@@ -1,0 +1,157 @@
+<div *ngIf="!(loadingMessages$ | async)" [class.dark-mode]="darkMode" class="chat chat-widget chat-widget-overlay"
+  [class.rtl]="rtl">
+  <div [class.dark-mode]="darkMode" class="chat-widget-header">
+    <div [class.dark-mode]="darkMode" class="user-status">
+      <div class="user-status-avatar" style="direction: ltr;">
+        <div [ngClass]="{
+            'online': (currentUser$ | async)?.status === 'ONLINE',
+            'offline': (currentUser$ | async)?.status !== 'ONLINE'
+          }" class="user-avatar small no-outline">
+          <div class="profile-cnt" style="left: -20%">
+            <div style="left: 7%; position: absolute; top: 5%">
+              <div class="small-profile-image" *ngIf="!(pos$ | async)?.picture?.baseUrl; else showImage">
+                <span style="display: flex;
+                align-items: center;
+                justify-content: center;
+                height: 100%;
+                width: 100%;
+                font-size: 24px;
+                color: #ffffff;
+                opacity: 0.8;
+                font-size: 16px;
+                font-weight: 900;
+                " [ngStyle]="{
+                  'background-color': (widgetSettings$ | async)?.theme || '#7750f8'
+                }" class="profile-text"> {{ (pos$ | async)?.title?.charAt(0) || 'N' }} </span>
+              </div>
+              <ng-template #showImage>
+                <div class="small-profile-image" [ngStyle]="{
+                  'background-image': 'url(' + (pos$ | async)?.picture?.baseUrl + '/' + (pos$ | async)?.picture?.path + ')',
+                  'background-position': 'center',
+                  'background-size': 'cover'
+                }"></div>
+              </ng-template>
+              <div class="progress-bar">
+                <svg class="small-progress progress blue noselect" x="0px" y="0px" viewBox="0 0 776 628">
+                  <path class="track" d="M723 314L543 625.77 183 625.77 3 314 183 2.23 543 2.23 723 314z">
+                  </path>
+                  <path class="test" d="M723 314L543 625.77 183 625.77 3 314 183 2.23 543 2.23 723 314z"></path>
+                </svg>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <p class="user-status-title"><span class="bold">
+          {{(pos$ | async)?.title }}
+        </span></p>
+      <p [ngClass]="{
+          'online': (currentUser$ | async)?.status === 'ONLINE',
+          'offline': (currentUser$ | async)?.status !== 'ONLINE'
+        }" class="user-status-tag">
+        {{
+        ((currentUser$ | async)?.status === 'ONLINE' ? 'ONLINE' : 'AWAY' ) | translate}}
+      </p>
+    </div>
+  </div>
+  <div [class.dark-mode]="darkMode" class="chat-widget-conversation chat-height" data-simplebar="init"
+    style="height: auto !important;">
+    <div class="simplebar-wrapper" style="margin: -35px -28px">
+      <div class="simplebar-height-auto-observer-wrapper">
+        <div class="simplebar-height-auto-observer"></div>
+      </div>
+      <div #scrollRef class="simplebar-mask">
+        <div class="simplebar-offset" style="right: 0px; bottom: 0px">
+          <div class="simplebar-content-wrapper" style="height: 100%; overflow: hidden scroll">
+            <div class="simplebar-content" style="padding: 35px 28px">
+              <div *ngFor="let message of messages"
+                [ngClass]="{'right': message?.sender?.id === (currentUser$ | async)?.id}"
+                class="chat-widget-speaker left">
+                <div class="chat-widget-speaker-avatar">
+                  <div class="user-avatar tiny no-border">
+                    <div class="user-avatar-content">
+                      <div class="hexagon-image-24-26" style="width: 24px; height: 26px; position: relative">
+                        <canvas width="24" height="26" style="position: absolute; top: 0px; left: 0px"></canvas>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <p class="chat-widget-speaker-message">{{message?.text}}</p>
+                <p class="chat-widget-speaker-timestamp">{{message?.date}}</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="simplebar-placeholder" style="width: auto; height: 542px"></div>
+    </div>
+    <div class="simplebar-track simplebar-horizontal" style="visibility: hidden">
+      <div class="simplebar-scrollbar" style="width: 0px; transform: translate3d(0px, 0px, 0px); display: none">
+      </div>
+    </div>
+    <div class="simplebar-track simplebar-vertical" style="visibility: visible">
+      <div class="simplebar-scrollbar" style="height: 25px; transform: translate3d(0px, 0px, 0px); display: block">
+      </div>
+    </div>
+  </div>
+  <form [class.dark-mode]="darkMode" class="chat chat-widget-form mt-3">
+    <div class="interactive-input small">
+      <button type="button" class="btn btn-link text-decoration-none emoji-btn"
+        style="position: absolute; right: 55px; top: 9%; width: 30px" id="emoji-btn" (click)="toggleEmojiPicker()">
+        <svg class="action-item-icon icon-settings">
+          <use xlink:href="#svg-friend"></use>
+        </svg>
+      </button>
+      <emoji-mart class="emoji-mart" [enableSearch]="false" [darkMode]="darkMode" [showPreview]="false"
+        *ngIf="showEmojiPicker" (emojiSelect)="addEmoji($event)" title="Pick your emoji…"></emoji-mart>
+      <input [formControl]="textInputControl" (keyup.enter)="send()" type="text" id="chat-widget-message-text"
+        name="chat_widget_message_text" [(ngModel)]="emoji" placeholder="{{'WRITE_MESSAGE' | translate}}" />
+      <div (click)="send()" style="pointer-events: auto; cursor: pointer;" class="interactive-input-icon-wrap">
+        <svg class="icon-send-message">
+          <use xlink:href="#svg-send-message"></use>
+        </svg>
+      </div>
+      <div class="interactive-input-action">
+        <svg class="interactive-input-action-icon icon-cross-thin">
+          <use xlink:href="#svg-cross-thin"></use>
+        </svg>
+      </div>
+    </div>
+  </form>
+</div>
+
+<div id="noresult" class="py-4 mt-4 text-center" *ngIf="loadingMessages$ | async">
+  <div>
+    <div class="page-loader-indicator loader-bars">
+      <div class="loader-bar"></div>
+      <div class="loader-bar"></div>
+      <div class="loader-bar"></div>
+      <div class="loader-bar"></div>
+      <div class="loader-bar"></div>
+      <div class="loader-bar"></div>
+      <div class="loader-bar"></div>
+      <div class="loader-bar"></div>
+    </div>
+  </div>
+</div>
+
+<svg style="display: none;">
+  <symbol id="svg-send-message" viewBox="0 0 20 20" preserveAspectRatio="xMinYMin meet">
+    <path
+      d="M19.993,0.94c-0.005-0.091-0.022-0.179-0.052-0.265c-0.011-0.031-0.021-0.062-0.035-0.093  c-0.049-0.107-0.109-0.208-0.195-0.294s-0.188-0.147-0.294-0.195c-0.031-0.014-0.062-0.024-0.093-0.035c-0.086-0.03-0.173-0.046-0.263-0.052C19.034,0.005,19.009,0,18.981,0c-0.104,0.002-0.207,0.017-0.308,0.052L0.67,6.353C0.283,6.488,0.018,6.846,0.001,7.256C-0.016,7.666,0.22,8.044,0.594,8.21l7.75,3.446l3.444,7.75C11.948,19.769,12.308,20,12.702,20
+    c0.014,0,0.027,0,0.041-0.002c0.409-0.016,0.768-0.28,0.903-0.668l6.302-18.003c0.035-0.101,0.05-0.206,0.052-0.309C20,0.991,19.994,0.967,19.993,0.94z M15.197,3.388L8.88,9.706L3.711,7.408L15.197,3.388z M12.592,16.288l-2.298-5.169l6.317-6.316L12.592,16.288z" />
+  </symbol>
+</svg>
+<svg style="display: none;">
+  <symbol id="svg-cross-thin" viewBox="0 0 20 20" preserveAspectRatio="xMinYMin meet">
+    <path
+      d="M18,16.547L16.545,18L10,11.455L3.455,18L2,16.547L8.545,10L2,3.455L3.455,2L10,8.546L16.545,2L18,3.455L11.455,10L18,16.547z" />
+  </symbol>
+</svg>
+<svg style="display: none;">
+  <symbol id="svg-friend" viewBox="0 0 20 20" preserveAspectRatio="xMinYMin meet">
+    <path
+      d="M10,0C4.477,0,0,4.478,0,10c0,5.523,4.477,10,10,10c5.522,0,10-4.477,10-10C20,4.478,15.522,0,10,0z M10,18c-4.418,0-8-3.582-8-8c0-4.418,3.582-8,8-8s8,3.582,8,8
+      C18,14.418,14.418,18,10,18z M10,13c-1.305,0-2.403-0.838-2.816-2H5.101c0.464,2.282,2.48,4,4.899,4s4.436-1.718,4.899-4h-2.083C12.403,12.162,11.305,13,10,13z M7,7H5v2h2V7z M13,9h2V7h-2V9z" />
+  </symbol>
+</svg>

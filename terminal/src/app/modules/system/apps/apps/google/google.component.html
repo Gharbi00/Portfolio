@@ -1,0 +1,341 @@
+<ng-container *ngIf="!(navigating$ | async)">
+
+  <div class="position-relative mx-n4 mt-n4">
+    <div class="profile-wid-bg profile-setting-img">
+      <img src="assets/images/profile-bg.jpg" class="profile-wid-img" alt="">
+      <div class="overlay-content">
+        <div class="text-end p-3">
+          <div class="p-0 ms-auto rounded-circle profile-photo-edit">
+            <input id="profile-foreground-img-file-input" type="file" class="profile-foreground-img-file-input">
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-xxl-3">
+      <div class="card mt-n5">
+        <div class="card-body p-4">
+          <div *ngIf="plugin$ | async as plugin" class="text-center">
+            <div class="profile-user position-relative d-inline-block mx-auto mb-4">
+              <div class="avatar-lg mb-3">
+                <div class="avatar-title bg-soft-success fs-24 text-success">
+                  <i [ngClass]="plugin?.icon"></i>
+                </div>
+              </div>
+            </div>
+            <h5 class="fs-16 mb-1">{{plugin?.name}}</h5>
+            <p class="text-muted mb-0">{{plugin?.description}}</p>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="col-xxl-9">
+      <div class="card mt-xxl-n5">
+        <div class="card-header">
+          <ul ngbNav #customNav="ngbNav" [activeId]="1" class="nav nav-tabs-custom rounded card-header-tabs border-bottom-0" role="tablist">
+            <li [ngbNavItem]="1" class="nav-item">
+              <a ngbNavLink class="nav-link" data-bs-toggle="tab" role="tab">
+                <i class="far fa-envelope"></i>{{'MODULES.SYSTEM.SETTINGS' | translate }}
+              </a>
+              <ng-template ngbNavContent>
+                <div class="mb-3 col-lg-12">
+                  <div for="firstnameInput" class="card-title">{{'MODULES.SYSTEM.GOOGLE_TAG_PREFERENCES' | translate }}</div>
+                  <div class="text-muted">{{'MODULES.SYSTEM.YOU_CAN_ADAPT_YOUR_GOOGLE_TAG_WITH_THESE_PREFERENCES' | translate }}</div>
+                </div>
+                <div class="col-lg-12 d-flex justify-content-between mb-3">
+                  <div>
+                    <div for="firstnameInput" class="">{{'MODULES.SYSTEM.ENABLE_GOOGLE_TAG' | translate }}</div>
+                    <div class="text-muted">{{'MODULES.SYSTEM.ALLOW_YOUR_WEBSITE_TO_PUSH_EVENTS_TO_GOOGLE_TAG' | translate }}</div>
+                  </div>
+                  <div class="flex-shrink-0 d-flex fs-18 gap-1">
+                    <div class="form-check form-switch">
+                      <input [checked]="googleAnalytics?.active" (change)="onSettingsChange($event)" class="form-check-input" type="checkbox" role="switch" id="flexSwitchCheckDefault">
+                    </div>
+                  </div>
+                </div>
+                <form [formGroup]="settingsForm">
+                  <div class="mb-3">
+                    <label for="customername-field" class="form-label">{{'MODULES.SYSTEM.GOOGLE_TAG_ID' | translate }}</label>
+                    <div class="input-group">
+                      <div class="input-group-append">
+                        <span class="input-group-text"><i class="ri-key-fill fs-15"></i></span>
+                      </div>
+                      <input type="text" id="customername-field" class="form-control" placeholder="{{'PLACEHOLDER.ENTER_GOOGLE_TAG_ID' | translate }}" formControlName="googleTagId" />
+                    </div>
+                  </div>
+                </form>
+                <div class="col-lg-12">
+                  <div class="hstack justify-content-end gap-2 mt-3">
+                    <button (click)="save()" [disabled]="isButtonDisabled || settingsForm.invalid" type="button" class="btn btn-success">{{'COMMON.SAVE' | translate }}</button>
+                  </div>
+                </div>
+              </ng-template>
+            </li>
+            <li [ngbNavItem]="2" class="nav-item">
+              <a ngbNavLink class="nav-link" data-bs-toggle="tab" role="tab">
+                <i class="far fa-envelope"></i>{{'MODULES.SYSTEM.EVENTS' | translate }}
+              </a>
+              <ng-template ngbNavContent>
+                <div class="col-lg-12 d-flex justify-content-between mb-3">
+                  <div>
+                    <div for="firstnameInput">{{'MODULES.SYSTEM.LOGIN' | translate }}</div>
+                    <div class="text-muted">{{'MODULES.SYSTEM.GET_LOGIN_UPDATES' | translate }}.</div>
+                  </div>
+                  <div class="flex-shrink-0 d-flex fs-18 gap-1">
+                    <div class="form-check form-switch">
+                      <input [checked]="googleAnalytics?.events[0]?.active" (change)="onChange($event?.target?.checked,'LOGIN')" class="form-check-input" type="checkbox" role="switch"
+                        id="flexSwitchCheckDefault">
+                    </div>
+                  </div>
+                </div>
+                <div class="col-lg-12 d-flex justify-content-between mb-3">
+                  <div>
+                    <div for="firstnameInput">{{'MODULES.SYSTEM.SIGN_UP' | translate }}</div>
+                    <div class="text-muted">{{'MODULES.SYSTEM.GET_SIGNUP_UPDATES' | translate }}</div>
+                  </div>
+                  <div class="flex-shrink-0 d-flex fs-18 gap-1">
+                    <div class="form-check form-switch">
+                      <input [checked]="googleAnalytics?.events[1]?.active" (change)="onChange($event?.target?.checked,'SIGNUP')" class="form-check-input" type="checkbox" role="switch"
+                        id="flexSwitchCheckDefault">
+                    </div>
+                  </div>
+                </div>
+                <div class="col-lg-12 d-flex justify-content-between mb-3">
+                  <div>
+                    <div for="firstnameInput">{{'COMMON.SEARCH' | translate }}</div>
+                    <div class="text-muted">{{'MODULES.SYSTEM.GET_SEARCH_REQUESTS' | translate }}</div>
+                  </div>
+                  <div class="flex-shrink-0 d-flex fs-18 gap-1">
+                    <div class="form-check form-switch">
+                      <input [checked]="googleAnalytics?.events[2]?.active" (change)="onChange($event?.target?.checked,'SEARCH')" class="form-check-input" type="checkbox" role="switch"
+                        id="flexSwitchCheckDefault">
+                    </div>
+                  </div>
+                </div>
+                <div class="col-lg-12 d-flex justify-content-between mb-3">
+                  <div>
+                    <div for="firstnameInput">{{'MODULES.SYSTEM.SHARE' | translate }}</div>
+                    <div class="text-muted">{{'MODULES.SYSTEM.GET_SHARE_REQUESTS' | translate }}</div>
+                  </div>
+                  <div class="flex-shrink-0 d-flex fs-18 gap-1">
+                    <div class="form-check form-switch">
+                      <input [checked]="googleAnalytics?.events[3]?.active" (change)="onChange($event?.target?.checked,'SHARE')" class="form-check-input" type="checkbox" role="switch"
+                        id="flexSwitchCheckDefault">
+                    </div>
+                  </div>
+                </div>
+                <div class="col-lg-12 d-flex justify-content-between mb-3">
+                  <div>
+                    <div for="firstnameInput">{{'MODULES.SYSTEM.EARN_VIRTUAL_CURRENCY' | translate }}</div>
+                    <div class="text-muted">{{'MODULES.SYSTEM.GET_EARN_VIRTUAL_CURRENCY_EVENT' | translate }}</div>
+                  </div>
+                  <div class="flex-shrink-0 d-flex fs-18 gap-1">
+                    <div class="form-check form-switch">
+                      <input [checked]="googleAnalytics?.events[4]?.active" (change)="onChange($event?.target?.checked,'EARN_VIRTUAL_CURRENCY')" class="form-check-input" type="checkbox" role="switch"
+                        id="flexSwitchCheckDefault">
+                    </div>
+                  </div>
+                </div>
+                <div class="col-lg-12 d-flex justify-content-between mb-3">
+                  <div>
+                    <div for="firstnameInput">{{'MODULES.SYSTEM.EARN_VIRTUAL_CURRENCY' | translate }}</div>
+                    <div class="text-muted">{{'MODULES.SYSTEM.GET_EARN_VIRTUAL_CURRENCY_UPDATES' | translate }}</div>
+                  </div>
+                  <div class="flex-shrink-0 d-flex fs-18 gap-1">
+                    <div class="form-check form-switch">
+                      <input [checked]="googleAnalytics?.events[5]?.active" (change)="onChange($event?.target?.checked,'SPEND_VIRTUAL_CURRENCY')" class="form-check-input" type="checkbox" role="switch"
+                        id="flexSwitchCheckDefault">
+                    </div>
+                  </div>
+                </div>
+                <div class="col-lg-12 d-flex justify-content-between mb-3">
+                  <div>
+                    <div for="firstnameInput">{{'MODULES.SYSTEM.ADD_PAYMENT_INFO' | translate }}</div>
+                    <div class="text-muted">{{'MODULES.SYSTEM.GET_ADD_PAYMENT_INFO_UPDATES' | translate }}</div>
+                  </div>
+                  <div class="flex-shrink-0 d-flex fs-18 gap-1">
+                    <div class="form-check form-switch">
+                      <input [checked]="googleAnalytics?.events[6]?.active" (change)="onChange($event?.target?.checked,'ADD_PAYMENT_INFO')" class="form-check-input" type="checkbox" role="switch"
+                        id="flexSwitchCheckDefault">
+                    </div>
+                  </div>
+                </div>
+                <div class="col-lg-12 d-flex justify-content-between mb-3">
+                  <div>
+                    <div for="firstnameInput">{{'MODULES.SYSTEM.ADD_SHIPPING_INFO' | translate }}</div>
+                    <div class="text-muted">{{'MODULES.SYSTEM.GET_ADD_SHIPPING_INFO' | translate }}</div>
+                  </div>
+                  <div class="flex-shrink-0 d-flex fs-18 gap-1">
+                    <div class="form-check form-switch">
+                      <input [checked]="googleAnalytics?.events[7]?.active" (change)="onChange($event?.target?.checked,'ADD_SHIPPING_INFO')" class="form-check-input" type="checkbox" role="switch"
+                        id="flexSwitchCheckDefault">
+                    </div>
+                  </div>
+                </div>
+                <div class="col-lg-12 d-flex justify-content-between mb-3">
+                  <div>
+                    <div for="firstnameInput">{{'MODULES.SYSTEM.ADD_TO_CART' | translate }}</div>
+                    <div class="text-muted">{{'MODULES.SYSTEM.GET_ADD_TO_CART_UPDATES' | translate }}</div>
+                  </div>
+                  <div class="flex-shrink-0 d-flex fs-18 gap-1">
+                    <div class="form-check form-switch">
+                      <input [checked]="googleAnalytics?.events[8]?.active" (change)="onChange($event?.target?.checked,'ADD_TO_CART')" class="form-check-input" type="checkbox" role="switch"
+                        id="flexSwitchCheckDefault">
+                    </div>
+                  </div>
+                </div>
+                <div class="col-lg-12 d-flex justify-content-between mb-3">
+                  <div>
+                    <div for="firstnameInput">{{'MODULES.SYSTEM.ADD_TO_WISHLIST' | translate }}</div>
+                    <div class="text-muted">{{'MODULES.SYSTEM.GET_ADD_TO_WISHLIST_UPDATES' | translate }}</div>
+                  </div>
+                  <div class="flex-shrink-0 d-flex fs-18 gap-1">
+                    <div class="form-check form-switch">
+                      <input [checked]="googleAnalytics?.events[9]?.active" (change)="onChange($event?.target?.checked,'ADD_TO_WISHLIST')" class="form-check-input" type="checkbox" role="switch"
+                        id="flexSwitchCheckDefault">
+                    </div>
+                  </div>
+                </div>
+                <div class="col-lg-12 d-flex justify-content-between mb-3">
+                  <div>
+                    <div for="firstnameInput">{{'MODULES.SYSTEM.BEGIN_CHECKOUT' | translate }}</div>
+                    <div class="text-muted">{{'MODULES.SYSTEM.GET_BEGIN_CHECKOUT_UPDATES' | translate }}</div>
+                  </div>
+                  <div class="flex-shrink-0 d-flex fs-18 gap-1">
+                    <div class="form-check form-switch">
+                      <input [checked]="googleAnalytics?.events[10]?.active" (change)="onChange($event?.target?.checked,'BEGIN_CHECKOUT')" class="form-check-input" type="checkbox" role="switch"
+                        id="flexSwitchCheckDefault">
+                    </div>
+                  </div>
+                </div>
+                <div class="col-lg-12 d-flex justify-content-between mb-3">
+                  <div>
+                    <div for="firstnameInput">{{'MODULES.SYSTEM.GENERATE_LEAD' | translate }}</div>
+                    <div class="text-muted">{{'MODULES.SYSTEM.GET_GENERATE_LEAD_UPDATES' | translate }}</div>
+                  </div>
+                  <div class="flex-shrink-0 d-flex fs-18 gap-1">
+                    <div class="form-check form-switch">
+                      <input [checked]="googleAnalytics?.events[11]?.active" (change)="onChange($event?.target?.checked,'GENERATE_LEAD')" class="form-check-input" type="checkbox" role="switch"
+                        id="flexSwitchCheckDefault">
+                    </div>
+                  </div>
+                </div>
+                <div class="col-lg-12 d-flex justify-content-between mb-3">
+                  <div>
+                    <div for="firstnameInput">{{'MODULES.SYSTEM.PURCHASE' | translate }}</div>
+                    <div class="text-muted">{{'MODULES.SYSTEM.GET_PURCHASE_UPDATES' | translate }}</div>
+                  </div>
+                  <div class="flex-shrink-0 d-flex fs-18 gap-1">
+                    <div class="form-check form-switch">
+                      <input [checked]="googleAnalytics?.events[12]?.active" (change)="onChange($event?.target?.checked,'PURCHASE')" class="form-check-input" type="checkbox" role="switch"
+                        id="flexSwitchCheckDefault">
+                    </div>
+                  </div>
+                </div>
+                <div class="col-lg-12 d-flex justify-content-between mb-3">
+                  <div>
+                    <div for="firstnameInput">{{ 'MODULES.ECOMMERCE.MAIN.PROMOTIONS' | translate }}</div>
+                    <div class="text-muted">{{'MODULES.SYSTEM.GET_REFUND_UPDATES' | translate }}</div>
+                  </div>
+                  <div class="flex-shrink-0 d-flex fs-18 gap-1">
+                    <div class="form-check form-switch">
+                      <input [checked]="googleAnalytics?.events[13]?.active" (change)="onChange($event?.target?.checked,'REFUND')" class="form-check-input" type="checkbox" role="switch"
+                        id="flexSwitchCheckDefault">
+                    </div>
+                  </div>
+                </div>
+                <div class="col-lg-12 d-flex justify-content-between mb-3">
+                  <div>
+                    <div for="firstnameInput">{{'MODULES.SYSTEM.REMOVE_FROM_CART' | translate }}</div>
+                    <div class="text-muted">{{'MODULES.SYSTEM.GET_REMOVE_FROM_CART_UPDATES' | translate }}</div>
+                  </div>
+                  <div class="flex-shrink-0 d-flex fs-18 gap-1">
+                    <div class="form-check form-switch">
+                      <input [checked]="googleAnalytics?.events[14]?.active" (change)="onChange($event?.target?.checked,'REMOVE_FROM_CART')" class="form-check-input" type="checkbox" role="switch"
+                        id="flexSwitchCheckDefault">
+                    </div>
+                  </div>
+                </div>
+                <div class="col-lg-12 d-flex justify-content-between mb-3">
+                  <div>
+                    <div for="firstnameInput">{{'MODULES.SYSTEM.SELECT_ITEM' | translate }}</div>
+                    <div class="text-muted">{{'MODULES.SYSTEM.GET_SELECT_ITEM_UPDATES' | translate }}</div>
+                  </div>
+                  <div class="flex-shrink-0 d-flex fs-18 gap-1">
+                    <div class="form-check form-switch">
+                      <input [checked]="googleAnalytics?.events[15]?.active" (change)="onChange($event?.target?.checked,'SELECT_ITEM')" class="form-check-input" type="checkbox" role="switch"
+                        id="flexSwitchCheckDefault">
+                    </div>
+                  </div>
+                </div>
+                <div class="col-lg-12 d-flex justify-content-between mb-3">
+                  <div>
+                    <div for="firstnameInput">{{'MODULES.SYSTEM.SELECT_PROMOTION' | translate }}</div>
+                    <div class="text-muted">{{'MODULES.SYSTEM.GET_SELECT_PROMOTION_UPDATES' | translate }}</div>
+                  </div>
+                  <div class="flex-shrink-0 d-flex fs-18 gap-1">
+                    <div class="form-check form-switch">
+                      <input [checked]="googleAnalytics?.events[16]?.active" (change)="onChange($event?.target?.checked,'SELECT_PROMOTION')" class="form-check-input" type="checkbox" role="switch"
+                        id="flexSwitchCheckDefault">
+                    </div>
+                  </div>
+                </div>
+                <div class="col-lg-12 d-flex justify-content-between mb-3">
+                  <div>
+                    <div for="firstnameInput">{{'MODULES.SYSTEM.VIEW_CART' | translate }}</div>
+                    <div class="text-muted">{{'MODULES.SYSTEM.GOOGLE_TAGS' | translate }}</div>
+                  </div>
+                  <div class="flex-shrink-0 d-flex fs-18 gap-1">
+                    <div class="form-check form-switch">
+                      <input [checked]="googleAnalytics?.events[17]?.active" (change)="onChange($event?.target?.checked,'VIEW_CART')" class="form-check-input" type="checkbox" role="switch"
+                        id="flexSwitchCheckDefault">
+                    </div>
+                  </div>
+                </div>
+                <div class="col-lg-12 d-flex justify-content-between mb-3">
+                  <div>
+                    <div for="firstnameInput">{{'MODULES.SYSTEM.PURVIEW_ITEM' | translate }}</div>
+                    <div class="text-muted">{{'MODULES.SYSTEM.GET_VIEW_ITEM_UPDATES' | translate }}</div>
+                  </div>
+                  <div class="flex-shrink-0 d-flex fs-18 gap-1">
+                    <div class="form-check form-switch">
+                      <input [checked]="googleAnalytics?.events[18]?.active" (change)="onChange($event?.target?.checked,'VIEW_ITEM')" class="form-check-input" type="checkbox" role="switch"
+                        id="flexSwitchCheckDefault">
+                    </div>
+                  </div>
+                </div>
+                <div class="col-lg-12 d-flex justify-content-between mb-3">
+                  <div>
+                    <div for="firstnameInput">{{'MODULES.SYSTEM.VIEW_PROMOTION' | translate }}</div>
+                    <div class="text-muted">{{'MODULES.SYSTEM.GET_VIEW_PROMOTION_UPDATES' | translate }}</div>
+                  </div>
+                  <div class="flex-shrink-0 d-flex fs-18 gap-1">
+                    <div class="form-check form-switch">
+                      <input [checked]="googleAnalytics?.events[19]?.active" (change)="onChange($event?.target?.checked,'VIEW_PROMOTION')" class="form-check-input" type="checkbox" role="switch"
+                        id="flexSwitchCheckDefault">
+                    </div>
+                  </div>
+                </div>
+              </ng-template>
+            </li>
+          </ul>
+        </div>
+        <div class="card-body p-4">
+          <div class="tab-content">
+            <div [ngbNavOutlet]="customNav"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</ng-container>
+<div *ngIf="navigating$ | async" class="vh-100 py-4 text-center" fxLayout="column" fxLayoutAlign="center center" fxLayoutGap="1rem">
+  <div>
+    <lord-icon trigger="loop" style="width:72px;height:72px" [colors]="'primary:' + primaryColor + ',secondary:' + secondaryColor" src="https://cdn.lordicon.com/msoeawqm.json">
+    </lord-icon>
+  </div>
+  <div class="mt-4">
+    <h5>{{'COMMON.LOADING' | translate }}</h5>
+  </div>
+</div>

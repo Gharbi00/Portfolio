@@ -1,0 +1,2 @@
+<?xml version="1.0"?>
+<products><product><product_id>1</product_id><sku>toji</sku><name>toji</name><price>30.000000</price><status>1</status><visibility>4</visibility><type>simple</type></product><product><product_id>2</product_id><sku>toji0</sku><name>toji0</name><price>50000.000000</price><status>1</status><visibility>4</visibility><type>simple</type></product></products>

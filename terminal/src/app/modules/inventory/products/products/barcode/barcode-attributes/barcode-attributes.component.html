@@ -1,0 +1,57 @@
+<div class="flex flex-col max-w-240 md:min-w-160 max-h-screen -m-6" *transloco="let t">
+
+  <!-- Header -->
+  <div class="flex flex-0 items-center justify-between h-16 pr-3 sm:pr-5 pl-6 sm:pl-8">
+    <div class="text-lg font-medium">{{t('catalog.products.products.barcode')}}</div>
+    <button mat-icon-button [matDialogClose]="undefined">
+      <mat-icon class="text-secondary" [svgIcon]="'heroicons_outline:x'"></mat-icon>
+    </button>
+  </div>
+
+  <!-- Compose form -->
+  <form class="flex flex-col flex-auto p-6 sm:p-8 overflow-y-auto">
+    <!-- </div> -->
+    <div class="grid sm:grid-cols-4 gap-2 w-full">
+      <!-- from -->
+      <div class="sm:col-span-4 flex items-center">
+        {{t('catalog.products.products.barcode')}}: {{ data.barcode }}
+        <mat-icon (click)="copyText(data.barcode)" class="ml-1.5 icon-size-4 text-hint cursor-pointer"
+          [svgIcon]="'heroicons_solid:clipboard-copy'" [matTooltip]="'Copy barcode'"></mat-icon>
+      </div>
+      <div class="sm:col-span-4">
+        <div class="mt-1.5 rounded-md border border-gray-300 dark:border-gray-500 shadow-sm overflow-hidden">
+          <div class="h-44 leading-none overflow-y-auto border-gray-300 dark:border-gray-500">
+            <ng-container *ngFor="let attribute of data.productAttributesValues.attributesValues">
+              <div
+                class="group border-t w-full select-none hover:bg-gray-100 font-semibold bg-gray-50 dark:bg-transparent">
+                <div class="flex flex-0 w-0 h-0"></div>
+                <div fxLayout="row" fxLayoutAlign="start center" style="padding-top: 14px; padding-bottom: 17px;"
+                  class="relative flex items-center h-full pl-10">
+                  <a class="flex flex-auto items-center min-w-0 pr-7">
+                    <div class="flex-auto mr-2 truncate">
+                      <span>{{attribute?.attribute?.label}}</span>
+                    </div>
+                  </a>
+                  <mat-chip-list #chipList>
+                    <mat-chip>
+                      {{ attribute.label }}
+                    </mat-chip>
+                  </mat-chip-list>
+                </div>
+              </div>
+            </ng-container>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="flex items-center justify-end mt-5">
+      <button mat-raised-button type="button" (click)="deleteBarcode()" color="warn">
+        <span class="mr-1.5">{{t('catalog.products.products.delete')}}</span>
+        <mat-icon class="text-current" [svgIcon]="'heroicons_outline:trash'"></mat-icon>
+      </button>
+      <button class="ml-4" mat-stroked-button type="button" (click)="cancel()">
+        {{t('catalog.products.products.close')}}
+      </button>
+    </div>
+  </form>
+</div>

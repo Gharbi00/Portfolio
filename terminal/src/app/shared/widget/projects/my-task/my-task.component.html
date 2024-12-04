@@ -1,0 +1,50 @@
+<table class="table table-borderless table-nowrap table-centered align-middle mb-0">
+  <thead class="table-light text-muted">
+    <tr>
+      <th scope="col">{{'COMMON.TITLE' | translate }}</th>
+      <th scope="col">{{'MODULES.INVENTORY.DUE_DATE' | translate }}</th>
+      <th scope="col">{{'MODULES.INVENTORY.PRIORITY' | translate }}</th>
+      <th scope="col">Assignee</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr *ngFor="let data of MyTask">
+      <td>
+        <div class="form-check">
+          <label class="form-check-label ms-1" for="checkTask1">
+            {{data.title}}
+          </label>
+        </div>
+      </td>
+      <td class="text-muted">{{data.dueDate | date: 'longDate'}}</td>
+      <td><span class="badge badge-soft-success"
+          [ngClass]=" {
+            'badge-soft-warning': data.priority === 'LOW',
+            'badge-soft-danger': data.priority === 'NORMAL',
+            'badge-soft-danger': data.priority === 'HIGH',
+            'badge-soft-danger': data.priority === 'CRITICAL'
+          }">{{data.priority}}</span>
+      </td>
+      <td>
+        <div class="d-flex gap-1" *ngIf="data?.assignedTo?.length">
+          <a *ngIf="data?.assignedTo[0]?.pictures?.length" href="javascript:void(0);" class="avatar-group-item">
+            <img [src]="data?.assignedTo[0]?.pictures[0]?.baseUrl + '/' + data?.assignedTo[0]?.pictures[0]?.path" alt=""
+              class="avatar-xxs rounded-circle me-2 shadow">
+          </a>
+          <a *ngIf="!data?.assignedTo[0]?.pictures?.length || (data?.assignedTo[0]?.firstName && data?.assignedTo[0]?.pictures?.length)"
+            href="javascript: void(0);" class="avatar-group-item shadow" [matTooltip]="data?.assignedTo[0]?.firstName"
+            placement="top">
+            <div class="avatar-xxs">
+              <div class="avatar-title rounded-circle bg-danger text-uppercase shadow">
+                {{ data?.assignedTo[0]?.firstName.charAt(0) || 'N'}}
+              </div>
+            </div>
+          </a>
+          <div>
+            {{ data?.assignedTo[0]?.firstName}}
+          </div>
+        </div>
+      </td>
+    </tr>
+  </tbody>
+</table>

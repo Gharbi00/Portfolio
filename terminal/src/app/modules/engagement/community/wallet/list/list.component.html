@@ -1,0 +1,148 @@
+<app-breadcrumbs title="{{'MENUITEMS.CUSTOMERENGAGEMENT.LIST.COMMUNITY.WALLETS' | translate }}"
+  [breadcrumbItems]="breadCrumbItems"></app-breadcrumbs>
+<ng-container *ngIf="!(navigating$ | async)">
+  <div class="row">
+    <div class="col-lg-12">
+      <div class="card" id="ticketsList">
+        <div class="card-header border-0">
+          <div class="row g-4 align-items-center">
+            <div class="col-sm">
+              <div>
+                <h5 class="card-title mb-0">{{'MENUITEMS.CUSTOMERENGAGEMENT.LIST.WALLET' | translate }}</h5>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="card-body border-bottom-dashed border-bottom">
+          <div class="row d-flex justify-content-between g-3">
+            <div class="col-lg-8 col-md-6">
+              <div class="search-box">
+                <form [formGroup]="searchForm">
+                  <input type="text" formControlName="searchString" name="searchTerm" class="form-control"
+                    placeholder="Search for wallets">
+                  <i class="ri-search-line search-icon"></i>
+                </form>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="card-body">
+          <div class="table-card gridjs-border-none">
+            <div class="table-responsive">
+              <table class="table align-middle custom-datatable" id="datatableexample">
+                <thead>
+                  <tr class="bg-light text-uppercase text-muted">
+                    <th class="w-25">{{'MENUITEMS.CUSTOMERENGAGEMENT.LIST.CUSTOMER' | translate }}</th>
+                    <th>{{'MENUITEMS.CUSTOMERENGAGEMENT.LIST.IDENTIFIER' | translate }}</th>
+                    <th class="w-25">{{'COMMON.EMAIL' | translate }}</th>
+                    <th>{{'COMMON.PHONE' | translate }}</th>
+                    <th>{{'MENUITEMS.CUSTOMERENGAGEMENT.LIST.WALLET' | translate }}</th>
+                  </tr>
+                </thead>
+                <tbody *ngIf="((loadingWallet$ | async) === false || null || undefined) && (wallet$ | async).length">
+                  <tr *ngFor="let item of wallet$ | async;let i = index;" id="p_{{item?.id}}">
+                    <td>
+                      <span>
+                        <div class="d-flex cursor-pointer align-items-center">
+                          <div class="flex-shrink-0 me-3">
+                            <div class="avatar-sm bg-light p-1 rounded-circle h-x" *ngIf="item?.picture?.baseUrl">
+                              <img [src]="item?.picture?.baseUrl + '/' + item?.picture?.path"
+                                class="img-fluid h-100 rounded-circle">
+                            </div>
+                            <div class="avatar-sm bg-light rounded-circle p-1 h-x"
+                              *ngIf="!item?.picture?.baseUrl">
+                              <div class="avatar-title bg-soft-success text-success rounded-circle fs-13">
+                                {{item?.firstName?.charAt(0) || 'N'}}</div>
+                            </div>
+                          </div>
+                          <div [routerLink]="['/ecommerce/customers/customers', item?.id]" class="flex-grow-1">
+                            <h5 class="fs-14 mb-1">
+                              <a class="cursor-pointer fw-medium link-primary">
+                                {{ (item?.firstName || '') + ' ' +
+                                (item?.lastName ||
+                                '') }}
+                              </a>
+                            </h5>
+                          </div>
+                        </div>
+                      </span>
+                    </td>
+                    <td>{{item?.socialLoginData?.partner?.identifier}}</td>
+                    <td>
+                      {{item?.email}}
+                    </td>
+                    <td> <span *ngIf="item?.phone?.number">+{{item?.phone?.countryCode}} {{item?.phone?.number}}</span> </td>
+                    <td>
+                      <ng-container *ngIf="item?.wallets?.length > 0">
+                        <div class="d-flex flex-column gap-1">
+                          <div *ngFor="let wallet of item?.wallets" class="d-flex gap-1 align-items-center">
+                            {{(wallet?.amount || 0) | number: '1.0-0'}}
+                            <img *ngIf="wallet?.coin?.picture?.baseUrl"
+                              [src]="wallet?.coin?.picture?.baseUrl + '/' + wallet?.coin?.picture?.path"
+                              alt="" class="img-fluid rounded-circle avatar-xxs">
+                            <lord-icon *ngIf="!wallet?.coin?.picture?.baseUrl"
+                              src="https://cdn.lordicon.com/lxizbtuq.json" trigger="loop" delay="2000"
+                              style="width:25px;height:25px">
+                            </lord-icon>
+                          </div>
+                        </div>
+                      </ng-container>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+          <div *ngIf="((loadingWallet$ | async) === false || null || undefined) && (wallet$ | async).length"
+            class="px-3">
+            <div class="row justify-content-md-between align-items-md-center gy-2">
+              <div class="col col-sm-6">
+                <div class="dataTables_info mb-2" id="tickets-table_info" role="status" aria-live="polite">
+                  {{'COMMON.SHOWING' | translate }}{{pagination?.startIndex + 1}}–{{pagination?.endIndex ===
+                  pagination?.length ? pagination?.endIndex : pagination?.endIndex + 1}} {{'COMMON.OF' | translate }}
+                  {{pagination?.length}} {{'COMMON.ENTRIES' | translate }}
+                </div>
+              </div>
+              <div class="col col-sm-6">
+                <div class="text-sm-right float-end listjs-pagination">
+                  <ngb-pagination [maxSize]="5" [collectionSize]="pagination?.length" [(page)]="page"
+                    (pageChange)="onPageChange($event)" [pageSize]="pagination?.size">
+                  </ngb-pagination>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div id="noresult" class="py-4 mt-4 text-center"
+            *ngIf="(loadingWallet$ | async) || (!(loadingWallet$ | async) && !(wallet$ | async).length)">
+            <div *ngIf="loadingWallet$ | async">
+              <lord-icon trigger="loop" style="width:72px;height:72px"
+                [colors]="'primary:' + primaryColor + ',secondary:' + secondaryColor"
+                src="https://cdn.lordicon.com/msoeawqm.json">
+              </lord-icon>
+              <h5 class="mt-4">{{'COMMON.LOADING' | translate }}</h5>
+            </div>
+            <div *ngIf="!(loadingWallet$ | async) && !(wallet$ | async).length">
+              <lord-icon trigger="loop" style="width:72px;height:72px"
+                [colors]="'primary:' + primaryColor + ',secondary:' + secondaryColor"
+                src="https://cdn.lordicon.com/vlycxjwx.json">
+              </lord-icon>
+              <h5 class="mt-4">{{ 'COMMON.NO_RESULT' | translate }}</h5>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</ng-container>
+<div *ngIf="navigating$ | async" class="vh-100 py-4 text-center" fxLayout="column" fxLayoutAlign="center center"
+  fxLayoutGap="1rem">
+  <div>
+    <lord-icon trigger="loop" style="width:72px;height:72px"
+      [colors]="'primary:' + primaryColor + ',secondary:' + secondaryColor"
+      src="https://cdn.lordicon.com/msoeawqm.json">
+    </lord-icon>
+  </div>
+  <div class="mt-4">
+    <h5>{{'COMMON.LOADING' | translate }}</h5>
+  </div>
+</div>

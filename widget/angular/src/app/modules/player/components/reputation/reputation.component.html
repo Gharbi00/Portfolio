@@ -1,0 +1,438 @@
+<div [class.dark-mode]="darkMode" [class.rtl]="rtl">
+  <div class="player-mode content-grid col-md-12 header-margin" style="padding: 00 0 !important">
+    <div class="section-banner"
+      [ngStyle]="{ background: 'url(' + headerImagePath + ') no-repeat center center / cover' }">
+      <img class="section-banner-icon" [src]="overviewIcon?.baseUrl + '/' + overviewIcon?.path" alt="newsfeed-icon" />
+      <p class="section-banner-title">{{'LEVEL_UP_YOUR_STATUS' | translate}}</p>
+      <p class="section-banner-text text-truncate">{{'EXPLORE_PERKS' | translate}}</p>
+    </div>
+  </div>
+  <div *ngIf="authenticated" class="level-24 widget-box col-md-12 special-margin-bottom">
+    <div class="special-widget-box">
+      <div class="widget-box-content">
+        <div *ngIf="isValidCountDown &&
+        (
+          (loyaltySettings?.prelevel?.frequencyGoalEnabled || currentLevel?.frequencyGoalEnabled) ||
+          (loyaltySettings?.prelevel?.turnoverGoalEnabled || currentLevel?.prelevel?.turnoverGoalEnabled)
+        )" class="section-header-info">
+          <h2 class="section-title displayed-center">{{'HEADS_UP' | translate}}</h2>
+          <div
+            class="mb-3"
+            *ngIf="(loyaltySettings?.prelevel?.frequencyGoalEnabled || currentLevel?.frequencyGoalEnabled) && frequencyLossDate">
+            <p class="quest-item-text" style="text-align: center">
+              {{'COMPLETE_ACTIVITY' | translate}} {{'AVOID_LOSING' | translate}}
+              <span class="experience-design" style="display: inline-flex; align-items: center;">
+                <p class="ml-2" style="font-size: large;font-weight: 600;">
+                  <span style="color: red;">
+                    {{currentLevel ? currentLevel?.lossAmount : (loyaltySettings$ |
+                    async)?.prelevel?.lossAmount}}
+                  </span>
+                  <img *ngIf="!(loyaltySettings$ | async)?.qualitative?.picture?.baseUrl" class="rounded-circle"
+                    src="https://sifca-storage.s3.eu-central-1.amazonaws.com/loyalcraft/reputation_512.gif"
+                    class="assets/img-fluid rounded-circle mb-1"
+                    style="margin-top: 5% !important; width: 25px !important" />
+                  <img *ngIf="(loyaltySettings$ | async)?.qualitative?.picture?.baseUrl"
+                    [src]="(loyaltySettings$ | async)?.qualitative?.picture?.baseUrl + '/' + (loyaltySettings$ | async)?.qualitative?.picture?.path"
+                    class="assets/img-fluid rounded-circle mb-1"
+                    style="margin-top: 5% !important; width: 25px !important" />
+                </p>
+              </span>
+              {{'FROM_WALLET' | translate}}
+            </p>
+            <p style="font-size: larger" class="quest-item-text text-center mt-2">
+              <b class="countdown">{{
+                (getFrequencyCountdown()?.day || 0) + ' : ' + (getFrequencyCountdown()?.hours || 0) + ' : ' +
+                (getFrequencyCountdown()?.minutes || 0) + ' : ' + (getFrequencyCountdown()?.seconds || 0)
+                }}
+              </b>
+            </p>
+          </div>
+          <div *ngIf="
+          (
+            (loyaltySettings?.prelevel?.frequencyGoalEnabled || currentLevel?.frequencyGoalEnabled) &&
+            (loyaltySettings?.prelevel?.turnoverGoalEnabled || currentLevel?.prelevel?.turnoverGoalEnabled)
+          )"  class="d-flex justify-content-center">
+            <p>{{'AND' | translate}}</p>
+          </div>
+          <ng-container
+            *ngIf="(loyaltySettings?.prelevel?.turnoverGoalEnabled || currentLevel?.turnoverGoalEnabled) && turnoverLossDate">
+            <p class="quest-item-text" style="text-align: center">
+              {{'COLLECT' | translate}}
+              <span class="experience-design" style="display: inline-flex; align-items: center;">
+                <p class="ml-2" style="font-size: large;font-weight: 600;">
+                  <span style="color: red;">
+                    {{turnoverLossDate?.turnoverPoints}}
+                  </span>
+                  <img *ngIf="!(loyaltySettings$ | async)?.qualitative?.picture?.baseUrl" class="rounded-circle"
+                    src="https://sifca-storage.s3.eu-central-1.amazonaws.com/loyalcraft/reputation_512.gif"
+                    class="assets/img-fluid rounded-circle mb-1"
+                    style="margin-top: 5% !important; width: 25px !important" />
+                  <img *ngIf="(loyaltySettings$ | async)?.qualitative?.picture?.baseUrl"
+                    [src]="(loyaltySettings$ | async)?.qualitative?.picture?.baseUrl + '/' + (loyaltySettings$ | async)?.qualitative?.picture?.path"
+                    class="assets/img-fluid rounded-circle mb-1"
+                    style="margin-top: 5% !important; width: 25px !important" />
+                </p>
+              </span>
+              {{'BEFORE' | translate}} <span style="font-weight: 700;">{{turnoverLossDate?.lossDate | date: 'dd MMM
+                yyyy'}}</span>
+              {{'TO_AVOID_LOSING' | translate}}
+              <span class="experience-design" style="display: inline-flex; align-items: center;">
+                <p class="ml-2" style="font-size: large;font-weight: 600;">
+                  <span [ngStyle]="{
+                    'color': (currentUser$ | async)?.id === data?.debitor?.owner?.user?.id ? 'red' : '#00c7d9'
+                  }">
+                    {{turnoverLossDate?.lossAmount}}
+                  </span>
+                  <img *ngIf="!(loyaltySettings$ | async)?.qualitative?.picture?.baseUrl" class="rounded-circle"
+                    src="https://sifca-storage.s3.eu-central-1.amazonaws.com/loyalcraft/reputation_512.gif"
+                    class="assets/img-fluid rounded-circle mb-1"
+                    style="margin-top: 5% !important; width: 25px !important" />
+                  <img *ngIf="(loyaltySettings$ | async)?.qualitative?.picture?.baseUrl"
+                    [src]="(loyaltySettings$ | async)?.qualitative?.picture?.baseUrl + '/' + (loyaltySettings$ | async)?.qualitative?.picture?.path"
+                    class="assets/img-fluid rounded-circle mb-1"
+                    style="margin-top: 5% !important; width: 25px !important" />
+                </p>
+              </span>
+            </p>
+            <div class="d-flex justify-content-center mb-4 mt-2">
+              <div class="progress-bar-width col-lg-4">
+                <div class="level-display" type="button">
+                  <div class="col-12 p-0">
+                    <div class="d-flex justify-content-end">
+                      <span style="font-weight: 600;" [ngClass]="{'text-white': darkMode, 'text-black': !darkMode}">
+                        {{turnoverLossDate?.currentPoints || 0}} /
+                        {{turnoverLossDate?.turnoverPoints || 0}}</span>
+                    </div>
+                  </div>
+                </div>
+                <div appProgressBar [height]="1" [lineColor]="'#e7e8ee'" [start]="0"
+                  [end]="turnoverLossDate?.turnoverPoints" [stop]="turnoverLossDate?.currentPoints"
+                  [gradientColors]="[levelColor$ | async, levelColor$ | async]" class="progress-stat-bar"
+                  style="height: 5px; position: relative; margin-bottom: 4%">
+                </div>
+              </div>
+            </div>
+          </ng-container>
+        </div>
+        <div class="timeline-information-list" style="margin-top: 40px">
+          <div class="timeline-information grid d-flex mb-3" style="display: flex">
+            <div class="badge-item level-img ml-3">
+              <img *ngIf="!(loyaltySettings$ | async)?.prelevel?.picture?.baseUrl"
+                [src]="badge1Icon?.baseUrl + '/' + badge1Icon?.path" alt="badge-bronzec-s" class="active-level" />
+              <img *ngIf="(loyaltySettings$ | async)?.prelevel?.picture?.baseUrl"
+                [src]="(loyaltySettings$ | async)?.prelevel?.picture?.baseUrl + '/' + (loyaltySettings$ | async)?.prelevel?.picture?.path"
+                alt="badge-bronzec-s" class="active-level" />
+            </div>
+            <div class="progress-bar-width" style="margin-top: -1%">
+              <div class="level-display" (click)="isPrelevelAccordionClosed = !isPrelevelAccordionClosed" type="button">
+                <div style="display: block">
+                  <p style="font-size: 16px;" class="timeline-information-title">{{ (loyaltySettings$ |
+                    async)?.prelevel?.name }}</p>
+                  <p class="timeline-information-date">{{'YOU_LOSE' | translate}} {{(loyaltySettings$ |
+                    async)?.prelevel?.lossAmount}} {{'POINTS_LOST' | translate}} {{(loyaltySettings$ |
+                    async)?.prelevel?.inactivityCycle}} {{'DAYS' | translate}}</p>
+                </div>
+              </div>
+              <p (click)="isPrelevelAccordionClosed = !isPrelevelAccordionClosed" class="timeline-information-date mt-4"
+                style="color: #4fa0ef; margin-top: -2%; cursor: pointer">
+                {{'BENEFITS' | translate}}
+                <svg *ngIf="!isPrelevelAccordionClosed" xmlns="http://www.w3.org/2000/svg"
+                  xmlns:xlink="http://www.w3.org/1999/xlink" width="11" height="11" viewBox="0 -4.5 20 20"
+                  version="1.1">
+                  <title>arrow_down [#338]</title>
+                  <desc>Created with Sketch.</desc>
+                  <defs>
+                  </defs>
+                  <g id="Page-1" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+                    <g id="Dribbble-Light-Preview" transform="translate(-220.000000, -6684.000000)" fill="#000000">
+                      <g id="icons" transform="translate(56.000000, 160.000000)">
+                        <path fill="#4fa0ef"
+                          d="M164.292308,6524.36583 L164.292308,6524.36583 C163.902564,6524.77071 163.902564,6525.42619 164.292308,6525.83004 L172.555873,6534.39267 C173.33636,6535.20244 174.602528,6535.20244 175.383014,6534.39267 L183.70754,6525.76791 C184.093286,6525.36716 184.098283,6524.71997 183.717533,6524.31405 C183.328789,6523.89985 182.68821,6523.89467 182.29347,6524.30266 L174.676479,6532.19636 C174.285736,6532.60124 173.653152,6532.60124 173.262409,6532.19636 L165.705379,6524.36583 C165.315635,6523.96094 164.683051,6523.96094 164.292308,6524.36583"
+                          id="arrow_down-[#338]">
+                        </path>
+                      </g>
+                    </g>
+                  </g>
+                </svg>
+                <svg *ngIf="isPrelevelAccordionClosed" xmlns="http://www.w3.org/2000/svg"
+                  xmlns:xlink="http://www.w3.org/1999/xlink" width="11" height="11" viewBox="0 -4.5 20 20"
+                  version="1.1">
+                  <g id="Page-1" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+                    <g id="Dribbble-Light-Preview" transform="translate(-260.000000, -6684.000000)" fill="#000000">
+                      <g id="icons" transform="translate(56.000000, 160.000000)">
+                        <path fill="#4fa0ef"
+                          d="M223.707692,6534.63378 L223.707692,6534.63378 C224.097436,6534.22888 224.097436,6533.57338 223.707692,6533.16951 L215.444127,6524.60657 C214.66364,6523.79781 213.397472,6523.79781 212.616986,6524.60657 L204.29246,6533.23165 C203.906714,6533.6324 203.901717,6534.27962 204.282467,6534.68555 C204.671211,6535.10081 205.31179,6535.10495 205.70653,6534.69695 L213.323521,6526.80297 C213.714264,6526.39807 214.346848,6526.39807 214.737591,6526.80297 L222.294621,6534.63378 C222.684365,6535.03868 223.317949,6535.03868 223.707692,6534.63378"
+                          id="arrow_up-[#337]">
+                        </path>
+                      </g>
+                    </g>
+                  </g>
+                </svg>
+              </p>
+              <div *ngIf="!isPrelevelAccordionClosed">
+                <p *ngIf="(loyaltySettings$ | async)?.prelevel?.perks?.description" class="timeline-information-text">
+                  <quill-view-html [content]="(loyaltySettings$ | async)?.prelevel?.perks?.description"
+                    theme="snow"></quill-view-html>
+                </p>
+                <p *ngIf="!(loyaltySettings$ | async)?.prelevel?.perks?.description" class="timeline-information-text">
+                  {{'NO_ADDED_BENEFITS' | translate}}
+                </p>
+              </div>
+            </div>
+          </div>
+
+          <div
+            [ngClass]="{'disabled-level': currentLevel?.levelInterval?.max !== level?.levelInterval?.max && currentLevel?.rank < level?.rank}"
+            *ngFor="let level of reputationLevels; let i = index" class="timeline-information grid"
+            style="display: flex">
+            <div class="badge-item level-img ml-3">
+              <img *ngIf="level?.picture?.baseUrl" [src]="level?.picture?.baseUrl + '/' + level?.picture?.path"
+                class="active-level" />
+              <ng-container *ngIf="!level?.picture?.baseUrl">
+                <img *ngIf="i === 0" [src]="badge2Icon?.baseUrl + '/' + badge2Icon?.path" class="active-level" />
+                <img *ngIf="i === 1" [src]="badge3Icon?.baseUrl + '/' + badge3Icon?.path" class="active-level" />
+                <img *ngIf="i === 2" [src]="badge4Icon?.baseUrl + '/' + badge4Icon?.path" class="active-level" />
+                <img *ngIf="i === 3" [src]="badge5Icon?.baseUrl + '/' + badge5Icon?.path" class="active-level" />
+              </ng-container>
+            </div>
+            <div class="progress-bar-width" style="margin-top: -1%">
+              <div class="level-display" type="button" (click)="toggleCollapse(i)">
+                <div class="col-12 p-0" style="display: block">
+                  <div class="d-flex justify-content-between">
+                    <p style="font-size: 16px;" class="timeline-information-title">{{ level?.reputationLevel }}</p>
+                    <p style="font-size: 16px;" class="timeline-information-title">
+                      <span style="font-size: 17.6px;"> {{getLevelAmount(level, i)}} </span> /
+                      <span> {{(level?.levelInterval?.max - level?.levelInterval?.min)}} </span>
+                      <span>
+                        <img *ngIf="!(loyaltySettings$ | async)?.qualitative?.picture?.baseUrl" class="rounded-circle"
+                          src="https://sifca-storage.s3.eu-central-1.amazonaws.com/loyalcraft/reputation_512.gif"
+                          class="assets/img-fluid rounded-circle mb-1"
+                          style="margin-top: 5% !important;width: 20px !important" />
+                        <img *ngIf="(loyaltySettings$ | async)?.qualitative?.picture?.baseUrl"
+                          [src]="(loyaltySettings$ | async)?.qualitative?.picture?.baseUrl + '/' + (loyaltySettings$ | async)?.qualitative?.picture?.path"
+                          class="assets/img-fluid rounded-circle mb-1"
+                          style="margin-top: 5% !important;width: 20px !important" />
+                      </span>
+                    </p>
+                  </div>
+                  <p class="timeline-information-date">{{'YOU_LOSE' | translate}} {{level?.lossAmount}}
+                    {{'POINTS_LOST'
+                    | translate}}
+                    {{level?.inactivityCycle}}
+                    {{'DAYS' | translate}}</p>
+                </div>
+              </div>
+
+              <div appProgressBar [height]="1" [lineColor]="'#e7e8ee'" [start]="0" [end]="100"
+                [stop]="
+                !isFinalLevel ? (((wallet?.amount - level?.levelInterval?.min) / (level?.levelInterval?.max - level?.levelInterval?.min) * 100) >= 100 ? 100 : ((wallet?.amount - level?.levelInterval?.min) / (level?.levelInterval?.max - level?.levelInterval?.min) * 100) <= 0 ? 0 : ((wallet?.amount - level?.levelInterval?.min) / (level?.levelInterval?.max - level?.levelInterval?.min) * 100)) : 100"
+                [gradientColors]="[level?.color, level?.color]" class="progress-stat-bar"
+                style="height: 5px; position: relative; margin-bottom: 4%"></div>
+              <p class="timeline-information-date mt-4" style="color: #4fa0ef; margin-top: -2%; cursor: pointer"
+                (click)="toggleCollapse(i)">
+                {{'BENEFITS' | translate}}
+                <svg *ngIf="!isAccordionClosed[i]" class="ml-1" xmlns="http://www.w3.org/2000/svg"
+                  xmlns:xlink="http://www.w3.org/1999/xlink" width="11" height="11" viewBox="0 -4.5 20 20"
+                  version="1.1">
+                  <title>arrow_down [#338]</title>
+                  <desc>Created with Sketch.</desc>
+                  <defs>
+                  </defs>
+                  <g id="Page-1" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+                    <g id="Dribbble-Light-Preview" transform="translate(-220.000000, -6684.000000)" fill="#000000">
+                      <g id="icons" transform="translate(56.000000, 160.000000)">
+                        <path fill="#4fa0ef"
+                          d="M164.292308,6524.36583 L164.292308,6524.36583 C163.902564,6524.77071 163.902564,6525.42619 164.292308,6525.83004 L172.555873,6534.39267 C173.33636,6535.20244 174.602528,6535.20244 175.383014,6534.39267 L183.70754,6525.76791 C184.093286,6525.36716 184.098283,6524.71997 183.717533,6524.31405 C183.328789,6523.89985 182.68821,6523.89467 182.29347,6524.30266 L174.676479,6532.19636 C174.285736,6532.60124 173.653152,6532.60124 173.262409,6532.19636 L165.705379,6524.36583 C165.315635,6523.96094 164.683051,6523.96094 164.292308,6524.36583"
+                          id="arrow_down-[#338]">
+                        </path>
+                      </g>
+                    </g>
+                  </g>
+                </svg>
+
+                <svg *ngIf="isAccordionClosed[i]" class="ml-1" xmlns="http://www.w3.org/2000/svg"
+                  xmlns:xlink="http://www.w3.org/1999/xlink" width="11" height="11" viewBox="0 -4.5 20 20"
+                  version="1.1">
+                  <g id="Page-1" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+                    <g id="Dribbble-Light-Preview" transform="translate(-260.000000, -6684.000000)" fill="#000000">
+                      <g id="icons" transform="translate(56.000000, 160.000000)">
+                        <path fill="#4fa0ef"
+                          d="M223.707692,6534.63378 L223.707692,6534.63378 C224.097436,6534.22888 224.097436,6533.57338 223.707692,6533.16951 L215.444127,6524.60657 C214.66364,6523.79781 213.397472,6523.79781 212.616986,6524.60657 L204.29246,6533.23165 C203.906714,6533.6324 203.901717,6534.27962 204.282467,6534.68555 C204.671211,6535.10081 205.31179,6535.10495 205.70653,6534.69695 L213.323521,6526.80297 C213.714264,6526.39807 214.346848,6526.39807 214.737591,6526.80297 L222.294621,6534.63378 C222.684365,6535.03868 223.317949,6535.03868 223.707692,6534.63378"
+                          id="arrow_up-[#337]">
+                        </path>
+                      </g>
+                    </g>
+                  </g>
+                </svg>
+              </p>
+              <div [ngClass]="{ 'accordion-undisplayed': isAccordionClosed[i] }">
+                <p *ngIf="level?.perks?.description" class="timeline-information-text">
+                  <quill-view-html [content]="level?.perks?.description" theme="snow"></quill-view-html>
+                </p>
+                <p *ngIf="!level?.perks?.description" class="timeline-information-text">
+                  {{'NO_ADDED_BENEFITS' | translate}}
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div *ngIf="!authenticated" class="level-24 widget-box col-md-12 special-margin-bottom">
+    <div class="special-widget-box">
+      <div class="widget-box-content">
+        <div class="timeline-information-list" style="margin-top: 40px">
+          <div class="timeline-information grid d-flex mb-3">
+            <div [class.mr-0]="!rtl" class="badge-item level-img ml-3">
+              <img *ngIf="!(loyaltySettings$ | async)?.prelevel?.picture?.baseUrl"
+                [src]="badge1Icon?.baseUrl + '/' + badge1Icon?.path" alt="badge-bronzec-s" class="active-level" />
+              <img *ngIf="(loyaltySettings$ | async)?.prelevel?.picture?.baseUrl"
+                [src]="(loyaltySettings$ | async)?.prelevel?.picture?.baseUrl + '/' + (loyaltySettings$ | async)?.prelevel?.picture?.path"
+                alt="badge-bronzec-s" class="active-level" />
+            </div>
+            <div class="progress-bar-width" style="margin-top: -1%">
+              <div class="level-display mb-1" (click)="isPrelevelAccordionClosed = !isPrelevelAccordionClosed"
+                type="button">
+                <div style="display: block">
+                  <div class="col-12 p-0" style="display: block">
+                    <p style="font-size: 16px;" class="timeline-information-title">{{ (loyaltySettings$ |
+                      async)?.prelevel?.name }}
+                    </p>
+                    <p class="timeline-information-date">{{'YOU_LOSE' | translate}} {{(loyaltySettings$ |
+                      async)?.prelevel?.lossAmount}} {{'POINTS_LOST' | translate}} {{(loyaltySettings$ |
+                      async)?.prelevel?.inactivityCycle}} {{'DAYS' | translate}}</p>
+                  </div>
+                </div>
+              </div>
+              <p (click)="isPrelevelAccordionClosed = !isPrelevelAccordionClosed" class="timeline-information-date mt-4"
+                style="color: #4fa0ef; margin-top: -2%; cursor: pointer;">
+                {{'BENEFITS' | translate}}
+                <svg *ngIf="!isPrelevelAccordionClosed" class="ml-1" xmlns="http://www.w3.org/2000/svg"
+                  xmlns:xlink="http://www.w3.org/1999/xlink" width="11" height="11" viewBox="0 -4.5 20 20"
+                  version="1.1">
+                  <title>arrow_down [#338]</title>
+                  <desc>Created with Sketch.</desc>
+                  <defs>
+                  </defs>
+                  <g id="Page-1" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+                    <g id="Dribbble-Light-Preview" transform="translate(-220.000000, -6684.000000)" fill="#000000">
+                      <g id="icons" transform="translate(56.000000, 160.000000)">
+                        <path fill="#4fa0ef"
+                          d="M164.292308,6524.36583 L164.292308,6524.36583 C163.902564,6524.77071 163.902564,6525.42619 164.292308,6525.83004 L172.555873,6534.39267 C173.33636,6535.20244 174.602528,6535.20244 175.383014,6534.39267 L183.70754,6525.76791 C184.093286,6525.36716 184.098283,6524.71997 183.717533,6524.31405 C183.328789,6523.89985 182.68821,6523.89467 182.29347,6524.30266 L174.676479,6532.19636 C174.285736,6532.60124 173.653152,6532.60124 173.262409,6532.19636 L165.705379,6524.36583 C165.315635,6523.96094 164.683051,6523.96094 164.292308,6524.36583"
+                          id="arrow_down-[#338]">
+                        </path>
+                      </g>
+                    </g>
+                  </g>
+                </svg>
+                <svg *ngIf="isPrelevelAccordionClosed" class="ml-1" xmlns="http://www.w3.org/2000/svg"
+                  xmlns:xlink="http://www.w3.org/1999/xlink" width="11" height="11" viewBox="0 -4.5 20 20"
+                  version="1.1">
+                  <g id="Page-1" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+                    <g id="Dribbble-Light-Preview" transform="translate(-260.000000, -6684.000000)" fill="#000000">
+                      <g id="icons" transform="translate(56.000000, 160.000000)">
+                        <path fill="#4fa0ef"
+                          d="M223.707692,6534.63378 L223.707692,6534.63378 C224.097436,6534.22888 224.097436,6533.57338 223.707692,6533.16951 L215.444127,6524.60657 C214.66364,6523.79781 213.397472,6523.79781 212.616986,6524.60657 L204.29246,6533.23165 C203.906714,6533.6324 203.901717,6534.27962 204.282467,6534.68555 C204.671211,6535.10081 205.31179,6535.10495 205.70653,6534.69695 L213.323521,6526.80297 C213.714264,6526.39807 214.346848,6526.39807 214.737591,6526.80297 L222.294621,6534.63378 C222.684365,6535.03868 223.317949,6535.03868 223.707692,6534.63378"
+                          id="arrow_up-[#337]">
+                        </path>
+                      </g>
+                    </g>
+                  </g>
+                </svg>
+              </p>
+              <div *ngIf="isPrelevelAccordionClosed">
+                <p *ngIf="(loyaltySettings$ | async)?.prelevel?.perks?.description" class="timeline-information-text">
+                  <quill-view-html [content]="(loyaltySettings$ | async)?.prelevel?.perks?.description"
+                    theme="snow"></quill-view-html>
+                </p>
+                <p *ngIf="!(loyaltySettings$ | async)?.prelevel?.perks?.description" class="timeline-information-text">
+                  {{'NO_ADDED_BENEFITS' | translate}}
+                </p>
+              </div>
+            </div>
+          </div>
+          <div *ngFor="let level of reputationLevels; let i = index" class="timeline-information grid d-flex mb-3">
+            <div [class.mr-0]="!rtl" class="badge-item level-img ml-3">
+              <img *ngIf="level?.picture?.baseUrl" [src]="level?.picture?.baseUrl + '/' + level?.picture?.path"
+                class="active-level" />
+              <ng-container *ngIf="!level?.picture?.baseUrl">
+                <img *ngIf="i === 0" [src]="badge2Icon?.baseUrl + '/' + badge2Icon?.path" class="active-level" />
+                <img *ngIf="i === 1" [src]="badge3Icon?.baseUrl + '/' + badge3Icon?.path" class="active-level" />
+                <img *ngIf="i === 2" [src]="badge4Icon?.baseUrl + '/' + badge4Icon?.path" class="active-level" />
+                <img *ngIf="i === 3" [src]="badge5Icon?.baseUrl + '/' + badge5Icon?.path" class="active-level" />
+              </ng-container>
+            </div>
+            <div class="progress-bar-width" style="margin-top: -1%">
+              <div class="level-display" type="button" (click)="toggleCollapse(i)">
+                <div class="col-12 p-0" style="display: block">
+                  <p style="font-size: 16px;" class="timeline-information-title">{{ level?.reputationLevel }}</p>
+                  <p class="timeline-information-date">{{'YOU_LOSE' | translate}} {{level?.lossAmount}}
+                    {{'POINTS_LOST'
+                    | translate}} {{level?.inactivityCycle}}
+                    {{'DAYS' | translate}}</p>
+                </div>
+              </div>
+
+              <div appProgressBar [height]="1" [lineColor]="'#e7e8ee'" [start]="0" [end]="100"
+                [stop]="!(isFinalLevel$ | async) ? (((wallet?.amount - level?.levelInterval?.min) / (level?.levelInterval?.max - level?.levelInterval?.min) * 100) >= 100 ? 100 : ((wallet?.amount - level?.levelInterval?.min) / (level?.levelInterval?.max - level?.levelInterval?.min) * 100) <= 0 ? 0 : ((wallet?.amount - level?.levelInterval?.min) / (level?.levelInterval?.max - level?.levelInterval?.min) * 100)) : 100"
+                [gradientColors]="[level?.color, level?.color]" class="progress-stat-bar"
+                style="height: 5px; position: relative; margin-bottom: 4%"></div>
+              <p class="timeline-information-date mt-4" style="color: #4fa0ef; margin-top: -2%; cursor: pointer"
+                (click)="toggleCollapse(i)">
+                {{'BENEFITS' | translate}}
+                <svg *ngIf="!isAccordionClosed[i]" class="ml-1" xmlns="http://www.w3.org/2000/svg"
+                  xmlns:xlink="http://www.w3.org/1999/xlink" width="11" height="11" viewBox="0 -4.5 20 20"
+                  version="1.1">
+                  <title>arrow_down [#338]</title>
+                  <desc>Created with Sketch.</desc>
+                  <defs>
+                  </defs>
+                  <g id="Page-1" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+                    <g id="Dribbble-Light-Preview" transform="translate(-220.000000, -6684.000000)" fill="#000000">
+                      <g id="icons" transform="translate(56.000000, 160.000000)">
+                        <path fill="#4fa0ef"
+                          d="M164.292308,6524.36583 L164.292308,6524.36583 C163.902564,6524.77071 163.902564,6525.42619 164.292308,6525.83004 L172.555873,6534.39267 C173.33636,6535.20244 174.602528,6535.20244 175.383014,6534.39267 L183.70754,6525.76791 C184.093286,6525.36716 184.098283,6524.71997 183.717533,6524.31405 C183.328789,6523.89985 182.68821,6523.89467 182.29347,6524.30266 L174.676479,6532.19636 C174.285736,6532.60124 173.653152,6532.60124 173.262409,6532.19636 L165.705379,6524.36583 C165.315635,6523.96094 164.683051,6523.96094 164.292308,6524.36583"
+                          id="arrow_down-[#338]">
+                        </path>
+                      </g>
+                    </g>
+                  </g>
+                </svg>
+
+                <svg *ngIf="isAccordionClosed[i]" class="ml-1" xmlns="http://www.w3.org/2000/svg"
+                  xmlns:xlink="http://www.w3.org/1999/xlink" width="11" height="11" viewBox="0 -4.5 20 20"
+                  version="1.1">
+                  <g id="Page-1" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+                    <g id="Dribbble-Light-Preview" transform="translate(-260.000000, -6684.000000)" fill="#000000">
+                      <g id="icons" transform="translate(56.000000, 160.000000)">
+                        <path fill="#4fa0ef"
+                          d="M223.707692,6534.63378 L223.707692,6534.63378 C224.097436,6534.22888 224.097436,6533.57338 223.707692,6533.16951 L215.444127,6524.60657 C214.66364,6523.79781 213.397472,6523.79781 212.616986,6524.60657 L204.29246,6533.23165 C203.906714,6533.6324 203.901717,6534.27962 204.282467,6534.68555 C204.671211,6535.10081 205.31179,6535.10495 205.70653,6534.69695 L213.323521,6526.80297 C213.714264,6526.39807 214.346848,6526.39807 214.737591,6526.80297 L222.294621,6534.63378 C222.684365,6535.03868 223.317949,6535.03868 223.707692,6534.63378"
+                          id="arrow_up-[#337]">
+                        </path>
+                      </g>
+                    </g>
+                  </g>
+                </svg>
+              </p>
+              <div [ngClass]="{ 'accordion-undisplayed': isAccordionClosed[i] }">
+                <p *ngIf="level?.perks?.description" class="timeline-information-text">
+                  <quill-view-html [content]="level?.perks?.description" theme="snow"></quill-view-html>
+                </p>
+                <p *ngIf="!level?.perks?.description" class="timeline-information-text">
+                  {{'NO_ADDED_BENEFITS' | translate}}
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<svg style="display: none">
+  <symbol id="svg-minus-small" viewBox="0 0 8 8" preserveAspectRatio="xMinYMin meet">
+    <rect y="3" width="8" height="2" />
+  </symbol>
+</svg>

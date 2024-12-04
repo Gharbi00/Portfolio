@@ -1,0 +1,103 @@
+<app-breadcrumbs title="{{ 'MENUITEMS.TITLE.CARDS' | translate }}" [breadcrumbItems]="breadCrumbItems"></app-breadcrumbs>
+<ng-container *ngIf="!(navigating$ | async)">
+
+  <div class="row">
+    <div class="col-12">
+      <ng-container *ngIf="((loadingPlugins$ | async) === false || null || undefined) && (plugins$ | async).length" >
+        <div class="justify-content-between d-flex align-items-center mt-3 mb-4">
+          <h5 class="mb-0 pb-1 text-decoration">{{'MODULES.SYSTEM.ENHANCE_EXPERIENCE' | translate }}</h5>
+        </div>
+        <div class="row row-cols-xxl-5 row-cols-lg-3 row-cols-1">
+          <div *ngFor="let plugin of plugins$ | async" class="col">
+            <div class="card card-body">
+              <div class="d-flex mb-4 align-items-center">
+                <div class="avatar-sm mb-3">
+                  <div class="avatar-title bg-soft-success text-success fs-24 rounded">
+                    <i [ngClass]="plugin?.icon"></i>
+                  </div>
+                </div>
+                <div class="flex-grow-1 ms-2">
+                  <h5 class="card-title mb-1">{{plugin?.name}}</h5>
+                  <p class="text-muted mb-0">{{plugin?.category}}</p>
+                </div>
+              </div>
+              <h6 class="mb-1">
+                <span class="badge text-uppercase"
+                  [ngClass]=" { 'badge-soft-warning': plugin.cost === 'BASIC', 'badge-soft-secondary': plugin.cost === 'PREMIUM', 'badge-soft-danger': plugin.cost === 'PAID' }">{{'PAGES.' + plugin.cost | translate}}</span>
+              </h6>
+              <p class="card-text text-muted">
+                {{plugin?.description?.length > 25 ?
+                plugin?.description?.substr(0,25) + '...' :
+                plugin?.description}}
+              </p>
+              <a *ngIf="!plugin?.isAdded" (click)="addPlugin(plugin)" href="javascript:void(0)" class="btn btn-primary btn-sm">{{'MODULES.SYSTEM.INSTALL' | translate }}</a>
+              <div class="d-flex ustify-content-center">
+                <a *ngIf="plugin?.isAdded" (click)="openDeleteTargetPlugin(deletePluginModel, plugin)" class="btn btn-danger btn-sm w-100">{{'MODULES.SYSTEM.UNINSTALL' | translate }}</a>
+                <a *ngIf="plugin?.url && plugin?.isAdded" (click)="onRoute(plugin?.url)" class="btn btn-link btn-sm w-100">{{'MENUITEMS.CUSTOMERENGAGEMENT.LIST.SETTINGS' | translate }}</a>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="px-3 p-3">
+          <div class="row justify-content-md-between align-items-md-center gy-2">
+            <div class="col col-sm-6">
+              <div class="dataTables_info mb-2" id="tickets-table_info" role="status" aria-live="polite">{{'COMMON.SHOWING' | translate }} {{pagination?.startIndex + 1}}–{{pagination?.endIndex ===
+                pagination?.length ? pagination?.endIndex : pagination?.endIndex + 1}} {{'COMMON.OF' | translate }}
+                {{pagination?.length}} {{'COMMON.ENTRIES' | translate }}
+              </div>
+            </div>
+            <div class="col col-sm-6">
+              <div class="text-sm-right float-end listjs-pagination">
+                <ngb-pagination [maxSize]="5" [collectionSize]="pagination?.length" [(page)]="page" (pageChange)="onPageChange($event)" [pageSize]="pagination?.size">
+                </ngb-pagination>
+              </div>
+            </div>
+          </div>
+        </div>
+      </ng-container>
+      <div id="noresult" class="py-4 mt-4 text-center" *ngIf="(loadingPlugins$ | async) || (!(loadingPlugins$ | async) && !(plugins$ | async).length)">
+        <div *ngIf="loadingPlugins$ | async">
+          <lord-icon trigger="loop" style="width:72px;height:72px" [colors]="'primary:' + primaryColor + ',secondary:' + secondaryColor" src="https://cdn.lordicon.com/msoeawqm.json">
+          </lord-icon>
+          <h5 class="mt-4">{{'COMMON.LOADING' | translate }}</h5>
+        </div>
+        <div *ngIf="!(loadingPlugins$ | async) && !(plugins$ | async).length">
+          <lord-icon trigger="loop" style="width:72px;height:72px" [colors]="'primary:' + primaryColor + ',secondary:' + secondaryColor" src="https://cdn.lordicon.com/vlycxjwx.json">
+          </lord-icon>
+          <h5 class="mt-4">{{ 'COMMON.NO_RESULT' | translate }}</h5>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <ng-template #deletePluginModel let-modal>
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" id="deleteRecord-close" (click)="modal.dismiss('Cross click')"></button>
+      </div>
+      <div class="modal-body">
+        <div class="mt-2 text-center">
+          <lord-icon src="https://cdn.lordicon.com/gsqxdxog.json" trigger="loop" colors="primary:#405189,secondary:#f06548" style="width:90px;height:90px"></lord-icon>
+          <div class="mt-4 pt-2 fs-15 mx-4 mx-sm-5">
+            <h4>{{'MENUITEMS.CUSTOMERENGAGEMENT.CAMPAIGN.YOU_ARE_ABOUT_TO_DELETE_A_TARGET_PLUGIN' | translate }} ?</h4>
+            <p class="text-muted mx-4 mb-0">{{'MENUITEMS.CUSTOMERENGAGEMENT.CAMPAIGN.DELETING_YOUR_TARGET_PLUGIN_DATA_BASE_REMOVE' | translate }}
+            </p>
+          </div>
+        </div>
+        <div class="d-flex gap-2 justify-content-center mt-4 mb-2">
+          <button class="btn btn-link link-success fw-medium text-decoration-none" data-bs-dismiss="modal" (click)="modal.close('Close click')"><i class="ri-close-line me-1 align-middle"></i>{{'COMMON.CLOSE' | translate }}</button>
+          <button type="button" class="btn w-sm btn-danger " id="delete-product" (click)="deleteTargetPlugin()">{{'COMMON.YES_DELETE_IT' | translate }}</button>
+        </div>
+      </div>
+    </div>
+  </ng-template>
+</ng-container>
+<div *ngIf="navigating$ | async" class="vh-100 py-4 text-center" fxLayout="column" fxLayoutAlign="center center" fxLayoutGap="1rem">
+  <div>
+    <lord-icon trigger="loop" style="width:72px;height:72px" [colors]="'primary:' + primaryColor + ',secondary:' + secondaryColor" src="https://cdn.lordicon.com/msoeawqm.json">
+    </lord-icon>
+  </div>
+  <div class="mt-4">
+    <h5>{{'COMMON.LOADING' | translate }}</h5>
+  </div>
+</div>

@@ -1,0 +1,222 @@
+<app-breadcrumbs title="{{ 'MENUITEMS.TITLE.WAREHOUSE' | translate }}" [breadcrumbItems]="breadCrumbItems"></app-breadcrumbs>
+<ng-container *ngIf="!(navigating$ | async)">
+
+  <div class="row">
+    <div class="p-3 bg-light rounded mb-4">
+      <div class="row g-2">
+        <div class="col-lg">
+          <div class="search-box">
+            <form [formGroup]="searchForm">
+              <input type="text" formControlName="searchString" id="searchTaskList" class="form-control search" placeholder="{{'PLACEHOLDER.SEARCH_WAREHOUSE' | translate }}">
+              <i class="ri-search-line search-icon"></i>
+            </form>
+          </div>
+        </div>
+        <div class="col-lg-auto d-flex gap-2">
+          <button class="btn btn-primary createTask" type="button" data-bs-toggle="modal" data-bs-target="#createTask" (click)="openWarehouseModal(warehouseContent, null)">
+            <i class="ri-add-fill align-bottom"></i>{{'MODULES.INVENTORY.ADD_WAREHOUSE' | translate }}
+          </button>
+          <button (click)="openImportModal(importModal)" type="button" class="btn btn-secondary"><i
+            class="ri-file-upload-line align-bottom me-1"></i>{{'COMMON.IMPORT' | translate }}</button>
+          <button (click)="downloadExcel()" type="button" class="btn btn-primary"><i
+            class="ri-file-upload-line align-bottom me-1"></i>{{'COMMON.EXPORT' | translate }}</button>
+        </div>
+      </div>
+    </div>
+    <div class="col-12">
+      <div *ngIf="warehouses.length && !(isLoading$ | async)" class="row row-cols-xxl-5 row-cols-lg-3 row-cols-1">
+        <div *ngFor="let warehouse of warehouses" class="col">
+          <div class="card card-body">
+            <div class="d-flex mb-4 align-items-center">
+              <div *ngIf="warehouse.media?.pictures?.length && warehouse?.media?.pictures[0]?.baseUrl !== ''" class="flex-shrink-0">
+                <img [src]="warehouse?.media?.pictures[0]?.baseUrl + '/' + warehouse?.media?.pictures[0]?.path" alt="" class="avatar-sm rounded-circle" />
+              </div>
+              <div *ngIf="!warehouse?.media?.pictures?.length || warehouse?.media?.pictures[0]?.baseUrl === ''" class="flex-shrink-0 avatar-sm me-2">
+                <div class="avatar-title bg-soft-success text-success rounded-circle fs-13">
+                  {{ warehouse.name.charAt(0) || 'N'}}
+                </div>
+              </div>
+
+              <div class="flex-grow-1 ms-2">
+                <h5 class="card-title mb-1">{{warehouse?.name?.length > 10 ?
+                  warehouse?.name.substr(0,11) + '...' :
+                  warehouse?.name}}</h5>
+                <p class="text-muted mb-0">{{warehouse?.location?.name}}</p>
+              </div>
+            </div>
+            <h6 class="mb-1">{{warehouse?.totalSurface}} m2</h6>
+            <p class="card-text text-muted">{{'MODULES.INVENTORY.SURFACE' | translate }}</p>
+            <div class="hstack gap-2">
+              <button (click)="openWarehouseModal(warehouseContent, warehouse)" class="btn btn-sm btn-soft-info remove-list" data-bs-toggle="modal" data-bs-target="#removeTaskItemModal"
+                data-remove-id="15">
+                <i class="ri-pencil-fill align-bottom"></i>
+              </button>
+              <button (click)="openDeleteWarehouse(deleteModel, warehouse)" class="btn btn-sm btn-soft-danger remove-list" data-bs-toggle="modal" data-bs-target="#createTask" data-edit-id="15">
+                <i class="ri-delete-bin-5-fill align-bottom"></i>
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div *ngIf="warehouses?.length" class="row justify-content-md-between align-items-md-center gy-2">
+        <div class="col col-sm-6">
+          <div class="dataTables_info mb-2" id="tickets-table_info" role="status" aria-live="polite">{{'COMMON.SHOWING' | translate }} {{pagination?.startIndex + 1}}–{{pagination?.endIndex ===
+            pagination?.length ? pagination?.endIndex : pagination?.endIndex + 1}} {{'COMMON.OF' | translate }} {{pagination?.length}}
+            {{'COMMON.ENTRIES' | translate }}
+          </div>
+        </div>
+        <div class="col col-sm-6">
+          <div class="text-sm-right float-end listjs-pagination">
+            <ngb-pagination [maxSize]="5" [collectionSize]="pagination?.length" [(page)]="page" (pageChange)="onPageChange($event)" [pageSize]="pagination?.size">
+            </ngb-pagination>
+          </div>
+        </div>
+      </div>
+      <div id="noresult" class="py-4 mt-4 text-center" *ngIf="(isLoading$ | async) || (!(isLoading$ | async) && !warehouses?.length)">
+        <div *ngIf="isLoading$ | async">
+          <lord-icon trigger="loop" style="width:72px;height:72px" [colors]="'primary:' + primaryColor + ',secondary:' + secondaryColor" src="https://cdn.lordicon.com/msoeawqm.json">
+          </lord-icon>
+          <h5 class="mt-4">{{'COMMON.LOADING' | translate }}</h5>
+        </div>
+        <div *ngIf="!(isLoading$ | async) && !warehouses?.length">
+          <lord-icon trigger="loop" style="width:72px;height:72px" [colors]="'primary:' + primaryColor + ',secondary:' + secondaryColor" src="https://cdn.lordicon.com/vlycxjwx.json">
+          </lord-icon>
+          <h5 class="mt-4">{{ 'COMMON.NO_RESULT' | translate }}</h5>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <ng-template #importModal role="document" let-modal>
+    <div class="modal-header bg-soft-info p-3">
+      <h5 class="modal-title" id="exampleModalLabel">{{'COMMON.UPLOAD_EXCEL' | translate }}</h5>
+      <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" id="close-modal"
+        (click)="modal.dismiss('Cross click')"></button>
+    </div>
+    <div class="modal-body">
+      <p>{{'MODULES.INVENTORY.PARAGRAPH_IMAGE' | translate }}
+      </p>
+    </div>
+    <div class="modal-footer">
+      <div class="hstack gap-2 justify-content-end">
+        <button type="button" class="btn btn-light" data-bs-dismiss="modal"
+          (click)="modal.close('Close click')">{{'COMMON.CLOSE' | translate }}</button>
+        <button type="button" (click)="!loadingImport ? uploadExcel() : null" class="btn btn-primary btn-load">
+          <span *ngIf="!loadingImport">{{'COMMON.IMPORT_EXCEL' | translate }}</span>
+          <span *ngIf="loadingImport" class="d-flex align-items-center">
+            <span class="spinner-border flex-shrink-0" role="status">
+              <span class="visually-hidden">{{'COMMON.LOADING' | translate }}</span> </span>
+            <span class="flex-grow-1 ms-2">{{'COMMON.LOADING' | translate }} </span> </span>
+        </button>
+        <button type="button" (click)="bulkUploadPicture()" class="btn btn-primary btn-load">
+          <span *ngIf="!loadingImportPictures">{{'MODULES.INVENTORY.IMPORT_PICTURES' | translate }}</span>
+          <span *ngIf="loadingImportPictures" class="d-flex align-items-center">
+            <span class="spinner-border flex-shrink-0" role="status">
+              <span class="visually-hidden">{{'COMMON.LOADING' | translate }}</span> </span>
+            <span class="flex-grow-1 ms-2">{{'COMMON.LOADING' | translate }} </span> </span>
+        </button>
+      </div>
+    </div>
+  </ng-template>
+
+  <ng-template #warehouseContent role="document" let-modal>
+    <div class="modal-header bg-soft-info p-3">
+      <h5 class="modal-title" id="exampleModalLabel">{{(selectedWarehouse ? 'MODULES.INVENTORY.EDIT_WAREHOUSE' : 'MODULES.INVENTORY.ADD_WAREHOUSE') | translate}}</h5>
+      <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" id="close-modal" (click)="modal.dismiss('Cross click')"></button>
+    </div>
+    <form [formGroup]="warehouseForm">
+      <div class="modal-body">
+        <div class="row">
+          <div class="col-lg-12">
+            <div class="text-center">
+              <div (click)="upload()" class="position-relative d-inline-block">
+                <div class="position-absolute bottom-0 end-0">
+                  <label for="company-logo-input" class="mb-0" data-bs-toggle="tooltip" data-bs-placement="right" title="Select Image">
+                    <div class="avatar-xs cursor-pointer">
+                      <div class="avatar-title bg-light border rounded-circle text-muted">
+                        <i class="ri-image-fill"></i>
+                      </div>
+                    </div>
+                  </label>
+                </div>
+                <div class="avatar-lg p-1">
+                  <div class="avatar-title bg-light rounded-circle">
+                    <img *ngIf="!pictures.value?.length || pictures.value[0].path === ''" src="assets/images/users/multi-user.jpg" id="companylogo-img" class="avatar-md rounded-circle object-cover" />
+                    <img *ngIf="pictures.value?.length && pictures.value.path !== '' && pictures.value[0]?.baseUrl !== ''" [src]="pictures.value[0]?.baseUrl + '/' + pictures.value[0]?.path"
+                      id="companylogo-img" class="avatar-md rounded-circle object-cover" />
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="mb-3">
+              <label for="firstnameInput" class="form-label">{{'COMMON.NAME' | translate }}</label>
+              <input formControlName="name" type="text" class="form-control" id="firstnameInput" placeholder="{{'PLACEHOLDER.ENTER_WAREHOUSE_NAME' | translate }}">
+            </div>
+          </div>
+          <div class="col-lg-6">
+            <div class="mb-3">
+              <label for="lastnameInput" class="form-label">{{'MODULES.INVENTORY.TOTAL_SURFACE' | translate }}</label>
+              <input formControlName="totalSurface" type="number" class="form-control" id="lastnameInput" placeholder="{{'PLACEHOLDER.ENTER_TOTAL_SURFACE' | translate }}">
+            </div>
+          </div>
+          <div class="col-lg-6">
+            <div class="mb-3">
+              <label for="lastnameInput" class="form-label">{{'MODULES.INVENTORY.NON_STORAGE_SURFACE' | translate }}</label>
+              <input formControlName="nonStorageSurface" type="number" class="form-control" id="lastnameInput" placeholder="{{'PLACEHOLDER.ENTER_NON_STORAGE_SURFACE' | translate }}">
+            </div>
+          </div>
+          <div ngbDropdown>
+            <label class="form-check-label" for="lastname-field">{{'COMMON.LOCATION' | translate }}*</label>
+            <input [(ngModel)]="selectedLocation" required placeholder="{{'PLACEHOLDER.SELECT_YOUR_LOCATION' | translate }}" [ngModelOptions]="{standalone: true}" class="cursor-pointer form-select form-control dropdown-toggle"
+              ngbDropdownToggle readonly>
+            <div infiniteScroll [scrollWindow]="false" [infiniteScrollDistance]="2" [infiniteScrollThrottle]="50" (scrolled)="loadMoreLocations()"
+              [infiniteScrollDisabled]="isLocationLastPage$ | async" class="dropdown-menu dropdown-menu-right w-100 h-7 p-3" ngbDropdownMenu>
+              <div class="form-check" *ngFor="let location of locations">
+                <input [value]="location.id" (change)="onLocationChange(location)" class="form-check-input border-s" type="radio" id="location_{{ location.id }}" name="location">
+                <label class="form-check-label" for="location_{{ location.id }}">
+                  {{ location?.name }}
+                </label>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <div class="hstack gap-2 justify-content-end">
+          <button type="button" class="btn btn-light" data-bs-dismiss="modal" (click)="modal.close('Close click')">{{'COMMON.CLOSE' | translate }}</button>
+          <button type="button" (click)="save()" [disabled]="isButtonDisabled || warehouseForm.invalid" class="btn btn-success" id="add-btn">{{(selectedWarehouse ? 'MODULES.INVENTORY.EDIT_WAREHOUSE' : 'MODULES.INVENTORY.ADD_WAREHOUSE') | translate}}</button>
+        </div>
+      </div>
+    </form>
+  </ng-template>
+
+  <ng-template #deleteModel let-modal>
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" id="deleteRecord-close" (click)="modal.dismiss('Cross click')"></button>
+      </div>
+      <div class="modal-body">
+        <div class="mt-2 text-center">
+          <lord-icon src="https://cdn.lordicon.com/gsqxdxog.json" trigger="loop" colors="primary:#f7b84b,secondary:#f06548" style="width:100px;height:100px"></lord-icon>
+          <div class="mt-4 pt-2 fs-15 mx-4 mx-sm-5">
+            <h4>{{'COMMON.ARE_YOU_SURE' | translate }}</h4>
+            <p class="text-muted mx-4 mb-0">{{ 'MODULES.HR.MAIN.ARE_YOU_SURE_YOU_WANT_TO_REMOVE_THIS_RECORD' | translate }}</p>
+          </div>
+        </div>
+        <div class="d-flex gap-2 justify-content-center mt-4 mb-2">
+          <button type="button" class="btn w-sm btn-light" data-bs-dismiss="modal" (click)="modal.close('Close click')">{{'COMMON.CLOSE' | translate }}</button>
+          <button type="button" class="btn w-sm btn-danger " id="delete-product" (click)="deleteWarehouse()">{{'COMMON.YES_DELETE_IT' | translate }}</button>
+        </div>
+      </div>
+    </div>
+  </ng-template>
+</ng-container>
+<div *ngIf="navigating$ | async" class="vh-100 py-4 text-center" fxLayout="column" fxLayoutAlign="center center" fxLayoutGap="1rem">
+  <div>
+    <lord-icon trigger="loop" style="width:72px;height:72px" [colors]="'primary:' + primaryColor + ',secondary:' + secondaryColor" src="https://cdn.lordicon.com/msoeawqm.json">
+    </lord-icon>
+  </div>
+  <div class="mt-4">
+    <h5>{{'COMMON.LOADING' | translate }}</h5>
+  </div>
+</div>

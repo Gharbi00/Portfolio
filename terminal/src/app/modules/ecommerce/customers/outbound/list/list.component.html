@@ -1,0 +1,182 @@
+<app-breadcrumbs title="{{'MENUITEMS.TITLE.OUTBOUND_LIST' | translate }}"
+  [breadcrumbItems]="breadCrumbItems"></app-breadcrumbs>
+<ng-container *ngIf="!(navigating$ | async)">
+
+  <div class="row">
+    <div class="col-lg-12">
+      <div class="card" id="ticketsList">
+        <div class="card-header border-0">
+          <div class="d-flex flex-wrap align-items-center">
+            <h5 class="card-title mb-2 flex-grow-1">{{
+              'MENUITEMS.TITLE.OUTBOUND' | translate }}</h5>
+            <div class="flex-shrink-0 d-flex gap-1">
+              <a [routerLink]="['/ecommerce/customers/outbound/new-item']"
+                class="btn btn-success add-btn"><i class="ri-add-line align-bottom me-1"></i> {{
+                'COMMON.ADD_NEW' | translate }}</a>
+                <a [routerLink]="['/ecommerce/customers/newsletter']"
+                class="btn btn-secondary"><i class="ri-mail-line align-bottom me-1"></i>{{'MENUITEMS.TITLE.SUBSCRIBERS' | translate }}</a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div *ngIf="((loadingOutbound$ | async) === false || null || undefined) && (oubounds$ | async)?.length">
+    <div class="row">
+      <div class="col-xxl-3 col-sm-6 project-card" *ngFor="let item of oubounds$ | async" id="pl1_{{item?.id}}">
+        <div class="card card-height-100">
+          <div class="card-body">
+            <div class="d-flex flex-column h-100">
+              <div class="d-flex">
+                <div class="flex-grow-1">
+                  <div class="d-flex justify-content-between">
+                    <p class="text-muted mb-4">{{ item?.updatedAt | date:'longDate' }}</p>
+                    <div class="dropdown" ngbDropdown>
+                      <button
+                        class="btn btn-link text-muted p-1 mt-n2 py-0 text-decoration-none fs-15 shadow-none arrow-none"
+                        data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="true" ngbDropdownToggle>
+                        <i class="ri-more-fill fs-17"></i>
+                      </button>
+                      <div class="dropdown-menu cursor-pointer dropdown-menu-end" ngbDropdownMenu>
+                        <a (click)="openDeleteModal(deleteModal, item)" class="dropdown-item">
+                          <i class="ri-delete-bin-line me-2 text-muted"></i>{{ 'COMMON.DELETE' | translate }}
+                        </a>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="d-flex mb-2">
+                <div class="flex-shrink-0 me-3">
+                  <div class="avatar-sm">
+                    <span *ngIf="item?.picture?.baseUrl" class="avatar-title bg-soft-warning rounded-circle">
+                      <img [src]="item?.picture.baseUrl + '/' + item?.picture.path" alt=""
+                        class="rounded-circle h-100 img-fluid">
+                    </span>
+                    <div *ngIf="!item?.picture?.baseUrl"
+                      class="avatar-title text-uppercase bg-soft-info text-danger rounded-circle shadow">
+                      {{item?.title?.charAt(0) || 'N'}}
+                    </div>
+                  </div>
+                </div>
+                <div class="flex-grow-1">
+                  <h5 class="mb-1 fs-15"><a [routerLink]="['/ecommerce/customers/outbound', item.id]"
+                      class="text-dark">{{item?.title | translate}}</a></h5>
+                  <p class="text-muted text-truncate-two-lines mb-3">{{item?.description}}</p>
+                </div>
+              </div>
+              <div *ngIf="item?.advertiser" class="d-flex align-items-center gap-2">
+                <p class="text-muted mb-0 me-2">{{'SHARED.ADVERTISER' | translate }}:</p>
+                <div class="avatar-group">
+                  <div class="avatar-group-item">
+                    <div *ngIf="item?.advertiser?.picture?.baseUrl && item?.advertiser?.picture?.baseUrl !==''"
+                      [matTooltip]="item?.advertiser?.title" href="javascript: void(0);"
+                      class="avatar-group-item shadow">
+                      <img [src]="item?.advertiser?.picture?.baseUrl + '/' + item?.advertiser?.picture?.path" alt=""
+                        class="rounded-circle avatar-xs img-fluid">
+                    </div>
+                    <div *ngIf="!item?.advertiser?.picture?.baseUrl || item?.advertiser?.picture?.baseUrl ===''"
+                      [matTooltip]="item?.advertiser?.title" href="javascript: void(0);"
+                      class="avatar-xs avatar-group-item shadow">
+                      <div class="avatar-title rounded-circle bg-info shadow">
+                        {{ item?.advertiser?.title?.charAt(0) || 'N'}}
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="mt-auto">
+                <div class="d-flex mb-2">
+                  <div class="flex-grow-1">
+                    <div>{{ 'MODULES.ECOMMERCE.MAIN.REACH' | translate }}</div>
+                  </div>
+                  <div *ngIf="item?.audience?.reach" class="flex-shrink-0">
+                    <div><i class="ri-list-check align-bottom me-1 text-muted"></i> {{(item?.audience?.reach?.reach || (contacts$ | async)?.length) +
+                      '/' + (item?.audience?.reach?.total || (contacts$ | async)?.length) }} </div>
+                  </div>
+                </div>
+                <div class="progress-sm animated-progess">
+                  <ngb-progressbar [value]="(+item?.audience?.reach?.reach /
+                  +item?.audience?.reach?.total) * 100" type="success" class="progress-sm"></ngb-progressbar>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div *ngIf="((loadingOutbound$ | async) === false || null || undefined) && (oubounds$ | async)?.length" class="p-3">
+    <div class="row justify-content-md-between align-items-md-center gy-2">
+      <div class="col col-sm-6">
+        <div class="dataTables_info mb-2" id="tickets-table_info" role="status" aria-live="polite">
+          {{ 'COMMON.SHOWING' | translate }}
+          {{pagination?.startIndex + 1}}–{{pagination?.endIndex ===
+          pagination?.length ? pagination?.endIndex : pagination?.endIndex + 1}} {{ 'COMMON.OF' | translate }}
+          {{pagination?.length}} {{ 'COMMON.ENTRIES' | translate }}
+        </div>
+      </div>
+      <div class="col col-sm-6">
+        <div class="text-sm-right float-end listjs-pagination">
+          <ngb-pagination [maxSize]="5" [collectionSize]="pagination?.length" [(page)]="page"
+            (pageChange)="onPageChange($event)" [pageSize]="pagination?.size">
+          </ngb-pagination>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div id="noresult" class="py-4 mt-4 text-center"
+    *ngIf="(loadingOutbound$ | async) || (!(loadingOutbound$ | async) && !(oubounds$ | async)?.length)">
+    <div *ngIf="loadingOutbound$ | async">
+      <lord-icon trigger="loop" style="width:72px;height:72px"
+        [colors]="'primary:' + primaryColor + ',secondary:' + secondaryColor"
+        src="https://cdn.lordicon.com/msoeawqm.json">
+      </lord-icon>
+      <h5 class="mt-4">{{ 'COMMON.LOADING' | translate }}</h5>
+    </div>
+    <div *ngIf="!(loadingOutbound$ | async) && !(oubounds$ | async)?.length">
+      <lord-icon trigger="loop" style="width:72px;height:72px"
+        [colors]="'primary:' + primaryColor + ',secondary:' + secondaryColor"
+        src="https://cdn.lordicon.com/msoeawqm.json">
+      </lord-icon>
+      <h5 class="mt-4">{{ 'COMMON.NO_RESULT' | translate }}</h5>
+    </div>
+  </div>
+</ng-container>
+
+<ng-template #deleteModal let-modal>
+  <div class="modal-content">
+    <div class="modal-header">
+      <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" id="btn-close" (click)="modal.dismiss('Cross click')"></button>
+    </div>
+    <div class="modal-body">
+      <div class="mt-2 text-center">
+        <lord-icon src="https://cdn.lordicon.com/gsqxdxog.json" trigger="loop" colors="primary:#405189,secondary:#f06548" style="width:90px;height:90px"></lord-icon>
+        <div class="mt-4 pt-2 fs-15 mx-4 mx-sm-5">
+          <h4>{{'MODULES.ECOMMERCE.MAIN.REMOVE_OUTBOUND_CONFIRMATION' | translate }}</h4>
+          <p class="text-muted mx-4 mb-0">{{'MODULES.ECOMMERCE.MAIN.REMOVE_OUTBOUND_WARNING' | translate }}
+          </p>
+        </div>
+      </div>
+      <div class="d-flex gap-2 justify-content-center mt-4 mb-2">
+        <button class="btn btn-link link-success fw-medium text-decoration-none" data-bs-dismiss="modal" (click)="modal.close('Close click')" id="deleteRecord-close"><i
+            class="ri-close-line me-1 align-middle"></i>{{'COMMON.CLOSE' | translate }}</button>
+        <button type="button" class="btn w-sm btn-danger " id="delete-product" (click)="deleteOutbound()">{{'COMMON.YES_DELETE_IT' | translate }}</button>
+      </div>
+    </div>
+  </div>
+</ng-template>
+
+<div *ngIf="navigating$ | async" class="vh-100 py-4 text-center" fxLayout="column" fxLayoutAlign="center center"
+  fxLayoutGap="1rem">
+  <div>
+    <lord-icon trigger="loop" style="width:72px;height:72px"
+      [colors]="'primary:' + primaryColor + ',secondary:' + secondaryColor"
+      src="https://cdn.lordicon.com/msoeawqm.json">
+    </lord-icon>
+  </div>
+  <div class="mt-4">
+    <h5>{{ 'COMMON.LOADING' | translate }}</h5>
+  </div>
+</div>

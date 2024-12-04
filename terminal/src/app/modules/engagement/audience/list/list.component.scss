@@ -1,0 +1,14 @@
+.h-12 {
+  height: 12rem;
+}
+@media (max-width: 1700px) {
+  .hide-on-small-screen {
+    display: none;
+  }
+}
+
+@media (min-width: 1701px) {
+  .hide-on-small-screen {
+    display: flex;
+  }
+}

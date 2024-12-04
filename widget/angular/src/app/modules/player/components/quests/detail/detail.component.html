@@ -1,0 +1,776 @@
+<div *ngIf="true===true" [class.dark-mode]="darkMode" [class.rtl]="rtl">
+  <div class="quests content-grid col-md-12 header-margin">
+    <div class="section-banner"
+      [ngStyle]="{ background: 'url(' + headerImagePath + ') no-repeat center center / cover' }">
+      <img class="section-banner-icon" [src]="questsIcon?.baseUrl + '/' + questsIcon?.path" alt="newsfeed-icon" />
+      <p class="section-banner-title">{{'QUESTS' | translate}}</p>
+      <p class="section-banner-text text-truncate">{{'COMPLETE_QUESTS' | translate}}</p>
+    </div>
+  </div>
+
+
+  <div class="col-md-12 special-margin">
+    <div class="survey-header">
+      <div class="d-flex justify-content-between align-items-center mb-4">
+        <p class="timeline-information-text " style="color: white">
+          {{quest?.title}}
+        </p>
+        <div class="table-column centered padded-big-left">
+          <div class="experience-design">
+            <ng-container *ngFor="let item of quest?.remuneration">
+              <p *ngIf="item?.walletType === 'QUALITATIVE'"
+                class="align-items-center d-flex justify-content-center text-sticker">
+                <svg class="text-sticker-icon icon-plus-small">
+                  <use xlink:href="#svg-plus-small"></use>
+                </svg>
+                {{ item?.amount | number: '1.0-0' }}
+                <img *ngIf="!(loyaltySettings$ | async)?.qualitative?.picture?.baseUrl"
+                  src="https://sifca-storage.s3.eu-central-1.amazonaws.com/loyalcraft/reputation_512.gif"
+                  class="assets/img-fluid rounded-circle mb-1"
+                  style="margin-top: 5% !important; width: 25px !important" />
+                <img *ngIf="(loyaltySettings$ | async)?.qualitative?.picture?.baseUrl"
+                  [src]="(loyaltySettings$ | async)?.qualitative?.picture?.baseUrl + '/' + (loyaltySettings$ | async)?.qualitative?.picture?.path"
+                  class="assets/img-fluid rounded-circle mb-1"
+                  style="margin-top: 5% !important; width: 25px !important" />
+              </p>
+              <p *ngIf="item?.walletType === 'QUANTITATIVE'"
+                class="align-items-center d-flex justify-content-center text-sticker">
+                <svg class="text-sticker-icon icon-plus-small">
+                  <use xlink:href="#svg-plus-small"></use>
+                </svg>
+                {{ item?.amount | number: '1.0-0' }}
+                <img *ngIf="item?.wallet?.coin?.picture?.baseUrl"
+                  [src]="item?.wallet?.coin?.picture?.baseUrl + '/' + item?.wallet?.coin?.picture?.path"
+                  class="assets/img-fluid rounded-circle avatar-xxs mb-1"
+                  style="margin-top: 5% !important; width: 25px !important" />
+                <lord-icon *ngIf="!item?.wallet?.coin?.picture?.baseUrl" src="https://cdn.lordicon.com/lxizbtuq.json"
+                  src="https://cdn.lordicon.com/lxizbtuq.json" trigger="loop" delay="2000"
+                  style="width:25px;height:25px">
+                </lord-icon>
+              </p>
+            </ng-container>
+          </div>
+        </div>
+      </div>
+      <p class="quest-preview-text quill-x" style="color: white">
+        <quill-view-html [content]="quest?.description" theme="snow"></quill-view-html>
+      </p>
+    </div>
+  </div>
+
+  <ng-container *ngIf="!(loadingActivitiesByQuest$ | async)">
+    <nav *ngIf="questActivities?.length > 1" [class.dark-mode]="darkMode"
+      class="col-md-12 section-navigation special-margin">
+      <div class="tns-outer" id="section-navigation-slider-ow">
+        <div id="section-navigation-slider-mw" class="tns-ovh">
+          <div class="tns-inner" id="section-navigation-slider-iw">
+            <owl-carousel-o id="section-navigation-slider" [options]="questtabsCarousel"
+              class="section-menu tns-slider tns-carousel tns-subpixel tns-calc tns-horizontal">
+              <ng-container *ngFor="let activity of questActivities">
+                <ng-template carouselSlide>
+                  <a [class.active]="activity?.id === selectedQuestActivity?.id"
+                    class="section-menu-item tns-item tns-slide-active" id="section-navigation-slider-item8">
+                    <svg class="section-menu-item-icon icon-blog-posts"
+                      *ngIf="activity?.activity?.action?.activityType?.code === 'GAME'"
+                      xmlns="http://www.w3.org/2000/svg" fill="#000000" width="30" height="30" viewBox="0 0 24 24">
+                      <path
+                        d="M15.5,6H13V4a1,1,0,0,0-2,0V6H8.5a7.5,7.5,0,0,0,0,15h7a7.5,7.5,0,0,0,0-15Zm0,13h-7a5.5,5.5,0,0,1,0-11h7a5.5,5.5,0,0,1,0,11ZM11,13.5a1,1,0,0,1-1,1H9v1a1,1,0,0,1-2,0v-1H6a1,1,0,0,1,0-2H7v-1a1,1,0,0,1,2,0v1h1A1,1,0,0,1,11,13.5ZM19,12a1,1,0,1,1-1-1A1,1,0,0,1,19,12Zm-2,3a1,1,0,1,1-1-1A1,1,0,0,1,17,15Z" />
+                    </svg>
+
+                    <svg *ngIf="activity?.activity?.action?.activityType?.code === 'QUESTION'"
+                      class="section-menu-item-icon icon-blog-posts">
+                      <use xlink:href="#svg-blog-posts"></use>
+                    </svg>
+
+                    <svg *ngIf="activity?.activity?.action?.activityType?.code === 'MEDIA'"
+                      class="section-menu-item-icon icon-blog-posts">
+                      <use xlink:href="#svg-streams"></use>
+                    </svg>
+
+                    <svg *ngIf="activity?.activity?.action?.activityType?.code === 'SOCIAL_MEDIA'"
+                      class="section-menu-item-icon icon-blog-posts">
+                      <use xlink:href="#svg-facebook"></use>
+                    </svg>
+
+                    <svg *ngIf="activity?.activity?.action?.activityType?.code === 'API_ACTION'"
+                      xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" fill="#000000"
+                      class="section-menu-item-icon icon-blog-posts" version="1.1" id="Capa_1" viewBox="0 0 511 511"
+                      xml:space="preserve">
+                      <g>
+                        <path
+                          d="M492.168,309.579l-17.626-10.177c2.96-14.723,4.458-29.466,4.458-43.902c0-14.646-1.474-29.403-4.384-43.946l17.552-10.134   c5.436-3.138,9.325-8.206,10.949-14.269s0.791-12.396-2.348-17.832l-48-83.139c-3.139-5.436-8.206-9.325-14.269-10.949   c-6.064-1.624-12.396-0.791-17.833,2.348l-17.566,10.142C380.912,68.2,354.798,53.092,327,43.692V23.5   C327,10.542,316.458,0,303.5,0h-96C194.542,0,184,10.542,184,23.5v20.193c-27.65,9.362-53.728,24.49-75.999,44.088L90.332,77.579   c-5.437-3.139-11.77-3.973-17.833-2.348c-6.063,1.625-11.13,5.513-14.269,10.949l-48,83.139   c-3.139,5.436-3.972,11.769-2.348,17.832s5.513,11.131,10.949,14.269l17.626,10.177C33.499,226.32,32,241.063,32,255.5   c0,14.644,1.474,29.401,4.384,43.945l-17.552,10.134c-11.222,6.479-15.08,20.879-8.602,32.102l48,83.139   c6.479,11.221,20.879,15.08,32.102,8.601l17.565-10.142c22.19,19.521,48.303,34.629,76.103,44.03V487.5   c0,12.958,10.542,23.5,23.5,23.5h96c12.958,0,23.5-10.542,23.5-23.5v-20.193c27.651-9.362,53.729-24.49,76-44.087l17.668,10.201   c11.221,6.479,25.623,2.62,32.102-8.601l48-83.139C507.248,330.458,503.39,316.058,492.168,309.579z M487.779,334.181l-48,83.138   c-2.343,4.06-7.552,5.455-11.611,3.111l-22.392-12.928c-2.845-1.643-6.43-1.242-8.842,0.989   c-22.893,21.173-50.437,37.148-79.653,46.199c-3.14,0.973-5.281,3.877-5.281,7.164V487.5c0,4.687-3.813,8.5-8.5,8.5h-96   c-4.687,0-8.5-3.813-8.5-8.5v-25.645c0-3.287-2.141-6.191-5.28-7.164c-29.396-9.107-56.974-25.062-79.755-46.139   c-1.421-1.315-3.25-1.995-5.095-1.995c-1.286,0-2.579,0.33-3.748,1.005L82.832,420.43c-4.06,2.343-9.268,0.948-11.611-3.111   l-48-83.138c-2.343-4.059-0.947-9.268,3.111-11.612l22.272-12.859c2.844-1.642,4.289-4.942,3.566-8.146   C48.739,286.357,47,270.858,47,255.5c0-15.1,1.765-30.584,5.247-46.022c0.722-3.203-0.723-6.504-3.566-8.145L26.332,188.43   c-1.966-1.135-3.372-2.968-3.96-5.161c-0.587-2.193-0.286-4.484,0.849-6.45l48-83.139c1.135-1.966,2.968-3.373,5.162-3.96   c2.192-0.588,4.484-0.286,6.45,0.849l22.392,12.928c2.846,1.644,6.43,1.242,8.842-0.989c22.894-21.173,50.437-37.148,79.653-46.199   c3.14-0.973,5.281-3.877,5.281-7.164V23.5c0-4.687,3.813-8.5,8.5-8.5h96c4.687,0,8.5,3.813,8.5,8.5v25.645   c0,3.287,2.141,6.191,5.28,7.164c29.395,9.106,56.973,25.061,79.755,46.139c2.412,2.232,5.997,2.633,8.843,0.99l22.29-12.869   c1.967-1.135,4.258-1.437,6.45-0.849c2.193,0.588,4.026,1.994,5.162,3.96l48,83.139c1.135,1.966,1.437,4.257,0.849,6.45   c-0.588,2.193-1.994,4.026-3.96,5.161l-22.272,12.859c-2.844,1.642-4.289,4.943-3.566,8.146c3.431,15.206,5.17,30.704,5.17,46.065   c0,15.1-1.765,30.584-5.247,46.021c-0.722,3.203,0.723,6.503,3.566,8.145l22.349,12.903   C488.727,324.913,490.123,330.122,487.779,334.181z" />
+                        <path
+                          d="M255.5,104C171.962,104,104,171.963,104,255.5S171.962,407,255.5,407S407,339.037,407,255.5S339.038,104,255.5,104z    M255.5,392C180.234,392,119,330.766,119,255.5S180.234,119,255.5,119S392,180.234,392,255.5S330.766,392,255.5,392z" />
+                        <path
+                          d="M283.5,216h-28c-4.142,0-7.5,3.358-7.5,7.5v64c0,4.142,3.358,7.5,7.5,7.5s7.5-3.358,7.5-7.5V271h20.5   c15.164,0,27.5-12.336,27.5-27.5S298.664,216,283.5,216z M283.5,256H263v-25h20.5c6.893,0,12.5,5.607,12.5,12.5   S290.393,256,283.5,256z" />
+                        <path
+                          d="M214.522,220.867c-1.098-2.927-3.896-4.867-7.022-4.867h-8c-3.126,0-5.925,1.939-7.022,4.867l-24,64   c-1.455,3.878,0.511,8.201,4.389,9.656c3.878,1.455,8.201-0.511,9.656-4.389L186.697,279h33.605l4.175,11.133   c1.129,3.011,3.987,4.869,7.023,4.869c0.875,0,1.765-0.154,2.632-0.479c3.878-1.454,5.844-5.778,4.389-9.656L214.522,220.867z    M192.322,264l11.178-29.807L214.678,264H192.322z" />
+                        <path
+                          d="M327.5,216c-4.142,0-7.5,3.358-7.5,7.5v64c0,4.142,3.358,7.5,7.5,7.5s7.5-3.358,7.5-7.5v-64   C335,219.358,331.642,216,327.5,216z" />
+                        <path
+                          d="M309.152,87.3c5.205,1.659,10.394,3.586,15.421,5.726c0.958,0.408,1.954,0.601,2.934,0.601c2.916,0,5.69-1.712,6.904-4.564   c1.622-3.811-0.152-8.216-3.963-9.838c-5.458-2.323-11.09-4.415-16.742-6.216c-3.945-1.258-8.165,0.922-9.423,4.868   C303.026,81.823,305.206,86.042,309.152,87.3z" />
+                        <path
+                          d="M100.45,339.904c-1.984-3.636-6.541-4.976-10.176-2.992c-3.636,1.984-4.976,6.54-2.992,10.176   c3.112,5.704,6.557,11.315,10.239,16.677c1.454,2.117,3.801,3.255,6.189,3.255c1.463,0,2.941-0.427,4.239-1.318   c3.415-2.345,4.282-7.014,1.937-10.428C106.493,350.332,103.318,345.161,100.45,339.904z" />
+                        <path
+                          d="M240.14,431.341c-40.189-3.463-78.337-20.879-107.416-49.041c-2.976-2.882-7.724-2.805-10.605,0.17   c-2.881,2.976-2.806,7.724,0.17,10.605c31.55,30.555,72.947,49.452,116.563,53.21c0.219,0.019,0.436,0.028,0.652,0.028   c3.851,0,7.127-2.949,7.464-6.856C247.323,435.331,244.266,431.697,240.14,431.341z" />
+                        <path
+                          d="M363.425,97.287c-3.42-2.337-8.087-1.459-10.424,1.96c-2.337,3.42-1.459,8.087,1.96,10.424   c34.844,23.813,60.049,59.248,70.972,99.776c0.902,3.346,3.93,5.55,7.237,5.55c0.646,0,1.303-0.084,1.956-0.26   c4-1.078,6.368-5.194,5.29-9.193C428.564,161.564,401.221,123.118,363.425,97.287z" />
+                      </g>
+                    </svg>
+
+                    <svg style="fill: white;" class="section-menu-item-icon icon-blog-posts"
+                      *ngIf="activity?.activity?.action?.activityType?.code === 'LEAD_GENERATION'"
+                      xmlns="http://www.w3.org/2000/svg" width="800px" height="800px" viewBox="0 0 24 24" fill="none">
+                      <circle cx="10" cy="6" r="4" stroke="#1C274C" stroke-width="1.5" />
+                      <path d="M21 10H19M19 10H17M19 10L19 8M19 10L19 12" stroke="#1C274C" stroke-width="1.5"
+                        stroke-linecap="round" />
+                      <path
+                        d="M17.9975 18C18 17.8358 18 17.669 18 17.5C18 15.0147 14.4183 13 10 13C5.58172 13 2 15.0147 2 17.5C2 19.9853 2 22 10 22C12.231 22 13.8398 21.8433 15 21.5634"
+                        stroke="#1C274C" stroke-width="1.5" stroke-linecap="round" />
+                    </svg>
+
+                    <svg class="section-menu-item-icon icon-blog-posts" *ngIf="activity?.activity?.transition"
+                      xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none">
+                      <path
+                        d="M13 17H9V19.5885C9 19.7554 8.80766 19.8489 8.67644 19.7458L2 14.5L8.67644 9.25423C8.80766 9.15112 9 9.24461 9 9.41149V12H15"
+                        stroke="#33363F" stroke-width="2" />
+                      <path
+                        d="M11 7H15V4.41149C15 4.24461 15.1923 4.15112 15.3236 4.25423L22 9.5L15.3236 14.7458C15.1923 14.8489 15 14.7554 15 14.5885V12H9"
+                        stroke="#33363F" stroke-width="2" />
+                    </svg>
+                  </a>
+                </ng-template>
+              </ng-container>
+            </owl-carousel-o>
+          </div>
+        </div>
+      </div>
+    </nav>
+
+    <ng-container *ngIf="selectedQuestActivity?.activity?.action?.activityType?.code === 'QUESTION'">
+      <div [class.dark-mode]="darkMode" class="widget-box col-md-12 special-margin special-margin-bottom">
+        <div class="special-widget-box">
+          <div class="widget-box-content survey-content" style="margin: 4%">
+            <div class="widget-box-status-content">
+              <div class="user-status" style="padding: 2px 0 0 0px">
+                <p class="user-status-title" style="font-size: 19.2px;"><a
+                    class="bold">{{selectedQuestActivity?.title}}</a></p>
+              </div>
+              <p class="widget-box-status-text mt-0 mb-5">
+                <quill-view-html class="quill-z" [content]="selectedQuestActivity?.description"
+                  theme="snow"></quill-view-html>
+              </p>
+            </div>
+            <form *ngIf="activityForm" [formGroup]="activityForm" class="form">
+              <ng-container formArrayName="responses">
+                <ng-container *ngFor="let control of questionsResponses['controls']; let i = index" [formGroupName]="i">
+                  <ng-container formGroupName="answers">
+                    <div class="mb-5" *ngIf="control.get('question').value.type === 'SINGLE_CHOICE'">
+                      <p class="poll-title">{{control.get('question').value.title}}</p>
+                      <div class="form-poll">
+                        <div class="form-row">
+                          <div *ngFor="let choice of control.get('question').value.choices; let i = index"
+                            class="form-item form-item-margin">
+                            <div class="poll-result">
+                              <div class="progress-stat">
+                                <div class="bar-progress-wrap mb-0 medium">
+                                  <div [class.dark-mode]="darkMode"
+                                    class="checkbox-wrap d-flex justify-content-between">
+                                    <div>
+                                      <input [checked]="i === 0" (change)="onChangeChoice(choice?.item, control)"
+                                        type="radio" [id]="choice?.item" name="poll_option" [value]="choice?.item" />
+                                      <div class="checkbox-box round"></div>
+                                      <label [for]="choice?.item">{{choice?.item}}</label>
+                                    </div>
+                                    <span *ngIf="control.get('question').value.settings?.singleChoice?.poll"
+                                      class="bar-progress-info bar-progress-text medium negative no-space">
+                                      <p>
+                                        {{ (getChoicePercentage(control.get('question').value, choice.item)?.percentage
+                                        |
+                                        number: '1.2-2') || 0 }}
+                                      </p>
+                                      <p class="bar-progress-unit">%</p>
+                                    </span>
+                                  </div>
+                                </div>
+                                <div *ngIf="control.get('question').value.settings?.singleChoice?.poll"
+                                  class="progress-stat">
+                                  <div appProgressBar [height]="1" [lineColor]="'#e7e8ee'" [start]="0" [end]="100"
+                                    [stop]="getChoicePercentage(control.get('question').value, choice.item)?.percentage || 0"
+                                    [gradientColors]="[progressBarColor, progressBarColor]" class="progress-stat-bar"
+                                    style="height: 4px; position: relative"></div>
+                                </div>
+                              </div>
+                              <div *ngIf="control.get('question').value.settings?.singleChoice?.poll"
+                                class="meta-line d-flex align-items-center mt-3">
+                                <div
+                                  *ngFor="let user of getChoicePercentage(control.get('question').value, choice.item)?.users">
+                                  <span *ngIf="!user?.picture?.baseUrl" style="display: flex; width: 22px !important; height: 22px !important;
+                                            align-items: center;
+                                            justify-content: center;
+                                            font-size: 24px;
+                                            color: #ffffff;
+                                            opacity: 0.8;
+                                            font-size: 16px;
+                                            font-weight: 900;
+                                            " [ngStyle]="{
+                                              'background-color': (widgetSettings$ | async)?.theme || '#7750f8'
+                                            }" class="rounded-circle"> {{ user?.firstName?.charAt(0) || 'N' }}
+                                  </span>
+                                  <img style="width: 22px; height: 22px; object-fit: cover;" class="rounded-circle"
+                                    *ngIf="user?.picture?.baseUrl"
+                                    [src]="user?.picture?.baseUrl + '/' + user?.picture?.path" alt="">
+                                </div>
+                                <p class="meta-line-text ml-2">
+                                  {{ getChoicePercentage(control.get('question').value, choice.item)?.count || 0 }}
+                                  {{ (getChoicePercentage(control.get('question').value, choice.item)?.count > 1 ?
+                                  'VOTES'
+                                  : 'VOTE') | translate }}
+                                </p>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+
+                    <div *ngIf="control.get('question').value.type === 'SMILEY'" style="margin-bottom: 4rem;"
+                      class="form-item form-item-margin">
+                      <div class="form-input">
+                        <p class="poll-title" style="margin-bottom: 48px !important;">
+                          {{control.get('question').value.title}} </p>
+                        <div style="display: flex; gap: 16px !important;">
+                          <div *ngFor="let level of control.get('question').value?.settings?.smiley?.levels">
+                            <img *ngIf="level?.picture?.baseUrl"
+                              (click)="selectEmoji(control, level.picture, 'picture', i)"
+                              [src]="level?.picture?.baseUrl + '/' + level?.picture?.path"
+                              class="reaction-stat-image people-choice"
+                              [class.selected-choice]="selectedEmojiPicture[i]?.path === level?.picture?.path"
+                              style="cursor: pointer;" />
+                            <span *ngIf="level?.icon"
+                              [ngStyle]="{'font-size': selectedEmojiIcon[i] === level?.icon ? '60px' : '50px'}"
+                              style="cursor: pointer;" (click)="selectEmoji(control, level.icon, 'icon', i)"
+                              class="reaction-stat-image people-choice"> {{level?.icon}} </span>
+                            <div [ngClass]="{
+                                'mt-3': level?.picture?.baseUrl,
+                                'selected-bar': (level?.icon ? selectedEmojiIcon[i] === level?.icon : selectedEmojiPicture[i]?.path === level?.picture?.path),
+                                'unselected-bar': !(level?.icon ? selectedEmojiIcon[i] === level?.icon : selectedEmojiPicture[i]?.path === level?.picture?.path)
+                              }">
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+
+                    <div formGroupName="date" *ngIf="control.get('question').value.type === 'DATETIME'"
+                      class="form-row split row mb-5">
+                      <p class="poll-title"> {{control.get('question').value.title}} </p>
+                      <div class="form-row row mt-4">
+                        <div class="form-item col-lg-6">
+                          <div [class.dark-mode]="darkMode" class="form-input small mid-textarea active">
+                            <label style="top: -11px !important;" for="profile-job-1-description">{{'FROM' |
+                              translate}}</label>
+                            <input placeholder="{{'ENTER_DATE' | translate}}" formControlName="from"
+                              class="form-control" type="text" mwlFlatpickr [altInput]="true" [convertModelValue]="true"
+                              [static]="true" [inline]="false">
+                          </div>
+                        </div>
+                        <div *ngIf="control.get('question').value.settings?.date?.interval" class="form-item col-lg-6">
+                          <div [class.dark-mode]="darkMode" class="form-input small mid-textarea active">
+                            <label style="top: -11px !important;" for="profile-job-1-description">{{'TO' |
+                              translate}}</label>
+                            <input placeholder="{{'ENTER_DATE' | translate}}" formControlName="to" class="form-control"
+                              type="text" mwlFlatpickr [altInput]="true" [convertModelValue]="true" [static]="true"
+                              [inline]="false">
+                          </div>
+                        </div>
+                        <span *ngIf="!dateRangeValid(control.get(['answers', 'date']))" class="text-danger">
+                          {{'DATE_BETWEEN' | translate}}
+                        </span>
+                      </div>
+                    </div>
+
+                    <div *ngIf="control.get('question').value.type === 'SHORT_ANSWER'"
+                      class="form-item form-item-margin mb-5">
+                      <div class="form-input small active">
+                        <p class="poll-title">{{control.get('question').value.title}}</p>
+                        <input required class="mb-1" formControlName="shortAnswer" type="text" id="profile-birthday"
+                          name="profile_birthday" />
+                        <span style="font-size: 0.8rem; font-weight: 600;" class="text-danger"
+                          *ngIf="control.get(['answers', 'shortAnswer'])?.touched && control.get(['answers', 'shortAnswer'])?.errors">
+                          {{'NUMBER_BETWEEN' | translate}}
+                          {{
+                          control.get('question').value.settings?.shortAnswer?.min
+                          }} {{'AND' | translate}}
+                          {{
+                          control.get('question').value?.settings?.shortAnswer?.max
+                          }} {{'CHARACTERS_LENGTH' | translate}}
+                        </span>
+                      </div>
+                    </div>
+
+                    <div *ngIf="control.get('question').value.type === 'RATING'"
+                      class="form-item form-item-margin mb-5">
+                      <div class="form-input small active">
+                        <p class="poll-title">{{control.get('question').value.title}}</p>
+                        <div class="rating-list">
+                          <div class="rating"
+                            *ngFor="let star of starRange(control.get('question').value.settings?.rating?.levels?.[0]); let j = index"
+                            [class.filled]="j <= hoverIndex[i] || j <= selectedRating[i]"
+                            (click)="setRating(i, control, j)" (mouseover)="setHoverIndex(i, j)"
+                            (mouseout)="clearHoverIndex(i)">
+                            <svg class="rating-icon icon-star">
+                              <use xlink:href="#svg-star"></use>
+                            </svg>
+                          </div>
+                        </div>
+                        <svg style="display: none">
+                          <symbol id="svg-star" viewBox="0 0 24 24">
+                            <path
+                              d="M12 .587l3.668 7.431L24 9.753l-6 5.831 1.418 8.277L12 18.812l-7.418 3.99L6 15.584 0 9.753l8.332-1.735z">
+                            </path>
+                          </symbol>
+                        </svg>
+                      </div>
+                    </div>
+
+                    <div *ngIf="control.get('question').value.type === 'PARAGRAPH'"
+                      class="form-item form-item-margin mb-5">
+                      <div class="form-input small active">
+                        <p class="poll-title">{{control.get('question').value.title}}</p>
+                        <textarea required formControlName="paragraph" class="mb-1" type="text"
+                          id="profile-social-question-1" name="profile_social_question_1" value=""></textarea>
+                        <span style="font-size: 0.8rem; font-weight: 600;" class="text-danger"
+                          *ngIf="control.get(['answers', 'paragraph'])?.touched && control.get(['answers', 'paragraph'])?.errors">
+                          {{'NUMBER_BETWEEN' | translate}}
+                          {{
+                          control.get('question').value?.settings?.paragraph?.min
+                          }} {{'AND' | translate}}
+                          {{
+                          control.get('question').value?.settings?.paragraph?.max
+                          }} {{'CHARACTERS_LENGTH' | translate}}
+                        </span>
+                      </div>
+                    </div>
+
+                    <div *ngIf="control.get('question').value.type === 'NUMBER'"
+                      class="form-item form-item-margin mb-5">
+                      <div class="form-input small active">
+                        <p class="poll-title">{{control.get('question').value.title}}</p>
+                        <!-- [ngStyle]="{'background-color': darkMode ? '#1d2333 !important' : '#fff !important'}" -->
+                        <input [ngClass]="{'bg-dark': darkMode, 'bg-light': !darkMode}" required class="mb-1 text-input"
+                          formControlName="number" type="number" id="profile-birthday" name="profile_birthday" />
+                        <span style="font-size: 0.8rem; font-weight: 600;" class="text-danger"
+                          *ngIf="control.get(['answers', 'number'])?.touched && control.get(['answers', 'number'])?.errors">
+                          {{'NUMBER_BETWEEN' | translate}}
+                          {{
+                          control.get('question').value.settings?.number?.minValue
+                          }} {{'AND' | translate}}
+                          {{
+                          control.get('question').value?.settings?.number?.maxValue
+                          }}.
+                        </span>
+                      </div>
+                    </div>
+
+                    <div *ngIf="control.get('question').value.type === 'MULTIPLE_CHOICE'" class="poll-box mb-5">
+                      <p [class.text-white]="darkMode" class="poll-title">{{control.get('question').value.title}}</p>
+                      <div class="marketplace-sidebar">
+                        <div class="sidebar-box" style="padding: 9px 28px;">
+                          <div *ngFor="let choice of control.get('question').value.choices; let j = index"
+                            class="sidebar-box-items mt-3">
+                            <div class="checkbox-line">
+                              <div [class.dark-mode]="darkMode" class="checkbox-wrap">
+                                <input [checked]="isSelected(control.get(['answers', 'multipleChoices']), choice.item)"
+                                  [disabled]="isCheckboxDisabled(control.get(['answers', 'multipleChoices'])) && isSelected(control.get(['answers', 'multipleChoices']), choice.item)"
+                                  (change)="onChangeMultipleChoice($event.target.checked, control.get(['answers', 'multipleChoices']), choice.item, j)"
+                                  type="checkbox" [id]="'category-' + j" name="category_all" />
+                                <div class="checkbox-box">
+                                  <svg class="icon-cross">
+                                    <use xlink:href="#svg-cross"></use>
+                                  </svg>
+                                </div>
+                                <label [class.text-white]="darkMode" [for]="'category-' + j">{{ choice.item }}</label>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </ng-container>
+                </ng-container>
+              </ng-container>
+            </form>
+          </div>
+
+          <div class="d-flex justify-content-end">
+            <button *ngIf="activityForm && !isLastActivity"
+              [ngClass]="{'white-solid': activityForm.invalid || isQuestionsButtonDisabled, 'primary': activityForm.valid}"
+              [disabled]="activityForm.invalid || isQuestionsButtonDisabled" (click)="navigateNextSlide()"
+              class="button">
+              <div>
+                <span> {{'NEXT' | translate}} </span> <svg style="fill: white;"
+                  class="slider-control-icon icon-custom-arrow">
+                  <use xlink:href="#svg-small-arrow"></use>
+                </svg>
+              </div>
+            </button>
+            <button [class.white-solid]="activityForm.invalid" *ngIf="isLastActivity" (click)="save()"
+              class="button">
+              <div>
+                <span> {{'SUBMIT' | translate}} </span>
+              </div>
+            </button>
+          </div>
+        </div>
+      </div>
+    </ng-container>
+
+    <ng-container *ngIf="selectedQuestActivity?.activity?.action?.activityType?.code === 'GAME'">
+      <div [class.dark-mode]="darkMode"
+        class="quests col-md-12 special-margin widget-box no-padding special-margin-bottom">
+        <div class="">
+          <div class="widget-box-status">
+            <div class="widget-box-status-content">
+              <div class="user-status" style="padding: 2px 0 0 0px">
+                <p class="user-status-title" style="font-size: 19.2px;"><a
+                    class="bold">{{selectedQuestActivity?.title}}</a></p>
+              </div>
+              <p class="widget-box-status-text mt-0">
+                <quill-view-html [content]="quest?.description" theme="snow"></quill-view-html>
+              </p>
+            </div>
+          </div>
+          <quizz-game (argsUpdate)="onArgsUpdate($event)" (performActivity)="save($event)" *ngIf="
+          selectedQuestActivity?.activity?.action?.definition?.game?.gameType === 'FIND_HIDDEN_OBJECT' ||
+          selectedQuestActivity?.activity?.action?.definition?.game?.gameType === 'TRIVIA_QUIZ' ||
+          selectedQuestActivity?.activity?.action?.definition?.game?.gameType === 'GUESS_THE_PRICE' ||
+          selectedQuestActivity?.activity?.action?.definition?.game?.gameType === 'GUESS_MISSING_ELEMENT'
+          "></quizz-game>
+          <app-jigsaw-puzzle (performActivity)="save()" (argsUpdate)="onArgsUpdate($event)"
+            *ngIf="selectedQuestActivity?.activity?.action?.definition?.game?.gameType === 'JIGSAW'"></app-jigsaw-puzzle>
+          <app-sliding (performActivity)="save('game', $event)" (argsUpdate)="onArgsUpdate($event)"
+            *ngIf="selectedQuestActivity?.activity?.action?.definition?.game?.gameType === 'SLIDING'"></app-sliding>
+          <memory-game (performActivity)="save('game', $event)" (argsUpdate)="onArgsUpdate($event)"
+            *ngIf="selectedQuestActivity?.activity?.action?.definition?.game?.gameType === 'MEMORY_GAME'"></memory-game>
+        </div>
+      </div>
+    </ng-container>
+
+    <ng-container *ngIf="selectedQuestActivity?.activity?.action?.activityType?.code === 'API_ACTION'">
+      <div [class.dark-mode]="darkMode"
+        class="quests col-md-12 special-margin widget-box no-padding special-margin-bottom">
+        <div class="special-widget-box">
+          <div class="widget-box-status">
+            <div class="widget-box-status-content">
+              <div class="user-status" style="padding: 2px 0 0 0px">
+                <p class="user-status-title" style="font-size: 19.2px;"><a
+                    class="bold">{{selectedQuestActivity?.title}}</a></p>
+              </div>
+              <p class="widget-box-status-text mt-0">
+                <quill-view-html [content]="quest?.description" theme="snow"></quill-view-html>
+              </p>
+              <figure *ngIf="selectedQuestActivity?.media?.pictures?.length"
+                class="widget-box-picture popup-picture-trigger">
+                <img class="img-w"
+                  [src]="selectedQuestActivity?.media?.pictures[0]?.baseUrl + '/' + selectedQuestActivity?.media?.pictures[0]?.path"
+                  alt="cover-04" />
+              </figure>
+            </div>
+            <form [formGroup]="performForm" class="form special-widget-box">
+              <ng-container formGroupName="api">
+                <div formArrayName="params" class="form-row split">
+                  <div *ngFor="let control of paramsArray.controls; let i = index" [formGroupName]="i"
+                    class="form-item form-item-margin">
+                    <div class="form-input small active">
+                      <p class="poll-title">{{control.get('value').value}}</p>
+                      <input formControlName="performValue" required type="text" id="profile-social-question-1"
+                        name="profile_social_question_1" />
+                    </div>
+                  </div>
+                </div>
+              </ng-container>
+            </form>
+            <div *ngIf="selectedQuestActivity?.tags?.length" class="widget-box-status-content">
+              <div class="tag-list">
+                <a *ngFor="let tag of selectedQuestActivity?.tags" class="tag-item secondary text-white"
+                  style="cursor: pointer;">{{tag}}</a>
+              </div>
+            </div>
+          </div>
+          <div class="d-flex justify-content-end">
+            <button *ngIf="performForm && !isLastActivity"
+              [ngClass]="{'primary': performForm.get('api').valid, 'white-solid': performForm.get('api').invalid}"
+              [disabled]="performForm.get('api').invalid" (click)="navigateNextSlide('api')"
+              class="button">
+              <div>
+                <span>{{'NEXT' | translate}}</span> <svg style="fill: white;"
+                  class="slider-control-icon icon-custom-arrow">
+                  <use xlink:href="#svg-small-arrow"></use>
+                </svg>
+              </div>
+            </button>
+            <button [class.white-solid]="performForm.get('api').invalid" *ngIf="performForm && isLastActivity"
+              [disabled]="performForm.get('api').invalid" (click)="save('api')" class="button">
+              <div>
+                <span> {{'SUBMIT' | translate}} </span>
+              </div>
+            </button>
+          </div>
+        </div>
+      </div>
+    </ng-container>
+
+    <ng-container *ngIf="selectedQuestActivity?.activity?.action?.activityType?.code === 'LEAD_GENERATION'">
+      <div [class.dark-mode]="darkMode"
+        class="quests col-md-12 special-margin widget-box no-padding special-margin-bottom">
+        <div class="special-widget-box">
+          <div class="widget-box-status">
+            <div class="widget-box-status-content">
+              <div class="user-status" style="padding: 2px 0 0 0px">
+                <p class="user-status-title" style="font-size: 19.2px;"><a
+                    class="bold">{{selectedQuestActivity?.title}}</a></p>
+              </div>
+              <p class="widget-box-status-text mt-0 mb-5">
+                <quill-view-html [content]="quest?.description" theme="snow"></quill-view-html>
+              </p>
+            </div>
+            <figure *ngIf="selectedQuestActivity?.activity?.action?.definition?.lead?.image"
+              class="widget-box-picture popup-picture-trigger">
+              <img class="img-w" [src]="selectedQuestActivity?.activity?.action?.definition?.lead?.image"
+                alt="cover-04" />
+            </figure>
+            <div *ngIf="webpageUrl">
+              <iframe #activityFrame style="width: -webkit-fill-available; height: 400px;"
+                class="border p-3 w-100 webpage-container" [src]="webpageUrl" frameborder="0" allowfullscreen></iframe>
+            </div>
+
+            <div class="widget-box-status-content">
+              <div class="tag-list">
+                <a *ngFor="let tag of selectedQuestActivity?.tags" class="tag-item secondary"
+                  style="color: #ffffff !important; cursor: pointer;">
+                  <span style="font-size: 14.4px;">{{tag}}</span>
+                </a>
+              </div>
+            </div>
+          </div>
+          <div class="align-items-center d-flex justify-content-end">
+            <button *ngIf="!isLastActivity" (click)="navigateNextSlide('lead')"
+              [ngClass]="{'primary': minutes === 0 && seconds === 0 && !isLeadButtonDisabled, 'white-solid': minutes > 0 || seconds > 0 || isLeadButtonDisabled}"
+              [disabled]="minutes > 0 || seconds > 0 || isLeadButtonDisabled" class="button primary">
+              <div>
+                <span> {{'NEXT' | translate}}
+                  <ng-container *ngIf="minutes > 0 || seconds > 0">
+                    {{ minutes > 0 ? (minutes + ':') : '' }}{{seconds < 10 ? '0' + seconds : seconds}} </ng-container>
+                </span> <svg style="fill: white;" class="slider-control-icon icon-custom-arrow">
+                  <use xlink:href="#svg-small-arrow"></use>
+                </svg>
+              </div>
+            </button>
+            <button [class.white-solid]="minutes > 0 || seconds > 0 || isLeadButtonDisabled" *ngIf="isLastActivity"
+              [disabled]="minutes > 0 || seconds > 0 || isLeadButtonDisabled" (click)="save('lead')"
+              class="button">
+              <div>
+                <span> {{'SUBMIT' | translate}}
+                  <ng-container *ngIf="minutes > 0 || seconds > 0">
+                    {{ minutes > 0 ? (minutes + ':') : '' }}{{seconds < 10 ? '0' + seconds : seconds}} </ng-container>
+                </span>
+              </div>
+            </button>
+          </div>
+        </div>
+      </div>
+    </ng-container>
+
+    <ng-container *ngIf="selectedQuestActivity?.activity?.action?.activityType?.code === 'MEDIA'">
+      <div [class.dark-mode]="darkMode"
+        class="quests col-md-12 special-margin widget-box no-padding special-margin-bottom">
+        <div class="special-widget-box">
+          <div class="widget-box-status mb-5">
+            <div class="widget-box-status-content">
+              <div class="user-status" style="padding: 2px 0 0 0px">
+                <p class="user-status-title" style="font-size: 19.2px;"><a
+                    class="bold">{{selectedQuestActivity?.title}}</a></p>
+              </div>
+              <p class="widget-box-status-text mt-0">
+                <quill-view-html [content]="quest?.description" theme="snow"></quill-view-html>
+              </p>
+
+              <video autoplay (playing)="onVideoPlay()" (pause)="onVideoPause()"
+                *ngIf="mediaVideo && selectedQuestActivity?.activity?.action?.definition?.video?.source === 'FILE'"
+                class="video-status" style="width: -webkit-fill-available; height: 300px" controls>
+                <source [src]="mediaVideo" type="video/mp4" />
+              </video>
+
+              <div
+                *ngIf="mediaVideo && selectedQuestActivity?.activity?.action?.definition?.video?.source === 'YOUTUBE'"
+                class="iframe-wrap">
+                <youtube-player
+                  [videoId]="videoId"
+                  (stateChange)="onPlayerStateChange($event)"
+                  [playerVars]="{ autoplay: 1, playsinline: 1 }"
+                >
+                </youtube-player>
+              </div>
+            </div>
+          </div>
+          <div class="align-items-center d-flex justify-content-end">
+            <button *ngIf="!isLastActivity" (click)="navigateNextSlide('media')"
+              [ngClass]="{'primary': minutes === 0 && seconds === 0 && !isMediaButtonDisabled, 'white-solid': minutes > 0 || seconds > 0 || isMediaButtonDisabled}"
+              [disabled]="minutes > 0 || seconds > 0 || isMediaButtonDisabled" class="button primary">
+              <div>
+                <span>
+                  {{'NEXT' | translate}}
+                  <ng-container *ngIf="minutes > 0 || seconds > 0">
+                    {{ minutes > 0 ? (minutes + ':') : '' }}{{seconds < 10 ? '0' + seconds : seconds}} </ng-container>
+                </span>
+                <svg style="fill: white;" class="slider-control-icon icon-custom-arrow">
+                  <use xlink:href="#svg-small-arrow"></use>
+                </svg>
+              </div>
+            </button>
+            <button [class.white-solid]="minutes > 0 || seconds > 0 || isMediaButtonDisabled" *ngIf="isLastActivity"
+              [disabled]="minutes > 0 || seconds > 0 || isMediaButtonDisabled" (click)="save('media')"
+              class="button">
+              <div>
+                <span> {{'SUBMIT' | translate}}
+                  <ng-container *ngIf="minutes > 0 || seconds > 0">
+                    {{ minutes > 0 ? (minutes + ':') : '' }}{{seconds < 10 ? '0' + seconds : seconds}} </ng-container>
+                </span>
+              </div>
+            </button>
+          </div>
+        </div>
+      </div>
+    </ng-container>
+
+    <ng-container *ngIf="selectedQuestActivity?.activity?.action?.activityType?.code === 'SOCIAL_MEDIA'">
+      <div [class.dark-mode]="darkMode"
+        class="quests col-md-12 special-margin widget-box no-padding special-margin-bottom">
+        <div class="special-widget-box">
+          <div class="widget-box-status" style="margin-bottom: 15%;">
+            <div class="widget-box-status-content">
+              <div class="user-status" style="padding: 2px 0 0 0px">
+                <p class="user-status-title" style="font-size: 19.2px;"><a
+                    class="bold">{{selectedQuestActivity?.title}}</a></p>
+              </div>
+              <p class="widget-box-status-text mt-0">
+                <quill-view-html [content]="quest?.description" theme="snow"></quill-view-html>
+              </p>
+            </div>
+          </div>
+          <div class="d-flex justify-content-end">
+            <button (click)="shareSocialMedia()" class="button primary">
+              <div>
+                <span>{{'SHARE' | translate}}</span> <svg style="fill: white;" class="slider-control-icon icon-custom-arrow">
+                  <use xlink:href="#svg-small-arrow"></use>
+                </svg>
+              </div>
+            </button>
+          </div>
+        </div>
+      </div>
+    </ng-container>
+
+    <ng-container *ngIf="selectedQuestActivity?.activity?.transition?.title">
+      <div [class.dark-mode]="darkMode"
+        class="quests col-md-12 special-margin widget-box no-padding special-margin-bottom">
+        <div class="special-widget-box">
+          <div class="widget-box-status" style="margin-bottom: 15%;">
+            <div class="widget-box-status-content">
+              <div class="user-status" style="padding: 2px 0 0 0px">
+                <p class="user-status-title" style="font-size: 19.2px;"><a
+                    class="bold">{{selectedQuestActivity?.title}}</a></p>
+              </div>
+              <p class="widget-box-status-text mt-0">
+                <quill-view-html [content]="quest?.description" theme="snow"></quill-view-html>
+              </p>
+            </div>
+          </div>
+          <div class="d-flex justify-content-end">
+            <button *ngIf="!isLastActivity" (click)="navigateNextSlide()" class="button primary">
+              <div>
+                <span> {{'NEXT' | translate}} </span> <svg style="fill: white;"
+                  class="slider-control-icon icon-custom-arrow">
+                  <use xlink:href="#svg-small-arrow"></use>
+                </svg>
+              </div>
+            </button>
+            <button *ngIf="isLastActivity" (click)="save()" class="button">
+              <div>
+                <span> {{'SUBMIT' | translate}} </span>
+              </div>
+            </button>
+          </div>
+        </div>
+      </div>
+    </ng-container>
+  </ng-container>
+
+  <div id="noresult" class="py-4 mt-4 text-center" *ngIf="(loadingActivitiesByQuest$ | async)">
+    <div class="page-loader-indicator loader-bars">
+      <div class="loader-bar"></div>
+      <div class="loader-bar"></div>
+      <div class="loader-bar"></div>
+      <div class="loader-bar"></div>
+      <div class="loader-bar"></div>
+      <div class="loader-bar"></div>
+      <div class="loader-bar"></div>
+      <div class="loader-bar"></div>
+    </div>
+  </div>
+
+
+</div>
+<svg style="display: none">
+  <symbol id="svg-cross" viewBox="0 0 12 12" preserveAspectRatio="xMinYMin meet">
+    <path d="M12,9.6L9.6,12L6,8.399L2.4,12L0,9.6L3.6,6L0,2.4L2.4,0L6,3.6L9.6,0L12,2.4L8.399,6L12,9.6z" />
+  </symbol>
+</svg>
+<svg style="display: none">
+  <symbol id="svg-videos" viewBox="0 0 20 20" preserveAspectRatio="xMinYMin meet">
+    <path
+      d="M16,0H4C1.791,0,0,1.791,0,4v12c0,2.209,1.791,4,4,4h12c2.209,0,4-1.791,4-4V4C20,1.791,18.209,0,16,0zM18,4v1h-2V2C17.103,2,18,2.897,18,4z M4,13H2V7h2V13z M16,7h2v6h-2V7z M14,2v16H6V2H14z M4,2v3H2V4C2,2.897,2.897,2,4,2z M2,16v-1h2v3C2.897,18,2,17.103,2,16z M16,18v-3h2v1C18,17.103,17.103,18,16,18z" />
+  </symbol>
+</svg>
+<svg style="display: none">
+  <symbol id="svg-streams" viewBox="0 0 20 20" preserveAspectRatio="xMinYMin meet">
+    <path
+      d="M16,3c1.103,0,2,0.897,2,2v10c0,1.103-0.897,2-2,2H4c-1.103,0-2-0.897-2-2V5c0-1.103,0.897-2,2-2H16 M16,1H4C1.791,1,0,2.791,0,5v10c0,2.209,1.791,4,4,4h12c2.209,0,4-1.791,4-4V5C20,2.791,18.209,1,16,1L16,1z" />
+    <path
+      d="M8.405,7c0.102,0,0.219,0.037,0.347,0.115l3.908,2.4c0.439,0.267,0.462,0.704,0.021,0.971l-3.928,2.4C8.624,12.964,8.507,13,8.405,13C8.157,13,8,12.782,8,12.408V7.593C8,7.217,8.157,7,8.405,7 M8.405,5C7.034,5,6,6.115,6,7.593v4.815C6,13.886,7.034,15,8.405,15c0.477,0,0.943-0.137,1.386-0.405l3.932-2.402c0.796-0.481,1.276-1.297,1.277-2.177c0.001-0.888-0.486-1.715-1.304-2.21L9.798,5.411C9.348,5.137,8.881,5,8.405,5L8.405,5z" />
+  </symbol>
+</svg>
+<svg style="display: none">
+  <symbol id="svg-timeline" viewBox="0 0 20 20" preserveAspectRatio="xMinYMin meet">
+    <path
+      d="M16,0H4C1.791,0,0,1.791,0,4v12c0,2.209,1.791,4,4,4h12c2.209,0,4-1.791,4-4V4C20,1.791,18.209,0,16,0zM18,16c0,1.103-0.897,2-2,2H4c-1.103,0-2-0.897-2-2V4c0-1.103,0.897-2,2-2h12c1.103,0,2,0.897,2,2V16z" />
+    <polygon points="18,5 2,5 2,7 5,7 5,20 7,20 7,7 13,7 13,20 15,20 15,7 18,7" />
+  </symbol>
+</svg>
+<svg style="display: none">
+  <symbol id="svg-blog-posts" viewBox="0 0 20 20" preserveAspectRatio="xMinYMin meet">
+    <path
+      d="M15,0H5C2.791,0,1,1.791,1,4v3v2v7c0,2.209,1.791,4,4,4h10c2.209,0,4-1.791,4-4V9V7V4C19,1.791,17.209,0,15,0z M17,16c0,1.103-0.897,2-2,2H5c-1.103,0-2-0.897-2-2V9h14V16z M3,7V4c0-1.103,0.897-2,2-2h10c1.103,0,2,0.897,2,2v3H3z" />
+    <rect x="5" y="11" width="10" height="2" />
+    <rect x="13" y="14" width="2" height="2" />
+    <rect x="5" y="14" width="6" height="2" />
+  </symbol>
+</svg>
+<svg style="display: none">
+  <symbol id="svg-small-arrow" viewBox="0 0 6 8" preserveAspectRatio="xMinYMin meet">
+    <path d="M6,4L1.5,8L0,6.665L3,4L0,1.333L1.5,0l3,2.666l0,0L6,4z" />
+  </symbol>
+</svg>
+<svg style="display: none">
+  <symbol id="svg-facebook" viewBox="0 0 18 18" preserveAspectRatio="xMinYMin meet">
+    <path
+      d="M16.313,18h-4.504v-6.192h3.087V8.671h-3.087V7.135V6.831V6.814l0,0c0.01-0.328,0.277-0.591,0.607-0.591h0.067h1.113h1.62V3.086h-2.733l0,0l-0.009,0.018h-0.092c-2.051,0-3.712,1.661-3.712,3.711v0.911v0.945H6.191v3.137h2.479V18H1.687C0.755,18,0,17.242,0,16.313V1.686C0,0.754,0.755,0,1.687,0h14.626C17.244,0,18,0.754,18,1.686v14.627C18,17.242,17.244,18,16.313,18z" />
+  </symbol>
+</svg>
+
+<svg style="display: none">
+  <symbol id="svg-plus-small" viewBox="0 0 8 8" preserveAspectRatio="xMinYMin meet">
+    <path d="M8,5H5v3H3V5H0V3h3V0h2v3h3V5z" />
+  </symbol>
+</svg>

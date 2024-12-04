@@ -1,0 +1,16 @@
+<li class="list-group-item ps-0" *ngFor="let data of UpcomingActivities">
+    <div class="row align-items-center g-3">
+        <div class="col-auto">
+            <div class="avatar-sm p-1 py-2 h-auto bg-light rounded-3 shadow">
+                <div class="text-center">
+                  <h5 class="mb-0">{{ data?.time | date: 'd' }}</h5>
+                  <div class="text-muted">{{ data?.time | date: 'EE' }}</div>
+                </div>
+            </div>
+        </div>
+        <div class="col">
+            <h5 class="text-muted mt-0 mb-1 fs-13">{{data?.time | date: 'longDate'}}</h5>
+            <a href="javascript:void(0);" class="text-reset fs-14 mb-0">{{data?.title}}</a>
+        </div>
+    </div>
+</li>

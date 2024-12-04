@@ -1,0 +1,79 @@
+<app-breadcrumbs title="{{ 'MENUITEMS.TITLE.FORM_LAYOUT' | translate }}" [breadcrumbItems]="breadCrumbItems"></app-breadcrumbs>
+<ng-container *ngIf="!(navigating$ | async)">
+
+  <div class="row">
+    <div class="col-lg-12">
+      <div class="card">
+        <div class="card-body">
+          <div class="live-preview">
+            <form [formGroup]="requestForm">
+              <h4 class="mb-5 mt-5 flex-grow-1">{{'MODULES.WEBSITE.REQUEST_DETAILS' | translate }}</h4>
+              <div class="row g-3">
+                <div class="col-lg-6 mb-3">
+                  <div class="form-label">
+                    <label for="firstnamefloatingInput">{{'COMMON.TYPE' | translate }}</label>
+                    <input readonly formControlName="type" type="text" class="form-control" id="firstnamefloatingInput" />
+                  </div>
+                </div>
+                <div class="col-lg-6 mb-3">
+                  <div class="form-label">
+                    <label for="firstnamefloatingInput">{{'COMMON.STATUS' | translate }}</label>
+                    <input readonly formControlName="status" type="text" class="form-control" id="firstnamefloatingInput" />
+                  </div>
+                </div>
+              </div>
+              <div class="row g-3">
+                <h4 class="mb-5 mt-5 flex-grow-1">{{'MODULES.WEBSITE.REQUESTOR' | translate }}</h4>
+                <ng-container formGroupName="requestor">
+                  <div class="col-lg-6 mb-3">
+                    <div class="form-label">
+                      <label for="firstnamefloatingInput">{{'COMMON.FIRST_NAME' | translate }}</label>
+                      <input readonly formControlName="firstName" type="text" class="form-control" id="firstnamefloatingInput" />
+                    </div>
+                  </div>
+                  <div class="col-lg-6 mb-3">
+                    <div class="form-label">
+                      <label for="firstnamefloatingInput">{{'COMMON.LAST_NAME' | translate }}</label>
+                      <input readonly formControlName="lastName" type="text" class="form-control" id="firstnamefloatingInput" />
+                    </div>
+                  </div>
+                  <div class="col-lg-6 mb-3 form-label">
+                    <label for="firstnamefloatingInput">{{ 'COMMON.EMAIL' | translate }}</label>
+                    <input readonly formControlName="email" type="text" class="form-control" id="firstnamefloatingInput" />
+                  </div>
+                </ng-container>
+                <h4 class="mb-5 mt-5 flex-grow-1">{{'MODULES.WEBSITE.REQUEST' | translate }}</h4>
+                <ng-container formGroupName="request">
+                  <div class="col-lg-6 mb-3">
+                    <div class="form-label">
+                      <label for="firstnamefloatingInput">{{'MODULES.WEBSITE.SUBJECT' | translate }}</label>
+                      <input readonly formControlName="subject" type="text" class="form-control" id="firstnamefloatingInput" />
+                    </div>
+                  </div>
+                  <div class="col-lg-6 mb-3 form-label">
+                    <label for="firstnamefloatingInput">{{'MODULES.INVENTORY.CONTENT' | translate }}</label>
+                    <textarea readonly class="form-control" id="description-field" rows="3" formControlName="content"></textarea>
+                  </div>
+                </ng-container>
+              </div>
+              <div class="col-lg-12 mt-3">
+                <div class="justify-content-end d-flex">
+                  <button (click)="close()" class="btn btn-soft-danger me-2 mt-sm-0 shadow-none"><i class="mdi mdi-archive-remove-outline align-middle me-1"></i>{{ 'COMMON.CANCEL' | translate }} </button>
+                </div>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</ng-container>
+<div *ngIf="navigating$ | async" class="vh-100 py-4 text-center" fxLayout="column" fxLayoutAlign="center center" fxLayoutGap="1rem">
+  <div>
+    <lord-icon trigger="loop" style="width:72px;height:72px" [colors]="'primary:' + primaryColor + ',secondary:' + secondaryColor" src="https://cdn.lordicon.com/msoeawqm.json">
+    </lord-icon>
+  </div>
+  <div class="mt-4">
+    <h5>{{'COMMON.LOADING' | translate }}</h5>
+  </div>
+</div>

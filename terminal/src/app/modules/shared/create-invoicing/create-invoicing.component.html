@@ -1,0 +1,784 @@
+<app-breadcrumbs [title]="title$ | async | translate " [breadcrumbItems]="breadCrumbItems$ | async"></app-breadcrumbs>
+<ng-container *ngIf="!(navigating$ | async)">
+  <div class="row justify-content-center">
+    <div class="elevok-main-content">
+      <div class="card" *ngIf="invoicingForm">
+        <form [formGroup]="invoicingForm" id="invoice_form">
+          <div class="card-body border-bottom border-bottom-dashed p-4">
+            <div fxLayout="row" fxLayoutAlign="space-between start">
+              <div [fxFlex]="100/3" fxLayout="column" fxLayoutAlign="space-between start" fxLayoutGap="2rem">
+                <div class="profile-user">
+                  <input id="profile-img-file-input" type="file" class="profile-img-file-input" required />
+                  <label for="profile-img-file-input" class="d-block" tabindex="0">
+                    <span
+                      class="overflow-hidden border border-dashed d-flex align-items-center justify-content-center rounded"
+                      style="height: 60px; width: 256px;">
+                      <img [src]="elevokLogo" class="card-logo card-logo-dark user-profile-image img-fluid"
+                        alt="logo dark">
+                      <img [src]="elevokLogo" class="card-logo card-logo-light user-profile-image img-fluid"
+                        alt="logo light">
+                    </span>
+                  </label>
+                </div>
+                <div fxFlexAlign="stretch" formGroupName="customer">
+                  <div fxLayout="row" fxLayoutAlign="space-between center">
+                    <label for="company" [ngClass]="{ 'text-muted text-uppercase fw-semibold': selectedCustomerSupplier$ | async }">
+                      {{ (type$ | async) === 'sale' ? ('COMMON.CUSTOMER' | translate) : ('COMMON.SUPPLIER' | translate) }}
+
+                    </label>
+                    <button mat-icon-button (click)="resetCustomer()" aria-label="change customer"
+                      *ngIf="!!(selectedCustomerSupplier$ | async) && !(isAvoir$ | async)">
+                      <i class="ri-pencil-line fs-4"></i>
+                    </button>
+                  </div>
+                  <div *ngIf="loadingSelectedCustomerSupplier$ | async" fxLayout="row" fxLayoutAlign="center center">
+                    <lord-icon trigger="loop" style="width:72px;height:72px" [colors]="'primary:' + primaryColor + ',secondary:' + secondaryColor"
+                      src="https://cdn.lordicon.com/msoeawqm.json">
+                    </lord-icon>
+                  </div>
+                  <div class="mb-2"
+                    *ngIf="!(selectedCustomerSupplier$ | async) && (loadingSelectedCustomerSupplier$ | async) === false || null || undefined">
+                    <ng-select bindValue="id" [addTag]="true" appendTo="body" bindLabel="name" [clearable]="true"
+                      data-choices="true" [searchable]="true" [hideSelected]="true" [virtualScroll]="true"
+                      formControlName="customer" [items]="companies$ | async" placeholder=" {{ 'MODULES.INVOICING.SHARED.SELECT_CUSTOMER' | translate }}"
+                      [typeahead]="customersInput$" (scrollToEnd)="loadMoreCompanies()"
+                      *ngIf="companies$ | async as companies">
+                      <ng-template ng-label-tmp let-item="item" let-clear="clear">
+                        <span class="ng-value-label">
+                          <div *ngIf="!item?.media?.pictures?.length"
+                            class="avatar-title me-3 h-8 w-8 bg-soft-info text-danger rounded-circle shadow">
+                            {{item.name?.charAt(0) || 'N'}}</div>
+                          <img *ngIf="item?.media?.pictures?.length" class="avatar-xxs rounded-circle"
+                            [src]="item?.media?.pictures[0]?.baseUrl + '/' + item?.media?.pictures[0]?.path"
+                            width="20px" height="20px">
+                          {{item?.name}}
+                        </span>
+                        <span class="ng-value-icon right" (click)="clear(item)" aria-hidden="true">×</span>
+                      </ng-template>
+                      <ng-template ng-option-tmp let-item$="item$" let-item="item">
+                        <div class="d-flex align-items-center">
+                          <span class="flex-shrink-0">
+                            <div *ngIf="!item?.media?.pictures?.length"
+                              class="avatar-title me-3 h-8 w-8 bg-soft-info text-danger rounded-circle shadow">
+                              {{item.name?.charAt(0) || 'N'}}</div>
+                            <img *ngIf="item?.media?.pictures?.length"
+                              [src]="item?.media?.pictures[0]?.baseUrl + '/' + item?.media?.pictures[0]?.path" alt=""
+                              class="avatar-xxs rounded-circle" />
+                          </span>
+                          <span class="flex-grow-1 ms-2">
+                            {{item?.name}}
+                          </span>
+                        </div>
+                      </ng-template>
+                    </ng-select>
+                  </div>
+                  <div fxLayout="column" fxLayoutAlign="space-between start"
+                    *ngIf="!(loadingSelectedCustomerSupplier$ | async) && selectedCustomerSupplier$ | async as selectedCustomerSupplier">
+                    <table
+                      class="table capitalized-table-headers table-borderless table-sm table-nowrap align-middle mb-0 text-muted fw-normal">
+                      <tbody>
+                        <tr>
+                          <th scope="row">{{ 'MODULES.INVOICING.SHARED.COMPANY' | translate }}</th>
+                          <td style="width:150px;" colspan="2">{{ selectedCustomerSupplier.name }}</td>
+                        </tr>
+                        <tr>
+                          <th scope="row">{{ 'MODULES.INVOICING.SHARED.REGISTRATION' | translate }}</th>
+                          <td colspan="2">{{ selectedCustomerSupplier.legal?.register }}</td>
+                        </tr>
+                        <tr>
+                          <th scope="row">{{ 'COMMON.ADDRESS' | translate }}</th>
+                          <td colspan="2">
+                            {{ selectedCustomerSupplier.address?.address ?
+                            selectedCustomerSupplier.address?.address + ', ' : '' }}
+                            {{ selectedCustomerSupplier.address?.city ? selectedCustomerSupplier.address?.city + ', '
+                            : '' }}
+                            {{ selectedCustomerSupplier.address?.postCode ? selectedCustomerSupplier.address?.postCode
+                            + ', ' : '' }}
+                            {{ selectedCustomerSupplier.address?.country?.name }}
+                          </td>
+                        </tr>
+                        <tr>
+                          <th scope="row">{{ 'COMMON.EMAIL' | translate }}</th>
+                          <td colspan="2">{{ selectedCustomerSupplier.contact?.email }}</td>
+                        </tr>
+                        <ng-container formArrayName="details">
+                          <tr [formGroupName]="i" *ngFor="let detail of customerDetails.controls; let i = index;">
+                            <td>
+                              <input type="text" data-time="true" placeholder="{{'PLACEHOLDER.KEY' | translate }}" formControlName="key"
+                                data-provider="flatpickr" [readonly]="isAvoir$ | async" id="details-key-{{ i }}-field"
+                                class="form-control bg-light border-0">
+                            </td>
+                            <td>
+                              <input type="text" data-time="true" placeholder="{{'PLACEHOLDER.VALUE' | translate }}" formControlName="value"
+                                data-provider="flatpickr" [readonly]="isAvoir$ | async" id="details-value-{{ i }}-field"
+                                class="form-control bg-light border-0">
+                            </td>
+                            <td>
+                              <button color="warn" mat-icon-button aria-label="remove field"
+                                [disabled]="isAvoir$ | async" (click)="removeCustomerField(i)">
+                                <i class="ri-delete-bin-6-line fs-4"></i>
+                              </button>
+                            </td>
+                          </tr>
+                        </ng-container>
+                      </tbody>
+                    </table>
+                    <div class="w-100" fxLayout="row" fxLayoutAlign="end center" *ngIf="!(isAvoir$ | async)">
+                      <button type="button" fxLayout="row" (click)="addCustomerField()" fxLayoutAlign="center center"
+                        class="btn btn-sm btn-soft-info">
+                        <i class="ri-add-line me-1 align-bottom"></i>
+                        {{ 'MODULES.INVOICING.SHARED.ADD_FIELD' | translate }}
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div [fxFlex]="100/3" *ngIf="company$ | async as company" fxLayout="row" fxLayoutAlign="end start">
+                <div fxLayout="column" fxLayoutAlign="space-between start" class="w-75">
+                  <h4 fxLayout="row" fxFlexAlign="stretch" fxLayoutAlign="end center" *ngIf="documentTitle"
+                    class="document-title text-muted fw-normal">
+                    {{ documentTitle }}
+                  </h4>
+                  <h4 *ngIf="company.name" class="text-muted fw-normal">{{ company.name }}</h4>
+                  <table
+                    class="table capitalized-table-headers table-borderless table-sm align-middle mb-0 text-muted fw-normal company-table">
+                    <tbody>
+                      <tr *ngIf="company.legal?.vat">
+                        <th scope="row">{{ 'MODULES.INVOICING.SHARED.TAX_NUMBER' | translate }}</th>
+                        <td>{{ company.legal?.vat }}</td>
+                      </tr>
+                      <tr *ngIf="company.legal?.register">
+                        <th scope="row">{{ 'MODULES.INVOICING.SHARED.REGISTRATION' | translate }}</th>
+                        <td>{{ company.legal?.register }}</td>
+                      </tr>
+                      <tr *ngIf="company.contact?.website">
+                        <th scope="row">{{ 'COMMON.WEBSITE' | translate }}</th>
+                        <td>{{ company.contact?.website }}</td>
+                      </tr>
+                      <tr *ngIf="company.contact?.email">
+                        <th scope="row">{{ 'COMMON.EMAIL' | translate }}</th>
+                        <td>{{ company.contact?.email }}</td>
+                      </tr>
+                      <tr *ngIf="company.contact?.phone?.number">
+                        <th scope="row">{{ 'MODULES.INVOICING.SHARED.CONTACT_NUMBER' | translate }}</th>
+                        <td>{{ company.contact?.phone?.number }}</td>
+                      </tr>
+                      <tr>
+                        <th scope="row">{{ 'COMMON.ADDRESS' | translate }}</th>
+                        <td>
+                          {{ company.address?.address ? company.address?.address + ', ' : '' }}
+                          {{ company.address?.city ? company.address?.city + ', ' : '' }}
+                          {{ company.address?.postCode ? company.address?.postCode + ', ' : '' }}
+                          {{ company.address?.country?.name }}
+                        </td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="card-body p-4">
+            <div fxLayout="column" fxLayoutAlign="space-between stretch" fxLayoutGap="1rem">
+              <div fxLayout="row" fxLayoutAlign="space-between center" fxLayoutGap="1rem">
+                <div fxFlex>
+                  <label for="invoicenoInput">{{ getLabel(pageId$ | async) }} No</label>
+                  <input readonly type="text" id="invoicenoInput" placeholder="{{'PLACEHOLDER.INVOICE_NO' | translate }}" formControlName="number"
+                    class="form-control bg-light border-0" />
+                </div>
+                <div fxFlex>
+                  <label for="date-field">{{ 'COMMON.DATE' | translate }}</label>
+                  <input readonly type="text" id="date-field" *ngIf="isAvoir$ | async" placeholder="{{'PLACEHOLDER.SELECT_DATE_TIME' | translate }}"
+                    class="form-control bg-light border-0"
+                    [value]="invoicingForm?.get('date').value | date: 'dd-MM-yyyy'">
+                  <input type="text" mwlFlatpickr id="date-field" data-time="true" formControlName="date"
+                    data-provider="flatpickr" [convertModelValue]="true" *ngIf="!(isAvoir$ | async)"
+                    placeholder="{{'PLACEHOLDER.SELECT_DATE_TIME' | translate }}" class="form-control bg-light border-0">
+                </div>
+                <div fxFlex>
+                  <label for="date-field">{{ 'MODULES.INVOICING.SHARED.PROJECT' | translate }}</label>
+                  <ng-select bindValue="id" [addTag]="true" appendTo="body" bindLabel="name" [clearable]="true"
+                    data-choices="true" [searchable]="true" [hideSelected]="true" [virtualScroll]="true"
+                    formControlName="project" [items]="projects$ | async" placeholder=" {{ 'MODULES.INVOICING.SHARED.SELECT_PROJECT' | translate }}"
+                    [typeahead]="projectsInput$" [readonly]="isAvoir$ | async" (scrollToEnd)="loadMoreProjects()"
+                    *ngIf="projects$ | async as projects">
+                    <ng-template ng-label-tmp let-item="item" let-clear="clear">
+                      <span class="ng-value-label" *ngIf="item?.id">{{item?.name}}</span>
+                      <span class="ng-value-icon right" (click)="clear(item)" aria-hidden="true">×</span>
+                    </ng-template>
+                    <ng-template ng-option-tmp let-item$="item$" let-item="item">
+                      <div class="d-flex align-items-center">
+                        <span class="flex-shrink-0">
+                          <div *ngIf="!item?.picture?.baseUrl || !item?.picture?.path"
+                            class="avatar-title me-3 h-8 w-8 bg-soft-info text-danger rounded-circle shadow">
+                            {{item.name?.charAt(0) || 'N'}}</div>
+                          <img class="avatar-xxs rounded-circle" *ngIf="item?.picture?.baseUrl && item?.picture?.path"
+                            [src]="item?.picture?.baseUrl + '/' + item?.picture?.path">
+                        </span>
+                        <span class="flex-grow-1 ms-2">
+                          {{item?.name}}
+                        </span>
+                      </div>
+                    </ng-template>
+                  </ng-select>
+                </div>
+              </div>
+              <ng-container formArrayName="details">
+                <div fxLayout="row" fxLayoutGap="1rem" [formGroupName]="i" fxLayoutAlign="space-between end"
+                  *ngFor="let detail of details.controls; let i = index;">
+                  <div fxFlex fxFill>
+                    <label for="date-field">{{ 'MODULES.INVOICING.PLACEHOLDER.KEY' | translate }}</label>
+                    <input type="text" data-time="true" placeholder="{{ 'MODULES.INVOICING.PLACEHOLDER.KEY' | translate }}" formControlName="key"
+                      data-provider="flatpickr" [readonly]="isAvoir$ | async" id="details-key-{{ i }}-field"
+                      class="form-control bg-light border-0">
+                  </div>
+                  <div fxFlex fxFill>
+                    <label for="date-field">{{ 'MODULES.INVOICING.PLACEHOLDER.VALUE' | translate }}</label>
+                    <input type="text" data-time="true" placeholder="{{ 'MODULES.INVOICING.PLACEHOLDER.VALUE' | translate }}" formControlName="value"
+                      data-provider="flatpickr" [readonly]="isAvoir$ | async" id="details-value-{{ i }}-field"
+                      class="form-control bg-light border-0">
+                  </div>
+                  <div fxFlex fxShrink="1" fxGrow="0">
+                    <button color="warn" mat-icon-button (click)="removeField(i)" aria-label="remove field"
+                      [disabled]="isAvoir$ | async">
+                      <i class="ri-delete-bin-6-line fs-4"></i>
+                    </button>
+                  </div>
+                </div>
+                <div fxLayout="row" fxLayoutAlign="end center" *ngIf="!(isAvoir$ | async)">
+                  <button type="button" fxLayout="row" (click)="addField()" fxLayoutAlign="center center"
+                    class="btn btn-sm btn-soft-info">
+                    <i class="ri-add-line me-1 align-bottom"></i>{{ 'MODULES.INVOICING.SHARED.ADD_FIELD' | translate }}
+                  </button>
+                </div>
+              </ng-container>
+            </div>
+          </div>
+          <div class="card-body p-4">
+            <div class="table-responsive" [class.mb-3]="isAvoir$ | async">
+              <table class="invoice-table table table-borderless table-nowrap mb-0">
+                <thead class="align-middle">
+                  <tr class="table-active">
+                    <th scope="col" class="text-center" [ngClass]="header.className"
+                      *ngFor="let header of tableHeaders">{{ header.label | translate }}</th>
+                  </tr>
+                </thead>
+                <tbody id="newlink" cdkDropList class="dndList" formArrayName="products"
+                  (cdkDropListDropped)="onDrop($event)">
+                  <tr cdkDrag [id]="i + 1" class="product" [formGroupName]="i"
+                    *ngFor="let productControl of products.controls; let i = index">
+                    <ng-container formGroupName="product"
+                      *ngIf="productControl.value?.kind === ProductKindEnum.PRODUCT">
+                      <td scope="row" class="product-id">
+                        <div fxLayout="row" fxLayoutAlign="start center">
+                          <div class="task-handle px-1 me-1 rounded" fxFlex fxShrink="2" fxGrow="0" cdkDragHandle>: :
+                          </div>
+                          <div fxFlex fxShrink="0" fxGrow="2" class="product-id-value">{{
+                            products.at(i)?.get('product.barcode')?.value || i + 1 }}</div>
+                        </div>
+                      </td>
+                      <td class="text-start product-name">
+                        <div class="mb-2">
+                          <div *ngIf="isAvoir$ | async">{{ products.at(i)?.get('product.label')?.value }}</div>
+                          <div class="input-group"
+                            *ngIf="!!products.at(i)?.get('product.article')?.value && !(isAvoir$ | async)">
+                            <input type="text" formControlName="label" class="form-control bg-light border-0">
+                            <input class="clear-input-button" type="reset" value="&#x2715;" (click)="resetProduct(i)"
+                              *ngIf="!(isAvoir$ | async)">
+                          </div>
+                          <ng-select bindValue="id" appendTo="body" [clearable]="true" [multiple]="false"
+                            bindlabel="barcode" data-choices="true" [searchable]="true" [hideSelected]="true"
+                            formControlName="article" [items]="barcodes$ | async" [typeahead]="barcodesInput$"
+                            placeholder=" {{ 'MODULES.INVOICING.SHARED.SELECT_PRODUCT' | translate }}" data-choices-removeItem="true"
+                            (scrollToEnd)="loadMoreBarcodes()" (change)="onBarcodeChange(i, $event)"
+                            *ngIf="!products.at(i)?.get('product.article')?.value && !(isAvoir$ | async)">
+                            <ng-template ng-label-tmp let-item="item" let-clear="clear">
+                              <div class="d-flex align-items-center" *ngIf="item?.id">
+                                <span class="flex-shrink-0">
+                                  <div *ngIf="!item?.media?.pictures?.length"
+                                    class="avatar-title me-3 h-8 w-8 bg-soft-info text-danger rounded-circle shadow">
+                                    {{item.name?.charAt(0) || 'N'}}</div>
+                                  <img *ngIf="item?.media?.pictures.length"
+                                    [src]="item?.media?.pictures[0]?.baseUrl + '/' + item?.media?.pictures[0]?.path"
+                                    alt="" class="avatar-xxs rounded-circle" />
+                                </span>
+                                <div class="flex-grow-1 ms-2" fxLayout="row" fxLayoutAlign="space-between center">
+                                  <span>{{ item?.name }}</span>
+                                  <span>{{ item?.price | currency:'DT':'symbol':'1.3-3' }}</span>
+                                </div>
+                              </div>
+                              <span class="ng-value-icon right" (click)="clear(item)" aria-hidden="true">×</span>
+                            </ng-template>
+                            <ng-template ng-option-tmp let-item$="item$" let-item="item">
+                              <div class="d-flex align-items-center">
+                                <span class="flex-shrink-0">
+                                  <div *ngIf="!item?.media?.pictures?.length"
+                                    class="avatar-title me-3 h-8 w-8 bg-soft-info text-danger rounded-circle shadow">
+                                    {{item.name?.charAt(0) || 'N'}}</div>
+                                  <img *ngIf="item?.media?.pictures.length"
+                                    [src]="item?.media?.pictures[0]?.baseUrl + '/' + item?.media?.pictures[0]?.path"
+                                    alt="" class="avatar-xxs rounded-circle" />
+                                </span>
+                                <div class="flex-grow-1 ms-2" fxLayout="row" fxLayoutAlign="space-between center">
+                                  <span>{{ item?.name }}</span>
+                                  <div fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="1rem">
+                                    <span>{{ item?.price | currency:'DT':'symbol':'1.3-3' }}</span>
+                                    <div fxLayout="column" class="stock-status-wrapper"
+                                      fxLayoutAlign="space-between center"
+                                      [class.text-success]="(item?.stock?.currentStock || 0) > 0"
+                                      [class.text-danger]="(item?.stock?.currentStock || 0) <= 0">
+                                      <span>{{ item?.stock?.currentStock || 0 }}</span>
+                                      <span>{{ (item?.stock?.currentStock || 0) > 0 ? 'In' : 'Out Of'}} Stock</span>
+                                    </div>
+                                  </div>
+                                </div>
+                              </div>
+                            </ng-template>
+                          </ng-select>
+                        </div>
+                        <div *ngIf="isAvoir$ | async">{{ products.at(i)?.get('product.description')?.value }}</div>
+                        <textarea rows="2" id="productDetails" formControlName="description"
+                          placeholder="{{ 'MODULES.INVOICING.SHARED.PRODUCT_DETAILS' | translate }}" [readonly]="isAvoir$ | async"
+                          class="form-control bg-light border-0 product-description"
+                          *ngIf="productControl.get('product.descriptionVisible')?.value && !(isAvoir$ | async)"></textarea>
+                        <div fxLayout="row"
+                          [fxLayoutAlign]="!(isAvoir$ | async) ? 'space-between center' : 'end center'">
+                          <div class="form-check" [class.mt-1]="productControl.get('product.descriptionVisible')?.value"
+                            *ngIf="!(isAvoir$ | async)">
+                            <input type="checkbox" [id]="'flexCheckDefault' + i" class="form-check-input me-1"
+                              formControlName="descriptionVisible">
+                            <label class="form-check-label" [for]="'flexCheckDefault' + i">{{ 'MODULES.INVOICING.SHARED.SHOW_DESCRIPTION' | translate }}</label>
+                          </div>
+                          <div class="form-check" [class.mt-1]="productControl.get('product.descriptionVisible')?.value"
+                            *ngIf="productControl.get('product.rent.start').value && productControl.get('product.rent.end').value || !(isAvoir$ | async)">
+                            <button type="button" fxLayout="row" class="btn btn-sm" fxLayoutAlign="center center"
+                              (click)="changeRentStatus(rentContent, i)"
+                              [class.btn-soft-info]="!productControl.get('product.rent.start').value && !productControl.get('product.rent.end').value"
+                              [class.btn-soft-success]="productControl.get('product.rent.start').value && productControl.get('product.rent.end').value">
+                              <i class="ri-add-line me-1 align-bottom"
+                                *ngIf="!productControl.get('product.rent.start').value && !productControl.get('product.rent.end').value && !(isAvoir$ | async)"></i>
+                              <i class="ri-check-line me-1 align-bottom"
+                                *ngIf="productControl.get('product.rent.start').value && productControl.get('product.rent.end').value && !(isAvoir$ | async)"></i>
+                              <i class="ri-eye-fill me-1 align-bottom"
+                                *ngIf="productControl.get('product.rent.start').value && productControl.get('product.rent.end').value && isAvoir$ | async"></i>
+                              {{ ((isAvoir$ | async) ? 'Show' : productControl.get('product.rent.start').value &&
+                              productControl.get('product.rent.end').value ? 'COMMON.EDIT' : 'COMMON.ADD') | translate }} {{ 'MODULES.INVOICING.SHARED.RENT' | translate }}
+                            </button>
+                          </div>
+                        </div>
+                      </td>
+                      <td class="product-quantity">
+                        <input type="number" formControlName="quantity" (input)="recalculateProductTotal(i)"
+                          class="form-control bg-light border-0">
+                      </td>
+                      <td class="product-price">
+                        <div *ngIf="isAvoir$ | async">
+                          {{ +products.at(i)?.get('product.price')?.value | currency:'DT':'symbol':'1.3-3' }}
+                        </div>
+                        <div class="input-group" ngbDropdown container="body" *ngIf="!(isAvoir$ | async)">
+                          <input type="text" mask="0*.000" thousandSeparator="," [showMaskTyped]="true"
+                            formControlName="price" placeHolderCharacter="0" [readonly]="isAvoir$ | async"
+                            (input)="recalculateProductTotal(i)" aria-describedby="product-price-addon"
+                            class="form-control bg-light border-0">
+                          <button type="button" ngbDropdownToggle id="product-price-addon"
+                            class="btn remove-caret price-selection-trigger"
+                            [disabled]="!productControl.get('product.priceList')?.value?.length"
+                            [class.btn-dark]="!productControl.get('product.priceList')?.value?.length"
+                            [class.btn-light]="productControl.get('product.priceList')?.value?.length">
+                            <i class="las la-sliders-h"></i>
+                          </button>
+                          <ul ngbDropdownMenu aria-labelledby="product-price-addon">
+                            <li>
+                              <a *ngFor="let price of productControl.get('product.priceList')?.value"
+                                class="dropdown-item cursor-pointer" (click)="updatePrice(price, i)">
+                                {{ price.price.label }} {{ price.value | currency:'DT':'symbol':'1.3-3' }}
+                              </a>
+                            </li>
+                          </ul>
+                        </div>
+                      </td>
+                      <td class="text-end product-discount">
+                        <div class="text-center" *ngIf="isAvoir$ | async">
+                          {{ products.at(i)?.get('product.discount')?.value.amount }} {{
+                          products.at(i)?.get('product.discount')?.value.discountType === 'PERCENTAGE' ? '%' : '$' }}
+                        </div>
+                        <div class="input-group" ngbDropdown formGroupName="discount" *ngIf="!(isAvoir$ | async)">
+                          <input type="number" class="form-control" aria-label="discount" formControlName="amount"
+                            id="product-discount-input" placeholder="{{'PLACEHOLDER.ENTER_DISCOUNT' | translate }}"
+                            (input)="recalculateProductTotal(i)" aria-describedby="product-discount-addon">
+                          <button ngbDropdownToggle class="btn btn-light" type="button" id="product-discount-addon">
+                            {{ products.at(i)?.get('product.discount')?.value.discountType === 'PERCENTAGE' ? '%' : '$'
+                            }}
+                          </button>
+                          <ul ngbDropdownMenu class="discount-dropdown" aria-labelledby="product-discount-addon">
+                            <li><a class="dropdown-item"
+                                (click)="products.at(i)?.get('product.discount.discountType')?.patchValue('AMOUNT')">$</a>
+                            </li>
+                            <li><a class="dropdown-item"
+                                (click)="products.at(i)?.get('product.discount.discountType')?.patchValue('PERCENTAGE')">%</a>
+                            </li>
+                          </ul>
+                        </div>
+                      </td>
+                      <td class="product-taxes">
+                        <div fxLayout="row wrap" fxLayoutAlign="start center" fxLayoutGap="0.5rem"
+                          *ngIf="isAvoir$ | async">
+                          <span class="mb-2 badge text-bg-secondary" *ngFor="let tax of getTaxesFromIndex(i) | async">{{
+                            tax.label }}</span>
+                        </div>
+                        <ng-select bindValue="id" appendTo="body" [multiple]="true" bindlabel="label" [clearable]="true"
+                          data-choices="true" [searchable]="true" [hideSelected]="true" formControlName="taxes"
+                          placeholder=" {{ 'MODULES.INVOICING.SHARED.SELECT_TAXES' | translate }}" *ngIf="!(isAvoir$ | async)" [items]="allTaxes$ | async"
+                          data-choices-removeItem="true" (change)="recalculateProductTotal(i)">
+                        </ng-select>
+                      </td>
+                      <td class="text-end total-product-price">
+                        {{ +products.at(i)?.get('product.total')?.value | currency:'DT':'symbol':'1.3-3' }}
+                      </td>
+                      <td class="product-removal">
+                        <div fxLayout="row" fxLayoutAlign="end center">
+                          <button mat-icon-button color="warn" aria-label="Delete product" (click)="removeItem(i)">
+                            <i class="ri-delete-bin-line delete-icon"></i>
+                          </button>
+                        </div>
+                      </td>
+                    </ng-container>
+                    <ng-container
+                      *ngIf="productControl.value?.kind === ProductKindEnum.TEXT || productControl.value?.kind === ProductKindEnum.SECTION">
+                      <td scope="row" class="product-id">
+                        <div fxLayout="row" fxLayoutAlign="start center">
+                          <div class="task-handle px-1 me-1 rounded" fxFlex fxShrink="2" fxGrow="0">: :</div>
+                        </div>
+                      </td>
+                      <td colspan="6">
+                        <input type="text" formControlName="text" [readonly]="isAvoir$ | async"
+                          class="form-control bg-light border-0"
+                          *ngIf="productControl.value?.kind === ProductKindEnum.SECTION">
+                        <textarea rows="2" id="productDetails" formControlName="text" [readonly]="isAvoir$ | async"
+                          placeholder="{{ 'MODULES.INVOICING.SHARED.PRODUCT_DETAILS' | translate }}" class="form-control bg-light border-0 product-description"
+                          *ngIf="productControl.value?.kind === ProductKindEnum.TEXT"></textarea>
+                      </td>
+                      <td class="product-removal">
+                        <div fxLayout="row" fxLayoutAlign="end center">
+                          <button mat-icon-button color="warn" aria-label="Delete product" (click)="removeItem(i)">
+                            <i class="ri-delete-bin-line delete-icon"></i>
+                          </button>
+                        </div>
+                      </td>
+                    </ng-container>
+                    <ng-container *ngIf="productControl.value?.kind === ProductKindEnum.SUBTOTAL">
+                      <td scope="row" class="product-id">
+                        <div fxLayout="row" fxLayoutAlign="start center">
+                          <div class="task-handle px-1 me-1 rounded" fxFlex fxShrink="2" fxGrow="0">: :</div>
+                        </div>
+                      </td>
+                      <td colspan="6">
+                        <div fxLayout="row" fxLayoutAlign="end center">
+                          <div fxLayout="column" fxLayoutAlign="start start">
+                            <div class="title"> {{ 'MODULES.INVOICING.SHARED.SUBTOTAL' | translate }}</div>
+                            <div class="body" *ngIf="!subTotalLoading">
+                              {{ productControl.value.value | currency:'DT':'symbol':'1.3-3' }}
+                            </div>
+                            <div role="status" class="spinner-border text-dark input-spinner" *ngIf="subTotalLoading">
+                              <span class="sr-only"> {{ 'COMMON.LOADING' | translate }}</span>
+                            </div>
+                          </div>
+                        </div>
+                      </td>
+                      <td class="product-removal">
+                        <div fxLayout="row" fxLayoutAlign="end center">
+                          <button mat-icon-button color="warn" aria-label="Delete product" (click)="removeItem(i)">
+                            <i class="ri-delete-bin-line delete-icon"></i>
+                          </button>
+                        </div>
+                      </td>
+                    </ng-container>
+                    <ng-container *ngIf="productControl.value?.kind === ProductKindEnum.SEPARATOR">
+                      <td scope="row" class="product-id">
+                        <div fxLayout="row" fxLayoutAlign="start center">
+                          <div class="task-handle px-1 me-1 rounded" fxFlex fxShrink="2" fxGrow="0">: :</div>
+                        </div>
+                      </td>
+                      <td colspan="6">
+                        <hr class="separator">
+                      </td>
+                      <td class="product-removal">
+                        <div fxLayout="row" fxLayoutAlign="end center">
+                          <button mat-icon-button color="warn" aria-label="Delete product" (click)="removeItem(i)">
+                            <i class="ri-delete-bin-line delete-icon"></i>
+                          </button>
+                        </div>
+                      </td>
+                    </ng-container>
+                  </tr>
+                  <tr *ngIf="!(isAvoir$ | async)">
+                    <td colspan="8">
+                      <div class="btn-group mt-2" role="group" aria-label="Add item" fxLayout="row"
+                        fxLayoutAlign="center center">
+                        <button type="button" class="btn btn-light" (click)="addItem(ProductKindEnum.PRODUCT)"> {{ 'MODULES.INVOICING.SHARED.ADD_SUBTOTAL' | translate }}</button>
+                        <button type="button" class="btn btn-light" (click)="addItem(ProductKindEnum.TEXT)"> {{ 'MODULES.INVOICING.SHARED.ADD_TEXT' | translate }}</button>
+                        <button type="button" class="btn btn-light" (click)="addItem(ProductKindEnum.SECTION)"> {{ 'MODULES.INVOICING.SHARED.ADD_SECTION' | translate }}</button>
+                        <button type="button" class="btn btn-light" (click)="addItem(ProductKindEnum.SEPARATOR)"> {{ 'MODULES.INVOICING.SHARED.ADD_SEPARATOR' | translate }}</button>
+                        <button type="button" class="btn btn-light" (click)="addItem(ProductKindEnum.SUBTOTAL)"> {{ 'MODULES.INVOICING.SHARED.ADD_PRODUCT' | translate }}</button>
+                      </div>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+            <div fxLayout="row" fxLayoutAlign="end center">
+              <table class="table table-borderless table-sm table-nowrap align-middle mb-0 w-25">
+                <tbody>
+                  <tr formGroupName="totalPrice">
+                    <th scope="row"> {{ 'MODULES.INVOICING.SHARED.TOTAL_HT' | translate }} </th>
+                    <td>
+                      <div class="input-group">
+                        <input readonly type="text" id="cart-subtotal" placeholder="$0.00" formControlName="net"
+                          class="form-control bg-light border-0">
+                        <div class="input-group-text" *ngIf="totalLoading">
+                          <div class="spinner-border text-dark input-spinner" role="status"><span
+                              class="sr-only"> {{ 'COMMON.LOADING' | translate }}</span></div>
+                        </div>
+                        <span class="input-group-text">DT</span>
+                      </div>
+                    </td>
+                  </tr>
+                  <tr>
+                    <th scope="row"> {{ 'MODULES.INVOICING.SHARED.TOTAL_TAXES' | translate }} </th>
+                    <td>
+                      <div class="input-group">
+                        <input readonly type="text" id="cart-tax" placeholder="$0.00" formControlName="totalTax"
+                          class="form-control bg-light border-0">
+                        <div class="input-group-text" *ngIf="totalLoading">
+                          <div class="spinner-border text-dark input-spinner" role="status"><span
+                              class="sr-only"> {{ 'COMMON.LOADING' | translate }}</span></div>
+                        </div>
+                        <span class="input-group-text">DT</span>
+                      </div>
+                    </td>
+                  </tr>
+                  <tr formGroupName="totalPrice">
+                    <th scope="row"> {{ 'MODULES.INVOICING.SHARED.TOTAL_TTC' | translate }} </th>
+                    <td>
+                      <div class="input-group">
+                        <input readonly type="text" id="cart-subtotal" placeholder="$0.00" formControlName="gross"
+                          class="form-control bg-light border-0">
+                        <div class="input-group-text" *ngIf="totalLoading">
+                          <div class="spinner-border text-dark input-spinner" role="status"><span
+                              class="sr-only"> {{ 'COMMON.LOADING' | translate }}</span></div>
+                        </div>
+                        <span class="input-group-text">DT</span>
+                      </div>
+                    </td>
+                  </tr>
+                  <!-- <tr *ngIf="hasDiscount">
+                  <th scope="row">{{ 'MODULES.ECOMMERCE.MAIN.DISCOUNT' | translate }}: </th>
+                  <td>
+                    <input type="text" class="form-control bg-light border-0" id="cart-discount" placeholder="$0.00">
+                  </td>
+                </tr> -->
+                  <ng-container *ngIf="hasTaxes">
+                    <tr *ngFor="let tax of globalSelectedTaxes; let i = index">
+                      <th scope="row">{{ tax.label }}</th>
+                      <td>
+                        <div class="input-group">
+                          <input readonly type="text" class="form-control bg-light border-0"
+                            [value]="tax.taxValue.toFixed(3)">
+                          <span class="input-group-text">DT</span>
+                          <span class="input-group-text cursor-pointer" *ngIf="!(isAvoir$ | async)"
+                            (click)="removeTax(i, tax)">&#x2715;</span>
+                        </div>
+                      </td>
+                    </tr>
+                  </ng-container>
+                  <tr *ngIf="hasTaxes && (globalTaxes$ | async).length && !(isAvoir$ | async)">
+                    <th scope="row"> {{ 'MODULES.INVOICING.SHARED.TAXES' | translate }}</th>
+                    <td>
+                      <ng-select #globalTax appendTo="body" bindlabel="label" [multiple]="false" [clearable]="true"
+                        [searchable]="true" [hideSelected]="true" placeholder=" {{ 'MODULES.INVOICING.SHARED.SELECT_TAXES' | translate }}"
+                        [items]="globalTaxes$ | async" (change)="addTax($event, globalTax)">
+                      </ng-select>
+                    </td>
+                  </tr>
+                  <!-- <tr *ngIf="!hasTaxes || !hasDiscount"> -->
+                  <tr *ngIf="!hasTaxes">
+                    <th></th>
+                    <td>
+                      <div fxLayout="row" fxLayoutAlign="end center">
+                        <div class="w-100" fxLayout="row" fxLayoutAlign="end center">
+                          <button type="button" fxLayout="row" *ngIf="!hasTaxes" aria-label="add Taxes"
+                            (click)="addGlobalTaxes()" fxLayoutAlign="center center" class="btn btn-sm btn-soft-info">
+                            <i class="ri-add-line me-1 align-bottom"></i> {{ 'MODULES.INVOICING.SHARED.ADD_TAXES' | translate }}
+                          </button>
+                        </div>
+                        <!-- <button mat-icon-button aria-label="add discount" *ngIf="!hasDiscount" (click)="addGlobalDiscount()">
+                        <i class="ri-percent-fill"></i>
+                      </button> -->
+                      </div>
+                    </td>
+                  </tr>
+                  <tr class="border-top border-top-dashed">
+                    <th scope="row"> {{ 'MODULES.INVOICING.SHARED.NET_TO_PAY' | translate }}</th>
+                    <td>
+                      <div class="input-group">
+                        <input readonly type="text" id="cart-total" placeholder="$0.00" formControlName="toPay"
+                          class="form-control bg-light border-0">
+                        <div class="input-group-text" *ngIf="toPayLoading">
+                          <div class="spinner-border text-dark input-spinner" role="status"><span
+                              class="sr-only"> {{ 'COMMON.LOADING' | translate }}</span></div>
+                        </div>
+                        <span class="input-group-text">DT</span>
+                      </div>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+            <div class="row mt-3">
+              <div class="col-lg-4">
+                <div class="mb-2">
+                  <div fxFlexAlign="stretch" formGroupName="customer">
+                    <div fxLayout="row" fxLayoutAlign="space-between center">
+                      <label for="choices-payment-type" class="form-label text-muted text-uppercase fw-semibold"> {{ 'MODULES.INVOICING.SHARED.BANK_DETAILS' | translate }}</label>
+                      <button mat-icon-button (click)="resetBank()" aria-label="change customer"
+                        *ngIf="!!(selectedBank$ | async) && (company$ | async).banks.length > 1 && !(isAvoir$ | async)">
+                        <i class="ri-pencil-line fs-4"></i>
+                      </button>
+                    </div>
+                    <div class="mb-2" *ngIf="!(selectedBank$ | async)">
+                      <ng-select [addTag]="true" appendTo="body" [clearable]="true" bindValue="bank.id"
+                        data-choices="true" [searchable]="true" bindLabel="bank.name" [hideSelected]="true"
+                        [virtualScroll]="true" placeholder=" {{ 'MODULES.INVOICING.SHARED.SELECT_BANK' | translate }}" (change)="selectBank($event)"
+                        [items]="(company$ | async).banks" *ngIf="company$ | async as company">
+                        <ng-template ng-label-tmp let-item="item" let-clear="clear">
+                          <span class="ng-value-label">
+                            <i *ngIf="!item?.media?.pictures?.length"
+                              class="icon mdi mdi-garage nav-icon company-default-icon"></i>
+                            <img *ngIf="item?.media?.pictures?.length" class="avatar-xxs rounded-circle"
+                              [src]="item?.media?.pictures[0]?.baseUrl + '/' + item?.media?.pictures[0]?.path"
+                              width="20px" height="20px">
+                            {{item?.bank?.name}}
+                          </span>
+                          <span class="ng-value-icon right" (click)="clear(item)" aria-hidden="true">×</span>
+                        </ng-template>
+                        <ng-template ng-option-tmp let-item$="item$" let-item="item">
+                          <div class="d-flex align-items-center">
+                            <span class="flex-shrink-0">
+                              <i *ngIf="!item?.media?.pictures?.length"
+                                class="icon mdi mdi-garage nav-icon company-default-icon"></i>
+                              <img *ngIf="item?.media?.pictures?.length"
+                                [src]="item?.media?.pictures[0]?.baseUrl + '/' + item?.media?.pictures[0]?.path" alt=""
+                                class="avatar-xxs rounded-circle" />
+                            </span>
+                            <span class="flex-grow-1 ms-2">
+                              {{item?.bank?.name}}
+                            </span>
+                          </div>
+                        </ng-template>
+                      </ng-select>
+                    </div>
+                    <div fxLayout="column" fxLayoutAlign="space-between start"
+                      *ngIf="selectedBank$ | async as selectedBank">
+                      <table
+                        class="table table-borderless table-sm table-nowrap align-middle mb-0 text-muted fw-normal">
+                        <tbody>
+                          <tr>
+                            <th scope="row"> {{ 'MODULES.INVOICING.SHARED.BANK_NAME' | translate }}</th>
+                            <td style="width:150px;" colspan="2">{{ selectedBank.bank.name }}</td>
+                          </tr>
+                          <tr>
+                            <th scope="row"> {{ 'MODULES.INVOICING.SHARED.IBAN' | translate }}</th>
+                            <td colspan="2">{{ selectedBank.iban }}</td>
+                          </tr>
+                          <tr>
+                            <th scope="row"> {{ 'MODULES.INVOICING.SHARED.SWIFT' | translate }}</th>
+                            <td colspan="2">{{ selectedBank.bank.bic }}</td>
+                          </tr>
+                        </tbody>
+                      </table>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="mt-4">
+              <label for="exampleFormControlTextarea1"
+                class="form-label text-muted text-uppercase fw-semibold"> {{ 'MODULES.INVOICING.SHARED.NOTES' | translate }}</label>
+              <textarea rows="2" placeholder=" {{ 'MODULES.INVOICING.SHARED.NOTES' | translate }}" formControlName="note" id="exampleFormControlTextarea1"
+                class="form-control alert alert-info" [readonly]="isAvoir$ | async"></textarea>
+            </div>
+            <div class="hstack gap-2 justify-content-end d-print-none mt-4">
+              <button type="button" class="btn btn-success" (click)="save()" [disabled]="isQuotationFormButtonDisabled">
+                <i class="ri-printer-line align-bottom me-1"></i> {{ 'COMMON.SAVE' | translate }}
+              </button>
+              <button class="btn btn-primary" (click)="downloadDocument()" [disabled]="isQuotationFormButtonDisabled"
+                *ngIf="(item$ | async) && !(isAvoir$ | async)">
+                <i class="ri-download-2-line align-bottom me-1"></i> {{ 'COMMON.DOWNLOAD' | translate }}
+              </button>
+              <button class="btn btn-danger" (click)="sendDocumentToEmail()" [disabled]="isQuotationFormButtonDisabled"
+                *ngIf="(item$ | async) && !(isAvoir$ | async)">
+                <i class="ri-send-plane-fill align-bottom me-1"></i> {{ 'COMMON.SEND' | translate }}
+              </button>
+            </div>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+  <ng-template #rentContent role="document" let-modal>
+    <div class="modal-header bg-soft-info p-3">
+      <h5 class="modal-title" id="exampleModalLabel">{{ 'COMMON.RENT_DETAILS' | translate }}</h5>
+      <button type="button" id="close-modal" class="btn-close" aria-label="Close" data-bs-dismiss="modal"
+        (click)="modal.dismiss('Cross click')">
+      </button>
+    </div>
+    <form [formGroup]="rentForm">
+      <div class="modal-body">
+        <div fxLayout="column" fxLayoutAlign="center stretch" fxLayoutGap="1rem">
+          <div fxLayout="row" fxLayoutAlign="space-between center" fxLayoutGap="1rem">
+            <input type="text" mode="range" mwlFlatpickr id="date-field" data-time="true" formControlName="range"
+              data-provider="flatpickr" [convertModelValue]="true" placeholder="{{ 'MODULES.INVOICING.SHARED.SELECT_DATE_TIME' | translate }}"
+              class="form-control bg-light border-0">
+          </div>
+          <div fxLayout="row" fxLayoutAlign="space-between center" fxLayoutGap="1rem">
+            <div fxFlex>
+              <label for="locationInput" class="form-label"> {{ 'COMMON.LOCATION' | translate }}</label>
+              <input formControlName="location" type="text" class="form-control" id="locationInput"
+                placeholder=" {{ 'MODULES.INVOICING.SHARED.ENTER_LOCATION' | translate }}">
+            </div>
+            <div fxFlex>
+              <label for="descriptionInput" class="form-label"> {{ 'COMMON.DESCRIPTION' | translate }}</label>
+              <input formControlName="description" type="text" class="form-control" id="descriptionInput"
+                placeholder=" {{ 'MODULES.INVOICING.SHARED.ENTER_DESCRIPTION' | translate }}">
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <div class="hstack gap-2 justify-content-end">
+          <button type="button" class="btn btn-light" data-bs-dismiss="modal" (click)="modal.dismiss()">
+            {{ 'COMMON.CLOSE' | translate }}
+          </button>
+          <button type="button" class="btn btn-light" (click)="resetRent()" data-bs-dismiss="modal">
+            {{ 'MODULES.INVOICING.SHARED.RESET_RENT' | translate }}
+          </button>
+          <button id="add-btn" type="button" (click)="saveRent()" class="btn btn-success"
+            [disabled]="isRentFormButtonDisabled">
+            {{ 'MODULES.INVOICING.SHARED.ADD_RENT_DETAILS' | translate }}
+          </button>
+        </div>
+      </div>
+    </form>
+  </ng-template>
+</ng-container>
+<div *ngIf="navigating$ | async" class="vh-100 py-4 text-center" fxLayout="column" fxLayoutAlign="center center"
+  fxLayoutGap="1rem">
+  <div>
+    <lord-icon trigger="loop" style="width:72px;height:72px" [colors]="'primary:' + primaryColor + ',secondary:' + secondaryColor"
+      src="https://cdn.lordicon.com/msoeawqm.json">
+    </lord-icon>
+  </div>
+  <div class="mt-4">
+    <h5> {{ 'COMMON.LOADING' | translate }}</h5>
+  </div>
+</div>

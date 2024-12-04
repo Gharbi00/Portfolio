@@ -1,0 +1,1274 @@
+<ng-container *ngIf="!(navigating$ | async)">
+
+  <div class="position-relative mx-n4 mt-n4">
+    <div class="profile-wid-bg profile-setting-img">
+      <img src="assets/images/profile-bg.jpg" class="profile-wid-img" alt="">
+      <div class="overlay-content">
+        <div class="text-end p-3">
+          <div class="p-0 ms-auto rounded-circle profile-photo-edit">
+            <input id="profile-foreground-img-file-input" type="file" class="profile-foreground-img-file-input">
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <form [formGroup]="companyForm" *ngIf="companyForm && settings">
+    <div class="row">
+      <div class="col-xxl-3">
+        <div class="card mt-n5">
+          <div class="card-body p-4">
+            <div class="text-center">
+              <div (click)="upload()" class="profile-user position-relative d-inline-block mx-auto mb-4">
+                <img *ngIf="pictures?.length" [src]="pictures.value[0].baseUrl + '/' + pictures.value[0].path" class="rounded-circle avatar-xl img-thumbnail user-profile-image shadow"
+                  alt="user-profile-image">
+                <img *ngIf="!pictures?.length" src="assets/images/companies/img-2.png" class="rounded-circle avatar-xl img-thumbnail user-profile-image shadow" alt="user-profile-image">
+                <div class="avatar-xs p-0 rounded-circle profile-photo-edit">
+                  <label for="profile-img-file-input" class="profile-photo-edit avatar-xs">
+                    <span class="avatar-title rounded-circle bg-light text-body shadow">
+                      <i class="ri-camera-fill"></i>
+                    </span>
+                  </label>
+                </div>
+              </div>
+              <h5 class="fs-16 mb-1">{{company.name}}</h5>
+              <p class="text-muted mb-0">{{company.description}}</p>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="col-xxl-9">
+        <div class="card mt-xxl-n5">
+          <div class="card-header">
+            <ul ngbNav #customNav="ngbNav" [activeId]="1" class="nav nav-tabs-custom rounded card-header-tabs border-bottom-0" role="tablist">
+              <li [ngbNavItem]="1" class="nav-item">
+                <a ngbNavLink class="nav-link" data-bs-toggle="tab" role="tab">
+                  <i class="fas fa-home"></i>
+                  {{ 'MODULES.SYSTEM.SALES' | translate }}
+                </a>
+                <ng-template ngbNavContent>
+                  <form [formGroup]="settingsForm">
+                    <ng-container formGroupName="sale">
+                      <div class="d-flex align-items-center">
+                        <h5 class="card-title mb-0 flex-grow-1"> {{ 'MODULES.SYSTEM.QUOTATION' | translate }}</h5>
+                      </div>
+                      <br>
+                      <ng-container formGroupName="quotation">
+                        <div class="row">
+                          <div class="mb-3 row g-2 gap-2">
+                            <label for="firstnameInput" class="form-label"> {{ 'MODULES.SYSTEM.REFERENCE' | translate }}</label>
+                            <div *ngFor="let item of DocumentReferences" class="align-content-center border border-dashed col-5 d-flex p-2 rounded">
+                              <div class="ms-3 d-flex align-items-center">
+                                <div class="form-check">
+                                  <input [value]="item" class="form-check-input" type="radio" id="checkAll" value="option" formControlName="reference">
+                                </div>
+                                <div class="ms-2">
+                                  <h6 class="mb-1"><a href="javascript:void(0);" class="text-body">
+                                      {{
+                                      item === ('MODULES.SYSTEM.WITH_PREFIX' |translate) ? 'With prefix':
+                                      item === ('MODULES.SYSTEM.WITH_PREFIX_AND_DATE'  |translate)? 'With prefix and date':
+                                      item === ('MODULES.SYSTEM.WITH_DATE'  |translate)? 'With date':
+                                      item === ('MODULES.SYSTEM.WITH_DATE_WITHOUT_HYPHEN'  |translate) ? 'With date without hypen':
+                                      'Without prefix'
+                                      }}
+                                        
+                                    </a>
+                                  </h6>
+                                  <div>
+                                    <small class="text-muted">
+                                      {{
+                                      item === 'WITH_PREFIX' ? 'FAC-00000X':
+                                      item === 'WITH_PREFIX_AND_DATE' ? 'FAC-2023-00000X':
+                                      item === 'WITH_DATE' ? '2023-00000X':
+                                      item === 'WITH_DATE_WITHOUT_HYPHEN' ? '202300000X':
+                                      '00000X'
+                                      }}
+                                    </small>
+                                  </div>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                          <div class="mb-3">
+                            <label for="lastnameInput" class="form-label"> {{ 'MODULES.SYSTEM.LABEL' | translate }}</label>
+                            <input type="text" class="form-control" id="lastnameInput" placeholder=" {{ 'MODULES.SYSTEM.ENTER_YOUR_LABEL' | translate }}" formControlName="label">
+                          </div>
+                          <div class="col-lg-6">
+                            <div class="mb-3">
+                              <label for="phonenumberInput" class="form-label"> {{ 'MODULES.SYSTEM.PREFIX' | translate }}</label>
+                              <input type="text" class="form-control" id="phonenumberInput" placeholder=" {{ 'MODULES.SYSTEM.ENTER_PREFIX' | translate }}" formControlName="prefix">
+                            </div>
+                          </div>
+                          <ng-container formGroupName="validity">
+                            <div class="col-lg-6">
+                              <div class="mb-3">
+                                <label for="emailInput" class="form-label"> {{ 'MODULES.SYSTEM.VALIDITY_PERIOD' | translate }}</label>
+                                <input formControlName="period" type="email" class="form-control" id="emailInput" placeholder=" {{ 'MODULES.SYSTEM.ENTER_VALIDITY_PERIOD' | translate }}">
+                              </div>
+                            </div>
+                            <div class="col-lg-6">
+                              <div class="mb-3">
+                                <label for="designationInput" class="form-label"> {{ 'MODULES.SYSTEM.VALIDITY_CYCLE' | translate }}</label>
+                                <input type="text" class="form-control" id="designationInput" placeholder=" {{ 'MODULES.SYSTEM.VALIDITY_CYCLE' | translate }}" formControlName="cycle">
+                              </div>
+                            </div>
+                          </ng-container>
+                          <div class="col-lg-6">
+                            <div class="mb-3">
+                              <label for="websiteInput1" class="form-label"> {{ 'MODULES.SYSTEM.COLOR' | translate }}</label>
+                              <input formControlName="color" type="text" class="form-control" id="websiteInput1" placeholder=" {{ 'MODULES.SYSTEM.COLOR' | translate }}" />
+                            </div>
+                          </div>
+                          <div class="col-lg-12">
+                            <div class="mb-3 pb-2">
+                              <label for="exampleFormControlTextarea" class="form-label"  >{{ 'MODULES.SYSTEM.NOTE' | translate }}</label>
+                              <textarea formControlName="note" class="form-control" id="exampleFormControlTextarea" placeholder=" {{ 'MODULES.SYSTEM.ENTER_YOUR_NOTE' | translate }}" rows="3"></textarea>
+                            </div>
+                          </div>
+                          <div class="col-lg-12">
+                            <div class="hstack gap-2 justify-content-end">
+                              <button type="button" [disabled]="isSettingsButtonDisabled || isQuotationButtonDisabled || settingsForm.invalid" (click)="updateCompanySales('quotation')"
+                                class="btn btn-primary">{{ 'COMMON.UPDATE' | translate }}</button>
+                            </div>
+                          </div>
+                        </div>
+                      </ng-container>
+                      <div class="d-flex align-items-center">
+                        <h5 class="card-title mb-0 flex-grow-1"> {{ 'MODULES.SYSTEM.ORDER' | translate }}</h5>
+                      </div>
+                      <br>
+                      <ng-container formGroupName="order">
+                        <div class="row">
+                          <div class="mb-3 row g-2 gap-2">
+                            <label for="firstnameInput" class="form-label"> {{ 'MODULES.SYSTEM.REFERENCE' | translate }}</label>
+                            <div *ngFor="let item of DocumentReferences" class="align-content-center border border-dashed col-5 d-flex p-2 rounded">
+                              <div class="ms-3 d-flex align-items-center">
+                                <div class="form-check">
+                                  <input [value]="item" class="form-check-input" type="radio" id="checkAll" value="option" formControlName="reference">
+                                </div>
+                                <div class="ms-2">
+                                  <h6 class="mb-1"><a href="javascript:void(0);" class="text-body">
+                                    {{
+                                      item === ('MODULES.SYSTEM.WITH_PREFIX' |translate) ? 'With prefix':
+                                      item === ('MODULES.SYSTEM.WITH_PREFIX_AND_DATE'  |translate)? 'With prefix and date':
+                                      item === ('MODULES.SYSTEM.WITH_DATE'  |translate)? 'With date':
+                                      item === ('MODULES.SYSTEM.WITH_DATE_WITHOUT_HYPHEN'  |translate) ? 'With date without hypen':
+                                      'Without prefix'
+                                      }}
+                                    </a>
+                                  </h6>
+                                  <div>
+                                    <small class="text-muted">
+                                      {{
+                                      item === 'WITH_PREFIX' ? 'FAC-00000X':
+                                      item === 'WITH_PREFIX_AND_DATE' ? 'FAC-2023-00000X':
+                                      item === 'WITH_DATE' ? '2023-00000X':
+                                      item === 'WITH_DATE_WITHOUT_HYPHEN' ? '202300000X':
+                                      '00000X'
+                                      }}
+                                    </small>
+                                  </div>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                          <div class="mb-3">
+                            <label for="lastnameInput" class="form-label"> {{ 'MODULES.SYSTEM.LABEL' | translate }}</label>
+                            <input type="text" class="form-control" id="lastnameInput" placeholder=" {{ 'MODULES.SYSTEM.ENTER_LABEL' | translate }}" formControlName="label">
+                          </div>
+                          <div class="col-lg-6">
+                            <div class="mb-3">
+                              <label for="phonenumberInput" class="form-label"> {{ 'MODULES.SYSTEM.PREFIX' | translate }}</label>
+                              <input type="text" class="form-control" id="phonenumberInput" placeholder="{{ 'MODULES.SYSTEM.PREFIX' | translate }}" formControlName="prefix">
+                            </div>
+                          </div>
+                          <ng-container formGroupName="validity">
+                            <div class="col-lg-6">
+                              <div class="mb-3">
+                                <label for="emailInput" class="form-label"> {{ 'MODULES.SYSTEM.VALIDITY_PERIOD' | translate }}</label>
+                                <input formControlName="period" type="email" class="form-control" id="emailInput" placeholder="{{ 'MODULES.SYSTEM.VALIDITY_PERIOD' | translate }}">
+                              </div>
+                            </div>
+                            <div class="col-lg-6">
+                              <div class="mb-3">
+                                <label for="designationInput" class="form-label"> {{ 'MODULES.SYSTEM.VALIDITY_CYCLE' | translate }}</label>
+                                <input type="text" class="form-control" id="designationInput" placeholder="{{ 'MODULES.SYSTEM.VALIDITY_CYCLE' | translate }}" formControlName="cycle">
+                              </div>
+                            </div>
+                          </ng-container>
+                          <div class="col-lg-6">
+                            <div class="mb-3">
+                              <label for="websiteInput1" class="form-label"> {{ 'MODULES.SYSTEM.COLOR' | translate }}</label>
+                              <input formControlName="color" type="text" class="form-control" id="websiteInput1" placeholder=" {{ 'MODULES.SYSTEM.COLOR' | translate }}" />
+                            </div>
+                          </div>
+                          <div class="col-lg-12">
+                            <div class="mb-3 pb-2">
+                              <label for="exampleFormControlTextarea" class="form-label"  >{{ 'MODULES.SYSTEM.NOTE' | translate }}</label>
+                              <textarea formControlName="note" class="form-control" id="exampleFormControlTextarea" placeholder="{{'PLACEHOLDER.NOTE' | translate }}" rows="3"></textarea>
+                            </div>
+                          </div>
+                          <div class="col-lg-12">
+                            <div class="hstack gap-2 justify-content-end">
+                              <button type="button" [disabled]="isSettingsButtonDisabled || isOrderButtonDisabled || settingsForm.invalid" (click)="updateCompanySales('order')"
+                                class="btn btn-primary">{{ 'COMMON.UPDATE' | translate }}</button>
+                            </div>
+                          </div>
+                        </div>
+                      </ng-container>
+                      <div class="d-flex align-items-center">
+                        <h5 class="card-title mb-0 flex-grow-1"> {{ 'MODULES.SYSTEM.INVOICE' | translate }}</h5>
+                      </div>
+                      <br>
+                      <ng-container formGroupName="invoice">
+                        <div class="row">
+                          <div class="mb-3 row g-2 gap-2">
+                            <label for="firstnameInput" class="form-label"> {{ 'MODULES.SYSTEM.REFERENCE' | translate }}</label>
+                            <div *ngFor="let item of DocumentReferences" class="align-content-center border border-dashed col-5 d-flex p-2 rounded">
+                              <div class="ms-3 d-flex align-items-center">
+                                <div class="form-check">
+                                  <input [value]="item" class="form-check-input" type="radio" id="checkAll" value="option" formControlName="reference">
+                                </div>
+                                <div class="ms-2">
+                                  <h6 class="mb-1"><a href="javascript:void(0);" class="text-body">
+                                    {{
+                                      item === ('MODULES.SYSTEM.WITH_PREFIX' |translate) ? 'With prefix':
+                                      item === ('MODULES.SYSTEM.WITH_PREFIX_AND_DATE'  |translate)? 'With prefix and date':
+                                      item === ('MODULES.SYSTEM.WITH_DATE'  |translate)? 'With date':
+                                      item === ('MODULES.SYSTEM.WITH_DATE_WITHOUT_HYPHEN'  |translate) ? 'With date without hypen':
+                                      'Without prefix'
+                                      }}
+                                    </a>
+                                  </h6>
+                                  <div>
+                                    <small class="text-muted">
+                                      {{
+                                      item === 'WITH_PREFIX' ? 'FAC-00000X':
+                                      item === 'WITH_PREFIX_AND_DATE' ? 'FAC-2023-00000X':
+                                      item === 'WITH_DATE' ? '2023-00000X':
+                                      item === 'WITH_DATE_WITHOUT_HYPHEN' ? '202300000X':
+                                      '00000X'
+                                      }}
+                                    </small>
+                                  </div>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                          <div class="col-lg-6">
+                            <div class="mb-3">
+                              <label for="lastnameInput" class="form-label"> {{ 'MODULES.SYSTEM.LABEL' | translate }}</label>
+                              <input type="text" class="form-control" id="lastnameInput" placeholder="{{ 'MODULES.SYSTEM.LABEL' | translate }}" formControlName="label">
+                            </div>
+                          </div>
+                          <div class="col-lg-6">
+                            <div class="mb-3">
+                              <label for="phonenumberInput" class="form-label"> {{ 'MODULES.SYSTEM.PREFIX' | translate }}</label>
+                              <input type="text" class="form-control" id="phonenumberInput" placeholder="{{ 'MODULES.SYSTEM.PREFIX' | translate }}" formControlName="prefix">
+                            </div>
+                          </div>
+                          <ng-container formGroupName="validity">
+                            <div class="col-lg-6">
+                              <div class="mb-3">
+                                <label for="emailInput" class="form-label"> {{ 'MODULES.SYSTEM.VALIDITY_PERIOD' | translate }}</label>
+                                <input formControlName="period" type="email" class="form-control" id="emailInput" placeholder="{{ 'MODULES.SYSTEM.VALIDITY_PERIOD' | translate }}">
+                              </div>
+                            </div>
+                            <div class="col-lg-6">
+                              <div class="mb-3">
+                                <label for="designationInput" class="form-label"> {{ 'MODULES.SYSTEM.VALIDITY_CYCLE' | translate }}</label>
+                                <input type="text" class="form-control" id="designationInput" placeholder="{{ 'MODULES.SYSTEM.VALIDITY_CYCLE' | translate }}" formControlName="cycle">
+                              </div>
+                            </div>
+                          </ng-container>
+                          <div class="col-lg-6">
+                            <div class="mb-3">
+                              <label for="websiteInput1" class="form-label"> {{ 'MODULES.SYSTEM.COLOR' | translate }}</label>
+                              <input formControlName="color" type="text" class="form-control" id="websiteInput1" placeholder=" {{ 'MODULES.SYSTEM.COLOR' | translate }}" />
+                            </div>
+                          </div>
+                          <div class="col-lg-12">
+                            <div class="mb-3 pb-2">
+                              <label for="exampleFormControlTextarea" class="form-label"  >{{ 'MODULES.SYSTEM.NOTE' | translate }}</label>
+                              <textarea formControlName="note" class="form-control" id="exampleFormControlTextarea" placeholder="{{'PLACEHOLDER.NOTE' | translate }}" rows="3"></textarea>
+                            </div>
+                          </div>
+                          <div class="col-lg-12">
+                            <div class="hstack gap-2 justify-content-end">
+                              <button type="button" [disabled]="isSettingsButtonDisabled || isInvoiceButtonDisabled || settingsForm.invalid" (click)="updateCompanySales('invoice')"
+                                class="btn btn-primary">{{ 'COMMON.UPDATE' | translate }}</button>
+                            </div>
+                          </div>
+                        </div>
+                      </ng-container>
+                      <div class="d-flex align-items-center">
+                        <h5 class="card-title mb-0 flex-grow-1"> {{ 'MODULES.SYSTEM.DELIVERY_NOTE' | translate }}</h5>
+                      </div>
+                      <br>
+                      <ng-container formGroupName="deliveryNote">
+                        <div class="row">
+                          <div class="mb-3 row g-2 gap-2">
+                            <label for="firstnameInput" class="form-label"> {{ 'MODULES.SYSTEM.REFERENCE' | translate }}</label>
+                            <div *ngFor="let item of DocumentReferences" class="align-content-center border border-dashed col-5 d-flex p-2 rounded">
+                              <div class="ms-3 d-flex align-items-center">
+                                <div class="form-check">
+                                  <input [value]="item" class="form-check-input" type="radio" id="checkAll" value="option" formControlName="reference">
+                                </div>
+                                <div class="ms-2">
+                                  <h6 class="mb-1"><a href="javascript:void(0);" class="text-body">
+                                    {{
+                                      item === ('MODULES.SYSTEM.WITH_PREFIX' |translate) ? 'With prefix':
+                                      item === ('MODULES.SYSTEM.WITH_PREFIX_AND_DATE'  |translate)? 'With prefix and date':
+                                      item === ('MODULES.SYSTEM.WITH_DATE'  |translate)? 'With date':
+                                      item === ('MODULES.SYSTEM.WITH_DATE_WITHOUT_HYPHEN'  |translate) ? 'With date without hypen':
+                                      'Without prefix'
+                                      }}
+                                    </a>
+                                  </h6>
+                                  <div>
+                                    <small class="text-muted">
+                                      {{
+                                      item === 'WITH_PREFIX' ? 'FAC-00000X':
+                                      item === 'WITH_PREFIX_AND_DATE' ? 'FAC-2023-00000X':
+                                      item === 'WITH_DATE' ? '2023-00000X':
+                                      item === 'WITH_DATE_WITHOUT_HYPHEN' ? '202300000X':
+                                      '00000X'
+                                      }}
+                                    </small>
+                                  </div>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                          <div class="col-lg-6">
+                            <div class="mb-3">
+                              <label for="lastnameInput" class="form-label"> {{ 'MODULES.SYSTEM.LABEL' | translate }}</label>
+                              <input type="text" class="form-control" id="lastnameInput" placeholder="{{ 'MODULES.SYSTEM.LABEL' | translate }}" formControlName="label">
+                            </div>
+                          </div>
+                          <div class="col-lg-6">
+                            <div class="mb-3">
+                              <label for="phonenumberInput" class="form-label"> {{ 'MODULES.SYSTEM.PREFIX' | translate }}</label>
+                              <input type="text" class="form-control" id="phonenumberInput" placeholder="{{ 'MODULES.SYSTEM.PREFIX' | translate }}" formControlName="prefix">
+                            </div>
+                          </div>
+                          <ng-container formGroupName="validity">
+                            <div class="col-lg-6">
+                              <div class="mb-3">
+                                <label for="emailInput" class="form-label"> {{ 'MODULES.SYSTEM.VALIDITY_PERIOD' | translate }}</label>
+                                <input formControlName="period" type="email" class="form-control" id="emailInput" placeholder="{{ 'MODULES.SYSTEM.VALIDITY_PERIOD' | translate }}">
+                              </div>
+                            </div>
+                            <div class="col-lg-6">
+                              <div class="mb-3">
+                                <label for="designationInput" class="form-label"> {{ 'MODULES.SYSTEM.VALIDITY_CYCLE' | translate }}</label>
+                                <input type="text" class="form-control" id="designationInput" placeholder="{{ 'MODULES.SYSTEM.VALIDITY_CYCLE' | translate }}" formControlName="cycle">
+                              </div>
+                            </div>
+                          </ng-container>
+                          <div class="col-lg-6">
+                            <div class="mb-3">
+                              <label for="websiteInput1" class="form-label"> {{ 'MODULES.SYSTEM.COLOR' | translate }}</label>
+                              <input formControlName="color" type="text" class="form-control" id="websiteInput1" placeholder=" {{ 'MODULES.SYSTEM.COLOR' | translate }}" />
+                            </div>
+                          </div>
+                          <div class="col-lg-12">
+                            <div class="mb-3 pb-2">
+                              <label for="exampleFormControlTextarea" class="form-label"  >{{ 'MODULES.SYSTEM.NOTE' | translate }}</label>
+                              <textarea formControlName="note" class="form-control" id="exampleFormControlTextarea" placeholder="{{'PLACEHOLDER.NOTE' | translate }}" rows="3"></textarea>
+                            </div>
+                          </div>
+                          <div class="col-lg-12">
+                            <div class="hstack gap-2 justify-content-end">
+                              <button type="button" [disabled]="isSettingsButtonDisabled || isDeliveryNoteButtonDisabled || settingsForm.invalid" (click)="updateCompanySales('deliveryNote')"
+                                class="btn btn-primary">{{ 'COMMON.UPDATE' | translate }}</button>
+                            </div>
+                          </div>
+                        </div>
+                      </ng-container>
+                      <div class="d-flex align-items-center">
+                        <h5 class="card-title mb-0 flex-grow-1"> {{ 'MODULES.SYSTEM.ISSUE_NOTE' | translate }}</h5>
+                      </div>
+                      <br>
+                      <ng-container formGroupName="issueNote">
+                        <div class="row">
+                          <div class="mb-3 row g-2 gap-2">
+                            <label for="firstnameInput" class="form-label"> {{ 'MODULES.SYSTEM.REFERENCE' | translate }}</label>
+                            <div *ngFor="let item of DocumentReferences" class="align-content-center border border-dashed col-5 d-flex p-2 rounded">
+                              <div class="ms-3 d-flex align-items-center">
+                                <div class="form-check">
+                                  <input [value]="item" class="form-check-input" type="radio" id="checkAll" value="option" formControlName="reference">
+                                </div>
+                                <div class="ms-2">
+                                  <h6 class="mb-1"><a href="javascript:void(0);" class="text-body">
+                                    {{
+                                      item === ('MODULES.SYSTEM.WITH_PREFIX' |translate) ? 'With prefix':
+                                      item === ('MODULES.SYSTEM.WITH_PREFIX_AND_DATE'  |translate)? 'With prefix and date':
+                                      item === ('MODULES.SYSTEM.WITH_DATE'  |translate)? 'With date':
+                                      item === ('MODULES.SYSTEM.WITH_DATE_WITHOUT_HYPHEN'  |translate) ? 'With date without hypen':
+                                      'Without prefix'
+                                      }}
+                                    </a>
+                                  </h6>
+                                  <div>
+                                    <small class="text-muted">
+                                      {{
+                                      item === 'WITH_PREFIX' ? 'FAC-00000X':
+                                      item === 'WITH_PREFIX_AND_DATE' ? 'FAC-2023-00000X':
+                                      item === 'WITH_DATE' ? '2023-00000X':
+                                      item === 'WITH_DATE_WITHOUT_HYPHEN' ? '202300000X':
+                                      '00000X'
+                                      }}
+                                    </small>
+                                  </div>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                          <div class="col-lg-6">
+                            <div class="mb-3">
+                              <label for="lastnameInput" class="form-label"> {{ 'MODULES.SYSTEM.LABEL' | translate }}</label>
+                              <input type="text" class="form-control" id="lastnameInput" placeholder="{{ 'MODULES.SYSTEM.LABEL' | translate }}" formControlName="label">
+                            </div>
+                          </div>
+                          <div class="col-lg-6">
+                            <div class="mb-3">
+                              <label for="phonenumberInput" class="form-label"> {{ 'MODULES.SYSTEM.PREFIX' | translate }}</label>
+                              <input type="text" class="form-control" id="phonenumberInput" placeholder="{{ 'MODULES.SYSTEM.PREFIX' | translate }}" formControlName="prefix">
+                            </div>
+                          </div>
+                          <ng-container formGroupName="validity">
+                            <div class="col-lg-6">
+                              <div class="mb-3">
+                                <label for="emailInput" class="form-label"> {{ 'MODULES.SYSTEM.VALIDITY_PERIOD' | translate }}</label>
+                                <input formControlName="period" type="email" class="form-control" id="emailInput" placeholder="{{ 'MODULES.SYSTEM.VALIDITY_PERIOD' | translate }}">
+                              </div>
+                            </div>
+                            <div class="col-lg-6">
+                              <div class="mb-3">
+                                <label for="designationInput" class="form-label"> {{ 'MODULES.SYSTEM.VALIDITY_CYCLE' | translate }}</label>
+                                <input type="text" class="form-control" id="designationInput" placeholder="{{ 'MODULES.SYSTEM.VALIDITY_CYCLE' | translate }}" formControlName="cycle">
+                              </div>
+                            </div>
+                          </ng-container>
+                          <div class="col-lg-6">
+                            <div class="mb-3">
+                              <label for="websiteInput1" class="form-label"> {{ 'MODULES.SYSTEM.COLOR' | translate }}</label>
+                              <input formControlName="color" type="text" class="form-control" id="websiteInput1" placeholder=" {{ 'MODULES.SYSTEM.COLOR' | translate }}" />
+                            </div>
+                          </div>
+                          <div class="col-lg-12">
+                            <div class="mb-3 pb-2">
+                              <label for="exampleFormControlTextarea" class="form-label"  >{{ 'MODULES.SYSTEM.NOTE' | translate }}</label>
+                              <textarea formControlName="note" class="form-control" id="exampleFormControlTextarea" placeholder="{{'PLACEHOLDER.NOTE' | translate }}" rows="3"></textarea>
+                            </div>
+                          </div>
+                          <div class="col-lg-12">
+                            <div class="hstack gap-2 justify-content-end">
+                              <button type="button" [disabled]="isIssueNoteButtonDisabled || settingsForm.invalid" (click)="updateCompanySales('issueNote')" class="btn btn-primary">{{ 'COMMON.UPDATE' | translate }}</button>
+                            </div>
+                          </div>
+                        </div>
+                      </ng-container>
+                    </ng-container>
+                  </form>
+                </ng-template>
+              </li>
+              <li [ngbNavItem]="2" class="nav-item">
+                <a ngbNavLink class="nav-link" data-bs-toggle="tab" role="tab">
+                  <i class="far fa-envelope"></i>
+                   {{ 'MODULES.SYSTEM.PURCHASE' | translate }}
+                </a>
+                <ng-template ngbNavContent>
+                  <form [formGroup]="settingsForm">
+                    <ng-container formGroupName="purchase">
+                      <div class="d-flex align-items-center">
+                        <h5 class="card-title mb-0 flex-grow-1"> {{ 'MODULES.SYSTEM.INVENTORY' | translate }}</h5>
+                      </div>
+                      <br>
+                      <ng-container formGroupName="inventory">
+                        <div class="row">
+                          <div class="mb-3 row g-2 gap-2">
+                            <label for="firstnameInput" class="form-label"> {{ 'MODULES.SYSTEM.REFERENCE' | translate }}</label>
+                            <div *ngFor="let item of DocumentReferences" class="align-content-center border border-dashed col-5 d-flex p-2 rounded">
+                              <div class="ms-3 d-flex align-items-center">
+                                <div class="form-check">
+                                  <input [value]="item" class="form-check-input" type="radio" id="checkAll" value="option" formControlName="reference">
+                                </div>
+                                <div class="ms-2">
+                                  <h6 class="mb-1"><a href="javascript:void(0);" class="text-body">
+                                    {{
+                                      item === ('MODULES.SYSTEM.WITH_PREFIX' |translate) ? 'With prefix':
+                                      item === ('MODULES.SYSTEM.WITH_PREFIX_AND_DATE'  |translate)? 'With prefix and date':
+                                      item === ('MODULES.SYSTEM.WITH_DATE'  |translate)? 'With date':
+                                      item === ('MODULES.SYSTEM.WITH_DATE_WITHOUT_HYPHEN'  |translate) ? 'With date without hypen':
+                                      'Without prefix'
+                                      }}
+                                    </a>
+                                  </h6>
+                                  <div>
+                                    <small class="text-muted">
+                                      {{
+                                      item === 'WITH_PREFIX' ? 'FAC-00000X':
+                                      item === 'WITH_PREFIX_AND_DATE' ? 'FAC-2023-00000X':
+                                      item === 'WITH_DATE' ? '2023-00000X':
+                                      item === 'WITH_DATE_WITHOUT_HYPHEN' ? '202300000X':
+                                      '00000X'
+                                      }}
+                                    </small>
+                                  </div>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                          <div class="mb-3">
+                            <label for="phonenumberInput" class="form-label"> {{ 'MODULES.SYSTEM.PREFIX' | translate }}</label>
+                            <input type="text" class="form-control" id="phonenumberInput" placeholder="{{ 'MODULES.SYSTEM.PREFIX' | translate }}" formControlName="prefix">
+                          </div>
+                          <div class="col-lg-12">
+                            <div class="mb-3 pb-2">
+                              <label for="exampleFormControlTextarea" class="form-label"  >{{ 'MODULES.SYSTEM.NOTE' | translate }}</label>
+                              <textarea formControlName="note" class="form-control" id="exampleFormControlTextarea" placeholder="{{'PLACEHOLDER.NOTE' | translate }}" rows="3"></textarea>
+                            </div>
+                          </div>
+                          <div class="col-lg-12">
+                            <div class="hstack gap-2 justify-content-end">
+                              <button type="button" [disabled]="isInventoryButtonDisabled || settingsForm.invalid" (click)="updateCompanyPurchase('inventory')" class="btn btn-primary">{{ 'COMMON.UPDATE' | translate }}</button>
+                            </div>
+                          </div>
+                        </div>
+                      </ng-container>
+                      <div class="d-flex align-items-center">
+                        <h5 class="card-title mb-0 flex-grow-1"> {{ 'MODULES.SYSTEM.ORDER' | translate }}</h5>
+                      </div>
+                      <br>
+                      <ng-container formGroupName="order">
+                        <div class="row">
+                          <div class="mb-3 row g-2 gap-2">
+                            <label for="firstnameInput" class="form-label"> {{ 'MODULES.SYSTEM.REFERENCE' | translate }}</label>
+                            <div *ngFor="let item of DocumentReferences" class="align-content-center border border-dashed col-5 d-flex p-2 rounded">
+                              <div class="ms-3 d-flex align-items-center">
+                                <div class="form-check">
+                                  <input [value]="item" class="form-check-input" type="radio" id="checkAll" value="option" formControlName="reference">
+                                </div>
+                                <div class="ms-2">
+                                  <h6 class="mb-1"><a href="javascript:void(0);" class="text-body">
+                                      {{
+                                      item === 'WITH_PREFIX' ? 'With prefix':
+                                      item === 'WITH_PREFIX_AND_DATE' ? 'With prefix and date':
+                                      item === 'WITH_DATE' ? 'With date':
+                                      item === 'WITH_DATE_WITHOUT_HYPHEN' ? 'With date without hypen':
+                                      'Without prefix'
+                                      }}
+                                    </a>
+                                  </h6>
+                                  <div>
+                                    <small class="text-muted">
+                                      {{
+                                      item === 'WITH_PREFIX' ? 'FAC-00000X':
+                                      item === 'WITH_PREFIX_AND_DATE' ? 'FAC-2023-00000X':
+                                      item === 'WITH_DATE' ? '2023-00000X':
+                                      item === 'WITH_DATE_WITHOUT_HYPHEN' ? '202300000X':
+                                      '00000X'
+                                      }}
+                                    </small>
+                                  </div>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                          <div class="mb-3">
+                            <label for="phonenumberInput" class="form-label"> {{ 'MODULES.SYSTEM.PREFIX' | translate }}</label>
+                            <input type="text" class="form-control" id="phonenumberInput" placeholder="{{ 'MODULES.SYSTEM.PREFIX' | translate }}" formControlName="prefix">
+                          </div>
+                          <div class="mb-3 pb-2">
+                            <label for="exampleFormControlTextarea" class="form-label"  >{{ 'MODULES.SYSTEM.NOTE' | translate }}</label>
+                            <textarea formControlName="note" class="form-control" id="exampleFormControlTextarea" placeholder="{{'PLACEHOLDER.NOTE' | translate }}" rows="3"></textarea>
+                          </div>
+                          <div class="col-lg-12">
+                            <div class="hstack gap-2 justify-content-end">
+                              <button type="button" [disabled]="isOrderButtonDisabled || settingsForm.invalid" (click)="updateCompanyPurchase('order')" class="btn btn-primary">{{ 'COMMON.UPDATE' | translate }}</button>
+                            </div>
+                          </div>
+                        </div>
+                      </ng-container>
+                      <div class="d-flex align-items-center">
+                        <h5 class="card-title mb-0 flex-grow-1"> {{ 'MODULES.SYSTEM.INVOICE' | translate }}</h5>
+                      </div>
+                      <br>
+                      <ng-container formGroupName="invoice">
+                        <div class="row">
+                          <div class="mb-3 row g-2 gap-2">
+                            <label for="firstnameInput" class="form-label"> {{ 'MODULES.SYSTEM.REFERENCE' | translate }}</label>
+                            <div *ngFor="let item of DocumentReferences" class="align-content-center border border-dashed col-5 d-flex p-2 rounded">
+                              <div class="ms-3 d-flex align-items-center">
+                                <div class="form-check">
+                                  <input [value]="item" class="form-check-input" type="radio" id="checkAll" value="option" formControlName="reference">
+                                </div>
+                                <div class="ms-2">
+                                  <h6 class="mb-1"><a href="javascript:void(0);" class="text-body">
+                                      {{
+                                      item === 'WITH_PREFIX' ? 'With prefix':
+                                      item === 'WITH_PREFIX_AND_DATE' ? 'With prefix and date':
+                                      item === 'WITH_DATE' ? 'With date':
+                                      item === 'WITH_DATE_WITHOUT_HYPHEN' ? 'With date without hypen':
+                                      'Without prefix'
+                                      }}
+                                    </a>
+                                  </h6>
+                                  <div>
+                                    <small class="text-muted">
+                                      {{
+                                      item === 'WITH_PREFIX' ? 'FAC-00000X':
+                                      item === 'WITH_PREFIX_AND_DATE' ? 'FAC-2023-00000X':
+                                      item === 'WITH_DATE' ? '2023-00000X':
+                                      item === 'WITH_DATE_WITHOUT_HYPHEN' ? '202300000X':
+                                      '00000X'
+                                      }}
+                                    </small>
+                                  </div>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                          <div class="mb-3">
+                            <label for="phonenumberInput" class="form-label"> {{ 'MODULES.SYSTEM.PREFIX' | translate }}</label>
+                            <input type="text" class="form-control" id="phonenumberInput" placeholder="{{ 'MODULES.SYSTEM.PREFIX' | translate }}" formControlName="prefix">
+                          </div>
+                          <div class="mb-3 pb-2">
+                            <label for="exampleFormControlTextarea" class="form-label"  >{{ 'MODULES.SYSTEM.NOTE' | translate }}</label>
+                            <textarea formControlName="note" class="form-control" id="exampleFormControlTextarea" placeholder="{{'PLACEHOLDER.NOTE' | translate }}" rows="3"></textarea>
+                          </div>
+                          <div class="col-lg-12">
+                            <div class="hstack gap-2 justify-content-end">
+                              <button type="button" [disabled]="isInvoiceButtonDisabled || settingsForm.invalid" (click)="updateCompanyPurchase('invoice')" class="btn btn-primary">{{ 'COMMON.UPDATE' | translate }}</button>
+                            </div>
+                          </div>
+                        </div>
+                      </ng-container>
+                      <div class="d-flex align-items-center">
+                        <h5 class="card-title mb-0 flex-grow-1"> {{ 'MODULES.SYSTEM.DELIVERY_NOTE' | translate }}</h5>
+                      </div>
+                      <br>
+                      <ng-container formGroupName="deliveryNote">
+                        <div class="row">
+                          <div class="mb-3 row g-2 gap-2">
+                            <label for="firstnameInput" class="form-label"> {{ 'MODULES.SYSTEM.REFERENCE' | translate }}</label>
+                            <div *ngFor="let item of DocumentReferences" class="align-content-center border border-dashed col-5 d-flex p-2 rounded">
+                              <div class="ms-3 d-flex align-items-center">
+                                <div class="form-check">
+                                  <input [value]="item" class="form-check-input" type="radio" id="checkAll" value="option" formControlName="reference">
+                                </div>
+                                <div class="ms-2">
+                                  <h6 class="mb-1"><a href="javascript:void(0);" class="text-body">
+                                      {{
+                                      item === 'WITH_PREFIX' ? 'With prefix':
+                                      item === 'WITH_PREFIX_AND_DATE' ? 'With prefix and date':
+                                      item === 'WITH_DATE' ? 'With date':
+                                      item === 'WITH_DATE_WITHOUT_HYPHEN' ? 'With date without hypen':
+                                      'Without prefix'
+                                      }}
+                                    </a>
+                                  </h6>
+                                  <div>
+                                    <small class="text-muted">
+                                      {{
+                                      item === 'WITH_PREFIX' ? 'FAC-00000X':
+                                      item === 'WITH_PREFIX_AND_DATE' ? 'FAC-2023-00000X':
+                                      item === 'WITH_DATE' ? '2023-00000X':
+                                      item === 'WITH_DATE_WITHOUT_HYPHEN' ? '202300000X':
+                                      '00000X'
+                                      }}
+                                    </small>
+                                  </div>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                          <div class="mb-3">
+                            <label for="phonenumberInput" class="form-label"> {{ 'MODULES.SYSTEM.PREFIX' | translate }}</label>
+                            <input type="text" class="form-control" id="phonenumberInput" placeholder="{{ 'MODULES.SYSTEM.PREFIX' | translate }}" formControlName="prefix">
+                          </div>
+                          <div class="mb-3 pb-2">
+                            <label for="exampleFormControlTextarea" class="form-label"  >{{ 'MODULES.SYSTEM.NOTE' | translate }}</label>
+                            <textarea formControlName="note" class="form-control" id="exampleFormControlTextarea" placeholder="{{'PLACEHOLDER.NOTE' | translate }}" rows="3"></textarea>
+                          </div>
+                          <div class="col-lg-12">
+                            <div class="hstack gap-2 justify-content-end">
+                              <button type="button" [disabled]="isDeliveryNoteButtonDisabled || settingsForm.invalid" (click)="updateCompanyPurchase('deliveryNote')"
+                                class="btn btn-primary">{{ 'COMMON.UPDATE' | translate }}</button>
+                            </div>
+                          </div>
+                        </div>
+                      </ng-container>
+                    </ng-container>
+                  </form>
+                </ng-template>
+              </li>
+              <li [ngbNavItem]="3" class="nav-item">
+                <a ngbNavLink class="nav-link" data-bs-toggle="tab" role="tab">
+                  <i class="far fa-envelope"></i>
+                   {{ 'MODULES.SYSTEM.MEDIA' | translate }}
+                </a>
+                <ng-template ngbNavContent>
+                  <div class="mb-3 col-lg-12">
+                    <label for="firstnameInput" class="form-label"> {{ 'MODULES.SYSTEM.DOCUMENT' | translate }}</label>
+                    <div class="col-lg-2 col-4 df-flex mt-2">
+                      <div class="img-wrap mb-2">
+                        <span class="delete-icon flex items-center justify-center cursor-pointer">
+                          <i class="ri-delete-bin-fill ft text-danger"></i>
+                        </span>
+                        <img class="w-100 h-100 rounded object-cover" src="assets/images/profile-bg.jpg" alt="Blog picture">
+                      </div>
+                      <!-- <div
+                      class="align-items-center border cursor-pointer d-flex h-6 justify-content-center overflow-hidden rounded w-100">
+                      <span class="fs-5 fw-bold">{{'COMMON.UPLOAD' | translate }}</span>
+                    </div> -->
+                    </div>
+                  </div>
+                </ng-template>
+              </li>
+              <li [ngbNavItem]="4" class="nav-item">
+                <a ngbNavLink class="nav-link" data-bs-toggle="tab" role="tab">
+                  <i class="fas fa-home"></i>
+                   {{ 'MODULES.SYSTEM.TICKETS' | translate }}
+                </a>
+                <ng-template ngbNavContent>
+                  <form [formGroup]="settingsForm">
+                    <div class="row">
+                      <ng-container formGroupName="tickets">
+                        <div class="col-lg-6">
+                          <div class="mb-3">
+                            <label for="firstnameInput" class="form-label"> {{ 'MODULES.SYSTEM.PREFIX' | translate }}</label>
+                            <input formControlName="prefix" type="text" class="form-control" id="firstnameInput" placeholder="{{'PLACEHOLDER.ENTER_REFERENCE' | translate }}">
+                          </div>
+                        </div>
+                      </ng-container>
+                      <div class="col-lg-12">
+                        <div class="hstack gap-2 justify-content-end">
+                          <button [disabled]="isTicketsButtonDisabled || settingsForm.invalid" (click)="updateCompanyTickets()" type="button" class="btn btn-primary">{{ 'COMMON.UPDATE' | translate }}</button>
+                        </div>
+                      </div>
+                    </div>
+                  </form>
+                </ng-template>
+              </li>
+              <li [ngbNavItem]="5" class="nav-item">
+                <a ngbNavLink class="nav-link" data-bs-toggle="tab" role="tab">
+                  <i class="far fa-envelope"></i>
+                   {{ 'MODULES.SYSTEM.TAX_VAT' | translate }}
+                </a>
+                <ng-template ngbNavContent>
+                  <div class="file-manager-content w-100 p-4 pb-0">
+                    <div class="p-3 bg-light rounded mb-4">
+                      <div class="row g-2">
+                        <div class="col-lg">
+                          <div class="search-box">
+                            <input type="text" id="searchTaskList" class="form-control search" placeholder="{{'PLACEHOLDER.SEARCH_TASK_NAME' | translate }}">
+                            <i class="ri-search-line search-icon"></i>
+                          </div>
+                        </div>
+                        <div class="col-lg-auto">
+                          <button class="btn btn-primary createTask" type="button" data-bs-toggle="modal" data-bs-target="#createTask" (click)="openTaxModal(content, null)">
+                            <i class="ri-add-fill align-bottom"></i>  {{ 'MODULES.SYSTEM.ADD_TAX' | translate }}
+                          </button>
+                        </div>
+                      </div>
+                    </div>
+                    <div *ngIf="taxes?.length" class="card-body">
+                      <div class="table-responsive table-card mb-3">
+                        <table class="table align-middle table-nowrap mb-0">
+                          <thead>
+                            <tr class="bg-light text-muted text-uppercase">
+                              <th> {{ 'MODULES.SYSTEM.LABEL' | translate }}</th>
+                              <th>{{ 'MODULES.SYSTEM.VALUE' | translate }}</th>
+                              <th>{{'COMMON.TYPE'|translate}}</th>
+                              <th> {{ 'MODULES.SYSTEM.SIGN' | translate }}</th>
+                              <th>{{ 'MODULES.SYSTEM.USE' | translate }}</th>
+                              <th> {{ 'MODULES.SYSTEM.PRODUCT' | translate }}</th>
+                              <th class="d-flex justify-content-center">{{ 'COMMON.ACTION' | translate }}</th>
+                            </tr>
+                          </thead>
+                          <tbody>
+                            <tr *ngFor="let tax of taxes" id="c_{{company.id}}">
+                              <td><ngb-highlight [result]="tax?.label"></ngb-highlight></td>
+                              <td><ngb-highlight [result]="tax.value?.value"></ngb-highlight></td>
+                              <td>
+                                <span class="badge text-uppercase" [ngClass]="{ 'badge-soft-warning': tax.value?.type === 'PERCENTAGE', 'badge-soft-info': tax.value?.type === 'AMOUNT'}">
+                                  {{tax.value?.type}}
+                                </span>
+                              </td>
+                              <td>
+                                <span class="badge text-uppercase" [ngClass]=" { 'bg-danger': tax.value?.sign === 'NEGATIVE', 'bg-success': tax.value?.sign === 'POSITIVE'}">{{tax.value?.sign}}</span>
+                              </td>
+                              <td>
+                                <span *ngFor="let use of tax.use" class="badge text-uppercase" [ngClass]=" { 'bg-info': use === 'PURCHASE', 'bg-success': use === 'SALE'}">{{use}}</span>
+                              </td>
+                              <td>
+                                <i *ngIf="tax.product" class="ri-check-fill align-bottom btn-soft-success"></i>
+                                <i *ngIf="!tax.product" class="ri-close-fill align-bottom btn-soft-danger"></i>
+                              </td>
+                              <td>
+                                <ul class="d-flex justify-content-center list-inline hstack gap-2 mb-0">
+                                  <li (click)="openTaxModal(content,tax)" class="list-inline-item edit" matTooltip="View" placement="top">
+                                    <a href="javascript:void(0);" data-bs-toggle="modal" class="text-primary d-inline-block edit-item-btn">
+                                      <i class="ri-pencil-fill fs-16"></i>
+                                    </a>
+                                  </li>
+                                  <li (click)="openDeleteTax(deleteModel,tax)" class="list-inline-item edit" matTooltip="Delete" placement="top">
+                                    <a href="javascript:void(0);" data-bs-toggle="modal" class="text-danger d-inline-block">
+                                      <i class="ri-delete-bin-5-fill fs-16"></i>
+                                    </a>
+                                  </li>
+                                </ul>
+                              </td>
+                            </tr>
+                          </tbody>
+                        </table>
+                      </div>
+                    </div>
+                    <div *ngIf="!taxes?.length" class="py-4 mt-4 text-center" id="noresult">
+                      <lord-icon src="https://cdn.lordicon.com/vlycxjwx.json" trigger="loop" [colors]="'primary:' + primaryColor + ',secondary:' + secondaryColor" style="width:72px;height:72px"></lord-icon>
+                      <h5 class="mt-4">{{ 'COMMON.NO_RESULT' | translate }}</h5>
+                    </div>
+                  </div>
+                </ng-template>
+              </li>
+              <li [ngbNavItem]="6" class="nav-item">
+                <a ngbNavLink class="nav-link" data-bs-toggle="tab" role="tab">
+                  <i class="far fa-envelope"></i>
+                   {{ 'MODULES.SYSTEM.PRICE_LIST' | translate }}
+                </a>
+                <ng-template ngbNavContent>
+                  <div class="file-manager-content w-100 p-4 pb-0">
+                    <div class="p-3 bg-light rounded mb-4">
+                      <div class="row g-2">
+                        <div class="col-lg">
+                          <div class="search-box">
+                            <form [formGroup]="searchPriceForm">
+                              <input formControlName="searchString" type="text" id="searchTaskList" class="form-control search" placeholder="{{'PLACEHOLDER.SEARCH_PRICE' | translate }}">
+                              <i class="ri-search-line search-icon"></i>
+                            </form>
+                          </div>
+                        </div>
+                        <div class="col-lg-auto">
+                          <button class="btn btn-primary createTask" type="button" data-bs-toggle="modal" data-bs-target="#createTask" (click)="openUpdateListModal(listModal, null)">
+                            <i class="ri-add-fill align-bottom"></i>  {{ 'MODULES.SYSTEM.ADD_PRICE' | translate }}
+                          </button>
+                        </div>
+                      </div>
+                    </div>
+                    <div *ngIf="priceList$ | async as priceList" class="card-body">
+                      <div class="table-responsive table-card mb-3">
+                        <table class="table align-middle table-nowrap mb-0">
+                          <thead>
+                            <tr class="bg-light text-muted text-uppercase">
+                              <th> {{ 'MODULES.SYSTEM.LABEL' | translate }}</th>
+                              <th>{{'COMMON.STATUS' | translate }}</th>
+                              <th class="d-flex justify-content-center">{{ 'COMMON.ACTION' | translate }}</th>
+                            </tr>
+                          </thead>
+                          <tbody>
+                            <tr *ngFor="let list of priceList" id="c_{{list.id}}">
+                              <td><ngb-highlight [result]="list?.label"></ngb-highlight></td>
+                              <td>
+                                <i [ngClass]="{
+                                'btn-soft-success': list?.enable,
+                                'ri-check-fill': list?.enable,
+                                'btn-soft-danger': !list?.enable,
+                                'ri-close-fill': !list?.enable
+                              }" class="align-bottom btn-soft-success"></i>
+                              </td>
+                              <td>
+                                <ul class="d-flex justify-content-center list-inline hstack gap-2 mb-0">
+                                  <li class="list-inline-item edit" matTooltip="View" placement="top">
+                                    <a (click)="openUpdateListModal(listModal, list)" href="javascript:void(0);" data-bs-toggle="modal" class="text-primary d-inline-block edit-item-btn">
+                                      <i class="ri-pencil-fill fs-16"></i>
+                                    </a>
+                                  </li>
+                                </ul>
+                              </td>
+                            </tr>
+                          </tbody>
+                        </table>
+                      </div>
+                    </div>
+                    <div *ngIf="!companies?.length" class="py-4 mt-4 text-center" id="noresult">
+                      <lord-icon src="https://cdn.lordicon.com/vlycxjwx.json" trigger="loop" [colors]="'primary:' + primaryColor + ',secondary:' + secondaryColor" style="width:72px;height:72px"></lord-icon>
+                      <h5 class="mt-4">{{ 'COMMON.NO_RESULT' | translate }}</h5>
+                    </div>
+                  </div>
+                </ng-template>
+              </li>
+              <li [ngbNavItem]="7" class="nav-item">
+                <a ngbNavLink class="nav-link" data-bs-toggle="tab" role="tab">
+                  <i class="far fa-envelope"></i>
+                   {{ 'MODULES.SYSTEM.LOGISTICS' | translate }}
+                </a>
+                <ng-template ngbNavContent>
+                  <form [formGroup]="settingsForm">
+                    <div class="row">
+                      <ng-container formGroupName="logistic">
+                        <div class="col-lg-6">
+                          <div class="mb-3">
+                            <label for="firstnameInput" class="form-label"> {{ 'MODULES.SYSTEM.PREFIX' | translate }}</label>
+                            <input formControlName="prefix" type="text" class="form-control" id="firstnameInput" placeholder="{{'PLACEHOLDER.ENTER_REFERENCE' | translate }}">
+                          </div>
+                        </div>
+                      </ng-container>
+                      <div class="col-lg-12">
+                        <div class="hstack gap-2 justify-content-end">
+                          <button (click)="updateCompanyLogistics()" [disabled]="isLogisticButtonDisabled || settingsForm.invalid" type="button" class="btn btn-primary">{{ 'COMMON.UPDATE' | translate }}</button>
+                        </div>
+                      </div>
+                    </div>
+                  </form>
+                  <div class="file-manager-content w-100 p-4 pb-0">
+                    <div class="p-3 bg-light rounded mb-4">
+                      <div class="row g-2">
+                        <div class="col-lg">
+                          <div class="search-box">
+                            <form [formGroup]="searchForm">
+                              <input formControlName="searchString" type="text" id="searchTaskList" class="form-control search" placeholder="{{'PLACEHOLDER.SEARCH_LOGISTIC_COMPANY' | translate }}">
+                              <i class="ri-search-line search-icon"></i>
+                            </form>
+                          </div>
+                        </div>
+                        <div class="col-lg-auto">
+                          <button class="btn btn-primary createTask" type="button" data-bs-toggle="modal" data-bs-target="#createTask" (click)="openLogisticModal(logisticModal, null)">
+                            <i class="ri-add-fill align-bottom"></i>  {{ 'MODULES.SYSTEM.ADD_LOGISTIC_COMPANY' | translate }}
+                          </button>
+                        </div>
+                      </div>
+                    </div>
+                    <div *ngIf="companies?.length" class="card-body">
+                      <div class="table-responsive table-card mb-3">
+                        <table class="table align-middle table-nowrap mb-0">
+                          <thead>
+                            <tr class="bg-light text-muted text-uppercase">
+                              <th>{{ 'MODULES.SYSTEM.COMPANY_NAME' | translate }}</th>
+                              <th>{{ 'COMMON.EMAIL' | translate }}</th>
+                              <th>{{ 'COMMON.PHONE' | translate }}</th>
+                              <th>{{ 'COMMON.WEBSITE' | translate }}</th>
+                              <th> {{ 'COMMON.LOCATION' | translate }}</th>
+                              <th class="d-flex justify-content-center">{{ 'COMMON.ACTION' | translate }}</th>
+                            </tr>
+                          </thead>
+                          <tbody>
+                            <tr *ngFor="let company of companies" id="c_{{company.id}}">
+                              <td><ngb-highlight [result]="company?.name"></ngb-highlight></td>
+                              <td><ngb-highlight [result]="company?.email"></ngb-highlight></td>
+                              <td>
+                                <div>
+                                  {{company?.contact?.phone?.countryCode}} {{company?.contact?.phone?.number}}
+                                </div>
+                              </td>
+                              <td><ngb-highlight [result]="company?.contact?.website"></ngb-highlight></td>
+                              <td><ngb-highlight [result]="company?.address?.country?.name"></ngb-highlight></td>
+                              <td>
+                                <ul class="d-flex justify-content-center list-inline hstack gap-2 mb-0">
+                                  <li (click)="openLogisticModal(logisticModal, company)" class="list-inline-item edit" matTooltip="View" placement="top">
+                                    <a href="javascript:void(0);" data-bs-toggle="modal" class="text-primary d-inline-block edit-item-btn">
+                                      <i class="ri-pencil-fill fs-16"></i>
+                                    </a>
+                                  </li>
+                                  <li (click)="openDeleteCompany(deleteCompanyModel,company)" class="list-inline-item edit" matTooltip="Delete" placement="top">
+                                    <a href="javascript:void(0);" data-bs-toggle="modal" class="text-danger d-inline-block">
+                                      <i class="ri-delete-bin-5-fill fs-16"></i>
+                                    </a>
+                                  </li>
+                                </ul>
+                              </td>
+                            </tr>
+                          </tbody>
+                        </table>
+                      </div>
+                    </div>
+                    <div *ngIf="!companies?.length" class="py-4 mt-4 text-center" id="noresult">
+                      <lord-icon src="https://cdn.lordicon.com/vlycxjwx.json" trigger="loop" [colors]="'primary:' + primaryColor + ',secondary:' + secondaryColor" style="width:72px;height:72px"></lord-icon>
+                      <h5 class="mt-4">{{ 'COMMON.NO_RESULT' | translate }}</h5>
+                    </div>
+                  </div>
+                </ng-template>
+              </li>
+            </ul>
+          </div>
+          <div class="card-body p-4">
+            <div class="tab-content">
+              <div [ngbNavOutlet]="customNav"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </form>
+
+  <ng-template #listModal role="document" let-modal>
+    <div class="modal-header bg-light p-3">
+      <h5 class="modal-title" id="exampleModalLabel">{{(selectedPrice ? 'SHARED.EDIT_PRICE' : 'SHARED.ADD_PRICE') | translate }}</h5>
+      <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" id="close-modal" (click)="modal.dismiss('Cross click')"></button>
+    </div>
+    <form [formGroup]="priceForm">
+      <div class="modal-body">
+        <div class="mb-3">
+          <label for="customername-field" class="form-label"> {{ 'MODULES.SYSTEM.LABEL' | translate }}</label>
+          <input type="text" id="customername-field" class="form-control" placeholder=" {{ 'MODULES.SYSTEM.ENTER_LABEL' | translate }}" formControlName="label" />
+          <div class="text-danger" *ngIf="priceForm.get('label')?.touched && priceForm.get('label').hasError('required')">
+            {{ 'COMMON.REQUIRED' | translate }}
+          </div>
+        </div>
+        <div class="mb-3">
+          <div class="form-check form-switch">
+            <input formControlName="enable" class="form-check-input" type="checkbox" role="switch" id="flexSwitchCheckDefault">
+            <label class="form-check-label" for="flexSwitchCheckDefault">{{ 'MODULES.SYSTEM.ENABLED' | translate }}</label>
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <div class="hstack gap-2 justify-content-end">
+          <button type="button" class="btn btn-light" data-bs-dismiss="modal" (click)="modal.close('Close click')">{{ 'COMMON.CLOSE' | translate }}</button>
+          <button type="button" [disabled]="isPriceButtonDisabled || priceForm.invalid" (click)="savePrice()" class="btn btn-success" id="add-btn">{{(selectedPrice ? 'SHARED.EDIT_PRICE' : 'SHARED.ADD_PRICE') | translate}}</button>
+        </div>
+      </div>
+    </form>
+  </ng-template>
+
+  <ng-template #content role="document" let-modal>
+    <div class="modal-header bg-light p-3">
+      <h5 class="modal-title" id="exampleModalLabel">{{(selectedTax ? 'SHARED.EDIT_TAX' : 'SHARED.ADD_TAX' | translate)}}</h5>
+      <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" id="close-modal" (click)="modal.dismiss('Cross click')"></button>
+    </div>
+    <form [formGroup]="taxForm">
+      <div class="modal-body">
+        <div class="mb-3">
+          <label for="customername-field" class="form-label"> {{ 'MODULES.SYSTEM.LABEL' | translate }}</label>
+          <input type="text" id="customername-field" class="form-control" placeholder=" {{ 'MODULES.SYSTEM.ENTER_LABEL' | translate }}" formControlName="label" />
+          <div class="text-danger" *ngIf="taxForm.get('label')?.touched && taxForm.get('label').hasError('required')">
+            {{ 'COMMON.REQUIRED' | translate }}
+          </div>
+        </div>
+        <ng-container formGroupName="value">
+          <div class="mb-3">
+            <label for="customername-field" class="form-label"> {{ 'MODULES.SYSTEM.SIGN' | translate }}</label>
+            <select class="form-select form-control-line" [formControlName]="'sign'">
+              <option value="" disabled selected> {{ 'COMMON.SELECT_OPTION' | translate }}</option>
+              <option *ngFor="let sign of signs" [value]="sign">
+                {{ sign.split('_').join(' ') | titlecase }}
+              </option>
+            </select>
+            <div class="text-danger" *ngIf="taxForm.get(['value', 'sign'])?.touched && taxForm.get(['value', 'sign']).hasError('required')">
+              {{ 'COMMON.REQUIRED' | translate }}
+            </div>
+          </div>
+          <div class="mb-3">
+            <label for="customername-field" class="form-label"></label>
+            <select class="form-select form-control-line" [formControlName]="'type'">
+              <option value="" disabled selected> {{ 'COMMON.SELECT_OPTION' | translate }}</option>
+              <option *ngFor="let type of types" [value]="type">
+                {{ type.split('_').join(' ') | titlecase }}
+              </option>
+            </select>
+            <div class="text-danger" *ngIf="taxForm.get(['value', 'sign'])?.touched && taxForm.get(['value', 'sign']).hasError('required')">
+              {{ 'COMMON.REQUIRED' | translate }}
+            </div>
+          </div>
+          <div class="mb-3">
+            <label for="customername-field" class="form-label">{{ 'MODULES.SYSTEM.VALUE' | translate }}</label>
+            <input type="text" id="customername-field" class="form-control" placeholder="{{'PLACEHOLDER.ENTER_VALUE' | translate }}" formControlName="value" />
+            <div class="text-danger" *ngIf="taxForm.get(['value', 'value'])?.touched && taxForm.get(['value', 'value']).hasError('required')">
+              {{ 'COMMON.REQUIRED' | translate }}
+            </div>
+          </div>
+        </ng-container>
+        <div class="mb-3">
+          <div class="form-group row">
+            <div class="col-sm-2 d-flex align-items-center">
+              <label for="purchaesNotification" class="col-form-label"> {{ 'MODULES.SYSTEM.PRODUCT' | translate }}</label>
+            </div>
+            <div class="col-sm-10 d-flex align-items-center">
+              <div class="form-check form-switch">
+                <input formControlName="product" class="form-check-input" type="checkbox" role="switch" id="purchaesNotification" />
+              </div>
+            </div>
+          </div>
+          <div class="text-danger" *ngIf="taxForm.get('value')?.touched && taxForm.get('value').hasError('required')">
+            {{ 'COMMON.REQUIRED' | translate }}
+          </div>
+        </div>
+        <div class="mb-3">
+          <label for="choices-privacy-status-input" class="form-label">Use</label>
+          <ng-select bindValue="privacies" [addTag]="true" [multiple]="true" bindlabel="label" [clearable]="true" data-choices="true" [searchable]="true" [hideSelected]="true" formControlName="use"
+            [items]="uses" data-choices-removeItem="true">
+          </ng-select>
+          <ng-template ng-option-tmp let-item="item" let-index="index">
+            {{item === 'SALE' ? 'Sale' : 'Purchase'}}
+          </ng-template>
+          <div class="text-danger" *ngIf="taxForm.get('use')?.touched && taxForm.get('use').hasError('required')">
+            {{ 'COMMON.REQUIRED' | translate }}
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <div class="hstack gap-2 justify-content-end">
+          <button type="button" class="btn btn-light" data-bs-dismiss="modal" (click)="modal.close('Close click')">{{ 'COMMON.CLOSE' | translate }}</button>
+          <button type="button" [disabled]="isTaxButtonDisabled || taxForm.invalid" (click)="saveTax()" class="btn btn-success" id="add-btn">{{(selectedTax ? 'SHARED.EDIT_TAX' : 'SHARED.ADD_TAX') | translate }}</button>
+        </div>
+      </div>
+    </form>
+  </ng-template>
+
+  <ng-template #logisticModal role="document" let-modal>
+    <div class="modal-header bg-light p-3">
+      <h5 class="modal-title" id="exampleModalLabel">{{(selectedCompany ? 'SHARED.EDIT_LOGISTIC_COMPANY' : 'SHARED.ADD_LOGISTIC_COMPANY') | translate}}</h5>
+      <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" id="close-modal" (click)="modal.dismiss('Cross click')"></button>
+    </div>
+    <form [formGroup]="logisticForm">
+      <div class="modal-body">
+        <div class="row">
+          <div class="col-lg-6">
+            <div class="mb-3">
+              <label for="firstnameInput" class="form-label"> {{ 'COMMON.NAME' | translate }}</label>
+              <input formControlName="name" type="text" class="form-control" id="firstnameInput" placeholder="{{'PLACEHOLDER.ENTER_COMPANY_NAME' | translate }}">
+            </div>
+          </div>
+          <ng-container formGroupName="legal">
+            <div class="col-lg-6">
+              <div class="mb-3">
+                <label for="lastnameInput" class="form-label">{{ 'COMMON.REG_NUMBER' | translate }}</label>
+                <input formControlName="register" type="text" class="form-control" id="lastnameInput" placeholder="{{ 'MODULES.SYSTEM.LABEL' | translate }}">
+              </div>
+            </div>
+            <div class="col-lg-6">
+              <div class="mb-3">
+                <label for="lastnameInput" class="form-label">{{ 'COMMON.VAT' | translate }}</label>
+                <input formControlName="vat" type="text" class="form-control" id="lastnameInput" placeholder="{{'PLACEHOLDER.ENTER_COMPANY_VAT' | translate }}">
+              </div>
+            </div>
+            <div class="col-lg-6">
+              <div class="mb-3">
+                <label for="lastnameInput" class="form-label"> {{ 'MODULES.SYSTEM.LICENCE' | translate }}</label>
+                <input formControlName="licence" type="text" class="form-control" id="lastnameInput" placeholder="{{'PLACEHOLDER.ENTER_COMPANY_LICENSE' | translate }}">
+              </div>
+            </div>
+          </ng-container>
+          <ng-container formGroupName="contact">
+            <div class="col-lg-6">
+              <ng-container formGroupName="phone">
+                <div class="mb-3">
+                  <label for="phonenumberInput" class="form-label">{{ 'COMMON.PHONE_NUMBER' | translate }}</label>
+                  <input formControlName="number" type="text" class="form-control" id="phonenumberInput" placeholder="{{ 'MODULES.SYSTEM.PREFIX' | translate }}">
+                </div>
+              </ng-container>
+            </div>
+            <div class="col-lg-6">
+              <div class="mb-3">
+                <label for="emailInput" class="form-label">{{ 'COMMON.EMAIL_ADDRESS' | translate }}</label>
+                <input formControlName="email" type="email" class="form-control" id="emailInput" placeholder="{{ 'MODULES.SYSTEM.VALIDITY_PERIOD' | translate }}">
+              </div>
+            </div>
+            <div class="col-lg-6">
+              <div class="mb-3">
+                <label for="websiteInput1" class="form-label">{{ 'COMMON.WEBSITE' | translate }}</label>
+                <input formControlName="website" type="text" class="form-control" id="websiteInput1" placeholder=" {{ 'MODULES.SYSTEM.COLOR' | translate }}" />
+              </div>
+            </div>
+          </ng-container>
+          <ng-container formGroupName="address">
+            <div class="col-lg-6">
+              <div class="mb-3">
+                <label for="designationInput" class="form-label"> {{ 'COMMON.ADDRESS' | translate }}</label>
+                <input formControlName="address" type="text" class="form-control" id="designationInput" placeholder="{{ 'MODULES.SYSTEM.VALIDITY_CYCLE' | translate }}">
+              </div>
+            </div>
+            <div class="col-lg-4">
+              <div class="mb-3">
+                <label for="cityInput" class="form-label"> {{ 'COMMON.CITY' | translate }}</label>
+                <input formControlName="city" type="text" class="form-control" id="cityInput" placeholder="{{ 'COMMON.CITY' | translate }}" />
+              </div>
+            </div>
+            <div class="col-lg-4">
+              <div class="mb-3">
+                <label for="countryInput" class="form-label">{{ 'COMMON.COUNTRY' | translate }}</label>
+                <select class="form-select form-control-line" [formControlName]="'country'">
+                  <option value="" disabled selected> {{ 'COMMON.SELECT_OPTION' | translate }}</option>
+                  <option *ngFor="let country of countries" [value]="country.id">
+                    {{ country.name.split('_').join(' ') | titlecase }}
+                  </option>
+                </select>
+              </div>
+            </div>
+            <div class="col-lg-4">
+              <div class="mb-3">
+                <label for="zipcodeInput" class="form-label">{{ 'COMMON.ZIP_CODE' | translate }}</label>
+                <input formControlName="postCode" type="text" class="form-control" id="zipcodeInput" placeholder="{{ 'COMMON.ENTER_ZIPCODE' | translate }}">
+              </div>
+            </div>
+          </ng-container>
+          <div class="col-lg-12">
+            <div class="mb-3 pb-2">
+              <label for="exampleFormControlTextarea" class="form-label">{{ 'COMMON.DESCRIPTION' | translate }}</label>
+              <textarea formControlName="description" class="form-control" id="exampleFormControlTextarea" placeholder="{{'PLACEHOLDER.NOTE' | translate }}" rows="3"></textarea>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <div class="hstack gap-2 justify-content-end">
+          <button type="button" class="btn btn-light" data-bs-dismiss="modal" (click)="modal.close('Close click')">{{ 'COMMON.CLOSE' | translate }}</button>
+          <button type="button" (click)="saveLogisticCompnay()" [disabled]="isLogisticButtonDisabled || logisticForm.invalid" class="btn btn-success" id="add-btn">{{selectedCompany ?
+            'Edit Logistic Company' : 'Add Logistic Company'}}</button>
+        </div>
+      </div>
+    </form>
+  </ng-template>
+
+  <ng-template #deleteModel let-modal>
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" id="deleteRecord-close" (click)="modal.dismiss('Cross click')"></button>
+      </div>
+      <div class="modal-body">
+        <div class="mt-2 text-center">
+          <lord-icon src="https://cdn.lordicon.com/gsqxdxog.json" trigger="loop" colors="primary:#f7b84b,secondary:#f06548" style="width:100px;height:100px"></lord-icon>
+          <div class="mt-4 pt-2 fs-15 mx-4 mx-sm-5">
+            <h4> {{ 'MODULES.SYSTEM.ARE_YOU_SURE' | translate }}</h4>
+            <p class="text-muted mx-4 mb-0"> {{ 'MODULES.SYSTEM.REMOVE_TAX_CONFIRMATION' | translate }}</p>
+          </div>
+        </div>
+        <div class="d-flex gap-2 justify-content-center mt-4 mb-2">
+          <button type="button" class="btn w-sm btn-light" data-bs-dismiss="modal" (click)="modal.close('Close click')">{{ 'COMMON.CLOSE' | translate }}</button>
+          <button type="button" class="btn w-sm btn-danger " id="delete-product" (click)="deleteTax()">{{'COMMON.YES_DELETE_IT' | translate }}</button>
+        </div>
+      </div>
+    </div>
+  </ng-template>
+
+  <ng-template #deleteCompanyModel let-modal>
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" id="deleteRecord-close" (click)="modal.dismiss('Cross click')"></button>
+      </div>
+      <div class="modal-body">
+        <div class="mt-2 text-center">
+          <lord-icon src="https://cdn.lordicon.com/gsqxdxog.json" trigger="loop" colors="primary:#f7b84b,secondary:#f06548" style="width:100px;height:100px"></lord-icon>
+          <div class="mt-4 pt-2 fs-15 mx-4 mx-sm-5">
+            <h4> {{ 'MODULES.SYSTEM.ARE_YOU_SURE' | translate }}</h4>
+            <p class="text-muted mx-4 mb-0"> {{ 'MODULES.SYSTEM.REMOVE_LOGISTICS_CONFIRMATION' | translate }}</p>
+          </div>
+        </div>
+        <div class="d-flex gap-2 justify-content-center mt-4 mb-2">
+          <button type="button" class="btn w-sm btn-light" data-bs-dismiss="modal" (click)="modal.close('Close click')">{{ 'COMMON.CLOSE' | translate }}</button>
+          <button type="button" class="btn w-sm btn-danger " id="delete-product">{{ 'COMMON.YES_DELETE_IT' | translate }}</button>
+        </div>
+      </div>
+    </div>
+  </ng-template>
+</ng-container>
+<div *ngIf="navigating$ | async" class="vh-100 py-4 text-center" fxLayout="column" fxLayoutAlign="center center" fxLayoutGap="1rem">
+  <div>
+    <lord-icon trigger="loop" style="width:72px;height:72px" [colors]="'primary:' + primaryColor + ',secondary:' + secondaryColor" src="https://cdn.lordicon.com/msoeawqm.json">
+    </lord-icon>
+  </div>
+  <div class="mt-4">
+    <h5>{{ 'COMMON.LOADING' | translate }}</h5>
+  </div>
+</div>

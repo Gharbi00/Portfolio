@@ -1,0 +1,16 @@
+.line-clamp-4 {
+  display: -webkit-box;
+  -webkit-line-clamp: 4;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.h-94 {
+  height: 16rem;
+}
+.ft {
+  font-size: 1.25rem;
+}
+.mx-h {
+  max-height: 18px;
+}

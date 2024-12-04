@@ -1,0 +1,23 @@
+.line-clamp-4 {
+  display: -webkit-box;
+  -webkit-line-clamp: 4;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.image-container {
+  height: 243px;
+  max-width: 100%;
+  overflow: hidden;
+}
+.image-container img {
+  width: 365px;
+  height: 100%;
+  object-fit: cover;
+}
+.h-x {
+  height: 18px;
+}
+.h-92 {
+  height: 92px;
+}

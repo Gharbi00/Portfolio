@@ -1,0 +1,146 @@
+<div [class.dark-mode]="darkMode">
+  <div class="player-mode content-grid col-md-12 header-margin" style="padding: 00 0 !important">
+    <div class="section-banner"
+      [ngStyle]="{ background: 'url(' + headerImagePath + ') no-repeat center center / cover' }">
+      <img class="section-banner-icon" [src]="badgesIcon?.baseUrl + '/' + badgesIcon?.path" alt="newsfeed-icon" />
+      <p class="section-banner-title">{{'BUTTONS' | translate}}</p>
+      <p class="section-banner-text text-truncate">{{'CHECK_BUTTONS' | translate}}</p>
+    </div>
+  </div>
+  <div class="earn section-header-info col-md-12 special-margin special-margin-bottom">
+    <div *ngIf="(quests$ | async)?.length && !(loadingQuests$ | async)" class="grid">
+      <div *ngFor="let data of quests$ | async" [class.p-4]="rtl" class="point-reward-box">
+        <div [class.l-auto]="rtl" class="point-reward-box-icon-wrap">
+          <svg *ngIf="getQuestIconData(data) === 'check-icon'" class="point-reward-box-icon"
+            xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" fill="#000000" height="30"
+            width="30" version="1.1" id="Capa_1" viewBox="0 0 490.05 490.05" xml:space="preserve">
+            <g>
+              <g>
+                <path
+                  d="M418.275,418.275c95.7-95.7,95.7-250.8,0-346.5s-250.8-95.7-346.5,0s-95.7,250.8,0,346.5S322.675,513.975,418.275,418.275    z M157.175,207.575l55.1,55.1l120.7-120.6l42.7,42.7l-120.6,120.6l-42.8,42.7l-42.7-42.7l-55.1-55.1L157.175,207.575z" />
+              </g>
+            </g>
+          </svg>
+
+          <svg *ngIf="getQuestIconData(data) === 'time-icon'" class="point-reward-box-icon"
+            xmlns="http://www.w3.org/2000/svg" width="30" height="30" viewBox="0 0 24 24" fill="none">
+            <path
+              d="M12 21C16.9706 21 21 16.9706 21 12C21 7.02944 16.9706 3 12 3C7.02944 3 3 7.02944 3 12C3 16.9706 7.02944 21 12 21Z"
+              stroke="#000000" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
+            <path d="M12 6V12" stroke="#000000" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
+            <path d="M16.24 16.24L12 12" stroke="#000000" stroke-width="1.5" stroke-linecap="round"
+              stroke-linejoin="round" />
+          </svg>
+          <svg *ngIf="getQuestIconData(data) === 'typhoon-icon'" class="point-reward-box-icon"
+            xmlns="http://www.w3.org/2000/svg" width="30" height="30" viewBox="0 0 24 24">
+            <g>
+              <path fill="none" d="M0 0h24v24H0z" />
+              <path
+                d="M17.654 1.7l-2.782 2.533a9.137 9.137 0 0 1 3.49 1.973c3.512 3.2 3.512 8.388 0 11.588-2.592 2.36-6.598 3.862-12.016 4.506l2.782-2.533a9.137 9.137 0 0 1-3.49-1.973c-3.512-3.2-3.533-8.369 0-11.588C8.23 3.846 12.237 2.344 17.655 1.7zM12 8c-2.485 0-4.5 1.79-4.5 4s2.015 4 4.5 4 4.5-1.79 4.5-4-2.015-4-4.5-4z" />
+            </g>
+          </svg>
+          <svg *ngIf="getQuestIconData(data) === 'question-icon'" xmlns="http://www.w3.org/2000/svg" width="30"
+            height="30" viewBox="0 0 1024 1024">
+            <path fill="#000000"
+              d="M512 64a448 448 0 1 1 0 896 448 448 0 0 1 0-896zm23.744 191.488c-52.096 0-92.928 14.784-123.2 44.352-30.976 29.568-45.76 70.4-45.76 122.496h80.256c0-29.568 5.632-52.8 17.6-68.992 13.376-19.712 35.2-28.864 66.176-28.864 23.936 0 42.944 6.336 56.32 19.712 12.672 13.376 19.712 31.68 19.712 54.912 0 17.6-6.336 34.496-19.008 49.984l-8.448 9.856c-45.76 40.832-73.216 70.4-82.368 89.408-9.856 19.008-14.08 42.24-14.08 68.992v9.856h80.96v-9.856c0-16.896 3.52-31.68 10.56-45.76 6.336-12.672 15.488-24.64 28.16-35.2 33.792-29.568 54.208-48.576 60.544-55.616 16.896-22.528 26.048-51.392 26.048-86.592 0-42.944-14.08-76.736-42.24-101.376-28.16-25.344-65.472-37.312-111.232-37.312zm-12.672 406.208a54.272 54.272 0 0 0-38.72 14.784 49.408 49.408 0 0 0-15.488 38.016c0 15.488 4.928 28.16 15.488 38.016A54.848 54.848 0 0 0 523.072 768c15.488 0 28.16-4.928 38.72-14.784a51.52 51.52 0 0 0 16.192-38.72 51.968 51.968 0 0 0-15.488-38.016 55.936 55.936 0 0 0-39.424-14.784z" />
+          </svg>
+        </div>
+
+        <div class="point-reward-box-info point-reward-box-info-description w-100">
+          <p style="font-size: 20.8px !important;" class="point-reward-box-title">{{data?.title}}</p>
+          <p class="point-reward-box-text">
+            {{
+            (getQuestStatusText(data) === 'OnceDone' ? 'REWARD_EARNED' :
+            getQuestStatusText(data) === 'OnceNotDone' ? 'CLAIM_IT_EVERY' :
+            getQuestStatusText(data) === 'RecurrentDone' && getQuestDuration(data) > 0 ? 'Great news! You can claim this
+            reward again in just' :
+            getQuestStatusText(data) === 'RecurrentNotDone' ? ('CLAIM_IT_EVERY' | translate: { cycle:
+            data?.recurrence?.cycle }) :
+            getQuestStatusText(data) === 'Unlimited' ? 'UNLIMITED_REWARDS' :
+            '') | translate
+            }}
+          </p>
+          <div *ngIf="getQuestDuration(data) > 0 && getQuestStatusText(data) === 'RecurrentDone'" class="mt-2">
+            <p *ngIf="getCountdown(data)" class="point-reward-box-title countdown">{{
+              (getCountdown(data)?.day || 0) + ' : ' + (getCountdown(data)?.hours || 0) + ' : ' +
+              (getCountdown(data)?.minutes || 0) + ' : ' + (getCountdown(data)?.seconds || 0)
+              }}</p>
+          </div>
+        </div>
+
+        <div class="experience-design">
+          <ng-container *ngFor="let item of data?.remuneration">
+            <p *ngIf="item?.walletType === 'QUALITATIVE'" class="text-sticker text-center mb-1">
+              <svg class="text-sticker-icon icon-plus-small">
+                <use xlink:href="#svg-plus-small"></use>
+              </svg>
+              {{ item?.amount | number: '1.0-0' }}
+              <img *ngIf="!(loyaltySettings$ | async)?.qualitative?.picture?.baseUrl" class="rounded-circle"
+                src="https://sifca-storage.s3.eu-central-1.amazonaws.com/loyalcraft/reputation_512.gif"
+                class="assets/img-fluid rounded-circle mb-1"
+                style="margin-top: 5% !important; width: 25px !important" />
+              <img *ngIf="(loyaltySettings$ | async)?.qualitative?.picture?.baseUrl"
+                [src]="(loyaltySettings$ | async)?.qualitative?.picture?.baseUrl + '/' + (loyaltySettings$ | async)?.qualitative?.picture?.path"
+                class="assets/img-fluid rounded-circle mb-1"
+                style="margin-top: 5% !important; width: 25px !important" />
+            </p>
+            <p *ngIf="item?.walletType === 'QUANTITATIVE'" class="text-sticker text-center">
+              <svg class="text-sticker-icon icon-plus-small">
+                <use xlink:href="#svg-plus-small"></use>
+              </svg>
+              {{ item?.amount | number: '1.0-0' }}
+              <img *ngIf="item?.wallet?.coin?.picture?.baseUrl"
+                [src]="item?.wallet?.coin?.picture?.baseUrl + '/' + item?.wallet?.coin?.picture?.path"
+                class="assets/img-fluid rounded-circle avatar-xxs mb-1"
+                style="margin-top: 5% !important; width: 25px !important" />
+              <lord-icon *ngIf="!item?.wallet?.coin?.picture?.baseUrl" src="https://cdn.lordicon.com/lxizbtuq.json"
+                src="https://cdn.lordicon.com/lxizbtuq.json" trigger="loop" delay="2000" style="width:25px;height:25px">
+              </lord-icon>
+            </p>
+          </ng-container>
+        </div>
+      </div>
+    </div>
+    <div *ngIf="!(loadingQuests$ | async) && !(quests$ | async)?.length || (loadingQuests$ | async)" id="noresult"
+      class="py-4 mt-4 text-center">
+      <div *ngIf="loadingQuests$ | async">
+        <div class="page-loader-indicator loader-bars">
+          <div class="loader-bar"></div>
+          <div class="loader-bar"></div>
+          <div class="loader-bar"></div>
+          <div class="loader-bar"></div>
+          <div class="loader-bar"></div>
+          <div class="loader-bar"></div>
+          <div class="loader-bar"></div>
+          <div class="loader-bar"></div>
+        </div>
+      </div>
+      <div class="widget-box" *ngIf="!(loadingQuests$ | async) && !(quests$ | async)?.length">
+        <div class="notification-section animate-slide-down special-margin-bottom">
+          <div class="displayed-center mb-5">
+            <svg class="empty-fill" width="150">
+              <use xlink:href="#svg-play"></use>
+            </svg>
+          </div>
+          <p class="mb-2" style="font-size: larger; font-weight: 600;">{{'NO_QUESTS_FOUND' | translate}}</p>
+          <p style="font-weight: 500;">
+            {{'QUESTS_EMPTY_STATE' | translate}}
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<svg style="display: none">
+  <symbol id="svg-plus-small" viewBox="0 0 8 8" preserveAspectRatio="xMinYMin meet">
+    <path d="M8,5H5v3H3V5H0V3h3V0h2v3h3V5z" />
+  </symbol>
+</svg>
+
+<svg style="display: none;">
+  <symbol id="svg-play" viewBox="0 0 12 14" preserveAspectRatio="xMinYMin meet">
+    <path
+      d="M11.182,5.868l-9.378-5.6C0.751-0.355,0,0.147,0,1.383v11.236c0,1.234,0.751,1.737,1.803,1.112l9.431-5.599C12.291,7.51,12.236,6.491,11.182,5.868z" />
+  </symbol>
+</svg>

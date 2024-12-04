@@ -1,0 +1,854 @@
+<ng-container *ngIf="!(navigating$ | async)">
+  <div class="position-relative mx-n4 mt-n4">
+    <div class="profile-wid-bg profile-setting-img">
+      <img src="assets/images/profile-bg.jpg" class="profile-wid-img" alt="">
+      <div class="overlay-content">
+        <div class="text-end p-2 ms-2">
+          <div class="p-0 ms-auto rounded-circle profile-photo-edit">
+            <input id="profile-foreground-img-file-input" type="file" class="profile-foreground-img-file-input">
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-xxl-3">
+      <div class="card mt-n5">
+        <div class="card-body p-4">
+          <div *ngIf="plugin$ | async as plugin" class="text-center">
+            <div class="profile-user position-relative d-inline-block mx-auto mb-4">
+              <div class="avatar-lg mb-3">
+                <div class="avatar-title bg-soft-success fs-24 text-success">
+                  <i [ngClass]="plugin?.icon"></i>
+                </div>
+              </div>
+            </div>
+            <h5 class="fs-16 mb-1">{{plugin?.name}}</h5>
+            <p class="text-muted mb-0">{{plugin?.description}}</p>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="col-xxl-9">
+      <div class="card mt-xxl-n5">
+        <div class="card-header">
+          <ul ngbNav #customNav="ngbNav" [activeId]="1" class="nav nav-tabs-custom rounded card-header-tabs border-bottom-0" role="tablist">
+            <li [ngbNavItem]="1" class="nav-item">
+              <a ngbNavLink class="nav-link" data-bs-toggle="tab" role="tab">
+                <i class="far fa-envelope"></i>{{'MODULES.SYSTEM.ACCESS' | translate }}
+              </a>
+              <ng-template ngbNavContent>
+                <ng-container *ngIf="((loadingIntegration$ | async) === false || null || undefined) && (integration$ | async)">
+                  <div class="row">
+                    <div class="col-lg-4">
+                      <div class="card card-height-100">
+                        <div class="card-body">
+                          <h5 class="card-title mb-3">{{'MODULES.SYSTEM.DEVELOPER_PLAN' | translate }}</h5>
+                          <div class="progress animated-progress custom-progress mb-1">
+                            <div class="progress-bar bg-secondary" role="progressbar" style="width: 38%" aria-valuenow="38" aria-valuemin="0" aria-valuemax="100"></div>
+                          </div>
+                          <p class="text-muted mb-2">You used 215 of 2000 of your API</p>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="col-lg-4">
+                      <div class="card card-animate card-height-100">
+                        <div class="card-body">
+                          <div class="d-flex justify-content-between">
+                            <div>
+                              <p class="fw-medium text-muted mb-0">{{'MODULES.SYSTEM.SUCCESSFUL_CONVERSIONS' | translate }}</p>
+                              <h2 class="mt-4 ff-secondary fw-bold">
+                                <span [CountTo]="50" class="counter-value" [from]="0" [duration]="1"></span>
+                              </h2>
+                              <p class="mb-0 text-muted"><span class="badge bg-light text-success mb-0"><i class="ri-arrow-up-line align-middle"></i> 8.24 % </span> 7 last week</p>
+                            </div>
+                            <div>
+                              <div class="avatar-sm flex-shrink-0">
+                                <span class="avatar-title bg-soft-success rounded-circle fs-2">
+                                  <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                    stroke-linejoin="round" class="feather feather-check-circle text-success">
+                                    <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path>
+                                    <polyline points="22 4 12 14.01 9 11.01"></polyline>
+                                  </svg>
+                                </span>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="col-lg-4">
+                      <div class="card card-animate card-height-100">
+                        <div class="card-body">
+                          <div class="d-flex justify-content-between">
+                            <div>
+                              <p class="fw-medium text-muted mb-0">{{'MODULES.SYSTEM.FAILED_CONVERSIONS' | translate }}</p>
+                              <h2 class="mt-4 ff-secondary fw-bold">
+                                <span [CountTo]="8" class="counter-value" [from]="0" [duration]="1"></span>
+                              </h2>
+                              <p class="mb-0 text-muted"><span class="badge bg-light text-danger mb-0"><i class="ri-arrow-down-line align-middle"></i> 25.87 % </span> 7 last week</p>
+                            </div>
+                            <div>
+                              <div class="avatar-sm flex-shrink-0">
+                                <span class="avatar-title bg-soft-danger rounded-circle fs-2">
+                                  <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                    stroke-linejoin="round" class="feather feather-alert-octagon text-danger">
+                                    <polygon points="7.86 2 16.14 2 22 7.86 22 16.14 16.14 22 7.86 22 2 16.14 2 7.86 7.86 2">
+                                    </polygon>
+                                    <line x1="12" y1="8" x2="12" y2="12"></line>
+                                    <line x1="12" y1="16" x2="12.01" y2="16"></line>
+                                  </svg>
+                                </span>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="card-header d-flex justify-content-end align-items-center">
+                    <button (click)="createAccessApi()" type="button" class="btn btn-info create-btn" data-bs-toggle="modal" data-bs-target="#api-key-modal"><i
+                        class="ri-add-line align-bottom me-1"></i>{{'MODULES.SYSTEM.ADD_ACCESS_API' | translate }}
+                    </button>
+                  </div>
+                  <div class="card-body">
+                    <div>
+                      <div class="table-responsive table-card mb-3">
+                        <table class="table align-middle table-nowrap mb-0">
+                          <thead class="table-light">
+                            <tr>
+                              <th>{{'MODULES.SYSTEM.PUBLIC_KEY' | translate }} </th>
+                              <th>{{'MODULES.SYSTEM.SECRET_KEY' | translate }}</th>
+                              <th>{{'MODULES.SYSTEM.CREATE_DATE' | translate }}</th>
+                              <th>{{'COMMON.STATUS' | translate }}</th>
+                            </tr>
+                          </thead>
+                          <tbody class="list form-check-all">
+                            <tr *ngFor="let access of (integration$ | async)?.access">
+                              <td class="apikey">
+                                <div class="input-group">
+                                  <input type="text" class="form-control apikey-value" [value]="access?.publicKey">
+                                  <span class="input-group-text cursor-pointer"><i matTooltip="Copy" (click)="copyText(access?.publicKey)" class="ri-file-copy-line"></i></span>
+                                </div>
+                              </td>
+                              <td class="apikey">
+                                <div class="input-group">
+                                  <input type="text" class="form-control apikey-value" [value]="access?.secretKey">
+                                  <span class="input-group-text cursor-pointer"><i matTooltip="Copy" (click)="copyText(access?.secretKey)" class="ri-file-copy-line"></i></span>
+                                </div>
+                              </td>
+                              <td class="create_date">25-12-2023</td>
+                              <td class="status"><span class="badge badge-soft-warning">{{'COMMON.STATE.DRAFT' | translate }}</span>
+                              </td>
+                            </tr>
+                          </tbody>
+                        </table>
+                      </div>
+                    </div>
+                  </div>
+                </ng-container>
+                <div id="noresult" class="py-4 mt-4 text-center" *ngIf="(loadingIntegration$ | async) || (!(loadingIntegration$ | async) && !(integration$ | async))">
+                  <div *ngIf="loadingIntegration$ | async">
+                    <lord-icon trigger="loop" style="width:72px;height:72px" [colors]="'primary:' + primaryColor + ',secondary:' + secondaryColor" src="https://cdn.lordicon.com/msoeawqm.json">
+                    </lord-icon>
+                    <h5 class="mt-4">{{'COMMON.LOADING' | translate }}</h5>
+                  </div>
+                  <div *ngIf="!(loadingIntegration$ | async) && !(integration$ | async)">
+                    <lord-icon trigger="loop" style="width:72px;height:72px" [colors]="'primary:' + primaryColor + ',secondary:' + secondaryColor" src="https://cdn.lordicon.com/vlycxjwx.json">
+                    </lord-icon>
+                    <h5 class="mt-4">{{ 'COMMON.NO_RESULT' | translate }}</h5>
+                  </div>
+                </div>
+              </ng-template>
+            </li>
+            <li [ngbNavItem]="2" class="nav-item">
+              <a ngbNavLink class="nav-link" data-bs-toggle="tab" role="tab">
+                <i class="far fa-envelope"></i>{{'MODULES.SYSTEM.ENDPOINTS' | translate }}
+              </a>
+              <ng-template ngbNavContent>
+                <div class="d-flex justify-content-between mb-3">
+                  <div>
+                    <div for="firstnameInput">{{ 'PAGES.SALES' | translate }}</div>
+                  </div>
+                  <div class="flex-shrink-0 d-flex fs-18 gap-1">
+                    <div class="form-check form-switch">
+                      <input [checked]="(integration$ | async)?.endpoints?.sales === true" (change)="onChangeIntegration($event?.target?.checked,'sales')" class="form-check-input" type="checkbox"
+                        role="switch" id="flexSwitchCheckDefault">
+                    </div>
+                  </div>
+                </div>
+                <div class="d-flex justify-content-between mb-3">
+                  <div>
+                    <div for="firstnameInput">{{'MODULES.SYSTEM.PURCHASE' | translate }}</div>
+                  </div>
+                  <div class="flex-shrink-0 d-flex fs-18 gap-1">
+                    <div class="form-check form-switch">
+                      <input [checked]="(integration$ | async)?.endpoints?.purchase === true" (change)="onChangeIntegration($event?.target?.checked,'purchase')" class="form-check-input"
+                        type="checkbox" role="switch" id="flexSwitchCheckDefault">
+                    </div>
+                  </div>
+                </div>
+                <div class="d-flex justify-content-between mb-3">
+                  <div>
+                    <div for="firstnameInput">Onsite Converter</div>
+                  </div>
+                  <div class="flex-shrink-0 d-flex fs-18 gap-1">
+                    <div class="form-check form-switch">
+                      <input [checked]="(integration$ | async)?.endpoints?.loyalty?.onsiteconverter === true" (change)="onChangeIntegration($event?.target?.checked,'loyalty')" class="form-check-input"
+                        type="checkbox" role="switch" id="flexSwitchCheckDefault">
+                    </div>
+                  </div>
+                </div>
+              </ng-template>
+            </li>
+            <li [ngbNavItem]="3" class="nav-item">
+              <a ngbNavLink class="nav-link" data-bs-toggle="tab" role="tab">
+                <i class="far fa-envelope"></i>{{'MODULES.SYSTEM.DOCUMENTATION' | translate }}
+              </a>
+              <ng-template ngbNavContent>
+                <div id="content" class="row justify-content-center">
+                  <div class="col-lg-10">
+                    <div class="card">
+                      <div class="bg-soft-warning position-relative">
+                        <div class="card-body p-5">
+                          <div class="text-center">
+                            <h3>{{'MODULES.SYSTEM.CUSTOMER_ENGAGEMENT_API_DOCUMENTATION' | translate }}</h3>
+                            <p class="mb-0 text-muted">{{'MODULES.SYSTEM.LAST_UPDATE' | translate }} 14 Mar, 2024</p>
+                          </div>
+                        </div>
+                        <div class="shape">
+                          <svg xmlns="http://www.w3.org/2000/svg" version="1.1" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:svgjs="http://svgjs.com/svgjs" width="1440" height="60"
+                            preserveAspectRatio="none" viewBox="0 0 1440 60">
+                            <g mask="url(&quot;#SvgjsMask1001&quot;)" fill="none">
+                              <path d="M 0,4 C 144,13 432,48 720,49 C 1008,50 1296,17 1440,9L1440 60L0 60z" style="fill: var(--vz-card-bg-custom);"></path>
+                            </g>
+                            <defs>
+                              <mask id="SvgjsMask1001">
+                                <rect width="1440" height="60" fill="#ffffff"></rect>
+                              </mask>
+                            </defs>
+                          </svg>
+                        </div>
+                      </div>
+                      <div class="card-body p-4">
+                        <div>
+                          <h5>{{'MODULES.SYSTEM.INTRODUCTION' | translate }}</h5>
+                          <p class="text-muted">Welcome to the Sifca Loyalty Program APIs documentation. Sifca offers a comprehensive loyalty program solution as a Software as a Service (SaaS), allowing businesses to integrate loyalty features seamlessly into their websites and mobile applications.</p>
+                          <p class="text-muted">This documentation provides developers with detailed information on how to integrate and utilize the Sifca Loyalty Program APIs effectively.</p>
+                        </div>
+
+                        <div>
+                          <h5>Document Map</h5>
+                          <ul class="text-muted vstack gap-2">
+                            <li>{{'MODULES.SYSTEM.INTRODUCTION' | translate }}
+                            </li>
+                            <li>{{'MODULES.SYSTEM.AUTHENTICATION' | translate }}
+                            </li>
+                            <li>{{'MODULES.SYSTEM.USER_MANAGEMENT' | translate }}
+                            </li>
+                            <li>{{'MODULES.SYSTEM.LOYALTY_POINTS' | translate }}
+                            </li>
+                            <li>{{'MODULES.SYSTEM.WIDGET_INTEGRATION' | translate }}
+                            </li>
+                            <li>{{'MODULES.SYSTEM.ERROR_HANDLING' | translate }}
+                            </li>
+                            <li>{{'MODULES.SYSTEM.RATE_LIMITING' | translate }}
+                            </li>
+                            <li>{{'MODULES.SYSTEM.EXAMPLES' | translate }}
+                            </li>
+                            <li>FAQ
+                            </li>
+                            <li>{{'MODULES.SYSTEM.SUPPORT' | translate }}
+                            </li>
+                          </ul>
+                        </div>
+
+                        <div>
+                          <h5>{{'MODULES.SYSTEM.CONTEXT' | translate }}</h5>
+                          <p class="text-muted">{{'MODULES.SYSTEM.API_DESCRIPTION' | translate }} </p>
+                          <p class="text-muted">{{'MODULES.SYSTEM.ROBUST_API_FOUNDATION' | translate }}</p>
+                        </div>
+
+                        <div>
+                          <h5>1. Authentication</h5>
+                          <p class="text-muted">{{'MODULES.SYSTEM.AUTHENTICATION_CRUCIAL' | translate }} {{'MODULES.SYSTEM.AUTHENTICATION_MECHANISMS' | translate }} </p>
+                          <div class="p-2 ms-2">
+                            <h6>{{'MODULES.SYSTEM.API_USER_AUTHENTICATION' | translate }}</h6>
+                            <p class="text-muted">{{'MODULES.SYSTEM.API_USER_AUTHENTICATION_DEV' | translate }} </p>
+                            <ul class="text-muted vstack gap-2">
+                              <li>
+                                URL: http://localhost:8011/auth/sclogin
+                              </li>
+                              <li>
+                                Method: POST
+                              </li>
+                            </ul>
+                          </div>
+
+                          <div class="p-2 ms-2">
+                            <h6>{{'MODULES.SYSTEM.END_CONSUMER_AUTHENTICATION' | translate }}</h6>
+                            <p class="text-muted">{{'MODULES.SYSTEM.END_CONSUMER_AUTHENTICATION_AUTH' | translate }} </p>
+                            <ul class="text-muted vstack gap-2">
+                              <li>
+                                URL: http://localhost:8011/cauth/login
+                              </li>
+                              <li>
+                                Method: POST
+                              </li>
+                            </ul>
+                          </div>
+                        </div>
+
+                        <div>
+                          <h5>2. {{'MODULES.SYSTEM.USER_MANAGEMENT' | translate }}</h5>
+                          <p class="text-muted">{{'MODULES.SYSTEM.MANAGE_USER_ACCOUNTS' | translate }} </p>
+                          <div class="p-2 ms-2">
+                            <h6>APIs</h6>
+                            <ul class="text-muted vstack gap-2">
+                              <li>
+                                <span class="fw-bold fs-17">{{'MODULES.SYSTEM.LOGIN_GET_ACCESS_TOKEN_API' | translate }}</span>{{'MODULES.SYSTEM.LOGIN_GET_ACCESS_TOKEN_API' | translate }}
+                                <p class="text-muted">{{'MODULES.SYSTEM.AUTHENTICATION_API_DESCRIPTION' | translate }}</p>
+                                <div>
+                                  <h6>{{'MODULES.SYSTEM.ENDPOINT' | translate }}</h6>
+                                  <ul class="mb-2 text-muted vstack gap-2">
+                                    <li>
+                                      URL: http://localhost:8011/cauth/clogin
+                                    </li>
+                                    <li>
+                                      Method: POST
+                                    </li>
+                                  </ul>
+                                </div>
+                                <div class="mb-3">
+                                  <h6>Request Parameters</h6>
+                                  <ul class="mb-2 text-muted vstack gap-2">
+                                    <li>
+                                      PublicKey: Public key associated with the user's account.
+                                    </li>
+                                    <li>
+                                      SecretKey: Secret key associated with the user's account.
+                                    </li>
+                                  </ul>
+                                </div>
+                                <div>
+                                  <h6>{{'MODULES.SYSTEM.ERROR_HANDLING' | translate }}</h6>
+                                  <p class="text-muted">{{'MODULES.SYSTEM.API_ERROR_RESPONSE' | translate }}</p>
+                                  <ul class="mb-2 text-muted vstack gap-2">
+                                    <li>
+                                      <span class="fs-15">{{'MODULES.SYSTEM.BAD_REQUEST' | translate }}</span> If the <span class="fw-bold">`publicKey`</span> or <span class="fw-bold">`secretKey`</span>
+                                      parameters are missing.
+                                    </li>
+                                    <li>
+                                      <span class="fs-15">{{'MODULES.SYSTEM.BAD_REQUEST' | translate }}</span>{{'MODULES.SYSTEM.NO_USER_FOUND' | translate }}
+                                    </li>
+                                    <li>
+                                      <span class="fs-15">{{'MODULES.SYSTEM.BAD_REQUEST' | translate }}</span>{{'MODULES.SYSTEM.INCORRECT_SECRET_KEY' | translate }}
+                                    </li>
+                                  </ul>
+                                </div>
+                                <div class="mb-3">
+                                  <h6>{{'MODULES.SYSTEM.SAMPLE_REQUEST' | translate }}</h6>
+                                  <p class="text-muted">{{'MODULES.SYSTEM.SUCCESSFUL_AUTHENTICATION' | translate }}
+                                  </p>
+                                  <pre class="language-markup" tabindex="0">
+                                    {{'{
+                                    "publicKey": "example_public_key",
+                                    "secretKey": "example_secret_key"
+                                    }'}}
+                                  </pre>
+                                </div>
+                                <div class="mb-3">
+                                  <h6>{{'MODULES.SYSTEM.SAMPLE_RESPONSE' | translate }}</h6>
+                                  <p class="text-muted">{{'MODULES.SYSTEM.SUCCESSFUL_AUTHENTICATION' | translate }}
+                                  </p>
+                                  <pre class="language-markup" tabindex="0">
+                                    {{'{
+                                    "accessToken": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..."
+                                    }'}}
+                                  </pre>
+                                </div>
+                              </li>
+
+                              <li>
+                                <span class="fw-bold fs-17">Mutualize Users API</span>
+                                <p class="text-muted">{{'MODULES.SYSTEM.MUTUALIZE_USERS_API' | translate }}</p>
+                                <div class="mb-3">
+                                  <h6>{{'MODULES.SYSTEM.ENDPOINT' | translate }}</h6>
+                                  <ul class="mb-2 text-muted vstack gap-2">
+                                    <li>
+                                      URL: http://localhost:8011/cauth/login
+                                    </li>
+                                    <li>
+                                      Method: POST
+                                    </li>
+                                  </ul>
+                                </div>
+                                <div class="mb-3">
+                                  <h6>{{'MODULES.SYSTEM.REQUEST_HEADERS' | translate }}</h6>
+                                  <ul class="mb-2 text-muted vstack gap-2">
+                                    <li>{{'MODULES.SYSTEM.AUTHORIZATION_BEARER' | translate }}
+                                    </li>
+                                  </ul>
+                                </div>
+                                <div class="mb-3">
+                                  <h6>{{'MODULES.SYSTEM.REQUEST_BODY_PARAMETERS' | translate }}</h6>
+                                  <ul class="mb-2 text-muted vstack gap-2">
+                                    <li>
+                                      <span class="fw-bold">{{'MENUITEMS.CUSTOMERENGAGEMENT.LIST.IDENTIFIER' | translate }}: </span>{{'MODULES.SYSTEM.USER_IDENTIFIER' | translate }}
+                                    </li>
+                                    <li>
+                                      <span class="fw-bold">{{ 'COMMON.EMAIL' | translate }}: </span>{{'COMMON.EMAIL' | translate }} address of the user.
+                                    </li>
+                                    <li>
+                                      <span class="fw-bold">{{'COMMON.FIRST_NAME' | translate }}: </span>{{'COMMON.FIRST_NAME' | translate }} of the user.
+                                    </li>
+                                    <li>
+                                      <span class="fw-bold">{{'COMMON.LAST_NAME' | translate }}: </span>{{'COMMON.LAST_NAME' | translate }} of the user.
+                                    </li>
+                                  </ul>
+                                </div>
+                                <div class="mb-3">
+                                  <h6>{{'MODULES.SYSTEM.RESPONSE' | translate }}</h6>
+                                  <p class="text-muted">{{'MODULES.SYSTEM.SUCCESSFUL_MUTUALIZATION_RESPONSE' | translate }}
+                                  </p>
+                                  <pre class="language-markup" tabindex="0">
+                                    {{'{
+                                    "expiresIn": 360000000,
+                                    "accessToken": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..."
+                                    }'}}
+                                  </pre>
+                                </div>
+                                <div class="mb-3">
+                                  <h6>{{'MODULES.SYSTEM.ERROR_HANDLING' | translate }}</h6>
+                                  <p class="text-muted">The API returns appropriate error responses in case of missing parameters or if the target user is not found in the database.404 Not Found: If the target user is not found in the database.</p>
+                                  <ul class="mb-2 text-muted vstack gap-2">
+                                    <li>
+                                      <span class="fs-15">{{'MODULES.SYSTEM.404_NOT_FOUND' | translate }}</span>{{'MODULES.SYSTEM.TARGET_USER_NOT_FOUND' | translate }}
+                                    </li>
+                                  </ul>
+                                </div>
+                                <div class="mb-3">
+                                  <h6>{{'MODULES.SYSTEM.SAMPLE_REQUEST' | translate }}</h6>
+                                  <pre class="language-markup" tabindex="0">
+                                    POST /cauth/login
+                                    Authorization: Bearer YOUR_ACCESS_TOKEN
+                                    {{'{
+                                    "identifier": "unique_user_identifier",
+                                    "email": "user@example.com",
+                                    "firstName": "John",
+                                    "lastName": "Doe"
+                                    }'}}
+                                  </pre>
+                                </div>
+                                <div class="mb-3">
+                                  <h6>{{'MODULES.SYSTEM.SAMPLE_RESPONSE' | translate }}</h6>
+                                  <pre class="language-markup" tabindex="0">
+                                    {{'{
+                                    "expiresIn": 360000000,
+                                    "accessToken": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..."
+                                    }'}}
+                                  </pre>
+                                </div>
+                              </li>
+                            </ul>
+                          </div>
+                        </div>
+
+                        <div>
+                          <h5>3. {{'MODULES.SYSTEM.LOYALTY_POINTS' | translate }}</h5>
+                          <p class="text-muted">{{'MODULES.SYSTEM.MANAGE_LOYALTY_POINTS_FOR_USERS' | translate }}</p>
+                          <div class="p-2 ms-2">
+                            <h6>APIs</h6>
+                            <ul class="text-muted vstack gap-2">
+                              <li>
+                                <span class="fw-bold fs-17">{{'MODULES.SYSTEM.CHECK_USER_WALLET_AND_REPUTATION_LEVEL_API' | translate }}</span>
+                                <p class="text-muted">{{'MODULES.SYSTEM.CHECK_WALLET_REPUTATION_API' | translate }}</p>
+                                <div>
+                                  <h6>{{'MODULES.SYSTEM.ENDPOINT' | translate }}</h6>
+                                  <ul class="mb-2 text-muted vstack gap-2">
+                                    <li>
+                                      URL: http://localhost:8011/wallet/check
+                                    </li>
+                                    <li>
+                                      Method: POST
+                                    </li>
+                                  </ul>
+                                </div>
+                                <div class="mb-3">
+                                  <h6>{{'MODULES.SYSTEM.REQUEST_HEADERS' | translate }}</h6>
+                                  <ul class="mb-2 text-muted vstack gap-2">
+                                    <li>{{'MODULES.SYSTEM.AUTHORIZATION' | translate }}
+                                    </li>
+                                  </ul>
+                                </div>
+
+                                <div class="mb-3">
+                                  <h6>{{'MODULES.SYSTEM.REQUEST_BODY_PARAMETERS' | translate }}</h6>
+                                  <ul class="mb-2 text-muted vstack gap-2">
+                                    <li>{{'MODULES.SYSTEM.USER_OR_CARD' | translate }}
+                                    </li>
+                                  </ul>
+                                </div>
+                                <div class="mb-3">
+                                  <h6>{{'MODULES.SYSTEM.RESPONSE' | translate }}</h6>
+                                  <p class="text-muted">{{'MODULES.SYSTEM.THE_API_RETURNS_AN_OBJECT' | translate }}
+                                  </p>
+                                  <pre class="language-markup" tabindex="0">
+                                    {{'{
+                                    "wallet": {
+                                    "amount": "330.76",
+                                    "walletType": "QUANTITATIVE",
+                                    "coin": {
+                                    "name": "Shop Coin",
+                                    "id": "65d38c76c706c90012f14ebb"
+                                    }
+                                    },
+                                    "currentReputation": {
+                                    "color": "#FFC107",
+                                    "perks": {
+                                    "discount": "0",
+                                    "description": ""
+                                    },
+                                    "reputationLevel": "YELLOW"
+                                    }
+                                    }'}}
+                                  </pre>
+                                </div>
+
+                                <div>
+                                  <h6>{{'MODULES.SYSTEM.ERROR_HANDLING' | translate }}</h6>
+                                  <p class="text-muted">The API returns appropriate error responses in case the user's card is not found or if no wallets are found for the provided user.</p>
+                                  <ul class="mb-2 text-muted vstack gap-2">
+                                    <li>
+                                      <span class="fs-15">{{'MODULES.SYSTEM.404_NOT_FOUND' | translate }} </span>{{'MODULES.SYSTEM.USER_CARD_NOT_FOUND' | translate }}
+                                    </li>
+                                    <li>
+                                      <span class="fs-15">{{'MODULES.SYSTEM.404_NOT_FOUND' | translate }} </span>{{'MODULES.SYSTEM.IF_NO_WALLETS_FOUND' | translate }}
+                                    </li>
+                                  </ul>
+                                </div>
+                                <div class="mb-3">
+                                  <h6>{{'MODULES.SYSTEM.SAMPLE_REQUEST' | translate }}</h6>
+                                  <pre class="language-markup" tabindex="0">
+                                    POST /wallet/check
+                                    Authorization: Bearer YOUR_ACCESS_TOKEN
+                                    {{'{
+                                    "user": "loyalty_card_number"
+                                    }'}}
+                                  </pre>
+                                </div>
+                                <div class="mb-3">
+                                  <h6>{{'MODULES.SYSTEM.SAMPLE_RESPONSE' | translate }}</h6>
+                                  <pre class="language-markup" tabindex="0">
+                                    {{'{
+                                    "wallet": {
+                                    "amount": "330.76",
+                                    "walletType": "QUANTITATIVE",
+                                    "coin": {
+                                    "name": "Shop Coin",
+                                    "id": "65d38c76c706c90012f14ebb"
+                                    }
+                                    },
+                                    "currentReputation": {
+                                    "color": "#FFC107",
+                                    "perks": {
+                                    "discount": "0",
+                                    "description": ""
+                                    },
+                                    "reputationLevel": "YELLOW"
+                                    }
+                                    }'}}
+                                  </pre>
+                                </div>
+                              </li>
+
+                              <li>
+                                <span class="fw-bold fs-17">{{'MODULES.SYSTEM.PUSH_POINTS_FOR_DIRECT_PURCHASE_API' | translate }}</span>
+                                <p class="text-muted">{{'MODULES.SYSTEM.PUSH_POINTS_FOR_DIRECT_PURCHASE' | translate }}</p>
+                                <div>
+                                  <h6>{{'MODULES.SYSTEM.ENDPOINT' | translate }}</h6>
+                                  <ul class="mb-2 text-muted vstack gap-2">
+                                    <li>
+                                      URL: http://localhost:8011/wallet/push
+                                    </li>
+                                    <li>
+                                      Method: POST
+                                    </li>
+                                  </ul>
+                                </div>
+                                <div class="mb-3">
+                                  <h6>{{'MODULES.SYSTEM.REQUEST_HEADERS' | translate }}</h6>
+                                  <ul class="mb-2 text-muted vstack gap-2">
+                                    <li>{{'MODULES.SYSTEM.AUTHORIZATION' | translate }}
+                                    </li>
+                                  </ul>
+                                </div>
+
+                                <div class="mb-3">
+                                  <h6>{{'MODULES.SYSTEM.REQUEST_BODY_PARAMETERS' | translate }}</h6>
+                                  <ul class="mb-2 text-muted vstack gap-2">
+                                    <li>{{'MODULES.SYSTEM.USER_OR_CARD' | translate }}
+                                    </li>
+                                    <li>{{'MODULES.SYSTEM.AMOUNT' | translate }}
+                                    </li>
+                                    <li>{{'MODULES.SYSTEM.ORDER_OPTIONAL' | translate }}
+                                    </li>
+                                  </ul>
+                                </div>
+                                <div class="mb-3">
+                                  <h6>{{'MODULES.SYSTEM.SAMPLE_REQUEST' | translate }}</h6>
+                                  <pre class="language-markup" tabindex="0">
+                                    POST /wallet/push
+                                    Authorization: Bearer YOUR_ACCESS_TOKEN
+                                    {{'{
+                                    "user": "06613613553184",
+                                    "amount": 10,
+                                    "order": {
+                                    "number": "az1235sdf",
+                                    "orderTime": "",
+                                    "currency": "TND",
+                                    "deliveryFees": "15",
+                                    "orderType": "DELIVERY",
+                                    "shoppingCart": {
+                                    "products": [
+                                    {
+                                    "name": "product name",
+                                    "barcode": "6192023010075",
+                                    "quantity": 5,
+                                    "price": {
+                                    "net": "7",
+                                    "gross": "10",
+                                    "unitNet": "10",
+                                    "unitGross": "15"
+                                    }
+                                    }
+                                    ],
+                                    "price": {
+                                    "net": {
+                                    "beforeReduction": "25",
+                                    "afterReduction": "5"
+                                    },
+                                    "gross": {
+                                    "beforeReduction": "25",
+                                    "afterReduction": "5"
+                                    },
+                                    "toPay": {
+                                    "beforeReduction": "25",
+                                    "afterReduction": "5"
+                                    },
+                                    "taxValue": "17"
+                                    }
+                                    }
+                                    }
+                                    }'}}
+                                  </pre>
+                                </div>
+                                <div class="mb-3">
+                                  <h6>{{'MODULES.SYSTEM.RESPONSE' | translate }}</h6>
+                                  <p class="text-muted">{{'MODULES.SYSTEM.SUCCESSFUL_PUSHING_OF_POINTS' | translate }}
+                                  </p>
+                                  <pre class="language-markup" tabindex="0">
+                                    {{'{
+                                    "status": 200,
+                                    "response": "Amount was pushed successfully."
+                                    }'}}
+                                  </pre>
+                                </div>
+
+                                <div>
+                                  <h6>{{'MODULES.SYSTEM.ERROR_HANDLING' | translate }}</h6>
+                                  <p class="text-muted">{{'MODULES.SYSTEM.API_RETURNS_APPROPRIATE_ERRORS' | translate }}</p>
+                                  <ul class="mb-2 text-muted vstack gap-2">
+                                    <li>
+                                      <span class="fs-15">{{'MODULES.SYSTEM.404_NOT_FOUND' | translate }} </span>{{'MODULES.SYSTEM.USER_CARD_NOT_FOUND' | translate }}
+                                    </li>
+                                    <li>
+                                      <span class="fs-15">{{'MODULES.SYSTEM.404_NOT_ACCEPTABLE' | translate }} </span>{{'MODULES.SYSTEM.ONSITE_CONVERTER_NOT_ACTIVE' | translate }}
+                                    </li>
+                                  </ul>
+                                </div>
+                              </li>
+
+                              <li>
+                                <span class="fw-bold fs-17">{{'MODULES.SYSTEM.DEDUCT_POINTS_APII' | translate }}</span>
+                                <p class="text-muted">{{'MODULES.SYSTEM.DEDUCT_POINTS_API' | translate }}</p>
+                                <div>
+                                  <h6>{{'MODULES.SYSTEM.ENDPOINT' | translate }}</h6>
+                                  <ul class="mb-2 text-muted vstack gap-2">
+                                    <li>
+                                      URL: http://localhost:8011/wallet/deduct
+                                    </li>
+                                    <li>
+                                      Method: POST
+                                    </li>
+                                  </ul>
+                                </div>
+                                <div class="mb-3">
+                                  <h6>{{'MODULES.SYSTEM.REQUEST_HEADERS' | translate }}</h6>
+                                  <ul class="mb-2 text-muted vstack gap-2">
+                                    <li>{{'MODULES.SYSTEM.AUTHORIZATION' | translate }}
+                                    </li>
+                                  </ul>
+                                </div>
+
+                                <div class="mb-3">
+                                  <h6>{{'MODULES.SYSTEM.REQUEST_BODY_PARAMETERS' | translate }}</h6>
+                                  <ul class="mb-2 text-muted vstack gap-2">
+                                    <li>{{'MODULES.SYSTEM.USER_OR_CARD' | translate }}
+                                    </li>
+                                    <li>{{'MODULES.SYSTEM.AMOUNT' | translate }}
+                                    </li>
+                                  </ul>
+                                </div>
+                                <div class="mb-3">
+                                  <h6>{{'MODULES.SYSTEM.SAMPLE_REQUEST' | translate }}</h6>
+                                  <pre class="language-markup" tabindex="0">
+                                    POST /wallet/deduct
+                                    Authorization: Bearer YOUR_ACCESS_TOKEN
+                                    {{'{
+                                    "user": "loyalty_card_number",
+                                    "amount": 10
+                                    }'}}
+                                  </pre>
+                                </div>
+                                <div class="mb-3">
+                                  <h6>{{'MODULES.SYSTEM.RESPONSE' | translate }}</h6>
+                                  <p class="text-muted">{{'MODULES.SYSTEM.SUCCESSFUL_DEDUCTION_OF_POINTS' | translate }}
+                                  </p>
+                                  <pre class="language-markup" tabindex="0">
+                                    {{'{
+                                    "success": true,
+                                    "message": "Successful transaction."
+                                    }'}}
+                                  </pre>
+                                </div>
+
+                                <div>
+                                  <h6>{{'MODULES.SYSTEM.ERROR_HANDLING' | translate }}</h6>
+                                  <p class="text-muted">{{'MODULES.SYSTEM.API_RETURNS_ERROR_RESPONSE' | translate }}</p>
+                                  <ul class="mb-2 text-muted vstack gap-2">
+                                    <li>
+                                      <span class="fs-15">{{'MODULES.SYSTEM.404_NOT_FOUND' | translate }} </span>{{'MODULES.SYSTEM.USER_CARD_NOT_FOUND' | translate }}
+                                    </li>
+                                  </ul>
+                                </div>
+                              </li>
+                            </ul>
+                          </div>
+                        </div>
+
+                        <div>
+                          <h5>4. {{'MODULES.SYSTEM.WIDGET_INTEGRATION' | translate }}</h5>
+                          <p class="text-muted">{{'MODULES.SYSTEM.INTEGRATE_THE_SIFCA_WIDGET' | translate }}</p>
+                          <div class="p-2 ms-2">
+                            <h6>APIs</h6>
+                            <ul class="text-muted vstack gap-2">
+                              <li>
+                                <span class="fw-bold fs-17">{{'MODULES.SYSTEM.INTEGRATION_GUIDE' | translate }}</span>
+                                <p class="text-muted">{{'MODULES.SYSTEM.TO_INTEGRATE_THE_SIFCA_WIDGET' | translate }}</p>
+                                <div class="mb-3">
+                                  <h6>{{'MODULES.SYSTEM.STEP_1_ADD_STYLESHEET_LINK' | translate }}</h6>
+                                  <p class="text-muted">{{'MODULES.SYSTEM.ADD_STYLESHEET_LINK' | translate }}</p>
+                                  <pre class="language-markup" tabindex="0">&lt;link rel="stylesheet" href="your-stylesheet.css"&gt;
+                                  </pre>
+                                </div>
+
+                                <div class="mb-3">
+                                  <h6>{{'MODULES.SYSTEM.STEP_2_ADD_JAVASCRIPT_SCRIPTS' | translate }}</h6>
+                                  <p class="text-muted">{{'MODULES.SYSTEM.ADD_THE_FOLLOWING_JAVASCRIPT_SCRIPTS' | translate }}</p>
+                                  <pre class="language-markup" tabindex="0">
+                                    &lt;script src="https://widgt-sbx-app.bosk.app/runtime-es2015.js" type="module"&gt;&lt;/script&gt;
+                                    &lt;script src="https://widgt-sbx-app.bosk.app/runtime-es5.js" nomodule defer&gt;&lt;/script&gt;
+                                    &lt;script src="https://widgt-sbx-app.bosk.app/polyfills-es5.js" nomodule defer&gt;&lt;/script&gt;
+                                    &lt;script src="https://widgt-sbx-app.bosk.app/polyfills-es2015.js" type="module"&gt;&lt;/script&gt;
+                                    &lt;script src="https://widgt-sbx-app.bosk.app/scripts.js" defer&gt;&lt;/script&gt;
+                                    &lt;script src="https://widgt-sbx-app.bosk.app/main-es2015.js" type="module"&gt;&lt;/script&gt;
+                                    &lt;script src="https://widgt-sbx-app.bosk.app/main-es5.js" nomodule defer&gt;&lt;/script&gt;
+                                  </pre>
+                                </div>
+                              </li>
+                              <li>
+                                <span class="fw-bold fs-17">{{'MODULES.SYSTEM.WIDGET_USAGE' | translate }}</span>
+                                <p class="text-muted">{{'MODULES.SYSTEM.ONCE_INTEGRATED_USERS_WILL' | translate }}</p>
+                              </li>
+                            </ul>
+                          </div>
+                        </div>
+
+                        <div>
+                          <h5>5. {{'MODULES.SYSTEM.ERROR_HANDLING' | translate }}</h5>
+                          <p class="text-muted">{{'MODULES.SYSTEM.LEARN_ABOUT_THE_ERROR_HANDLING' | translate }}</p>
+                        </div>
+                        <div>
+                          <h5>6. {{'MODULES.SYSTEM.RATE_LIMITING' | translate }}</h5>
+                          <p class="text-muted">{{'MODULES.SYSTEM.UNDERSTAND_HOW_RATE' | translate }}</p>
+                        </div>
+                        <div>
+                          <h5>7. {{'MODULES.SYSTEM.EXAMPLES' | translate }}</h5>
+                          <p class="text-muted">{{'MODULES.SYSTEM.EXPLORE_SAMPLE_REQUESTS' | translate }}</p>
+                        </div>
+                        <div>
+                          <h5>8. FAQ</h5>
+                          <p class="text-muted">{{'MODULES.SYSTEM.FIND_ANSWERS_TO_FREQUENTLY_ASKED_QUESTIONS' | translate }}</p>
+                        </div>
+                        <div>
+                          <h5>8. {{'MODULES.SYSTEM.SUPPORT' | translate }}</h5>
+                          <p class="text-muted">{{'MODULES.SYSTEM.FOR_ANY_QUESTIONS_OR_ASSISTANCE' | translate }}</p>
+                        </div>
+
+                        <div class="text-end d-flex gap-1 justify-content-end">
+                          <a href="javascript:void(0);" class="btn btn-success">{{'MODULES.SYSTEM.ACCEPT' | translate }}</a>
+                          <a href="javascript:void(0);" class="btn btn-outline-danger"><i class="ri-close-line align-bottom me-1"></i>{{'MODULES.SYSTEM.DECLINE' | translate }}</a>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </ng-template>
+            </li>
+          </ul>
+        </div>
+        <div class="card-body p-4">
+          <div class="tab-content">
+            <div [ngbNavOutlet]="customNav"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <ng-template #accessAPI let-modal>
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" id="deleteRecord-close" (click)="modal.dismiss('Cross click')"></button>
+      </div>
+      <div class="modal-body">
+        <div class="mt-2 text-center">
+          <lord-icon src="https://cdn.lordicon.com/gsqxdxog.json" trigger="loop" colors="primary:#405189,secondary:#f06548" style="width:90px;height:90px"></lord-icon>
+          <div class="mt-4 pt-2 fs-15 mx-4 mx-sm-5">
+            <h4>{{ 'COMMON.ARE_YOU_SURE_DELETE' | translate }}</h4>
+            <p class="text-muted mx-4 mb-0">{{ 'COMMON.DELETE_WARNING' | translate }}</p>
+          </div>
+        </div>
+        <div class="d-flex gap-2 justify-content-center mt-4 mb-2">
+          <button class="btn btn-link link-success fw-medium text-decoration-none" data-bs-dismiss="modal" (click)="modal.close('Close click')">
+            <i class="ri-close-line me-1 align-middle"></i>{{ 'COMMON.CLOSE' | translate }}
+          </button>
+          <button type="button" class="btn w-sm btn-danger" id="delete-product" (click)="deleteItem()">
+            {{ 'COMMON.YES_DELETE_IT' | translate }}
+          </button>
+        </div>
+      </div>
+    </div>
+  </ng-template>
+
+</ng-container>
+<div *ngIf="navigating$ | async" class="vh-100 py-4 text-center" fxLayout="column" fxLayoutAlign="center center" fxLayoutGap="1rem">
+  <div>
+    <lord-icon trigger="loop" style="width:72px;height:72px" [colors]="'primary:' + primaryColor + ',secondary:' + secondaryColor" src="https://cdn.lordicon.com/msoeawqm.json">
+    </lord-icon>
+  </div>
+  <div class="mt-4">
+    <h5>{{'COMMON.LOADING' | translate }}</h5>
+  </div>
+</div>

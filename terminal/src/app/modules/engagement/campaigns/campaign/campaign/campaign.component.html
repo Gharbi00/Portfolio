@@ -1,0 +1,1433 @@
+<div *ngIf="((loadingQuestActivities$ | async) === false || null || undefined) && (activityTypes$ | async)?.length"
+  class="row">
+  <div class="col-xl-12">
+    <div class="card">
+      <div class="card-body form-steps">
+        <form class="vertical-navs-step">
+          <div class="row gy-5">
+            <div class="col-lg-3">
+              <div role="tablist" aria-orientation="vertical">
+                <ul (navChange)="onTabChange($event)" cdkDropList
+                  (cdkDropListDropped)="quest?.status !== 'ONGOING' && quest?.status !== 'FINISHED' ? sectionDropped($event) : null"
+                  ngbNav #customNav="ngbNav" [activeId]="1" class="nav flex-column custom-nav nav-pills" role="tablist">
+                  <li (click)="chooseStep(i)"
+                    *ngFor="let questActivity of questActivities; let i = index; let first = first"
+                    [ngbNavItem]="i === 0 ? 1 : i + 1" class="nav-item">
+                    <a ngbNavLink cdkDrag class="nav-link d-flex justify-content-between" data-bs-toggle="tab"
+                      role="tab">
+                      <span class="align-items-center d-flex gap-1 me-2 step-title">
+                        <i [ngClass]="{
+                          'ri-settings-4-line text-warning': questActivity?.activity?.action?.activityType?.id,
+                          'ri-refresh-fill text-primary': questActivity?.activity?.transition?.title
+                        }" class="bi fs-2"></i>
+                        {{questActivity?.title || 'Select a Step'}}
+                      </span>
+                      <div class="align-items-center d-flex gap-1">
+                        <div class="cursor-pointer" (click)="openDeleteModal(deleteModal, questActivity)">
+                          <i class="text-danger ri-delete-bin-line fs-4"></i>
+                        </div>
+                      </div>
+                    </a>
+                    <ng-template ngbNavContent>
+                      <div class="row">
+                        <div class="card">
+                          <div class="card-body">
+                            <ng-container *ngTemplateOutlet="questActivityTemplate"></ng-container>
+                          </div>
+                        </div>
+                      </div>
+                    </ng-template>
+                  </li>
+                  <li
+                    *ngIf="(quest?.status !== 'ONGOING' || quest?.status !=='FINISHED') && (questActivities?.length < quest?.questType?.maxActivities)"
+                    (click)="addStep()" [ngbNavItem]="questActivities?.length ? null : 1" class="nav-item">
+                    <a ngbNavLink class="nav-link" data-bs-toggle="tab" role="tab">
+                      <span class="step-title d-flex align-items-center gap-1 me-2">
+                        <i
+                          class="ri-add-circle-fill text-primary fs-2 me-2"></i>{{'MENUITEMS.CUSTOMERENGAGEMENT.LIST.ADD_STEP'
+                        | translate }}
+                      </span>
+                    </a>
+                    <ng-template ngbNavContent>
+                      <div class="row">
+                        <div class="card">
+                          <div class="card-body">
+                            <ng-container *ngTemplateOutlet="questActivityTemplate"></ng-container>
+                          </div>
+                        </div>
+                      </div>
+                    </ng-template>
+                  </li>
+                </ul>
+              </div>
+            </div>
+            <div class="col-lg-8">
+              <div class="px-lg-4">
+                <div class="tab-content">
+                  <div [ngbNavOutlet]="customNav"></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div id="noresult" class="py-4 mt-4 text-center"
+  *ngIf="(loadingQuestActivities$ | async) || (!(loadingQuestActivities$ | async) && !(activityTypes$ | async)?.length)">
+  <div *ngIf="loadingQuestActivities$ | async">
+    <lord-icon trigger="loop" style="width:72px;height:72px"
+      [colors]="'primary:' + primaryColor + ',secondary:' + secondaryColor"
+      src="https://cdn.lordicon.com/msoeawqm.json">
+    </lord-icon>
+    <h5 class="mt-4">{{ 'COMMON.LOADING' | translate }}</h5>
+  </div>
+  <div *ngIf="!(loadingQuestActivities$ | async) && !(activityTypes$ | async)?.length">
+    <lord-icon trigger="loop" style="width:72px;height:72px"
+      [colors]="'primary:' + primaryColor + ',secondary:' + secondaryColor"
+      src="https://cdn.lordicon.com/msoeawqm.json">
+    </lord-icon>
+    <h5 class="mt-4">{{ 'COMMON.NO_RESULT'
+      | translate }}
+    </h5>
+  </div>
+</div>
+
+
+<ng-template #questActivityTemplate>
+  <form *ngIf="questActivityForm" [formGroup]="questActivityForm">
+    <div class="row g-3">
+      <div class="col-lg-12">
+        <div class="mb-3 row">
+          <div class="col-xl-3">
+            <label class="form-label" for="project-thumbnail-img">{{'MENUITEMS.CUSTOMERENGAGEMENT.LIST.CAMPAIGN_ICON' |
+              translate }}</label>
+          </div>
+          <div class="mt-2 col-lg-8 df-flex">
+            <div class="img-wrap w-30 h-30 me-3 mb-2">
+              <ng-container *ngIf="pictures?.value[0]?.baseUrl">
+                <span class="delete-icon w-6 h-6 flex items-center justify-center cursor-pointer"
+                  (click)="quest?.status !=='ONGOING' && quest?.status !=='FINISHED' ? removePicture() : null">
+                  <i class="ri-delete-bin-fill ft text-danger"></i>
+                </span>
+                <img (click)="quest?.status !=='ONGOING' && quest?.status !=='FINISHED' ? upload() : null" class="w-30 h-30 rounded object-cover"
+                  [src]="pictures?.value[0]?.baseUrl + '/' + pictures?.value[0]?.path">
+              </ng-container>
+              <div *ngIf="!pictures?.value[0]?.baseUrl"
+                (click)="quest?.status !=='ONGOING' && quest?.status !=='FINISHED' ? upload() : null"
+                class="w-30 h-30 mb-3 col-4 border rounded overflow-hidden cursor-pointer d-flex align-items-center justify-content-center">
+                <p class="d-flex flex-column text-center">
+                  <span class="fs-5 fw-bold">
+                    {{'COMMON.UPLOAD' | translate }}
+                  </span>
+                  <span>{{'COMMON.MAX_SIZE' | translate }}</span>
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="mb-3 row">
+          <label for="email_id-field" class="form-label col-xl-3">{{'COMMON.TITLE' | translate }}*</label>
+          <div class="col-lg-8">
+            <input required [readonly]="quest?.status ==='ONGOING' || quest?.status ==='FINISHED'" type="text"
+              id="email_id-field" class="form-control" required placeholder="{{'PLACEHOLDER.ENTER_NAME' | translate }}"
+              formControlName="title"
+              [ngClass]="{ 'is-invalid': questActivityForm.get('title')?.touched && questActivityForm.get('title').hasError('required') }" />
+            <div class="invalid-feedback"
+              *ngIf="questActivityForm.get('title')?.touched && questActivityForm.get('title').hasError('required')">
+              {{'COMMON.REQUIRED' | translate }}
+            </div>
+          </div>
+        </div>
+        <div class="mb-3 row">
+          <label for="email_id-field" class="form-label col-xl-3">{{'COMMON.DESCRIPTION' | translate }}*</label>
+          <div class="col-lg-8">
+            <div class="mb-sm-6 mb-7">
+              <quill-editor *ngIf="quest?.status !== 'ONGOING' && quest?.status !== 'FINISHED'"
+                class="custom-quill-editor" formControlName="description"></quill-editor>
+              <quill-view-html *ngIf="quest?.status ==='ONGOING' || quest?.status === 'FINISHED'"
+                [content]="quest?.description" theme="snow"></quill-view-html>
+            </div>
+            <div class="invalid-feedback"
+              *ngIf="questActivityForm.get('description')?.touched && questActivityForm.get('description').hasError('required')">
+              {{'COMMON.REQUIRED' | translate }}
+            </div>
+          </div>
+        </div>
+        <div class="row">
+          <label for="email_id-field" class="form-label col-xl-3">{{'COMMON.TAGS' | translate }}*</label>
+          <div class="col-lg-8">
+            <ng-select [readonly]="quest?.status ==='ONGOING' || quest?.status ==='FINISHED'" [items]="[]"
+              placeholder="{{'COMMON.PRESS_ENTER_TO_ADD' | translate}}" class="mb-2 col-lg-12" [addTag]="true"
+              [isOpen]="false" [multiple]="true" [selectOnTab]="true" formControlName="tags">
+            </ng-select>
+          </div>
+        </div>
+        <div *ngIf="questDefinitionForm.get('activityType')?.value?.code === 'QUESTION'" class="mb-3">
+          <div class="form-check col-lg-6">
+            <input [checked]="questDefinitionForm.get(['definition', 'form', 'scoring']).value === true"
+              (change)="questDefinitionForm.get(['definition', 'form', 'scoring']).patchValue($event.target.checked)"
+              class="form-check-input" type="checkbox" id="Required">
+            <label class="form-check-label" for="Required">
+              {{'MENUITEMS.CUSTOMERENGAGEMENT.CAMPAIGN.SCORING' | translate }}
+            </label>
+          </div>
+          <div class="form-check col-lg-6">
+            <input [checked]="questDefinitionForm.get(['definition', 'form', 'random']).value === true"
+              (change)="questDefinitionForm.get(['definition', 'form', 'random']).patchValue($event.target.checked)"
+              class="form-check-input" type="checkbox" id="Required">
+            <label class="form-check-label" for="Required">{{'MENUITEMS.CUSTOMERENGAGEMENT.CAMPAIGN.RANDOM' | translate
+              }}
+            </label>
+          </div>
+        </div>
+        <div class="mb-3 row">
+          <label class="form-label col-xl-3">{{'COMMON.ACTIVITY' | translate }}</label>
+          <div class="col-lg-8">
+            <ng-select (change)="onChangeActivity($event)" [readonly]="quest?.status === 'ONGOING' || quest?.status ==='FINISHED'"
+              [(ngModel)]="selectedActivity" [ngModelOptions]="{standalone: true}"
+              placeholder="{{'PLACEHOLDER.SELECT_ACTIVITY' | translate }}"
+              [items]="!quest?.questType?.transition ? ['Action'] : ['Action', 'Transition']"
+              class="mb-2 col-lg-12" [addTag]="true" [multiple]="false" bindValue="name" bindLabel="name"
+              [selectableGroup]="true" [closeOnSelect]="true" required>
+              <ng-template ng-label-tmp let-item="item" let-clear="clear">
+                {{ item }}
+              </ng-template>
+              <ng-template ng-option-tmp let-item$="item$" let-item="item">
+                {{ item }}
+              </ng-template>
+            </ng-select>
+          </div>
+        </div>
+        <div *ngIf="questDefinitionForm && selectedActivity === 'Action'" [formGroup]="questDefinitionForm">
+          <div class="mb-3 row">
+            <label class="form-label col-xl-3">{{'MENUITEMS.CUSTOMERENGAGEMENT.CAMPAIGN.ACTIVITY_TYPE' | translate
+              }}</label>
+            <div class="col-lg-8">
+              <ng-select [readonly]="quest?.status ==='ONGOING' || quest?.status ==='FINISHED'" [searchable]="false"
+                (change)="onChangeActivityType($event)"
+                placeholder="{{'PLACEHOLDER.SELECT_ACTIVITY_TYPE' | translate }}" formControlName="activityType"
+                [items]="quest?.questType?.activityTypes" class="mb-2 col-lg-12" required>
+                <ng-template ng-label-tmp let-item="item" let-clear="clear">
+                  <div class="ng-value-label">
+                    {{ item?.title }}
+                  </div>
+                </ng-template>
+                <ng-template ng-option-tmp let-item$="item$" let-item="item">
+                  <div class="d-flex gap-2 align-items-center">
+                    <div class="symbol symbol-20px">
+                      <div *ngIf="!item?.icon" class="symbol-label bg-soft-danger text-danger">
+                        {{'N'}}</div>
+                      <div *ngIf="item?.icon">
+                        <i [class]="item?.icon + ' fs-2 ' + item?.theme"></i>
+                      </div>
+                    </div>
+                    {{item?.title}}
+                  </div>
+                </ng-template>
+              </ng-select>
+            </div>
+          </div>
+          <ng-container formGroupName="definition" *ngIf="questDefinitionForm.get('activityType').value">
+            <div *ngIf="questDefinitionForm.get('activityType')?.value?.code === 'SOCIAL_MEDIA'">
+              <div formGroupName="socialMedia">
+                <div class="row mb-3">
+                  <div class="col-lg-6">
+                    <label class="fw-semibold fs-6 mb-2">{{'COMMON.SOCIAL_MEDIA' | translate }}</label>
+                    <ng-select [readonly]="quest?.status ==='ONGOING' || quest?.status ==='FINISHED'"
+                      placeholder="{{'PLACEHOLDER.SELECT_SOCIAL_MEDIA' | translate }}" formControlName="socialMedia"
+                      [items]="quest?.questType?.social" class="mb-2 col-lg-12" required>
+                      <ng-template ng-label-tmp let-item="item" let-clear="clear">
+                        <div class="ng-value-label">
+                          {{ item?.name }}
+                        </div>
+                      </ng-template>
+                      <ng-template ng-option-tmp let-item$="item$" let-item="item">
+                        {{item?.name}}
+                      </ng-template>
+                    </ng-select>
+                  </div>
+                  <div class="col-lg-6">
+                    <label class="fw-semibold fs-6 mb-2">Hashtag</label>
+                    <input type="text" formControlName="hashtag" name="user_name"
+                      class="form-control form-control-solid mb-3 mb-lg-0" placeholder="Hashtag" />
+                  </div>
+                  <div class="col-lg-6">
+                    <label class="fw-semibold fs-6 mb-2">URL</label>
+                    <input [readonly]="quest?.status ==='ONGOING' || quest?.status ==='FINISHED'" type="text"
+                      formControlName="url" name="user_name" class="form-control form-control-solid mb-3 mb-lg-0"
+                      placeholder="URL" />
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div *ngIf="questDefinitionForm.get('activityType')?.value?.code === 'MEDIA'" formGroupName="video">
+              <div class="mb-3">
+                <div class="form-check">
+                  <input (change)="onChangeVideo(questDefinitionForm.get(['definition', 'video', 'link']))"
+                    [ngModelOptions]="{standalone: true}" formControlName="source" value="YOUTUBE" id="shippingMethod02"
+                    type="radio" class="form-check-input">
+                  <label class="form-check-label" for="shippingMethod02">
+                    <span class="fs-14 mb-1 text-wrap d-block">{{'MENUITEMS.CUSTOMERENGAGEMENT.CAMPAIGN.YOUTUBE' |
+                      translate }}</span>
+                  </label>
+                </div>
+                <div class="form-check">
+                  <input (change)="onChangeVideo(questDefinitionForm.get(['definition', 'video', 'link']))"
+                    formControlName="source" value="FILE" id="shippingMethod02" type="radio" class="form-check-input">
+                  <label class="form-check-label" for="shippingMethod02">
+                    <span class="fs-14 mb-1 text-wrap d-block">
+                      {{'MENUITEMS.CUSTOMERENGAGEMENT.CAMPAIGN.FILE' | translate }}</span>
+                  </label>
+                </div>
+              </div>
+              <ng-container *ngIf="questDefinitionForm.get(['definition', 'video', 'source']).value === 'FILE'">
+                <!-- *ngIf="!mediaVideo"  -->
+                <div class="uploader-wrapper mb-5">
+                  <ngx-file-drop class="cursor-pointer"
+                    (click)="addedFile(questDefinitionForm.get(['definition', 'video']))"
+                    dropZoneLabel="{{ 'MODULES.COLLABORATION.PROJECTS.DROP_FILES_HERE' | translate }}"
+                    (onFileDrop)="dropped($event)">
+                    <ng-template ngx-file-drop-content-tmp let-openFileSelector="openFileSelector">
+                      <ng-container *ngIf="!loadingUpload">
+                        {{ 'MODULES.COLLABORATION.PROJECTS.CLICK_OR_DRAG_FILES' | translate }}
+                      </ng-container>
+                      <div *ngIf="loadingUpload" class="spinner-border text-primary" role="status">
+                        <span class="sr-only">Loading...</span>
+                      </div>
+                    </ng-template>
+                  </ngx-file-drop>
+                </div>
+                <video *ngIf="mediaVideo" class="video-status mb-3" style="width: -webkit-fill-available; height: 300px"
+                  controls>
+                  <source [src]="mediaVideo" type="video/mp4" />
+                </video>
+              </ng-container>
+              <ng-container
+                *ngIf="mediaVideo && videoId && questDefinitionForm.get(['definition', 'video', 'source']).value === 'YOUTUBE'">
+                <div class="iframe-wrap video-container mb-3">
+                  <iframe width="560" height="315" [src]="mediaVideo" frameborder="0" allowfullscreen></iframe>
+                </div>
+              </ng-container>
+              <div class="row mb-3">
+                <div class="col-lg-5">
+                  <label class="required form-label">{{'MENUITEMS.CUSTOMERENGAGEMENT.CAMPAIGN.MIN_SECONDS' |
+                    translate}}</label>
+                  <input [readonly]="quest?.status ==='ONGOING' || quest?.status ==='FINISHED'" type="number" required
+                    formControlName="minSeconds" name="user_name" class="form-control form-control-solid mb-3 mb-lg-0"
+                    placeholder="{{'MENUITEMS.CUSTOMERENGAGEMENT.CAMPAIGN.MIN_SECONDS' | translate }}" />
+                </div>
+                <div *ngIf="questDefinitionForm.get(['definition', 'video', 'source']).value === 'YOUTUBE'"
+                  class="col-lg-5">
+                  <label class="required form-label">{{'MENUITEMS.CUSTOMERENGAGEMENT.CAMPAIGN.URL' | translate}}</label>
+                  <input [readonly]="quest?.status ==='ONGOING' || quest?.status ==='FINISHED'" type="text" required
+                    formControlName="link" name="user_name" class="form-control form-control-solid mb-3 mb-lg-0"
+                    placeholder="Url" />
+                </div>
+              </div>
+            </div>
+            <div *ngIf="questDefinitionForm.get('activityType')?.value?.code === 'LEAD_GENERATION'">
+              <div formGroupName="lead">
+                <div class="row mb-3">
+                  <div class="col-lg-5">
+                    <label class="required form-label">{{'MENUITEMS.CUSTOMERENGAGEMENT.CAMPAIGN.MIN_SECONDS' |
+                      translate}}</label>
+                    <input [readonly]="quest?.status ==='ONGOING' || quest?.status ==='FINISHED'" type="number" required
+                      formControlName="minSeconds" name="user_name" class="form-control form-control-solid mb-3 mb-lg-0"
+                      placeholder="{{'MENUITEMS.CUSTOMERENGAGEMENT.CAMPAIGN.MIN_SECONDS' | translate }}" />
+                  </div>
+                  <div *ngIf="questDefinitionForm.get(['definition', 'video', 'source']).value === 'YOUTUBE'"
+                    class="col-lg-5">
+                    <label class="required form-label">{{'MENUITEMS.CUSTOMERENGAGEMENT.CAMPAIGN.URL' |
+                      translate}}</label>
+                    <input [readonly]="quest?.status ==='ONGOING' || quest?.status ==='FINISHED'" type="text" required
+                      formControlName="url" name="user_name" class="form-control form-control-solid mb-3 mb-lg-0"
+                      placeholder="Url" />
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div *ngIf="questDefinitionForm.get('activityType')?.value?.code === 'DOWNLOAD_APP'">
+              <div formGroupName="appDownload">
+                <div class="row gap-3">
+                  <div class="mb-3 row col-lg-4">
+                    <label class="form-label">{{'MENUITEMS.CUSTOMERENGAGEMENT.CAMPAIGN.PLAY_STORE' | translate
+                      }}</label>
+                    <input type="text" [readonly]="quest?.status ==='ONGOING' || quest?.status ==='FINISHED'"
+                      formControlName="playstore" name="user_name" class="form-control form-control-solid mb-3 mb-lg-0"
+                      placeholder="{{'MENUITEMS.CUSTOMERENGAGEMENT.CAMPAIGN.PLAY_STORE' | translate }}" />
+                  </div>
+                  <div class="mb-3 row col-lg-4">
+                    <label class="form-label">{{'MENUITEMS.CUSTOMERENGAGEMENT.CAMPAIGN.APP_STORE' | translate }}</label>
+                    <input type="text" [readonly]="quest?.status ==='ONGOING' || quest?.status ==='FINISHED'"
+                      formControlName="appstore" name="user_name" class="form-control form-control-solid mb-3 mb-lg-0"
+                      placeholder="{{'MENUITEMS.CUSTOMERENGAGEMENT.CAMPAIGN.APP_STORE' | translate }}" />
+                  </div>
+                  <div class="mb-3 row col-lg-4">
+                    <label class="form-label">{{'MENUITEMS.CUSTOMERENGAGEMENT.CAMPAIGN.APP_GALLERY' | translate
+                      }}</label>
+                    <input type="text" [readonly]="quest?.status ==='ONGOING' || quest?.status ==='FINISHED'"
+                      formControlName="appgallery" name="user_name" class="form-control form-control-solid mb-3 mb-lg-0"
+                      placeholder="{{'MENUITEMS.CUSTOMERENGAGEMENT.CAMPAIGN.APP_GALLERY' | translate }}" />
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div *ngIf="questDefinitionForm.get('activityType')?.value?.code === 'API_ACTION'">
+              <div class="col-lg-12">
+                <div class="mb-3">
+                  <div class="d-flex gap-1">
+                    <div formGroupName="api" class="input-group" ngbDropdown>
+                      <button ngbDropdownToggle class="btn btn-light" type="button" id="discountType">
+                        {{questDefinitionForm.get(['definition', 'api', 'method']).value === 'GET' ? 'GET' : 'POST'}}
+                      </button>
+                      <ul ngbDropdownMenu aria-labelledby="discountType">
+                        <li><a (click)="questDefinitionForm.get(['definition', 'api', 'method']).patchValue('GET')"
+                            class="dropdown-item cursor-pointer">GET</a></li>
+                        <li><a (click)="questDefinitionForm.get(['definition', 'api', 'method']).patchValue('POST')"
+                            class="dropdown-item cursor-pointer">POST</a></li>
+                      </ul>
+                      <input type="text" [readonly]="quest?.status ==='ONGOING' || quest?.status ==='FINISHED'"
+                        formControlName="link" class="form-control" aria-label="discount"
+                        [ngClass]="{ 'is-invalid': questDefinitionForm.get('name')?.touched && questDefinitionForm.get(['definition', 'api', 'link']).invalid }"
+                        id="product-discount-input" placeholder="{{'PLACEHOLDER.ENTER_LINK' | translate }}"
+                        aria-describedby="product-discount-addon">
+                      <div class="invalid-feedback"
+                        *ngIf="questDefinitionForm.get(['definition', 'api', 'link']).invalid && questDefinitionForm.get(['definition', 'api', 'link']).touched">
+                        {{'COMMON.REQUIRED' | translate }}
+                      </div>
+                    </div>
+                    <div *ngIf="quest?.status !=='ONGOING' && quest?.status !=='FINISHED'">
+                      <button (click)="openSendApi(apiModal)"
+                        class="btn btn-primary">{{'MENUITEMS.CUSTOMERENGAGEMENT.CAMPAIGN.TEST' | translate }}</button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div role="tablist" aria-orientation="horizontal">
+                <ul ngbNav #customNavs="ngbNav" [activeId]="1" class="nav nav-tabs-custom border-bottom-0"
+                  role="tablist">
+                  <li [ngbNavItem]="1" class="nav-item">
+                    <a ngbNavLink class="nav-link border-0" data-bs-toggle="tab"
+                      role="tab">{{'MENUITEMS.CUSTOMERENGAGEMENT.CAMPAIGN.HEADERS' | translate }}
+                    </a>
+                    <ng-template ngbNavContent>
+                      <div class="card">
+                        <div formGroupName="api" class="card-body">
+                          <ng-container formArrayName="headers">
+                            <ng-container *ngFor="let header of headers['controls']; let i=index; let last = last"
+                              [formGroupName]="i">
+                              <div class="row gap-3">
+                                <div class="mb-3 row col-lg-6">
+                                  <input required [readonly]="quest?.status ==='ONGOING' || quest?.status ==='FINISHED'"
+                                    formControlName="key" type="text" name="user_name"
+                                    class="form-control form-control-solid mb-3 mb-lg-0"
+                                    placeholder="{{'PLACEHOLDER.NAME' | translate }}" />
+                                </div>
+                                <div class="mb-3 row col-lg-6">
+                                  <input required [readonly]="quest?.status ==='ONGOING' || quest?.status ==='FINISHED'"
+                                    formControlName="value" type="text" name="user_name"
+                                    class="form-control form-control-solid mb-3 mb-lg-0"
+                                    placeholder="{{'PLACEHOLDER.TYPE' | translate }}" />
+                                </div>
+                              </div>
+                              <div *ngIf="quest?.status !=='ONGOING' && quest?.status !=='FINISHED'"
+                                class="hstack justify-content-end gap-2 mt-4 mb-4">
+                                <button
+                                  *ngIf="questDefinitionForm.get(['definition', 'api', 'headers']).value?.length > 1"
+                                  type="button" (click)="deleteHeaderSection(i)" class="btn btn-sm btn-danger"><i
+                                    class="ri-delete-bin-fill align-bottom"></i>{{COMMON.DELETE' | translate }}</button>
+                                <button *ngIf="last" (click)="newHeaderParam()" type="button"
+                                  class="btn btn-primary btn-sm add-btn" id="create-btn"><i
+                                    class="ri-add-line align-bottom me-1"></i>{{'MENUITEMS.CUSTOMERENGAGEMENT.CAMPAIGN.HEADERS'
+                                  | translate }}</button>
+                              </div>
+                            </ng-container>
+                          </ng-container>
+                        </div>
+                      </div>
+                    </ng-template>
+                  </li>
+                  <li [ngbNavItem]="2" class="nav-item">
+                    <a ngbNavLink class="nav-link border-0" data-bs-toggle="tab" role="tab">
+                      Params
+                    </a>
+                    <ng-template ngbNavContent>
+                      <div class="card">
+                        <div formGroupName="api" class="card-body">
+                          <ng-container formArrayName="params">
+                            <ng-container *ngFor="let param of params['controls']; let i=index; let last = last"
+                              [formGroupName]="i">
+                              <div class="gap-3">
+                                <div formGroupName="user" class="form-check mb-3">
+                                  <input (change)="onChangeUserLabel($event.target.checked, i)" formControlName="enable"
+                                    class="form-check-input fs-16" type="checkbox" role="switch"
+                                    id="flexSwitchCheckDefault">
+                                  <label class="form-check-label"
+                                    for="flexSwitchCheckDefault">{{'MENUITEMS.CUSTOMERENGAGEMENT.LIST.USER' | translate
+                                    }}</label>
+                                </div>
+                                <div class="row">
+                                  <div class="mb-3 col-lg-6">
+                                    <input required
+                                      [readonly]="quest?.status ==='ONGOING' || quest?.status ==='FINISHED'"
+                                      formControlName="key" type="text" name="user_name"
+                                      class="form-control form-control-solid mb-3 mb-lg-0"
+                                      placeholder="{{'PLACEHOLDER.KEY' | translate }}" />
+                                  </div>
+                                  <div *ngIf="param.get('user').value.enable === false" class="mb-3 col-lg-6">
+                                    <input required
+                                      [readonly]="quest?.status ==='ONGOING' || quest?.status ==='FINISHED'"
+                                      formControlName="value" type="text" name="user_name"
+                                      class="form-control form-control-solid mb-3 mb-lg-0"
+                                      placeholder="{{'PLACEHOLDER.VALUE' | translate }}" />
+                                  </div>
+                                  <div formGroupName="user" *ngIf="param.get('user').value.enable === true"
+                                    class="mb-3 col-lg-6">
+                                    <input required
+                                      [readonly]="quest?.status ==='ONGOING' || quest?.status ==='FINISHED'"
+                                      formControlName="label" type="text" name="user_name"
+                                      class="form-control form-control-solid mb-3 mb-lg-0"
+                                      placeholder="{{'PLACEHOLDER.VALUE' | translate }}" />
+                                  </div>
+                                </div>
+                              </div>
+                              <div *ngIf="quest?.status !=='ONGOING' && quest?.status !== 'FINISHED'"
+                                class="hstack justify-content-end gap-2 mt-4 mb-4">
+                                <button
+                                  *ngIf="questDefinitionForm.get(['definition', 'api', 'params'])?.value?.length > 1"
+                                  type="button" (click)="deleteSection(i)" class="btn btn-sm btn-danger"><i
+                                    class="ri-delete-bin-fill align-bottom"></i>{{COMMON.DELETE' | translate }}</button>
+                                <button *ngIf="last" (click)="newParam()" type="button"
+                                  class="btn btn-sm btn-primary add-btn" id="create-btn"><i
+                                    class="ri-add-line align-bottom me-1"></i>Param</button>
+                              </div>
+                            </ng-container>
+                          </ng-container>
+                        </div>
+                      </div>
+                    </ng-template>
+                  </li>
+                </ul>
+                <div class="tab-content">
+                  <div [ngbNavOutlet]="customNavs"></div>
+                </div>
+              </div>
+            </div>
+            <div *ngIf="questDefinitionForm.get('activityType')?.value?.code === 'QUESTION'">
+              <div class="bg-opacity-10 bg-primary card card-body shadow-none">
+                <form [formGroup]="formQuestionForm">
+                  <div class="mb-3">
+                    <label class="form-label">{{'COMMON.TITLE' | translate }}*</label>
+                    <input [readonly]="quest?.status ==='ONGOING' || quest?.status ==='FINISHED'" required type="text"
+                      formControlName="title" name="user_name" class="form-control form-control-solid mb-3 mb-lg-0"
+                      placeholder="{{'PLACEHOLDER.TITLE' | translate }}" />
+                  </div>
+                  <div class="mb-3">
+                    <label class="form-label">{{'COMMON.DESCRIPTION' | translate }}*</label>
+                    <textarea [readonly]="quest?.status ==='ONGOING' || quest?.status ==='FINISHED'" required
+                      formControlName="description" placeholder="{{'COMMON.ENTER_DESCRIPTION' | translate }}"
+                      name="description" class="form-control h-100px"></textarea>
+                  </div>
+                  <div *ngIf="selectedFormId && quest?.status !=='ONGOING' && quest?.status !=='FINISHED'"
+                    class="d-flex justify-content-end mt-3">
+                    <button [disabled]="isFormButtonDisabled || formQuestionForm.invalid" class="btn btn-sm btn-primary"
+                      (click)="saveForm()">{{'COMMON.SAVE' | translate }}</button>
+                  </div>
+                </form>
+              </div>
+              <!-- *ngIf="quest?.status !=='ONGOING' && quest?.status !=='FINISHED'"  -->
+              <form [formGroup]="questionForm">
+                <ng-container formArrayName="questions">
+                  <div cdkDropList (cdkDropListDropped)="questionDropped($event)">
+                    <ng-container *ngFor="let question of questionForm.get('questions')['controls']; let i = index"
+                      [formGroupName]="i">
+                      <div cdkDrag [cdkDragLockAxis]="'y'" class="bg-opacity-10 bg-primary card card-body shadow-none">
+                        <div class="mb-3">
+                          <ng-container *ngIf="editMode[i] === true">
+                            <label for="email_id-field" class="form-label">{{'COMMON.TITLE' | translate }}</label>
+                            <input required [readonly]="quest?.status ==='ONGOING' || quest?.status ==='FINISHED'"
+                              type="text" id="email_id-field" class="form-control"
+                              placeholder="{{'PLACEHOLDER.ENTER_TITLE' | translate }}" formControlName="title" />
+                          </ng-container>
+                        </div>
+                        <p *ngIf="editMode[i] === false" class="fs-15 text-body">
+                          {{ question.get('title').value }}
+                        </p>
+                        <div class="mb-3">
+                          <ng-container *ngIf="editMode[i] === true">
+                            <label class="form-label">{{'COMMON.DESCRIPTION' | translate }}</label>
+                            <textarea
+                              [readonly]="editMode[i] === false && (quest?.status ==='ONGOING' || quest?.status ==='FINISHED')"
+                              formControlName="description" placeholder="{{'COMMON.ENTER_DESCRIPTION' | translate }}"
+                              name="description" class="form-control h-100px"></textarea>
+                          </ng-container>
+                          <p *ngIf="editMode[i] === false && question.get('description').value" class="text-muted mb-1">
+                            {{ question.get('description').value }}
+                          </p>
+                        </div>
+                        <div *ngIf="editMode[i] === true" class="mb-3">
+                          <ng-select [readonly]="quest?.status ==='ONGOING' || quest?.status ==='FINISHED'"
+                            formControlName="type" placeholder="{{'PLACEHOLDER.SELECT_TYPE' | translate }}"
+                            [items]="quest?.questType?.questionTypes" class="mb-2 col-lg-12" [multiple]="false"
+                            [closeOnSelect]="true">
+                            <ng-template ng-label-tmp let-item="item" let-clear="clear">
+                              <div class="ng-value-label">
+                                {{
+                                (item === 'SHORT_ANSWER' ? 'SHARED.SHORT_ANSWER' :
+                                item === 'MULTIPLE_CHOICE' ? 'SHARED.MULTIPLE_CHOICE' :
+                                item === 'SINGLE_CHOICE' ? 'SHARED.SINGLE_CHOICE' :
+                                item === 'PARAGRAPH' ? 'SHARED.PARAGRAPH' :
+                                item === 'PICTURE' ? 'SHARED.PICTURE' :
+                                item === 'DATETIME' ? 'SHARED.DATETIME' :
+                                item === 'NUMBER' ? 'SHARED.NUMBER' :
+                                item === 'TOGGLE' ? 'SHARED.TOGGLE' :
+                                item === 'RATING' ? 'SHARED.RATING' :
+                                item === 'SMILEY' ? 'SHARED.SMILEY' :
+                                '') | translate
+                                }}
+                              </div>
+                            </ng-template>
+                            <ng-template ng-option-tmp let-item$="item$" let-item="item">
+                              <div class="d-flex gap-2 align-items-center">
+                                <i [class]="'fs-2 ' + getClassForItem(item)"></i>
+                                {{
+                                (item === 'SHORT_ANSWER' ? 'SHARED.SHORT_ANSWER' :
+                                item === 'MULTIPLE_CHOICE' ? 'SHARED.MULTIPLE_CHOICE' :
+                                item === 'SINGLE_CHOICE' ? 'SHARED.SINGLE_CHOICE' :
+                                item === 'PARAGRAPH' ? 'SHARED.PARAGRAPH' :
+                                item === 'PICTURE' ? 'SHARED.PICTURE' :
+                                item === 'DATETIME' ? 'SHARED.DATETIME' :
+                                item === 'NUMBER' ? 'SHARED.NUMBER' :
+                                item === 'TOGGLE' ? 'SHARED.TOGGLE' :
+                                item === 'RATING' ? 'SHARED.RATING' :
+                                item === 'SMILEY' ? 'SHARED.SMILEY' :
+                                '') | translate
+                                }}
+                              </div>
+                            </ng-template>
+                          </ng-select>
+                        </div>
+                        <div
+                          *ngIf="question.get('type').value === 'MULTIPLE_CHOICE' || question.get('type').value === 'SINGLE_CHOICE'"
+                          class="mb-3 row">
+                          <div formArrayName="choices">
+                            <div
+                              *ngFor="let key of question.get('choices')?.controls; let j = index; let first = first; let last = last;"
+                              class="mt-2 mb-2">
+                              <ng-container [formGroupName]="j">
+                                <div class="mb-6">
+                                  <div class="d-flex align-items-center gap-2">
+                                    <input
+                                      [disabled]="editMode[i] === false && (quest?.status === 'ONGOING' || quest?.status ==='FINISHED')"
+                                      formControlName="enable" *ngIf="question.get('type').value === 'MULTIPLE_CHOICE'"
+                                      class="form-check-input fs-5" type="checkbox" id="Required">
+                                    <input [disabled]="quest?.status ==='ONGOING' || quest?.status ==='FINISHED'"
+                                      (change)="onChangeChoice(question.get('choices'), j)"
+                                      *ngIf="question.get('type').value === 'SINGLE_CHOICE'" name="enable"
+                                      class="form-check-input fs-5" [checked]="key.get('enable')?.value === true"
+                                      type="radio">
+                                    <ng-container
+                                      *ngIf="question.get('type').value === 'MULTIPLE_CHOICE' || question.get('type').value === 'SINGLE_CHOICE'">
+                                      <input
+                                        [readonly]="editMode[i] === false && quest?.status ==='ONGOING' || quest?.status ==='FINISHED'"
+                                        type="text" formControlName="item"
+                                        class="form-control form-control-solid mb-lg-0"
+                                        placeholder="{{'PLACEHOLDER.ENTER_CHOICE' | translate }}">
+                                      <button (click)="removeChoice(i, j)"
+                                        *ngIf="question.get('choices').value?.length > 2 && editMode[i] === true"
+                                        class="btn btn-sm btn-danger">
+                                        <i class="ri-delete-bin-line fs-6"></i>
+                                      </button>
+                                    </ng-container>
+                                  </div>
+                                </div>
+                              </ng-container>
+                            </div>
+                            <div
+                              *ngIf="((question.get('type').value === 'MULTIPLE_CHOICE' || question.get('type').value === 'SINGLE_CHOICE') && editMode[i] === true && quest?.status !=='ONGOING' && quest?.status !=='FINISHED')"
+                              class="d-flex justify-content-end mt-3 mb-3">
+                              <button (click)="addChoice(i)" type="button"
+                                class="btn btn-soft-primary btn-sm">{{'MENUITEMS.CUSTOMERENGAGEMENT.CAMPAIGN.ADD_CHOICE'
+                                | translate }}</button>
+                            </div>
+                          </div>
+                          <ng-container formGroupName="settings">
+                            <div *ngIf="question.get('type').value === 'SINGLE_CHOICE'"
+                              class="d-flex flex-column flex-shrink-0 gap-1 ms-2">
+                              <ng-container formGroupName="singleChoice">
+                                <div *ngIf="question.get('choices').value?.length < 3"
+                                  class="form-check d-flex gap-1 align-items-center">
+                                  <input formControlName="toggle" class="form-check-input fs-16" type="checkbox"
+                                    role="switch" id="flexSwitchCheckDefault">
+                                  <label class="form-check-label" for="flexSwitchCheckDefault">{{'COMMON.TOGGLE' |
+                                    translate }}</label>
+                                </div>
+                                <div class="form-check d-flex gap-1 align-items-center">
+                                  <input formControlName="poll" class="form-check-input fs-16" type="checkbox"
+                                    role="switch" id="flexSwitchCheckDefault">
+                                  <label class="form-check-label" for="flexSwitchCheckDefault">{{'SHARED.POLL' |
+                                    translate }}</label>
+                                </div>
+                              </ng-container>
+                            </div>
+                            <div *ngIf="question.get('type').value === 'MULTIPLE_CHOICE'"
+                              class="d-flex flex-column flex-shrink-0 gap-1 ms-2">
+                              <div formGroupName="multipleChoice" class="form-check d-flex gap-1 align-items-center">
+                                <input formControlName="poll" class="form-check-input fs-16" type="checkbox"
+                                  role="switch" id="flexSwitchCheckDefault">
+                                <label class="form-check-label" for="flexSwitchCheckDefault">{{'SHARED.POLL' |
+                                  translate }}</label>
+                              </div>
+                            </div>
+                          </ng-container>
+                        </div>
+                        <ng-container formGroupName="settings">
+                          <ng-container *ngIf="question.get('type').value === 'SMILEY'" formGroupName="smiley">
+                            <ng-container formArrayName="levels" *ngIf="editMode[i] === false">
+                              <div class="d-flex gap-2 align-items-center">
+                                <ng-container
+                                  *ngFor="let level of question.get(['settings', 'smiley', 'levels'])['controls']; let j = index"
+                                  [formGroupName]="j">
+                                  <span *ngIf="level.get('icon').value && selectedTypes[i] === 'icon'"
+                                    class="fs-1 cursor-pointer">{{level.get('icon').value}}</span>
+                                  <div *ngIf="level.get('picture').value && selectedTypes[i] === 'picture'"
+                                    class="img-wrap h-x-4 mb-2">
+                                    <ng-container
+                                      *ngIf="level?.get(['picture', 'baseUrl'])?.value && level?.get(['picture', 'baseUrl'])?.value !== ''">
+                                      <img class="h-x-4 rounded object-cover"
+                                        [src]="level?.get(['picture', 'baseUrl'])?.value + '/' + level?.get(['picture', 'path']).value">
+                                    </ng-container>
+                                  </div>
+                                </ng-container>
+                              </div>
+                            </ng-container>
+                            <ng-container *ngIf="editMode[i] === true">
+                              <div class="mb-3">
+                                <div class="col-4 d-flex align-items-center">
+                                  <input [checked]="selectedTypes[i] === 'icon'" (change)="onChangeSmileyType(i)"
+                                    [ngModelOptions]="{standalone: true}" value="icon" [(ngModel)]="selectedTypes[i]"
+                                    name="category{{i}}" class="form-check-input me-3" type="radio" id="zone">
+                                  <label class="form-check-label" for="shape">
+                                    {{'COMMON.ICON' | translate }}
+                                  </label>
+                                </div>
+                                <div class="col-4 d-flex align-items-center">
+                                  <input [checked]="selectedTypes[i] === 'picture'" (change)="onChangeSmileyType(i)"
+                                    value="picture" [(ngModel)]="selectedTypes[i]" [ngModelOptions]="{standalone: true}"
+                                    name="category{{i}}" class="form-check-input me-3" type="radio" id="zone">
+                                  <label class="form-check-label"
+                                    for="shape">{{'MENUITEMS.CUSTOMERENGAGEMENT.CAMPAIGN.PICTURE' | translate }}
+                                  </label>
+                                </div>
+                              </div>
+                              <ng-container formArrayName="levels">
+                                <div *ngIf="selectedTypes[i] === 'icon'" class="d-flex gap-2 align-items-center">
+                                  <div cdkDropList (cdkDropListDropped)="smileySectionDropped($event, i)"
+                                    #todoList="cdkDropList"
+                                    [cdkDropListData]="question.get(['settings', 'smiley', 'levels']).value"
+                                    class="d-flex gap-3">
+                                    <ng-container
+                                      *ngFor="let level of question.get(['settings', 'smiley', 'levels'])['controls']; let j = index"
+                                      [formGroupName]="j">
+                                      <div cdkDrag class="d-flex align-items-center flex-column">
+                                        <span *ngIf="level.get('icon').value"
+                                          class="fs-1 cursor-pointer">{{level.get('icon').value}}</span>
+                                        <span (click)="removeSmiley(i, j)">
+                                          <i class="ri-delete-bin-fill text-danger"></i>
+                                        </span>
+                                      </div>
+                                    </ng-container>
+                                  </div>
+                                  <button (click)="toggleEmojiPicker()" type="button"
+                                    class="btn btn-soft-primary btn-sm">
+                                    <i class="ri-add-line fs-5"></i></button>
+                                  <emoji-mart class="emoji-mart bottom-50" *ngIf="showEmojiPicker"
+                                    (emojiSelect)="addEmoji($event, i, j)" title="Pick your emoji…"></emoji-mart>
+                                </div>
+
+                                <ng-container *ngIf="selectedTypes[i] === 'picture'">
+                                  <div class="d-flex gap-2">
+                                    <ng-container
+                                      *ngFor="let level of question.get(['settings', 'smiley', 'levels'])['controls']; let j = index"
+                                      [formGroupName]="j">
+                                      <div class="img-wrap h-x-4 mb-2">
+                                        <ng-container
+                                          *ngIf="level?.get(['picture', 'baseUrl'])?.value && level?.get(['picture', 'baseUrl'])?.value !== ''">
+                                          <span
+                                            class="delete-icon w-6 h-6 flex items-center justify-center cursor-pointer"
+                                            (click)="removePicture('smiley', i, j)">
+                                            <i class="ri-delete-bin-fill text-danger"></i>
+                                          </span>
+                                          <img class="h-x-4 rounded object-cover"
+                                            [src]="level?.get(['picture', 'baseUrl'])?.value + '/' + level?.get(['picture', 'path']).value">
+                                        </ng-container>
+                                      </div>
+                                    </ng-container>
+                                    <button (click)="upload('smiley', i)" type="button"
+                                      class="btn btn-soft-primary btn-sm h-4 col-1">
+                                      <i class="ri-add-line fs-5"></i></button>
+                                  </div>
+                                </ng-container>
+                              </ng-container>
+                            </ng-container>
+                          </ng-container>
+                          <ng-container *ngIf="question.get('type').value === 'NUMBER'" formGroupName="number">
+                            <ng-container *ngIf="editMode[i] === false">
+                              <div class="col-lg-6">
+                                <div class="input-wrapper input-group d-flex align-items-center">
+                                  <input readonly class="form-control form-control-solid mb-lg-0" placeholder="1234">
+                                </div>
+                              </div>
+                            </ng-container>
+                            <ng-container *ngIf="editMode[i] === true">
+                              <div class="row">
+                                <div class="mb-3 col-lg-4">
+                                  <input required type="number" id="email_id-field" class="form-control"
+                                    placeholder="{{'PLACEHOLDER.MIN_VALUE' | translate }}" formControlName="minValue" />
+                                </div>
+                                <div class="mb-3 col-lg-4">
+                                  <input required type="number" id="email_id-field" class="form-control"
+                                    placeholder="{{'PLACEHOLDER.MAX_VALUE' | translate }}" formControlName="maxValue" />
+                                </div>
+                              </div>
+                            </ng-container>
+                          </ng-container>
+                          <ng-container *ngIf="question.get('type').value === 'RATING'" formGroupName="rating">
+                            <ng-container *ngIf="editMode[i] === false">
+                              <div class="row">
+                                <ngb-rating [readonly]="readonly" class="stars" [max]=ratingRanges[i]></ngb-rating>
+                              </div>
+                            </ng-container>
+                            <ng-container *ngIf="editMode[i] === true">
+                              <div class="row">
+                                <div class="mb-3 col-lg-4">
+                                  <input required type="number" id="email_id-field" class="form-control"
+                                    placeholder="{{'PLACEHOLDER.LEVELS' | translate }}" formControlName="levels" />
+                                </div>
+                              </div>
+                            </ng-container>
+                          </ng-container>
+                          <ng-container *ngIf="question.get('type').value === 'DATETIME'" formGroupName="date">
+                            <ng-container *ngIf="editMode[i] === false">
+                              <div class="col-lg-6">
+                                <div class="input-wrapper input-group d-flex align-items-center">
+                                  <input readonly class="form-control form-control-solid mb-lg-0"
+                                    placeholder="{{'PLACEHOLDER.MONTH_DAY_YEAR' | translate }}">
+                                  <a class="input-group-text">
+                                    <i class="ri-calendar-line fs-13"></i>
+                                  </a>
+                                </div>
+                              </div>
+                            </ng-container>
+                            <ng-container *ngIf="editMode[i] === true">
+                              <div class="form-check col-lg-6">
+                                <input formControlName="outdated" class="form-check-input" type="checkbox"
+                                  id="Required">
+                                <label class="form-check-label"
+                                  for="Required">{{'MENUITEMS.CUSTOMERENGAGEMENT.CAMPAIGN.OUTDATED' | translate }}
+                                </label>
+                              </div>
+                              <div class="form-check col-lg-6">
+                                <input formControlName="interval" class="form-check-input" type="checkbox"
+                                  id="Required">
+                                <label class="form-check-label"
+                                  for="Required">{{'MENUITEMS.CUSTOMERENGAGEMENT.CAMPAIGN.INTERVAL' | translate }}
+                                </label>
+                              </div>
+                            </ng-container>
+                          </ng-container>
+
+                          <ng-container *ngIf="question.get('type').value === 'PARAGRAPH'">
+                            <textarea *ngIf="editMode[i] === false" placeholder="Réponse longue" readonly
+                              name="description" class="form-control h-100px"></textarea>
+                            <div *ngIf="editMode[i] === true" formGroupName="paragraph" class="row">
+                              <div class="mb-3 col-lg-5">
+                                <input required type="number" id="email_id-field" class="form-control"
+                                  placeholder="{{'PLACEHOLDER.MIN' | translate }}" formControlName="min" />
+                              </div>
+                              <div class="mb-3 col-lg-5">
+                                <input required type="number" id="email_id-field" class="form-control"
+                                  placeholder="{{'PLACEHOLDER.MAX' | translate }}" formControlName="max" />
+                              </div>
+                            </div>
+                          </ng-container>
+                          <ng-container *ngIf="question.get('type').value === 'SHORT_ANSWER'">
+                            <div *ngIf="editMode[i] === false" class="col-lg-6">
+                              <input readonly type="number" id="email_id-field" class="form-control"
+                                placeholder="{{'PLACEHOLDER.SHORT_ANSWER' | translate }}" />
+                            </div>
+                            <div *ngIf="question.get('type').value === 'SHORT_ANSWER' && editMode[i] === true"
+                              formGroupName="shortAnswer" class="row">
+                              <div class="mb-3 col-lg-5">
+                                <input required type="number" id="email_id-field" class="form-control"
+                                  placeholder="{{'PLACEHOLDER.MIN' | translate }}" formControlName="min" />
+                              </div>
+                              <div class="mb-3 col-lg-5">
+                                <input required type="number" id="email_id-field" class="form-control"
+                                  placeholder="{{'PLACEHOLDER.MAX' | translate }}" formControlName="max" />
+                              </div>
+                            </div>
+                          </ng-container>
+                          <ng-container *ngIf="question.get('type').value === 'TOGGLE'" formGroupName="toggle">
+                            <div class="row">
+                              <ng-container *ngIf="editMode[i] === false">
+                                <div class="form-check form-switch mb-3">
+                                  <div class="row align-items-center">
+                                    <span class="col-2">
+                                      {{question.get(['settings', 'toggle', 'leftLabel']).value}}
+                                    </span>
+                                    <div class="col-1">
+                                      <input checked class="form-check-input fs-16" type="checkbox" role="switch"
+                                        id="flexSwitchCheckDefault">
+                                    </div>
+                                    <span class="col-2">
+                                      {{question.get(['settings', 'toggle', 'rightLabel']).value}}
+                                    </span>
+                                  </div>
+                                </div>
+                              </ng-container>
+                              <ng-container *ngIf="editMode[i] === true">
+                                <div class="mb-3 col-lg-5">
+                                  <input type="text" required formControlName="leftLabel" name="user_name"
+                                    class="form-control form-control-solid mb-3 mb-lg-0"
+                                    placeholder="{{'PLACEHOLDER.LEFT_LABEL' | translate }}" />
+                                </div>
+                                <div class="mb-3 col-lg-5">
+                                  <input type="text" required formControlName="rightLabel" name="user_name"
+                                    class="form-control form-control-solid mb-3 mb-lg-0"
+                                    placeholder="{{'PLACEHOLDER.RIGHT_LABEL' | translate }}" />
+                                </div>
+                              </ng-container>
+                            </div>
+                          </ng-container>
+                        </ng-container>
+                        <div *ngIf="quest?.status !=='ONGOING' && quest?.status !== 'FINISHED'"
+                          class="d-flex justify-content-end gap-1 mt-2">
+                          <button *ngIf="questionForm.get('questions').value?.length > 1" class="btn btn-sm btn-danger"
+                            (click)="questionForm.get('questions').value?.length > questions?.length ? removeQuestion(i) : openDeleteModal(deleteModal, i, 'question')">
+                            <i class="ri-delete-bin-6-line"></i>
+                          </button>
+                          <button
+                            [disabled]="formQuestionForm.invalid || (question.get('type').value === 'SMILEY' && editMode[i] === true && (question.get(['settings', 'smiley', 'levels']).value?.length > 5 || question.get(['settings', 'smiley', 'levels']).value?.length < 3) ? true : false)"
+                            class="btn btn-sm btn-primary" (click)="saveQuestion(i)">
+                            <i [ngClass]="{
+                              'ri-save-3-line': editMode[i] === true,
+                              'ri-pencil-line': editMode[i] === false
+                            }" class="ri-save-3-line"></i>
+                          </button>
+                        </div>
+                      </div>
+                    </ng-container>
+                    <div *ngIf="!(isLastQuestions$ | async) && questions?.length" class="d-flex justify-content-center">
+                      <button (click)="loadMoreQuestions()" class="btn btn-sm btn-soft-primary">Load more</button>
+                    </div>
+                  </div>
+                </ng-container>
+                <div
+                  *ngIf="quest?.status !=='ONGOING' && quest?.status !== 'FINISHED' && questionForm.get('questions').value?.length < quest?.questType?.maxQuestions"
+                  class="d-flex justify-content-end mt-2 mb-3">
+                  <button class="btn btn-sm btn-soft-primary"
+                    (click)="addQuestion()">{{'MENUITEMS.CUSTOMERENGAGEMENT.CAMPAIGN.ADD_QUESTION' | translate
+                    }}</button>
+                </div>
+              </form>
+            </div>
+            <div formGroupName="game" *ngIf="questDefinitionForm.get('activityType')?.value?.code === 'GAME'">
+              <div class="mb-3 row">
+                <label class="form-label col-xl-3">Game*</label>
+                <div class="col-lg-8">
+                  <ng-select required [ngModelOptions]="{standalone: true}" formControlName="gameType"
+                    (change)="onChangeGame($event)" placeholder="{{'MENUITEMS.CUSTOMERENGAGEMENT.CAMPAIGN.SELECT_GAME' | translate
+                  }}" [items]="games" class="mb-2" [multiple]="false" [closeOnSelect]="true">
+                    <ng-template ng-label-tmp let-item="item" let-clear="clear">
+                      <div class="ng-value-label">
+                        {{
+                        (item === 'JIGSAW' ? 'SHARED.JIGSAW' :
+                        item === 'SLIDING' ? 'SHARED.SLIDING' :
+                        item === 'TRIVIA_QUIZ' ? 'SHARED.TRIVIA_QUIZ' :
+                        item === 'MEMORY_GAME' ? 'SHARED.MEMORY_GAME' :
+                        item === 'GUESS_THE_PRICE' ? 'SHARED.GUESS_THE_PRICE' :
+                        item === 'FIND_HIDDEN_OBJECT' ? 'SHARED.FIND_HIDDEN_OBJECT' :
+                        item === 'GUESS_MISSING_ELEMENT' ? 'SHARED.GUESS_MISSING_ELEMENT' :
+                        '') | translate
+                        }}
+                      </div>
+                    </ng-template>
+                    <ng-template ng-option-tmp let-item$="item$" let-item="item">
+                      {{
+                      (item === 'JIGSAW' ? 'SHARED.JIGSAW' :
+                      item === 'SLIDING' ? 'SHARED.SLIDING' :
+                      item === 'TRIVIA_QUIZ' ? 'SHARED.TRIVIA_QUIZ' :
+                      item === 'MEMORY_GAME' ? 'SHARED.MEMORY_GAME' :
+                      item === 'GUESS_THE_PRICE' ? 'SHARED.GUESS_THE_PRICE' :
+                      item === 'FIND_HIDDEN_OBJECT' ? 'SHARED.FIND_HIDDEN_OBJECT' :
+                      item === 'GUESS_MISSING_ELEMENT' ? 'SHARED.GUESS_MISSING_ELEMENT' :
+                      '') | translate
+                      }}
+                    </ng-template>
+                  </ng-select>
+                </div>
+              </div>
+              <ng-container *ngIf="questDefinitionForm.get(['definition', 'game', 'gameType']).value">
+                <ng-container *ngIf="selectedGameType === 'quizz'" formGroupName="quizz">
+                  <div class="custom-control custom-radio mb-3">
+                    <div class="form-check col-lg-6">
+                      <input
+                        (change)="onChangeChoiceType(questDefinitionForm.get(['definition', 'game', 'quizz', 'choices']))"
+                        formControlName="quizzType" class="form-check-input" type="radio" id="aggregator"
+                        value="SINGLE_CHOICE">
+                      <label class="form-check-label" for="aggregator">
+                        Single Choice
+                      </label>
+                    </div>
+                    <div class="form-check col-lg-6">
+                      <input
+                        (change)="onChangeChoiceType(questDefinitionForm.get(['definition', 'game', 'quizz', 'choices']))"
+                        formControlName="quizzType" class="form-check-input" type="radio" id="coin"
+                        value="MULTIPLE_CHOICE">
+                      <label class="form-check-label" for="coin">
+                        Multiple Choice
+                      </label>
+                    </div>
+                  </div>
+                  <div class="mt-2 col-lg-8 df-flex">
+                    <div class="img-wrap w-30 h-30 me-3 mb-2">
+                      <ng-container
+                        *ngIf="questDefinitionForm.get(['definition', 'game', 'quizz', 'picture', 'path']).value">
+                        <span class="delete-icon w-6 h-6 flex items-center justify-center cursor-pointer"
+                          (click)="quest?.status !=='ONGOING' && quest?.status !=='FINISHED' ? removePicture('quizz') : null">
+                          <i class="ri-delete-bin-fill ft text-danger"></i>
+                        </span>
+                        <img
+                          (click)="quest?.status !=='ONGOING' && quest?.status !=='FINISHED' ? upload('quizz') : null"
+                          class="w-30 h-30 rounded object-cover"
+                          [src]="questDefinitionForm.get(['definition', 'game', 'quizz', 'picture', 'baseUrl']).value + '/' + questDefinitionForm.get(['definition', 'game', 'quizz', 'picture', 'path']).value">
+                      </ng-container>
+                      <div *ngIf="!questDefinitionForm.get(['definition', 'game', 'quizz', 'picture', 'baseUrl']).value"
+                        (click)="quest?.status !=='ONGOING' && quest?.status !=='FINISHED' ? upload('quizz') : null"
+                        class="w-30 h-30 mb-3 col-4 border rounded overflow-hidden cursor-pointer d-flex align-items-center justify-content-center">
+                        <p class="d-flex flex-column text-center">
+                          <span class="fs-5 fw-bold">
+                            {{'COMMON.UPLOAD' | translate }}
+                          </span>
+                          <span>{{'COMMON.MAX_SIZE' | translate }}</span>
+                        </p>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="mb-3 row">
+                    <div formArrayName="choices">
+                      <div
+                        *ngFor="let key of questDefinitionForm.get(['definition', 'game', 'quizz', 'choices'])?.controls; let j = index; let first = first; let last = last;"
+                        class="mt-2 mb-2">
+                        <ng-container [formGroupName]="j">
+                          <div class="mb-6">
+                            <div class="d-flex align-items-center gap-2">
+                              <input
+                                *ngIf="questDefinitionForm.get(['definition', 'game', 'quizz', 'quizzType']).value === 'MULTIPLE_CHOICE'"
+                                formControlName="correct" class="form-check-input" type="checkbox" id="Required">
+                              <input
+                                *ngIf="questDefinitionForm.get(['definition', 'game', 'quizz', 'quizzType']).value === 'SINGLE_CHOICE'"
+                                class="form-check-input" type="radio" id="Required"
+                                (change)="onChangeQuizzStatus(questDefinitionForm.get(['definition', 'game', 'quizz', 'choices']), j)"
+                                [checked]="key.get('correct')?.value === true">
+                              <ng-container
+                                *ngIf="questDefinitionForm.get(['definition', 'game', 'quizz', 'quizzType']).value === 'MULTIPLE_CHOICE' || questDefinitionForm.get(['definition', 'game', 'quizz', 'quizzType']).value === 'SINGLE_CHOICE'">
+                                <input required
+                                  [ngClass]="{ 'is-invalid': key.get('item')?.touched && key.get('item').hasError('required') }"
+                                  [readonly]="quest?.status ==='ONGOING' || quest?.status ==='FINISHED'" type="text"
+                                  formControlName="item" class="form-control form-control-solid mb-lg-0"
+                                  placeholder="{{'PLACEHOLDER.ENTER_CHOICE' | translate }}">
+                                <button
+                                  (click)="removeChoice(j, null, questDefinitionForm.get(['definition', 'game', 'quizz', 'choices']))"
+                                  *ngIf="quest?.status !== 'ONGOING' && quest?.status !== 'FINISHED' && questDefinitionForm.get(['definition', 'game', 'quizz', 'choices']).value?.length > 1"
+                                  class="btn btn-sm btn-danger">
+                                  <i class="ri-delete-bin-line fs-6"></i>
+                                </button>
+                              </ng-container>
+                            </div>
+                          </div>
+                        </ng-container>
+                      </div>
+                      <div class="d-flex justify-content-end mt-3 mb-3">
+                        <button *ngIf="quest?.status !== 'ONGOING' && quest?.status !== 'FINISHED'"
+                          (click)="addChoice(null, questDefinitionForm.get(['definition', 'game', 'quizz', 'choices']))"
+                          type="button"
+                          class="btn btn-soft-primary btn-sm">{{'MENUITEMS.CUSTOMERENGAGEMENT.CAMPAIGN.ADD_CHOICE'
+                          | translate }}</button>
+                      </div>
+                    </div>
+                  </div>
+                </ng-container>
+
+                <ng-container *ngIf="selectedGameType === 'memory'" formGroupName="memory">
+                  <div class="mb-3 row">
+                    <div class="col-lg-6">
+                      <label class="form-label">Setup</label>
+                      <ng-select required [ngModelOptions]="{standalone: true}" formControlName="setup"
+                        placeholder="Select a setup" [items]="setup" class="mb-2" [multiple]="false"
+                        [closeOnSelect]="true">
+                        <ng-template ng-label-tmp let-item="item" let-clear="clear">
+                          <div class="ng-value-label">
+                            {{
+                            (item === 'FOUR' ? 'SHARED.FOUR' :
+                            item === 'EIGHT' ? 'SHARED.EIGHT' :
+                            item === 'TWELVE' ? 'SHARED.TWELVE' :
+                            'SHARED.SIXTEEN') | translate
+                            }}
+                          </div>
+                        </ng-template>
+                        <ng-template ng-option-tmp let-item$="item$" let-item="item">
+                          {{
+                          (item === 'FOUR' ? 'SHARED.FOUR' :
+                          item === 'EIGHT' ? 'SHARED.EIGHT' :
+                          item === 'TWELVE' ? 'SHARED.TWELVE' :
+                          'SHARED.SIXTEEN') | translate
+                          }}
+                        </ng-template>
+                      </ng-select>
+                      <div class="invalid-feedback"
+                        *ngIf="questDefinitionForm.get(['definition', 'game', 'memory', 'setup'])?.touched && questDefinitionForm.get(['definition', 'game', 'memory', 'setup']).hasError('required')">
+                        {{'COMMON.REQUIRED' | translate }}
+                      </div>
+                    </div>
+                    <div class="col-lg-6">
+                      <label class="form-label">{{'COMMON.TIMER' | translate}}</label>
+                      <ng-select required [ngModelOptions]="{standalone: true}" formControlName="timer"
+                        placeholder="Select a timer" [items]="timer" class="mb-2" [multiple]="false"
+                        [closeOnSelect]="true">
+                        <ng-template ng-label-tmp let-item="item" let-clear="clear">
+                          <div class="ng-value-label">
+                            {{
+                            (item === 'MINUTE' ? 'SHARED.MINUTE' :
+                            item === 'TWO_MINUTES' ? 'SHARED.TWO_MINUTES' :
+                            item === 'FIVE_MINUTES' ? 'SHARED.FIVE_MINUTES' :
+                            item === 'HALF_MINUTE' ? 'SHARED.HALF_MINUTE' : '') | translate
+                            }}
+                          </div>
+                        </ng-template>
+                        <ng-template ng-option-tmp let-item$="item$" let-item="item">
+                          {{
+                          (item === 'MINUTE' ? 'SHARED.MINUTE' :
+                          item === 'TWO_MINUTES' ? 'SHARED.TWO_MINUTES' :
+                          item === 'FIVE_MINUTES' ? 'SHARED.FIVE_MINUTES' :
+                          item === 'HALF_MINUTE' ? 'SHARED.HALF_MINUTE' : '') | translate
+                          }}
+                        </ng-template>
+                      </ng-select>
+                      <div class="invalid-feedback"
+                        *ngIf="questDefinitionForm.get(['definition', 'game', 'memory', 'timer'])?.touched && questDefinitionForm.get(['definition', 'game', 'memory', 'timer']).hasError('required')">
+                        {{'COMMON.REQUIRED' | translate }}
+                      </div>
+                    </div>
+                  </div>
+                  <div class="d-flex flex-wrap gap-2 mb-3">
+                    <ng-container
+                      *ngFor="let picture of questDefinitionForm.get(['definition', 'game', 'memory', 'pictures'])['controls']; let j = index">
+                      <div class="img-wrap h-x-4 mb-2">
+                        <ng-container *ngIf="picture?.get('baseUrl')?.value && picture?.get('baseUrl')?.value !== ''">
+                          <span *ngIf="quest?.status !== 'ONGOING' && quest?.status !== 'FINISHED'"
+                            class="delete-icon w-6 h-6 flex items-center justify-center cursor-pointer"
+                            (click)="removePicture('memory', j)">
+                            <i class="ri-delete-bin-fill text-danger"></i>
+                          </span>
+                          <img class="h-x-4 rounded object-cover"
+                            [src]="picture?.get('baseUrl')?.value + '/' + picture?.get('path').value">
+                        </ng-container>
+                      </div>
+                    </ng-container>
+                    <button *ngIf="quest?.status !== 'ONGOING' && quest?.status !== 'FINISHED' && questDefinitionForm.get(['definition', 'game', 'memory', 'pictures']).value?.length < (
+                      questDefinitionForm.get(['definition', 'game', 'memory', 'setup']).value === 'FOUR' ? 4 :
+                      questDefinitionForm.get(['definition', 'game', 'memory', 'setup']).value === 'EIGHT' ? 8 :
+                      questDefinitionForm.get(['definition', 'game', 'memory', 'setup']).value === 'TWELVE' ? 12 : 16
+                    )" (click)="upload('memory', i)" type="button" class="btn btn-soft-primary btn-sm h-4 col-1">
+                      <i class="ri-add-line fs-5"></i></button>
+                  </div>
+                </ng-container>
+
+                <ng-container *ngIf="selectedGameType === 'sliding'" formGroupName="sliding">
+                  <div class="mt-2 col-lg-8 df-flex">
+                    <div class="img-wrap w-30 h-30 me-3 mb-2">
+                      <ng-container
+                        *ngIf="questDefinitionForm.get(['definition', 'game', 'sliding', 'picture', 'path']).value">
+                        <span class="delete-icon w-6 h-6 flex items-center justify-center cursor-pointer"
+                          (click)="quest?.status !=='ONGOING' && quest?.status !=='FINISHED' ? removePicture('sliding') : null">
+                          <i class="ri-delete-bin-fill ft text-danger"></i>
+                        </span>
+                        <img (click)="quest?.status !=='ONGOING' && quest?.status !=='FINISHED' ? upload('sliding') : null"
+                          class="w-30 h-30 rounded object-cover"
+                          [src]="questDefinitionForm.get(['definition', 'game', 'sliding', 'picture', 'baseUrl']).value + '/' + questDefinitionForm.get(['definition', 'game', 'sliding', 'picture', 'path']).value">
+                      </ng-container>
+                      <div
+                        *ngIf="!questDefinitionForm.get(['definition', 'game', 'sliding', 'picture', 'baseUrl']).value"
+                        (click)="quest?.status !=='ONGOING' && quest?.status !=='FINISHED' ? upload('sliding') : null"
+                        class="w-30 h-30 mb-3 col-4 border rounded overflow-hidden cursor-pointer d-flex align-items-center justify-content-center">
+                        <p class="d-flex flex-column text-center">
+                          <span class="fs-5 fw-bold">
+                            {{'COMMON.UPLOAD' | translate }}
+                          </span>
+                          <span>{{'COMMON.MAX_SIZE' | translate }}</span>
+                        </p>
+                      </div>
+                    </div>
+                  </div>
+                  <ng-container formArrayName="threshold">
+                    <div class="d-flex justify-content-between align-items-center mt-3 mb-3">
+                      <h5>{{'SHARED.BONUS' | translate}}</h5>
+                      <button
+                        *ngIf="quest?.status !== 'ONGOING' && quest?.status !== 'FINISHED' && !threshold.value?.length"
+                        (click)="addThresholdField()" type="button" class="btn btn-primary btn-sm add-btn"
+                        id="create-btn"><i class="ri-add-line align-bottom me-1"></i>{{'SHARED.ADD_FIELD' | translate
+                        }}</button>
+                    </div>
+                    <ng-container *ngFor="let control of threshold?.controls; let i = index; let last = last"
+                      [formGroupName]="i">
+                      <ng-container formArrayName="bonus">
+                        <div class="row">
+                          <div class="mb-3 col-lg-5" *ngFor="let param of control.get('bonus').controls; let j = index"
+                            [formGroupName]="j">
+                            <div class="input-group">
+                              <div
+                                *ngIf="param.get('walletType').value === 'QUANTITATIVE' && quest?.questType?.wallet?.coin?.unitValue?.amount && param.get('amount').value > 0"
+                                class="input-group-append">
+                                <span class="input-group-text h-100">
+                                  <span>
+                                    {{(+param.get('amount').value *
+                                    +(quest?.questType?.wallet?.coin?.unitValue?.amount))
+                                    | customCurrency : quest?.questType?.wallet?.coin?.unitValue?.currency?.name }}
+                                    {{quest?.questType?.wallet?.coin?.unitValue?.currency?.name}}
+                                  </span>
+                                </span>
+                              </div>
+                              <input [readonly]="quest?.status === 'ONGOING' || quest?.status === 'FINISHED'"
+                                [ngClass]="{ 'is-invalid': param.get('amount')?.touched && param.get('amount').hasError('required') }"
+                                type="text" id="customername-field" class="form-control" placeholder="Enter amount"
+                                formControlName="amount" />
+                              <div class="input-group-append">
+                                <span *ngIf="param.get('walletType').value === 'QUANTITATIVE'" class="input-group-text">
+                                  <img *ngIf="(loyaltySettings$ | async)?.quantitative?.coin?.picture?.baseUrl"
+                                    [src]="(loyaltySettings$ | async)?.quantitative?.coin?.picture?.baseUrl + '/' + (loyaltySettings$ | async)?.quantitative?.coin?.picture?.path"
+                                    alt="" class="img-fluid rounded-circle avatar-xxs mb-1">
+                                  <lord-icon *ngIf="!(loyaltySettings$ | async)?.quantitative?.coin?.picture?.baseUrl"
+                                    src="https://cdn.lordicon.com/lxizbtuq.json" trigger="loop" delay="2000"
+                                    style="width:30px;height:30px">
+                                  </lord-icon>
+                                </span>
+
+                                <span *ngIf="param.get('walletType').value === 'QUALITATIVE'" class="input-group-text">
+                                  <img *ngIf="(loyaltySettings$ | async)?.qualitative?.picture?.baseUrl"
+                                    [src]="(loyaltySettings$ | async)?.qualitative?.picture?.baseUrl + '/' + (loyaltySettings$ | async)?.qualitative?.picture?.path"
+                                    alt="" class="img-fluid rounded-circle avatar-xxs mb-1">
+                                  <img class="img-fluid rounded-circle avatar-xxs mb-1"
+                                    *ngIf="!(loyaltySettings$ | async)?.qualitative?.picture?.baseUrl"
+                                    src="https://sifca-storage.s3.eu-central-1.amazonaws.com/loyalcraft/reputation_512.gif">
+                                </span>
+                              </div>
+                            </div>
+                            <div class="invalid-feedback"
+                              *ngIf="param.get('amount')?.touched && param.get('amount').hasError('required')">
+                              {{'COMMON.REQUIRED' | translate }}
+                            </div>
+                          </div>
+                        </div>
+                      </ng-container>
+                      <div class="col-lg-6">
+                        <label class="form-label">{{'COMMON.TIMER' | translate}}</label>
+                        <ng-select [ngModelOptions]="{standalone: true}" formControlName="timer"
+                          placeholder="Select a timer" [items]="timer" class="mb-2" [multiple]="false"
+                          [closeOnSelect]="true">
+                          <ng-template ng-label-tmp let-item="item" let-clear="clear">
+                            <div class="ng-value-label">
+                              {{
+                              (item === 'MINUTE' ? 'SHARED.MINUTE' :
+                              item === 'TWO_MINUTES' ? 'SHARED.TWO_MINUTES' :
+                              item === 'FIVE_MINUTES' ? 'SHARED.FIVE_MINUTES' :
+                              item === 'HALF_MINUTE' ? 'SHARED.HALF_MINUTE' : '') | translate
+                              }}
+                            </div>
+                          </ng-template>
+                          <ng-template ng-option-tmp let-item$="item$" let-item="item">
+                            {{
+                            (item === 'MINUTE' ? 'SHARED.MINUTE' :
+                            item === 'TWO_MINUTES' ? 'SHARED.TWO_MINUTES' :
+                            item === 'FIVE_MINUTES' ? 'SHARED.FIVE_MINUTES' :
+                            item === 'HALF_MINUTE' ? 'SHARED.HALF_MINUTE' : '') | translate
+                            }}
+                          </ng-template>
+                        </ng-select>
+                        <div class="invalid-feedback"
+                          *ngIf="control.get('timer')?.touched && control.get('timer').hasError('required')">
+                          {{'COMMON.REQUIRED' | translate }}
+                        </div>
+                      </div>
+                      <div *ngIf="quest?.status !== 'ONGOING' && quest?.status !== 'FINISHED'"
+                        class="d-flex gap-1 justify-content-end mb-3 mt-3">
+                        <button type="button" (click)="deleteThreshold(i)" class="btn btn-sm btn-danger"><i
+                            class="ri-delete-bin-fill align-bottom me-1"></i>{{'COMMON.DELETE' | translate }}</button>
+                      </div>
+                    </ng-container>
+                    <div
+                      *ngIf="quest?.status !== 'ONGOING' && quest?.status !== 'FINISHED' && threshold.value?.length > 0"
+                      class="d-flex gap-1 justify-content-end mb-3 mt-3">
+                      <button (click)="addThresholdField()" type="button" class="btn btn-primary btn-sm add-btn"
+                        id="create-btn"><i class="ri-add-line align-bottom me-1"></i>{{'SHARED.ADD_FIELD' | translate
+                        }}</button>
+                    </div>
+                  </ng-container>
+                </ng-container>
+              </ng-container>
+
+              <ng-container *ngIf="selectedGameType === 'jigsaw'" formGroupName="jigsaw">
+                <div class="mt-2 col-lg-8 df-flex">
+                  <div class="img-wrap w-30 h-30 me-3 mb-2">
+                    <ng-container
+                      *ngIf="questDefinitionForm.get(['definition', 'game', 'jigsaw', 'picture', 'path']).value">
+                      <span class="delete-icon w-6 h-6 flex items-center justify-center cursor-pointer"
+                        (click)="quest?.status !=='ONGOING' && quest?.status !=='FINISHED' ? removePicture('jigsaw') : null">
+                        <i class="ri-delete-bin-fill ft text-danger"></i>
+                      </span>
+                      <img (click)="quest?.status !=='ONGOING' && quest?.status !=='FINISHED' ? upload('jigsaw') : null"
+                        class="w-30 h-30 rounded object-cover"
+                        [src]="questDefinitionForm.get(['definition', 'game', 'jigsaw', 'picture', 'baseUrl']).value + '/' + questDefinitionForm.get(['definition', 'game', 'jigsaw', 'picture', 'path']).value">
+                    </ng-container>
+                    <div *ngIf="!questDefinitionForm.get(['definition', 'game', 'jigsaw', 'picture', 'baseUrl']).value"
+                      (click)="quest?.status !=='ONGOING' && quest?.status !=='FINISHED' ? upload('jigsaw') : null"
+                      class="w-30 h-30 mb-3 col-4 border rounded overflow-hidden cursor-pointer d-flex align-items-center justify-content-center">
+                      <p class="d-flex flex-column text-center">
+                        <span class="fs-5 fw-bold">
+                          {{'COMMON.UPLOAD' | translate }}
+                        </span>
+                        <span>{{'COMMON.MAX_SIZE' | translate }}</span>
+                      </p>
+                    </div>
+                  </div>
+                </div>
+                <div class="mb-3 col-lg-4">
+                  <label for="email_id-field" class="form-label">{{'MODULES.ENGAGEMENT.PIECES' | translate }}*</label>
+                  <ng-select bindValue="value" bindLabel="label" required [ngModelOptions]="{standalone: true}"
+                    formControlName="pieces" placeholder="Select pieces number" [items]="pieceOptions" class="mb-2"
+                    [multiple]="false" [closeOnSelect]="true">
+                    <ng-template ng-label-tmp let-item="item" let-clear="clear">
+                      <div class="ng-value-label">
+                        {{ item.label }}
+                      </div>
+                    </ng-template>
+                    <ng-template ng-option-tmp let-item="item">
+                      {{ item.label }}
+                    </ng-template>
+                  </ng-select>
+                  <div class="invalid-feedback"
+                    *ngIf="questDefinitionForm.get(['definition', 'game', 'jigsaw', 'pieces'])?.touched && questDefinitionForm.get(['definition', 'game', 'jigsaw', 'pieces']).hasError('required')">
+                    {{'COMMON.REQUIRED' | translate }}
+                  </div>
+                </div>
+              </ng-container>
+            </div>
+          </ng-container>
+        </div>
+        <div *ngIf="selectedActivity === 'Transition'" formGroupName="activity">
+          <ng-container formGroupName="transition">
+            <div class="mb-3">
+              <label for="email_id-field" class="form-label">{{'COMMON.TITLE' | translate }}*</label>
+              <input [readonly]="quest?.status ==='ONGOING' || quest?.status ==='FINISHED'" type="text"
+                id="email_id-field" class="form-control" required
+                placeholder="{{'PLACEHOLDER.ENTER_TITLE' | translate }}" formControlName="title" />
+            </div>
+            <div class="mb-3">
+              <label class="form-label">{{'COMMON.DESCRIPTION' | translate }}</label>
+              <textarea [readonly]="quest?.status ==='ONGOING' || quest?.status ==='FINISHED'"
+                formControlName="description" placeholder="{{'COMMON.ENTER_DESCRIPTION' | translate }}"
+                name="description" class="form-control h-100px"></textarea>
+            </div>
+          </ng-container>
+        </div>
+      </div>
+    </div>
+    <div *ngIf="quest?.status !== 'ONGOING' && quest?.status !== 'FINISHED'" class="hstack justify-content-end">
+      <button [disabled]="handleButtonDisabled()" type="button" (click)="save()" class="btn btn-success"
+        id="add-btn">{{'COMMON.SUBMIT' | translate
+        }}</button>
+    </div>
+  </form>
+</ng-template>
+
+
+<ng-template #apiModal role="document" let-modal>
+  <div class="modal-header bg-soft-info p-3">
+    <h5 class="modal-title" id="exampleModalLabel">{{'MENUITEMS.CUSTOMERENGAGEMENT.CAMPAIGN.USER_API' | translate }}
+    </h5>
+    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" id="close-modal"
+      (click)="modal.dismiss('Cross click')"></button>
+  </div>
+  <div class="modal-body">
+    <form [formGroup]="questDefinitionForm">
+      <ng-container formGroupName="definition">
+        <ng-container formGroupName="api">
+          <ng-container formArrayName="userParams">
+            <ng-container *ngFor="let param of userParams['controls']; let i=index; let last = last"
+              [formGroupName]="i">
+              <div class="gap-3">
+                <div class="row">
+                  <div class="mb-3 col-lg-6">
+                    <input required [readonly]="quest?.status ==='ONGOING' || quest?.status ==='FINISHED'"
+                      formControlName="key" type="text" name="user_name"
+                      class="form-control form-control-solid mb-3 mb-lg-0"
+                      placeholder="{{'PLACEHOLDER.KEY' | translate }}" />
+                  </div>
+                  <div class="mb-3 col-lg-6">
+                    <input required [readonly]="quest?.status ==='ONGOING' || quest?.status ==='FINISHED'"
+                      formControlName="value" type="text" name="user_name"
+                      class="form-control form-control-solid mb-3 mb-lg-0"
+                      placeholder="{{'PLACEHOLDER.VALUE' | translate }}" />
+                  </div>
+                </div>
+              </div>
+            </ng-container>
+          </ng-container>
+        </ng-container>
+      </ng-container>
+    </form>
+  </div>
+  <div class="modal-footer">
+    <div class="hstack gap-2 justify-content-end">
+      <button type="button" class="btn btn-light" data-bs-dismiss="modal"
+        (click)="modal.close('Close click')">{{'COMMON.CLOSE' | translate }}</button>
+      <button (click)="sendTest()" type="button" class="btn btn-success" id="add-btn">{{'COMMON.SEND' | translate
+        }}</button>
+    </div>
+  </div>
+</ng-template>
+
+<ng-template #deleteModal let-modal>
+  <div class="modal-content">
+    <div class="modal-header">
+      <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" id="btn-close"
+        (click)="modal.dismiss('Cross click')"></button>
+    </div>
+    <div class="modal-body">
+      <div class="mt-2 text-center">
+        <lord-icon src="https://cdn.lordicon.com/gsqxdxog.json" trigger="loop"
+          colors="primary:#405189,secondary:#f06548" style="width:90px;height:90px"></lord-icon>
+        <div class="mt-4 pt-2 fs-15 mx-4 mx-sm-5">
+          <h4>{{'MENUITEMS.CUSTOMERENGAGEMENT.CAMPAIGN.YOU_ARE_ABOUT_TO_DELETE_A' | translate }} {{selectedQuestionIndex
+            >= 0 ? 'question' : 'Quest Activity'}} ?</h4>
+          <p class="text-muted mx-4 mb-0">{{'MENUITEMS.CUSTOMERENGAGEMENT.CAMPAIGN.DELETING_YOUR' | translate }}
+            {{selectedQuestionIndex >= 0 ? 'question' : 'Quest Activity'}}
+            {{'MENUITEMS.CUSTOMERENGAGEMENT.CAMPAIGN.DATA_BASE_REMOVE' | translate }}
+          </p>
+        </div>
+      </div>
+      <div class="d-flex gap-2 justify-content-center mt-4 mb-2">
+        <button class="btn btn-link link-success fw-medium text-decoration-none" data-bs-dismiss="modal"
+          (click)="modal.close('Close click')" id="deleteRecord-close"><i
+            class="ri-close-line me-1 align-middle"></i>{{'COMMON.CLOSE' | translate }}</button>
+        <button type="button" class="btn w-sm btn-danger " id="delete-product"
+          (click)="selectedQuestionIndex >= 0 ? deleteQuestion() : deleteQuestActivity()"
+          (click)="modal.close('Close click')">{{'COMMON.YES_DELETE_IT' | translate }}</button>
+      </div>
+    </div>
+  </div>
+</ng-template>

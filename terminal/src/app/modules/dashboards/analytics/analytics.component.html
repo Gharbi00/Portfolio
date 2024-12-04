@@ -1,0 +1,460 @@
+<app-breadcrumbs title="{{ 'MODULES.DASHBOARDS.ANALYTICS.TITLE' | translate }}" [breadcrumbItems]="breadCrumbItems"></app-breadcrumbs>
+
+<div class="row mb-3 pb-1">
+  <div class="col-12">
+    <div class="d-flex align-items-lg-center flex-lg-row flex-column">
+      <div class="flex-grow-1">
+        <h4 class="fs-16 mb-1">{{ 'MODULES.DASHBOARDS.ANALYTICS.GOOD_MORNING' | translate }}, {{name}}!</h4>
+        <p class="text-muted mb-0">{{ 'MODULES.DASHBOARDS.ANALYTICS.WHATS_HAPPENING' | translate }}</p>
+      </div>
+      <div class="mt-3 mt-lg-0">
+        <div class="row g-3 mb-0 align-items-center">
+          <div class="col-sm-auto">
+            <div class="input-group">
+              <input (flatpickrClose)="onChangeFilter($event)" class="form-control flatpickr-input" type="text" mwlFlatpickr [(ngModel)]="filter" [altInput]="true" [convertModelValue]="true"
+                mode="range" placeholder="{{ 'COMMON.SELECT_DATE_RANGE' | translate }}">
+              <div class="input-group-text bg-primary border-primary text-white"><i class="ri-calendar-2-line"></i>
+              </div>
+            </div>
+          </div>
+          <div class="col-auto">
+            <button type="button" class="btn btn-soft-info btn-icon waves-effect waves-light layout-rightside-btn shadow-none" (click)="toggleActivity()"><i class="ri-pulse-line"></i></button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="row">
+  <div class="col-xxl-5">
+    <div class="row">
+      <div class="col-12">
+        <div class="card">
+          <div class="card-body p-0">
+            <div class="alert alert-warning border-0 rounded-0 m-0 d-flex align-items-center" role="alert">
+              <i-feather name="alert-triangle" class="text-warning me-2 icon-sm"></i-feather>
+              <div class="flex-grow-1 text-truncate">
+                {{ 'MODULES.DASHBOARDS.ANALYTICS.TRIAL_EXPIRED' | translate }} <b>17</b> {{
+                'MODULES.DASHBOARDS.ANALYTICS.DAYS' | translate }}.
+              </div>
+              <div class="flex-shrink-0">
+                <a routerLink="/pricing" class="text-reset text-decoration-underline"><b>{{
+                    'MODULES.DASHBOARDS.ANALYTICS.UPGRADE' | translate }}</b></a>
+              </div>
+            </div>
+
+            <div class="row align-items-end">
+              <div class="col-sm-8">
+                <div class="p-3">
+                  <p class="fs-16 lh-base">{{ 'MODULES.DASHBOARDS.ANALYTICS.UPGRADE_PLAN' | translate }}</p>
+                  <div class="mt-3">
+                    <a routerLink="/pricing" class="btn btn-success">{{ 'MODULES.DASHBOARDS.ANALYTICS.UPGRADE_ACCOUNT' |
+                      translate }}</a>
+                  </div>
+                </div>
+              </div>
+              <div class="col-sm-4">
+                <div class="px-3">
+                  <img src="assets/images/user-illustarator-2.png" class="img-fluid" alt="">
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div *ngIf="((loadingStats$ | async) === false || null || undefined) && (statData?.length)" class="row">
+      <div *ngFor="let stat of statData" class="col-md-6">
+        <app-analatics-stat [title]="stat?.title | translate" [value]="stat?.value | translate" [icon]="stat?.icon | translate" [persantage]="stat?.persantage | translate" [profit]="stat?.profit | translate"
+          [icon_bg_color]="stat?.icon_bg_color"></app-analatics-stat>
+      </div>
+    </div>
+    <div id="noresult" class="py-4 mt-4 text-center" *ngIf="(loadingStats$ | async) || (!(loadingStats$ | async) && !(statData?.length))">
+      <div *ngIf="loadingStats$ | async">
+        <lord-icon trigger="loop" style="width:72px;height:72px" [colors]="'primary:' + primaryColor + ',secondary:' + secondaryColor" src="https://cdn.lordicon.com/msoeawqm.json">
+        </lord-icon>
+        <h5 class="mt-4">{{'COMMON.LOADING' | translate }}</h5>
+      </div>
+      <div *ngIf="!(loadingStats$ | async) && !(statData?.length)">
+        <lord-icon trigger="loop" style="width:72px;height:72px" [colors]="'primary:' + primaryColor + ',secondary:' + secondaryColor" src="https://cdn.lordicon.com/vlycxjwx.json">
+        </lord-icon>
+        <h5 class="mt-4">{{ 'COMMON.NO_RESULT' | translate }}</h5>
+      </div>
+    </div>
+  </div>
+
+  <div class="col-xxl-7">
+    <div class="row h-100">
+      <div class="col-xl-6">
+        <div class="card card-height-100">
+          <div class="card-header align-items-center d-flex">
+            <h4 class="card-title mb-0 flex-grow-1">{{ 'MODULES.DASHBOARDS.ANALYTICS.LIVE_USERS' | translate }}</h4>
+          </div>
+          <div class="card-body">
+            <div *ngIf="isBrowser" id="sales-by-locations" leaflet style="height: 250px;" [leafletOptions]="options" [leafletLayers]="layers"></div>
+            <div class="table-responsive table-card mt-3">
+              <table class="table table-borderless table-sm table-centered align-middle table-nowrap mb-1">
+                <thead class="text-muted border-dashed border border-start-0 border-end-0 bg-soft-light">
+                  <tr>
+                    <th>{{ 'MODULES.DASHBOARDS.ANALYTICS.DURATION' | translate }}</th>
+                    <th style="width: 30%;">{{ 'MODULES.DASHBOARDS.ANALYTICS.SESSIONS' | translate }}</th>
+                    <th style="width: 30%;">{{ 'MODULES.DASHBOARDS.ANALYTICS.VIEWS' | translate }}</th>
+                  </tr>
+                </thead>
+                <tbody *ngIf="((loadingUserByCountry$ | async) === false || null || undefined) && userByCountries" class="border-0">
+                  <tr *ngFor="let segment of userByCountries?.segments">
+                    <td>{{ segment.duration }}</td>
+                    <td>{{ segment.sessions | number }}</td>
+                    <td>{{ segment.views | number }}</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+        <div id="noresult" class="py-4 mt-4 text-center" *ngIf="(loadingUserByCountry$ | async) || (!(loadingUserByCountry$ | async) && !userByCountries)">
+          <div *ngIf="loadingUserByCountry$ | async">
+            <lord-icon trigger="loop" style="width:72px;height:72px" [colors]="'primary:' + primaryColor + ',secondary:' + secondaryColor" src="https://cdn.lordicon.com/msoeawqm.json">
+            </lord-icon>
+            <h5 class="mt-4">{{'COMMON.LOADING' | translate }}</h5>
+          </div>
+          <div *ngIf="!(loadingUserByCountry$ | async) && !userByCountries">
+            <lord-icon trigger="loop" style="width:72px;height:72px" [colors]="'primary:' + primaryColor + ',secondary:' + secondaryColor" src="https://cdn.lordicon.com/vlycxjwx.json">
+            </lord-icon>
+            <h5 class="mt-4">{{ 'COMMON.NO_RESULT' | translate }}</h5>
+          </div>
+        </div>
+      </div>
+      <div class="col-xl-6">
+        <div class="card card-height-100">
+          <div class="card-header align-items-center d-flex">
+            <h4 class="card-title mb-0 flex-grow-1">{{ 'MODULES.DASHBOARDS.ANALYTICS.SESSIONS_BY_COUNTRIES' | translate
+              }}</h4>
+            <div class="d-flex gap-1">
+              <button type="button" class="btn btn-soft-secondary btn-sm shadow-none" (click)="monthFilter('All', 'sessionsByCountry')">
+                {{ 'COMMON.ALL' | translate }}
+              </button>
+              <button type="button" class="btn btn-soft-primary btn-sm shadow-none" (click)="monthFilter('1M', 'sessionsByCountry')">
+                {{ 'COMMON.ONE_MONTH' | translate }}
+              </button>
+              <button type="button" class="btn btn-soft-secondary btn-sm shadow-none" (click)="monthFilter('6M', 'sessionsByCountry')">
+                {{ 'COMMON.SIX_MONTHS' | translate }}
+              </button>
+            </div>
+          </div>
+          <div *ngIf="((loadingSessionsByCountries$ | async) === false || null || undefined) && (sessionsByCountries?.length)" class="card-body p-0">
+            <div *ngIf="isBrowser">
+              <apx-chart *ngIf="basicBarChart" [series]="basicBarChart?.series" [colors]="basicBarChart?.colors" [chart]="basicBarChart?.chart" [dataLabels]="basicBarChart?.dataLabels"
+                [plotOptions]="basicBarChart?.plotOptions" [xaxis]="basicBarChart?.xaxis" dir="ltr"></apx-chart>
+            </div>
+          </div>
+          <div id="noresult" class="py-4 mt-4 text-center" *ngIf="(loadingSessionsByCountries$ | async) || (!(loadingSessionsByCountries$ | async) && !sessionsByCountries?.length)">
+            <div *ngIf="loadingSessionsByCountries$ | async">
+              <lord-icon trigger="loop" style="width:72px;height:72px" [colors]="'primary:' + primaryColor + ',secondary:' + secondaryColor" src="https://cdn.lordicon.com/msoeawqm.json">
+              </lord-icon>
+              <h5 class="mt-4">{{'COMMON.LOADING' | translate }}</h5>
+            </div>
+            <div *ngIf="!(loadingSessionsByCountries$ | async) && !sessionsByCountries?.length">
+              <lord-icon trigger="loop" style="width:72px;height:72px" [colors]="'primary:' + primaryColor + ',secondary:' + secondaryColor" src="https://cdn.lordicon.com/vlycxjwx.json">
+              </lord-icon>
+              <h5 class="mt-4">{{ 'COMMON.NO_RESULT' | translate }}</h5>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="row">
+  <div class="col-xl-6">
+    <div class="card">
+      <div class="card-header border-0 align-items-center d-flex">
+        <h4 class="card-title mb-0 flex-grow-1">{{ 'MODULES.DASHBOARDS.ANALYTICS.AUDIENCE_METRICS' | translate }}</h4>
+        <div class="d-flex gap-1">
+          <button [class.active]="selectedField === 'All'" type="button" class="btn btn-soft-secondary btn-sm shadow-none" (click)="monthFilter('All', 'audienceMetrics')">
+            {{ 'COMMON.ALL' | translate }}
+          </button>
+          <button [class.active]="selectedField === '1M'" type="button" class="btn btn-soft-secondary btn-sm shadow-none" (click)="monthFilter('1M', 'audienceMetrics')">
+            {{ 'COMMON.ONE_MONTH' | translate }}
+          </button>
+          <button [class.active]="selectedField === '6M'" type="button" class="btn btn-soft-secondary btn-sm shadow-none" (click)="monthFilter('6M', 'audienceMetrics')">
+            {{ 'COMMON.SIX_MONTHS' | translate }}
+          </button>
+          <button [class.active]="selectedField === '1Y'" type="button" class="btn btn-soft-primary btn-sm shadow-none" (click)="monthFilter('1Y', 'audienceMetrics')">
+            {{ 'COMMON.ONE_YEAR' | translate }}
+          </button>
+        </div>
+      </div>
+      <div class="card-header p-0 border-0 bg-soft-light">
+        <div class="row g-0 text-center">
+          <div class="col-6 col-sm-4">
+            <div class="p-3 border border-dashed border-start-0">
+              <h5 class="mb-1">
+                <span> {{(audienceMetrics?.avgSession?.rate | number:'1.3-3') || 0.000}} </span>
+                <span class="text-success ms-1 fs-12">{{ audienceMetrics?.avgSession?.compare | number:'1.2-2' }}%<i class="ri-arrow-right-up-line ms-1 align-middle"></i></span>
+              </h5>
+              <p class="text-muted mb-0">{{ 'MODULES.DASHBOARDS.ANALYTICS.AVG_SESSION' | translate }}</p>
+            </div>
+          </div>
+          <div class="col-6 col-sm-4">
+            <div class="p-3 border border-dashed border-start-0">
+              <h5 class="mb-1"><span class="counter-value"> {{(audienceMetrics?.conversion.rate | number:'1.3-3') || 0.000}} </span>
+                <span class="text-success ms-1 fs-12">{{ audienceMetrics?.conversion?.compare | number:'1.2-2' }}%<i class="ri-arrow-right-up-line ms-1 align-middle"></i></span>
+              </h5>
+              <p class="text-muted mb-0">{{ 'MODULES.DASHBOARDS.ANALYTICS.CONVERSION_RATE' | translate }}</p>
+            </div>
+          </div>
+          <div class="col-6 col-sm-4">
+            <div class="p-3 border border-dashed border-start-0 border-end-0">
+              <h5 class="mb-1"><span class="counter-value"> {{(audienceMetrics?.impressions?.rate | number:'1.3-3') || 0.000}} </span>m
+                <span class="text-success ms-1 fs-12">{{ audienceMetrics?.impressions?.compare | number:'1.2-2' }}%<i class="ri-arrow-right-up-line ms-1 align-middle"></i></span>
+              </h5>
+              <p class="text-muted mb-0">{{ 'MODULES.DASHBOARDS.ANALYTICS.AVG_SESSION_DURATION' | translate }}</p>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="card-body p-0 pb-2">
+        <div *ngIf="((loadingAnalyticsMetrics$ | async) === false || null || undefined) && audienceMetrics" class="mb-n2">
+          <apx-chart *ngIf="isBrowser" [series]="basicColumnChart.series" [chart]="basicColumnChart.chart" [colors]="basicColumnChart.colors" [dataLabels]="basicColumnChart.dataLabels"
+            [plotOptions]="basicColumnChart.plotOptions" [yaxis]="basicColumnChart.yaxis" [legend]="basicColumnChart.legend" [fill]="basicColumnChart.fill" [stroke]="basicColumnChart.stroke"
+            [tooltip]="basicColumnChart.tooltip" [xaxis]="basicColumnChart.xaxis" dir="ltr"></apx-chart>
+        </div>
+      </div>
+      <div id="noresult" class="py-4 mt-4 text-center" *ngIf="(loadingAnalyticsMetrics$ | async) || (!(loadingAnalyticsMetrics$ | async) && !audienceMetrics)">
+        <div *ngIf="loadingAnalyticsMetrics$ | async">
+          <lord-icon trigger="loop" style="width:72px;height:72px" [colors]="'primary:' + primaryColor + ',secondary:' + secondaryColor" src="https://cdn.lordicon.com/msoeawqm.json">
+          </lord-icon>
+          <h5 class="mt-4">{{'COMMON.LOADING' | translate }}</h5>
+        </div>
+        <div *ngIf="!(loadingAnalyticsMetrics$ | async) && !audienceMetrics">
+          <lord-icon trigger="loop" style="width:72px;height:72px" [colors]="'primary:' + primaryColor + ',secondary:' + secondaryColor" src="https://cdn.lordicon.com/vlycxjwx.json">
+          </lord-icon>
+          <h5 class="mt-4">{{ 'COMMON.NO_RESULT' | translate }}</h5>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="col-xl-6">
+    <div class="card card-height-100">
+      <div class="card-header align-items-center d-flex">
+        <h4 class="card-title mb-0 flex-grow-1">{{ 'MODULES.DASHBOARDS.ANALYTICS.AUDIENCE_SESSIONS_BY_COUNTRY' |
+          translate }}</h4>
+        <div class="flex-shrink-0">
+          <div class="dropdown card-header-dropdown" ngbDropdown>
+            <a class="text-reset arrow-none" href="javascript:void(0);" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false" ngbDropdownToggle>
+              <span class="text-muted fs-18"><i class="mdi mdi-dots-horizontal"></i></span>
+            </a>
+            <div class="dropdown-menu dropdown-menu-end" ngbDropdownMenu>
+              <a (click)="onChangeMonth('All', 'userByDevice')" class="dropdown-item" href="javascript:void(0);">{{'COMMON.ALL' | translate }}</a>
+              <a (click)="onChangeMonth(month, 'sessionsByCountry')" *ngFor="let month of lastMonths" class="dropdown-item" href="javascript:void(0);">{{month}}</a>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div *ngIf="((loadingAnalyticsAudience$ | async) === false || null || undefined) && sessionByCountry?.length" class="card-body p-0">
+        <div *ngIf="isBrowser" class="mb-n2">
+          <apx-chart [series]="basicHeatmapChart?.series" [chart]="basicHeatmapChart?.chart" [dataLabels]="basicHeatmapChart?.dataLabels" [legend]="basicHeatmapChart?.legend"
+            [plotOptions]="basicHeatmapChart?.plotOptions" [colors]="basicHeatmapChart?.colors" [tooltip]="basicHeatmapChart?.tooltip" dir="ltr"></apx-chart>
+        </div>
+      </div>
+      <div id="noresult" class="py-4 mt-4 text-center" *ngIf="(loadingAnalyticsAudience$ | async) || (!(loadingAnalyticsAudience$ | async) && !(sessionByCountry?.length))">
+        <div *ngIf="loadingAnalyticsAudience$ | async">
+          <lord-icon trigger="loop" style="width:72px;height:72px" [colors]="'primary:' + primaryColor + ',secondary:' + secondaryColor" src="https://cdn.lordicon.com/msoeawqm.json">
+          </lord-icon>
+          <h5 class="mt-4">{{'COMMON.LOADING' | translate }}</h5>
+        </div>
+        <div *ngIf="!(loadingAnalyticsAudience$ | async) && !(sessionByCountry?.length)">
+          <lord-icon trigger="loop" style="width:72px;height:72px" [colors]="'primary:' + primaryColor + ',secondary:' + secondaryColor" src="https://cdn.lordicon.com/vlycxjwx.json">
+          </lord-icon>
+          <h5 class="mt-4">{{ 'COMMON.NO_RESULT' | translate }}</h5>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<div class="row">
+  <div class="col-xl-4">
+    <div class="card card-height-100">
+      <div class="card-header align-items-center d-flex">
+        <h4 class="card-title mb-0 flex-grow-1">{{ 'MODULES.DASHBOARDS.ANALYTICS.USERS_BY_DEVICE' | translate }}</h4>
+        <div class="flex-shrink-0">
+          <div class="dropdown card-header-dropdown" ngbDropdown>
+            <a class="text-reset arrow-none" href="javascript:void(0);" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false" ngbDropdownToggle>
+              <span class="text-muted fs-18"><i class="mdi mdi-dots-horizontal"></i></span>
+            </a>
+            <div class="dropdown-menu dropdown-menu-end" ngbDropdownMenu>
+              <a (click)="onChangeMonth('All', 'userByDevice')" class="dropdown-item" href="javascript:void(0);">{{'COMMON.ALL' | translate }}</a>
+              <a (click)="onChangeMonth(month, 'userByDevice')" *ngFor="let month of lastMonths" class="dropdown-item" href="javascript:void(0);">{{month}}</a>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div *ngIf="((loadingUsersDevice$ | async) === false || null || undefined) && simpleDonutChart" class="card-body">
+        <apx-chart *ngIf="isBrowser" [series]="simpleDonutChart?.series" [labels]="simpleDonutChart?.labels" [chart]="simpleDonutChart?.chart" [plotOptions]="simpleDonutChart?.plotOptions"
+          [dataLabels]="simpleDonutChart?.dataLabels" [legend]="simpleDonutChart?.legend" [stroke]="simpleDonutChart?.stroke" [yaxis]="simpleDonutChart?.yaxis" [colors]="simpleDonutChart?.colors"
+          dir="ltr"></apx-chart>
+
+        <div class="table-responsive mt-3">
+          <table class="table table-borderless table-sm table-centered align-middle table-nowrap mb-0">
+            <tbody class="border-0">
+              <tr>
+                <td>
+                  <h4 class="text-truncate fs-14 fs-medium mb-0"><i class="ri-stop-fill align-middle fs-18 text-primary me-2"></i>{{
+                    'MODULES.DASHBOARDS.ANALYTICS.DESKTOP_USERS' | translate }}</h4>
+                </td>
+                <td>
+                  <p class="text-muted mb-0"><i-feather name="users" class="me-2 icon-sm"></i-feather>{{
+                    usersByDevice?.desktop?.value }}</p>
+                </td>
+                <td class="text-end">
+                  <p class="text-success fw-medium fs-12 mb-0"><i class="ri-arrow-up-s-fill fs-5 align-middle"></i>{{
+                    usersByDevice?.desktop?.compare }}%</p>
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  <h4 class="text-truncate fs-14 fs-medium mb-0"><i class="ri-stop-fill align-middle fs-18 text-warning me-2"></i>{{
+                    'MODULES.DASHBOARDS.ANALYTICS.MOBILE_USERS' | translate }}</h4>
+                </td>
+                <td>
+                  <p class="text-muted mb-0"><i-feather name="users" class="me-2 icon-sm"></i-feather>{{
+                    usersByDevice?.mobile.value }}</p>
+                </td>
+                <td class="text-end">
+                  <p class="text-danger fw-medium fs-12 mb-0"><i class="ri-arrow-down-s-fill fs-5 align-middle"></i>{{
+                    usersByDevice?.mobile.compare }}%</p>
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  <h4 class="text-truncate fs-14 fs-medium mb-0"><i class="ri-stop-fill align-middle fs-18 text-info me-2"></i>{{
+                    'MODULES.DASHBOARDS.ANALYTICS.TABLET_USERS' | translate }}</h4>
+                </td>
+                <td>
+                  <p class="text-muted mb-0"><i-feather name="users" class="me-2 icon-sm"></i-feather>{{
+                    usersByDevice?.tablet.value }}</p>
+                </td>
+                <td class="text-end">
+                  <p class="text-danger fw-medium fs-12 mb-0"><i class="ri-arrow-down-s-fill fs-5 align-middle"></i>{{
+                    usersByDevice?.tablet.compare }}%</p>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+      <div id="noresult" class="py-4 mt-4 text-center" *ngIf="(loadingUsersDevice$ | async) || (!(loadingUsersDevice$ | async) && !usersByDevice)">
+        <div *ngIf="loadingUsersDevice$ | async">
+          <lord-icon trigger="loop" style="width:72px;height:72px" [colors]="'primary:' + primaryColor + ',secondary:' + secondaryColor" src="https://cdn.lordicon.com/msoeawqm.json">
+          </lord-icon>
+          <h5 class="mt-4">{{'COMMON.LOADING' | translate }}</h5>
+        </div>
+        <div *ngIf="!(loadingUsersDevice$ | async) && !usersByDevice">
+          <lord-icon trigger="loop" style="width:72px;height:72px" [colors]="'primary:' + primaryColor + ',secondary:' + secondaryColor" src="https://cdn.lordicon.com/vlycxjwx.json">
+          </lord-icon>
+          <h5 class="mt-4">{{ 'COMMON.NO_RESULT' | translate }}</h5>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="col-xl-4 col-md-6">
+    <div class="card card-height-100">
+      <div class="card-header align-items-center d-flex">
+        <h4 class="card-title mb-0 flex-grow-1">{{'SHARED.OPERATING_SYSTEMS' | translate }}
+        </h4>
+      </div>
+      <div *ngIf="((loadingOperatingSystems$ | async) === false || null || undefined)" class="card-body">
+        <div class="row align-items-center">
+          <div class="col-6">
+            <h6 class="text-muted text-uppercase fw-semibold text-truncate fs-12 mb-3">{{'SHARED.OPERATING_SYSTEMS' | translate }}</h6>
+            <h4 class="fs- mb-0">{{ topOperatingSystem?.total }}</h4>
+            <p class="mb-0 mt-2 text-muted"><span class="badge badge-soft-success mb-0">
+                <i class="ri-arrow-up-line align-middle"></i> {{ topOperatingSystem?.compare | number: '1.2-2' }} %
+              </span> vs. {{ 'MODULES.DASHBOARDS.ANALYTICS.PREVIOUS_MONTH' | translate }}</p>
+          </div>
+          <div class="col-6">
+            <div class="text-center">
+              <img src="assets/images/illustrator-1.png" class="img-fluid" alt="">
+            </div>
+          </div>
+        </div>
+        <div class="mt-3 pt-2">
+          <div class="progress progress-lg rounded-pill">
+            <div *ngFor="let segment of topOperatingSystem?.segments" class="progress-bar" [style.width.%]="segment.value" [attr.role]="'progressbar'" [attr.aria-valuenow]="segment.value"
+              [attr.aria-valuemin]="'0'" [attr.aria-valuemax]="'100'" [style.backgroundColor]="'var(--vz-' + segment.color + ')'">
+            </div>
+          </div>
+        </div>
+        <div class="mt-3 pt-2">
+          <div *ngFor="let segment of topOperatingSystem?.segments" class="d-flex mb-2">
+            <div class="flex-grow-1">
+              <p class="text-truncate text-muted fs-14 mb-0">
+                <i class="mdi mdi-circle align-middle" [ngClass]="'text-' + segment.color"></i>
+                {{ segment.source }}
+              </p>
+            </div>
+            <div class="flex-shrink-0">
+              <p class="mb-0">{{ segment.value | number: '1.2-2' }}%</p>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div id="noresult" class="py-4 mt-4 text-center" *ngIf="(loadingOperatingSystems$ | async) || (!(loadingOperatingSystems$ | async) && !topOperatingSystem)">
+        <div *ngIf="loadingOperatingSystems$ | async">
+          <lord-icon trigger="loop" style="width:72px;height:72px" [colors]="'primary:' + primaryColor + ',secondary:' + secondaryColor" src="https://cdn.lordicon.com/msoeawqm.json">
+          </lord-icon>
+          <h5 class="mt-4">{{'COMMON.LOADING' | translate }}</h5>
+        </div>
+        <div *ngIf="!(loadingOperatingSystems$ | async) && !topOperatingSystem">
+          <lord-icon trigger="loop" style="width:72px;height:72px" [colors]="'primary:' + primaryColor + ',secondary:' + secondaryColor" src="https://cdn.lordicon.com/vlycxjwx.json">
+          </lord-icon>
+          <h5 class="mt-4">{{ 'COMMON.NO_RESULT' | translate }}</h5>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="col-xl-4 col-md-6">
+    <div class="card card-height-100">
+      <div class="card-header align-items-center d-flex">
+        <h4 class="card-title mb-0 flex-grow-1">{{ 'MODULES.DASHBOARDS.ANALYTICS.TOP_PAGES' | translate }}</h4>
+        <div class="flex-shrink-0">
+          <div class="dropdown card-header-dropdown" ngbDropdown>
+            <a class="text-reset arrow-none" href="javascript:void(0);" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false" ngbDropdownToggle>
+              <span class="text-muted fs-18"><i class="mdi mdi-dots-horizontal"></i></span>
+            </a>
+            <div class="dropdown-menu dropdown-menu-end" ngbDropdownMenu>
+              <a (click)="onChangeMonth('All', 'topPages')" class="dropdown-item" href="javascript:void(0);">{{'COMMON.ALL' | translate }}</a>
+              <a (click)="onChangeMonth(month, 'topPages')" *ngFor="let month of lastMonths" class="dropdown-item" href="javascript:void(0);">{{month}}</a>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div *ngIf="((loadingTopPages$ | async) === false || null || undefined) && (topPages$ | async)?.length" class="card-body">
+        <div class="table-responsive table-card">
+          <app-top-pages [TopPages]="topPages$ | async"></app-top-pages>
+        </div>
+      </div>
+      <div id="noresult" class="py-4 mt-4 text-center" *ngIf="(loadingTopPages$ | async) || (!(loadingTopPages$ | async) && !(topPages$ | async)?.length)">
+        <div *ngIf="loadingTopPages$ | async">
+          <lord-icon trigger="loop" style="width:72px;height:72px" [colors]="'primary:' + primaryColor + ',secondary:' + secondaryColor" src="https://cdn.lordicon.com/msoeawqm.json">
+          </lord-icon>
+          <h5 class="mt-4">{{'COMMON.LOADING' | translate }}</h5>
+        </div>
+        <div *ngIf="!(loadingTopPages$ | async) && !(topPages$ | async)?.length">
+          <lord-icon trigger="loop" style="width:72px;height:72px" [colors]="'primary:' + primaryColor + ',secondary:' + secondaryColor" src="https://cdn.lordicon.com/vlycxjwx.json">
+          </lord-icon>
+          <h5 class="mt-4">{{ 'COMMON.NO_RESULT' | translate }}</h5>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,550 @@
+<div *ngIf="isLoaded" [class.dark-mode]="darkMode" [class.rtl]="rtl">
+  <div class="player-mode content-grid col-md-12 header-margin" style="padding: 00 0 !important">
+    <div class="section-banner"
+      [ngStyle]="{ background: 'url(' + headerImagePath + ') no-repeat center center / cover' }">
+      <img class="section-banner-icon" [src]="overviewIcon?.baseUrl + '/' + overviewIcon?.path" alt="newsfeed-icon" />
+      <p class="section-banner-title">{{'OVERVIEW' | translate}}</p>
+      <p class="section-banner-text text-truncate">{{'UNLOCK_EXCLUSIVE_BENEFITS_AND_STAY_CONNECTED' | translate}}</p>
+    </div>
+  </div>
+
+  <div class="col-md-12 display-flex">
+    <div *ngIf="(loyaltySettings$ | async)?.qualitative?.active"
+      [ngClass]="{'col-md-6': (loyaltySettings$ | async)?.qualitative?.active || connectButton, 'col-md-12': !(loyaltySettings$ | async)?.qualitative?.active}"
+      [class.dark-mode]="darkMode" class="player-mode stats-decoration v2 secondary big special-margin" [ngStyle]="{
+            'background-image': 'url(' + chartBackground?.baseUrl + '/' + chartBackground?.path + ')',
+            'background-repeat': 'repeat-x',
+            'background-position': 'bottom',
+            'background-color': '#fff'
+          }">
+      <div class="align-items-center d-flex justify-content-center">
+        <p class="stats-decoration-title special-span" [countUp]="(quantitativeWallet$ | async)?.[0]?.amount"
+          [options]="{separator: ''}"></p>
+
+        <img *ngIf="(quantitativeWallet$ | async)?.[0]?.coin?.picture?.baseUrl"
+          [src]="(quantitativeWallet$ | async)?.[0]?.coin?.picture?.baseUrl + '/' + (quantitativeWallet$ | async)?.[0]?.coin?.picture?.path"
+          class="assets/img-fluid rounded-circle" style="width: 48px !important" />
+        <lord-icon *ngIf="!(quantitativeWallet$ | async)?.[0]?.coin?.picture?.baseUrl"
+          src="https://cdn.lordicon.com/lxizbtuq.json" trigger="loop" delay="2000"
+          style="width: 48px; height: 48px"></lord-icon>
+      </div>
+      <p class="stats-decoration-subtitle">{{'REWARD_POINTS' | translate}}</p>
+      <p class="stats-decoration-text">{{'AS_OF_TODAY' | translate}}</p>
+      <div class="percentage-diff">
+        <a type="button" (click)="toggleModal('transactions', 'QUANTITATIVE')">
+          <svg class="action-list-item-icon icon-friend">
+            <use xlink:href="#svg-blog-posts" [class.dark-mode]="darkMode" class="color-invert"></use>
+          </svg>
+        </a>
+      </div>
+    </div>
+    <div *ngIf="(loyaltySettings$ | async)?.qualitative?.active && !connectButton"
+      class="player-mode col-md-6 special-margin coin-card">
+      <div [class.dark-mode]="darkMode" class="level-progress-box">
+        <div class="percentage-diff">
+          <a type="button" (click)="toggleModal('transactions', 'QUALITATIVE')"><svg
+              class="action-list-item-icon icon-friend">
+              <use xlink:href="#svg-blog-posts" [class.dark-mode]="darkMode" class="color-invert"></use>
+            </svg>
+          </a>
+        </div>
+
+        <div class="level-progress-badge" [ngStyle]="{
+                background: 'url(' + levelNumberPicture?.baseUrl + '/' + levelNumberPicture?.path + ') no-repeat 50%/cover'
+              }" alt="quest-completedq-l" type="button" (click)="toggleModal('reputations')">
+          <p class="level-progress-badge-title">{{'LEVEL' | translate}}</p>
+          <p class="level-progress-badge-text">{{(currentLevel$ | async) ? (currentLevel$ | async)?.rank + 1 : 1}}</p>
+        </div>
+        <div class="progress-stat">
+          <div class="bar-progress-wrap big text-center">
+            <p *ngIf="!(isFinalLevel$ | async)"
+              class="displayed-center bar-progress-info start negative progress-with-text flex-column">
+              <span style="font-weight: 700;" [ngClass]="{'light': darkMode, 'bar-progress-text': !darkMode}">
+                +{{(remainingPoints$ | async) || 0}}
+                <span class="bar-progress-unit">
+                  <img style="width: 25px;"
+                    src="https://sifca-storage.s3.eu-central-1.amazonaws.com/loyalcraft/reputation_512.gif"
+                    class="assets/img-fluid rounded-circle avatar-xxs mb-1" />
+                </span>
+              </span>
+              <span style="font-size: 0.8rem !important;" [class.light]="darkMode">{{'TO_REACH_NEXT_LEVEL' |
+                translate}}</span>
+            </p>
+            <p *ngIf="isFinalLevel$ | async"
+              class="displayed-center bar-progress-info start negative progress-with-text">
+              <span [ngClass]="{'light': darkMode, 'bar-progress-text': !darkMode}"
+                style="font-weight: 700;">{{'CONGRATULATIONS' | translate}}!</span>
+              <span class="light">{{'COMPLETED_LEVELS' | translate}}</span>
+            </p>
+          </div>
+          <div appProgressBar [height]="1" [lineColor]="'#e7e8ee'" [start]="0" [end]="100"
+            [stop]="(isFinalLevel$ | async) ? 100 : ((currentLevelPercentage$ | async) || 0)"
+            [gradientColors]="[levelColor$ | async, levelColor$ | async]" class="progress-stat-bar"
+            style="height: 4px; position: relative">
+          </div>
+        </div>
+      </div>
+    </div>
+    <div *ngIf="connectButton" [class.dark-mode]="darkMode" class="player-mode col-md-6 special-margin coin-card">
+      <div class="widget-box h-100">
+        <div class="d-flex justify-content-center mb-4 mt-4">
+          <button (click)="toggleModal('connectUser')" type="button" class="button primary">{{'CONNECT_TO_PARTNER' |
+            translate}}</button>
+        </div>
+        <div class="p-1 text-center">
+          <p style="font-size: 16px; font-weight: 500;">{{'NOT_CONNECTED' | translate}}</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div *ngIf="(loyaltySettings$ | async)?.profileComplete?.enable && levels?.length && +completeProfile?.progress < 100">
+    <app-complete-profile></app-complete-profile>
+  </div>
+  <div class="col-md-12 display-flex">
+    <div [class.pl-0]="!rtl" *ngIf="(quests$ | async)?.length" class="special-col-margin-1 col-md-5 responsive-right"
+      style="display: grid">
+      <div [class.dark-mode]="darkMode" class="player-mode widget-box special-margin special-widget-box">
+        <div class="widget-box-settings">
+          <div class="post-settings-wrap" style="position: relative">
+            <div (click)="toggleModal('questsList')" class="post-settings widget-box-post-settings-dropdown-trigger">
+              <svg class="post-settings-icon icon-more-dots">
+                <use xlink:href="#svg-more-dots"></use>
+              </svg>
+            </div>
+            <div class="simple-dropdown widget-box-post-settings-dropdown dots-dropdown">
+              <p (click)="toggleModal('editProfile')" class="simple-dropdown-link">{{'WIDGET_SETTINGS' | translate}}</p>
+            </div>
+          </div>
+        </div>
+        <p class="widget-box-title responsive-margin-top">{{'AVAILABLE_QUESTS' | translate}}</p>
+        <div class="widget-box-content scrollable-content h-100">
+          <div class="quest-preview-list">
+            <div *ngFor="let data of quests$ | async; let first = first" class="quest-preview">
+              <div class="quest-preview-info">
+                <div class="perform-svg">
+                  <img *ngIf="!data?.performed" width="30" height="30" class="quest-preview-image"
+                    [src]="starIcon?.baseUrl + '/' + starIcon?.path" alt="completedq-s" />
+                  <img *ngIf="data?.performed" width="30" height="30" class="quest-preview-image"
+                    [src]="performedIcon?.baseUrl + '/' + performedIcon?.path" alt="completedq-s" />
+                  <div [class.left-x]="!rtl" [ngStyle]="{'bottom': first ? '-6px' : '52px'}" class="xm-tooltip">
+                    <p class="xm-tooltip-text">{{(data?.performed ? 'ALREADY_PERFORMED' : 'AVAILABLE') | translate}}</p>
+                  </div>
+                </div>
+                <div class="quest-tool">
+                  <p (click)="!data?.performed ? questModal('questsDetails', data) : null" style="cursor: pointer;"
+                    class="quest-preview-title">{{data?.title}}</p>
+                  <p (click)="!data?.performed ? questModal('questsDetails', data) : null" style="cursor: pointer;"
+                    [class.dark-mode]="darkMode" class="quest-preview-text">
+                    <quill-view-html [content]="data?.description?.length > 60 ?
+                      data?.description?.substr(0,60) + '...' : data?.description" theme="snow"></quill-view-html>
+                  </p>
+                  <div style="left: 100px" [ngStyle]="{'bottom': first ? '-6px' : '52px'}" class="rm-tooltip">
+                    <div class="experience-design xm-tooltip-text">
+                      <ng-container *ngFor="let item of data?.remuneration">
+                        <p [class.dark-mode]="darkMode" *ngIf="item?.walletType === 'QUALITATIVE'"
+                          style="min-width: 68px !important; height: 23px;"
+                          class="align-items-center d-flex text-sticker mt-1">
+                          <svg class="text-sticker-icon icon-plus-small">
+                            <use xlink:href="#svg-plus-small"></use>
+                          </svg>
+                          {{ item?.amount | number: '1.0-0' }}
+                          <img *ngIf="!(loyaltySettings$ | async)?.qualitative?.picture?.baseUrl" class="rounded-circle"
+                            src="https://sifca-storage.s3.eu-central-1.amazonaws.com/loyalcraft/reputation_512.gif"
+                            class="assets/img-fluid rounded-circle mb-1"
+                            style="margin-top: 5% !important;width: 20px !important" />
+                          <img *ngIf="(loyaltySettings$ | async)?.qualitative?.picture?.baseUrl"
+                            [src]="(loyaltySettings$ | async)?.qualitative?.picture?.baseUrl + '/' + (loyaltySettings$ | async)?.qualitative?.picture?.path"
+                            class="assets/img-fluid rounded-circle mb-1"
+                            style="margin-top: 5% !important;width: 20px !important" />
+                        </p>
+                        <p [class.dark-mode]="darkMode" *ngIf="item?.walletType === 'QUANTITATIVE'"
+                          style="min-width: 68px !important; height: 23px;"
+                          class="align-items-center d-flex ng-star-inserted text-sticker mb-1">
+                          <svg class="text-sticker-icon icon-plus-small">
+                            <use xlink:href="#svg-plus-small"></use>
+                          </svg>
+                          {{ item?.amount | number: '1.0-0' }}
+                          <img *ngIf="item?.wallet?.coin?.picture?.baseUrl"
+                            [src]="item?.wallet?.coin?.picture?.baseUrl + '/' + item?.wallet?.coin?.picture?.path"
+                            class="assets/img-fluid rounded-circle avatar-xxs mb-1"
+                            style="margin-top: 5% !important; width: 20px !important" />
+                          <lord-icon *ngIf="!item?.wallet?.coin?.picture?.baseUrl"
+                            src="https://cdn.lordicon.com/lxizbtuq.json" src="https://cdn.lordicon.com/lxizbtuq.json"
+                            trigger="loop" delay="2000" style="width: 20px;height:20px">
+                          </lord-icon>
+                        </p>
+                      </ng-container>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <a [class.dark-mode]="darkMode" class="widget-box-button small button custom"
+          (click)="toggleModal('questsList')">{{'SEE_ALL_QUESTS' | translate}}</a>
+      </div>
+    </div>
+    <div [class.col-md-7]="(quests$ | async)?.length" [class.col-md-12]="!(quests$ | async)?.length"
+      class="special-col-margin-2 col-responsive-margin custom-padding special-margin custom-padding padding-right-disabled grid"
+      [ngStyle]="rtl ? {'padding-left': '15px'} : {'padding-left': '0'}">
+      <div *ngIf="widgetSettings?.content?.buttons || widgetSettings?.content?.campaigns || loyaltySettings?.prelevel?.onsiteConverter?.web?.active"
+        class="grid grid-half change-on-desktop">
+        <div class="achievement-box secondary" [ngStyle]="{
+                background: 'url(' + banner1Picture?.baseUrl + '/' + banner1Picture?.path + ') no-repeat 50%/cover'
+              }">
+          <div class="achievement-box-info-wrap">
+            <img class="achievement-box-image" [src]="roundedStarPhoto?.baseUrl + '/' + roundedStarPhoto?.path"
+              style="width: 82px" alt="badge-caffeinated-b" />
+            <div class="achievement-box-info mr-2">
+              <p class="achievement-box-title">{{'WAYS_TO_EARN' | translate}}</p>
+              <p class="achievement-box-text">{{'DISCOVER_QUICKLY_ACCUMULATE_POINTS' | translate}}</p>
+            </div>
+          </div>
+          <div style="display: flex; margin-top: 20px">
+            <a [class.dark-mode]="darkMode" class="button white-solid" style="margin-right: 2%;"
+              (click)="toggleModal('earn')">
+              <span>
+                {{'CHECK_IT_NOW' | translate}}
+              </span>
+            </a>
+            <a *ngIf="widgetSettings?.content?.buttons" class="button white-solid" (click)="toggleVibration()"
+              style="margin-right: 2%" [class.dark-mode]="darkMode">
+              <span>
+                {{(!(vibrating$ | async)
+                ? 'VIBRATE' : 'STOP_VIBRATING') | translate }}
+              </span>
+            </a>
+          </div>
+        </div>
+      </div>
+      <div class="grid grid-half change-on-desktop">
+        <div class="achievement-box primary" [ngStyle]="{
+                background: 'url(' + banner2Picture?.baseUrl + '/' + banner2Picture?.path + ') no-repeat 50%/cover'
+              }">
+          <div class="achievement-box-info-wrap">
+            <img [class.ml-2]="rtl" class="achievement-box-image" [src]="giftPhoto?.baseUrl + '/' + giftPhoto?.path"
+              style="width: 82px" alt="quest-completedq-l" />
+            <div class="achievement-box-info">
+              <p class="achievement-box-title">{{'REDEEM_YOUR_POINTS' | translate}}</p>
+              <p class="achievement-box-text">{{'TURN_POINTS_INTO_PERKS' | translate}}</p>
+            </div>
+          </div>
+          <a [class.dark-mode]="darkMode" class="button white-solid" (click)="toggleModal('redeem')">{{'CHECK_IT_NOW' |
+            translate}}</a>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div
+    [ngClass]="{'special-margin-bottom': !(widgetSettings$ | async)?.content?.badges && (!widgetSettings?.content?.marketplace || !products?.length), 'mb-4': (widgetSettings$ | async)?.content?.badges || (widgetSettings?.content?.marketplace && products?.length)}"
+    class="col-md-12 display-flex">
+    <div [class.pl-0]="!rtl" *ngIf="loyaltySettings?.referral?.enable"
+      class="special-col-margin-1 col-md-5 responsive-right" style="display: grid">
+      <div [class.dark-mode]="darkMode" class="featured-stat-box reactioner special-margin">
+        <div class="featured-stat-box-cover" [ngStyle]="{
+                background: 'url(' + bannerReactionPicture?.baseUrl + '/' + bannerReactionPicture?.path + ') no-repeat 50%/cover'
+              }">
+          <p class="featured-stat-box-cover-title" style="font-weight: 800">{{'INVITE_YOUR_FRIENDS' | translate}}</p>
+          <p class="featured-stat-box-cover-text" style="font-weight: 600">{{'RECEIVE_REWARDS' | translate}}</p>
+        </div>
+        <div class="featured-stat-box-info">
+          <div style="display: flex; justify-content: center">
+            <div class="featured-stat-box-subtitle" style="display: grid; place-items: center;margin-right: 4%;">
+              <p>{{'YOU_GET' | translate}}</p>
+              <p [class.dark-mode]="darkMode" class="text-sticker">
+                <svg class="text-sticker-icon icon-plus-small">
+                  <use xlink:href="#svg-plus-small"></use>
+                </svg>
+                {{loyaltySettings?.referral?.remuneration?.referrer?.quantitative?.amount}}
+                <img
+                  *ngIf="loyaltySettings?.referral?.remuneration?.referrer?.quantitative?.wallet?.coin?.picture?.baseUrl"
+                  [src]="loyaltySettings?.referral?.remuneration?.referrer?.quantitative?.wallet?.coin?.picture?.baseUrl + '/' + loyaltySettings?.referral?.remuneration?.referrer?.quantitative?.wallet?.coin?.picture?.path"
+                  class="assets/img-fluid rounded-circle avatar-xxs mb-1 ml-1"
+                  style="margin-top: 5% !important; width: 25px !important" />
+                <lord-icon
+                  *ngIf="!loyaltySettings?.referral?.remuneration?.referrer?.quantitative?.wallet?.coin?.picture?.baseUrl"
+                  src="https://cdn.lordicon.com/lxizbtuq.json" class="ml-1" trigger="loop" delay="2000"
+                  style="width:25px;height:25px">
+                </lord-icon>
+              </p>
+              <p [class.dark-mode]="darkMode" class="text-sticker">
+                <svg class="text-sticker-icon icon-plus-small">
+                  <use xlink:href="#svg-plus-small"></use>
+                </svg>
+                {{loyaltySettings?.referral?.remuneration?.referrer?.qualitative?.amount}}
+                <img *ngIf="!(loyaltySettings$ | async)?.qualitative?.picture?.baseUrl"
+                  src="https://sifca-storage.s3.eu-central-1.amazonaws.com/loyalcraft/reputation_512.gif"
+                  class="assets/img-fluid rounded-circle mb-1 ml-1"
+                  style="margin-top: 5% !important; width: 25px !important" />
+                <img *ngIf="(loyaltySettings$ | async)?.qualitative?.picture?.baseUrl"
+                  [src]="(loyaltySettings$ | async)?.qualitative?.picture?.baseUrl + '/' + (loyaltySettings$ | async)?.qualitative?.picture?.path"
+                  class="assets/img-fluid rounded-circle mb-1 ml-1"
+                  style="margin-top: 5% !important; width: 25px !important" />
+              </p>
+            </div>
+
+            <div class="featured-stat-box-subtitle" style="display: grid; place-items: center;margin-right: 4%">
+              <p>{{'THEY_GET' | translate}}</p>
+              <p [class.dark-mode]="darkMode" class="text-sticker">
+                <svg class="text-sticker-icon icon-plus-small">
+                  <use xlink:href="#svg-plus-small"></use>
+                </svg>
+                {{loyaltySettings?.referral?.remuneration?.referred?.quantitative?.amount}}
+                <img
+                  *ngIf="loyaltySettings?.referral?.remuneration?.referred?.quantitative?.wallet?.coin?.picture?.baseUrl"
+                  [src]="loyaltySettings?.referral?.remuneration?.referred?.quantitative?.wallet?.coin?.picture?.baseUrl + '/' + loyaltySettings?.referral?.remuneration?.referred?.quantitative?.wallet?.coin?.picture?.path"
+                  class="assets/img-fluid rounded-circle avatar-xxs mb-1 ml-1"
+                  style="margin-top: 5% !important; width: 25px !important" />
+                <lord-icon
+                  *ngIf="!loyaltySettings?.referral?.remuneration?.referred?.quantitative?.wallet?.coin?.picture?.baseUrl"
+                  src="https://cdn.lordicon.com/lxizbtuq.json" class="ml-1" trigger="loop" delay="2000"
+                  style="width:25px;height:25px">
+                </lord-icon>
+              </p>
+              <p [class.dark-mode]="darkMode" class="text-sticker">
+                <svg class="text-sticker-icon icon-plus-small">
+                  <use xlink:href="#svg-plus-small"></use>
+                </svg>
+                {{loyaltySettings?.referral?.remuneration?.referred?.qualitative?.amount}}
+                <img *ngIf="!(loyaltySettings$ | async)?.qualitative?.picture?.baseUrl"
+                  src="https://sifca-storage.s3.eu-central-1.amazonaws.com/loyalcraft/reputation_512.gif"
+                  class="assets/img-fluid rounded-circle mb-1 ml-1"
+                  style="margin-top: 5% !important; width: 25px !important" />
+                <img *ngIf="(loyaltySettings$ | async)?.qualitative?.picture?.baseUrl"
+                  [src]="(loyaltySettings$ | async)?.qualitative?.picture?.baseUrl + '/' + (loyaltySettings$ | async)?.qualitative?.picture?.path"
+                  class="assets/img-fluid rounded-circle mb-1 ml-1"
+                  style="margin-top: 5% !important; width: 25px !important" />
+              </p>
+            </div>
+          </div>
+          <div *ngIf="referraleRference" class="form-input-decorated" style="margin: 22px 13px">
+            <div class="form-input small active" style="padding: 0px 2%">
+              <input readonly type="text" id="profile-birthday" name="profile_birthday"
+                [value]="loyaltySettings?.referral?.url+referraleRference" />
+            </div>
+
+            <svg style="pointer-events: auto;" (click)="copyText(loyaltySettings?.referral?.url+referraleRference)"
+              type="button" class="form-input-icon icon-events" xmlns="http://www.w3.org/2000/svg" width="15"
+              height="15" viewBox="0 0 24 24" fill="none">
+              <path style="fill: white;"
+                d="M6 11C6 8.17157 6 6.75736 6.87868 5.87868C7.75736 5 9.17157 5 12 5H15C17.8284 5 19.2426 5 20.1213 5.87868C21 6.75736 21 8.17157 21 11V16C21 18.8284 21 20.2426 20.1213 21.1213C19.2426 22 17.8284 22 15 22H12C9.17157 22 7.75736 22 6.87868 21.1213C6 20.2426 6 18.8284 6 16V11Z"
+                stroke="#1C274C" stroke-width="1.5" />
+              <path style="fill: white;" opacity="0.5"
+                d="M6 19C4.34315 19 3 17.6569 3 16V10C3 6.22876 3 4.34315 4.17157 3.17157C5.34315 2 7.22876 2 11 2H15C16.6569 2 18 3.34315 18 5"
+                stroke="#1C274C" stroke-width="1.5" />
+            </svg>
+          </div>
+          <div *ngIf="referraleRference" class="featured-stat-box-subtitle p-2">
+            <p> {{'LINK_SHARE' | translate}} </p>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div *ngIf="selectedCard" [ngClass]="{
+      'col-md-12': !loyaltySettings?.referral?.enable,
+      'col-md-7': loyaltySettings?.referral?.enable
+    }" [class.dark-mode]="darkMode" [class.pl-0]="!rtl"
+      class="special-flex special-col-margin-2 col-responsive-margin custom-padding special-margin custom-padding padding-right-disabled grid widget-box"
+      style="display: grid">
+      <div class="special-widget-box">
+        <p class="widget-box-title">{{'MY_CARD' | translate}}</p>
+        <div class="widget-box-content">
+          <div class="tns-outer" id="badge-stat-slider-items-ow">
+            <div id="badge-stat-slider-items-mw" class="tns-ovh">
+              <div class="tns-inner" id="badge-stat-slider-items-iw">
+                <div class="widget-box-content-slider tns-slider tns-carousel tns-subpixel tns-calc tns-horizontal">
+                  <div class="widget-box-content-slider-item tns-item" id="badge-stat-slider-items-item0"
+                    aria-hidden="true" tabindex="-1">
+                    <div class="badge-item-stat void" style="padding: 0 0 0">
+                      <ng-container *ngIf="loyaltySettings?.loyaltyCard?.representation?.visual === 'BARCODE'">
+                        <div *ngIf="validateBarcode(selectedCard?.identifier)" class="col-3">
+                          <ngx-barcode [bc-height]="25" [bc-width]="2" [bc-font-size]="12"
+                            [bc-format]="loyaltySettings?.loyaltyCard?.representation?.style" class="cursor-pointer"
+                            [bc-element-type]="'svg'" [bc-display-value]="true" [bc-background]="'#EEEEEE'"
+                            [bc-value]="selectedCard?.identifier" matTooltip="Copy Barcode"
+                            (click)="copyText(selectedCard?.identifier)">
+                          </ngx-barcode>
+                        </div>
+                        <div *ngIf="!validateBarcode(selectedCard?.identifier)"
+                          (click)="copyText(selectedCard?.identifier)" class="align-items-center d-flex">
+                          {{ selectedCard?.identifier }}
+                          <i matTooltip="This is not a valid EAN13 barcode"
+                            class="fs-sm-20 ms-1 ri-error-warning-line text-warning"></i>
+                        </div>
+                      </ng-container>
+                      <qrcode style="pointer-events: auto;"
+                        *ngIf="loyaltySettings?.loyaltyCard?.representation?.visual === 'QRCODE' && selectedCard"
+                        (click)="copyText(selectedCard?.identifier)" [qrdata]="selectedCard?.identifier"
+                        class="displayed-center" [errorCorrectionLevel]="'M'" height="200" width="200">
+                      </qrcode>
+                      <p class="badge-item-stat-title" style="margin-top: 10px">{{'CARD_ID' | translate}}</p>
+                      <p class="badge-item-stat-text">{{'PRESENT_CARD_UNLOCK_REWARDS' | translate}}
+                      </p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div [ngClass]="{'special-margin-bottom': !widgetSettings?.content?.marketplace || !products?.length, 'mb-4': widgetSettings?.content?.marketplace && products?.length}" *ngIf="(widgetSettings$ | async)?.content?.badges" [class.dark-mode]="darkMode"
+    class="col-md-12 widget-box special-margin special-margin-bottom">
+    <div class="special-widget-box pt-0">
+      <div class="d-flex justify-content-between align-items-center mb-5">
+        <p class="widget-box-title">{{'BADGES' | translate}} <span class="highlighted">13</span></p>
+        <div class="post-settings-wrap" style="position: relative;">
+          <div class="post-settings widget-box-post-settings-dropdown-trigger">
+            <svg class="post-settings-icon icon-more-dots">
+              <use xlink:href="#svg-more-dots"></use>
+            </svg>
+          </div>
+          <div class="simple-dropdown widget-box-post-settings-dropdown"
+            style="position: absolute; z-index: 9999; top: 30px; right: 9px; opacity: 0; visibility: hidden; transform: translate(0px, -20px); transition: transform 0.3s ease-in-out 0s, opacity 0.3s ease-in-out 0s, visibility 0.3s ease-in-out 0s;">
+            <p class="simple-dropdown-link">{{'WIDGET_SETTINGS' | translate}}</p>
+          </div>
+        </div>
+      </div>
+      <div class="widget-box-content">
+        <div class="draggable-items">
+          <div class="draggable-item" [class.dark-mode]="darkMode">
+            <div class="badge-item">
+              <img [src]="baseUrl + '/assets/img/badge/gold-s.png'" alt="badge-gold-s">
+            </div>
+          </div>
+          <div class="draggable-item" [class.dark-mode]="darkMode">
+            <div class="badge-item">
+              <img [src]="baseUrl + '/assets/img/badge/age-s.png'" alt="badge-age-s">
+            </div>
+          </div>
+          <div class="draggable-item" [class.dark-mode]="darkMode">
+            <div class="badge-item">
+              <img [src]="baseUrl + '/assets/img/badge/caffeinated-s.png'" alt="badge-caffeinated-s">
+            </div>
+          </div>
+          <div class="draggable-item" [class.dark-mode]="darkMode">
+            <div class="badge-item">
+              <img [src]="baseUrl + '/assets/img/badge/warrior-s.png'">
+            </div>
+          </div>
+          <div class="draggable-item" [class.dark-mode]="darkMode">
+            <div class="badge-item">
+              <img [src]="baseUrl + '/assets/img/badge/traveller-s.png'" alt="badge-traveller-s">
+            </div>
+          </div>
+          <div class="draggable-item" [class.dark-mode]="darkMode">
+            <div class="badge-item">
+              <img [src]="baseUrl + '/assets/img/badge/scientist-s.png'" alt="badge-scientist-s">
+            </div>
+          </div>
+          <div class="draggable-item" [class.dark-mode]="darkMode">
+            <div class="badge-item">
+              <img [src]="baseUrl + '/assets/img/badge/ncreature-s.png'" alt="badge-ncreature-s">
+            </div>
+          </div>
+          <div class="draggable-item" [class.dark-mode]="darkMode">
+            <div class="badge-item">
+              <img [src]="baseUrl + '/assets/img/badge/mightiers-s.png'" alt="badge-mightiers-s">
+            </div>
+          </div>
+          <div class="draggable-item" [class.dark-mode]="darkMode">
+            <div class="badge-item">
+              <img [src]="baseUrl + '/assets/img/badge/phantom-s.png'" alt="badge-phantom-s">
+            </div>
+          </div>
+          <div class="draggable-item" [class.dark-mode]="darkMode">
+            <div class="badge-item">
+              <img [src]="baseUrl + '/assets/img/badge/collector-s.png'" alt="badge-collector-s">
+            </div>
+          </div>
+          <div class="draggable-item" [class.dark-mode]="darkMode">
+            <div class="badge-item">
+              <img [src]="baseUrl + '/assets/img/badge/bronzec-s.png'" alt="badge-bronzec-s">
+            </div>
+          </div>
+          <div class="draggable-item" [class.dark-mode]="darkMode">
+            <div class="badge-item">
+              <img [src]="baseUrl + '/assets/img/badge/silverc-s.png'" alt="badge-silverc-s">
+            </div>
+          </div>
+          <div class="draggable-item" [class.dark-mode]="darkMode">
+            <div class="badge-item">
+              <img [src]="baseUrl + '/assets/img/badge/goldc-s.png'" alt="badge-goldc-s">
+            </div>
+          </div>
+          <div class="draggable-item empty" [class.dark-mode]="darkMode"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div *ngIf="widgetSettings?.content?.marketplace && products?.length" class="special-margin-bottom mt-5">
+    <ng-container *ngIf="!(loadingProducts$ | async)">
+      <div class="section-header align-items-center">
+        <div class="section-header-info">
+          <p class="section-pretitle"> {{'CHECK_NEW' | translate}}</p>
+          <h2 class="section-title"> {{'LATEST_ITEMS' | translate}} </h2>
+        </div>
+        <div class="section-header-actions">
+          <a class="section-header-action" href="javascript:void(0);" (click)="toggleModal('marketplace')">
+            {{'BROWSE_ALL_LATEST' | translate}}
+          </a>
+        </div>
+      </div>
+      <owl-carousel-o (changed)="draggingChange($event)" [options]="productsCarousel" id="profile-header-social-links-slider">
+        <ng-container *ngFor="let product of products; let i = index">
+          <ng-template carouselSlide id="profile-header-social-links-slider-item0">
+            <div class="w-100">
+              <app-product [isDragging]="isDragging" [product]="product"></app-product>
+            </div>
+          </ng-template>
+        </ng-container>
+      </owl-carousel-o>
+    </ng-container>
+    <div id="noresult" class="py-4 mt-4 text-center" *ngIf="(loadingProducts$ | async)">
+      <div class="page-loader-indicator loader-bars">
+        <div class="loader-bar"></div>
+        <div class="loader-bar"></div>
+        <div class="loader-bar"></div>
+        <div class="loader-bar"></div>
+        <div class="loader-bar"></div>
+        <div class="loader-bar"></div>
+        <div class="loader-bar"></div>
+        <div class="loader-bar"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<svg style="display: none">
+  <symbol id="svg-blog-posts" viewBox="0 0 20 20" preserveAspectRatio="xMinYMin meet">
+    <path
+      d="M15,0H5C2.791,0,1,1.791,1,4v3v2v7c0,2.209,1.791,4,4,4h10c2.209,0,4-1.791,4-4V9V7V4C19,1.791,17.209,0,15,0z M17,16c0,1.103-0.897,2-2,2H5c-1.103,0-2-0.897-2-2V9h14V16z M3,7V4c0-1.103,0.897-2,2-2h10c1.103,0,2,0.897,2,2v3H3z" />
+    <rect x="5" y="11" width="10" height="2" />
+    <rect x="13" y="14" width="2" height="2" />
+    <rect x="5" y="14" width="6" height="2" />
+  </symbol>
+</svg>
+
+<svg style="display: none">
+  <symbol id="svg-more-dots" viewBox="0 0 22 6" preserveAspectRatio="xMinYMin meet">
+    <path
+      d="M19,6c-1.657,0-3-1.344-3-3c0-1.656,1.343-3,3-3s3,1.344,3,3C22,4.656,20.657,6,19,6z M19,2c-0.553,0-1,0.447-1,1c0,0.552,0.447,1,1,1c0.552,0,1-0.449,1-1C20,2.447,19.552,2,19,2z M11,6C9.343,6,8,4.656,8,3c0-1.656,1.343-3,3-3s3,1.344,3,3C14,4.656,12.657,6,11,6z M11,2c-0.553,0-1,0.447-1,1c0,0.552,0.447,1,1,1c0.552,0,1-0.449,1-1C12,2.447,11.552,2,11,2z M3,6C1.343,6,0,4.656,0,3c0-1.656,1.343-3,3-3c1.656,0,3,1.344,3,3C6,4.656,4.656,6,3,6z M3,2C2.447,2,2,2.447,2,3c0,0.552,0.447,1,1,1c0.552,0,1-0.449,1-1C4,2.447,3.552,2,3,2z" />
+  </symbol>
+</svg>
+
+<svg style="display: none">
+  <symbol id="svg-check" viewBox="0 0 12 9" preserveAspectRatio="xMinYMin meet">
+    <path d="M12,1.5L4.5,9L3,7.499l0,0L0,4.5L1.5,3l3,3l6-6L12,1.5z" />
+  </symbol>
+</svg>
+
+<svg style="display: none">
+  <symbol id="svg-plus-small" viewBox="0 0 8 8" preserveAspectRatio="xMinYMin meet">
+    <path d="M8,5H5v3H3V5H0V3h3V0h2v3h3V5z" />
+  </symbol>
+</svg>

@@ -1,0 +1,103 @@
+<div class="modal-header bg-soft-info p-3">
+  <h5 class="modal-title" id="exampleModalLabel">{{ 'MODULES.ECOMMERCE.MAIN.SELECT_AUDIENCE' | translate }}</h5>
+  <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" id="close-modal"
+    (click)="activeModal.close('Close click')"></button>
+</div>
+<div infiniteScroll [scrollWindow]="false" [infiniteScrollDistance]="2" [infiniteScrollThrottle]="50"
+  (scrolled)="loadMoreAudiences()" class="modal-body overflow-auto">
+  <div class="mh-475px scroll-y me-n7 pe-7">
+    <div *ngIf="((loadingAudiences$ | async) === false || null || undefined) && (audiences$ | async).length">
+      <div *ngFor="let audience of audiences$ | async" id="pl1_{{audience?.id}}">
+        <div [ngClass]="{'border-primary': audience?.id === selectedAudience?.id}"
+          class="project-card border rounded p-7 card card-height-100">
+          <div class="card-body">
+            <div class="d-flex flex-column h-100">
+              <div class="d-flex">
+                <div class="flex-grow-1">
+                  <p class="text-muted mb-4">{{ audience?.updatedAt | date:'longDate' }}</p>
+                </div>
+              </div>
+              <div class="d-flex mb-2">
+                <div class="flex-shrink-0 me-3">
+                  <div class="avatar-sm">
+                    <span *ngIf="audience?.media?.pictures?.length && audience?.media?.pictures[0]?.baseUrl"
+                      class="avatar-title bg-soft-warning rounded-circle">
+                      <img [src]="audience?.media?.pictures[0].baseUrl + '/' + audience?.media?.pictures[0].path" alt=""
+                        class="rounded-circle h-100 img-fluid">
+                    </span>
+                    <div *ngIf="!audience?.media?.pictures?.length || !audience?.media?.pictures?.[0]?.baseUrl"
+                      class="avatar-title text-uppercase bg-soft-info text-danger rounded-circle shadow">
+                      {{audience?.title?.charAt(0) || 'N'}}
+                    </div>
+                  </div>
+                </div>
+                <div class="flex-grow-1">
+                  <h5 class="mb-1 fs-15"><a routerLink="/collaboration/projects/view/{{audience?.id}}"
+                      class="text-dark">{{audience?.title | translate}}</a></h5>
+                  <p class="text-muted text-truncate-two-lines mb-3">{{audience?.description}}</p>
+                </div>
+              </div>
+              <div class="mt-auto">
+                <div class="d-flex mb-2">
+                  <div class="flex-grow-1 mb-x">
+                    <div>{{ 'MODULES.ECOMMERCE.MAIN.REACH' | translate }}</div>
+                  </div>
+                  <div class="flex-shrink-0">
+                    <div><i class="ri-list-check align-bottom me-1 text-muted"></i> {{audience?.reach?.reach +
+                      '/' + audience?.reach?.total }} </div>
+                  </div>
+                </div>
+                <div class="progress animated-progess custom-progress progress-label">
+                  <div class="progress-bar bg-primary" role="progressbar" [style.width]="(+audience?.reach?.reach /
+                          +audience?.reach?.total) * 100 + '%'" [aria-valuenow]="percentage" aria-valuemin="0"
+                    aria-valuemax="100">
+                    <div class="label">{{((+audience?.reach?.reach /
+                      +audience?.reach?.total) * 100).toFixed(1)}}%</div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="card-footer bg-transparent border-top-dashed py-2">
+            <div class="d-flex justify-content-end">
+              <a (click)="selectAudience(audience)" class="btn btn-sm btn-primary">{{'COMMON.SELECT' | translate }}</a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div id="noresult" class="py-4 mt-4 text-center"
+      *ngIf="(!questType && (loadingAudiences$ | async) )|| ((loadingAudiences$ | async) || (!(loadingAudiences$ | async) && !(audiences$ | async).length))">
+      <div *ngIf="loadingAudiences$ | async">
+        <lord-icon trigger="loop" style="width:72px;height:72px"
+          [colors]="'primary:' + primaryColor + ',secondary:' + secondaryColor"
+          src="https://cdn.lordicon.com/msoeawqm.json">
+        </lord-icon>
+        <h5 class="mt-4">{{'COMMON.LOADING' | translate }}</h5>
+      </div>
+      <div *ngIf="!(loadingAudiences$ | async) && !(audiences$ | async).length && !questType">
+        <lord-icon trigger="loop" style="width:72px;height:72px"
+          [colors]="'primary:' + primaryColor + ',secondary:' + secondaryColor"
+          src="https://cdn.lordicon.com/vlycxjwx.json">
+        </lord-icon>
+        <h5 class="mt-4">{{ 'COMMON.NO_RESULT' | translate }}</h5>
+      </div>
+    </div>
+    <div *ngIf="!(audiences$ | async).length && questType && !(loadingAudiences$ | async)" id="noresult" class="py-4 mt-4 text-center">
+      <lord-icon trigger="loop" style="width:72px;height:72px"
+        [colors]="'primary:' + primaryColor + ',secondary:' + secondaryColor"
+        src="https://cdn.lordicon.com/vlycxjwx.json">
+      </lord-icon>
+      <h5 class="mt-4">{{ 'COMMON.NO_AUDIENCES' | translate }} {{questType?.title}} </h5>
+    </div>
+  </div>
+</div>
+<div class="modal-footer">
+  <div class="hstack gap-2 justify-content-end">
+    <button type="button" class="btn btn-light" data-bs-dismiss="modal"
+      (click)="activeModal.close('Close click')">{{'COMMON.CLOSE' | translate }}</button>
+    <button type="button" *ngIf="(audiences$ | async)?.length" [disabled]="!selectedAudience" (click)="save()"
+      class="btn btn-success" id="add-btn">{{'MENUITEMS.CUSTOMERENGAGEMENT.LIST.APPLY' | translate}}</button>
+  </div>
+</div>

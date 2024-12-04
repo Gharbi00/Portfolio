@@ -1,0 +1,209 @@
+<div [class.dark-mode]="darkMode" [class.rtl]="rtl">
+  <div class="earn content-grid col-md-12 header-margin">
+    <div class="section-banner"
+      [ngStyle]="{ background: 'url(' + headerImagePath + ') no-repeat center center / cover' }">
+      <img class="section-banner-icon" [src]="earnHeaderIcon?.baseUrl + '/' + earnHeaderIcon?.path"
+        alt="newsfeed-icon" />
+      <p class="section-banner-title">{{'HOW_TO_EARN' | translate}}</p>
+      <p class="section-banner-text text-truncate">{{'DISCOVER_EFFORTLESS_WAYS' | translate}}</p>
+    </div>
+  </div>
+  <div class="earn col-md-12">
+    <div class="challenge section-header col-md-12">
+      <div class="section-header-info">
+        <p class="section-pretitle">{{'EARN_NOW' | translate}}</p>
+        <h2 class="section-title">{{'DISCOVER_HOW_TO_EARN' | translate}}</h2>
+      </div>
+    </div>
+    <div *ngIf="loyaltySettings?.prelevel?.onsiteConverter?.web?.active" class="grid grid-half change-on-desktop">
+      <div class="achievement-box secondary" [ngStyle]="{
+          background: 'url(' + banner1Icon?.baseUrl + '/' + banner1Icon?.path + ') no-repeat 50%/cover'
+        }">
+        <div class="achievement-box-info-wrap">
+          <img [src]="earn1Picture?.baseUrl + '/' + earn1Picture?.path" alt="badge-caffeinated-b"
+            class="achievement-box-image earn-card-images" />
+          <div class="achievement-box-info">
+            <p class="achievement-box-title">{{'POINTS_PER_PURCHASE' | translate}}</p>
+            <p class="achievement-box-text align-items-center d-flex flex-wrap">
+              <span style="margin-right: 5px;" class="mt-1">
+                {{'RECEIVE' | translate}} {{ (authenticated$ | async) ? '' : ('UP_TO' | translate) }}
+              </span>
+              <ng-container *ngIf="!(authenticated$ | async)">
+                <div class="d-flex">
+                  <p *ngIf="loyaltySettings?.onsiteConverter?.web?.remunerations[lastIndex]?.qualitative"
+                    style="height: 23px;" class="align-items-center d-flex text-sticker justify-content-center">
+                    <svg class="text-sticker-icon icon-plus-small">
+                      <use xlink:href="#svg-plus-small"></use>
+                    </svg>
+                    <span>
+                      {{(+loyaltySettings?.onsiteConverter?.web?.remunerations[lastIndex]?.qualitative?.amount * 1000) /
+                      100 }}
+                    </span>
+                    <img *ngIf="!(loyaltySettings$ | async)?.qualitative?.picture?.baseUrl"
+                      src="https://sifca-storage.s3.eu-central-1.amazonaws.com/loyalcraft/reputation_512.gif"
+                      class="assets/img-fluid rounded-circle mb-1"
+                      style="margin-top: 5% !important; width: 20px !important" />
+                    <img *ngIf="(loyaltySettings$ | async)?.qualitative?.picture?.baseUrl"
+                      [src]="(loyaltySettings$ | async)?.qualitative?.picture?.baseUrl + '/' + (loyaltySettings$ | async)?.qualitative?.picture?.path"
+                      class="assets/img-fluid rounded-circle mb-1"
+                      style="margin-top: 5% !important; width: 20px !important" />
+                  </p>
+                  <p *ngIf="loyaltySettings?.onsiteConverter?.web?.remunerations[lastIndex]?.quantitative"
+                    style="height: 23px;" class="align-items-center d-flex justify-content-center text-sticker mr-2">
+                    <svg class="text-sticker-icon icon-plus-small">
+                      <use xlink:href="#svg-plus-small"></use>
+                    </svg>
+                    <span *ngIf="loyaltySettings?.prelevel?.onsiteConverter?.web?.quantitative">
+                      {{(+loyaltySettings?.onsiteConverter?.web?.remunerations[lastIndex]?.quantitative?.amount * 1000)
+                      / 100 }}
+                    </span>
+                    <img
+                      *ngIf="loyaltySettings?.onsiteConverter?.web?.remunerations[lastIndex]?.quantitative?.wallet?.coin?.picture?.baseUrl"
+                      [src]="loyaltySettings?.onsiteConverter?.web?.remunerations[lastIndex]?.quantitative?.wallet?.coin?.picture?.baseUrl + '/' + loyaltySettings?.onsiteConverter?.web?.remunerations[lastIndex]?.quantitative?.wallet?.coin?.picture?.path"
+                      alt="" class="img-fluid rounded-circle avatar-xxs mb-1"
+                      style="margin-top: 5% !important; width: 20px !important">
+                    <lord-icon
+                      *ngIf="!loyaltySettings?.onsiteConverter?.web?.remunerations[lastIndex]?.quantitative?.wallet?.coin?.picture?.baseUrl"
+                      src="https://cdn.lordicon.com/lxizbtuq.json" trigger="loop" delay="2000"
+                      style="width:20px;height:20px">
+                    </lord-icon>
+                  </p>
+                </div>
+              </ng-container>
+
+              <ng-container *ngIf="(authenticated$ | async)">
+                <ng-container *ngIf="(currentLevel$ | async)">
+                  <div class="d-flex">
+                    <ng-container *ngFor="let item of loyaltySettings?.onsiteConverter?.web?.remunerations">
+                      <ng-container *ngIf="(currentLevel$ | async).reputationLevel === item?.reputationLevel?.reputationLevel">
+                        <p *ngIf="item?.qualitative" class="align-items-center d-flex text-sticker mt-1" style="min-width: 68px !important; height: 23px; margin-right: 5px;">
+                          <svg class="text-sticker-icon icon-plus-small">
+                            <use xlink:href="#svg-plus-small"></use>
+                          </svg>
+                          {{(+item?.qualitative?.amount * 1000) / 100 }}
+                          <img *ngIf="item?.quantitative?.wallet?.coin?.picture?.baseUrl"
+                            [src]="item?.quantitative?.wallet?.coin?.picture?.baseUrl + '/' + item?.quantitative?.wallet?.coin?.picture?.path"
+                            alt="" class="img-fluid rounded-circle avatar-xxs mb-1"
+                            style="margin-top: 5% !important; width: 20px !important">
+                          <lord-icon *ngIf="!item?.quantitative?.wallet?.coin?.picture?.baseUrl"
+                            src="https://cdn.lordicon.com/lxizbtuq.json" trigger="loop" delay="2000"
+                            style="width:20px;height:20px">
+                          </lord-icon>
+                        </p>
+                        <p *ngIf="item?.quantitative" class="align-items-center d-flex text-sticker mt-1" style="min-width: 68px !important; height: 23px; margin-right: 5px;">
+                          <svg class="text-sticker-icon icon-plus-small">
+                            <use xlink:href="#svg-plus-small"></use>
+                          </svg>
+                          {{(+item?.quantitative?.amount * 1000) / 100 }}
+                          <img *ngIf="!(loyaltySettings$ | async)?.qualitative?.picture?.baseUrl"
+                            src="https://sifca-storage.s3.eu-central-1.amazonaws.com/loyalcraft/reputation_512.gif"
+                            class="assets/img-fluid rounded-circle mb-1"
+                            style="margin-top: 5% !important; width: 20px !important" />
+                          <img *ngIf="(loyaltySettings$ | async)?.qualitative?.picture?.baseUrl"
+                            [src]="(loyaltySettings$ | async)?.qualitative?.picture?.baseUrl + '/' + (loyaltySettings$ | async)?.qualitative?.picture?.path"
+                            class="assets/img-fluid rounded-circle mb-1"
+                            style="margin-top: 5% !important; width: 20px !important" />
+                        </p>
+                      </ng-container>
+                    </ng-container>
+                  </div>
+                </ng-container>
+
+                <ng-container *ngIf="!(currentLevel$ | async)">
+                  <div class="d-flex">
+                    <p *ngIf="loyaltySettings?.prelevel?.onsiteConverter?.web?.qualitative" style="min-width: 68px !important; height: 23px; margin-right: 5px;"
+                      class="align-items-center d-flex text-sticker mt-1">
+                      <svg class="text-sticker-icon icon-plus-small">
+                        <use xlink:href="#svg-plus-small"></use>
+                      </svg>
+                      <span *ngIf="loyaltySettings?.prelevel?.onsiteConverter?.web?.qualitative">
+                        {{(+loyaltySettings?.prelevel?.onsiteConverter?.web?.qualitative?.amount * 1000)/ 100 }}
+                      </span>
+                      <img *ngIf="!(loyaltySettings$ | async)?.qualitative?.picture?.baseUrl"
+                        src="https://sifca-storage.s3.eu-central-1.amazonaws.com/loyalcraft/reputation_512.gif"
+                        class="assets/img-fluid rounded-circle mb-1"
+                        style="margin-left: 5px; margin-top: 5% !important; width: 20px !important" />
+                      <img *ngIf="(loyaltySettings$ | async)?.qualitative?.picture?.baseUrl"
+                        [src]="(loyaltySettings$ | async)?.qualitative?.picture?.baseUrl + '/' + (loyaltySettings$ | async)?.qualitative?.picture?.path"
+                        class="assets/img-fluid rounded-circle mb-1"
+                        style="margin-left: 5px; margin-top: 5% !important; width: 20px !important" />
+                    </p>
+                    <p *ngIf="loyaltySettings?.prelevel?.onsiteConverter?.web?.quantitative" style="min-width: 68px !important; height: 23px; margin-right: 5px;"
+                      class="align-items-center d-flex text-sticker mt-1">
+                      <svg class="text-sticker-icon icon-plus-small">
+                        <use xlink:href="#svg-plus-small"></use>
+                      </svg>
+                      <span *ngIf="loyaltySettings?.prelevel?.onsiteConverter?.web?.quantitative">
+                        {{(+loyaltySettings?.prelevel?.onsiteConverter?.web?.quantitative?.amount * 1000)/ 100 }}
+                      </span>
+                      <img
+                        *ngIf="loyaltySettings?.prelevel?.onsiteConverter?.web?.quantitative?.wallet?.coin?.picture?.baseUrl"
+                        [src]="loyaltySettings?.prelevel?.onsiteConverter?.web?.quantitative?.wallet?.coin?.picture?.baseUrl + '/' + loyaltySettings?.prelevel?.onsiteConverter?.web?.quantitative?.wallet?.coin?.picture?.path"
+                        alt="" class="img-fluid rounded-circle avatar-xxs mb-1"
+                        style="margin-left: 5px; margin-top: 5% !important; width: 20px !important">
+                      <lord-icon
+                        *ngIf="!loyaltySettings?.prelevel?.onsiteConverter?.web?.quantitative?.wallet?.coin?.picture?.baseUrl"
+                        src="https://cdn.lordicon.com/lxizbtuq.json" trigger="loop" delay="2000"
+                        style="margin-left: 5px; width:20px;height:20px">
+                      </lord-icon>
+                    </p>
+                  </div>
+                </ng-container>
+              </ng-container>
+              <span class="mt-1">
+                {{'FOR_EVERY_1' | translate}} {{!(authenticated$ | async) || !pos?.currencies?.length ? 'DT' :
+                pos?.currencies?.[0]?.currency?.name}} {{'SPENT' | translate}}
+              </span>
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div *ngIf="(widgetSettings$ | async)?.content?.buttons" class="grid grid-half change-on-desktop special-margin">
+      <div class="achievement-box primary" [ngStyle]="{
+          background: 'url(' + banner2Icon?.baseUrl + '/' + banner2Icon?.path + ') no-repeat 50%/cover'
+        }">
+        <div class="achievement-box-info-wrap">
+          <img [src]="earn1Picture?.baseUrl + '/' + earn1Picture?.path" alt="badge-caffeinated-b"
+            class="achievement-box-image earn-card-images" />
+          <div class="achievement-box-info">
+            <p class="achievement-box-title">{{'CLICK_EARN_REPEAT' | translate}}</p>
+            <p class="achievement-box-text">{{'CLICK_EARN_REPEAT_DESCRIPTION' | translate}}
+            </p>
+          </div>
+        </div>
+        <div style="display: flex; margin-top: 20px">
+          <a class="button white-solid" style="margin-right: 2%;" (click)="toggleModal('buttons')">{{'CHECK_IT_NOW' |
+            translate}}</a>
+          <a class="button white-solid" (click)="toggleVibration()" style="margin-right: 2%;">{{(!(vibrating$ | async) ?
+            'VIBRATE' : 'STOP_VIBRATING') | translate }}!</a>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div *ngIf="(widgetSettings$ | async)?.content?.campaigns"
+    class="earn col-md-12 special-margin special-margin-bottom">
+    <div class="grid grid-half change-on-desktop">
+      <div class="achievement-box secondary" [ngStyle]="{
+          background: 'url(' + banner1Icon?.baseUrl + '/' + banner1Icon?.path + ') no-repeat 50%/cover'
+        }">
+        <div class="achievement-box-info-wrap">
+          <img [src]="earn3Picture?.baseUrl + '/' + earn3Picture?.path" alt="badge-caffeinated-b"
+            class="achievement-box-image earn-card-images" />
+          <div class="achievement-box-info">
+            <p class="achievement-box-title">{{'ENGAGE_EARN_ENJOY' | translate}}</p>
+            <p class="achievement-box-text">{{'ENGAGE_EARN_ENJOY_DESCRIPTION' | translate}}
+            </p>
+          </div>
+        </div>
+        <a (click)="toggleModal('questsList')" class="button white-solid">{{'BROWSE_ALL' | translate}}</a>
+      </div>
+    </div>
+  </div>
+</div>
+
+<svg style="display: none">
+  <symbol id="svg-plus-small" viewBox="0 0 8 8" preserveAspectRatio="xMinYMin meet">
+    <path d="M8,5H5v3H3V5H0V3h3V0h2v3h3V5z" />
+  </symbol>
+</svg>

@@ -1,0 +1,712 @@
+<div *ngIf="!(navigating$ | async)" class="chat-wrapper d-lg-flex gap-1 mx-n4 mt-n4 p-1">
+  <div class="chat-leftsidebar">
+    <div class="px-4 pt-4 mb-4">
+      <div class="d-flex align-items-start">
+        <div class="flex-grow-1">
+          <h5 class="mb-4">{{ 'MODULES.ECOMMERCE.MAIN.CHATS' | translate }}</h5>
+        </div>
+        <div class="flex-shrink-0">
+          <div data-bs-toggle="tooltip" data-bs-trigger="hover" matTooltip="Add Customer" placement="bottom">
+            <button [routerLink]="[chatType === 'INTERNAL' ? '/system/team' : '/ecommerce/customers/customers']"
+              type="button" class="btn btn-soft-success btn-sm shadow-none">
+              <i class="ri-add-line align-bottom"></i>
+            </button>
+          </div>
+        </div>
+      </div>
+      <div class="search-box">
+        <form [formGroup]="searchForm">
+          <input formControlName="searchString" type="text" class="form-control bg-light border-light"
+            placeholder="{{'PLACEHOLDER.SEARCH_HERE' | translate }}..." id="searchContact" autocomplete="off">
+          <i class="ri-search-2-line search-icon"></i>
+        </form>
+      </div>
+    </div>
+
+    <ul ngbNav #nav="ngbNav" (navChange)="onNavChange($event)" [activeId]="selectedNav"
+      class="nav nav-tabs nav-tabs-custom nav-success nav-justified" role="tablist">
+      <li class="nav-item" [ngbNavItem]="1">
+        <a ngbNavLink class="nav-link" data-bs-toggle="tab" href="javascript:void(0);" role="tab">{{
+          'MODULES.ECOMMERCE.MAIN.CHATS' | translate }}
+        </a>
+        <ng-template ngbNavContent>
+          <div (scroll)="onScroll($event, 'chat')" style="height: calc(100vh - 296px); overflow-y: auto;"
+            class="chat-room-list pt-3">
+            <div class="d-flex align-items-center px-4 mb-2">
+              <div class="flex-grow-1">
+                <h4 class="mb-0 fs-11 text-muted text-uppercase">{{ 'MODULES.ECOMMERCE.MAIN.DIRECT_MESSAGES' | translate
+                  }}</h4>
+              </div>
+            </div>
+            <div
+              *ngIf="((loadingMessageGroups$ | async) === false || null || undefined) && messageGroups?.length"
+              class="chat-message-list">
+              <ul class="list-unstyled chat-list chat-user-list" id="userList">
+                <li *ngFor="let data of messageGroups"
+                  [ngClass]="{'active': data?.id === selectedMessageGroup?.id}">
+                  <a *ngIf="data?.members?.users?.length" href="javascript: void(0);" (click)="getMessageGroup(data)">
+                    <div class="d-flex align-items-center">
+                      <div [ngClass]="{
+                          'away': data?.members?.users[0]?.status === 'AWAY' || data?.members?.users[0]?.status === 'OFFLINE',
+                          'online': data?.members?.users[0]?.status === 'ONLINE'
+                        }" class="flex-shrink-0 chat-user-img align-self-center me-2 ms-0">
+                        <div class="avatar-xxs" *ngIf="data?.members?.users[0]?.picture?.baseUrl">
+                          <img
+                            [src]="data?.members?.users[0]?.picture?.baseUrl + '/' + data?.members?.users[0]?.picture?.path"
+                            class="rounded-circle w-100 h-100 img-fluid userprofile" alt="">
+                        </div>
+                        <div class="avatar-xxs" *ngIf="!data?.members?.users[0]?.picture?.baseUrl ">
+                          <span class="avatar-title rounded-circle bg-danger userprofile">{{
+                            data?.members?.users[0]?.firstName?.charAt(0) ||
+                            'N'}}</span>
+                        </div>
+                        <span class="user-status"></span>
+                      </div>
+                      <div class="align-items-center d-flex flex-grow-1 justify-content-between overflow-hidden">
+                        <p class="text-truncate mb-0">{{data?.members?.users[0]?.firstName}} {{data?.members?.users[0]?.lastName}}</p>
+                        <div *ngIf="+data?.unreadCount > 0" class="flex-shrink-0">
+                          <span class="badge bg-soft-dark text-body rounded p-1">{{data?.unreadCount}}</span>
+                        </div>
+                      </div>
+                    </div>
+                  </a>
+                </li>
+              </ul>
+            </div>
+            <div
+              *ngIf="(loadingMessageGroups$ | async) || (!(loadingMessageGroups$ | async) && !messageGroups?.length)"
+              id="noresult" class="py-4 mt-4 text-center">
+              <div *ngIf="loadingMessageGroups$ | async">
+                <lord-icon trigger="loop" style="width:72px;height:72px"
+                  [colors]="'primary:' + primaryColor + ',secondary:' + secondaryColor"
+                  src="https://cdn.lordicon.com/msoeawqm.json">
+                </lord-icon>
+                <h5 class="widget-h5 mt-4">{{'COMMON.LOADING' | translate }}</h5>
+              </div>
+              <div *ngIf="!(loadingMessageGroups$ | async) && !messageGroups?.length">
+                <lord-icon trigger="loop" style="width:72px;height:72px"
+                  [colors]="'primary:' + primaryColor + ',secondary:' + secondaryColor"
+                  src="https://cdn.lordicon.com/vlycxjwx.json">
+                </lord-icon>
+                <h5 class="widget-h5 mt-4">{{ 'MODULES.ECOMMERCE.MAIN.NO_RESULT_FOUND' | translate }}</h5>
+              </div>
+            </div>
+          </div>
+        </ng-template>
+      </li>
+      <li class="nav-item" [ngbNavItem]="2">
+        <a ngbNavLink class="nav-link " data-bs-toggle="tab" href="javascript:void(0);" role="tab">{{
+          'MODULES.ECOMMERCE.MAIN.CUSTOMERS' | translate }}
+        </a>
+        <ng-template ngbNavContent>
+          <ng-container *ngIf="chatType === 'SUPPORT'">
+            <div (scroll)="onScroll($event, 'customers')" class="chat-room-list pt-3"
+              style="height: calc(100vh - 296px); overflow-y: auto;">
+              <div class="sort-contact">
+                <div *ngIf="(contacts$ | async)?.length" class="mt-3">
+                  <ul id="contact-sort-A" class="list-unstyled contact-list">
+                    <li *ngFor="let contact of contacts$ | async">
+                      <div (click)="selectUser(contact?.id)" class="d-flex align-items-center">
+                        <div class="flex-shrink-0 me-2">
+                          <div class="avatar-xxs" *ngIf="contact?.picture?.baseUrl">
+                            <img [src]="contact?.picture?.baseUrl + '/' + contact?.picture?.path"
+                              class="rounded-circle w-100 h-100 img-fluid userprofile" alt="">
+                          </div>
+                          <div class="avatar-xxs" *ngIf="!contact?.picture?.baseUrl ">
+                            <span class="avatar-title rounded-circle bg-danger userprofile">{{
+                              contact?.firstName?.charAt(0) ||
+                              'N'}}</span>
+                          </div>
+                        </div>
+                        <div class="flex-grow-1">
+                          <p class="text-truncate contactlist-name mb-0">{{contact?.firstName}} {{contact?.lastName}}
+                          </p>
+                        </div>
+                      </div>
+                    </li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+          </ng-container>
+          <ng-container *ngIf="chatType === 'INTERNAL'">
+            <div (scroll)="onScroll($event, 'customers')" class="chat-room-list pt-3"
+              style="height: calc(100vh - 296px); overflow-y: auto;">
+              <div class="sort-contact">
+                <div *ngIf="((loadingTeam$ | async) === false || null || undefined) && (infiniteTeam$ | async)?.length"
+                  class="mt-3">
+                  <ul id="contact-sort-A" class="list-unstyled contact-list">
+                    <li [ngClass]="{'active': team?.user?.id === selectedUser?.id}"
+                      *ngFor="let team of infiniteTeam$ | async">
+                      <div (click)="selectUser(team)" class="d-flex align-items-center">
+                        <div class="flex-shrink-0 me-2">
+                          <div class="avatar-xxs" *ngIf="team?.user.picture?.baseUrl">
+                            <img [src]="team?.user.picture?.baseUrl + '/' + team?.user.picture?.path"
+                              class="rounded-circle w-100 h-100 img-fluid userprofile" alt="">
+                          </div>
+                          <div class="avatar-xxs" *ngIf="!team?.user.picture?.baseUrl ">
+                            <span class="avatar-title rounded-circle bg-danger userprofile">{{
+                              team?.user.firstName?.charAt(0) ||
+                              'N'}}</span>
+                          </div>
+                        </div>
+                        <div class="flex-grow-1">
+                          <p class="text-truncate contactlist-name mb-0">{{team?.user?.firstName}}
+                            {{team?.user?.lastName}}</p>
+                        </div>
+                      </div>
+                    </li>
+                  </ul>
+                </div>
+                <div *ngIf="(loadingTeam$ | async) || (!(loadingTeam$ | async) && !(infiniteTeam$ | async)?.length)"
+                  id="noresult" class="py-4 mt-4 text-center">
+                  <div *ngIf="loadingTeam$ | async">
+                    <lord-icon trigger="loop" style="width:72px;height:72px"
+                      [colors]="'primary:' + primaryColor + ',secondary:' + secondaryColor"
+                      src="https://cdn.lordicon.com/msoeawqm.json">
+                    </lord-icon>
+                    <h5 class="widget-h5 mt-4">{{'COMMON.LOADING' | translate }}</h5>
+                  </div>
+                  <div *ngIf="!(loadingTeam$ | async) && !(infiniteTeam$ | async)?.length">
+                    <lord-icon trigger="loop" style="width:72px;height:72px"
+                      [colors]="'primary:' + primaryColor + ',secondary:' + secondaryColor"
+                      src="https://cdn.lordicon.com/vlycxjwx.json">
+                    </lord-icon>
+                    <h5 class="widget-h5 mt-4">{{ 'MODULES.ECOMMERCE.MAIN.NO_RESULT_FOUND' | translate }}</h5>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </ng-container>
+        </ng-template>
+      </li>
+    </ul>
+    <div class="tab-content  text-muted">
+      <div [ngbNavOutlet]="nav"></div>
+    </div>
+
+  </div>
+  <!-- end chat leftsidebar -->
+  <!-- Start User chat -->
+  <div class="user-chat w-100 overflow-hidden">
+
+    <div class="chat-content d-lg-flex">
+      <!-- start chat conversation section -->
+      <div class="w-100 overflow-hidden position-relative">
+        <!-- conversation user -->
+        <div class="position-relative">
+          <div class="p-3 user-chat-topbar">
+            <div class="row align-items-center">
+              <div class="col-sm-4 col-8">
+                <div *ngIf="chatType === 'SUPPORT'" class="d-flex align-items-center">
+                  <div class="flex-shrink-0 d-block d-lg-none me-3">
+                    <a href="javascript: void(0);" class="user-chat-remove fs-18 p-1" (click)="SidebarHide()"><i
+                        class="ri-arrow-left-s-line align-bottom"></i></a>
+                  </div>
+                  <div class="flex-grow-1 overflow-hidden">
+                    <div class="d-flex align-items-center">
+                      <div class="flex-shrink-0 chat-user-img user-own-img align-self-center me-3 ms-0" [ngClass]="{
+                        'away': selectedMessageGroup?.members?.users[0]?.status === 'AWAY' || selectedMessageGroup?.members?.users[0]?.status === 'OFFLINE',
+                        'online': selectedMessageGroup?.members?.users[0]?.status === 'ONLINE'
+                      }">
+                        <div class="avatar-xs" *ngIf="selectedMessageGroup?.members?.users[0]?.picture?.baseUrl">
+                          <img
+                            [src]="selectedMessageGroup?.members?.users[0]?.picture?.baseUrl + '/' + selectedMessageGroup?.members?.users[0]?.picture?.path"
+                            class="rounded-circle w-100 h-100 img-fluid userprofile" alt="">
+                        </div>
+                        <div class="avatar-xs chat-avatar"
+                          *ngIf="!selectedMessageGroup?.members?.users[0]?.picture?.baseUrl ">
+                          <span class="avatar-title rounded-circle bg-danger userprofile">{{
+                            selectedMessageGroup?.members?.users[0]?.firstName?.charAt(0) ||
+                            'N'}}</span>
+                        </div>
+                        <span class="user-status"></span>
+                      </div>
+                      <div class="flex-grow-1 overflow-hidden">
+                        <h5 *ngIf="selectedMessageGroup" class="text-truncate mb-0 fs-16"><a class="text-reset username"
+                            data-bs-toggle="offcanvas" href="javascript:void(0);"
+                            aria-controls="userProfileCanvasExample"
+                            (click)="onChatInfoClicked(userInfo)">{{selectedMessageGroup?.members?.users[0]?.firstName}}
+                            {{selectedMessageGroup?.members?.users[0]?.lastName}}</a></h5>
+                        <h5 *ngIf="!selectedMessageGroup" class="text-truncate mb-0 fs-16"><a
+                            class="text-reset username" data-bs-toggle="offcanvas" href="javascript:void(0);"
+                            aria-controls="userProfileCanvasExample" (click)="onChatInfoClicked(userInfo)">{{
+                            'MODULES.ECOMMERCE.MAIN.SELECT_CHAT' | translate }}</a></h5>
+                        <p *ngIf="selectedMessageGroup" class="text-truncate text-muted fs-14 mb-0 userStatus"><small>{{
+                            (selectedMessageGroup?.members?.users[0]?.status === 'ONLINE' ? 'SHARED.ONLINE' : 'SHARED.AWAY')  | translate }}</small></p>
+
+
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <div *ngIf="chatType === 'INTERNAL'" class="d-flex align-items-center">
+                  <div class="flex-shrink-0 d-block d-lg-none me-3">
+                    <a href="javascript: void(0);" class="user-chat-remove fs-18 p-1" (click)="SidebarHide()"><i
+                        class="ri-arrow-left-s-line align-bottom"></i></a>
+                  </div>
+                  <div class="flex-grow-1 overflow-hidden">
+                    <div class="d-flex align-items-center">
+                      <div class="flex-shrink-0 chat-user-img user-own-img align-self-center me-3 ms-0" [ngClass]="{
+                        'away': selectedUser?.status === 'AWAY' || selectedUser?.status === 'OFFLINE',
+                        'online': selectedUser?.status === 'ONLINE'
+                      }">
+                        <div class="avatar-xs" *ngIf="selectedUser?.picture?.baseUrl">
+                          <img [src]="selectedUser?.picture?.baseUrl + '/' + selectedUser?.picture?.path"
+                            class="rounded-circle w-100 h-100 img-fluid userprofile" alt="">
+                        </div>
+                        <div class="avatar-xs chat-avatar" *ngIf="!selectedUser?.picture?.baseUrl ">
+                          <span class="avatar-title rounded-circle bg-danger userprofile">{{
+                            selectedUser?.firstName?.charAt(0) ||
+                            'N'}}</span>
+                        </div>
+                        <span class="user-status"></span>
+                      </div>
+                      <div class="flex-grow-1 overflow-hidden">
+                        <h5 *ngIf="selectedUser" class="text-truncate mb-0 fs-16"><a class="text-reset username"
+                            data-bs-toggle="offcanvas" href="javascript:void(0);"
+                            aria-controls="userProfileCanvasExample"
+                            (click)="onChatInfoClicked(userInfo)">{{selectedUser?.firstName}}
+                            {{selectedUser?.lastName}}</a></h5>
+                        <h5 *ngIf="!selectedUser" class="text-truncate mb-0 fs-16"><a class="text-reset username"
+                            data-bs-toggle="offcanvas" href="javascript:void(0);"
+                            aria-controls="userProfileCanvasExample" (click)="onChatInfoClicked(userInfo)">{{
+                            'MODULES.ECOMMERCE.MAIN.SELECT_CHAT' | translate }}</a></h5>
+                        <p *ngIf="selectedUser" class="text-truncate text-muted fs-14 mb-0 userStatus"><small>{{
+                            (selectedUser?.status === 'ONLINE' ? 'SHARED.ONLINE' : 'SHARED.AWAY' )  | translate }}</small></p>
+
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="position-relative" id="users-chat">
+            <div scrollable #chatContainer (scrollPosition)="scrollHandler($event)"
+              class="overflow-auto chat-conversation p-3 p-lg-4" #scrollRef>
+              <ul *ngIf="((loadingMessages$ | async) === false || null || undefined) && messages?.length"
+                class="list-unstyled chat-conversation-list" id="users-conversation">
+                <ng-container *ngFor="let message of messages">
+                  <li *ngIf="message?.text" class="chat-list left"
+                    [ngClass]="{ 'right': message?.sender?.id === currentUser?.id }">
+                    <div class="conversation-list">
+                      <ng-container *ngIf="message?.sender?.id !== currentUser?.id">
+                        <div class="chat-avatar" *ngIf="selectedMessageGroup?.members?.users[0]?.picture?.baseUrl">
+                          <img
+                            [src]="selectedMessageGroup?.members.users[0]?.picture?.baseUrl + '/' + selectedMessageGroup?.members.users[0]?.picture?.path"
+                            alt="">
+                        </div>
+                        <div class="avatar-xxs chat-avatar"
+                          *ngIf="!selectedMessageGroup?.members?.users[0]?.picture?.baseUrl ">
+                          <span class="avatar-title rounded-circle bg-danger userprofile">{{
+                            selectedMessageGroup?.members?.users[0]?.firstName?.charAt(0) ||
+                            'N'}}</span>
+                        </div>
+                      </ng-container>
+                      <div class="user-chat-content">
+                        <div class="ctext-wrap">
+                          <div class="ctext-wrap-content">
+                            <p class="mb-0 ctext-content">{{message?.text}}</p>
+                            <ul class="list-inline message-img mt-3  mb-0" *ngIf="data?.image">
+                              <li class="list-inline-item message-img-list"
+                                *ngFor="let images of data?.image; let i=index">
+                                <a class="d-inline-block m-1">
+                                  <img
+                                    [src]="selectedMessageGroup?.members.users[0]?.picture?.baseUrl + '/' + selectedMessageGroup?.members.users[0]?.picture?.path"
+                                    alt="" class="rounded img-thumbnail" (click)="open(i)">
+                                </a>
+                              </li>
+                            </ul>
+                          </div>
+                          <div class="dropdown align-self-start message-box-drop" ngbDropdown>
+                            <a class="dropdown-toggle" href="javascript:void(0);" role="button" data-bs-toggle="dropdown"
+                              aria-haspopup="true" aria-expanded="false" ngbDropdownToggle>
+                              <i class="ri-more-2-fill"></i>
+                            </a>
+                            <div class="dropdown-menu" ngbDropdownMenu>
+                              <a class="dropdown-item copy-message" href="javascript:void(0);"
+                                (click)="copyMessage($event)"><i
+                                  class="ri-file-copy-line me-2 text-muted align-bottom"></i>{{'SHARED.COPY' | translate }}</a>
+                            </div>
+                          </div>
+                        </div>
+                        <div class="conversation-name">
+                          <ng-container *ngIf="isToday(message.createdAt)">
+                            <small class="text-muted time">{{ message.createdAt | date:'HH:mm' }}</small>
+                          </ng-container>
+                          <ng-container *ngIf="!isToday(message.createdAt)">
+                            <small class="text-muted time">{{ message.createdAt | date:'longDate' }}</small>
+                          </ng-container>
+                          <span class="text-success check-message-icon">
+                            <i class="ri-check-double-line align-bottom"></i>
+                          </span>
+                        </div>
+                      </div>
+                    </div>
+                  </li>
+                </ng-container>
+              </ul>
+              <div *ngIf="(loadingMessages$ | async) || (!(loadingMessages$ | async) && !messages?.length)"
+                id="noresult" class="py-4 mt-4 text-center">
+                <div *ngIf="loadingMessages$ | async">
+                  <lord-icon trigger="loop" style="width:72px;height:72px"
+                    [colors]="'primary:' + primaryColor + ',secondary:' + secondaryColor"
+                    src="https://cdn.lordicon.com/msoeawqm.json">
+                  </lord-icon>
+                  <h5 class="widget-h5 mt-4">{{'COMMON.LOADING' | translate }}</h5>
+                </div>
+                <div *ngIf="!(loadingMessages$ | async) && !messages?.length">
+                  <lord-icon trigger="loop" style="width:72px;height:72px"
+                    [colors]="'primary:' + primaryColor + ',secondary:' + secondaryColor"
+                    src="https://cdn.lordicon.com/vlycxjwx.json">
+                  </lord-icon>
+                  <h5 class="widget-h5 mt-4">{{ 'MODULES.ECOMMERCE.MAIN.NO_RESULT_FOUND' | translate }}</h5>
+                </div>
+              </div>
+            </div>
+            <div class="alert alert-warning alert-dismissible copyclipboard-alert px-4 fade" id="copyClipBoard"
+              role="alert">{{ 'MODULES.ECOMMERCE.MAIN.MESSAGE_COPIED' | translate }}
+            </div>
+          </div>
+          <div class="chat-input-section p-3 p-lg-4">
+            <div class="row g-0 align-items-center">
+              <div class="col-auto">
+                <div class="chat-input-links me-2">
+                  <div class="links-list-item">
+                    <button type="button" class="btn btn-link text-decoration-none emoji-btn" id="emoji-btn"
+                      (click)="toggleEmojiPicker()">
+                      <i class="bx bx-smile align-middle"></i>
+                    </button>
+                    <emoji-mart class="emoji-mart" *ngIf="showEmojiPicker" (emojiSelect)="addEmoji($event)"
+                      title="Pick your emoji…"></emoji-mart>
+                  </div>
+                </div>
+              </div>
+              <div class="col">
+                <input [formControl]="textInputControl" (keyup.enter)="send()" type="text"
+                  class="form-control chat-input bg-light border-light" id="chat-input"
+                  placeholder="{{'PLACEHOLDER.TYPE_MESSGAE' | translate}}" autocomplete="off" [(ngModel)]="emoji" (blur)="onBlur()"
+                  (focus)="onFocus()">
+              </div>
+              <div class="col-auto">
+                <div class="chat-input-links ms-2">
+                  <div class="links-list-item">
+                    <button type="button" (click)="send()"
+                      class="btn btn-primary chat-send waves-effect waves-light shadow">
+                      <i class="ri-send-plane-2-fill align-bottom"></i>
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <ng-template #userInfo let-offcanvas>
+    <div class="offcanvas-body profile-offcanvas p-0">
+      <div class="team-cover">
+        <img src="assets/images/small/img-9.jpg" alt="" class="img-fluid" />
+      </div>
+      <div class="p-1 pb-4 pt-0">
+        <div class="team-settings">
+          <div class="row g-0">
+            <div class="col">
+              <div class="btn nav-btn">
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="offcanvas" aria-label="Close"
+                  (click)="offcanvas.dismiss('Cross click')"></button>
+              </div>
+            </div>
+            <div class="col-auto">
+              <div class="user-chat-nav d-flex">
+                <button type="button" class="btn nav-btn favourite-btn active">
+                  <i class="ri-star-fill"></i>
+                </button>
+
+                <div class="dropdown" ngbDropdown>
+                  <a class="btn nav-btn arrow-none" href="javascript:void(0);" data-bs-toggle="dropdown"
+                    aria-expanded="false" ngbDropdownToggle>
+                    <i class="ri-more-2-fill"></i>
+                  </a>
+                  <ul class="dropdown-menu dropdown-menu-end" ngbDropdownMenu>
+                    <li><a class="dropdown-item" href="javascript:void(0);"><i
+                          class="ri-inbox-archive-line align-bottom text-muted me-2"></i>{{
+                        'MODULES.ECOMMERCE.MAIN.ARCHIVE' | translate }}</a></li>
+                    <li><a class="dropdown-item" href="javascript:void(0);"><i
+                          class="ri-mic-off-line align-bottom text-muted me-2"></i>{{ 'MODULES.ECOMMERCE.MAIN.MUTED' |
+                        translate }}</a></li>
+                    <li><a class="dropdown-item" href="javascript:void(0);"><i
+                          class="ri-delete-bin-5-line align-bottom text-muted me-2"></i>{{'COMMON.DELETE' | translate
+                        }}</a></li>
+                  </ul>
+                </div>
+              </div>
+
+            </div>
+          </div>
+        </div><!--end col-->
+      </div>
+      <div class="p-3 text-center">
+        <img src="{{isProfile}}" alt="" class="avatar-lg img-thumbnail rounded-circle mx-auto">
+        <div class="mt-3">
+          <h5 class="fs-16 mb-1"><a href="javascript:void(0);" class="link-primary username">{{username}}</a></h5>
+          <p class="text-muted"><i class="ri-checkbox-blank-circle-fill me-1 align-bottom text-success"></i>{{
+            'MODULES.ECOMMERCE.MAIN.ONLINE' | translate }}</p>
+        </div>
+
+        <div class="d-flex gap-2 justify-content-center">
+          <button type="button" class="btn avatar-xs p-0" data-bs-toggle="tooltip" data-bs-placement="top"
+            title="Message">
+            <span class="avatar-title rounded bg-light text-body">
+              <i class="ri-question-answer-line"></i>
+            </span>
+          </button>
+
+          <button type="button" class="btn avatar-xs p-0" data-bs-toggle="tooltip" data-bs-placement="top"
+            title="Favourite">
+            <span class="avatar-title rounded bg-light text-body">
+              <i class="ri-star-line"></i>
+            </span>
+          </button>
+
+          <button type="button" class="btn avatar-xs p-0" data-bs-toggle="tooltip" data-bs-placement="top"
+            title="Phone">
+            <span class="avatar-title rounded bg-light text-body">
+              <i class="ri-phone-line"></i>
+            </span>
+          </button>
+
+          <div class="dropdown" ngbDropdown>
+            <button class="btn avatar-xs p-0 arrow-none" type="button" data-bs-toggle="dropdown" aria-haspopup="true"
+              aria-expanded="false" ngbDropdownToggle>
+              <span class="avatar-title bg-light text-body rounded">
+                <i class="ri-more-fill"></i>
+              </span>
+            </button>
+
+            <ul class="dropdown-menu dropdown-menu-end" ngbDropdownMenu>
+              <li><a class="dropdown-item" href="javascript:void(0);"><i
+                    class="ri-inbox-archive-line align-bottom text-muted me-2"></i>{{ 'MODULES.ECOMMERCE.MAIN.ARCHIVE' |
+                  translate }}</a></li>
+              <li><a class="dropdown-item" href="javascript:void(0);"><i
+                    class="ri-mic-off-line align-bottom text-muted me-2"></i>{{ 'MODULES.ECOMMERCE.MAIN.MUTED' |
+                  translate
+                  }}</a></li>
+              <li><a class="dropdown-item" href="javascript:void(0);"><i
+                    class="ri-delete-bin-5-line align-bottom text-muted me-2"></i>{{'COMMON.DELETE' | translate }}</a>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+      <div class="border-top border-top-dashed p-3">
+        <h5 class="fs-15 mb-3">{{ 'MODULES.ECOMMERCE.MAIN.PERSONAL_DETAILS' | translate }}</h5>
+        <div class="mb-3">
+          <p class="text-muted text-uppercase fw-medium fs-12 mb-1">{{ 'COMMON.NUMBER' | translate }}</p>
+          <h6>+(256) 2451 8974</h6>
+        </div>
+        <div class="mb-3">
+          <p class="text-muted text-uppercase fw-medium fs-12 mb-1">{{'COMMON.EMAIL' | translate }}</p>
+          <h6>lisaparker@gmail.com</h6>
+        </div>
+        <div>
+          <p class="text-muted text-uppercase fw-medium fs-12 mb-1">{{'COMMON.LOCATION' | translate }}</p>
+          <h6 class="mb-0">California, USA</h6>
+        </div>
+      </div>
+
+      <div class="border-top border-top-dashed p-3">
+        <h5 class="fs-15 mb-3">{{ 'MODULES.ECOMMERCE.MAIN.ATTACHED_FILES' | translate }}</h5>
+
+        <div class="vstack gap-2">
+          <div class="border rounded border-dashed p-2">
+            <div class="d-flex align-items-center">
+              <div class="flex-shrink-0 me-3">
+                <div class="avatar-xs">
+                  <div class="avatar-title bg-light text-secondary rounded fs-20">
+                    <i class="ri-folder-zip-line"></i>
+                  </div>
+                </div>
+              </div>
+              <div class="flex-grow-1 overflow-hidden">
+                <h5 class="fs-13 mb-1"><a href="javascript:void(0);" class="text-body text-truncate d-block">App
+                    pages.zip</a></h5>
+                <div class="text-muted">2.2MB</div>
+              </div>
+              <div class="flex-shrink-0 ms-2">
+                <div class="d-flex gap-1">
+                  <button type="button" class="btn btn-icon text-muted btn-sm fs-18"><i
+                      class="ri-download-2-line"></i></button>
+                  <div class="dropdown" ngbDropdown>
+                    <button class="btn btn-icon text-muted btn-sm fs-18 dropdown arrow-none" type="button"
+                      data-bs-toggle="dropdown" aria-expanded="false" ngbDropdownToggle>
+                      <i class="ri-more-fill"></i>
+                    </button>
+                    <ul class="dropdown-menu" ngbDropdownMenu>
+                      <li><a class="dropdown-item" href="javascript:void(0);"><i
+                            class="ri-share-line align-bottom me-2 text-muted"></i>{{ 'MODULES.ECOMMERCE.MAIN.SHARE' |
+                          translate }}</a></li>
+                      <li><a class="dropdown-item" href="javascript:void(0);"><i
+                            class="ri-bookmark-line align-bottom me-2 text-muted"></i>{{
+                          'MODULES.ECOMMERCE.MAIN.BOOKMARK'
+                          | translate }}</a></li>
+                      <li><a class="dropdown-item" href="javascript:void(0);"><i
+                            class="ri-delete-bin-line align-bottom me-2 text-muted"></i>{{ 'COMMON.DELETE' | translate
+                          }}</a></li>
+                    </ul>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="border rounded border-dashed p-2">
+            <div class="d-flex align-items-center">
+              <div class="flex-shrink-0 me-3">
+                <div class="avatar-xs">
+                  <div class="avatar-title bg-light text-secondary rounded fs-20">
+                    <i class="ri-file-ppt-2-line"></i>
+                  </div>
+                </div>
+              </div>
+              <div class="flex-grow-1 overflow-hidden">
+                <h5 class="fs-13 mb-1"><a href="javascript:void(0);" class="text-body text-truncate d-block">Elevok
+                    admin.ppt</a></h5>
+                <div class="text-muted">2.4MB</div>
+              </div>
+              <div class="flex-shrink-0 ms-2">
+                <div class="d-flex gap-1">
+                  <button type="button" class="btn btn-icon text-muted btn-sm fs-18"><i
+                      class="ri-download-2-line"></i></button>
+                  <div class="dropdown" ngbDropdown>
+                    <button class="btn btn-icon text-muted btn-sm fs-18 dropdown arrow-none" type="button"
+                      data-bs-toggle="dropdown" aria-expanded="false" ngbDropdownToggle>
+                      <i class="ri-more-fill"></i>
+                    </button>
+                    <ul class="dropdown-menu" ngbDropdownMenu>
+                      <li><a class="dropdown-item" href="javascript:void(0);"><i
+                            class="ri-share-line align-bottom me-2 text-muted"></i>{{ 'MODULES.ECOMMERCE.MAIN.SHARE' |
+                          translate }}</a></li>
+                      <li><a class="dropdown-item" href="javascript:void(0);"><i
+                            class="ri-bookmark-line align-bottom me-2 text-muted"></i>{{
+                          'MODULES.ECOMMERCE.MAIN.BOOKMARK'
+                          | translate }}</a></li>
+                      <li><a class="dropdown-item" href="javascript:void(0);"><i
+                            class="ri-delete-bin-line align-bottom me-2 text-muted"></i>{{ 'COMMON.DELETE' | translate
+                          }}</a></li>
+                    </ul>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="border rounded border-dashed p-2">
+            <div class="d-flex align-items-center">
+              <div class="flex-shrink-0 me-3">
+                <div class="avatar-xs">
+                  <div class="avatar-title bg-light text-secondary rounded fs-20">
+                    <i class="ri-folder-zip-line"></i>
+                  </div>
+                </div>
+              </div>
+              <div class="flex-grow-1 overflow-hidden">
+                <h5 class="fs-13 mb-1"><a href="javascript:void(0);"
+                    class="text-body text-truncate d-block">{{'COMMON.IMAGE' | translate }}s.zip</a></h5>
+                <div class="text-muted">1.2MB</div>
+              </div>
+              <div class="flex-shrink-0 ms-2">
+                <div class="d-flex gap-1">
+                  <button type="button" class="btn btn-icon text-muted btn-sm fs-18"><i
+                      class="ri-download-2-line"></i></button>
+                  <div class="dropdown" ngbDropdown>
+                    <button class="btn btn-icon text-muted btn-sm fs-18 dropdown arrow-none" type="button"
+                      data-bs-toggle="dropdown" aria-expanded="false" ngbDropdownToggle>
+                      <i class="ri-more-fill"></i>
+                    </button>
+                    <ul class="dropdown-menu" ngbDropdownMenu>
+                      <li><a class="dropdown-item" href="javascript:void(0);"><i
+                            class="ri-share-line align-bottom me-2 text-muted"></i>{{ 'MODULES.ECOMMERCE.MAIN.SHARE' |
+                          translate }}</a></li>
+                      <li><a class="dropdown-item" href="javascript:void(0);"><i
+                            class="ri-bookmark-line align-bottom me-2 text-muted"></i>{{
+                          'MODULES.ECOMMERCE.MAIN.BOOKMARK'
+                          | translate }}</a></li>
+                      <li><a class="dropdown-item" href="javascript:void(0);"><i
+                            class="ri-delete-bin-line align-bottom me-2 text-muted"></i>{{ 'COMMON.DELETE' | translate
+                          }}</a></li>
+                    </ul>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="border rounded border-dashed p-2">
+            <div class="d-flex align-items-center">
+              <div class="flex-shrink-0 me-3">
+                <div class="avatar-xs">
+                  <div class="avatar-title bg-light text-secondary rounded fs-20">
+                    <i class="ri-image-2-line"></i>
+                  </div>
+                </div>
+              </div>
+              <div class="flex-grow-1 overflow-hidden">
+                <h5 class="fs-13 mb-1"><a href="javascript:void(0);"
+                    class="text-body text-truncate d-block">bg-pattern.png</a></h5>
+                <div class="text-muted">1.1MB</div>
+              </div>
+              <div class="flex-shrink-0 ms-2">
+                <div class="d-flex gap-1">
+                  <button type="button" class="btn btn-icon text-muted btn-sm fs-18"><i
+                      class="ri-download-2-line"></i></button>
+                  <div class="dropdown" ngbDropdown>
+                    <button class="btn btn-icon text-muted btn-sm fs-18 dropdown arrow-none" type="button"
+                      data-bs-toggle="dropdown" aria-expanded="false" ngbDropdownToggle>
+                      <i class="ri-more-fill"></i>
+                    </button>
+                    <ul class="dropdown-menu" ngbDropdownMenu>
+                      <li><a class="dropdown-item" href="javascript:void(0);"><i
+                            class="ri-share-line align-bottom me-2 text-muted"></i>{{ 'MODULES.ECOMMERCE.MAIN.SHARE' |
+                          translate }}</a></li>
+                      <li><a class="dropdown-item" href="javascript:void(0);"><i
+                            class="ri-bookmark-line align-bottom me-2 text-muted"></i>{{
+                          'MODULES.ECOMMERCE.MAIN.BOOKMARK'
+                          | translate }}</a></li>
+                      <li><a class="dropdown-item" href="javascript:void(0);"><i
+                            class="ri-delete-bin-line align-bottom me-2 text-muted"></i>{{ 'COMMON.DELETE' | translate
+                          }}</a></li>
+                    </ul>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="text-center mt-2">
+            <button type="button" class="btn btn-danger">{{ 'COMMON.LOAD_MORE' | translate }} <i
+                class="ri-arrow-right-fill align-bottom ms-1"></i></button>
+          </div>
+        </div>
+      </div>
+    </div><!--end offcanvas-body-->
+  </ng-template>
+</div>
+
+<div *ngIf="navigating$ | async" class="vh-100 py-4 text-center" fxLayout="column" fxLayoutAlign="center center"
+  fxLayoutGap="1rem">
+  <div>
+    <lord-icon trigger="loop" style="width:72px;height:72px"
+      [colors]="'primary:' + primaryColor + ',secondary:' + secondaryColor"
+      src="https://cdn.lordicon.com/msoeawqm.json">
+    </lord-icon>
+  </div>
+  <div class="mt-4">
+    <h5>{{ 'COMMON.LOADING' | translate }}</h5>
+  </div>
+</div>

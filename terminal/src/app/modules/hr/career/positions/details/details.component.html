@@ -1,0 +1,390 @@
+<ng-container *ngIf="!(navigating$ | async)">
+
+  <form [formGroup]="jobDefinitionForm">
+    <div
+      *ngIf="(website$ | async)?.multilanguage?.active === true && (website$ | async)?.multilanguage?.languages?.length && !fullPath.includes('new-job')"
+      class="card" id="ticketsList">
+      <div class="card-header border-0">
+        <div formGroupName="translation" class="row">
+          <h5 class="card-title col-lg-4 flex-grow-1">{{'COMMON.LANGUAGE' | translate }}</h5>
+          <ng-select bindLabel="name" formControlName="language" (change)="onChangeLanguage($event)" class="col-lg-8"
+            [closeOnSelect]="true" [multiple]="false" [items]="languages" placeholder="{{'PLACEHOLDER.SELECT_LANGUAGE' | translate }}"
+            [searchable]="false" [clearable]="false">
+            <ng-template ng-label-tmp let-item="item" let-clear="clear">
+              <div class="d-flex gap-1">
+                <span *ngIf="item?.name !== 'Default'">{{item?.iconFlag}}</span>
+                <span>{{item?.name}}</span>
+              </div>
+            </ng-template>
+            <ng-template ng-option-tmp let-item$="item$" let-item="item">
+              <div class="d-flex gap-1">
+                <span *ngIf="item?.name !== 'Default'">{{item?.iconFlag}}</span>
+                <span>{{item?.name}}</span>
+              </div>
+            </ng-template>
+          </ng-select>
+        </div>
+      </div>
+    </div>
+    <ng-container *ngIf="translation?.value?.language?.name === 'Default'">
+      <div class="row">
+        <div class="col-lg-12">
+          <div class="card" id="invoiceList">
+            <div class="card-header border-0">
+              <h4 class="mb-0 flex-grow-1">{{ 'MODULES.HR.CAREER.POSITIONS.JOB_POSITIONS' | translate }}</h4>
+            </div>
+            <div class="card-body">
+              <div class="row mb-3">
+                <div class="col-lg-4">
+                  <label for="firstnameInput" class="form-label">{{ 'MODULES.HR.CAREER.POSITIONS.JOB_TITLE' |
+                    translate
+                    }}*</label>
+                  <input required
+                    [ngClass]="{ 'is-invalid': jobDefinitionForm.get('title')?.touched && jobDefinitionForm.get('title').hasError('required') }"
+                    formControlName="title" type="text" class="form-control" id="lastnameInput"
+                    placeholder=" {{ 'MODULES.HR.CAREER.POSITIONS.JOB_TITLE' | translate }}">
+                  <div class="text-danger"
+                    *ngIf="jobDefinitionForm.get('title')?.touched && jobDefinitionForm.get('title').hasError('required')">
+                    {{ 'COMMON.REQUIRED' | translate }}!
+                  </div>
+                </div>
+                <div class="col-lg-4">
+                  <label for="lastnameInput" class="form-label">{{ 'MODULES.HR.CAREER.POSITIONS.JOB_DEPARTMENT'
+                    |translate }}*</label>
+                  <select required class="form-control form-select"
+                    [ngClass]="{ 'is-invalid': jobDefinitionForm.get('department')?.touched && jobDefinitionForm.get('department').hasError('required') }"
+                    [formControlName]="'department'">
+                    <option value="" disabled selected>{{ 'COMMON.SELECT_OPTION' |translate }}</option>
+                    <option *ngFor="let jobD of jobDepartments" [value]="jobD.id">{{ jobD?.name }}
+                    </option>
+                  </select>
+                  <div class="text-danger"
+                    *ngIf="jobDefinitionForm.get('department')?.touched && jobDefinitionForm.get('department').hasError('required')">
+                    {{ 'COMMON.REQUIRED' | translate }}!
+                  </div>
+                </div>
+                <div class="col-lg-4">
+                  <label for="lastnameInput" class="form-label">{{ 'COMMON.STATUS' | translate }}*</label>
+                  <select class="form-control form-select"
+                    [ngClass]="{ 'is-invalid': jobDefinitionForm.get('status')?.touched && jobDefinitionForm.get('status').hasError('required') }"
+                    [formControlName]="'status'">
+                    <option *ngFor="let state of jobDefinitionStatus" [value]="state">
+                      {{ 'COMMON.STATE.'+ state | translate }}
+                    </option>
+                  </select>
+                  <div class="text-danger"
+                    *ngIf="jobDefinitionForm.get('status')?.touched && jobDefinitionForm.get('status').hasError('required')">
+                    {{ 'COMMON.REQUIRED' | translate }}!
+                  </div>
+                </div>
+              </div>
+              <div formArrayName="specs" class="row">
+                <div
+                  *ngFor="let key of jobDefinitionForm.get('specs')['controls']; let i = index; let first = first; let last = last;"
+                  class="mt-2">
+                  <div [formGroupName]="i" class="row">
+                    <div class="mb-3 col-lg-6">
+                      <label class="control-label">{{ 'MODULES.HR.CAREER.POSITIONS.JOB_SPEC' | translate }}*</label>
+                      <select
+                        [ngClass]="{ 'is-invalid': key.get('key')?.touched && key.get('key').hasError('required') }"
+                        class="form-control" [formControlName]="'key'">
+                        <option value="" selected> {{'COMMON.SELECT_OPTION' | translate}} </option>
+                        <option *ngFor="let spec of jobDefinitionSpecEnum" [value]="spec">
+                          {{'MODULES.HR.CAREER.SHARED.'+ spec | translate }}
+                        </option>
+                      </select>
+                      <div class="text-danger" *ngIf="key.get('key')?.touched && key.get('key').hasError('required')">
+                        {{ 'COMMON.REQUIRED' | translate }}!
+                      </div>
+                    </div>
+                    <div class="mb-3 col-lg-6">
+                      <label class="control-label">{{ 'MODULES.HR.CAREER.POSITIONS.TEXT' | translate }}*</label>
+                      <div class="d-flex align-items-center">
+                        <input
+                          [ngClass]="{ 'is-invalid': key.get('value')?.touched && key.get('value').hasError('required') }"
+                          type="text" formControlName="value" class="form-control"
+                          placeholder="{{ 'MODULES.HR.CAREER.POSITIONS.ENTER_CONTENT' | translate }}">
+                        <button *ngIf="!first" (click)="removeSpecs(i)" class="btn btn-danger btn-sm ms-3">
+                          <i class="fs-16 ft ri-delete-bin-2-line"></i>
+                        </button>
+                        <div class="text-danger" *ngIf="key.get('key')?.touched && key.get('key').hasError('required')">
+                          {{ 'COMMON.REQUIRED' | translate }}!
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <a (click)="addSpecsField()" class="btn btn-soft-info btn-sm mt-2 mt-sm-0 shadow-none"><i
+                  class="ri-add-line align-middle me-1"></i>
+                {{ 'MODULES.HR.CAREER.POSITIONS.ADD_JOB_SPEC' | translate }}</a>
+              <h4 class="mb-4 mt-4 flex-grow-1">{{ 'MODULES.HR.CAREER.POSITIONS.JOB_DESCRIPTION' | translate }}</h4>
+              <ng-container formGroupName="description">
+                <div class="mb-3 col-lg-12">
+                  <label for="firstnameInput" class="form-label">{{ 'COMMON.DESCRIPTION' | translate }}</label>
+                  <input formControlName="description" type="text" class="form-control" id="lastnameInput"
+                    placeholder="{{ 'COMMON.DESCRIPTION' | translate }}">
+                </div>
+                <ng-container formArrayName="descriptionList">
+                  <ng-container
+                    *ngFor="let key of jobDefinitionForm.get(['description', 'descriptionList'])['controls']; let i = index; let first = first; let last = last">
+                    <div class="mb-7 mb-sm-6">
+                      <label for="firstnameInput" class="form-label">{{ 'MODULES.HR.CAREER.POSITIONS.DESCRIPTION_ITEM'
+                        |translate }}</label>
+                      <div class="d-flex align-items-center">
+                        <quill-editor class="custom-quill-editor" [formControl]="jobDefinitionForm.get(['description', 'descriptionList']).controls[i]"></quill-editor>
+                        <button *ngIf="!first" (click)="removeDescriptionField(i)" class="btn btn-danger btn-sm ms-3">
+                          <i class="fs-16 ft ri-delete-bin-2-line"></i>
+                        </button>
+                      </div>
+                    </div>
+                  </ng-container>
+                  <a (click)="addDescriptionListField()" class="btn btn-soft-info btn-sm mt-2 mt-sm-0 shadow-none"><i
+                      class="ri-add-line align-middle me-1"></i>
+                    {{ 'MODULES.HR.CAREER.POSITIONS.ADD_DESCRIPTION_ITEM' | translate }}</a>
+                </ng-container>
+              </ng-container>
+              <h4 class="mb-4 mt-4 flex-grow-1">{{ 'MODULES.HR.CAREER.POSITIONS.JOB_RESPONSIBILITY' | translate }}
+              </h4>
+              <ng-container formGroupName="responsibility">
+                <div class="mb-3 col-lg-12">
+                  <label for="firstnameInput" class="form-label">{{ 'COMMON.DESCRIPTION' | translate }}</label>
+                  <input formControlName="description" type="text" class="form-control" id="lastnameInput"
+                    placeholder="{{ 'COMMON.ENTER' | translate }}  {{ 'COMMON.DESCRIPTION' | translate }}">
+                </div>
+                <ng-container formArrayName="descriptionList">
+                  <ng-container
+                    *ngFor="let key of jobDefinitionForm.get(['responsibility', 'descriptionList'])['controls']; let i = index; let first = first; let last = last">
+                    <div class="mb-7 mb-sm-6 col-lg-12">
+                      <label for="firstnameInput" class="form-label">{{ 'MODULES.HR.CAREER.POSITIONS.DESCRIPTION_ITEM'
+                        |
+                        translate }}</label>
+                      <div class="d-flex align-items-center">
+                        <quill-editor class="custom-quill-editor" class="custom-quill-editor" [formControl]="jobDefinitionForm.get(['responsibility', 'descriptionList']).controls[i]"></quill-editor>
+                        <button *ngIf="!first" (click)="removeResponsibilityField(i)"
+                          class="btn btn-danger btn-sm ms-3">
+                          <i class="fs-16 ft ri-delete-bin-2-line"></i>
+                        </button>
+                      </div>
+                    </div>
+                  </ng-container>
+                  <a (click)="addResponsibilityField()" class="btn btn-soft-info btn-sm mt-2 mt-sm-0 shadow-none"><i
+                      class="ri-add-line align-middle me-1"></i>
+                    {{ 'MODULES.HR.CAREER.POSITIONS.ADD_DESCRIPTION_ITEM' | translate }}</a>
+                </ng-container>
+              </ng-container>
+              <h4 class="mb-4 mt-4 flex-grow-1"> {{ 'MODULES.HR.CAREER.POSITIONS.JOB_OFFER' | translate }}</h4>
+              <ng-container formGroupName="offer">
+                <div class="mb-3 col-lg-12">
+                  <label for="firstnameInput" class="form-label">{{ 'COMMON.DESCRIPTION' | translate }}</label>
+                  <input formControlName="description" type="text" class="form-control" id="lastnameInput"
+                    placeholder="{{ 'COMMON.ENTER' | translate }}  {{ 'COMMON.DESCRIPTION' | translate }}">
+                </div>
+                <ng-container formArrayName="descriptionList">
+                  <ng-container
+                    *ngFor="let key of jobDefinitionForm.get(['offer', 'descriptionList'])['controls']; let i = index; let first = first; let last = last">
+                    <div class="mb-7 mb-sm-6 col-lg-12">
+                      <label for="firstnameInput" class="form-label"> {{
+                        'MODULES.HR.CAREER.POSITIONS.DESCRIPTION_ITEM'
+                        |
+                        translate }}</label>
+                      <div class="d-flex align-items-center">
+                        <quill-editor class="custom-quill-editor" [formControl]="jobDefinitionForm.get(['offer', 'descriptionList']).controls[i]"></quill-editor>
+                        <button *ngIf="!first" (click)="removeOfferField(i)" class="btn btn-danger btn-sm ms-3">
+                          <i class="fs-16 ft ri-delete-bin-2-line"></i>
+                        </button>
+                      </div>
+                    </div>
+                  </ng-container>
+                  <a (click)="addOfferField()" class="btn btn-soft-info btn-sm mt-2 mt-sm-0 shadow-none"><i
+                      class="ri-add-line align-middle me-1"></i>
+                    {{ 'MODULES.HR.CAREER.POSITIONS.ADD_DESCRIPTION_ITEM' | translate }}</a>
+                </ng-container>
+              </ng-container>
+              <div class="col-lg-12">
+                <div class="hstack justify-content-end gap-2 mt-3">
+                  <button routerLink="/hr/career/positions/all" type="button" class="btn btn-soft-danger">
+                    {{ 'COMMON.BACK' | translate }}</button>
+                  <button (click)="save()" [disabled]="isButtonDisabled || jobDefinitionForm.invalid" type="button"
+                    class="btn btn-success">{{ 'COMMON.SAVE' | translate }}</button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </ng-container>
+    <ng-container *ngIf="translation?.value?.language?.name !== 'Default'">
+      <div class="row">
+        <div class="col-lg-12">
+          <div class="card" id="invoiceList">
+            <div class="card-header border-0">
+              <h4 class="mb-0 flex-grow-1">{{ 'MODULES.HR.CAREER.POSITIONS.JOB_POSITIONS' | translate }}</h4>
+            </div>
+            <div formGroupName="translation" class="card-body">
+              <ng-container formGroupName="content">
+                <div class="row mb-3">
+                  <div class="col-lg-4">
+                    <label for="firstnameInput" class="form-label">{{ 'MODULES.HR.CAREER.POSITIONS.JOB_TITLE' |
+                      translate
+                      }}*</label>
+                    <input
+                      [ngClass]="{ 'is-invalid': jobDefinitionForm.get('title')?.touched && jobDefinitionForm.get('title').hasError('required') }"
+                      formControlName="title" type="text" class="form-control" id="lastnameInput"
+                      placeholder=" {{ 'MODULES.HR.CAREER.POSITIONS.ENTER_PAGE_REFERENCE' | translate }}">
+                    <div class="text-danger"
+                      *ngIf="jobDefinitionForm.get('title')?.touched && jobDefinitionForm.get('title').hasError('required')">
+                      {{ 'COMMON.REQUIRED' | translate }}!
+                    </div>
+                  </div>
+                </div>
+                <div formArrayName="specs" class="row">
+                  <div
+                    *ngFor="let key of translation.get(['content', 'specs'])['controls']; let j = index; let first = first; let last = last;"
+                    class="mt-2">
+                    <div [formGroupName]="j" class="row">
+                      <div class="mb-3 col-lg-6">
+                        <label class="control-label">{{ 'MODULES.HR.CAREER.POSITIONS.JOB_SPEC' | translate }}*</label>
+                        <select
+                          [ngClass]="{ 'is-invalid': key.get('key')?.touched && key.get('key').hasError('required') }"
+                          class="form-control" [formControlName]="'key'">
+                          <option value="" selected> {{'COMMON.SELECT_OPTION' | translate}} </option>
+                          <option *ngFor="let spec of jobDefinitionSpecEnum" [value]="spec">
+                            {{'MODULES.HR.CAREER.SHARED.'+ spec | translate }}
+                          </option>
+                        </select>
+                        <div class="text-danger" *ngIf="key.get('key')?.touched && key.get('key').hasError('required')">
+                          {{ 'COMMON.REQUIRED' | translate }}!
+                        </div>
+                      </div>
+                      <div class="mb-3 col-lg-6">
+                        <label class="control-label">{{ 'MODULES.HR.CAREER.POSITIONS.TEXT' | translate }}*</label>
+                        <div class="d-flex align-items-center">
+                          <input
+                            [ngClass]="{ 'is-invalid': key.get('value')?.touched && key.get('value').hasError('required') }"
+                            type="text" formControlName="value" class="form-control"
+                            placeholder="{{ 'MODULES.HR.CAREER.POSITIONS.ENTER_CONTENT' | translate }}">
+                          <button *ngIf="!first" (click)="removeSpecs(i, j)" class="btn btn-danger btn-sm ms-3">
+                            <i class="fs-16 ft ri-delete-bin-2-line"></i>
+                          </button>
+                          <div class="text-danger"
+                            *ngIf="key.get('key')?.touched && key.get('key').hasError('required')">
+                            {{ 'COMMON.REQUIRED' | translate }}!
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <a (click)="addSpecsField(i)" class="btn btn-soft-info btn-sm mt-2 mt-sm-0 shadow-none"><i
+                    class="ri-add-line align-middle me-1"></i>
+                  {{ 'MODULES.HR.CAREER.POSITIONS.ADD_JOB_SPEC' | translate }}</a>
+                <h4 class="mb-4 mt-4 flex-grow-1">{{ 'MODULES.HR.CAREER.POSITIONS.JOB_DESCRIPTION' | translate }}</h4>
+                <ng-container formGroupName="description">
+                  <div class="mb-3 col-lg-12">
+                    <label for="firstnameInput" class="form-label">{{ 'COMMON.DESCRIPTION' | translate }}</label>
+                    <input formControlName="description" type="text" class="form-control" id="lastnameInput"
+                      placeholder="{{ 'COMMON.DESCRIPTION' | translate }}">
+                  </div>
+                  <ng-container formArrayName="descriptionList">
+                    <ng-container
+                      *ngFor="let key of translation.get(['content', 'description', 'descriptionList'])['controls']; let j = index; let first = first; let last = last">
+                      <div class="mb-7 mb-sm-6 col-lg-12">
+                        <label for="firstnameInput" class="form-label">{{
+                          'MODULES.HR.CAREER.POSITIONS.DESCRIPTION_ITEM'
+                          |translate }}</label>
+                        <div class="d-flex align-items-center">
+                          <quill-editor class="custom-quill-editor" [formControl]="jobDefinitionForm.get(['content', 'description', 'descriptionList']).controls[i]"></quill-editor>
+                          <button *ngIf="!first" (click)="removeDescriptionField(j)"
+                            class="btn btn-danger btn-sm ms-3">
+                            <i class="fs-16 ft ri-delete-bin-2-line"></i>
+                          </button>
+                        </div>
+                      </div>
+                    </ng-container>
+                    <a (click)="addDescriptionListField()" class="btn btn-soft-info btn-sm mt-2 mt-sm-0 shadow-none"><i
+                        class="ri-add-line align-middle me-1"></i>
+                      {{ 'MODULES.HR.CAREER.POSITIONS.ADD_DESCRIPTION_ITEM' | translate }}</a>
+                  </ng-container>
+                </ng-container>
+                <h4 class="mb-4 mt-4 flex-grow-1">{{ 'MODULES.HR.CAREER.POSITIONS.JOB_RESPONSIBILITY' | translate }}
+                </h4>
+                <ng-container formGroupName="responsibility">
+                  <div class="mb-3 col-lg-12">
+                    <label for="firstnameInput" class="form-label">{{ 'COMMON.DESCRIPTION' | translate }}</label>
+                    <input formControlName="description" type="text" class="form-control" id="lastnameInput"
+                      placeholder="{{ 'COMMON.ENTER' | translate }}  {{ 'COMMON.DESCRIPTION' | translate }}">
+                  </div>
+                  <ng-container formArrayName="descriptionList">
+                    <ng-container
+                      *ngFor="let key of translation.get(['content', 'responsibility', 'descriptionList'])['controls']; let j = index; let first = first; let last = last">
+                      <div class="mb-7 mb-sm-6 col-lg-12">
+                        <label for="firstnameInput" class="form-label">{{'MODULES.HR.CAREER.POSITIONS.DESCRIPTION_ITEM' | translate }}</label>
+                        <div class="d-flex align-items-center">
+                          <quill-editor class="custom-quill-editor" [formControl]="jobDefinitionForm.get(['content', 'responsibility', 'descriptionList']).controls[i]"></quill-editor>
+                          <button *ngIf="!first" (click)="removeResponsibilityField(j)"
+                            class="btn btn-danger btn-sm ms-3">
+                            <i class="fs-16 ft ri-delete-bin-2-line"></i>
+                          </button>
+                        </div>
+                      </div>
+                    </ng-container>
+                    <a (click)="addResponsibilityField()" class="btn btn-soft-info btn-sm mt-2 mt-sm-0 shadow-none"><i
+                        class="ri-add-line align-middle me-1"></i>
+                      {{ 'MODULES.HR.CAREER.POSITIONS.ADD_DESCRIPTION_ITEM' | translate }}</a>
+                  </ng-container>
+                </ng-container>
+                <h4 class="mb-4 mt-4 flex-grow-1"> {{ 'MODULES.HR.CAREER.POSITIONS.JOB_OFFER' | translate }}</h4>
+                <ng-container formGroupName="offer">
+                  <div class="mb-3 col-lg-12">
+                    <label for="firstnameInput" class="form-label">{{ 'COMMON.DESCRIPTION' | translate }}</label>
+                    <input formControlName="description" type="text" class="form-control" id="lastnameInput"
+                      placeholder="{{ 'COMMON.ENTER' | translate }}  {{ 'COMMON.DESCRIPTION' | translate }}">
+                  </div>
+                  <ng-container formArrayName="descriptionList">
+                    <ng-container
+                      *ngFor="let key of translation.get(['content', 'offer', 'descriptionList'])['controls']; let j = index; let first = first; let last = last">
+                      <div class="mb-7 mb-sm-6 col-lg-12">
+                        <label for="firstnameInput" class="form-label"> {{
+                          'MODULES.HR.CAREER.POSITIONS.DESCRIPTION_ITEM' |
+                          translate }}</label>
+                        <div class="d-flex align-items-center">
+                          <quill-editor class="custom-quill-editor" [formControl]="jobDefinitionForm.get(['content', 'offer', 'descriptionList']).controls[i]"></quill-editor>
+                          <button *ngIf="!first" (click)="removeOfferField(j)" class="btn btn-danger btn-sm ms-3">
+                            <i class="fs-16 ft ri-delete-bin-2-line"></i>
+                          </button>
+                        </div>
+                      </div>
+                    </ng-container>
+                    <a (click)="addOfferField()" class="btn btn-soft-info btn-sm mt-2 mt-sm-0 shadow-none"><i
+                        class="ri-add-line align-middle me-1"></i>
+                      {{ 'MODULES.HR.CAREER.POSITIONS.ADD_DESCRIPTION_ITEM' | translate }}</a>
+                  </ng-container>
+                </ng-container>
+                <div class="col-lg-12">
+                  <div class="hstack justify-content-end gap-2 mt-3">
+                    <button routerLink="/hr/career/positions/all" type="button" class="btn btn-soft-danger">
+                      {{ 'COMMON.BACK' | translate }}</button>
+                    <button (click)="save()" [disabled]="isButtonDisabled || jobDefinitionForm.invalid" type="button"
+                      class="btn btn-success">{{ 'COMMON.SAVE' | translate }}</button>
+                  </div>
+                </div>
+              </ng-container>
+            </div>
+          </div>
+        </div>
+      </div>
+    </ng-container>
+  </form>
+</ng-container>
+<div *ngIf="navigating$ | async" class="vh-100 py-4 text-center" fxLayout="column" fxLayoutAlign="center center"
+  fxLayoutGap="1rem">
+  <div>
+    <lord-icon trigger="loop" style="width:72px;height:72px" [colors]="'primary:' + primaryColor + ',secondary:' + secondaryColor"
+      src="https://cdn.lordicon.com/msoeawqm.json">
+    </lord-icon>
+  </div>
+  <div class="mt-4">
+    <h5>{{ 'COMMON.LOADING' | translate }}</h5>
+  </div>
+</div>

@@ -1,0 +1,200 @@
+<ng-container *ngIf="!(navigating$ | async)">
+  <app-breadcrumbs title="{{ 'MENUITEMS.TITLE.BRANDS' | translate }}" [breadcrumbItems]="breadCrumbItems"></app-breadcrumbs>
+
+  <div class="row">
+    <div class="col-lg-12">
+      <div class="card" id="ticketsList">
+        <div class="card-header border-0">
+          <div class="d-flex align-items-center">
+            <h5 class="card-title mb-0 flex-grow-1">{{'MODULES.HR.MAIN.BRANDS' | translate }}</h5>
+            <div class="flex-shrink-0 d-flex gap-1">
+              <button class="btn btn-success add-btn" (click)="openBrandModal(brandModal, null)" data-bs-toggle="modal" data-bs-target="#showModal"><i class="ri-add-line align-bottom me-1"></i>{{'MODULES.INVENTORY.ADD_BRAND' | translate }}</button>
+            </div>
+          </div>
+        </div>
+        <div class="card-body border border-dashed border-end-0 border-start-0">
+          <div class="row g-3">
+            <div class="col-xxl-10 col-sm-12">
+              <div class="search-box">
+                <form [formGroup]="searchForm">
+                  <input type="text" name="searchTerm" formControlName="searchString" class="form-control search bg-light border-light" placeholder="{{'PLACEHOLDER.SEARCH_FOR_BRAND_DETAILS_OR_SOMETHING' | translate }}...">
+                  <i class="ri-search-line search-icon"></i>
+                </form>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="card-body">
+          <div class="table-responsive table-card mb-3">
+            <table class="table align-middle table-nowrap mb-0" id="ticketTable">
+              <thead>
+                <tr>
+                  <th scope="col" data-sort="id">{{'COMMON.ID' | translate }}</th>
+                  <th scope="col" data-sort="tasks_name">{{'COMMON.TITLE' | translate }}</th>
+                  <th scope="col" data-sort="client_name">{{'COMMON.WEBSITE' | translate }}</th>
+                  <th scope="col" data-sort="action">{{'COMMON.ACTION' | translate }}</th>
+                </tr>
+              </thead>
+              <tbody *ngIf="((loadingBrands$ | async) === false || null || undefined) && (brands$ | async).length" class="list form-check-all" id="ticket-list-data">
+                <tr *ngFor="let data of brands$ | async" id="t_{{data.id}}">
+                  <td class="id"><a routerLink="/inventory/brands/{{data.id}}" class="fw-medium link-primary">#{{data.externalId}}</a></td>
+                  <td><ngb-highlight [result]="data.name"></ngb-highlight></td>
+                  <td><ngb-highlight [result]="data.website"></ngb-highlight></td>
+                  <td>
+                    <ul class="list-inline hstack gap-2 mb-0">
+                      <li (click)="openBrandModal(brandModal, data)" class="list-inline-item edit" matTooltip="Edit" placement="top">
+                        <a href="javascript:void(0);" data-bs-toggle="modal" class="text-primary d-inline-block edit-item-btn">
+                          <i class="ri-pencil-fill fs-16"></i>
+                        </a>
+                      </li>
+                      <li (click)="openDeleteModal(deleteModel, data)" class="list-inline-item edit" matTooltip="Delete" placement="top">
+                        <a href="javascript:void(0);" data-bs-toggle="modal" class="text-danger d-inline-block">
+                          <i class="ri-delete-bin-5-fill fs-16"></i>
+                        </a>
+                      </li>
+                    </ul>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+        <div *ngIf="((loadingBrands$ | async) === false || null || undefined) && (brands$ | async).length" class="px-3">
+          <div class="row justify-content-md-between align-items-md-center gy-2">
+            <div class="col col-sm-6">
+              <div class="dataTables_info mb-2" id="tickets-table_info" role="status" aria-live="polite">{{'COMMON.SHOWING' | translate }} {{pagination?.startIndex + 1}}–{{pagination?.endIndex ===
+                pagination?.length ? pagination?.endIndex : pagination?.endIndex + 1}} {{'COMMON.OF' | translate }}
+                {{pagination?.length}} {{'COMMON.ENTRIES' | translate }}
+              </div>
+            </div>
+            <div class="col col-sm-6">
+              <div class="text-sm-right float-end listjs-pagination">
+                <ngb-pagination [maxSize]="5" [collectionSize]="pagination?.length" [(page)]="page" (pageChange)="onPageChange($event)" [pageSize]="pagination?.size">
+                </ngb-pagination>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div id="noresult" class="py-4 mt-4 text-center" *ngIf="(loadingBrands$ | async) || (!(loadingBrands$ | async) && !(brands$ | async).length)">
+          <div *ngIf="loadingBrands$ | async">
+            <lord-icon trigger="loop" style="width:72px;height:72px" [colors]="'primary:' + primaryColor + ',secondary:' + secondaryColor" src="https://cdn.lordicon.com/msoeawqm.json">
+            </lord-icon>
+            <h5 class="mt-4">{{'COMMON.LOADING' | translate }}</h5>
+          </div>
+          <div *ngIf="!(loadingBrands$ | async) && !(brands$ | async).length">
+            <lord-icon trigger="loop" style="width:72px;height:72px" [colors]="'primary:' + primaryColor + ',secondary:' + secondaryColor" src="https://cdn.lordicon.com/vlycxjwx.json">
+            </lord-icon>
+            <h5 class="mt-4">{{ 'COMMON.NO_RESULT' | translate }}</h5>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <ng-template #brandModal role="document" let-modal>
+    <div class="modal-header bg-soft-info p-3">
+      <h5 class="modal-title" id="exampleModalLabel">{{(selectedBrand ? 'SHARED.EDIT_BRAND' : 'SHARED.ADD_BRAND') | translate}}</h5>
+      <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" id="close-modal" (click)="modal.dismiss('Cross click')"></button>
+    </div>
+    <form [formGroup]="brandForm">
+      <div class="modal-body">
+        <input type="hidden" id="id-field" />
+        <div class="row g-3">
+          <div class="col-lg-12">
+            <div class="text-center">
+              <div class="position-relative d-inline-block">
+                <div (click)="upload()" class="position-absolute bottom-0 end-0">
+                  <label for="customer-image-input" class="mb-0" data-bs-toggle="tooltip" data-bs-placement="right" title="{{'COMMON.SELECT_IMAGE' | translate}}">
+                    <div class="avatar-xs cursor-pointer">
+                      <div class="avatar-title bg-light border rounded-circle text-muted">
+                        <i class="ri-image-fill"></i>
+                      </div>
+                    </div>
+                  </label>
+                </div>
+                <div (click)="upload()" class="cursor-pointer avatar-lg">
+                  <div class="avatar-title rounded-circle">
+                    <div class="avatar-lg img-thumbnail rounded-circle flex-shrink-0 shadow" *ngIf="brandForm.get('picture').value?.baseUrl === ''">
+                      <div class="avatar-title border rounded-circle text-uppercase">
+                        {{'MODULES.SYSTEM.UPLOAD_PICTURE' | translate}}</div>
+                    </div>
+                    <img *ngIf="brandForm.get('picture').value?.baseUrl !== ''" [src]="brandForm.get('picture').value.baseUrl + '/' + brandForm.get('picture').value.path" id="companylogo-img"
+                      class="avatar-md h-100 w-100 rounded-circle object-cover" />
+                  </div>
+                </div>
+                <div class="position-absolute top-0 end-0">
+                  <label for="customer-image-input" class="mb-0" data-bs-toggle="tooltip" data-bs-placement="right" title="{{'COMMON.SELECT_IMAGE' | translate}}">
+                    <div (click)="openAltMoadal()" class="avatar-xs cursor-pointer">
+                      <div class="avatar-title bg-light border rounded-circle text-muted">
+                        <i class="ri-coupon-2-line"></i>
+                      </div>
+                    </div>
+                  </label>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="mb-3">
+            <label for="email_id-field" class="form-label">{{'MODULES.INVENTORY.BRAND_NAME' | translate }}</label>
+            <input type="text" id="email_id-field" class="form-control" placeholder="{{'PLACEHOLDER.ENTER_BRAND_NAME' | translate }}" required formControlName="name"
+              [ngClass]="{ 'is-invalid': brandForm.get('name')?.touched && brandForm.get('name').hasError('required') }" />
+            <div class="invalid-feedback" *ngIf="brandForm.get('name')?.touched && brandForm.get('name').hasError('required')">{{'COMMON.REQUIRED' | translate }}
+            </div>
+          </div>
+          <div class="mb-3">
+            <label for="email_id-field" class="form-label">{{'COMMON.WEBSITE' | translate }}</label>
+            <input type="text" id="email_id-field" class="form-control" placeholder="{{'PLACEHOLDER.ENTER_WEBSITE' | translate }}" formControlName="website"
+              [ngClass]="{ 'is-invalid': brandForm.get('website')?.touched && brandForm.get('website').hasError('required') }" />
+            <div class="invalid-feedback" *ngIf="brandForm.get('website')?.touched && brandForm.get('website').hasError('required')">{{'COMMON.REQUIRED' | translate }}
+            </div>
+          </div>
+          <div class="mb-3">
+            <label for="email_id-field" class="form-label">{{'MODULES.INVENTORY.EXTERNAL_ID' | translate }}</label>
+            <input type="text" id="email_id-field" class="form-control" placeholder="{{'PLACEHOLDER.ENTER_EXTERNAL_ID' | translate }}" required formControlName="externalId"
+              [ngClass]="{ 'is-invalid': brandForm.get('externalId')?.touched && brandForm.get('externalId').hasError('required') }" />
+            <div class="invalid-feedback" *ngIf="brandForm.get('externalId')?.touched && brandForm.get('externalId').hasError('required')">{{'COMMON.REQUIRED' | translate }}
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <div class="hstack gap-2 justify-content-end">
+          <button type="button" class="btn btn-light" data-bs-dismiss="modal" (click)="modal.close('Close click')">{{'COMMON.CLOSE' | translate }}</button>
+          <button type="button" [disabled]="brandForm.invalid || isButtonDisabled" (click)="save()" class="btn btn-success" id="add-btn">{{(selectedBrand ? 'SHARED.EDIT_BRAND' : 'SHARED.ADD_BRAND') | translate}}</button>
+        </div>
+      </div>
+    </form>
+  </ng-template>
+
+  <ng-template #deleteModel let-modal>
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" id="btn-close" (click)="modal.dismiss('Cross click')"></button>
+      </div>
+      <div class="modal-body">
+        <div class="mt-2 text-center">
+          <lord-icon src="https://cdn.lordicon.com/gsqxdxog.json" trigger="loop" colors="primary:#405189,secondary:#f06548" style="width:90px;height:90px"></lord-icon>
+          <div class="mt-4 pt-2 fs-15 mx-4 mx-sm-5">
+            <h4>{{'MENUITEMS.CUSTOMERENGAGEMENT.CAMPAIGN.YOU_ARE_ABOUT_TO_DELETE_A_BRAND' | translate }} ?</h4>
+            <p class="text-muted mx-4 mb-0">{{'MENUITEMS.CUSTOMERENGAGEMENT.CAMPAIGN.DELETING_YOUR_BRAND_DATA_BASE_REMOVE' | translate }}
+            </p>
+          </div>
+        </div>
+        <div class="d-flex gap-2 justify-content-center mt-4 mb-2">
+          <button class="btn btn-link link-success fw-medium text-decoration-none" data-bs-dismiss="modal" (click)="modal.close('Close click')" id="deleteRecord-close"><i
+              class="ri-close-line me-1 align-middle"></i>{{'COMMON.CLOSE' | translate }}</button>
+          <button type="button" class="btn w-sm btn-danger " id="delete-product" (click)="deleteBrand()" (click)="modal.close('Close click')">{{'COMMON.YES_DELETE_IT' | translate }}</button>
+        </div>
+      </div>
+    </div>
+  </ng-template>
+</ng-container>
+<div *ngIf="navigating$ | async" class="vh-100 py-4 text-center" fxLayout="column" fxLayoutAlign="center center" fxLayoutGap="1rem">
+  <div>
+    <lord-icon trigger="loop" style="width:72px;height:72px" [colors]="'primary:' + primaryColor + ',secondary:' + secondaryColor" src="https://cdn.lordicon.com/msoeawqm.json">
+    </lord-icon>
+  </div>
+  <div class="mt-4">
+    <h5>{{'COMMON.LOADING' | translate }}</h5>
+  </div>
+</div>

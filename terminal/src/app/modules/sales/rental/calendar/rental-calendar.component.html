@@ -1,0 +1,197 @@
+<!-- Start Breadcrumbs -->
+<app-breadcrumbs title="{{ 'MENUITEMS.TITLE.RENTAL_CALENDAR' | translate }}" [breadcrumbItems]="breadCrumbItems"></app-breadcrumbs>
+<!-- End Breadcrumbs -->
+
+<div class="row">
+    <div class="col-12">
+        <div class="row">
+            <div class="col-xl-12">
+                <div class="card card-h-100">
+                    <div class="card-body">
+                        <div id="calendar"></div>
+                        <full-calendar [options]="calendarOptions"></full-calendar>
+                    </div>
+                </div>
+            </div><!-- end col -->
+        </div><!--end row-->
+
+        <div style='clear:both'></div>
+
+        <!-- Add New Event MODAL -->
+        <ng-template #modalShow let-modal>
+        <div class="modal-header p-3 bg-soft-info">
+            <h5 class="modal-title" id="modal-title">{{ 'MODULES.INVOICING.SALES.RENTAL.ADD_RENTAL_EVENT' | translate }}</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-hidden="true" (click)="closeEventModal()"></button>
+        </div>
+        <div class="modal-body p-4">
+            <form class="needs-validation" name="event-form" id="form-event" novalidate (ngSubmit)="saveEvent()"
+                [formGroup]="formData">
+                <div class="row event-form">
+                    <div class="col-12">
+                        <div class="mb-3">
+                            <label class="form-label">{{'COMMON.TYPE' | translate }}</label>
+                            <select class="form-select" name="category" formControlName="category" [ngClass]="{'is-invalid': submitted && form['category'].errors}" id="event-category"  required>
+                                <option value="bg-soft-danger">{{'MODULES.COLLABORATION.MAIN.DANGER' | translate }}</option>
+                                <option value="bg-soft-success">{{'MODULES.COLLABORATION.MAIN.SUCCESS' | translate }}</option>
+                                <option value="bg-soft-primary">{{'MODULES.COLLABORATION.MAIN.PRIMARY' | translate }}</option>
+                                <option value="bg-soft-info">{{'MODULES.COLLABORATION.MAIN.INFO' | translate }}</option>
+                                <option value="bg-soft-dark">{{'MODULES.COLLABORATION.MAIN.DARK' | translate }}</option>
+                                <option value="bg-soft-warning">{{'MODULES.COLLABORATION.MAIN.WARNING' | translate }}</option>
+                            </select>
+                            <div *ngIf="submitted && form['category'].errors" class="invalid-feedback">
+                                <div *ngIf="form['category'].errors['required']">{{'MODULES.COLLABORATION.MAIN.VALUE_REQUIRED' | translate }}
+                                </div>
+                            </div>
+                        </div>
+                    </div><!--end col-->
+                    <div class="col-12">
+                        <div class="mb-3">
+                            <label class="form-label">{{ 'MODULES.INVOICING.SALES.RENTAL.RENT_EVENT_NAME' | translate }}</label>
+                            <input class="form-control" placeholder="{{'PLACEHOLDER.ENTER_EVENT_NAME' | translate }}" type="text" name="title" id="event-title" required value="" formControlName="title"
+                            [ngClass]="{ 'is-invalid': submitted && form['title'].errors }" />
+                            <div *ngIf="submitted && form['title'].errors" class="invalid-feedback">
+                                <span *ngIf="form['title'].errors['required']">{{'MODULES.COLLABORATION.MAIN.VALUE_REQUIRED' | translate }}.</span>
+                            </div>
+                        </div>
+                    </div><!--end col-->
+                    <div class="col-12">
+                        <div class="mb-3">
+                            <label>{{'MODULES.COLLABORATION.MAIN.EVENT_DATE' | translate }}</label>
+                            <div class="input-group">
+                                <input class="form-control flatpickr-input" type="text" mwlFlatpickr [altInput]="true" [convertModelValue]="true" placeholder="{{'PLACEHOLDER.SELECT_DATE' | translate }}" formControlName="date">
+                            </div>
+                        </div>
+                    </div><!--end col-->
+                    <div class="col-12" id="event-time">
+                        <div class="row">
+                            <div class="col-6">
+                                <div class="mb-3">
+                                    <label class="form-label">{{'MODULES.COLLABORATION.MAIN.START_TIME' | translate }}</label>
+                                    <div class="input-group">
+                                        <input class="form-control flatpickr-input" type="text" placeholder="{{'MODULES.COLLABORATION.MAIN.SELECT_START_TIME' | translate }}"  formControlName="start" mwlFlatpickr [noCalendar]="true" [enableTime]="true" [dateFormat]="'H:i'">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-6">
+                                <div class="mb-3">
+                                    <label class="form-label">{{'MODULES.COLLABORATION.MAIN.END_TIME' | translate }}</label>
+                                    <div class="input-group">
+                                        <input class="form-control flatpickr-input" type="text" placeholder="{{'MODULES.COLLABORATION.MAIN.SELECT_END_TIME' | translate }}"  formControlName="end" mwlFlatpickr [noCalendar]="true" [enableTime]="true" [dateFormat]="'H:i'">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div><!--end col-->
+                    <div class="col-12">
+                        <div class="mb-3">
+                            <label for="event-location">{{'COMMON.LOCATION' | translate }}</label>
+                            <div>
+                                <input class="form-control" placeholder="{{'PLACEHOLDER.EVENT_LOCATION' | translate }}" type="text"
+                                name="event-location" id="event-location" required value=""
+                                formControlName="location"
+                                [ngClass]="{ 'is-invalid': submitted && form['location'].errors }" />
+                            <div *ngIf="submitted && form['location'].errors" class="invalid-feedback">
+                                <span *ngIf="form['location'].errors['required']">{{'MODULES.COLLABORATION.MAIN.VALUE_REQUIRED' | translate }}.</span>
+                            </div>
+                            </div>
+                        </div>
+                    </div><!--end col-->
+                    <div class="col-12">
+                        <div class="mb-3">
+                            <label class="form-label">{{'COMMON.DESCRIPTION' | translate }}</label>
+                            <textarea class="form-control" id="event-description" placeholder="{{'PLACEHOLDER.ENTER_DESCRIPTION' | translate }}"
+                            rows="3" spellcheck="false" formControlName="desription"
+                            [ngClass]="{ 'is-invalid': submitted && form['desription'].errors }"></textarea>
+                        <div *ngIf="submitted && form['desription'].errors" class="invalid-feedback">
+                            <span *ngIf="form['desription'].errors['required']">{{'MODULES.COLLABORATION.MAIN.VALUE_REQUIRED' | translate }}.</span>
+                        </div>
+                        </div>
+                    </div><!--end col-->
+                </div>
+                <div class="hstack gap-2 justify-content-end">
+                    <button type="submit" class="btn btn-success" id="btn-save-event">{{'MODULES.COLLABORATION.MAIN.ADD_EVENT' | translate }}</button>
+                </div>
+            </form>
+        </div>
+        </ng-template>
+        <!-- end modal-->
+
+    <!-- Edit event modal -->
+    <ng-template #editmodalShow let-modal>
+      <div class="modal-header p-3 bg-soft-info">
+          <h5 class="modal-title" id="modal-title">{{ 'MODULES.INVOICING.SALES.RENTAL.ALL_DAY_RENTAL' | translate }}</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-hidden="true"
+              (click)="modal.dismiss('Cross click')"></button>
+      </div>
+      <div class="modal-body p-4">
+          <form [formGroup]="formEditData" (ngSubmit)="editEventSave()">
+              <div class="row event-form">
+                <div class="col-12">
+                    <div class="mb-3">
+                        <label class="form-label">{{'COMMON.TYPE' | translate }}</label>
+                        <select class="form-control" name="ecategory" formControlName="editCategory" required>
+                            <option *ngFor="let option of category" value="{{ option.value }}">
+                                {{ option.name }}
+                            </option>
+                        </select>
+                    </div>
+                </div><!--end col-->
+                <div class="col-12">
+                    <div class="mb-3">
+                        <label class="form-label">{{ 'MODULES.INVOICING.SALES.RENTAL.RENT_EVENT_NAME' | translate }}</label>
+                        <input class="form-control" placeholder="{{'PLACEHOLDER.INSERT_EVENT_NAME' | translate }}" type="text" name="editTitle" formControlName="editTitle" />
+                    </div>
+                </div><!--end col-->
+                <div class="col-12">
+                    <div class="mb-3">
+                        <label>{{'MODULES.COLLABORATION.MAIN.EVENT_DATE' | translate }}</label>
+                        <div class="input-group">
+                            <input class="form-control flatpickr-input" type="text" mwlFlatpickr name="editDate" formControlName="editDate" [altInput]="true" [convertModelValue]="true" placeholder="{{'PLACEHOLDER.SELECT_DATE' | translate }}">
+                        </div>
+                    </div>
+                </div><!--end col-->
+                <div class="col-12" id="event-time">
+                    <div class="row">
+                        <div class="col-6">
+                            <div class="mb-3">
+                                <label class="form-label">{{'MODULES.COLLABORATION.MAIN.START_TIME' | translate }}</label>
+                                <div class="input-group">
+                                    <input class="form-control flatpickr-input" type="text" placeholder="{{'MODULES.COLLABORATION.MAIN.SELECT_START_TIME' | translate }}" name="editStart" formControlName="editStart" mwlFlatpickr [noCalendar]="true" [enableTime]="true" [dateFormat]="'H:i'">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-6">
+                            <div class="mb-3">
+                                <label class="form-label">{{'MODULES.COLLABORATION.MAIN.END_TIME' | translate }}</label>
+                                <div class="input-group">
+                                    <input class="form-control flatpickr-input" type="text" placeholder="{{'MODULES.COLLABORATION.MAIN.SELECT_END_TIME' | translate }}"  name="editEnd" formControlName="editEnd" mwlFlatpickr [noCalendar]="true" [enableTime]="true" [dateFormat]="'H:i'">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div><!--end col-->
+                <div class="col-12">
+                    <div class="mb-3">
+                        <label for="event-location">{{'COMMON.LOCATION' | translate }}</label>
+                        <div>
+                            <input type="text" class="form-control" name="editlocation" formControlName="editlocation" placeholder="{{'PLACEHOLDER.EVENT_LOCATION' | translate }}">
+                        </div>
+                    </div>
+                </div><!--end col-->
+                <div class="col-12">
+                    <div class="mb-3">
+                        <label class="form-label">{{'COMMON.DESCRIPTION' | translate }}</label>
+                        <textarea class="form-control" name="editDescription" formControlName="editDescription" placeholder="{{'PLACEHOLDER.ENTER_DESCRIPTION' | translate }}" rows="3" spellcheck="false"></textarea>
+                    </div>
+                </div><!--end col-->
+              </div>
+              <div class="hstack gap-2 justify-content-end">
+                <button type="button" class="btn btn-soft-danger" id="btn-delete-event" (click)="confirm()"><i class="ri-close-line align-bottom"></i>{{ 'COMMON.DELETE' | translate }}</button>
+                <button type="submit" class="btn btn-success" id="btn-save-event">{{'MODULES.COLLABORATION.MAIN.UPDATE_EVENT' | translate }}</button>
+            </div>
+          </form>
+      </div>
+  </ng-template>
+  <!-- end modal-->
+    </div>
+</div> <!-- end row-->

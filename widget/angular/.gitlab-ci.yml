@@ -1,0 +1,87 @@
+variables:
+  WIDGET_TAG: sifca-widget-2.0
+  WIDGET_PROD_TAG: sifca-widget-prod-1.0
+
+##########################################
+## STAGE: BUILD                         ##
+##########################################
+
+build:widget:
+  stage: build
+  dependencies:
+    - cleanup
+  script:
+    - echo "Build Started ..."
+
+
+##########################################
+## STAGE: VERIFY                        ##
+##########################################
+
+verify:widget:
+  stage: verify
+  dependencies:
+    - build:widget
+  script:
+    - echo "Verfify Widget Started ..."
+
+##########################################
+## STAGE: CONTAINERIZE                  ##
+##########################################
+
+containerize:widget:
+  stage: containerize
+  dependencies:
+    - verify:widget
+  image: docker:23.0.5
+  services:
+    - docker:23.0.5-dind
+  script:
+    - docker system prune -a -f
+    - docker build -t $IMAGE_NAME:$WIDGET_TAG --build-arg CI_SERVER_HOST=$CI_SERVER_HOST --build-arg CI_PROJECT_ID=$CI_PROJECT_ID --build-arg CI_JOB_TOKEN=$CI_JOB_TOKEN -f apps/widget/angular/Dockerfile .
+    - docker tag $IMAGE_NAME:$WIDGET_TAG $CI_REGISTRY_IMAGE:$WIDGET_TAG
+    - docker push $CI_REGISTRY_IMAGE:$WIDGET_TAG
+  when: manual
+  # rules:
+  #   - if: '$CI_COMMIT_MESSAGE =~ /widget/'  # trigger the build step if the commit message contains the word "widget"
+  #     when: always
+containerize:widget:prod:
+  stage: containerize
+  dependencies:
+    - verify:widget
+  image: docker:23.0.5
+  services:
+    - docker:23.0.5-dind
+  script:
+    - docker system prune -a -f
+    - docker build -t $IMAGE_NAME:$WIDGET_PROD_TAG --build-arg CI_SERVER_HOST=$CI_SERVER_HOST --build-arg CI_PROJECT_ID=$CI_PROJECT_ID --build-arg CI_JOB_TOKEN=$CI_JOB_TOKEN -f apps/widget/angular/Dockerfile.prod .
+    - docker tag $IMAGE_NAME:$WIDGET_PROD_TAG $CI_REGISTRY_IMAGE:$WIDGET_PROD_TAG
+    - docker push $CI_REGISTRY_IMAGE:$WIDGET_PROD_TAG
+  when: manual
+
+##########################################
+## STAGE: DEPLOY                        ##
+##########################################
+
+deploy:widget:
+  stage: deploy
+  dependencies:
+    - containerize:widget
+  variables:
+    CONTAINER_NAME: sifca-widget
+  script:
+    - ssh -o StrictHostKeyChecking=no -i $SSH_KEY ubuntu@"$DEV_SERVER" "
+        docker login -u $CI_REGISTRY_USER -p $CI_REGISTRY_PASSWORD $CI_REGISTRY &&
+        docker pull $CI_REGISTRY_IMAGE:$WIDGET_TAG &&
+        RUNNING_CONTAINER=\$(docker ps -aqf "name=$CONTAINER_NAME") &&
+        if [ -n \"\$RUNNING_CONTAINER\" ]; then
+            echo stopping and removing container $RUNNING_CONTAINER &&
+            docker stop \$RUNNING_CONTAINER &&
+            docker rm \$RUNNING_CONTAINER;
+        fi &&
+        docker system prune -a -f &&
+        docker run -d -p 803:80 -e API_SERVER=widgt-sbx-app.bosk.app -e BACKEND_SERVER=sfca-sbx-bck.diktup.cloud --name $CONTAINER_NAME $CI_REGISTRY_IMAGE:$WIDGET_TAG"
+  when: manual
+  # rules:
+  #   - if: '$CI_COMMIT_MESSAGE =~ /widget/'  # trigger the build step if the commit message contains the word "widget"
+  #     when: always

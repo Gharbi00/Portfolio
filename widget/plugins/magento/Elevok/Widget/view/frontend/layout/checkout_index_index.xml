@@ -1,0 +1,20 @@
+<?xml version="1.0"?>
+<page xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/page_configuration.xsd">
+    <head>
+        <!-- Add JavaScript files to the page -->
+        <script src="Elevok_Widget::js/discount.js"/>
+
+        <!-- Add Content-Security-Policy meta tag to control resources -->
+        <meta http-equiv="Content-Security-Policy" content="default-src 'self'; img-src 'self' https://sifca-storage.s3.eu-central-1.amazonaws.com; style-src 'self' 'unsafe-inline'; script-src 'self' 'unsafe-inline' 'unsafe-eval'"/>
+        <meta https-equiv="Content-Security-Policy" content="default-src 'self'; img-src 'self' https://sifca-storage.s3.eu-central-1.amazonaws.com; style-src 'self' 'unsafe-inline'; script-src 'self' 'unsafe-inline' 'unsafe-eval'"/>
+    </head>
+    <body>
+        <referenceContainer name="content">
+            <!-- Add discount widget block -->
+            <block class="Elevok\Widget\Block\WidgetSettings" name="elevok_discount_widget" template="Elevok_Widget::discount.phtml"/>
+            
+            <!-- Add additional scripts if needed -->
+            <block class="Elevok\Widget\Block\WidgetSettings" name="widget_scripts" template="Elevok_Widget::scripts.phtml"/>
+        </referenceContainer>
+    </body>
+</page>

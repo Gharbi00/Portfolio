@@ -1,0 +1,16 @@
+.no-cursor {
+  cursor: default;
+}
+.disabled {
+  color: grey;
+  // background-color: rgba(0, 0, 0, .2);
+}
+.day:hover {
+  background-color: #e6e2e2;
+  cursor: pointer;
+}
+.day-item {
+  width: 23px;
+  height: 30px;
+  margin: 1px;
+}

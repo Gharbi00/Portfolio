@@ -1,0 +1,797 @@
+<ng-container *ngIf="!(navigating$ | async)">
+
+  <div class="row">
+    <div class="col-lg-12">
+      <div class="card mt-n4 mx-n4">
+        <div [ngClass]="project?.color" class="bg-soft-warning">
+          <div class="card-body pb-0 px-4">
+            <div class="row mb-3">
+              <div class="col-md">
+                <div class="row align-items-center g-3">
+                  <div class="col-md-auto">
+                    <div class="avatar-md">
+                      <div *ngIf="project?.media?.pictures?.length" class="avatar-title bg-white rounded-circle">
+                        <img [src]="project?.media.pictures[0]?.baseUrl + '/' + project?.media.pictures[0]?.path" alt=""
+                          class="avatar-xs">
+                      </div>
+                      <div *ngIf="!project?.media?.pictures?.length"
+                        class="avatar-title bg-soft-info text-danger rounded-circle shadow">
+                        {{ project?.name?.charAt(0) || 'N'}}
+                      </div>
+                    </div>
+                  </div>
+                  <div class="col-md">
+                    <div>
+                      <h4 class="fw-bold">{{ project?.name }}</h4>
+                      <div class="hstack gap-3 flex-wrap">
+                        <div>{{ 'MODULES.COLLABORATION.PROJECTS.CREATE_DATE' | translate }} : <span class="fw-medium">{{
+                            project?.createdAt | date:'longDate' }}</span></div>
+                        <div class="vr"></div>
+                        <div>{{ 'MODULES.COLLABORATION.PROJECTS.DUE_DATE' | translate }} : <span class="fw-medium">{{
+                            project?.deadline | date:'longDate' }}</span></div>
+                        <div class="vr"></div>
+                        <div class="badge rounded-pill fs-12"
+                          [ngClass]=" { 'bg-danger': project?.priority === 'HIGH' || project?.priority === 'CRITICAL', 'bg-success': project?.priority === 'LOW', 'bg-warning': project?.priority === 'NORMAL'}">
+                          {{ project?.priority }}</div>
+                        <div class="badge rounded-pill fs-12"
+                          [ngClass]=" { 'bg-danger': project?.status === 'CANCELLED' || project?.status === 'BLOCKED', 'bg-success': project?.status === 'ACTIVE', 'bg-warning': project?.status === 'DELIVERED'}">
+                          {{ project?.status }}</div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="col-md-auto">
+                <div class="hstack gap-1 flex-wrap">
+                  <button type="button" class="btn py-0 fs-16 favourite-btn active shadow-none">
+                    <i class="ri-star-fill"></i>
+                  </button>
+                  <button type="button" class="btn py-0 fs-16 text-body shadow-none">
+                    <i class="ri-share-line"></i>
+                  </button>
+                  <button type="button" class="btn py-0 fs-16 text-body shadow-none">
+                    <i class="ri-flag-line"></i>
+                  </button>
+                </div>
+              </div>
+            </div>
+
+            <ul ngbNav #customNav="ngbNav" [activeId]="1" class="nav nav-tabs-custom border-bottom-0" role="tablist">
+              <li [ngbNavItem]="1" class="nav-item">
+                <a ngbNavLink class="nav-link" data-bs-toggle="tab" role="tab">
+                  {{ 'MODULES.COLLABORATION.PROJECTS.OVERVIEW' | translate }}
+                </a>
+                <ng-template ngbNavContent>
+                  <div class="row">
+                    <div class="col-xl-9 col-lg-8">
+                      <div class="card">
+                        <div class="card-body">
+                          <div class="text-muted">
+                            <div class="d-flex justify-content-md-between">
+                              <h6 class="mb-3 fw-semibold text-uppercase">
+                                {{ 'MODULES.COLLABORATION.PROJECTS.SUMMARY' | translate }}
+                              </h6>
+                              <div class="flex-shrink-0">
+                                <a routerLink="/collaboration/projects/e/{{project?.id}}" class="btn btn-light"
+                                  data-bs-toggle="tooltip" data-bs-placement="top"
+                                  title="{{ 'MODULES.COLLABORATION.PROJECTS.EDIT' | translate }}">
+                                  <i class="ri-pencil-fill align-bottom"></i>
+                                </a>
+                              </div>
+                            </div>
+                            <p>{{project?.description}}</p>
+                            <div class="pt-3 border-top border-top-dashed mt-4">
+                              <div class="row">
+                                <div class="col-lg-3 col-sm-6">
+                                  <div>
+                                    <p class="mb-2 text-uppercase fw-medium">{{
+                                      'MODULES.COLLABORATION.PROJECTS.CREATE_DATE' | translate }}:</p>
+                                    <h5 class="fs-15 mb-0">{{project?.createdAt | date:'longDate'}}</h5>
+                                  </div>
+                                </div>
+                                <div class="col-lg-3 col-sm-6">
+                                  <div>
+                                    <p class="mb-2 text-uppercase fw-medium">{{
+                                      'MODULES.COLLABORATION.PROJECTS.DUE_DATE' | translate }}:</p>
+                                    <h5 class="fs-15 mb-0">{{project?.deadline | date:'longDate'}}</h5>
+                                  </div>
+                                </div>
+                                <div class="col-lg-3 col-sm-6">
+                                  <div>
+                                    <p class="mb-2 text-uppercase fw-medium">{{
+                                      'MODULES.COLLABORATION.PROJECTS.PRIORITY' | translate }}:</p>
+                                    <div class="badge bg-danger fs-12">{{project?.priority}}</div>
+                                  </div>
+                                </div>
+                                <div class="col-lg-3 col-sm-6">
+                                  <div>
+                                    <p class="mb-2 text-uppercase fw-medium">{{ 'MODULES.COLLABORATION.PROJECTS.STATUS'
+                                      | translate }}:</p>
+                                    <div class="badge bg-warning fs-12">{{project?.status}}</div>
+                                  </div>
+                                </div>
+                              </div>
+                            </div>
+                            <div class="pt-3 border-top border-top-dashed mt-4">
+                              <h6 class="mb-3 fw-semibold text-uppercase">{{ 'MODULES.COLLABORATION.PROJECTS.RESOURCES'
+                                | translate }}</h6>
+                              <div *ngIf="resources?.value?.length" class="row g-3">
+                                <div *ngFor="let resource of resources.value" class="col-xxl-4 col-lg-6 ">
+                                  <div class="d-flex align-items-center border border-dashed p-2 rounded">
+                                    <div class="flex-shrink-0 avatar-sm">
+                                      <div class="avatar-title bg-light rounded">
+                                        <img class="w-10 h-10 rounded-md overflow-hidden"
+                                          [src]="resource.content?.type?.image?.background?.svg?.baseUrl + '/' + resource.content?.type?.image?.background?.svg?.path">
+                                      </div>
+                                    </div>
+                                    <div class="flex-grow-1 ms-3">
+                                      <h6 class="mb-1"><a href="javascript:void(0);"
+                                          class="text-body">{{resource?.length
+                                          > 10 ?
+                                          resource?.name?.substr(0,7) + '...' : resource?.name}}</a></h6>
+                                      <small class="text-muted">{{resource?.size / 1000 | number:'1.0-2'}} KB</small>
+                                    </div>
+                                    <div class="hstack gap-3 fs-16">
+                                      <a (click)="downloadDocument(resource?.id)" class="text-muted"><i
+                                          class="ri-download-2-line"></i></a>
+                                      <a href="javascript:void(0);" (click)="removeDocument(resource?.id, 'resource')"
+                                        class="text-muted"><i class="ri-delete-bin-line"></i></a>
+                                    </div>
+                                  </div>
+                                </div>
+                              </div>
+                              <div class="card-body">
+                                <div class="uploader-wrapper">
+                                  <ngx-file-drop class="cursor-pointer" (click)="addedFile('resources')"
+                                    dropZoneLabel="{{ 'MODULES.COLLABORATION.PROJECTS.DROP_FILES_HERE' | translate }}"
+                                    (onFileDrop)="dropped($event)" (onFileOver)="fileOver($event)"
+                                    (onFileLeave)="fileLeave($event)">
+                                    <ng-template ngx-file-drop-content-tmp let-openFileSelector="openFileSelector">
+                                      {{ 'MODULES.COLLABORATION.PROJECTS.CLICK_OR_DRAG_FILES' | translate }}
+                                    </ng-template>
+                                  </ngx-file-drop>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+
+                        </div>
+                      </div>
+                      <app-comments></app-comments>
+                    </div>
+                    <div class="col-xl-3 col-lg-4">
+                      <div class="card">
+                        <div class="card-body">
+                          <h5 class="card-title mb-4">{{ 'MODULES.COLLABORATION.PROJECTS.TAGS' | translate }}</h5>
+                          <div class="mb-3">
+                            <form [formGroup]="projectForm">
+                              <ng-select (change)="onChangeTags()" class="no-arrow-select" [items]="[]" [addTag]="true" [isOpen]="false"
+                                [multiple]="true" [selectOnTab]="true" formControlName="tags">
+                              </ng-select>
+                            </form>
+                          </div>
+                        </div>
+                      </div>
+                      <div *ngIf="selectedMembers?.length" class="card">
+                        <div class="card-header align-items-center d-flex border-bottom-dashed">
+                          <h4 class="card-title mb-0 flex-grow-1">{{ 'MODULES.COLLABORATION.PROJECTS.MEMBERS' |
+                            translate }}</h4>
+                          <div class="flex-shrink-0">
+                            <button type="button" class="btn btn-soft-danger btn-sm shadow-none" data-bs-toggle="modal"
+                              data-bs-target="#inviteMembersModal" (click)="openMemberModal(memberModal, 'member')"><i
+                                class="ri-share-line me-1 align-bottom"></i> {{
+                              'MODULES.COLLABORATION.PROJECTS.INVITE_MEMBER' | translate }}</button>
+                          </div>
+                        </div>
+                        <div *ngIf="selectedMembers?.length" class="card-body">
+                          <ngx-simplebar style="height: 175px;" class="mx-n3 px-3">
+                            <div class="vstack gap-3">
+                              <div *ngFor="let user of selectedMembers" class="d-flex align-items-center">
+                                <div *ngIf="user?.picture" class="avatar-xs flex-shrink-0 me-3">
+                                  <img [src]="user.picture.baseUrl + '/' + user.picture.path" alt=""
+                                    class="img-fluid h-100 rounded-circle">
+                                </div>
+                                <div *ngIf="!user?.picture"
+                                  class="avatar-title h-8 w-8 me-3 bg-info rounded-circle text-uppercase">
+                                  {{user?.firstName?.charAt(0) || 'N'}}
+                                </div>
+                                <div class="flex-grow-1">
+                                  <h5 class="fs-13 mb-0"><a href="javascript:void(0);" class="text-body d-block">
+                                      {{user?.firstName}}
+                                      {{user?.lastName.length
+                                      > 3 ? user?.lastName.substr(0,3) + '...' :
+                                      user?.lastName}}
+                                    </a></h5>
+                                </div>
+                                <div class="flex-shrink-0">
+                                  <div class="d-flex align-items-center gap-1">
+                                    <button type="button" class="btn btn-light btn-sm">{{
+                                      'MODULES.COLLABORATION.PROJECTS.MESSAGE' | translate }}</button>
+                                    <div class="dropdown" ngbDropdown>
+                                      <button
+                                        class="btn btn-icon btn-sm fs-16 text-muted dropdown shadow-none arrow-none"
+                                        type="button" data-bs-toggle="dropdown" aria-expanded="false" ngbDropdownToggle>
+                                        <i class="ri-more-fill"></i>
+                                      </button>
+                                      <ul class="dropdown-menu" ngbDropdownMenu>
+                                        <li><a routerLink="/collaboration/projects/e/{{project?.id}}"
+                                            class="dropdown-item"><i
+                                              class="ri-eye-fill text-muted me-2 align-bottom"></i>{{
+                                            'MODULES.COLLABORATION.PROJECTS.VIEW' | translate }}</a>
+                                        </li>
+                                        <li><a (click)="removeUser(user.id, 'MEMBER')" class="dropdown-item"
+                                            href="javascript:void(0);"><i
+                                              class="ri-delete-bin-5-fill text-muted me-2 align-bottom"></i>{{
+                                            'MODULES.COLLABORATION.PROJECTS.DELETE' | translate }}</a>
+                                        </li>
+                                      </ul>
+                                    </div>
+                                  </div>
+                                </div>
+                              </div>
+                            </div>
+                          </ngx-simplebar>
+                        </div>
+                        <div *ngIf="!selectedMembers?.length" class="py-4 mt-4 text-center" id="noresult">
+                          <lord-icon src="https://cdn.lordicon.com/msoeawqm.json" trigger="loop"
+                            [colors]="'primary:' + primaryColor + ',secondary:' + secondaryColor" style="width:72px;height:72px"></lord-icon>
+                          <h5 class="mt-4">{{ 'MODULES.COLLABORATION.PROJECTS.NO_RESULT' | translate }}</h5>
+                        </div>
+                      </div>
+                      <div *ngIf="attachments?.value?.length" class="card">
+                        <div class="card-header align-items-center d-flex border-bottom-dashed">
+                          <h4 class="card-title mb-0 flex-grow-1">{{ 'MODULES.COLLABORATION.PROJECTS.LEADS' | translate
+                            }}</h4>
+                          <div class="flex-shrink-0">
+                            <button type="button" class="btn btn-soft-danger btn-sm shadow-none" data-bs-toggle="modal"
+                              data-bs-target="#inviteMembersModal" (click)="openMemberModal(memberModal, 'lead')"><i
+                                class="ri-share-line me-1 align-bottom"></i> {{
+                              'MODULES.COLLABORATION.PROJECTS.INVITE_LEAD' | translate }}</button>
+                          </div>
+                        </div>
+                        <div *ngIf="selectedLead?.length" class="card-body">
+                          <ngx-simplebar style="height: 175px;" class="mx-n3 px-3">
+                            <div class="vstack gap-3">
+                              <div *ngFor="let user of selectedLead" class="d-flex align-items-center">
+                                <div *ngIf="user.picture" class="avatar-xs flex-shrink-0 me-3">
+                                  <img [src]="user.picture.baseUrl + '/' + user.picture.path" alt=""
+                                    class="img-fluid h-8 w-8 rounded-circle">
+                                </div>
+                                <div *ngIf="!user.picture" class="avatar-title bg-info rounded-circle text-uppercase">
+                                  {{user.firstName?.charAt(0) || 'N'}}
+                                </div>
+                                <div class="flex-grow-1">
+                                  <h5 class="fs-13 mb-0"><a href="javascript:void(0);"
+                                      class="text-body d-block">{{user.firstName}}
+                                      {{user.lastName.length
+                                      > 3 ? user.lastName.substr(0,3) + '...' :
+                                      user.lastName}}</a></h5>
+                                </div>
+                                <div class="flex-shrink-0">
+                                  <div class="d-flex align-items-center gap-1">
+                                    <button type="button" class="btn btn-light btn-sm">{{
+                                      'MODULES.COLLABORATION.PROJECTS.MESSAGE' | translate }}</button>
+                                    <div class="dropdown" ngbDropdown>
+                                      <button
+                                        class="btn btn-icon btn-sm fs-16 text-muted dropdown shadow-none arrow-none"
+                                        type="button" data-bs-toggle="dropdown" aria-expanded="false" ngbDropdownToggle>
+                                        <i class="ri-more-fill"></i>
+                                      </button>
+                                      <ul class="dropdown-menu" ngbDropdownMenu>
+                                        <li><a routerLink="/collaboration/projects/e/{{project?.id}}"
+                                            class="dropdown-item"><i
+                                              class="ri-eye-fill text-muted me-2 align-bottom"></i>{{
+                                            'MODULES.COLLABORATION.PROJECTS.VIEW' | translate }}</a>
+                                        </li>
+                                        <li><a (click)="removeUser(user.id, 'LEAD')" class="dropdown-item"
+                                            href="javascript:void(0);"><i
+                                              class="ri-delete-bin-5-fill text-muted me-2 align-bottom"></i>{{
+                                            'MODULES.COLLABORATION.PROJECTS.DELETE' | translate }}</a>
+                                        </li>
+                                      </ul>
+                                    </div>
+                                  </div>
+                                </div>
+                              </div>
+                            </div>
+                          </ngx-simplebar>
+                        </div>
+                        <div *ngIf="!selectedLead?.length" class="py-4 mt-4 text-center" id="noresult">
+                          <lord-icon src="https://cdn.lordicon.com/msoeawqm.json" trigger="loop"
+                            [colors]="'primary:' + primaryColor + ',secondary:' + secondaryColor" style="width:72px;height:72px"></lord-icon>
+                          <h5 class="mt-4">{{ 'MODULES.COLLABORATION.PROJECTS.NO_RESULT' | translate }}</h5>
+                        </div>
+                      </div>
+                      <div class="card">
+                        <div class="card-header align-items-center d-flex border-bottom-dashed">
+                          <h4 class="card-title mb-0 flex-grow-1">{{ 'MODULES.COLLABORATION.PROJECTS.ATTACHMENTS' |
+                            translate }}</h4>
+                        </div>
+                        <div class="card-body">
+                          <div class="vstack gap-2">
+                            <div *ngFor="let attachment of project?.attachments"
+                              class="border rounded border-dashed p-2">
+                              <div class="d-flex align-items-center">
+                                <div class="flex-shrink-0 me-3">
+                                  <div class="avatar-sm">
+                                    <div class="avatar-title bg-light text-secondary rounded fs-24 shadow">
+                                      <img class="w-10 h-10 rounded-md overflow-hidden"
+                                        [src]="attachment.content?.type?.image?.background?.svg?.baseUrl + '/' + attachment.content?.type?.image?.background?.svg?.path">
+                                    </div>
+                                  </div>
+                                </div>
+                                <div class="flex-grow-1 overflow-hidden">
+                                  <h5 class="fs-13 mb-1"><a href="javascript:void(0);"
+                                      class="text-body text-truncate d-block">{{attachment.name.length
+                                      > 10 ? attachment.name.substr(0,7) + '...' :
+                                      attachment.name}}</a></h5>
+                                  <div>{{attachment.size / 1000 | number:'1.0-2'}} KB
+                                  </div>
+                                </div>
+                                <div class="flex-shrink-0 ms-2">
+                                  <div class="d-flex gap-1">
+                                    <button type="button" (click)="downloadDocument(attachment.id)"
+                                      class="btn btn-icon text-muted btn-sm fs-18 shadow-none"><i
+                                        class="ri-download-2-line"></i></button>
+                                    <div class="dropdown" ngbDropdown>
+                                      <button
+                                        class="btn btn-icon text-muted btn-sm fs-18 dropdown shadow-none arrow-none"
+                                        type="button" data-bs-toggle="dropdown" aria-expanded="false" ngbDropdownToggle>
+                                        <i class="ri-more-fill"></i>
+                                      </button>
+                                      <ul class="dropdown-menu dropdown-menu-end" ngbDropdownMenu>
+                                        <li><a class="dropdown-item" href="javascript:void(0);"><i
+                                              class="ri-pencil-fill align-bottom me-2 text-muted"></i>
+                                            {{ 'MODULES.COLLABORATION.PROJECTS.RENAME' | translate }}</a></li>
+                                        <li><a (click)="removeDocument(attachment.id, 'attachment')"
+                                            class="dropdown-item" href="javascript:void(0);"><i
+                                              class="ri-delete-bin-fill align-bottom me-2 text-muted"></i>
+                                            {{ 'MODULES.COLLABORATION.PROJECTS.DELETE' | translate }}</a></li>
+                                      </ul>
+                                    </div>
+                                  </div>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                        <div class="uploader-wrapper card-body">
+                          <ngx-file-drop class="cursor-pointer" (click)="addedFile('attachments')"
+                            dropZoneLabel="{{ 'MODULES.COLLABORATION.PROJECTS.DROP_FILES_HERE' | translate }}"
+                            (onFileDrop)="dropped($event)" (onFileOver)="fileOver($event)"
+                            (onFileLeave)="fileLeave($event)">
+                            <ng-template ngx-file-drop-content-tmp let-openFileSelector="openFileSelector">
+                              {{ 'MODULES.COLLABORATION.PROJECTS.CLICK_OR_DRAG_FILES' | translate }}
+                            </ng-template>
+                          </ngx-file-drop>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </ng-template>
+              </li>
+              <li [ngbNavItem]="2" class="nav-item">
+                <a ngbNavLink class="nav-link" data-bs-toggle="tab" role="tab">
+                  {{ 'MODULES.COLLABORATION.PROJECTS.DOCUMENTS' | translate }}
+                </a>
+                <ng-template ngbNavContent>
+                  <div class="card">
+                    <div class="card-body">
+                      <div class="card-header align-items-center d-flex border-bottom-dashed">
+                        <h5 class="card-title mb-0 flex-grow-1">{{ 'MODULES.COLLABORATION.PROJECTS.DOCUMENTS' |
+                          translate }}</h5>
+                        <div class="flex-shrink-0">
+                          <button (click)="uploadDocument()" type="button"
+                            class="btn btn-soft-info btn-sm shadow-none"><i
+                              class="ri-upload-2-fill me-1 align-bottom"></i>
+                            {{ 'MODULES.COLLABORATION.PROJECTS.UPLOAD' | translate }}</button>
+                          <input type="file" #fileInput id="fileUpload" multiple name="fileUpload"
+                            style="display:none;" />
+                        </div>
+                      </div>
+                      <br>
+                      <div class="row">
+                        <div *ngIf="project?.attachments.length" class="col-lg-12">
+                          <div class="table-responsive table-card">
+                            <table class="table table-borderless align-middle mb-0">
+                              <thead class="table-light">
+                                <tr>
+                                  <th scope="col">{{ 'MODULES.COLLABORATION.PROJECTS.FILE_NAME' | translate }}</th>
+                                  <th scope="col">{{ 'MODULES.COLLABORATION.PROJECTS.TYPE' | translate }}</th>
+                                  <th scope="col">{{ 'MODULES.COLLABORATION.PROJECTS.SIZE' | translate }}</th>
+                                  <th scope="col">{{ 'MODULES.COLLABORATION.PROJECTS.UPLOAD_DATE' | translate }}</th>
+                                  <th scope="col" style="width: 120px;">{{ 'MODULES.COLLABORATION.PROJECTS.ACTION' |
+                                    translate }}</th>
+                                </tr>
+                              </thead>
+                              <tbody>
+                                <tr *ngFor="let attachment of project?.attachments">
+                                  <td>
+                                    <div class="d-flex align-items-center">
+                                      <div class="avatar-sm">
+                                        <div class="avatar-title bg-light text-info rounded fs-24 shadow">
+                                          <img class="w-10 h-10 rounded-md overflow-hidden"
+                                            [src]="attachment.content?.type?.image?.background?.svg?.baseUrl + '/' + attachment.content?.type?.image?.background?.svg?.path">
+                                        </div>
+                                      </div>
+                                      <div class="ms-3 flex-grow-1">
+                                        <h5 class="fs-14 mb-0"><a href="javascript:void(0)"
+                                            class="text-dark">{{attachment.name.length
+                                            > 10 ? attachment.name.substr(0,7) +
+                                            '...' : attachment.name}}</a></h5>
+                                      </div>
+                                    </div>
+                                  </td>
+                                  <td>{{attachment.content.type.name}} {{ 'MODULES.COLLABORATION.PROJECTS.FILE' |
+                                    translate }}</td>
+                                  <td>{{attachment.size / 1000 | number:'1.0-2'}} KB</td>
+                                  <td>{{attachment.createdAt | date :'longDate'}}</td>
+                                  <td>
+                                    <div class="dropdown" ngbDropdown>
+                                      <a href="javascript:void(0);"
+                                        class="btn btn-soft-secondary btn-sm btn-icon arrow-none shadow-none"
+                                        data-bs-toggle="dropdown" aria-expanded="true" ngbDropdownToggle>
+                                        <i class="ri-more-fill"></i>
+                                      </a>
+                                      <ul class="dropdown-menu dropdown-menu-end" ngbDropdownMenu>
+                                        <li><a class="dropdown-item" (click)="downloadDocument(attachment.id)"><i
+                                              class="ri-download-2-fill me-2 align-bottom text-muted"></i>{{
+                                            'MODULES.COLLABORATION.PROJECTS.DOWNLOAD' | translate }}</a>
+                                        </li>
+                                        <li class="dropdown-divider"></li>
+                                        <li><a (click)="removeDocument(attachment.id, 'attachment')"
+                                            class="dropdown-item" href="javascript:void(0);"><i
+                                              class="ri-delete-bin-5-fill me-2 align-bottom text-muted"></i>{{
+                                            'MODULES.COLLABORATION.PROJECTS.DELETE' | translate }}</a>
+                                        </li>
+                                      </ul>
+                                    </div>
+                                  </td>
+                                </tr>
+                              </tbody>
+                            </table>
+                          </div>
+                        </div>
+                        <div *ngIf="!project?.attachments.length" class="py-4 mt-4 text-center" id="noresult">
+                          <lord-icon src="https://cdn.lordicon.com/msoeawqm.json" trigger="loop"
+                            [colors]="'primary:' + primaryColor + ',secondary:' + secondaryColor" style="width:72px;height:72px"></lord-icon>
+                          <h5 class="mt-4">{{ 'MODULES.COLLABORATION.PROJECTS.NO_RESULT' | translate }}</h5>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </ng-template>
+              </li>
+
+              <li [ngbNavItem]="3" class="nav-item">
+                <a ngbNavLink class="nav-link" data-bs-toggle="tab" role="tab">
+                  {{ 'MODULES.COLLABORATION.PROJECTS.TEAM' | translate }}
+                </a>
+                <ng-template ngbNavContent>
+                  <div class="row g-4 mb-3">
+                    <div class="col-sm">
+                      <div class="d-flex">
+                        <div class="search-box me-2">
+                          <input type="text" name="searchTerm" class="form-control"
+                            placeholder="{{ 'MODULES.COLLABORATION.PROJECTS.SEARCH_MEMBER' | translate }}">
+                          <i class="ri-search-line search-icon"></i>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="col-sm-auto">
+                      <div>
+                        <button (click)="openMemberModal(teamModal, 'member')" type="button" class="btn btn-danger"
+                          data-bs-toggle="modal" data-bs-target="#inviteMembersModal"><i
+                            class="ri-share-line me-1 align-bottom"></i> {{
+                          'MODULES.COLLABORATION.PROJECTS.INVITE_MEMBER' | translate }}</button>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="team-list list-view-filter">
+                    <div class="card team-box" *ngFor="let data of project?.members">
+                      <div class="card-body px-4">
+                        <div class="row align-items-center team-row">
+                          <div class="col team-settings">
+                            <div class="row align-items-center">
+                              <div class="col text-end dropdown" ngbDropdown>
+                                <a href="javascript:void(0);" class="arrow-none" data-bs-toggle="dropdown"
+                                  aria-expanded="false" ngbDropdownToggle>
+                                  <i class="ri-more-fill fs-17"></i>
+                                </a>
+                                <ul class="dropdown-menu" ngbDropdownMenu>
+                                  <li><a routerLink="/collaboration/projects/view/{{data.id}}" class="dropdown-item"
+                                      href="javascript:void(0);"><i
+                                        class="ri-eye-fill text-muted me-2 align-bottom"></i>{{
+                                      'MODULES.COLLABORATION.PROJECTS.VIEW' | translate }}</a>
+                                  </li>
+                                  <li><a (click)="removeUser(data.member?.id, data.role)" class="dropdown-item"
+                                      href="javascript:void(0);"><i
+                                        class="ri-delete-bin-5-fill text-muted me-2 align-bottom"></i>{{
+                                      'MODULES.COLLABORATION.PROJECTS.DELETE' | translate }}</a>
+                                  </li>
+                                </ul>
+                              </div>
+                            </div>
+                          </div>
+                          <div class="col-lg-4 col">
+                            <div class="team-profile-img">
+                              <div class="avatar-lg img-thumbnail rounded-circle" *ngIf="data.member?.picture?.baseUrl">
+                                <img [src]="data.member?.picture.baseUrl + '/' + data.member?.picture.path" alt=""
+                                  class="img-fluid d-block rounded-circle shadow" />
+                              </div>
+                              <div class="avatar-lg img-thumbnail rounded-circle" *ngIf="!data.member?.picture">
+                                <div class="avatar-title bg-soft-success text-info rounded-circle">
+                                  {{ data.member?.firstName.charAt(0) || 'N'}}
+                                </div>
+                              </div>
+                              <div class="team-content">
+                                <a href="javascript:void(0);" class="d-block">
+                                  <h5 class="fs-16 mb-1">{{data.member?.firstName}}
+                                    {{data.member?.lastName}}</h5>
+                                </a>
+                                <p class="text-muted mb-0">{{data.role}}</p>
+                              </div>
+                            </div>
+                          </div>
+                          <div class="col-lg-4 col">
+                            <div class="row text-muted text-center">
+                              <div class="col-6 border-end border-end-dashed">
+                                <h5 class="mb-1">543</h5>
+                                <p class="text-muted mb-0">{{ 'MODULES.COLLABORATION.PROJECTS.PROJECTS' | translate }}
+                                </p>
+                              </div>
+                              <div class="col-6">
+                                <h5 class="mb-1">7645</h5>
+                                <p class="text-muted mb-0">{{ 'MODULES.COLLABORATION.PROJECTS.TASKS' | translate }}</p>
+                              </div>
+                            </div>
+                          </div>
+                          <div class="col-lg-2 col">
+                            <div class="text-end">
+                              <a routerLink="/collaboration/projects/view/{{data.id}}" class="btn btn-light view-btn">{{
+                                'MODULES.COLLABORATION.PROJECTS.VIEW_PROFILE' | translate }}</a>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </ng-template>
+              </li>
+
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-lg-12">
+      <div class="tab-content text-muted">
+        <div [ngbNavOutlet]="customNav"></div>
+      </div>
+    </div>
+  </div>
+
+  <ng-template #memberModal role="document" let-modal>
+    <div class="modal-header p-3 bg-soft-success">
+      <h5 class="modal-title" id="inviteMembersModalLabel">{{ 'MODULES.COLLABORATION.PROJECTS.MEMBERS' | translate }}
+      </h5>
+      <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"
+        (click)="modal.dismiss('Cross click')"></button>
+    </div>
+    <div class="modal-body p-4">
+      <div class="search-box mb-3">
+        <form [formGroup]="searchForm">
+          <input type="text" formControlName="searchString" class="form-control bg-light border-light"
+            placeholder="{{ 'MODULES.COLLABORATION.PROJECTS.SEARCH_PLACEHOLDER' | translate }}">
+          <i class="ri-search-line search-icon"></i>
+        </form>
+      </div>
+      <div *ngIf="selectedItem ==='member' && selectedMembers?.length" class="mb-4 d-flex align-items-center">
+        <div class="me-2">
+          <h5 class="mb-0 fs-13">{{ 'MODULES.COLLABORATION.PROJECTS.SELECTED_MEMBERS' | translate }} :</h5>
+        </div>
+        <div *ngIf="selectedItem === 'member'" class="avatar-group justify-content-center">
+          <ng-container *ngFor="let member of selectedMembers">
+            <a *ngIf="member?.picture?.baseUrl" [matTooltip]="member?.firstName" href="javascript:void(0);"
+              class="avatar-group-item" data-bs-toggle="tooltip" data-bs-trigger="hover" data-bs-placement="top"
+              title="{{ member?.firstName }}">
+              <div class="avatar-xs">
+                <img [src]="member?.picture?.baseUrl + '/' + member?.picture?.path" alt=""
+                  class="rounded-circle h-100 img-fluid">
+              </div>
+            </a>
+            <a *ngIf="!member?.picture" href="javascript: void(0);" class="avatar-group-item shadow"
+              [matTooltip]="member?.firstName" placement="top">
+              <div class="avatar-xs">
+                <div class="avatar-title bg-info rounded-circle text-uppercase">
+                  {{ member?.firstName?.charAt(0) || 'N'}}
+                </div>
+              </div>
+            </a>
+          </ng-container>
+        </div>
+      </div>
+      <div *ngIf="selectedItem ==='lead' && selectedLead?.length" class="mb-4 d-flex align-items-center">
+        <div class="me-2">
+          <h5 class="mb-0 fs-13">{{ 'MODULES.COLLABORATION.PROJECTS.SELECTED_LEAD' | translate }} :</h5>
+        </div>
+        <div class="avatar-group justify-content-center">
+          <ng-container *ngFor="let member of selectedLead">
+            <a *ngIf="member?.picture?.baseUrl" href="javascript:void(0);" class="avatar-group-item"
+              data-bs-toggle="tooltip" data-bs-trigger="hover" data-bs-placement="top" title="{{ member?.firstName }}">
+              <div [matTooltip]="'member?.firstName'" class="avatar-xs">
+                <img [src]="member?.picture?.baseUrl + '/' + member?.picture?.path" alt=""
+                  class="rounded-circle h-100 img-fluid">
+              </div>
+            </a>
+            <a *ngIf="!member?.picture" href="javascript: void(0);" class="avatar-group-item shadow" placement="top">
+              <div class="avatar-xs">
+                <div [matTooltip]="member?.firstName"
+                  class="avatar-title rounded-circle h-8 w-8 bg-info text-danger shadow">
+                  {{ member?.firstName?.charAt(0) || 'N'}}
+                </div>
+              </div>
+            </a>
+          </ng-container>
+        </div>
+      </div>
+      <ngx-simplebar class="mx-n4 px-4" style="max-height: 225px;">
+        <div *ngIf="team?.length" class="vstack gap-3">
+          <div *ngFor="let member of team" class="d-flex align-items-center">
+            <div class="avatar-xs flex-shrink-0 me-3">
+              <div *ngIf="!member?.user?.picture" class="col-md-auto">
+                <div class="avatar-xs mb-md-0 mb-4">
+                  <div class="avatar-title rounded-circle bg-info">
+                    {{ member?.user?.firstName?.charAt(0) || 'N'}}
+                  </div>
+                </div>
+              </div>
+              <img *ngIf="member?.user?.picture"
+                [src]="member?.user.picture?.baseUrl + '/' + member?.user.picture?.path"
+                class="img-fluid h-100 rounded-circle">
+            </div>
+            <div class="flex-grow-1">
+              <h5 class="fs-13 mb-0"><a href="javascript:void(0);" class="text-body d-block">{{ member?.user?.firstName
+                  }} {{ member?.user?.lastName }}</a></h5>
+            </div>
+            <div class="flex-shrink-0">
+              <button type="button"
+                (click)="!isAdded(member?.user?.id) ? addMember(member) : removeMember(member?.user?.id)"
+                class="btn btn-light btn-sm">{{ !isAdded(member?.user?.id) ? 'Add' : 'Remove' }}</button>
+            </div>
+          </div>
+        </div>
+        <div *ngIf="!team?.length && !isMemberLoading" class="py-4 mt-4 text-center" id="noresult">
+          <lord-icon src="https://cdn.lordicon.com/msoeawqm.json" trigger="loop"
+            [colors]="'primary:' + primaryColor + ',secondary:' + secondaryColor" style="width:72px;height:72px"></lord-icon>
+          <h5 class="mt-4">{{ 'MODULES.COLLABORATION.PROJECTS.NO_RESULT_FOUND' | translate }}</h5>
+        </div>
+        <div *ngIf="isMemberLoading" class="py-4 mt-4 text-center" id="noresult">
+          <lord-icon src="https://cdn.lordicon.com/msoeawqm.json" trigger="loop"
+            [colors]="'primary:' + primaryColor + ',secondary:' + secondaryColor" style="width:72px;height:72px"></lord-icon>
+          <h5 class="mt-4">{{ 'MODULES.COLLABORATION.PROJECTS.LOADING' | translate }}</h5>
+        </div>
+        <div class="mt-3 justify-content-center d-flex" *ngIf="isLast === false && team?.length">
+          <button class="btn btn-soft-secondary" (click)="loadMoreMembers()">{{
+            'MODULES.COLLABORATION.PROJECTS.LOAD_MORE' | translate }}</button>
+        </div>
+      </ngx-simplebar>
+    </div>
+    <div class="modal-footer">
+      <button type="button" class="btn btn-light w-xs" data-bs-dismiss="modal" (click)="modal.close('Close click')">{{
+        'COMMON.CANCEL' | translate }}</button>
+      <button type="button" [disabled]="isButtonDisabled" (click)="invite()" class="btn btn-success w-xs">{{
+        'COMMON.INVITE' | translate }}</button>
+    </div>
+  </ng-template>
+
+
+
+  <ng-template #teamModal role="document" let-modal>
+    <div class="modal-header p-3 bg-soft-success">
+      <h5 class="modal-title" id="inviteMembersModalLabel">{{ 'MODULES.COLLABORATION.PROJECTS.INVITE_MEMBER' | translate
+        }}</h5>
+      <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"
+        (click)="modal.dismiss('Cross click')"></button>
+    </div>
+    <div class="modal-body p-4">
+      <div class="search-box mb-3">
+        <form [formGroup]="searchForm">
+          <input type="text" formControlName="searchString" class="form-control bg-light border-light"
+            placeholder="{{ 'MODULES.COLLABORATION.PROJECTS.SEARCH_PLACEHOLDER' | translate }}">
+          <i class="ri-search-line search-icon"></i>
+        </form>
+      </div>
+      <div *ngIf="selectedItem ==='member' && selectedMembers?.length" class="mb-4 d-flex align-items-center">
+        <div class="me-2">
+          <h5 class="mb-0 fs-13">{{ 'MODULES.COLLABORATION.PROJECTS.SELECTED_MEMBERS' | translate }} :</h5>
+        </div>
+        <div *ngIf="selectedItem === 'member'" class="avatar-group justify-content-center">
+          <ng-container *ngFor="let member of selectedMembers">
+            <a *ngIf="member?.picture?.baseUrl" [matTooltip]="member?.firstName" href="javascript:void(0);"
+              class="avatar-group-item" data-bs-toggle="tooltip" data-bs-trigger="hover" data-bs-placement="top"
+              title="Brent Gonzalez">
+              <div class="avatar-xs">
+                <img [src]="member?.picture?.baseUrl + '/' + member?.picture?.path" alt=""
+                  class="rounded-circle h-100 img-fluid">
+              </div>
+            </a>
+            <a *ngIf="!member?.picture" href="javascript: void(0);" class="avatar-group-item shadow" placement="top">
+              <div class="avatar-xs">
+                <div [matTooltip]="member?.firstName"
+                  class="avatar-title rounded-circle h-8 w-8 bg-info text-danger shadow">
+                  {{member?.firstName?.charAt(0) || 'N'}}
+                </div>
+              </div>
+            </a>
+          </ng-container>
+        </div>
+      </div>
+      <ngx-simplebar class="mx-n4 px-4" style="max-height: 225px;">
+        <div *ngIf="team?.length" class="vstack gap-3">
+          <div *ngFor="let member of team" class="d-flex align-items-center">
+            <div class="avatar-xs flex-shrink-0 me-3">
+              <div *ngIf="!member?.user?.picture" class="col-md-auto">
+                <div class="avatar-xs mb-md-0 mb-4">
+                  <div class="avatar-title rounded-circle h-8 w-8 bg-info text-danger shadow">
+                    {{member?.user?.firstName?.charAt(0) || 'N'}}
+                  </div>
+                </div>
+              </div>
+              <img *ngIf="member?.user?.picture"
+                [src]="member?.user.picture?.baseUrl + '/' + member?.user.picture?.path"
+                class="img-fluid h-100 rounded-circle">
+            </div>
+            <div class="flex-grow-1">
+              <h5 class="fs-13 mb-0"><a href="javascript:void(0);" class="text-body d-block">{{member?.user?.firstName}}
+                  {{member?.user?.lastName}}</a>
+              </h5>
+            </div>
+            <div class="flex-shrink-0">
+              <button *ngIf="!isTeamMemberAdded(member?.user?.id)" type="button" (click)="addTeamMember(member.user)"
+                class="btn btn-light btn-sm">{{ 'MODULES.COLLABORATION.PROJECTS.ADD' | translate }}</button>
+              <button *ngIf="isTeamMemberAdded(member?.user?.id)" [disabled]="isTeamMemberAdded(member?.user?.id)"
+                type="button" (click)="removeMember(member?.user?.id)" class="btn btn-light btn-sm">{{
+                'MODULES.COLLABORATION.PROJECTS.ADD' | translate }}</button>
+            </div>
+          </div>
+        </div>
+        <div *ngIf="!team?.length && !isMemberLoading" class="py-4 mt-4 text-center" id="noresult">
+          <lord-icon src="https://cdn.lordicon.com/msoeawqm.json" trigger="loop"
+            [colors]="'primary:' + primaryColor + ',secondary:' + secondaryColor" style="width:72px;height:72px"></lord-icon>
+          <h5 class="mt-4">{{ 'MODULES.COLLABORATION.PROJECTS.NO_RESULT_FOUND' | translate }}</h5>
+        </div>
+        <div *ngIf="isMemberLoading" class="py-4 mt-4 text-center" id="noresult">
+          <lord-icon src="https://cdn.lordicon.com/msoeawqm.json" trigger="loop"
+            [colors]="'primary:' + primaryColor + ',secondary:' + secondaryColor" style="width:72px;height:72px"></lord-icon>
+          <h5 class="mt-4">{{ 'MODULES.COLLABORATION.PROJECTS.LOADING' | translate }}</h5>
+        </div>
+        <div class="mt-3 justify-content-center d-flex" *ngIf="isLast === false && team?.length">
+          <button class="btn btn-soft-secondary" (click)="loadMoreMembers()">{{
+            'MODULES.COLLABORATION.PROJECTS.LOAD_MORE' | translate }}</button>
+        </div>
+      </ngx-simplebar>
+    </div>
+    <div class="modal-footer">
+      <button type="button" class="btn btn-light w-xs" data-bs-dismiss="modal" (click)="modal.close('Close click')">{{
+        'COMMON.CANCEL' | translate }}</button>
+      <button type="button" [disabled]="isButtonDisabled" (click)="inviteTeam()" class="btn btn-success w-xs">{{
+        'COMMON.INVITE' | translate }}</button>
+    </div>
+  </ng-template>
+
+</ng-container>
+<div *ngIf="navigating$ | async" class="vh-100 py-4 text-center" fxLayout="column" fxLayoutAlign="center center"
+  fxLayoutGap="1rem">
+  <div>
+    <lord-icon trigger="loop" style="width:72px;height:72px" [colors]="'primary:' + primaryColor + ',secondary:' + secondaryColor"
+      src="https://cdn.lordicon.com/msoeawqm.json">
+    </lord-icon>
+  </div>
+  <div class="mt-4">
+    <h5>{{ 'COMMON.LOADING' | translate }}</h5>
+  </div>
+
+</div>

@@ -1,0 +1,96 @@
+{
+  "_args": [
+    [
+      "@ng-select/ng-select@8.3.0",
+      "/Users/macbookpro/Desktop/sifca-monorepo"
+    ]
+  ],
+  "_from": "@ng-select/ng-select@8.3.0",
+  "_id": "@ng-select/ng-select@8.3.0",
+  "_inBundle": false,
+  "_integrity": "sha512-AwAuDs+86++D2kEsik2/ZiQuRk0khd1HESofOm1yMBwbzsw+xLSyVOMml/OehDFSOxli7fAkk07wYtzAhxSB3Q==",
+  "_location": "/@ng-select/ng-select",
+  "_phantomChildren": {},
+  "_requested": {
+    "type": "version",
+    "registry": true,
+    "raw": "@ng-select/ng-select@8.3.0",
+    "name": "@ng-select/ng-select",
+    "escapedName": "@ng-select%2fng-select",
+    "scope": "@ng-select",
+    "rawSpec": "8.3.0",
+    "saveSpec": null,
+    "fetchSpec": "8.3.0"
+  },
+  "_requiredBy": [
+    "/"
+  ],
+  "_resolved": "https://npm.diktup.cloud/@ng-select%2fng-select/-/ng-select-8.3.0.tgz",
+  "_spec": "8.3.0",
+  "_where": "/Users/macbookpro/Desktop/sifca-monorepo",
+  "author": {
+    "name": "@ng-select/ng-select"
+  },
+  "bugs": {
+    "url": "https://github.com/ng-select/ng-select/issues"
+  },
+  "dependencies": {
+    "tslib": "^2.3.1"
+  },
+  "description": "Angular ng-select - All in One UI Select, Multiselect and Autocomplete",
+  "engines": {
+    "node": ">= 12.20.0",
+    "npm": ">= 6.0.0"
+  },
+  "es2020": "fesm2020/ng-select-ng-select.mjs",
+  "esm2020": "esm2020/ng-select-ng-select.mjs",
+  "exports": {
+    "./scss/ant.design.theme": {
+      "style": "./scss/ant.design.theme.scss"
+    },
+    "./scss/default.theme": {
+      "style": "./scss/default.theme.scss"
+    },
+    "./scss/material.theme": {
+      "style": "./scss/material.theme.scss"
+    },
+    "./package.json": {
+      "default": "./package.json"
+    },
+    ".": {
+      "types": "./ng-select-ng-select.d.ts",
+      "esm2020": "./esm2020/ng-select-ng-select.mjs",
+      "es2020": "./fesm2020/ng-select-ng-select.mjs",
+      "es2015": "./fesm2015/ng-select-ng-select.mjs",
+      "node": "./fesm2015/ng-select-ng-select.mjs",
+      "default": "./fesm2020/ng-select-ng-select.mjs"
+    }
+  },
+  "fesm2015": "fesm2015/ng-select-ng-select.mjs",
+  "fesm2020": "fesm2020/ng-select-ng-select.mjs",
+  "homepage": "https://github.com/ng-select/ng-select#readme",
+  "keywords": [
+    "angular",
+    "select",
+    "ui-select",
+    "dropdown",
+    "multiselect",
+    "autocomplete",
+    "angular2"
+  ],
+  "license": "MIT",
+  "module": "fesm2015/ng-select-ng-select.mjs",
+  "name": "@ng-select/ng-select",
+  "peerDependencies": {
+    "@angular/common": ">=13.0.0 <14.0.0",
+    "@angular/core": ">=13.0.0 <14.0.0",
+    "@angular/forms": ">=13.0.0 <14.0.0"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ng-select/ng-select.git"
+  },
+  "sideEffects": false,
+  "typings": "ng-select-ng-select.d.ts",
+  "version": "8.3.0"
+}

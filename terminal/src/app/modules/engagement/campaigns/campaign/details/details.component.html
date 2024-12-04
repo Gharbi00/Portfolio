@@ -1,0 +1,142 @@
+<ng-container *ngIf="((loadingQuest$ | async) === false || null || undefined) && (quest$ | async)">
+  <div class="row">
+    <div class="col-lg-12">
+      <div class="card mt-n4 mx-n4">
+        <div class="bg-soft-warning">
+          <div class="card-body pb-0 px-4">
+            <div class="row mb-3">
+              <div class="col-md">
+                <div class="row align-items-center g-3">
+                  <div class="col-md-auto">
+                    <div class="avatar-md bg-white rounded-circle">
+                      <div class="avatar-md" *ngIf="!(quest$ | async)?.media?.pictures?.length || (quest$ | async)?.media?.pictures[0]?.baseUrl === ''">
+                        <span class="avatar-title rounded-circle bg-primary">{{(quest$ | async)?.title.charAt(0) ||
+                          'N'}}</span>
+                      </div>
+                      <img *ngIf="(quest$ | async)?.media?.pictures?.length && (quest$ | async)?.media?.pictures[0]?.baseUrl !== ''" [src]="(quest$ | async)?.media?.pictures[0].baseUrl + '/' + (quest$ | async)?.media?.pictures[0].path" alt=""
+                        class="rounded-circle avatar-md">
+                    </div>
+                  </div>
+                  <div class="col-md">
+                    <div>
+                      <h4 class="fw-bold">{{(quest$ | async)?.title}}</h4>
+                      <div class="hstack gap-3 flex-wrap">
+                        <div><i class="ri-building-line align-bottom me-1"></i> {{
+                          ((quest$ | async)?.category === 'INDUSTRY' ? 'SHARED.INDUSTRY' :
+                          (quest$ | async)?.category === 'FAMILY' ? 'SHARED.FAMILY' :
+                          (quest$ | async)?.category === 'FITNESS' ? 'SHARED.FITNESS' :
+                          (quest$ | async)?.category === 'GASTRONOMY' ? 'SHARED.GASTRONOMY' :
+                          '') | translate
+                          }}</div>
+                        <div class="vr"></div>
+                        <div>{{'MODULES.SYSTEM.CREATE_DATE' | translate }} : <span class="fw-medium">{{(quest$ | async)?.createdAt | date: 'longDate'}}</span></div>
+                        <div class="vr"></div>
+                        <div [ngClass]="{
+                          'bg-warning': (quest$ | async)?.status === 'DRAFT',
+                          'bg-primary': (quest$ | async)?.status === 'ONGOING',
+                          'bg-danger': (quest$ | async)?.status === 'ON_HOLD',
+                          'bg-secondary': (quest$ | async)?.status === 'IN_REVIEW',
+                          'bg-success': (quest$ | async)?.status === 'FINISHED'
+                        }" class="badge rounded-pill fs-12">{{
+                          ((quest$ | async)?.status === 'DRAFT' ? 'COMMON.STATE.DRAFT' :
+                          (quest$ | async)?.status === 'ONGOING' ? 'COMMON.STATE.ONGOING' :
+                          (quest$ | async)?.status === 'IN_REVIEW' ? 'COMMON.STATE.IN_REVIEW' :
+                          (quest$ | async)?.status === 'ON_HOLD' ? 'COMMON.STATE.ON_HOLD' :
+                          (quest$ | async)?.status === 'FINISHED' ? 'COMMON.STATE.FINISHED' :
+                          '') | translate
+                          }}</div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="col-md-auto">
+                <div class="hstack gap-1 flex-wrap">
+                  <button (click)="selectedButton = 1" [class.active]="selectedButton === 1" type="button" class="btn py-0 fs-16 favourite-btn">
+                    <i [ngStyle]="{ 'color': selectedButton === 1 ? '#ffbe0b' : '' }" class="ri-star-fill"></i>
+                  </button>
+                  <button (click)="selectedButton = 2" [class.active]="selectedButton === 2" type="button" class="btn py-0 fs-16 text-body">
+                    <i [ngStyle]="{ 'color': selectedButton === 2 ? '#ffbe0b' : '' }" class="ri-share-line"></i>
+                  </button>
+                  <button (click)="selectedButton = 3" [class.active]="selectedButton === 3" type="button" class="btn py-0 fs-16 text-body">
+                    <i [ngStyle]="{ 'color': selectedButton === 3 ? '#ffbe0b' : '' }" class="ri-flag-line"></i>
+                  </button>
+                  <button (click)="openPreviewQrCode(previewModal, campaign); selectedButton = 4" [class.active]="selectedButton === 4" type="button" class="btn py-0 fs-16 text-body">
+                    <i [ngStyle]="{ 'color': selectedButton === 4 ? '#ffbe0b' : '' }" class="ri-eye-line"></i>
+                  </button>
+                </div>
+              </div>
+            </div>
+            <ul ngbNav [activeId]="activeTab" class="nav nav-tabs-custom border-bottom-0" role="tablist">
+              <li [ngbNavItem]="1" class="nav-item">
+                <a routerLinkActive="router-link-active" [routerLink]="['/engagement/campaigns/campaigns/', compaignId, 'overview']" ngbNavLink class="nav-link" data-bs-toggle="tab" role="tab">{{'MENUITEMS.CUSTOMERENGAGEMENT.LIST.OVERVIEW' | translate }}
+                </a>
+              </li>
+              <li [ngbNavItem]="2" class="nav-item">
+                <a routerLinkActive="router-link-active" [routerLink]="['/engagement/campaigns/campaigns/', compaignId, 'campaign']" ngbNavLink class="nav-link" data-bs-toggle="tab" role="tab">{{'MENUITEMS.CUSTOMERENGAGEMENT.LIST.CAMPAIGN' | translate }}
+                </a>
+              </li>
+              <li [ngbNavItem]="3" class="nav-item">
+                <a routerLinkActive="router-link-active" [routerLink]="['/engagement/campaigns/campaigns/', compaignId, 'audience']" ngbNavLink class="nav-link" data-bs-toggle="tab" role="tab">{{'MENUITEMS.CUSTOMERENGAGEMENT.LIST.AUDIENCE' | translate }}
+                </a>
+              </li>
+              <li [ngbNavItem]="4" class="nav-item">
+                <a routerLinkActive="router-link-active" [routerLink]="['/engagement/campaigns/campaigns/', compaignId, 'remuneration']" ngbNavLink class="nav-link" data-bs-toggle="tab" role="tab">{{'MENUITEMS.CUSTOMERENGAGEMENT.LIST.REMUNERATION' | translate }}
+                </a>
+              </li>
+              <li [ngbNavItem]="5" class="nav-item">
+                <a routerLinkActive="router-link-active" [routerLink]="['/engagement/campaigns/campaigns/', compaignId, 'budget']" ngbNavLink class="nav-link" data-bs-toggle="tab" role="tab">{{'MENUITEMS.CUSTOMERENGAGEMENT.BUDGET.BUDGET' | translate }}
+                </a>
+              </li>
+              <li [ngbNavItem]="6" class="nav-item">
+                <a routerLinkActive="router-link-active" [routerLink]="['/engagement/campaigns/campaigns/', compaignId, 'settings']" ngbNavLink class="nav-link" data-bs-toggle="tab" role="tab">{{'MENUITEMS.CUSTOMERENGAGEMENT.LIST.SETTINGS' | translate }}
+                </a>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-lg-12">
+      <div class="tab-content text-muted">
+        <router-outlet></router-outlet>
+      </div>
+    </div>
+  </div>
+</ng-container>
+
+<ng-template #previewModal role="document" let-modal>
+  <div class="modal-header bg-soft-info p-3">
+    <h5 class="modal-title" id="exampleModalLabel">{{'MODULES.ECOMMERCE.MAIN.PREVIEW' | translate }}</h5>
+    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" id="close-modal"
+      (click)="modal.dismiss('Cross click')"></button>
+  </div>
+  <div class="modal-body">
+    <div class="text-center">
+      <qrcode [qrdata]="'loyalcraft.com/m/tq/'+ (quest$ | async)?.id" [width]="300" [errorCorrectionLevel]="'M'"></qrcode>
+    </div>
+  </div>
+  <div class="modal-footer">
+    <div class="hstack gap-2 justify-content-end">
+      <button type="button" class="btn btn-light" data-bs-dismiss="modal" (click)="modal.close('Close click')">{{
+        'COMMON.CLOSE' | translate }}</button>
+    </div>
+  </div>
+</ng-template>
+
+<ng-container>
+  <div id="noresult" class="py-4 mt-4 text-center" *ngIf="(loadingQuest$ | async) || (!(loadingQuest$ | async) && !(quest$ | async))">
+    <div *ngIf="loadingQuest$ | async">
+      <lord-icon trigger="loop" style="width:72px;height:72px" [colors]="'primary:' + primaryColor + ',secondary:' + secondaryColor" src="https://cdn.lordicon.com/msoeawqm.json">
+      </lord-icon>
+      <h5 class="mt-4">{{ 'COMMON.LOADING' | translate }}</h5>
+    </div>
+    <div *ngIf="!(loadingQuest$ | async) && !quest">
+      <lord-icon trigger="loop" style="width:72px;height:72px" [colors]="'primary:' + primaryColor + ',secondary:' + secondaryColor" src="https://cdn.lordicon.com/msoeawqm.json">
+      </lord-icon>
+      <h5 class="mt-4">{{ 'COMMON.NO_RESULT' | translate }}</h5>
+    </div>
+  </div>
+</ng-container>

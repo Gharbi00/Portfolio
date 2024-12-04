@@ -1,0 +1,477 @@
+<app-breadcrumbs title="{{ 'MENUITEMS.TITLE.MAINTENANCE_SCHEDULE' | translate }}" [breadcrumbItems]="breadCrumbItems"></app-breadcrumbs>
+
+<div class="card">
+  <div class="card-body">
+    <div class="row g-2">
+      <div class="col-xxl-2 col-sm-4">
+        <button type="button" class="btn btn-primary w-100" routerLink="/maintenance/schedule/list/{{board.id}}"> <i
+            class="ri-file-list-line me-1 align-bottom"></i>{{'MODULES.INVENTORY.LIST_VIEW' | translate }}
+        </button>
+      </div>
+      <div class="col-xxl-2 col-sm-4">
+        <button routerLink="/maintenance/schedule/archived/{{board.id}}" data-bs-toggle="modal"
+          data-bs-target="#adddeals" class="btn btn-warning">{{ 'MODULES.ECOMMERCE.MAIN.ARCHIVE' | translate }}</button>
+      </div>
+      <div class="col-auto ms-sm-auto">
+        <div class="avatar-group" id="newMembar">
+          <div class="avatar-group-item shadow" *ngFor="let user of board?.members?.slice(0,4)">
+            <a href="javascript:void(0);" class="d-block" placement="top" *ngIf="!user?.picture">
+              <div class="avatar-xxs">
+                <span class="avatar-title rounded-circle {{user.variant}}">
+                  {{user.firstName?.charAt(0) || 'N'}}
+                </span>
+              </div>
+            </a>
+            <a href="javascript:void(0);" class="d-block" placement="top" *ngIf="user.picture">
+              <img :src="{{user.picture.baseUrl}}/{{user.picture.path}}" alt="" class="rounded-circle avatar-xxs">
+            </a>
+          </div>
+          <div *ngIf="board?.members?.length > 4" class="avatar-group-item shadow">
+            <a (click)="openMemberModal(selectedUsersModal, board?.members)" href="javascript:void(0);" class="d-block">
+              <div class="avatar-xxs">
+                <span class="avatar-title bg-info rounded-circle text-uppercase">
+                  ...
+                </span>
+              </div>
+            </a>
+          </div>
+          <div class="avatar-group-item shadow">
+            <a (click)="openMemberModal(memberModal)" href="javascript:void(0);" class="d-block" placement="top">
+              <div class="avatar-xxs">
+                <span class="avatar-title rounded-circle bg-light text-primary">
+                  +
+                </span>
+              </div>
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div *ngIf="board?.boardLists?.length" class="tasks-board mb-3" id="kanbanboard">
+  <div *ngFor="let list of board.boardLists; let i = index" class="tasks-list">
+    <div (dndMoved)="removeItem(list, board.boardLists)" [dndDraggable]="task" dndEffectAllowed="move"
+      [dndObject]="list">
+      <div class="d-flex mb-3">
+        <div class="flex-grow-1">
+          <h6 class="fs-14 text-uppercase fw-semibold mb-0">{{'COMMON.CUSTOM_VALUES.'+ list?.name | translate}} <small
+              class="badge bg-warning align-bottom ms-1">{{list?.boardCards?.length || '0' }}</small></h6>
+        </div>
+        <div class="flex-shrink-0">
+          <div class="dropdown card-header-dropdown" ngbDropdown>
+            <a class="text-reset dropdown-btn arrow-none" href="javascript:void(0);" data-bs-toggle="dropdown"
+              aria-haspopup="true" aria-expanded="false" ngbDropdownToggle>
+              <i class="mdi mdi-chevron-down ms-1"></i>
+            </a>
+            <div class="dropdown-menu dropdown-menu-end" ngbDropdownMenu>
+              <li><a (click)="openListModal(listModal, list)" class="dropdown-item" href="javascript:void(0);"><i
+                    class="ri-pencil-fill text-muted me-2 align-bottom"></i>{{'COMMON.EDIT' | translate }}</a></li>
+            </div>
+          </div>
+        </div>
+      </div>
+      <ngx-simplebar class="tasklist-content">
+        <div id="unassigned-task" class="tasks" [dndDropzone] dndEffectAllowed="move"
+          (dndDrop)="onDrop($event, list.boardCards, i)">
+          <div class="dndPlaceholder" dndPlaceholderRef></div>
+          <ng-container *ngFor="let task of list.boardCards">
+            <div [dndDraggable]="task" dndEffectAllowed="move" (dndMoved)="onDragged(task, list.boardCards)">
+              <ng-template [ngTemplateOutlet]="TaskContent" [ngTemplateOutletContext]="{task:task, listId: list.id}">
+              </ng-template>
+            </div>
+          </ng-container>
+        </div>
+      </ngx-simplebar>
+      <div class="my-3">
+        <button class="btn btn-soft-info w-100" data-bs-toggle="modal" data-bs-target="#creatertaskModal"
+          (click)="openCardModal(cardModal, null, list.id, i)">{{'MODULES.INVENTORY.ADD_MORE' | translate }}</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div *ngIf="!board?.boardLists?.length" class="py-4 mt-4 text-center" id="noresult">
+  <lord-icon src="https://cdn.lordicon.com/vlycxjwx.json" trigger="loop" [colors]="'primary:' + primaryColor + ',secondary:' + secondaryColor"
+    style="width:72px;height:72px"></lord-icon>
+  <h5 class="mt-4">{{ 'COMMON.NO_RESULT' | translate }}</h5>
+</div>
+
+<ng-template #selectedUsersModal role="document" let-modal>
+  <div class="modal-header p-3 bg-soft-success">
+    <h5 class="modal-title" id="inviteMembersModalLabel">{{'MODULES.INVENTORY.MEMBERS' | translate }}</h5>
+    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"
+      (click)="modal.dismiss('Cross click')"></button>
+  </div>
+  <div class="modal-body p-4">
+    <div class="mb-4 d-flex align-items-center">
+      <div class="me-2">
+        <h5 class="mb-0 fs-13">{{'MODULES.INVENTORY.MEMBERS' | translate }} :</h5>
+      </div>
+      <div class="avatar-group justify-content-center">
+        <ng-container *ngFor="let member of selectedUsers">
+          <a *ngIf="member?.picture?.baseUrl" href="javascript:void(0);" class="avatar-group-item"
+            data-bs-toggle="tooltip" data-bs-trigger="hover" data-bs-placement="top" title="Brent Gonzalez">
+            <div class="avatar-xs">
+              <img [src]="member?.picture?.baseUrl + '/' + member?.picture?.path" alt=""
+                class="rounded-circle h-100 img-fluid">
+            </div>
+          </a>
+          <a *ngIf="!member?.picture" href="javascript: void(0);" class="avatar-group-item shadow"
+            [matTooltip]="member?.firstName" placement="top">
+            <div class="avatar-xs">
+              <div class="avatar-title rounded-circle bg-info text-uppercase shadow">
+                {{member?.firstName?.charAt(0) || 'N'}}
+              </div>
+            </div>
+          </a>
+        </ng-container>
+      </div>
+    </div>
+    <ngx-simplebar class="mx-n4 px-4" style="max-height: 225px;">
+      <div class="vstack gap-3">
+        <div *ngFor="let member of selectedUsers" class="d-flex align-items-center">
+          <div class="avatar-xs flex-shrink-0 me-3">
+            <div *ngIf="!member?.picture" class="col-md-auto">
+              <div class="avatar-xs mb-md-0 mb-4">
+                <div class="avatar-title rounded-circle bg-info text-uppercase shadow">
+                  {{member?.firstName?.charAt(0) || 'N'}}
+                </div>
+              </div>
+            </div>
+            <img *ngIf="member?.picture" [src]="member?.picture?.baseUrl + '/' + member?.picture?.path"
+              class="img-fluid h-100 rounded-circle">
+          </div>
+          <div class="flex-grow-1">
+            <h5 class="fs-13 mb-0"><a href="javascript:void(0);" class="text-body d-block">{{member?.firstName}}
+                {{member?.lastName}}</a>
+            </h5>
+          </div>
+        </div>
+      </div>
+    </ngx-simplebar>
+  </div>
+  <div class="modal-footer">
+    <button type="button" class="btn btn-light w-xs" data-bs-dismiss="modal"
+      (click)="modal.close('Close click')">{{ 'COMMON.CANCEL' | translate }}</button>
+  </div>
+</ng-template>
+
+<ng-template #archiveModel let-modal>
+  <div class="modal-content">
+    <div class="modal-header">
+      <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" id="deleteRecord-close"
+        (click)="modal.dismiss('Cross click')"></button>
+    </div>
+    <div class="modal-body">
+      <div class="mt-2 text-center">
+        <lord-icon src="https://cdn.lordicon.com/gsqxdxog.json" trigger="loop"
+          colors="primary:#f7b84b,secondary:#f06548" style="width:100px;height:100px"></lord-icon>
+        <div class="mt-4 pt-2 fs-15 mx-4 mx-sm-5">
+          <h4>{{'COMMON.ARE_YOU_SURE' | translate }}</h4>
+          <p class="text-muted mx-4 mb-0">{{'MODULES.INVENTORY.ARE_YOU_SURE_YOU_WANT_TO_ARCHIVE_THIS_CARD' | translate }}</p>
+        </div>
+      </div>
+      <div class="d-flex gap-2 justify-content-center mt-4 mb-2">
+        <button type="button" class="btn w-sm btn-danger " id="delete-product" (click)="archiveCard()">{{'COMMON.YES_ARCHIVE_IT' | translate }}</button>
+        <button type="button" class="btn w-sm btn-light" data-bs-dismiss="modal"
+          (click)="modal.close('Close click')">{{'COMMON.CLOSE' | translate }}</button>
+      </div>
+    </div>
+  </div>
+</ng-template>
+
+<ng-template #memberModal role="document" let-modal>
+  <div class="modal-header p-3 bg-soft-success">
+    <h5 class="modal-title" id="inviteMembersModalLabel">{{'MODULES.INVENTORY.MEMBERS' | translate }}</h5>
+    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"
+      (click)="modal.dismiss('Cross click')"></button>
+  </div>
+  <div class="modal-body p-4">
+    <div class="search-box mb-3">
+      <form [formGroup]="searchForm">
+        <input type="text" formControlName="searchString" class="form-control bg-light border-light"
+          placeholder="{{'PLACEHOLDER.SEARCH_HERE' | translate }}...">
+        <i class="ri-search-line search-icon"></i>
+      </form>
+    </div>
+    <ngx-simplebar class="mx-n4 px-4" style="max-height: 225px;">
+      <div *ngIf="!(isLoading$ | async)">
+        <div *ngIf="team$ | async as team" class="vstack gap-3">
+          <div *ngFor="let member of team" class="d-flex align-items-center">
+            <div class="avatar-xs flex-shrink-0 me-3">
+              <div *ngIf="!member?.user?.picture" class="col-md-auto">
+                <div class="avatar-xs mb-md-0 mb-4">
+                  <div class="avatar-title bg-soft-info text-danger rounded-circle shadow">
+                    {{member?.user?.firstName?.charAt(0) || 'N'}}
+                  </div>
+                </div>
+              </div>
+              <img *ngIf="member?.user?.picture"
+                [src]="member?.user.picture?.baseUrl + '/' + member?.user.picture?.path"
+                class="img-fluid h-100 rounded-circle">
+            </div>
+            <div class="flex-grow-1">
+              <h5 class="fs-13 mb-0"><a href="javascript:void(0);" class="text-body d-block">{{member?.user?.firstName}}
+                  {{member?.user?.lastName}}</a>
+              </h5>
+            </div>
+            <div class="flex-shrink-0">
+              <button type="button"
+                (click)="!isAdded(member?.user?.id) ? addMember(member) : removeMember(member?.user?.id)"
+                class="btn btn-light btn-sm">{{!isAdded(member?.user?.id) ? 'Add' : 'Remove'}}</button>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div *ngIf="!(team$ | async) && !(isLoading$ | async)" class="py-4 mt-4 text-center" id="noresult">
+        <lord-icon src="https://cdn.lordicon.com/vlycxjwx.json" trigger="loop"
+          [colors]="'primary:' + primaryColor + ',secondary:' + secondaryColor" style="width:72px;height:72px"></lord-icon>
+        <h5 class="mt-4">{{ 'COMMON.NO_RESULT' | translate }}</h5>
+      </div>
+      <div *ngIf="(isLoading$ | async)" class="py-4 mt-4 text-center" id="noresult">
+        <lord-icon src="https://cdn.lordicon.com/msoeawqm.json" trigger="loop"
+          [colors]="'primary:' + primaryColor + ',secondary:' + secondaryColor" style="width:72px;height:72px"></lord-icon>
+        <h5 class="mt-4">{{'COMMON.LOADING' | translate }}</h5>
+      </div>
+      <div class="mt-3 justify-content-center d-flex"
+        *ngIf="!(isLast$ | async) && (team$ | async) && !(isLoading$ | async)">
+        <button class="btn btn-soft-secondary" (click)="loadMoreMembers()">{{ 'COMMON.LOAD_MORE' | translate }}</button>
+      </div>
+    </ngx-simplebar>
+  </div>
+  <div class="modal-footer">
+    <button type="button" class="btn btn-light w-xs" data-bs-dismiss="modal"
+      (click)="modal.close('Close click')">{{ 'COMMON.CANCEL' | translate }}</button>
+    <button type="button" [disabled]="isButtonDisabled" (click)="invite()" class="btn btn-success w-xs">{{ 'COMMON.INVITE' | translate }}</button>
+  </div>
+</ng-template>
+
+<ng-template #cardModal role="document" let-modal>
+  <div class="modal-header bg-soft-info p-3">
+    <h5 class="modal-title" id="exampleModalLabel">{{selectedCard ? 'Edit card' : 'Create card'}}</h5>
+    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" id="close-modal"
+      (click)="modal.dismiss('Cross click')"></button>
+  </div>
+  <form [formGroup]="cardForm">
+    <div class="modal-body">
+      <div class="row g-3">
+        <div class="col-lg-12">
+          <div class="mb-3">
+            <label for="email_id-field" class="form-label">{{'COMMON.TITLE' | translate }}</label>
+            <input type="text" id="email_id-field" class="form-control" placeholder="{{'PLACEHOLDER.ENTER_TITLE' | translate }}" required
+              formControlName="title"
+              [ngClass]="{ 'is-invalid': cardForm.get('title')?.touched && cardForm.get('title').hasError('required') }" />
+            <div class="invalid-feedback"
+              *ngIf="cardForm.get('title')?.touched && cardForm.get('title').hasError('required')">{{'COMMON.REQUIRED' | translate }}
+            </div>
+          </div>
+          <div class="mb-3">
+            <label class="form-label">{{'COMMON.DESCRIPTION' | translate }}</label>
+            <textarea formControlName="description" name="description" id="comments" rows="3"
+              class="form-control bg-light border-light" placeholder="{{'PLACEHOLDER.PROJECT_DESCRIPTION' | translate }}..."></textarea>
+          </div>
+          <div class="mb-3">
+            <label for="choices-priority-input" class="form-label">{{'MODULES.INVENTORY.PRIORITY' | translate }}</label>
+            <select class="form-select form-control-line" [formControlName]="'priority'">
+              <option selected disabled value="">{{'COMMON.SELECT_OPTION' | translate }}</option>
+              <option *ngFor="let pr of priorities" [value]="pr">{{'COMMON.PRIORITY.' + pr | translate}}
+              </option>
+            </select>
+          </div>
+          <div class="mb-3">
+            <label for="choices-privacy-status-input" class="form-label">{{'MODULES.INVENTORY.DUE_DATE' | translate }}</label>
+            <input formControlName="dueDate" [inline]="false" class="form-control bg-light border-light" type="text"
+              mwlFlatpickr [altInput]="true" [convertModelValue]="true" placeholder="{{'PLACEHOLDER.SELECT_DATE_RANGE' | translate }}" id="isDate">
+          </div>
+          <div class="mb-3">
+            <label class="form-label" for="product-tags-input">{{'COMMON.TAGS' | translate }} {{'MODULES.INVENTORY.PRESS_ENTER' | translate }}</label>
+            <ng-select [items]="[]" class="no-arrow-select" [addTag]="true" [isOpen]="false" [multiple]="true" [selectOnTab]="true"
+              formControlName="tags">
+            </ng-select>
+          </div>
+          <div class="mb-3">
+            <label class="form-check-label" for="lastname-field">{{'MODULES.INVENTORY.OWNER' | translate }}</label>
+            <ng-select [selectableGroup]="true" [closeOnSelect]="false" formControlName="assignedTo" [multiple]="true"
+              [items]="users$ | async" [virtualScroll]="true" placeholder="{{'PLACEHOLDER.SELECT_OWNER' | translate }}"
+              (scrollToEnd)="loadMoreOwners()" bindLabel="firstName" bindValue="id">
+              <ng-template *ngIf="teamPagination$ | async as teamPagination" ng-header-tmp>
+                <small class="form-text text-muted">{{'COMMON.LOADED' | translate }} {{team?.length}} {{'COMMON.OF' | translate }} {{teamPagination?.length}}</small>
+              </ng-template>
+              <ng-template ng-label-tmp let-item="item" let-clear="clear">
+                <span class="ng-value-label">
+                  <img *ngIf="item?.picture" class="avatar-xxs rounded-circle"
+                    [src]="item?.picture?.baseUrl + '/' + item?.picture?.path" width="20px" height="20px">
+                  <img *ngIf="!item?.picture" class="avatar-xxs rounded-circle" src="assets/images/users/avatar-1.jpg"
+                    width="20px" height="20px">
+                  {{item?.firstName}}
+                </span>
+                <span class="ng-value-icon right" (click)="clear(item)" aria-hidden="true">×</span>
+              </ng-template>
+              <ng-template ng-option-tmp let-item$="item$" let-item="item">
+                <div class="d-flex align-items-center">
+                  <input id="item-{{index}}" class="me-2" type="checkbox" [ngModelOptions]="{standalone: true}"
+                    [ngModel]="item$.selected" />
+                  <label class="form-check-label d-flex align-items-center" for="anna-adame">
+                    <span class="flex-shrink-0">
+                      <img *ngIf="!item?.picture" src="assets/images/users/avatar-1.jpg" alt=""
+                        class="avatar-xxs rounded-circle" />
+                      <img *ngIf="item?.picture" [src]="item?.picture?.baseUrl + '/' + item?.picture?.path" alt=""
+                        class="avatar-xxs rounded-circle" />
+                    </span>
+                    <span class="flex-grow-1 ms-2">
+                      {{item?.firstName}}
+                    </span>
+                  </label>
+                </div>
+              </ng-template>
+            </ng-select>
+          </div>
+          <div class="mb-3">
+            <label class="form-check-label" for="lastname-field">{{ 'MODULES.HR.MAIN.PROJECTS' | translate }}</label>
+            <ng-select [selectableGroup]="true" [closeOnSelect]="false" formControlName="project" [multiple]="false"
+              [items]="projects$ | async" [virtualScroll]="true" bindLabel="name" bindValue="id"
+              placeholder="{{'PLACEHOLDER.SELECT_PROJECTS' | translate }}" (scrollToEnd)="loadMoreProjects()">
+              <ng-template *ngIf="projects$ | async" ng-label-tmp let-item="item" let-clear="clear">
+                <span class="ng-value-label">
+                  <img *ngIf="item?.picture" class="avatar-xxs rounded-circle"
+                    [src]="item?.picture?.baseUrl + '/' + item?.picture?.path" width="20px" height="20px">
+                  <img *ngIf="!item?.picture" class="avatar-xxs rounded-circle" src="assets/images/companies/img-2.png"
+                    width="20px" height="20px">
+                  {{item?.name}}
+                </span>
+                <span class="ng-value-icon right" (click)="clear(item)" aria-hidden="true">×</span>
+              </ng-template>
+              <ng-template ng-option-tmp let-item$="item$" let-item="item">
+                <div class="d-flex align-items-center">
+                  <input id="item-{{index}}" type="checkbox" [ngModelOptions]="{standalone: true}"
+                    [ngModel]="item$.selected" />
+                  <label class="form-check-label d-flex ms-2 align-items-center" for="anna-adame">
+                    <span class="flex-shrink-0">
+                      <img *ngIf="!item?.picture" src="assets/images/companies/img-2.png" alt=""
+                        class="avatar-xxs rounded-circle" />
+                      <img *ngIf="item?.picture" [src]="item.picture?.baseUrl + '/' + item.picture?.path" alt=""
+                        class="avatar-xxs rounded-circle" />
+                    </span>
+                    <span class="flex-grow-1 ms-2">
+                      {{item?.name}}
+                    </span>
+                  </label>
+                </div>
+              </ng-template>
+            </ng-select>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <div class="hstack gap-2 justify-content-end">
+        <button type="button" class="btn btn-light" data-bs-dismiss="modal"
+          (click)="modal.close('Close click')">{{'COMMON.CLOSE' | translate }}</button>
+        <button type="button" [disabled]="cardForm.invalid || isCardButtonDisabled" (click)="saveCard()"
+          class="btn btn-success" id="add-btn">{{selectedCard ? 'Edit card' : 'Create card'}}</button>
+      </div>
+    </div>
+  </form>
+</ng-template>
+
+<ng-template #TaskContent let-task='task' let-listId=listId>
+  <div class="card tasks-box">
+    <div class="card-body">
+      <div class="d-flex mb-2">
+        <h6 class="fs-15 mb-0 flex-grow-1 text-truncate"><a
+            routerLink="/maintenance/schedule/{{task.id}}">{{task.title}}</a></h6>
+        <div class="dropdown" ngbDropdown>
+          <a href="javascript:void(0);" class="text-muted arrow-none" id="dropdownMenuLink1" data-bs-toggle="dropdown"
+            aria-expanded="false" ngbDropdownToggle><i class="ri-more-fill"></i></a>
+          <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="dropdownMenuLink1" ngbDropdownMenu>
+            <li><a class="dropdown-item" routerLink="/maintenance/schedule/{{task.id}}"><i
+                  class="ri-eye-fill align-bottom me-2 text-muted"></i>{{'COMMON.VIEW' | translate }}</a></li>
+            <li><a class="dropdown-item" (click)="openCardModal(cardModal, task, listId)" href="javascript:void(0);"><i
+                  class="ri-edit-2-line align-bottom me-2 text-muted"></i>{{'COMMON.EDIT' | translate }}</a></li>
+            <li><a class="dropdown-item" data-bs-toggle="modal" (click)="openArchiveModal(archiveModel, task)"><i
+                  class="ri-delete-bin-5-line align-bottom me-2 text-muted"></i>{{ 'COMMON.DELETE' | translate }}</a></li>
+          </ul>
+        </div>
+      </div>
+      <p class="text-muted">{{task.description?.length > 80 ?
+        task.description.substr(0,80) + '...' :
+        task.description}}</p>
+      <div class="mb-3" *ngIf="task.progress != 0">
+        <div class="d-flex mb-1">
+          <div class="flex-grow-1">
+            <h6 class="text-muted mb-0"><span class="text-secondary">{{
+                task?.tasksStats?.total > 0 ?
+                (((task?.tasksStats?.done / task?.tasksStats?.total) * 100).toFixed(1)) : '0'
+                }}%</span> of 100%</h6>
+          </div>
+          <div class="flex-shrink-0">
+            <span class="text-muted">{{task.updatedAt | date :'longDate'}}</span>
+          </div>
+        </div>
+        <div class="rounded-3">
+          <ngb-progressbar [value]="(task?.tasksStats?.done / task?.tasksStats?.total) * 100" type="success"
+            class="progress-sm"></ngb-progressbar>
+        </div>
+      </div>
+      <div class="d-flex align-items-center">
+        <div class="flex-grow-1">
+          <div class="d-flex gap-1">
+            <span class="badge badge-soft-primary" *ngFor="let role of task.tags">{{role}}</span>
+          </div>
+        </div>
+        <div class="flex-shrink-0">
+          <div class="avatar-group">
+            <div class="avatar-group-item shadow" *ngFor="let user of task?.assignedTo">
+              <a href="javascript:void(0);" class="d-block" placement="top" *ngIf="!user.picture">
+                <div class="avatar-xxs">
+                  <span class="avatar-title rounded-circle {{user.variant}}">
+                    {{user.firstName?.charAt(0) || 'N'}}
+                  </span>
+                </div>
+              </a>
+              <a href="javascript:void(0);" class="d-block" placement="top" *ngIf="user?.picture">
+                <img :src="{{user.picture.baseUrl}}/{{user.picture.path}}" alt="" class="rounded-circle avatar-xxs">
+              </a>
+            </div>
+            <div *ngIf="task?.assignedTo?.length > 4" class="avatar-group-item shadow">
+              <a (click)="openMemberModal(selectedUsersModal, task?.assignedTo)" href="javascript:void(0);"
+                class="d-block">
+                <div class="avatar-xxs">
+                  <span class="avatar-title bg-info rounded-circle text-uppercase">
+                    ...
+                  </span>
+                </div>
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="card-footer border-top-dashed">
+      <div class="d-flex">
+        <div class="flex-grow-1">
+          <span class="badge bg-warning text-uppercase"
+            [ngClass]=" { 'bg-danger': task.priority === 'CRITICAL', 'bg-danger': task.priority === 'HIGH', 'bg-success': task.priority === 'LOW', 'bg-warning': task.priority === 'NORMAL'}">{{task.priority}}</span>
+        </div>
+        <div class="flex-shrink-0">
+          <ul class="link-inline mb-0">
+            <li class="list-inline-item">
+              <a href="javascript:void(0)" class="text-muted"><i class="ri-eye-line align-bottom"></i>
+                12</a>
+            </li>
+            <li class="list-inline-item">
+              <a href="javascript:void(0)" class="text-muted"><i class="ri-question-answer-line align-bottom"></i>
+                11</a>
+            </li>
+            <li class="list-inline-item">
+              <a href="javascript:void(0)" class="text-muted"><i class="ri-attachment-2 align-bottom"></i>
+                4</a>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+</ng-template>

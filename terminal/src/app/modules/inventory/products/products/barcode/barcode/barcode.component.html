@@ -1,0 +1,138 @@
+<div class="flex flex-col max-w-240 md:min-w-160 max-h-screen -m-6" *transloco="let t">
+  <div class="flex flex-0 items-center justify-between h-16 pr-3 sm:pr-5 pl-6 sm:pl-8">
+    <div class="text-lg font-medium">{{t('catalog.products.products.addbarcode')}}</div>
+    <button mat-icon-button [matDialogClose]="undefined">
+      <mat-icon class="text-secondary" [svgIcon]="'heroicons_outline:x'"></mat-icon>
+    </button>
+  </div>
+  <form [formGroup]="barcodeForm" class="flex flex-col flex-auto p-6 sm:p-8 overflow-y-auto">
+    <div *ngIf="!noBarCode"
+      class="mrg-b container mt-1.5 rounded-md border border-gray-300 dark:border-gray-500 shadow-sm overflow-hidden">
+      <div class="h-44 leading-none overflow-y-auto border-gray-300 dark:border-gray-500">
+        <div style="margin-top:40px;" class="flex flex-row items-center justify-center h-20 min-h-20 px-4 mb-1">
+          <mat-progress-spinner *ngIf="spinner" [diameter]="24" mode="indeterminate"></mat-progress-spinner>
+          <ngx-barcode *ngIf="validateBarcode(barcode?.barcode) && barcode?.barcode" [bc-height]="25"
+            [bc-font-size]="10" [bc-format]="'EAN13'" class="cursor-pointer" [bc-element-type]="'svg'"
+            [bc-display-value]="true" [bc-background]="'#EEEEEE'" [bc-value]="barcode?.barcode" matTooltip="Click copy"
+            (click)="copyText(barcode.barcode)">
+          </ngx-barcode>
+          <div *ngIf="!validateBarcode(barcode.barcode)">
+            <div fxLayout="row" fxLayoutAlign="start center">
+              {{barcode?.barcode}}
+              <i matTooltip="This is not a valid EAN13 barcode" class="fs-20 ms-1 ri-error-warning-line text-warning"></i>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div *ngIf="noBarCode" class="mrg-t sm:col-span-4">
+      <mat-form-field class="w-full">
+        <mat-label>{{t('catalog.products.products.barcode')}}</mat-label>
+        <input matInput id="barcode" [formControlName]="'barcode'">
+        <mat-error *ngIf="barcodeForm.get('barcode').errors?.required">
+          {{t('catalog.products.products.required')}}!
+        </mat-error>
+        <mat-error *ngIf="barcodeForm.get('barcode').errors?.exist">
+          {{t('catalog.products.products.barcodeexist')}}!
+        </mat-error>
+        <mat-error *ngIf="barcodeForm.get('barcode').errors?.minlength || barcodeForm.get('barcode').errors?.maxlength">
+          {{t('catalog.products.products.barcoderest')}}
+        </mat-error>
+      </mat-form-field>
+    </div>
+    <div class="sm:col-span-4 flex justify-center" *ngIf="barcodeForm.get('barcode').valid">
+      <ngx-barcode *ngIf="validateBarcode(barcodeForm.get('barcode').value) && barcodeForm.get('barcode').value"
+        [bc-height]="25" [bc-font-size]="10" [bc-format]="'EAN13'" [bc-element-type]="'svg'" [bc-display-value]="true"
+        [bc-background]="'#EEEEEE'" [bc-value]="barcodeForm.get('barcode').value" matTooltip="Click copy"
+        (click)="copyText(barcodeForm.get('barcode').value)">
+      </ngx-barcode>
+      <div *ngIf="!validateBarcode(barcodeForm.get('barcode').value)">
+        <div fxLayout="row" fxLayoutAlign="start center">
+          {{barcode?.barcode}}
+          <i matTooltip="This is not a valid EAN13 barcode" class="fs-20 ms-1 ri-error-warning-line text-warning"></i>
+        </div>
+      </div>
+    </div>
+      <div *ngIf="showMessageError" class="mt-2 sm:col-span-4 flex justify-center" fxLayout="column" fxLayoutAlign="space-around center">
+        <div class="text-red" fxLayout="row" fxLayoutAlign="center center">{{'MODULES.INVENTORY.BARCODE_EXISTS' | translate }}
+        </div>
+      </div>
+    <div class="mt-2 sm:col-span-4 flex justify-center">
+      <mat-chip-list #chipList>
+        <mat-chip *ngFor="let label of selectedAttributeNames">
+          {{label}}
+        </mat-chip>
+      </mat-chip-list>
+    </div>
+    <div class="sm:col-span-4">
+      <span class="mb-px font-medium leading-tight">{{t('catalog.products.products.attributes')}}</span>
+      <div class="mt-1.5 rounded-md border border-gray-300 dark:border-gray-500 shadow-sm overflow-hidden">
+        <div *ngIf="isLoading" class="flex flex-row items-center justify-center h-20 min-h-20 px-4 mb-1">
+          <mat-progress-spinner [diameter]="24" mode="indeterminate">
+          </mat-progress-spinner>
+        </div>
+        <div class="h-44 leading-none overflow-y-auto border-gray-300 dark:border-gray-500">
+          <ng-container *ngIf="attributes?.length; else noAttributes">
+            <ng-container *ngFor="let attribute of attributes; let i = index; trackBy: trackByFn">
+              <div
+                class="group border-t w-full select-none hover:bg-gray-100 dark:hover:bg-hover font-semibold bg-gray-50 dark:bg-transparent">
+                <div class="flex flex-0 w-0 h-0"></div>
+                <div (click)="getAttributeValues(attribute.id)" style="padding-top: 14px; padding-bottom: 17px;"
+                  class="relative flex items-center h-full pl-10">
+                  <a class="flex flex-auto items-center min-w-0 pr-7">
+                    <div class="flex-auto mr-2 truncate">
+                      <span>{{ attribute.label }}</span>
+                    </div>
+                  </a>
+                </div>
+                <ng-container *ngIf="(selectedAttribute?.id === attribute.id) && barcodeForm">
+                  <form [formGroup]="barcodeForm">
+                    <ng-container *ngIf="attribute.isMultipleChoice">
+                      <div *ngFor="let attributeValue of attributeValues; let first = first; let i = index" class="mrg">
+                        <mat-checkbox [checked]="isAttributeExist(attributeValue)"
+                          (change)="checkAttributes(attributeValue, $event, i)" [value]="attributeValue.id"
+                          [color]="'primary'">
+                          {{attributeValue.label}}
+                        </mat-checkbox>
+                      </div>
+                    </ng-container>
+                    <ng-container *ngIf="!attribute.isMultipleChoice">
+                      <mat-radio-group class="mrg example-radio-group" aria-labelledby="radio-group-label"
+                        [value]="selectedAttributeValue" (change)="checkRadioAttributes($event)">
+                        <mat-radio-button *ngFor="let attributeValue of attributeValues" class="example-radio-button"
+                          [checked]="isAttributeRadioExist(attributeValue)" color="primary" [value]="attributeValue.id">
+                          {{attributeValue.label}}
+                        </mat-radio-button>
+                      </mat-radio-group>
+                    </ng-container>
+                  </form>
+                </ng-container>
+              </div>
+            </ng-container>
+          </ng-container>
+          <ng-template #noAttributes>
+            <div *ngIf="!isLoading"
+              class="mrg-t flex flex-auto flex-col items-center justify-center bg-gray-100 dark:bg-transparent">
+              <mat-icon class="icon-size-20" [svgIcon]="'iconsmind:file_search'"></mat-icon>
+              <div class="mt-6 text-2xl font-semibold tracking-tight text-secondary">{{t('catalog.products.products.noattributes')}}!</div>
+            </div>
+          </ng-template>
+        </div>
+      </div>
+    </div>
+    <div class="flex items-center justify-end mt-5">
+      <mat-progress-spinner *ngIf="loading1 || loading2" [diameter]="24" [mode]="'indeterminate'">
+      </mat-progress-spinner>
+      <button class="ml-4" mat-stroked-button type="button" (click)="cancel()">
+        {{t('catalog.products.products.close')}}
+      </button>
+      <button class="ml-4" color="warn" mat-flat-button type="button" (click)="resetForm()">
+        {{t('catalog.products.products.reset')}}
+      </button>
+      <button class="ml-4" type="button" mat-flat-button [color]="'primary'" (click)="save()"
+        [disabled]="barcodeForm.invalid || barcode">
+        {{t('catalog.products.products.save')}}
+      </button>
+    </div>
+  </form>
+</div>

@@ -1,0 +1,201 @@
+<app-breadcrumbs title="{{'MODULES.ENGAGEMENT.REFERRALS' | translate }}" [breadcrumbItems]="breadCrumbItems"></app-breadcrumbs>
+<ng-container *ngIf="!(navigating$ | async)">
+  <div class="row">
+    <div class="col-lg-12">
+      <div class="card" id="ticketsList">
+        <div class="card-header border-0">
+          <div class="row g-4 align-items-center">
+            <div class="col-sm">
+              <div>
+                <h5 class="card-title mb-0">{{'MODULES.ENGAGEMENT.REFERRALS' | translate }}</h5>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="card-body">
+          <div class="table-card gridjs-border-none">
+            <div class="table-responsive">
+              <table class="table align-middle custom-datatable" id="datatableexample">
+                <thead>
+                  <tr class="bg-light text-uppercase text-muted">
+                    <th>{{'MODULES.ENGAGEMENT.REFERRER' | translate }}</th>
+                    <th>{{'MODULES.ENGAGEMENT.REFERRED' | translate }}</th>
+                    <th>{{'MODULES.ENGAGEMENT.REFERENCE' | translate }}</th>
+                    <th>{{'MODULES.ENGAGEMENT.CREATED_AT' | translate }}</th>
+                    <th>{{'MODULES.ENGAGEMENT.REFERRER_REMUNERATION' | translate }}</th>
+                    <th>{{'MODULES.ENGAGEMENT.REFERRED_REMUNERATION' | translate }}</th>
+                  </tr>
+                </thead>
+                <tbody
+                  *ngIf="((loadingReferrals$ | async) === false || null || undefined) && (referrals$ | async)?.length">
+                  <tr *ngFor="let item of referrals$ | async ;let i = index;" id="p_{{item?.id}}">
+                    <td>
+                      <span *ngIf="item?.referrer">
+                        <div class="d-flex cursor-pointer align-items-center">
+                          <div class="flex-shrink-0 me-3">
+                            <div class="avatar-sm bg-light p-1 rounded-circle h-x"
+                              *ngIf="item?.referrer?.picture?.baseUrl">
+                              <img [src]="item?.referrer?.picture?.baseUrl + '/' + item?.referrer?.picture?.path"
+                                class="img-fluid h-100 rounded-circle">
+                            </div>
+                            <div class="avatar-sm bg-light rounded-circle p-1 h-x"
+                              *ngIf="!item?.referrer?.picture?.baseUrl">
+                              <div class="avatar-title bg-soft-success text-success rounded-circle fs-13">
+                                {{item?.referrer?.firstName?.charAt(0) || 'N'}}</div>
+                            </div>
+                          </div>
+                          <div [routerLink]="['/ecommerce/customers/customers', item?.referrer?.id]"
+                            class="flex-grow-1">
+                            <h5 class="fs-14 mb-1">
+                              <a class="cursor-pointer fw-medium link-primary">
+                                {{ (item?.referrer?.firstName || '') + ' ' +
+                                (item?.referrer?.lastName ||
+                                '') }}
+                              </a>
+                            </h5>
+                          </div>
+                        </div>
+                      </span>
+                    </td>
+                    <td>
+                      <span *ngIf="item?.referred">
+                        <div class="d-flex cursor-pointer align-items-center">
+                          <div class="flex-shrink-0 me-3">
+                            <div class="avatar-sm bg-light p-1 rounded-circle h-x"
+                              *ngIf="item?.referred?.picture?.baseUrl">
+                              <img [src]="item?.referred?.picture?.baseUrl + '/' + item?.referred?.picture?.path"
+                                class="img-fluid h-100 rounded-circle">
+                            </div>
+                            <div class="avatar-sm bg-light rounded-circle p-1 h-x"
+                              *ngIf="!item?.referred?.picture?.baseUrl">
+                              <div class="avatar-title bg-soft-success text-success rounded-circle fs-13">
+                                {{item?.referred?.firstName?.charAt(0) || 'N'}}</div>
+                            </div>
+                          </div>
+                          <div [routerLink]="['/ecommerce/customers/customers', item?.referred?.id]"
+                            class="flex-grow-1">
+                            <h5 class="fs-14 mb-1">
+                              <a class="cursor-pointer fw-medium link-primary">
+                                {{ (item?.referred?.firstName || '') + ' ' +
+                                (item?.referred?.lastName ||
+                                '') }}
+                              </a>
+                            </h5>
+                          </div>
+                        </div>
+                      </span>
+                    </td>
+                    <td>{{item?.reference}} </td>
+                    <td>{{item?.createdAt | date: 'dd-MM-yyyy'}} </td>
+                    <td>
+                      <div class="align-items-center d-flex gap-1 gap-3">
+                        <div class="align-items-center d-flex gap-2" *ngIf="item?.remuneration?.referrer?.quantitative?.amount">
+                          <span>{{ item?.remuneration?.referrer?.quantitative?.amount | number: '1.0-0' }}</span>
+                          <img *ngIf="item?.remuneration?.referrer?.quantitative?.wallet?.coin?.picture?.baseUrl"
+                            [src]="item?.remuneration?.referrer?.quantitative?.wallet?.coin?.picture?.baseUrl + '/' + item?.remuneration?.referrer?.quantitative?.wallet?.coin?.picture?.path"
+                            alt="" class="img-fluid rounded-circle avatar-xxs">
+                          <lord-icon *ngIf="!item?.remuneration?.referrer?.quantitative?.wallet?.coin?.picture?.baseUrl"
+                            src="https://cdn.lordicon.com/lxizbtuq.json" trigger="loop" delay="2000"
+                            style="width:30px;height:30px">
+                          </lord-icon>
+                        </div>
+                        <div class="align-items-center d-flex gap-2" *ngIf="item?.remuneration?.referrer?.qualitative?.amount">
+                          <span>
+                            {{item?.remuneration?.referrer?.qualitative?.amount | number: '1.0-0'}}
+                          </span>
+                          <div>
+                            <img *ngIf="(loyaltySettings$ | async)?.qualitative?.picture?.baseUrl"
+                              [src]="(loyaltySettings$ | async)?.qualitative?.picture?.baseUrl + '/' + (loyaltySettings$ | async)?.qualitative?.picture?.path"
+                              alt="" class="img-fluid rounded-circle avatar-xxs mb-1">
+                            <img class="img-fluid rounded-circle avatar-xxs mb-1"
+                              *ngIf="!(loyaltySettings$ | async)?.qualitative?.picture?.baseUrl"
+                              src="https://sifca-storage.s3.eu-central-1.amazonaws.com/loyalcraft/reputation_512.gif">
+                          </div>
+                        </div>
+                      </div>
+                    </td>
+                    <td>
+                      <div class="align-items-center d-flex gap-1 gap-3">
+                        <div class="align-items-center d-flex gap-2" *ngIf="item?.remuneration?.referred?.quantitative?.amount">
+                          <span>{{ item?.remuneration?.referred?.quantitative?.amount | number: '1.0-0' }}</span>
+                          <img *ngIf="item?.remuneration?.referred?.quantitative?.wallet?.coin?.picture?.baseUrl"
+                            [src]="item?.remuneration?.referred?.quantitative?.wallet?.coin?.picture?.baseUrl + '/' + item?.remuneration?.referred?.quantitative?.wallet?.coin?.picture?.path"
+                            alt="" class="img-fluid rounded-circle avatar-xxs">
+                          <lord-icon *ngIf="!item?.remuneration?.referred?.quantitative?.wallet?.coin?.picture?.baseUrl"
+                            src="https://cdn.lordicon.com/lxizbtuq.json" trigger="loop" delay="2000"
+                            style="width:30px;height:30px">
+                          </lord-icon>
+                        </div>
+                        <div class="align-items-center d-flex gap-2" *ngIf="item?.remuneration?.referred?.qualitative?.amount">
+                          <span>
+                            {{item?.remuneration?.referred?.qualitative?.amount | number: '1.0-0'}}
+                          </span>
+                          <div>
+                            <img *ngIf="(loyaltySettings$ | async)?.qualitative?.picture?.baseUrl"
+                              [src]="(loyaltySettings$ | async)?.qualitative?.picture?.baseUrl + '/' + (loyaltySettings$ | async)?.qualitative?.picture?.path"
+                              alt="" class="img-fluid rounded-circle avatar-xxs mb-1">
+                            <img class="img-fluid rounded-circle avatar-xxs mb-1"
+                              *ngIf="!(loyaltySettings$ | async)?.qualitative?.picture?.baseUrl"
+                              src="https://sifca-storage.s3.eu-central-1.amazonaws.com/loyalcraft/reputation_512.gif">
+                          </div>
+                        </div>
+                      </div>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+          <div *ngIf="((loadingReferrals$ | async) === false || null || undefined) && (referrals$ | async)?.length"
+            class="px-3">
+            <div class="row justify-content-md-between align-items-md-center gy-2">
+              <div class="col col-sm-6">
+                <div class="dataTables_info mb-2" id="tickets-table_info" role="status" aria-live="polite">
+                  {{'COMMON.SHOWING' | translate }}{{pagination?.startIndex + 1}}–{{pagination?.endIndex ===
+                  pagination?.length ? pagination?.endIndex : pagination?.endIndex + 1}} {{'COMMON.OF' | translate }}
+                  {{pagination?.length}} {{'COMMON.ENTRIES' | translate }}
+                </div>
+              </div>
+              <div class="col col-sm-6">
+                <div class="text-sm-right float-end listjs-pagination">
+                  <ngb-pagination [maxSize]="5" [collectionSize]="pagination?.length" [(page)]="page"
+                    (pageChange)="onPageChange($event)" [pageSize]="pagination?.size">
+                  </ngb-pagination>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div id="noresult" class="py-4 mt-4 text-center"
+            *ngIf="(loadingReferrals$ | async) || (!(loadingReferrals$ | async) && !(referrals$ | async)?.length)">
+            <div *ngIf="loadingReferrals$ | async">
+              <lord-icon trigger="loop" style="width:72px;height:72px"
+                [colors]="'primary:' + primaryColor + ',secondary:' + secondaryColor"
+                src="https://cdn.lordicon.com/msoeawqm.json">
+              </lord-icon>
+              <h5 class="mt-4">{{'COMMON.LOADING' | translate }}</h5>
+            </div>
+            <div *ngIf="!(loadingReferrals$ | async) && !(referrals$ | async)?.length">
+              <lord-icon trigger="loop" style="width:72px;height:72px"
+                [colors]="'primary:' + primaryColor + ',secondary:' + secondaryColor"
+                src="https://cdn.lordicon.com/vlycxjwx.json">
+              </lord-icon>
+              <h5 class="mt-4">{{ 'COMMON.NO_RESULT' | translate }}</h5>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</ng-container>
+<div *ngIf="navigating$ | async" class="vh-100 py-4 text-center" fxLayout="column" fxLayoutAlign="center center"
+  fxLayoutGap="1rem">
+  <div>
+    <lord-icon trigger="loop" style="width:72px;height:72px"
+      [colors]="'primary:' + primaryColor + ',secondary:' + secondaryColor"
+      src="https://cdn.lordicon.com/msoeawqm.json">
+    </lord-icon>
+  </div>
+  <div class="mt-4">
+    <h5>{{'COMMON.LOADING' | translate }}</h5>
+  </div>
+</div>

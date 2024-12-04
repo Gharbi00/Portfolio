@@ -1,0 +1,344 @@
+<div class="wrapper">
+  <div class="row" *ngIf="doc$ | async as doc">
+    <div class="col-xl-9">
+      <div class="card">
+        <div class="card-header">
+          <div class="d-flex align-items-center gap-1">
+            <h5 class="card-title flex-grow-1 mb-0"> {{'MODULES.INVOICING.PREVIEW.QUOTATION' | translate }}
+              {{doc.number}}</h5>
+            <div class="flex-shrink-0">
+              <a (click)="downloadDocument(doc)" class="btn btn-success btn-sm"><i class="ri-download-2-fill align-middle me-1"></i> {{'COMMON.DOWNLOAD' | translate }}</a>
+            </div>
+            <div class="flex-shrink-0">
+              <a [routerLink]="['/pv/p', token$ | async]" class="btn btn-info btn-sm"><i class="ri-eye-fill align-middle me-1"></i>Page View</a>
+            </div>
+          </div>
+        </div>
+        <div class="card-body">
+          <div class="table-responsive table-card">
+            <table class="table table-nowrap align-middle table-borderless mb-0">
+              <thead class="table-light text-muted">
+                <tr>
+                  <th scope="col"> {{'MODULES.INVOICING.PREVIEW.PRODUCT_DETAILS' | translate }}</th>
+                  <th scope="col"> {{'MODULES.INVOICING.PREVIEW.ITEM_PRICE' | translate }}</th>
+                  <th scope="col"> {{'MODULES.INVOICING.PREVIEW.QUANTITY' | translate }}</th>
+                  <th scope="col" class="text-end"> {{'MODULES.INVOICING.PREVIEW.TOTAL_AMOUNT' | translate }}</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let product of doc.products">
+                  <ng-container *ngIf="product.kind === ProductKindEnum.PRODUCT">
+                    <td>
+                      <div fxLayout="row" fxLayoutAlign="start center">
+                        <div
+                          class="rounded-circle shadow product-logo bg-soft-info text-danger"
+                          fxShrink="2"
+                          fxLayout="row"
+                          fxLayoutAlign="center center"
+                          *ngIf="!product?.product?.article?.media?.pictures?.length"
+                        >
+                          {{product.product?.article?.name?.charAt(0) || 'N'}}
+                        </div>
+                        <div fxShrink="2" class="avatar-md bg-light p-1 rounded-circle shadow product-logo" *ngIf="product?.product?.article?.media?.pictures?.length">
+                          <img [src]="product?.product?.article?.media.pictures[0]?.baseUrl + '/' + product?.product?.article?.media.pictures[0]?.path" alt="" class="img-fluid d-block">
+                        </div>
+                        <div class="ms-3" fxGrow="2">
+                          <h5 class="fs-15">
+                            <a routerLink="/inventory/articles/{{product.product?.article?.id}}" class="link-primary">
+                              {{product.product?.article?.name}}
+                            </a>
+                          </h5>
+                          <p class="text-muted mb-0"> {{'MODULES.INVOICING.PREVIEW.BARCODE' | translate }}:
+                            <span class="fw-medium">{{product.product?.article?.barcode}}</span>
+                          </p>
+                          <p class="text-muted mb-0"> {{'MODULES.INVOICING.PREVIEW.BRAND' | translate }}:
+                            <span class="fw-medium">
+                              {{product.product?.article?.product?.brand?.name || product.product?.article?.internalProduct?.brand?.name}}
+                            </span>
+                          </p>
+                        </div>
+                      </div>
+                    </td>
+                    <td>{{((product.product?.price) || 0) | currency:'DT':'symbol':'1.3-3'}}</td>
+                    <td>{{product.product?.quantity}}</td>
+                    <td class="fw-medium text-end">{{((product.product?.total) || 0) | currency:'DT':'symbol':'1.3-3'}}</td>
+                  </ng-container>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <div
+            fxLayout="row"
+            fxLayoutAlign="end center"
+            class="border-top border-top-dashed pt-3 mt-3"
+          >
+            <table class="table table-borderless table-sm table-nowrap align-middle mb-0 w-25">
+              <tbody>
+                <tr>
+                  <th scope="row"> {{'MODULES.INVOICING.PREVIEW.TOTAL_HT' | translate }}: </th>
+                  <td class="text-end">
+                    {{ doc.totalPrice.net | currency:'DT':'symbol':'1.3-3' }}
+                  </td>
+                </tr>
+                <tr>
+                  <th scope="row"> {{'MODULES.INVOICING.PREVIEW.TOTAL_TAXES' | translate }}: </th>
+                  <td class="text-end">
+                    {{ doc.totalTax | currency:'DT':'symbol':'1.3-3' }}
+                  </td>
+                </tr>
+                <tr>
+                  <th scope="row"> {{'MODULES.INVOICING.PREVIEW.TOTAL_TTC' | translate }}: </th>
+                  <td class="text-end">
+                    {{ doc.totalPrice.gross | currency:'DT':'symbol':'1.3-3' }}
+                  </td>
+                </tr>
+                <tr *ngFor="let tax of doc.taxes; let i = index">
+                  <th scope="row">{{ tax.tax.label }}:</th>
+                  <td class="text-end">
+                    {{ (tax.isNegative ? '-' : '') }} {{ +tax.tax.value.value | currency:'DT':'symbol':'1.3-3' }}
+                  </td>
+                </tr>
+                <tr class="border-top border-top-dashed">
+                  <th scope="row"> {{'MODULES.INVOICING.PREVIEW.NET_TO_PAY' | translate }}</th>
+                  <td class="text-end">
+                    {{ doc.toPay | currency:'DT':'symbol':'1.3-3' }}
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+      <div class="card">
+        <div class="card-header">
+          <div class="d-sm-flex align-items-center">
+            <h5 class="card-title flex-grow-1 mb-0"> {{'MODULES.INVOICING.PREVIEW.QUOTATION' | translate }} {{'COMMON.STATUS' | translate }} </h5>
+            <div class="flex-shrink-0 mt-2 mt-sm-0">
+              <div class="d-flex gap-1">
+                <a href="javasccript:void(0;)" class="btn btn-soft-info btn-sm mt-2 mt-sm-0 shadow-none"><i class="ri-map-pin-line align-middle me-1"></i> {{'MODULES.INVOICING.PREVIEW.CHANGE_ADDRESS' | translate }}</a>
+                <a href="javasccript:void(0;)" class="btn btn-soft-danger btn-sm mt-2 mt-sm-0 shadow-none"><i class="mdi mdi-archive-remove-outline align-middle me-1"></i> {{'MODULES.INVOICING.PREVIEW.CANCEL_ORDER' | translate }}</a>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="card-body">
+          <div *ngIf="doc.logistic?.tracker.length" class="profile-timeline order-status">
+            <ngb-accordion #acc="ngbAccordion" activeIds="static-{{doc.logistic?.tracker[0].status}}" [closeOthers]="true">
+              <ngb-panel *ngFor="let track of doc.logistic.tracker" id="static-{{track.status}}">
+                <ng-template ngbPanelTitle>
+                  <a class="accordion-button p-2 shadow-none" data-bs-toggle="collapse" href="javascript:void(0);" aria-expanded="true" aria-controls="collapseOne">
+                    <div class="d-flex align-items-center">
+                      <div class="flex-shrink-0 avatar-xs">
+                        <div class="avatar-title bg-success rounded-circle">
+                          <i *ngIf="track.status === 'PLACED'" class="ri-shopping-bag-line"></i>
+                          <i *ngIf="track.status === 'PACKED'" class="mdi mdi-gift-outline"></i>
+                          <i *ngIf="track.status === 'OUT_FOR_DELIVERY'" class="ri-truck-line"></i>
+                          <i *ngIf="track.status === 'DELIVERED'" class="mdi mdi-package-variant"></i>
+                        </div>
+                      </div>
+                      <div class="flex-grow-1 ms-3">
+                        <h6 *ngIf="track.status === 'PLACED'" class="fs-14 mb-0"> {{'MODULES.INVOICING.PREVIEW.ORDER_PLACED' | translate }} - <span class="fw-normal">{{ track.date | date:'longDate' }}</span></h6>
+                        <h6 *ngIf="track.status === 'PACKED'" class="fs-14 mb-0"> {{'MODULES.INVOICING.PREVIEW.PACKED' | translate }} - <span class="fw-normal">{{ track.date | date:'longDate' }}</span></h6>
+                        <h6 *ngIf="track.status === 'OUT_FOR_DELIVERY'" class="fs-14 mb-0"> {{'MODULES.INVOICING.PREVIEW.OUT_FOR_DELIVERY' | translate }} - <span class="fw-normal">{{ track.date | date:'longDate' }}</span></h6>
+                        <h6 *ngIf="track.status === 'DELIVERED'" class="fs-14 mb-0"> {{'MODULES.INVOICING.PREVIEW.DELIVERED' | translate }} - <span class="fw-normal">{{ track.date | date:'longDate' }}</span></h6>
+                      </div>
+                    </div>
+                  </a>
+                </ng-template>
+                <ng-template ngbPanelContent>
+                  <div id="collapseOne" class="accordion-collapse collapse show" aria-labelledby="headingOne" data-bs-parent="#accordionExample">
+                    <div *ngIf="track.status === 'PLACED'" class="accordion-body ms-2 ps-5 pt-0">
+                      <h6 class="mb-1"> {{'MODULES.INVOICING.PREVIEW.AN_ORDER_HAS_BEEN_PLACED' | translate }}</h6>
+                      <p class="text-muted">{{ track.date | date:'longDate' }}</p>
+                    </div>
+                    <div *ngIf="track.status === 'PACKED'" class="accordion-body ms-2 ps-5 pt-0">
+                      <h6 class="mb-1">{{'MODULES.INVOICING.PREVIEW.YOUR_ITEM_HAS_BEEN_PICKED_UP_BY_COURIER_PARTNER' | translate }} </h6>
+                      <p class="text-muted">{{ track.date | date:'longDate' }}</p>
+                    </div>
+                    <div *ngIf="track.status === 'OUT_FOR_DELIVERY'" class="accordion-body ms-2 ps-5 pt-0">
+                      <h6 *ngIf="doc.logistic.company" class="fs-14">{{doc.logistic.company?.name}} - {{doc.logistic?.identifier}}</h6>
+                      <h6 *ngIf="!doc.logistic.company" class="fs-14">{{doc.logistic?.identifier}}</h6>
+                      <h6 class="mb-1"> {{'MODULES.INVOICING.PREVIEW.YOUR_ITEM_HAS_BEEN_SHIPPED' | translate }}</h6>
+                      <p class="text-muted">{{ track.date | date:'longDate' }}</p>
+                    </div>
+                    <div *ngIf="track.status === 'DELIVERED'" class="accordion-body ms-2 ps-5 pt-0">
+                      <h6 class="mb-1"> {{'MODULES.INVOICING.PREVIEW.AN_ORDER_HAS_BEEN_DELIVERED' | translate }}</h6>
+                      <p class="text-muted">{{ track.date | date:'longDate' }}</p>
+                    </div>
+                  </div>
+                </ng-template>
+              </ngb-panel>
+            </ngb-accordion>
+          </div>
+          <div *ngIf="!doc.logistic?.tracker.length" class="py-4 mt-4 text-center" id="noresult">
+            <lord-icon src="https://cdn.lordicon.com/vlycxjwx.json" trigger="loop" [colors]="'primary:' + primaryColor + ',secondary:' + secondaryColor" style="width:72px;height:72px"></lord-icon>
+            <h5 class="mt-4"> {{'COMMON.NO_RESULT' | translate }}</h5>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="col-xl-3">
+      <div class="card">
+        <div class="card-header">
+          <div class="d-flex">
+            <h5 class="card-title flex-grow-1 mb-0"><i class="mdi mdi-truck-fast-outline align-middle me-1 text-muted"></i> {{'MODULES.INVOICING.PREVIEW.LOGISTICS_DETAILS' | translate }}</h5>
+            <div class="flex-shrink-0">
+              <a href="javascript:void(0);" class="badge badge-soft-primary fs-11"> {{'MODULES.INVOICING.PREVIEW.TRACK_ORDER' | translate }}</a>
+            </div>
+          </div>
+        </div>
+        <div *ngIf="doc.logistic" class="card-body">
+          <div class="text-center">
+            <lord-icon src="https://cdn.lordicon.com/uetqnvvg.json" trigger="loop" [colors]="'primary:' + primaryColor + ',secondary:' + secondaryColor" style="width:80px;height:80px"></lord-icon>
+            <h5 class="fs-16 mt-2">{{doc.logistic.company?.name}}</h5>
+            <p class="text-muted mb-0">{{'COMMON.ID' | translate }}: {{doc.logistic.identifier}}</p>
+            <p *ngIf="doc.logistic.warehouse" class="text-muted mb-0">{{'MODULES.INVENTORY.WAREHOUSE' | translate }}: {{doc.logistic.warehouse.name}}</p>
+          </div>
+        </div>
+        <div *ngIf="!doc.logistic" class="py-4 mt-4 text-center" id="noresult">
+          <lord-icon src="https://cdn.lordicon.com/vlycxjwx.json" trigger="loop" [colors]="'primary:' + primaryColor + ',secondary:' + secondaryColor" style="width:72px;height:72px"></lord-icon>
+          <h5 class="mt-4"> {{'COMMON.NO_RESULT' | translate }}</h5>
+        </div>
+      </div>
+      <div class="card">
+        <div class="card-header">
+          <div class="d-flex">
+            <h5 class="card-title flex-grow-1 mb-0">{{(inPurchasePages() | async) ? 'Supplier' : 'Customer'}}  {{'MODULES.INVOICING.PREVIEW.DETAILS' | translate }} </h5>
+            <div class="flex-shrink-0">
+              <a class="link-secondary" [routerLink]="[
+                (inPurchasePages() | async) ? '/purchases/suppliers' : '/crm/customers/companies',
+                doc.supplier?.supplier?.id || doc.customer?.customer?.id
+              ]">
+               {{'MODULES.INVOICING.PREVIEW.VIEW_PROFILE' | translate }}
+              </a>
+            </div>
+          </div>
+        </div>
+        <div *ngIf="doc.customer || doc.supplier" class="card-body">
+          <ul class="list-unstyled mb-0 vstack gap-3">
+            <li>
+              <div class="d-flex align-items-center">
+                <div *ngIf="(doc.customer?.customer || doc.supplier?.supplier)?.media?.pictures?.length" class="flex-shrink-0">
+                  <img [src]="(doc.customer?.customer || doc.supplier?.supplier)?.media.pictures[0]?.baseUrl + '/' + (doc.customer?.customer || doc.supplier?.supplier)?.media.pictures[0]?.path"
+                    alt="" class="avatar-sm rounded shadow">
+                </div>
+                <div *ngIf="!(doc.customer?.customer || doc.supplier?.supplier)?.media?.pictures?.length" class="flex-shrink-0">
+                  <span class="avatar-title me-3 bg-soft-info text-danger rounded-circle shadow customer-default-logo">
+                    {{(doc.customer?.customer || doc.supplier?.supplier)?.name?.charAt(0) || 'N'}}
+                  </span>
+                </div>
+                <div class="flex-grow-1 ms-2">
+                  <h6 class="fs-14 mb-1">{{(doc.customer?.customer || doc.supplier?.supplier)?.name}}</h6>
+                  <p class="text-muted mb-0" *ngIf="(doc.customer?.customer || doc.supplier?.supplier)?.legal?.vat">
+                    VAT: {{(doc.customer?.customer || doc.supplier?.supplier)?.legal?.vat}}
+                  </p>
+                </div>
+              </div>
+            </li>
+            <li *ngIf="(doc.customer?.customer || doc.supplier?.supplier)?.contact.email">
+              <i class="ri-mail-line me-2 align-middle text-muted fs-16"></i>{{(doc.customer?.customer || doc.supplier?.supplier)?.contact.email}}
+            </li>
+            <li *ngIf="(doc.customer?.customer || doc.supplier?.supplier)?.contact?.phone?.number">
+              <i class="ri-phone-line me-2 align-middle text-muted fs-16"></i>({{(doc.customer?.customer || doc.supplier?.supplier)?.contact?.phone?.countryCode}})
+              {{(doc.customer?.customer || doc.supplier?.supplier)?.contact?.phone?.number}}
+            </li>
+          </ul>
+        </div>
+        <div *ngIf="!doc.customer && !doc.supplier" class="py-4 mt-4 text-center" id="noresult">
+          <lord-icon src="https://cdn.lordicon.com/vlycxjwx.json" trigger="loop" [colors]="'primary:' + primaryColor + ',secondary:' + secondaryColor" style="width:72px;height:72px"></lord-icon>
+          <h5 class="mt-4"> {{'COMMON.NO_RESULT' | translate }}</h5>
+        </div>
+      </div>
+      <div class="card">
+        <div class="card-header">
+          <h5 class="card-title mb-0"><i class="ri-map-pin-line align-middle me-1 text-muted"></i>{{'MODULES.INVOICING.PREVIEW.BILLING_ADRRESS' | translate }}
+          </h5>
+        </div>
+        <div *ngIf="doc.address?.billing" class="card-body">
+          <ul class="list-unstyled vstack gap-2 fs-13 mb-0">
+            <li class="fw-medium fs-14">{{doc.address?.billing?.owner?.name}}</li>
+            <li>{{doc.address?.billing?.owner?.phone.countryCode}} {{doc.address?.billing?.owner?.phone.number}}</li>
+            <li>{{doc.address?.billing?.address}}</li>
+            <li>{{doc.address?.billing?.city}} - {{doc.address?.billing?.postCode}}</li>
+            <li>{{doc.address?.billing?.country?.name}}</li>
+          </ul>
+        </div>
+        <div *ngIf="!doc.address?.billing" class="py-4 mt-4 text-center" id="noresult">
+          <lord-icon src="https://cdn.lordicon.com/vlycxjwx.json" trigger="loop" [colors]="'primary:' + primaryColor + ',secondary:' + secondaryColor" style="width:72px;height:72px"></lord-icon>
+          <h5 class="mt-4"> {{'COMMON.NO_RESULT' | translate }}</h5>
+        </div>
+      </div>
+      <div class="card">
+        <div class="card-header">
+          <h5 class="card-title mb-0"><i class="ri-map-pin-line align-middle me-1 text-muted"></i>
+            {{'MODULES.INVOICING.PREVIEW.SHIPPING_ADDRESS' | translate }}</h5>
+        </div>
+        <div *ngIf="doc.address?.shipping" class="card-body">
+          <ul class="list-unstyled vstack gap-2 fs-13 mb-0">
+            <li class="fw-medium fs-14">{{doc.address?.shipping?.owner?.name}}</li>
+            <li>{{doc.address?.shipping?.owner?.phone.countryCode}} {{doc.address?.shipping?.owner?.phone.number}}</li>
+            <li>{{doc.address?.shipping?.address}}</li>
+            <li>{{doc.address?.shipping?.city}} - {{doc.address?.shipping?.postCode}}</li>
+            <li>{{doc.address?.shipping?.country?.name}}</li>
+          </ul>
+        </div>
+        <div *ngIf="!doc.address?.shipping" class="py-4 mt-4 text-center" id="noresult">
+          <lord-icon src="https://cdn.lordicon.com/vlycxjwx.json" trigger="loop" [colors]="'primary:' + primaryColor + ',secondary:' + secondaryColor" style="width:72px;height:72px"></lord-icon>
+          <h5 class="mt-4"> {{'COMMON.NO_RESULT' | translate }}</h5>
+        </div>
+      </div>
+      <div class="card">
+        <div class="card-header">
+          <h5 class="card-title mb-0"><i class="ri-secure-payment-line align-bottom me-1 text-muted"></i>
+            {{'MODULES.INVOICING.PREVIEW.PAYMENT_DETAILS' | translate }}</h5>
+        </div>
+        <div *ngIf="doc.installments" class="card-body">
+          <div class="d-flex align-items-center mb-2">
+            <div class="flex-shrink-0">
+              <p class="text-muted mb-0">{{'MODULES.INVOICING.PREVIEW.TRANSACTIONS' | translate }}:</p>
+            </div>
+            <div class="flex-grow-1 ms-2">
+              <h6 class="mb-0">#VLZ124561278124</h6>
+            </div>
+          </div>
+          <div class="d-flex align-items-center mb-2">
+            <div class="flex-shrink-0">
+              <p class="text-muted mb-0">{{'MODULES.INVOICING.PREVIEW.PAYMENT_METHOD' | translate }}:</p>
+            </div>
+            <div class="flex-grow-1 ms-2">
+              <h6 class="mb-0">{{'MODULES.INVOICING.PREVIEW.DEBIT_CARD' | translate }}</h6>
+            </div>
+          </div>
+          <div class="d-flex align-items-center mb-2">
+            <div class="flex-shrink-0">
+              <p class="text-muted mb-0">{{'MODULES.INVOICING.PREVIEW.CARD_HOLDER_NAME' | translate }}:</p>
+            </div>
+            <div class="flex-grow-1 ms-2">
+              <h6 class="mb-0">Joseph Parker</h6>
+            </div>
+          </div>
+          <div class="d-flex align-items-center mb-2">
+            <div class="flex-shrink-0">
+              <p class="text-muted mb-0"> {{'MODULES.SHARED.CARD_NUMBER' | translate }}:</p>
+            </div>
+            <div class="flex-grow-1 ms-2">
+              <h6 class="mb-0">xxxx xxxx xxxx 2456</h6>
+            </div>
+          </div>
+          <div class="d-flex align-items-center">
+            <div class="flex-shrink-0">
+              <p class="text-muted mb-0"> {{'MODULES.INVOICING.PREVIEW.TOTAL_AMOUNT' | translate }}:</p>
+            </div>
+            <div class="flex-grow-1 ms-2">
+              <h6 class="mb-0">$415.96</h6>
+            </div>
+          </div>
+        </div>
+        <div *ngIf="!doc.installments" class="py-4 mt-4 text-center" id="noresult">
+          <lord-icon src="https://cdn.lordicon.com/vlycxjwx.json" trigger="loop" [colors]="'primary:' + primaryColor + ',secondary:' + secondaryColor" style="width:72px;height:72px"></lord-icon>
+          <h5 class="mt-4"> {{'COMMON.NO_RESULT' | translate }}</h5>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

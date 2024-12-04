@@ -1,0 +1,88 @@
+<div class="popup-container mxh-13 mxh-12 mxh-11" [ngStyle]="cordsStyle"
+  [style.display]="'block'">
+  <div [class.dark-mode]="darkMode" class="popup-picture">
+    <div class="widget-box p-0 col-md-12">
+      <div class="special-widget-box mxh-13 mxh-12 mxh-11">
+        <p class="widget-box-title">{{quest?.activityType?.title}}</p>
+        <div style="height: auto !important;"
+          class="mxh-11 mxh-13 mxh-12 widget-box-content small-margin-top padded-for-scroll small"
+          data-simplebar="init">
+          <div class="exp-line">
+            <p class="exp-line-text"> {{quest?.description?.length > 90 ? quest?.description.substr(0,90) + '...'
+              :
+              quest?.description}}</p>
+          </div>
+          <div class="d-flex justify-content-between align-items-center">
+            <p style="font-size: 16px; font-weight: 500;" class="exp-line-text">
+              <ng-container *ngIf="questStatusText === 'OnceDone'">
+                {{'REWARD_EARNED' | translate}}
+              </ng-container>
+
+              <ng-container *ngIf="questStatusText === 'OnceNotDone'">
+                {{'REWARD_NOT_CLAIMED' | translate}}
+              </ng-container>
+
+              <ng-container *ngIf="questStatusText === 'RecurrentDone' && questDuration > 0">
+                {{'REWARD_AGAIN' | translate}}
+                <span class="countdown" style="font-size: 14px; font-weight: 700;">
+                  {{ getCountdown(quest)?.days || 0 }} :
+                  {{ getCountdown(quest)?.hours || 0 }} :
+                  {{ getCountdown(quest)?.minutes || 0 }} :
+                  {{ getCountdown(quest)?.seconds || 0 }}
+                </span>
+              </ng-container>
+
+              <ng-container *ngIf="questStatusText === 'RecurrentNotDone'">
+                {{'CLAIM_IT_EVERY' | translate}} {{ quest?.recurrence?.cycle }} {{'HOURS' | translate}}
+              </ng-container>
+
+              <ng-container *ngIf="questStatusText === 'Unlimited'">
+                {{'UNLIMITED_REWARDS' | translate}}
+              </ng-container>
+            </p>
+
+            <div class="experience-design">
+              <ng-container *ngFor="let item of quest?.remuneration">
+                <p *ngIf="item?.walletType === 'QUALITATIVE' && loaded" class="d-flex align-items-center text-sticker">
+                  <svg class="text-sticker-icon icon-plus-small">
+                    <use xlink:href="#svg-plus-small"></use>
+                  </svg>
+                  {{(item?.amount || 0) | number: '1.0-0'}}
+                  <img *ngIf="(loyaltySettings$ | async)?.qualitative?.picture?.baseUrl"
+                    [src]="(loyaltySettings$ | async)?.qualitative?.picture?.baseUrl + '/' + (loyaltySettings$ | async)?.qualitative?.picture?.path"
+                    alt="" style="width: 25px;" class="ml-1">
+                  <img class="img-fluid rounded-circle ml-1" style="width: 25px;"
+                    *ngIf="!(loyaltySettings$ | async)?.qualitative?.picture?.baseUrl"
+                    src="https://sifca-storage.s3.eu-central-1.amazonaws.com/loyalcraft/reputation_512.gif">
+                </p>
+                <p *ngIf="item?.walletType === 'QUANTITATIVE' && loaded" class="d-flex align-items-center text-sticker">
+                  <svg class="text-sticker-icon icon-plus-small">
+                    <use xlink:href="#svg-plus-small"></use>
+                  </svg>
+                  {{(item?.amount || 0) | number: '1.0-0'}}
+                  <img *ngIf="item?.wallet?.coin?.picture?.baseUrl"
+                    [src]="item?.wallet?.coin?.picture?.baseUrl + '/' + item?.wallet?.coin?.picture?.path" alt=""
+                    class="img-fluid rounded-circle avatar-xxs ml-1">
+                  <lord-icon *ngIf="!item?.wallet?.coin?.picture?.baseUrl" src="https://cdn.lordicon.com/lxizbtuq.json"
+                    trigger="loop" delay="2000" class="ml-1" style="width:25px;height:25px">
+                  </lord-icon>
+                </p>
+              </ng-container>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<svg style="display: none">
+  <symbol id="svg-cross" viewBox="0 0 12 12" preserveAspectRatio="xMinYMin meet">
+    <path d="M12,9.6L9.6,12L6,8.399L2.4,12L0,9.6L3.6,6L0,2.4L2.4,0L6,3.6L9.6,0L12,2.4L8.399,6L12,9.6z" />
+  </symbol>
+</svg>
+<svg style="display: none">
+  <symbol id="svg-plus-small" viewBox="0 0 8 8" preserveAspectRatio="xMinYMin meet">
+    <path d="M8,5H5v3H3V5H0V3h3V0h2v3h3V5z" />
+  </symbol>
+</svg>

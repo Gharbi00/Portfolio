@@ -1,0 +1,19 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:Event/etc/events.xsd">
+	<event name="customer_login">
+		<observer name="elevok_widget_customer_login_register" instance="Elevok\Widget\Controller\Index\Register" />
+	</event>
+	<event name="customer_register_success">
+		<observer name="elevok_widget_customer_register_register" instance="Elevok\Widget\Controller\Index\Register" />
+	</event>
+	<event name="customer_logout">
+		<observer name="elevok_widget_customer_logout" instance="Elevok\Widget\Controller\Index\Register" />
+	</event>
+	<event name="checkout_onepage_controller_success_action">
+		<observer name="send_push_amount_observer" instance="Elevok\Widget\Observer\SendPushAmountObserver" />
+		<!-- <observer name="export_orders_on_new_order" instance="Elevok\Widget\Controller\Adminhtml\Orders\CronOrders" /> -->
+	</event>
+	<event name="controller_action_predispatch">
+		<observer name="detect_elvkaflt_url" instance="Elevok\Widget\Observer\DetectElvkafltUrl" />
+	</event>
+</config>

@@ -1,0 +1,117 @@
+<div class="card">
+  <div *ngIf="!(loadingChallenge$ | async) && !audience" class="card-body">
+    <div class="text-center mb-4">
+      <h4 class="fw-semibold fs-22">{{'MENUITEMS.CUSTOMERENGAGEMENT.AUDIENCES.SELECT_AUDIENCE' | translate }} </h4>
+      <div class="d-flex mt-3 justify-content-center">
+        <div class="alert alert-borderless alert-info col-lg-6" role="alert">
+          <div class="d-flex align-items-center">
+            <i class="fs-16 me-2 ri-information-fill"></i>
+            <div>
+         {{'MENUITEMS.CUSTOMERENGAGEMENT.AUDIENCES.IF_NO_AUDIENCE_IS_SELECTED_THE_CONTENT_WILL_BE_DISTRIBUTED_TO_ALL_CAMPAIGNS' | translate }}
+            </div>
+          </div>
+        </div>
+      </div>
+      <p class="text-muted mb-4 fs-15">{{'MENUITEMS.CUSTOMERENGAGEMENT.AUDIENCES.SELECT_FROM_A_RANGE_OF_TARGETED_AUDIENCE_LISTS_BY_SIMPLY_CLICKING_ON_THE_BUTTONS_BELOW' | translate }}</p>
+      <div class="mt-2 d-flex justify-content-center gap-2">
+        <button (click)="openSelectAudienceModal()" class="btn btn-primary">{{'MENUITEMS.CUSTOMERENGAGEMENT.AUDIENCES.SELECT_AUDIENCE' | translate }}</button>
+        <button [routerLink]="['/engagement/audiences/new-audience']" class="btn btn-primary"> {{'MENUITEMS.CUSTOMERENGAGEMENT.AUDIENCES.CREATE_AUDIENCE' | translate }}</button>
+      </div>
+    </div>
+  </div>
+
+  <ng-container *ngIf="((loadingChallenge$ | async) === false || null || undefined) && audience">
+    <div class="border rounded card-height-100">
+      <div class="card-body">
+        <div class="d-flex flex-column h-100">
+          <div class="mb-4 align-items-center d-flex">
+            <div class="text-muted mb-0 flex-grow-1">{{ audience?.updatedAt | date:'longDate' }}</div>
+            <div *ngIf="challenge?.status !=='ONGOING' && challenge?.status !== 'FINISHED'" class="flex-shrink-0">
+              <div class="dropdown card-header-dropdown" ngbDropdown>
+                <a class="text-reset dropdown-btn arrow-none" href="javascript:void(0);" data-bs-toggle="dropdown"
+                  aria-haspopup="true" aria-expanded="false" ngbDropdownToggle>
+                  <span class="text-muted fs-18"><i class="mdi mdi-dots-vertical"></i></span>
+                </a>
+                <div class="dropdown-menu dropdown-menu-end" ngbDropdownMenu>
+                  <a [routerLink]="['/engagement/audiences', audience?.id]" routerLinkActive="router-link-active"  class="dropdown-item" href="javascript:void(0);">{{'COMMON.EDIT' | translate }}</a>
+                  <a (click)="openDeleteModal(deleteModal)" class="dropdown-item" href="javascript:void(0);">{{'COMMON.DELETE' | translate }}</a>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="d-flex mb-3">
+            <div class="flex-shrink-0 me-3">
+              <div class="avatar-sm">
+                <span *ngIf="audience?.media?.pictures?.length" class="avatar-title bg-soft-warning rounded-circle">
+                  <img [src]="audience?.media?.pictures[0].baseUrl + '/' + audience?.media?.pictures[0].path" alt=""
+                    class="rounded-circle h-100 img-fluid">
+                </span>
+                <div *ngIf="!audience?.media?.pictures?.length"
+                  class="avatar-title text-uppercase bg-soft-info text-danger rounded-circle shadow">
+                  {{audience?.title?.charAt(0) || 'N'}}
+                </div>
+              </div>
+            </div>
+            <div class="flex-grow-1">
+              <h5 class="mb-1"><a [routerLink]="['/engagement/audiences', audience?.id]"
+                  class="text-dark">{{audience?.title | translate}}</a></h5>
+              <p class="text-muted text-truncate-two-lines mb-3">{{audience?.description}}</p>
+            </div>
+          </div>
+          <div class="mt-auto">
+            <div class="d-flex mb-2">
+              <div class="flex-grow-1 mb-x">
+                <div>{{'MENUITEMS.CUSTOMERENGAGEMENT.AUDIENCES.REACH' | translate }}</div>
+              </div>
+              <div class="flex-shrink-0">
+                <div><i class="ri-list-check align-bottom me-1 text-muted"></i> {{(audienceReach?.reach || 0) +
+                  '/' + (audienceReach?.total || 0) }} </div>
+              </div>
+            </div>
+            <div class="progress animated-progess custom-progress progress-label">
+              <div class="progress-bar bg-primary" role="progressbar" [style.width]="(+audience?.reach?.reach /
+                          +audience?.reach?.total) * 100 + '%'" [aria-valuenow]="percentage" aria-valuemin="0"
+                aria-valuemax="100">
+                <div class="label">{{percentage}}%</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </ng-container>
+
+  <div id="noresult" class="py-4 mt-4 text-center" *ngIf="(loadingChallenge$ | async)">
+    <lord-icon trigger="loop" style="width:72px;height:72px" [colors]="'primary:' + primaryColor + ',secondary:' + secondaryColor"
+      src="https://cdn.lordicon.com/msoeawqm.json">
+    </lord-icon>
+    <h5 class="mt-4" *ngIf="loadingChallenge$ | async">{{'COMMON.LOADING' | translate }}</h5>
+  </div>
+</div>
+
+<ng-template #deleteModal let-modal>
+  <div class="modal-content">
+    <div class="modal-header">
+      <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" id="btn-close"
+        (click)="modal.dismiss('Cross click')"></button>
+    </div>
+    <div class="modal-body">
+      <div class="mt-2 text-center">
+        <lord-icon src="https://cdn.lordicon.com/gsqxdxog.json" trigger="loop"
+          colors="primary:#405189,secondary:#f06548" style="width:90px;height:90px"></lord-icon>
+        <div class="mt-4 pt-2 fs-15 mx-4 mx-sm-5">
+          <h4>{{'MENUITEMS.CUSTOMERENGAGEMENT.AUDIENCES.YOU_ARE_ABOUT_TO_DELETE_AN_AUDIENCE' | translate }}</h4>
+          <p class="text-muted mx-4 mb-0">{{'MENUITEMS.CUSTOMERENGAGEMENT.AUDIENCES.DELETING_YOUR_AUDIENCE_WILL_REMOVE_ALL_OF_YOUR_INFORMATION_FROM_OUR_DATABASE' | translate }}
+          </p>
+        </div>
+      </div>
+      <div class="d-flex gap-2 justify-content-center mt-4 mb-2">
+        <button type="button" class="btn btn-lg btn-light me-3" (click)="modal.close('Close click')">
+          <i class="bi bi-x-lg"></i>{{'COMMON.CLOSE' | translate }}
+        </button>
+        <button type="button" class="btn w-sm btn-danger " id="delete-product" (click)="deleteAudience()"
+          (click)="modal.close('Close click')">{{'COMMON.YES_DELETE_IT' | translate }}</button>
+      </div>
+    </div>
+  </div>
+</ng-template>

@@ -1,0 +1,24 @@
+.w-h {
+  width: 2rem;
+  height: 2rem;
+}
+.ft {
+  font-size: 37px;
+}
+.h-44 {
+  height: 11rem;
+}
+.ft-s {
+  font-size: 24px;;
+}
+.w-10 {
+  width: 10rem;
+}
+.mxh-13 {
+  max-height: 13rem;
+}
+
+::ng-deep .accordion-body {
+  max-height: 9rem;
+  overflow-y: auto;
+}

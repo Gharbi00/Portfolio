@@ -1,0 +1,522 @@
+<app-breadcrumbs title="{{ 'MENUITEMS.TITLE.STOCKS' | translate }}" [breadcrumbItems]="breadCrumbItems"></app-breadcrumbs>
+<ng-container *ngIf="!(navigating$ | async)">
+
+  <div class="row">
+    <div class="col-lg-12">
+      <div class="card" id="orderList">
+        <div class="card-header  border-0">
+          <div class="d-flex align-items-center">
+            <h5 class="card-title mb-0 flex-grow-1"> {{'MENUITEMS.TITLE.STOCKS' | translate }}</h5>
+            <div class="flex-shrink-0 hstack gap-2">
+              <button type="button" (click)="openWizardModal(wizardModal)" class="btn btn-success">
+                {{'SHARED.ADD_STOCK' | translate }}</button>
+                <button (click)="openImportModal(importModal)" type="button" class="btn btn-secondary"><i
+                  class="ri-file-upload-line align-bottom me-1"></i>
+                  {{'COMMON.IMPORT' | translate }}</button>
+                <button (click)="downloadExcel()" type="button" class="btn btn-primary"><i
+                  class="ri-file-upload-line align-bottom me-1"></i>{{'COMMON.EXPORT' | translate }}</button>
+            </div>
+          </div>
+        </div>
+        <div class="card-body border border-dashed border-end-0 border-start-0">
+          <div class="row g-3">
+            <div class="col-xxl-5 col-sm-6">
+              <div class="search-box">
+                <form [formGroup]="searchForm">
+                  <input type="text" name="searchTerm" formControlName="searchString" class="form-control"
+                    placeholder="{{'PLACEHOLDER.SEARCH_FOR_STOCK_BY_ARTICLE' | translate }}...">
+                  <i class="ri-search-line search-icon"></i>
+                </form>
+              </div>
+            </div>
+            <div class="col-xxl-2 col-sm-4">
+              <div>
+                <select (change)="getStocks()" [(ngModel)]="isOutOfStock" class="form-control" data-choices
+                  data-choices-search-false name="choices-single-default" id="idStatus">
+                  <option value="both" selected>{{'COMMON.ALL' | translate }}</option>
+                  <option value="inStock">{{'MODULES.INVENTORY.IN_STOCK' | translate }}</option>
+                  <option value="outOfStock">{{'MODULES.INVENTORY.OUT_OF_STOCK' | translate }}</option>
+                </select>
+              </div>
+            </div>
+            <div class="col-xxl-2 col-sm-4">
+              <div ngbDropdown>
+                <input [value]="selectedWarehouses?.join(', ')" placeholder="{{'PLACEHOLDER.CHOOSE_WAREHOUSE' | translate }}"
+                  class="cursor-pointer form-select form-control dropdown-toggle" ngbDropdownToggle>
+                <div class="dropdown-menu dropdown-menu-right w-100 h-7 p-3" ngbDropdownMenu>
+                  <div *ngFor="let warehouse of warehouses$ | async" [value]="type" class="form-check">
+                    <input (change)="onWarehouseFilter(warehouse, $event.target.checked)" class="form-check-input me-3"
+                      type="checkbox" [value]="state">
+                    <label class="form-check-label d-flex align-items-center" for="anna-adame">
+                      {{ warehouse?.name }}
+                    </label>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="card-body pt-0">
+          <div>
+            <ul ngbNav #nav="ngbNav" [activeId]="1" class="nav nav-tabs nav-tabs-custom nav-success mb-3">
+              <li [ngbNavItem]="1">
+                <ng-template ngbNavContent>
+                  <div class="table-responsive table-card mb-0">
+                    <table class="table align-middle custom-datatable">
+                      <thead>
+                        <tr class="bg-light text-muted text-uppercase">
+                          <th>{{'MODULES.INVENTORY.BARCODE' | translate }}</th>
+                          <th>{{ 'MODULES.ECOMMERCE.MAIN.ARTICLE' | translate }}</th>
+                          <th>{{'MODULES.INVENTORY.WAREHOUSE' | translate }}</th>
+                          <th>{{'MODULES.INVENTORY.CAPACITY' | translate }}</th>
+                          <th> {{'MODULES.HR.MAIN.STOCK' | translate }}</th>
+                          <th>{{'MODULES.INVENTORY.MIN_STOCK' | translate }}</th>
+                          <th>%</th>
+                          <th>{{'MODULES.INVENTORY.IN_STOCK' | translate }}</th>
+                          <th class="d-flex justify-content-center">{{'COMMON.ACTION' | translate }}</th>
+                        </tr>
+                      </thead>
+                      <tbody
+                        *ngIf="((loadingStocks$ | async) === false || null || undefined) && (stocks$ | async).length">
+                        <tr *ngFor="let data of stocks" id="o_{{data.id}}">
+                          <td>
+                            <a routerLink="/inventory/products/articles/{{data.barcode.id}}">
+                              <ngx-barcode *ngIf="validateBarcode(data?.barcode?.barcode)" [bc-height]="25"
+                                [bc-font-size]="10" [bc-format]="'EAN13'" class="cursor-pointer"
+                                [bc-element-type]="'svg'" [bc-display-value]="true" [bc-background]="'#EEEEEE'"
+                                [bc-value]="data.barcode.barcode">
+                              </ngx-barcode>
+                              <div *ngIf="!validateBarcode(data.barcode?.barcode)">
+                                <div fxLayout="row" fxLayoutAlign="start center">
+                                  {{data?.barcode?.barcode}}
+                                  <i matTooltip="This is not a valid EAN13 barcode"
+                                    class="fs-20 ms-1 ri-error-warning-line text-warning"></i>
+                                </div>
+                              </div>
+                            </a>
+                          </td>
+                          <td>
+                            <div class="align-items-center d-flex">
+                              <div *ngIf="data.barcode.media?.pictures?.length" class="avatar-sm bg-light rounded p-1">
+                                <img
+                                  [src]="data.barcode.media?.pictures[0]?.baseUrl + '/' + data.barcode.media?.pictures[0]?.path"
+                                  alt="" class="img-fluid h-100 d-block">
+                              </div>
+                              <div class="avatar-sm bg-light rounded p-1" *ngIf="!data.barcode.media?.pictures?.length">
+                                <div class="avatar-title bg-soft-success text-success rounded fs-13">
+                                  {{data.barcode?.name?.charAt(0) || 'N'}}</div>
+                              </div>
+                              <div class="flex-grow-1 cursor-pointer ms-2 name">
+                                {{data.barcode?.name?.length > 13 ?
+                                data.barcode?.name.substr(0,13) + '...' :
+                                data.barcode?.name}}
+                              </div>
+                            </div>
+                          </td>
+                          <td routerLink="/inventory/stock/warehouse/{{data.warehouse?.id}}">{{data.warehouse?.name}}
+                          </td>
+                          <td><ngb-highlight [result]="data.stockCapacity"></ngb-highlight></td>
+                          <td><ngb-highlight [result]="data.currentStock"></ngb-highlight></td>
+                          <td><ngb-highlight [result]="data.minimumStockQuantity"></ngb-highlight></td>
+                          <td>
+                            <div class="d-flex align-items-center">
+                              <div>{{ +data.stockPercentage | currency:'':'':'1.0-0' }}%</div>
+                              <div class="d-flex align-items-end w-1 ms-2 h-4 bg-red-200 rounded overflow-hidden"
+                                *ngIf="+data.stockPercentage < 25">
+                                <div class="d-flex w-100 h-x bg-red-600"></div>
+                              </div>
+                              <div class="d-flex align-items-end w-1 ms-2 h-4 bg-red-200 rounded overflow-hidden"
+                                *ngIf="+data.stockPercentage >= 25 && +data.stockPercentage < 50">
+                                <div class="d-flex w-100 h-50 bg-warning"></div>
+                              </div>
+                              <div class="d-flex align-items-end w-1 ms-2 h-4 bg-red-200 rounded overflow-hidden"
+                                *ngIf="+data?.stockPercentage >= 50">
+                                <div class="flex w-100 h-100 bg-success"></div>
+                              </div>
+                            </div>
+                          </td>
+                          <td>
+                            <div class="d-flex justify-content-center">
+                              <i [ngClass]="{
+                              'btn-soft-success': !data?.outOfStock,
+                              'ri-check-fill': !data?.outOfStock,
+                              'btn-soft-danger': data?.outOfStock,
+                              'ri-close-fill': data?.outOfStock
+                            }" class="align-bottom btn-soft-success"></i>
+                            </div>
+                          </td>
+                          <td>
+                            <ul class="list-inline hstack gap-2 mb-0">
+                              <li class="list-inline-item edit" data-bs-toggle="tooltip" data-bs-trigger="hover"
+                                placement="top">
+                                <a href="javascript:void(0);" data-bs-toggle="modal"
+                                  class="text-info d-inline-block edit-item-btn"
+                                  (click)="openRemoveStockModal(quantityModal, data, 'remove')" data-bs-toggle="modal"
+                                  id="create-btn" data-bs-target="#showModal">
+                                  <i class="ri-subtract-fill fs-16"></i>
+                                </a>
+                              </li>
+                              <li class="list-inline-item edit" data-bs-toggle="tooltip" data-bs-trigger="hover"
+                                placement="top">
+                                <a (click)="openRemoveStockModal(quantityModal, data, 'add')" href="javascript:void(0);"
+                                  data-bs-toggle="modal" class="text-info d-inline-block edit-item-btn"
+                                  data-bs-toggle="modal" id="create-btn" data-bs-target="#showModal">
+                                  <i class="ri-add-fill fs-16"></i>
+                                </a>
+                              </li>
+                              <li class="list-inline-item edit" data-bs-toggle="tooltip" data-bs-trigger="hover"
+                                placement="top">
+                                <a href="javascript:void(0);" data-bs-toggle="modal"
+                                  class="text-primary d-inline-block edit-item-btn" data-bs-toggle="modal"
+                                  id="create-btn" data-bs-target="#showModal"
+                                  (click)="openStockModal(stockModal, data)">
+                                  <i class="ri-pencil-fill fs-16"></i>
+                                </a>
+                              </li>
+                              <li class="list-inline-item" data-bs-toggle="tooltip" data-bs-trigger="hover"
+                                (click)="openDeleteModal(deleteModel, data)">
+                                <a class="text-danger d-inline-block remove-item-btn" data-bs-toggle="modal"
+                                  data-bs-target="#deleteOrder">
+                                  <i class="ri-delete-bin-5-fill fs-16"></i>
+                                </a>
+                              </li>
+                            </ul>
+                          </td>
+                        </tr>
+                      </tbody>
+                    </table>
+                  </div>
+                  <div *ngIf="((loadingStocks$ | async) === false || null || undefined) && (stocks$ | async).length"
+                    class="px-3">
+                    <div class="row justify-content-md-between align-items-md-center gy-2">
+                      <div class="col col-sm-6">
+                        <div class="dataTables_info mb-2" id="tickets-table_info" role="status" aria-live="polite">
+                          {{'COMMON.SHOWING' | translate }} {{pagination?.startIndex + 1}}–{{pagination?.endIndex ===
+                          pagination?.length ? pagination?.endIndex : pagination?.endIndex + 1}} {{'COMMON.OF' | translate }}
+                          {{pagination?.length}} {{'COMMON.ENTRIES' | translate }}
+                        </div>
+                      </div>
+                      <div class="col col-sm-6">
+                        <div class="text-sm-right float-end listjs-pagination">
+                          <ngb-pagination [maxSize]="5" [collectionSize]="pagination?.length" [(page)]="page"
+                            (pageChange)="onPageChange($event)" [pageSize]="pagination?.size">
+                          </ngb-pagination>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div id="noresult" class="py-4 mt-4 text-center"
+                    *ngIf="(loadingStocks$ | async) || (!(loadingStocks$ | async) && !(stocks$ | async).length)">
+                    <lord-icon *ngIf="loadingStocks$ | async" trigger="loop" style="width:72px;height:72px" [colors]="'primary:' + primaryColor + ',secondary:' + secondaryColor"
+                      src="https://cdn.lordicon.com/msoeawqm.json">
+                    </lord-icon>
+                    <h5 class="mt-4" *ngIf="loadingStocks$ | async">{{'COMMON.LOADING' | translate }}</h5>
+                    <lord-icon *ngIf="!(loadingStocks$ | async) && !(stocks$ | async).length" trigger="loop" style="width:72px;height:72px" [colors]="'primary:' + primaryColor + ',secondary:' + secondaryColor"
+                      src="https://cdn.lordicon.com/vlycxjwx.json">
+                    </lord-icon>
+                    <h5 class="mt-4" *ngIf="!(loadingStocks$ | async) && !(stocks$ | async).length">{{ 'COMMON.NO_RESULT' | translate }}</h5>
+                  </div>
+                </ng-template>
+              </li>
+            </ul>
+            <div class="tab-content text-muted">
+              <div [ngbNavOutlet]="nav"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <ng-template #importModal role="document" let-modal>
+      <div class="modal-header bg-soft-info p-3">
+        <h5 class="modal-title" id="exampleModalLabel">{{'COMMON.UPLOAD_EXCEL' | translate }}</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" id="close-modal"
+          (click)="modal.dismiss('Cross click')"></button>
+      </div>
+      <div class="modal-body">
+        <p>{{'MODULES.INVENTORY.ARCHIVE_PRODUCT_SURE' | translate }}
+        </p>
+      </div>
+      <div class="modal-footer">
+        <div class="hstack gap-2 justify-content-end">
+          <button type="button" class="btn btn-light" data-bs-dismiss="modal"
+            (click)="modal.close('Close click')">{{'COMMON.CLOSE' | translate }}</button>
+          <button type="button" (click)="!loadingImport ? uploadExcel() : null" class="btn btn-primary btn-load">
+            <span *ngIf="!loadingImport">{{'COMMON.IMPORT_EXCEL' | translate }}</span>
+            <span *ngIf="loadingImport" class="d-flex align-items-center">
+              <span class="spinner-border flex-shrink-0" role="status">
+                <span class="visually-hidden">{{'COMMON.LOADING' | translate }}</span> </span>
+              <span class="flex-grow-1 ms-2">{{'COMMON.LOADING' | translate }} </span> </span>
+          </button>
+          <button type="button" (click)="bulkUploadPicture()" class="btn btn-primary btn-load">
+            <span *ngIf="!loadingImportPictures">{{'MODULES.INVENTORY.IMPORT_PICTURES' | translate }}</span>
+            <span *ngIf="loadingImportPictures" class="d-flex align-items-center">
+              <span class="spinner-border flex-shrink-0" role="status">
+                <span class="visually-hidden">{{'COMMON.LOADING' | translate }}</span> </span>
+              <span class="flex-grow-1 ms-2">{{'COMMON.LOADING' | translate }} </span> </span>
+          </button>
+        </div>
+      </div>
+    </ng-template>
+
+    <ng-template #quantityModal role="document" let-modal>
+      <div class="modal-header bg-soft-info p-3">
+        <h5 class="modal-title" id="exampleModalLabel">{{data === 'remove' ? 'Remove from stock': 'Add to stock'}}</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" id="close-modal"
+          (click)="modal.dismiss('Cross click')"></button>
+      </div>
+      <form [formGroup]="editQuantityForm">
+        <div class="modal-body">
+          <input type="hidden" id="id-field" />
+          <div class="row g-3">
+            <div class="col-lg-12">
+              <div class="mb-3">
+                <label for="email_id-field" class="form-label">{{ 'MODULES.ECOMMERCE.MAIN.QUANTITY' | translate }}</label>
+                <input type="number" min="0" id="email_id-field" class="form-control" formControlName="quantity" />
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <div class="hstack gap-2 justify-content-end">
+            <button type="button" class="btn btn-light" data-bs-dismiss="modal"
+              (click)="modal.close('Close click')">{{'COMMON.CLOSE' | translate }}</button>
+            <button type="button" [disabled]="isQuantityButtonDisabled || editQuantityForm.invalid"
+              (click)="saveQuntity()" class="btn btn-success" id="add-btn">{{'COMMON.EDIT' | translate }} Stock</button>
+          </div>
+        </div>
+      </form>
+    </ng-template>
+
+    <ng-template #stockModal role="document" let-modal>
+      <div class="modal-header bg-soft-info p-3">
+        <h5 class="modal-title" id="exampleModalLabel">{{'COMMON.EDIT' | translate }} Stock</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" id="close-modal"
+          (click)="modal.dismiss('Cross click')"></button>
+      </div>
+      <form [formGroup]="stockForm">
+        <div class="modal-body">
+          <input type="hidden" id="id-field" />
+          <div class="row g-3">
+            <div class="col-lg-12">
+              <div class="mb-3">
+                <label for="email_id-field" class="form-label"> {{'MODULES.HR.MAIN.STOCK_CAPACITY' | translate }}</label>
+                <input type="number" id="email_id-field" class="form-control" placeholder="{{'PLACEHOLDER.ENTER_STOCK_CAPACITY' | translate }}"
+                  required formControlName="stockCapacity"
+                  [ngClass]="{ 'is-invalid': stockForm.get('stockCapacity')?.touched && stockForm.get('stockCapacity').hasError('required') }" />
+                <div class="invalid-feedback"
+                  *ngIf="stockForm.get('stockCapacity')?.touched && stockForm.get('stockCapacity').hasError('required')">{{'COMMON.REQUIRED' | translate }}
+                </div>
+              </div>
+              <div class="mb-3">
+                <label for="email_id-field" class="form-label">{{'MODULES.INVENTORY.MINIMUM_STOCK_QUANTITY' | translate }}</label>
+                <input type="number" id="email_id-field" class="form-control" placeholder="{{'PLACEHOLDER.ENTER_MINIMUM_STOCK_QUANTITY' | translate }}"
+                  required formControlName="minimumStockQuantity"
+                  [ngClass]="{ 'is-invalid': stockForm.get('minimumStockQuantity')?.touched && stockForm.get('minimumStockQuantity').hasError('required') }" />
+                <div class="invalid-feedback"
+                  *ngIf="stockForm.get('minimumStockQuantity')?.touched && stockForm.get('minimumStockQuantity').hasError('required')">{{'COMMON.REQUIRED' | translate }}
+                </div>
+              </div>
+              <div class="mb-3">
+                <div class="form-check">
+                  <input required [checked]="selectedStock?.outOfStock === true" (change)="outOfStockChange($event)"
+                    class="form-check-input border-x" type="checkbox" id="Required">
+                  <label class="form-check-label" role="switch" for="Outofstock">{{'MODULES.INVENTORY.OUT_OF_STOCK' | translate }}
+                  </label>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <div class="hstack gap-2 justify-content-end">
+            <button type="button" class="btn btn-light" data-bs-dismiss="modal"
+              (click)="modal.close('Close click')">{{'COMMON.CLOSE' | translate }}</button>
+            <button type="button" [disabled]="stockForm.invalid || isButtonDisabled" (click)="save()"
+              class="btn btn-success" id="add-btn">{{'COMMON.EDIT' | translate }} Stock</button>
+          </div>
+        </div>
+      </form>
+    </ng-template>
+
+    <ng-template #wizardModal role="document" let-modal>
+      <div class="modal-header">
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" id="deleteRecord-close"
+          (click)="modal.dismiss('Cross click')"></button>
+      </div>
+      <div class="card-body p-4 form-steps">
+        <div class="text-center pt-3 pb-4 mb-1">
+          <h5>{{'MODULES.INVENTORY.SELECT_YOUR_STOCK' | translate }}</h5>
+        </div>
+        <aw-wizard [navBarLayout]="'large-empty-symbols'" class="nav nav-pills progress-bar-tab custom-nav">
+          <form class="w-100" [formGroup]="initStockForm">
+            <aw-wizard-step>
+              <ng-template awWizardStepSymbol>
+                <li class="nav-item" role="presentation">
+                  <button class="nav-link rounded-pill active" data-progressbar="custom-progress-bar"
+                    id="pills-gen-info-tab" data-bs-toggle="pill" data-bs-target="#pills-gen-info" type="button"
+                    role="tab" aria-controls="pills-gen-info" aria-selected="true">1</button>
+                </li>
+              </ng-template>
+              <div class="col-lg-12">
+                <div class="mb-3">
+                  <div ngbDropdown>
+                    <label class="form-check-label" for="lastname-field">{{'MODULES.INVENTORY.WAREHOUSE' | translate }}</label>
+                    <input [(ngModel)]="selectedWarehouse" placeholder="{{'PLACEHOLDER.SELECT_YOUR_WAREHOUSE' | translate }}"
+                      [ngModelOptions]="{standalone: true}"
+                      class="cursor-pointer form-select form-control dropdown-toggle" ngbDropdownToggle readonly>
+                    <div infiniteScroll [scrollWindow]="false" [infiniteScrollDistance]="2"
+                      [infiniteScrollThrottle]="50" (scrolled)="loadMoreWarhouses()"
+                      [infiniteScrollDisabled]="isStocksLastPage$ | async"
+                      class="dropdown-menu dropdown-menu-right h-7 w-100 p-3" ngbDropdownMenu>
+                      <div class="form-check" *ngFor="let warehouse of warehouses">
+                        <input (change)="onWarehouseChange(warehouse)" class="form-check-input border-s" type="radio"
+                          id="{{ warehouse.id }}" name="warehouse" [value]="warehouse.id">
+                        <label class="form-check-label" for="{{ warehouse.id }}">
+                          {{ warehouse?.name }}
+                        </label>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="col-lg-12">
+                <label class="form-check-label" for="lastname-field">{{ 'MODULES.ECOMMERCE.MAIN.ARTICLE' | translate }}</label>
+                <ng-select placeholder="{{'PLACEHOLDER.CHOOSE_AN_ARTICLE' | translate }}" required [multiple]="false"
+                  [infiniteScrollDisabled]="isBarcodeLastPage$ | async" formControlName="barcode" bindValue="id"
+                  [typeahead]="barcodeSearchInput$" [virtualScroll]="true" (scrollToEnd)="loadMoreBarcodes()"
+                  [items]="barcodes$ | async" bindLabel="name">
+                  <ng-template ng-label-tmp let-item="item" let-clear="clear">
+                    <span class="ng-value-label">
+                      {{item?.name}}
+                    </span>
+                    <span class="ng-value-icon right" (click)="clear(item)" aria-hidden="true">×</span>
+                  </ng-template>
+                  <ng-template ng-option-tmp let-item$="item$" let-item="item">
+                    <div class="d-flex align-items-center">
+                      <div class="flex-shrink-0 me-3">
+                        <div class="avatar-sm bg-light p-1 rounded" *ngIf="item?.media?.pictures?.length">
+                          <img [src]="item?.media?.pictures[0]?.baseUrl + '/' + item?.media?.pictures[0]?.path"
+                            class="img-fluid h-100 d-block">
+                        </div>
+                        <div class="avatar-sm bg-light rounded p-1" *ngIf="!item?.media?.pictures?.length">
+                          <div class="avatar-title bg-soft-success text-success rounded fs-13">
+                            {{item?.name?.charAt(0) || 'N'}}</div>
+                        </div>
+                      </div>
+                      <span class="flex-grow-1 ms-2">
+                        {{item?.name}}
+                      </span>
+                    </div>
+                  </ng-template>
+                </ng-select>
+              </div>
+              <div></div>
+              <div class="d-flex align-items-start gap-3 mt-4">
+                <button (click)="getStock()"
+                  [disabled]="initStockForm.get('warehouse').value === '' ||  initStockForm.get('barcode').value === ''"
+                  type="button" class="btn btn-success mt-5 btn-label right ms-auto nexttab nexttab"
+                  data-nexttab="pills-info-desc-tab" awNextStep><i
+                    class="ri-arrow-right-line label-icon align-middle fs-16 ms-2"></i>{{'MODULES.INVENTORY.GO_TO_MORE_INFO' | translate }}</button>
+              </div>
+            </aw-wizard-step>
+
+            <aw-wizard-step>
+              <ng-template awWizardStepSymbol>
+                <li class="nav-item" role="presentation">
+                  <button class="nav-link rounded-pill" data-progressbar="custom-progress-bar" id="pills-info-desc-tab"
+                    data-bs-toggle="pill" data-bs-target="#pills-info-desc" type="button" role="tab"
+                    aria-controls="pills-info-desc" aria-selected="false">2</button>
+                </li>
+              </ng-template>
+              <div>
+                <div class="row">
+                  <div class="col-lg-6">
+                    <div class="mb-3">
+                      <label for="email_id-field" class="form-label"> {{'MODULES.HR.MAIN.STOCK' | translate }} Capacity</label>
+                      <input type="number" id="email_id-field" class="form-control" placeholder="{{'PLACEHOLDER.ENTER_STOCK_CAPACITY' | translate }}"
+                        required formControlName="stockCapacity"
+                        [ngClass]="{ 'is-invalid': initStockForm.get('stockCapacity')?.touched && initStockForm.get('stockCapacity').hasError('required') }" />
+                      <div class="invalid-feedback"
+                        *ngIf="initStockForm.get('stockCapacity')?.touched && initStockForm.get('stockCapacity').hasError('required')">{{'COMMON.REQUIRED' | translate }}
+                      </div>
+                    </div>
+                  </div>
+                  <div class="col-lg-6">
+                    <div class="mb-3">
+                      <label for="email_id-field" class="form-label">{{'MODULES.INVENTORY.MINIMUM_STOCK_QUANTITY' | translate }}</label>
+                      <input type="number" id="email_id-field" class="form-control"
+                        placeholder="{{'PLACEHOLDER.ENTER_MINIMUM_STOCK_QUANTITY' | translate }}" required formControlName="minimumStockQuantity"
+                        [ngClass]="{ 'is-invalid': initStockForm.get('minimumStockQuantity')?.touched && initStockForm.get('minimumStockQuantity').hasError('required') }" />
+                      <div class="invalid-feedback"
+                        *ngIf="initStockForm.get('minimumStockQuantity')?.touched && initStockForm.get('minimumStockQuantity').hasError('required')">{{'COMMON.REQUIRED' | translate }}
+                      </div>
+                    </div>
+                  </div>
+                  <div class="col-lg-6">
+                    <div class="mb-3">
+                      <div class="form-check">
+                        <input required [checked]="selectedStock?.outOfStock === true"
+                          (change)="wizardOutOfStockChange($event)" class="form-check-input border-x" type="checkbox"
+                          id="Required">
+                        <label class="form-check-label" for="Outofstock">
+                          Out of stock
+                        </label>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="d-flex align-items-start gap-3 mt-4">
+                <button type="button" class="btn btn-link text-decoration-none btn-label previestab"
+                  data-previous="pills-gen-info-tab" awPreviousStep><i
+                    class="ri-arrow-left-line label-icon align-middle fs-16 me-2"></i>{{'COMMON.BACK' | translate }} to
+                  General</button>
+                <button type="button" [disabled]="isWizardButtonDisabled || initStockForm.invalid"
+                  (click)="saveWizard()" class="btn ms-auto btn-success">{{'COMMON.SAVE' | translate }}</button>
+              </div>
+            </aw-wizard-step>
+          </form>
+        </aw-wizard>
+      </div>
+    </ng-template>
+
+    <ng-template #deleteModel let-modal>
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" id="deleteRecord-close"
+            (click)="modal.dismiss('Cross click')"></button>
+        </div>
+        <div class="modal-body">
+          <div class="mt-2 text-center">
+            <lord-icon src="https://cdn.lordicon.com/gsqxdxog.json" trigger="loop"
+              colors="primary:#405189,secondary:#f06548" style="width:90px;height:90px"></lord-icon>
+            <div class="mt-4 pt-2 fs-15 mx-4 mx-sm-5">
+              <h4>{{'MENUITEMS.CUSTOMERENGAGEMENT.CAMPAIGN.YOU_ARE_ABOUT_TO_DELETE_A_STOCK' | translate }} ?</h4>
+              <p class="text-muted mx-4 mb-0">{{'MENUITEMS.CUSTOMERENGAGEMENT.CAMPAIGN.DELETING_YOUR_STOCK_DATA_BASE_REMOVE' | translate }}
+              </p>
+            </div>
+          </div>
+          <div class="d-flex gap-2 justify-content-center mt-4 mb-2">
+            <button class="btn btn-link link-success fw-medium text-decoration-none" data-bs-dismiss="modal"
+              (click)="modal.close('Close click')"><i class="ri-close-line me-1 align-middle"></i>
+              Close</button>
+            <button type="button" class="btn w-sm btn-danger " id="delete-product" (click)="deleteStock()"
+              (click)="modal.close('Close click')">{{'COMMON.YES_DELETE_IT' | translate }}</button>
+          </div>
+        </div>
+      </div><!-- /.modal-content -->
+    </ng-template>
+  </div>
+</ng-container>
+<div *ngIf="navigating$ | async" class="vh-100 py-4 text-center" fxLayout="column" fxLayoutAlign="center center"
+  fxLayoutGap="1rem">
+  <div>
+    <lord-icon trigger="loop" style="width:72px;height:72px" [colors]="'primary:' + primaryColor + ',secondary:' + secondaryColor"
+      src="https://cdn.lordicon.com/msoeawqm.json">
+    </lord-icon>
+  </div>
+  <div class="mt-4">
+    <h5>{{'COMMON.LOADING' | translate }}</h5>
+  </div>
+</div>

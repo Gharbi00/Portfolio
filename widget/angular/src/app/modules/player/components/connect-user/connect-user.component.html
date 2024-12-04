@@ -1,0 +1,125 @@
+<div [class.rtl]="rtl" [class.dark-mode]="darkMode">
+  <div class="player-mode content-grid col-md-12 header-margin" style="padding: 00 0 !important">
+    <div class="section-banner"
+      [ngStyle]="{ background: 'url(' + headerImagePath + ') no-repeat center center / cover' }">
+      <img class="section-banner-icon" [src]="badgesIcon?.baseUrl + '/' + badgesIcon?.path" alt="newsfeed-icon" />
+      <p class="section-banner-title"> {{'CONNECT_USER' | translate}} </p>
+      <p class="section-banner-text text-truncate"> {{'CONNECT_NOW' | translate}} </p>
+    </div>
+  </div>
+  <div class="widget-box" style="height: 688px">
+    <div [class.dark-mode]="darkMode" class="checkbox-wrap d-flex justify-content-between">
+      <input (change)="onChangeOption()" [checked]="true" value="sms" [(ngModel)]="selectedOption" type="radio"
+        id="sms_option" name="poll_option" />
+      <div class="checkbox-box round"></div>
+      <label class="label-x" for="sms_option">{{'SMS' | translate}}</label>
+    </div>
+    <div [class.dark-mode]="darkMode" class="checkbox-wrap d-flex justify-content-between">
+      <input (change)="onChangeOption()" value="email" [(ngModel)]="selectedOption" type="radio" id="email_option"
+        name="poll_option" />
+      <div class="checkbox-box round"></div>
+      <label class="label-x" for="email_option">{{'EMAIL' | translate}}</label>
+    </div>
+    <div class="col-md-12 text-center" style="margin-top: 7rem">
+      <div class="d-flex flex-column justify-content-center">
+        <div class="displayed-center mb-5">
+          <svg *ngIf="selectedOption === 'sms'" class="empty-fill" style="width: 40px; height: 40px">
+            <use xlink:href="#svg-send-message"></use>
+          </svg>
+          <svg *ngIf="selectedOption === 'email'" class="empty-fill" style="width: 40px; height: 40px"
+            xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" id="_x32_"
+            viewBox="0 0 512 512" xml:space="preserve">
+            <g>
+              <path class="st0"
+                d="M510.746,110.361c-2.128-10.754-6.926-20.918-13.926-29.463c-1.422-1.794-2.909-3.39-4.535-5.009   c-12.454-12.52-29.778-19.701-47.531-19.701H67.244c-17.951,0-34.834,7-47.539,19.708c-1.608,1.604-3.099,3.216-4.575,5.067   c-6.97,8.509-11.747,18.659-13.824,29.428C0.438,114.62,0,119.002,0,123.435v265.137c0,9.224,1.874,18.206,5.589,26.745   c3.215,7.583,8.093,14.772,14.112,20.788c1.516,1.509,3.022,2.901,4.63,4.258c12.034,9.966,27.272,15.45,42.913,15.45h377.51   c15.742,0,30.965-5.505,42.967-15.56c1.604-1.298,3.091-2.661,4.578-4.148c5.818-5.812,10.442-12.49,13.766-19.854l0.438-1.05   c3.646-8.377,5.497-17.33,5.497-26.628V123.435C512,119.06,511.578,114.649,510.746,110.361z M34.823,99.104   c0.951-1.392,2.165-2.821,3.714-4.382c7.689-7.685,17.886-11.914,28.706-11.914h377.51c10.915,0,21.115,4.236,28.719,11.929   c1.313,1.327,2.567,2.8,3.661,4.272l2.887,3.88l-201.5,175.616c-6.212,5.446-14.21,8.443-22.523,8.443   c-8.231,0-16.222-2.99-22.508-8.436L32.19,102.939L34.823,99.104z M26.755,390.913c-0.109-0.722-0.134-1.524-0.134-2.341V128.925   l156.37,136.411L28.199,400.297L26.755,390.913z M464.899,423.84c-6.052,3.492-13.022,5.344-20.145,5.344H67.244   c-7.127,0-14.094-1.852-20.142-5.344l-6.328-3.668l159.936-139.379l17.528,15.246c10.514,9.128,23.922,14.16,37.761,14.16   c13.89,0,27.32-5.032,37.827-14.16l17.521-15.253L471.228,420.18L464.899,423.84z M485.372,388.572   c0,0.803-0.015,1.597-0.116,2.304l-1.386,9.472L329.012,265.409l156.36-136.418V388.572z" />
+            </g>
+          </svg>
+        </div>
+        <div class="mb-5">
+          <h3>{{'VERIFICATION' | translate}}</h3>
+          <ng-container *ngIf="selectedOption === 'sms'">
+            <ng-container *ngIf="!isValidCode">
+              <p>{{ 'SEND' | translate }} <span>{{ 'OPT' | translate }}</span> {{ 'PHONE_NUMBER' | translate }}</p>
+            </ng-container>
+            <ng-container *ngIf="isValidCode">
+              <p>{{ 'WILL_GET' | translate }} <span>{{ 'OPT' | translate }}</span> {{'VIA_SMS' | translate }} </p>
+            </ng-container>
+          </ng-container>
+          <ng-container *ngIf="selectedOption === 'email'">
+            <ng-container *ngIf="!isValidCode">
+              <p>{{ 'SEND' | translate }} <span>{{ 'OPT' | translate }}</span> {{'ON_EMAIL' | translate }} </p>
+            </ng-container>
+            <ng-container *ngIf="isValidCode">
+              <p>{{ 'WILL_GET' | translate }} <span>{{ 'OPT' | translate }}</span> {{'VIA_EMAIL' | translate }} </p>
+            </ng-container>
+          </ng-container>
+        </div>
+      </div>
+
+      <div class="justify-content-center d-flex">
+        <div class="form-row split col-lg-8">
+          <div class="form-item">
+            <div [class.dark-mode]="darkMode" class="form-input small active">
+              <ng-container *ngIf="!isValidCode">
+                <form [formGroup]="validationForm">
+                  <div class="interactive-input">
+                    <input placeholder="{{ 'ENTER_PHONE' | translate }}" *ngIf="selectedOption === 'sms'"
+                      formControlName="number" type="text" id="firstnameInput">
+                    <input placeholder="{{ 'ENTER_EMAIL' | translate }}" *ngIf="selectedOption === 'email'"
+                      formControlName="login" type="text" id="firstnameInput">
+                  </div>
+                  <p style="font-weight: 600; color: #dc3545 !important" class="text-danger mt-1"
+                    *ngIf="showAlert && !isSendButtonDisabled">
+                    {{ 'ACCOUNT_NOT_FOUND' | translate }}.
+                  </p>
+                </form>
+              </ng-container>
+              <ng-container *ngIf="isValidCode">
+                <div class="interactive-input">
+                  <input placeholder="{{ 'VALIDATION_CODE' | translate }}" [formControl]="codeInputControl" type="text"
+                    id="firstnameInput">
+                </div>
+                <p class="mt-2" style="font-size: 14.4px;">{{ 'DID_NOT_RECEIVE_OPT' | translate }} <a
+                    style="cursor: pointer; text-decoration: underline;" (click)="sendCode()">{{ 'RESEND' | translate
+                    }}</a> </p>
+                <p style="font-size: 14.4px; font-weight: 600; color: #dc3545 !important" class="text-danger mt-3"
+                  *ngIf="isWrongCode">
+                  {{ 'INVALID_CODE' | translate }}.
+                </p>
+              </ng-container>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="mt-4">
+        <button *ngIf="!isValidCode" [disabled]="isSendButtonDisabled || validationForm.invalid" (click)="sendCode()"
+          [ngClass]="{'primary': !isSendButtonDisabled && validationForm.valid}" class="button">{{
+          'GET_OTP' | translate }} </button>
+        <button *ngIf="isValidCode" [ngClass]="{'primary': codeInputControl.value}" [disabled]="!codeInputControl.value"
+          (click)="linkAccount()" class="button">{{ 'VERIFY' | translate }}</button>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<svg style="display: none;">
+  <symbol id="svg-send-message" viewBox="0 0 20 20" preserveAspectRatio="xMinYMin meet">
+    <path
+      d="M19.993,0.94c-0.005-0.091-0.022-0.179-0.052-0.265c-0.011-0.031-0.021-0.062-0.035-0.093  c-0.049-0.107-0.109-0.208-0.195-0.294s-0.188-0.147-0.294-0.195c-0.031-0.014-0.062-0.024-0.093-0.035c-0.086-0.03-0.173-0.046-0.263-0.052C19.034,0.005,19.009,0,18.981,0c-0.104,0.002-0.207,0.017-0.308,0.052L0.67,6.353C0.283,6.488,0.018,6.846,0.001,7.256C-0.016,7.666,0.22,8.044,0.594,8.21l7.75,3.446l3.444,7.75C11.948,19.769,12.308,20,12.702,20
+    c0.014,0,0.027,0,0.041-0.002c0.409-0.016,0.768-0.28,0.903-0.668l6.302-18.003c0.035-0.101,0.05-0.206,0.052-0.309C20,0.991,19.994,0.967,19.993,0.94z M15.197,3.388L8.88,9.706L3.711,7.408L15.197,3.388z M12.592,16.288l-2.298-5.169l6.317-6.316L12.592,16.288z" />
+  </symbol>
+</svg>
+
+<svg style="display: none">
+  <symbol id="svg-plus-small" viewBox="0 0 8 8" preserveAspectRatio="xMinYMin meet">
+    <path d="M8,5H5v3H3V5H0V3h3V0h2v3h3V5z" />
+  </symbol>
+</svg>
+
+<svg style="display: none;">
+  <symbol id="svg-play" viewBox="0 0 12 14" preserveAspectRatio="xMinYMin meet">
+    <path
+      d="M11.182,5.868l-9.378-5.6C0.751-0.355,0,0.147,0,1.383v11.236c0,1.234,0.751,1.737,1.803,1.112l9.431-5.599C12.291,7.51,12.236,6.491,11.182,5.868z" />
+  </symbol>
+</svg>

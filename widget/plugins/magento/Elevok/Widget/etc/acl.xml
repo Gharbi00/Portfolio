@@ -1,0 +1,22 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Auth:etc/acl.xsd">
+    <acl>
+        <resources>
+            <administration>
+                <children>
+                    <elevok_widget translate="label">
+                        <title><![CDATA[Elevok Widget]]></title>
+                        <sortOrder>100</sortOrder>
+                        <children>
+                            <config_elevok_widget translate="label">
+                                <title><![CDATA[General Settings]]></title>
+                                <sortOrder>10</sortOrder>
+                            </config_elevok_widget>
+                        </children>
+                    </elevok_widget>
+                </children>
+            </administration>
+        </resources>
+    </acl>
+</config>

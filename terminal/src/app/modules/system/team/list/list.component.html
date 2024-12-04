@@ -1,0 +1,482 @@
+<app-breadcrumbs title="{{ 'MODULES.SYSTEM.TEAM' | translate }}" [breadcrumbItems]="breadCrumbItems"></app-breadcrumbs>
+<ng-container *ngIf="!(navigating$ | async)">
+
+  <div class="items-wrapper card">
+    <div class="card-body">
+      <div class="row g-2">
+        <div class="col-sm-4">
+          <form [formGroup]="searchForm">
+            <div class="search-box">
+              <input type="text" formControlName="searchString" class="form-control"
+                placeholder="{{ 'MODULES.SYSTEM.SEARCH_FOR_NAME' | translate }}">
+              <i class="ri-search-line search-icon"></i>
+            </div>
+          </form>
+        </div>
+        <div class="col-sm-auto d-flex gap-1 ms-auto">
+          <div>
+            <button (click)="openAccountModal(accountModal)" class="btn btn-primary">
+              <i class="ri-add-line align-bottom me-1"></i>
+              {{'MODULES.HR.MAIN.ADD_MEMBER' | translate}}</button>
+          </div>
+          <div class="list-grid-nav hstack gap-1" ngbDropdown>
+            <ul ngbNav #Border="ngbNav" [activeId]="1" class="d-flex gap-1">
+              <li [ngbNavItem]="1">
+                <a ngbNavLink class="btn btn-soft-info nav-link btn-icon fs-14 filter-button shadow-none"
+                  id="grid-view-button">
+                  <i class="ri-grid-fill"></i>
+                </a>
+                <ng-template ngbNavContent>
+                  <div class="team-list grid-view-filter row">
+                    <div class="col" *ngFor="let data of team">
+                      <div class="card team-box">
+                        <div class="team-cover">
+                          <img *ngIf="data?.user?.picture && data?.user?.picture?.baseUrl !==''"
+                            [src]="data?.user?.picture?.baseUrl + '/' + data?.user?.picture?.path" alt=""
+                            class="img-fluid" />
+                          <img *ngIf="!data?.user?.picture || data?.user?.picture?.baseUrl ===''"
+                            src="assets/images/small/img-9.jpg" alt="" id="cover-img" class="img-fluid">
+                        </div>
+                        <div class="card-body p-4">
+                          <div class="row align-items-center team-row">
+                            <div class="col team-settings">
+                              <div class="row">
+                                <div class="col">
+                                  <div class="flex-shrink-0 me-2">
+                                    <button type="button"
+                                      class="btn btn-light btn-icon rounded-circle btn-sm favourite-btn star_{{data.id}}"
+                                      [ngClass]="{'active': data.isActive == true}" (click)="activeMenu(data.id)">
+                                      <i class="ri-star-fill fs-14"></i>
+                                    </button>
+                                  </div>
+                                </div>
+                                <div class="col text-end dropdown" ngbDropdown>
+                                  <a href="javascript:void(0);" class="arrow-none" id="dropdownMenuLink2"
+                                    data-bs-toggle="dropdown" aria-expanded="false" ngbDropdownToggle>
+                                    <i class="ri-more-fill fs-17"></i>
+                                  </a>
+                                  <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="dropdownMenuLink2"
+                                    ngbDropdownMenu>
+                                    <li><a class="dropdown-item" routerLink="details/{{data.user.id}}"><i
+                                          class="ri-eye-line me-2 align-middle"></i>{{ 'COMMON.VIEW' | translate }}</a>
+                                    </li>
+                                    <li><a class="dropdown-item" href="javascript:void(0);"><i
+                                          class="ri-star-line me-2 align-middle"></i>{{ 'COMMON.FAVORITES' |
+                                        translate}}</a>
+                                    </li>
+                                    <li><a class="dropdown-item" href="javascript:void(0);"
+                                        (click)="confirm(deleteModel,data.id)"><i
+                                          class="ri-delete-bin-5-line me-2 align-middle"></i>{{ 'COMMON.DELETE'
+                                        |translate }}</a>
+                                    </li>
+                                  </ul>
+                                </div>
+                              </div>
+                            </div>
+                            <div class="col-lg-4 col">
+                              <div class="team-profile-img">
+                                <div class="avatar-lg img-thumbnail rounded-circle flex-shrink-0 shadow"
+                                  *ngIf="data.user.picture && data?.user?.picture?.baseUrl !==''">
+                                  <img [src]="data.user.picture?.baseUrl + '/' + data.user.picture?.path"
+                                    class="rounded-circle w-100 h-100 img-fluid userprofile" alt="">
+                                </div>
+                                <div class="avatar-lg img-thumbnail rounded-circle flex-shrink-0 shadow"
+                                  *ngIf="!data?.user?.picture || data?.user?.picture?.baseUrl ===''">
+                                  <div class="avatar-title border bg-light text-primary rounded-circle text-uppercase">
+                                    {{ data?.user?.firstName?.charAt(0) || 'N'}}</div>
+                                </div>
+                                <div class="team-content">
+                                  <a data-bs-toggle="offcanvas" aria-controls="offcanvasExample"
+                                    routerLink="details/{{data.user.id}}">
+                                    <h5 class="fs-16 mb-1">{{data.user.firstName}}
+                                      {{data.user.lastName}}</h5>
+                                  </a>
+                                  <p class="text-muted mb-0">{{data.user?.permission?.name}}</p>
+                                </div>
+                              </div>
+                            </div>
+                            <!-- <div class="col-lg-4 col">
+                              <div class="row text-muted text-center">
+                                <div class="col-6 border-end border-end-dashed">
+                                  <h5 class="mb-1">213</h5>
+                                  <p class="text-muted mb-0">{{ 'MODULES.SYSTEM.PROJECTS' | translate }}</p>
+                                </div>
+                                <div class="col-6">
+                                  <h5 class="mb-1">23</h5>
+                                  <p class="text-muted mb-0">{{ 'MODULES.SYSTEM.TASKS' | translate }}</p>
+                                </div>
+                              </div>
+                            </div> -->
+                            <div class="col-lg-2 col">
+                              <div class="text-end">
+                                <a routerLink="details/{{data.user.id}}" class="btn btn-light view-btn">{{ 'COMMON.VIEW'
+                                  |
+                                  translate }} {{ 'MODULES.SYSTEM.PROFILE' | translate }}</a>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="px-3 mb-3">
+                      <div class="row justify-content-md-between align-items-md-center gy-2">
+                        <div class="col col-sm-6">
+                          <div class="dataTables_info mb-2" id="tickets-table_info" role="status" aria-live="polite">
+                            {{ 'COMMON.SHOWING' | translate }} {{pagination?.startIndex + 1}}–{{pagination?.endIndex ===
+                            pagination?.length ? pagination?.endIndex : pagination?.endIndex + 1}} {{ 'COMMON.OF' |
+                            translate }} {{pagination?.length}}
+                            {{ 'COMMON.ENTRIES' | translate }}
+                          </div>
+                        </div>
+                        <div class="col col-sm-6">
+                          <div class="text-sm-right float-end listjs-pagination">
+                            <ngb-pagination [maxSize]="5" [collectionSize]="pagination?.length" [(page)]="page"
+                              (pageChange)="onPageChange($event)" [pageSize]="pagination?.size">
+                            </ngb-pagination>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </ng-template>
+              </li>
+              <li [ngbNavItem]="2">
+                <a ngbNavLink id="list-view-button" class="btn btn-soft-info nav-link  btn-icon fs-14 filter-button">
+                  <i class="ri-list-unordered"></i>
+                </a>
+                <ng-template ngbNavContent>
+                  <div class="team-list list-view-filter row">
+                    <div class="col" *ngFor="let data of team" id="t_{{data?.id}}">
+                      <div class="card team-box">
+                        <div class="team-cover">
+                          <img [src]="data?.user.picture?.baseUrl + '/' + data?.user.picture?.path" alt=""
+                            class="img-fluid" />
+                        </div>
+                        <div class="card-body p-4">
+                          <div class="row align-items-center team-row">
+                            <div class="col team-settings">
+                              <div class="row">
+                                <div class="col">
+                                  <div class="flex-shrink-0 me-2">
+                                    <button type="button"
+                                      class="btn btn-light btn-icon srounded-circle btn-sm favourite-btn star_{{data?.id}}"
+                                      [ngClass]="{'active': data?.isActive == true}" (click)="activeMenu(data?.id)">
+                                      <i class="ri-star-fill fs-14"></i>
+                                    </button>
+                                  </div>
+                                </div>
+                                <div class="col text-end dropdown" ngbDropdown>
+                                  <a href="javascript:void(0);" class="arrow-none" id="dropdownMenuLink2"
+                                    data-bs-toggle="dropdown" aria-expanded="false" ngbDropdownToggle>
+                                    <i class="ri-more-fill fs-17"></i>
+                                  </a>
+                                  <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="dropdownMenuLink2"
+                                    ngbDropdownMenu>
+                                    <li><a class="dropdown-item" routerLink="details/{{data?.user?.id}}"><i
+                                          class="ri-eye-line me-2 align-middle"></i>{{ 'COMMON.VIEW' | translate }}</a>
+                                    </li>
+                                    <li><a class="dropdown-item" href="javascript:void(0);"><i
+                                          class="ri-star-line me-2 align-middle"></i>{{ 'COMMON.FAVORITES' |
+                                        translate}}</a>
+                                    </li>
+                                  </ul>
+                                </div>
+                              </div>
+                            </div>
+                            <div class="col-lg-4 col">
+                              <div class="team-profile-img">
+                                <div class="avatar-lg img-thumbnail rounded-circle flex-shrink-0"
+                                  *ngIf="data?.user.picture">
+                                  <img [src]="data?.user.picture?.baseUrl + '/' + data?.user.picture?.path"
+                                    class="rounded-circle w-100 h-100 img-fluid userprofile" alt="">
+                                </div>
+                                <div class="avatar-lg img-thumbnail rounded-circle flex-shrink-0"
+                                  *ngIf="!data?.user.picture">
+                                  <div class="avatar-title border bg-light text-primary rounded-circle text-uppercase">
+                                    {{ data?.user.firstName.charAt(0) || 'N'}}</div>
+                                </div>
+                                <div class="team-content">
+                                  <a data-bs-toggle="offcanvas" aria-controls="offcanvasExample"
+                                    routerLink="details/{{data.user.id}}">
+                                    <h5 class="fs-16 mb-1">{{data?.user?.firstName}}</h5>
+                                  </a>
+                                  <p class="text-muted mb-0">{{data?.user?.permission?.name}}</p>
+                                </div>
+                              </div>
+                            </div>
+                            <!-- <div class="col-lg-4 col">
+                              <div class="row text-muted text-center">
+                                <div class="col-6 border-end border-end-dashed">
+                                  <h5 class="mb-1">231</h5>
+                                  <p class="text-muted mb-0"> {{ 'MODULES.SYSTEM.PROJECTS' | translate }}</p>
+                                </div>
+                                <div class="col-6">
+                                  <h5 class="mb-1">13</h5>
+                                  <p class="text-muted mb-0">{{ 'MODULES.SYSTEM.TASKS' | translate }}</p>
+                                </div>
+                              </div>
+                            </div> -->
+                            <div class="col-lg-2 col">
+                              <div class="text-end">
+                                <a routerLink="details/{{data?.user.id}}" class="btn btn-light view-btn">{{
+                                  'COMMON.VIEW'
+                                  |translate }} {{ 'MODULES.SYSTEM.PROFILE' | translate }}</a>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="px-3 mb-3">
+                      <div class="row justify-content-md-between align-items-md-center gy-2">
+                        <div class="col col-sm-6">
+                          <div class="dataTables_info mb-2" id="tickets-table_info" role="status" aria-live="polite">
+                            {{ 'COMMON.SHOWING' | translate }} {{pagination?.startIndex + 1}}–{{pagination?.endIndex ===
+                            pagination?.length ? pagination?.endIndex : pagination?.endIndex + 1}} {{ 'COMMON.OF' |
+                            translate }} {{pagination?.length}}
+                            {{ 'COMMON.ENTRIES' | translate }}
+                          </div>
+                        </div>
+                        <div class="col col-sm-6">
+                          <div class="text-sm-right float-end listjs-pagination">
+                            <ngb-pagination [collectionSize]="pagination?.length" [(page)]="page"
+                              (pageChange)="onPageChange($event)" [pageSize]="pagination?.size">
+                            </ngb-pagination>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </ng-template>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col-lg-12">
+      <div>
+        <div [ngbNavOutlet]="Border"></div>
+
+        <ng-template #viewContent let-offcanvas>
+          <div class="offcanvas-body profile-offcanvas p-0">
+            <div class="team-cover">
+              <img src="assets/images/small/img-9.jpg" alt="" class="img-fluid" />
+            </div>
+            <div class="p-3">
+              <div class="team-settings">
+                <div class="row">
+                  <div class="col">
+                    <div class="bookmark-icon flex-shrink-0 me-2">
+                      <input type="checkbox" id="favourite13" class="bookmark-input bookmark-hide">
+                      <label class="btn-star fs-16 favourite-btn">
+                        <i class="ri-star-fill"></i>
+                      </label>
+                    </div>
+                  </div>
+                  <div class="col text-end dropdown" ngbDropdown>
+                    <a href="javascript:void(0);" class="arrow-none" id="dropdownMenuLink14" data-bs-toggle="dropdown"
+                      aria-expanded="false" ngbDropdownToggle>
+                      <i class="ri-more-fill fs-17"></i>
+                    </a>
+                    <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="dropdownMenuLink14" ngbDropdownMenu>
+                      <li><a class="dropdown-item" href="javascript:void(0);"><i
+                            class="ri-eye-line me-2 align-middle"></i>{{ 'COMMON.VIEW' | translate }}</a></li>
+                      <li><a class="dropdown-item" href="javascript:void(0);"><i
+                            class="ri-star-line me-2 align-middle"></i>{{ 'COMMON.FAVORITES' | translate }}</a></li>
+                      <li><a class="dropdown-item" href="javascript:void(0);"><i
+                            class="ri-delete-bin-5-line me-2 align-middle"></i>{{ 'COMMON.DELETE' | translate }}</a>
+                      </li>
+                    </ul>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <!-- <div class="row g-0 text-center">
+              <div class="col-6">
+                <div class="p-3 border border-dashed border-start-0">
+                  <h5 class="mb-1 project_count">124</h5>
+                  <p class="text-muted mb-0">{{ 'MODULES.SYSTEM.PROJECTS' | translate }}</p>
+                </div>
+              </div>
+              <div class="col-6">
+                <div class="p-3 border border-dashed border-start-0">
+                  <h5 class="mb-1 task_count">81</h5>
+                  <p class="text-muted mb-0">{{ 'MODULES.SYSTEM.TASKS' | translate }}</p>
+                </div>
+              </div>
+            </div> -->
+            <div class="p-3">
+              <h5 class="fs-15 mb-3"> {{ 'MODULES.SYSTEM.PERSONAL_DETAILS' | translate }}</h5>
+              <div class="mb-3">
+                <p class="text-muted text-uppercase fw-semibold fs-12 mb-2">{{ 'COMMON.NUMBER' | translate }}</p>
+                <h6>+(256) 2451 8974</h6>
+              </div>
+              <div class="mb-3">
+                <p class="text-muted text-uppercase fw-semibold fs-12 mb-2">{{ 'COMMON.EMAIL' | translate }}</p>
+                <h6>nancymartino@email.com</h6>
+              </div>
+              <div>
+                <p class="text-muted text-uppercase fw-semibold fs-12 mb-2">{{ 'COMMON.LOCATION' | translate }}</p>
+                <h6 class="mb-0">Carson City - USA</h6>
+              </div>
+            </div>
+            <div class="p-3 border-top">
+              <h5 class="fs-15 mb-4">{{ 'MODULES.SYSTEM.FILE_MANAGER' | translate }}</h5>
+              <div class="d-flex mb-3">
+                <div class="flex-shrink-0 avatar-xs">
+                  <div class="avatar-title bg-soft-danger text-danger rounded fs-16">
+                    <i class="ri-image-2-line"></i>
+                  </div>
+                </div>
+                <div class="flex-grow-1 ms-3">
+                  <h6 class="mb-1"><a href="javascript:void(0);">{{ 'MODULES.SYSTEM.IMAGES' | translate }}</a></h6>
+                  <p class="text-muted mb-0">4469 {{ 'MODULES.SYSTEM.FILES' | translate }}</p>
+                </div>
+                <div class="text-muted">
+                  12 GB
+                </div>
+              </div>
+              <div class="d-flex mb-3">
+                <div class="flex-shrink-0 avatar-xs">
+                  <div class="avatar-title bg-soft-secondary text-secondary rounded fs-16">
+                    <i class="ri-file-zip-line"></i>
+                  </div>
+                </div>
+                <div class="flex-grow-1 ms-3">
+                  <h6 class="mb-1"><a href="javascript:void(0);">{{ 'MODULES.SYSTEM.DOCUMENT' | translate }}</a></h6>
+                  <p class="text-muted mb-0">46 {{ 'MODULES.SYSTEM.FILES' | translate }}</p>
+                </div>
+                <div class="text-muted">
+                  3.46 GB
+                </div>
+              </div>
+              <div class="d-flex mb-3">
+                <div class="flex-shrink-0 avatar-xs">
+                  <div class="avatar-title bg-soft-success text-success rounded fs-16">
+                    <i class="ri-live-line"></i>
+                  </div>
+                </div>
+                <div class="flex-grow-1 ms-3">
+                  <h6 class="mb-1"><a href="javascript:void(0);">{{ 'MODULES.SYSTEM.MEDIA' | translate }}</a></h6>
+                  <p class="text-muted mb-0">124 {{ 'MODULES.SYSTEM.FILES' | translate }}</p>
+                </div>
+                <div class="text-muted">
+                  4.3 GB
+                </div>
+              </div>
+              <div class="d-flex">
+                <div class="flex-shrink-0 avatar-xs">
+                  <div class="avatar-title bg-soft-primary text-primary rounded fs-16">
+                    <i class="ri-error-warning-line"></i>
+                  </div>
+                </div>
+                <div class="flex-grow-1 ms-3">
+                  <h6 class="mb-1"><a href="javascript:void(0);">{{ 'MODULES.SYSTEM.OTHERS' | translate }}</a></h6>
+                  <p class="text-muted mb-0">18 {{ 'MODULES.SYSTEM.FILES' | translate }}</p>
+                </div>
+                <div class="text-muted">
+                  846 MB
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="offcanvas-foorter border p-3 hstack gap-3 text-center position-relative">
+            <button class="btn btn-light w-100"><i class="ri-question-answer-fill align-bottom ms-1"></i> {{
+              'MODULES.SYSTEM.SEND_MESSAGE' | translate }}</button>
+            <a routerLink="details/{{data?.user.id}}" class="btn btn-primary w-100"><i
+                class="ri-user-3-fill align-bottom ms-1"></i> {{ 'COMMON.VIEW.PROFILE' | translate }}</a>
+          </div>
+        </ng-template>
+      </div>
+    </div>
+  </div>
+
+  <ng-template #accountModal role="document" let-modal>
+    <div class="modal-header bg-soft-info p-3">
+      <h5 class="modal-title" id="exampleModalLabel">{{'COMMON.ADD_ACCOUNT' | translate}} </h5>
+      <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" id="close-modal"
+        (click)="modal.dismiss('Cross click')"></button>
+    </div>
+    <div class="modal-body">
+      <form [formGroup]="userForm">
+        <div class="mb-3">
+          <label for="firstnameInput" class="form-label"> {{ 'COMMON.FIRST_NAME' | translate }}</label>
+          <input required formControlName="firstName" type="text" class="form-control" id="firstnameInput"
+            placeholder="{{'PLACEHOLDER.ENTER_FIRSTNAME' | translate }}">
+        </div>
+        <div class="mb-3">
+          <label for="lastnameInput" class="form-label"> {{ 'COMMON.LAST_NAME' | translate }}</label>
+          <input formControlName="lastName" type="text" class="form-control" id="lastnameInput"
+            placeholder="{{'PLACEHOLDER.ENTER_LASTNAME' | translate }}">
+        </div>
+        <div class="mb-3">
+          <label for="email" class="col-sm-4 col-form-label">{{ 'COMMON.EMAIL_ADDRESS' | translate
+            }}</label>
+          <input type="email" class="form-control" placeholder="Email" [formControlName]="'email'">
+          <div class="text-danger" *ngIf="userForm.get('email').touched && userForm.get('email').hasError('required')">
+            {{ 'COMMON.REQUIRED' | translate }}
+          </div>
+        </div>
+        <div class="mb-3">
+          <label for="email" class="col-form-label">{{ 'MODULES.SYSTEM.PASSWORD' | translate
+            }}</label>
+          <div class="input-group">
+            <input id="password" class="form-control" type="password" [formControlName]="'password'" #passwordField>
+            <div class="input-group-append">
+              <button class="btn btn-link position-absolute end-0 top-0 text-decoration-none text-muted" type="button"
+                id="password-addon"><i class="mdi align-middle" [ngClass]="{'mdi-eye-off-outline': passwordField.type !== 'password', 'mdi-eye-outline': passwordField.type === 'password'
+              }" (click)="passwordField.type = passwordField.type === 'password' ? 'text' : 'password'"></i></button>
+            </div>
+          </div>
+          <div class="text-danger"
+            *ngIf="userForm.get('password')?.touched && userForm.get('password').hasError('required')">
+            {{ 'COMMON.REQUIRED' | translate }}
+          </div>
+        </div>
+        <div class="mb-3">
+          <label for="email" class="col-form-label">{{ 'MODULES.SYSTEM.CONFIRM_PASSWORD' |
+            translate}}</label>
+          <div class="input-group">
+            <input id="password-confirm" class="form-control" type="password" [formControlName]="'passwordConfirm'"
+              [required]="true" #passwordConfirmField>
+            <div class="input-group-append">
+              <button class="btn btn-link position-absolute end-0 top-0 text-decoration-none text-muted" type="button"
+                id="password-addon"><i class="mdi align-middle" [ngClass]="{'mdi-eye-off-outline': passwordConfirmField.type !== 'password', 'mdi-eye-outline': passwordConfirmField.type === 'password'
+              }"
+                  (click)="passwordConfirmField.type = passwordConfirmField.type === 'password' ? 'text' : 'password'"></i></button>
+            </div>
+          </div>
+          <div class="text-danger"
+            *ngIf="userForm?.errors?.fieldsMismatch && userForm.get('passwordConfirm').touched">
+            {{ 'MODULES.SYSTEM.NO_MATCH_PASSWORD' | translate }}
+          </div>
+        </div>
+      </form>
+    </div>
+    <div class="modal-footer">
+      <div class="hstack gap-2 justify-content-end">
+        <button type="button" class="btn btn-light" data-bs-dismiss="modal"
+          (click)="modal.close('Close click')">{{'COMMON.CLOSE' | translate }}</button>
+        <button type="button" [disabled]="userForm.invalid || isButtonDisabled" (click)="save()" class="btn btn-success"
+          id="add-btn">{{ 'COMMON.SAVE' | translate }}</button>
+      </div>
+    </div>
+  </ng-template>
+</ng-container>
+
+<div *ngIf="navigating$ | async" class="vh-100 py-4 text-center" fxLayout="column" fxLayoutAlign="center center"
+  fxLayoutGap="1rem">
+  <div>
+    <lord-icon trigger="loop" style="width:72px;height:72px"
+      [colors]="'primary:' + primaryColor + ',secondary:' + secondaryColor"
+      src="https://cdn.lordicon.com/msoeawqm.json">
+    </lord-icon>
+  </div>
+  <div class="mt-4">
+    <h5>{{ 'COMMON.LOADING' | translate }}</h5>
+  </div>
+</div>

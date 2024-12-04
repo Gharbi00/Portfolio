@@ -1,0 +1,731 @@
+<ng-container *ngIf="!(navigating$ | async)">
+  <app-breadcrumbs title="{{ 'MENUITEMS.TITLE.CREATE' | translate }} {{ 'MENUITEMS.TITLE.GALLERY' | translate }}"
+    [breadcrumbItems]="breadCrumbItems"></app-breadcrumbs>
+  <div
+    *ngIf="website?.multilanguage?.active === true && website?.multilanguage?.languages?.length && !fullPath.includes('add')"
+    class="card" id="ticketsList">
+    <div class="card-header border-0">
+      <form [formGroup]="productForm">
+        <div formGroupName="translation" class="row">
+          <h5 class="card-title col-lg-4 flex-grow-1">{{'COMMON.LANGUAGE' | translate }}</h5>
+          <ng-select bindLabel="name" formControlName="language" (change)="onChangeLanguage($event)" class="col-lg-8"
+            [closeOnSelect]="true" [multiple]="false" [items]="languages"
+            placeholder="{{'PLACEHOLDER.SELECT_LANGUAGE' | translate }}" [searchable]="false" [clearable]="false">
+            <ng-template ng-label-tmp let-item="item" let-clear="clear">
+              <div class="d-flex gap-1">
+                <span *ngIf="item?.name !== 'Default'">{{item?.iconFlag}}</span>
+                <span>{{item?.name}}</span>
+              </div>
+            </ng-template>
+            <ng-template ng-option-tmp let-item$="item$" let-item="item">
+              <div class="d-flex gap-1">
+                <span *ngIf="item?.name !== 'Default'">{{item?.iconFlag}}</span>
+                <span>{{item?.name}}</span>
+              </div>
+            </ng-template>
+          </ng-select>
+        </div>
+      </form>
+    </div>
+  </div>
+  <ng-container *ngIf="translation?.value?.language?.name !== 'Default'">
+    <form [formGroup]="productForm">
+      <div formGroupName="translation" class="col-lg-12">
+        <div class="card">
+          <div class="card-body">
+            <h4 class="mb-4 mt-4 flex-grow-1">{{'MODULES.WEBSITE.TRANSLATION_SECTIONS' | translate }}</h4>
+            <ng-container formGroupName="content">
+              <div class="col-lg-6 mb-3">
+                <div class="form-label">
+                  <label for="firstnamefloatingInput">{{'COMMON.NAME' | translate }}</label>
+                  <input required formControlName="name" type="text" class="form-control" id="firstnamefloatingInput"
+                    placeholder="{{'PLACEHOLDER.ENTER_TITLE' | translate }}" />
+                </div>
+                <div class="mb-3" fxLayout="column" fxLayoutAlign="space-between start">
+                  <label>{{'COMMON.DESCRIPTION' | translate }}</label>
+                  <textarea cols="30" rows="10" id="description" name="description" class="form-control"
+                    formControlName="description" placeholder="{{'COMMON.ENTER_DESCRIPTION' | translate }}"></textarea>
+                </div>
+                <ng-container formArrayName="descriptionList">
+                  <ng-container
+                    *ngFor="let key of translation.get(['content', 'descriptionList'])['controls']; let i = index; let first = first; let last = last">
+                    <div class="mb-3 col-lg-12">
+                      <label for="firstnameInput" class="form-label">{{ 'MODULES.HR.CAREER.POSITIONS.DESCRIPTION_ITEM'
+                        |translate }}</label>
+                      <div class="d-flex align-items-center">
+                        <textarea class="form-control" id="description-field" rows="4"
+                          placeholder="{{ 'COMMON.ENTER' | translate }}  {{ 'MODULES.HR.CAREER.POSITIONS.DESCRIPTION_ITEM' | translate }}"
+                          [formControlName]="i"></textarea>
+                        <button *ngIf="!first" (click)="removeDescriptionField(i)" class="btn btn-danger btn-sm ms-3">
+                          <i class="fs-16 ft ri-delete-bin-2-line"></i>
+                        </button>
+                      </div>
+                    </div>
+                  </ng-container>
+                  <a (click)="addDescriptionListField()" class="btn btn-soft-info btn-sm mt-2 mt-sm-0 shadow-none"><i
+                      class="ri-add-line align-middle me-1"></i>
+                    {{ 'MODULES.HR.CAREER.POSITIONS.ADD_DESCRIPTION_ITEM' | translate }}</a>
+                </ng-container>
+              </div>
+              <ng-container formArrayName="specs">
+                <div
+                  *ngFor="let section of translation.get(['content', 'specs'])['controls']; let j=index; let last = last"
+                  [formGroupName]="j">
+                  <div class="row g-3">
+                    <div class="col-lg-3 mb-3">
+                      <div class="form-label">
+                        <label for="firstnamefloatingInput">{{ 'PLCAEHOLDER.KEY' | translate }}</label>
+                        <input formControlName="key" type="text" class="form-control" id="firstnamefloatingInput"
+                          placeholder="{{'PLACEHOLDER.ENTER_KEY' | translate }}">
+                      </div>
+                    </div>
+                    <div class="col-lg-3 mb-3">
+                      <div class="form-label">
+                        <label for="firstnamefloatingInput">{{ 'PLCAEHOLDER.VALUE' | translate }}</label>
+                        <input formControlName="value" type="text" class="form-control" id="firstnamefloatingInput"
+                          placeholder="{{'PLACEHOLDER.ENTER_VALUE' | translate }}">
+                      </div>
+                    </div>
+                  </div>
+                  <div class="col-lg-12">
+                    <div class="hstack justify-content-end gap-2 mt-4 mb-4">
+                      <button *ngIf="translation.get(['content', 'specs']).value?.length > 1" type="button"
+                        (click)="deleteSpecs(j)" class="btn btn-sm btn-danger"><i
+                          class="ri-delete-bin-fill align-bottom"></i>{{'COMMON.DELETE' | translate }}</button>
+                      <button *ngIf="last" (click)="newSpecs()" type="button" class="btn btn-sm btn-primary add-btn"
+                        id="create-btn"><i class="ri-add-line align-bottom me-1"></i>{{'MODULES.WEBSITE.SECTION' |
+                        translate }}</button>
+                    </div>
+                  </div>
+                </div>
+              </ng-container>
+              <div class="col-lg-12">
+                <div class="justify-content-end gap-2 d-flex">
+                  <button (click)="exit()" class="btn btn-soft-danger btn-sm mt-2 mt-sm-0 shadow-none"><i
+                      class="mdi mdi-archive-remove-outline align-middle me-1"></i>{{'COMMON.BACK' | translate }}
+                  </button>
+                  <button [disabled]="isButtonDisabled || productForm.invalid" (click)="save()" type="button"
+                    class="btn btn-success">{{'COMMON.SAVE' | translate }}</button>
+                </div>
+              </div>
+            </ng-container>
+          </div>
+        </div>
+      </div>
+    </form>
+  </ng-container>
+  <ng-container *ngIf="translation?.value?.language?.name === 'Default'">
+    <form [formGroup]="productForm" *ngIf="productForm">
+      <div fxLayout="column" fxLayoutAlign="space-between stretch">
+        <div fxLayout="row" fxLayout.lt-md="column" fxLayoutGap="25px grid" fxLayoutAlign="start start" *ngIf="pageId$ | async as pageId">
+          <div  fxFlex="20%" fxFlex.lt-md="100%">
+            <div class="card">
+              <div class="card-body">
+                <div class="mb-3">
+                  <label class="form-label" for="product-title-input">{{ 'SHARED.' + pageId.slice(0, -1) | translate }}
+                    {{'COMMON.TITLE' | translate}}</label>
+                  <input type="text" class="form-control" formControlName="name" id="product-title-input"
+                    placeholder="{{'COMMON.ENTER' | translate}} {{ 'SHARED.' + pageId.slice(0, -1) | translate }} {{'COMMON.TITLE' | translate}}">
+                </div>
+                <div class="mb-3" *ngIf="pageId === 'services'">
+                  <label class="form-label" for="product-barcode-input">{{ 'SHARED.' + pageId.slice(0, -1) | translate
+                    }}
+                    {{'MODULES.SYSTEM.REFERENCE' | translate}}</label>
+                  <input type="text" class="form-control" formControlName="barcode" id="product-barcode-input"
+                    placeholder="{{'COMMON.ENTER' | translate}} {{ 'SHARED.' + pageId.slice(0, -1) | translate }} {{'MODULES.INVENTORY.BARCODE' | translate}}">
+                </div>
+                <div class="mb-7 mb-sm-6" fxLayout="column" fxLayoutAlign="space-between start">
+                  <label>{{ 'SHARED.' + pageId.slice(0, -1) | translate }} {{'COMMON.DESCRIPTION' | translate}}</label>
+                  <quill-editor class="custom-quill-editor" formControlName="description"></quill-editor>
+                </div>
+              </div>
+            </div>
+            <div class="card">
+              <div class="card-header">
+                <h5 class="card-title mb-0">{{ 'SHARED.' + pageId.slice(0, -1) | translate }} {{
+                  'MENUITEMS.TITLE.GALLERY' | translate }}</h5>
+              </div>
+              <div class="card-body" fxLayout="column" fxLayoutAlign="space-between stretch">
+                <div *ngIf="pictures.value?.length" class="mt-2 p-3 gap-2 df-flex">
+                  <div *ngFor="let picture of pictures.value; let i = index" class="img-wrap image-area">
+                    <button (click)="openAltMoadal(i)" type="button" class="btn btn-outline-info btn-sm wrap-img m-2">
+                      <i class="ri-coupon-2-line"></i>
+                    </button>
+                    <img class="cover h-30 product-picture w-30" [src]="picture.baseUrl + '/' + picture.path">
+                    <button (click)="removePicture(i)" type="button"
+                      class="delete-button btn btn-outline-danger btn-icon waves-effect waves-light btn-sm">
+                      <i class="ri-delete-bin-5-line"></i>
+                    </button>
+                  </div>
+                </div>
+
+                <div class="uploader-wrapper">
+                  <div class="progress-wrapper" *ngIf="uploadingFiles" fxLayout="column" fxLayoutAlign="center center">
+                    <mat-progress-spinner [diameter]="100" mode="indeterminate"></mat-progress-spinner>
+                  </div>
+                  <ngx-file-drop class="cursor-pointer" (click)="addedFile(true)"
+                    dropZoneLabel="{{ 'MODULES.COLLABORATION.PROJECTS.DROP_FILES_HERE' | translate }}"
+                    (onFileDrop)="dropped($event)" (onFileOver)="fileOver($event)" (onFileLeave)="fileLeave($event)">
+                    <ng-template ngx-file-drop-content-tmp let-openFileSelector="openFileSelector">
+                      {{ 'MODULES.COLLABORATION.PROJECTS.CLICK_OR_DRAG_FILES' | translate }}
+                    </ng-template>
+                  </ngx-file-drop>
+                </div>
+
+              </div>
+            </div>
+            <div class="card">
+              <div class="card-header">
+                <h5 class="card-title mb-0">{{ pageId === 'services' ? 'Price And Discount' : 'General Info'}}</h5>
+              </div>
+              <div class="card-body" fxLayout="column" fxLayoutAlign="space-between stretch" fxLayoutGap="1rem">
+                <div fxLayout="row" fxLayoutAlign="space-between center" fxLayoutGap="1rem">
+                  <div fxFlex="auto" *ngIf="pageId !== 'services'">
+                    <label class="form-label" for="sku-input">SKU</label>
+                    <input type="text" id="sku-input" class="form-control" formControlName="sku"
+                      placeholder="{{'PLACEHOLDER.ENTER_SKU' | translate }}">
+                  </div>
+                  <div fxFlex="auto" *ngIf="pageId !== 'services'">
+                    <label class="form-label" for="external-id-input">{{'MODULES.INVENTORY.EXTERNAL_ID' | translate
+                      }}</label>
+                    <input type="text" class="form-control" id="external-id-input" formControlName="externalId"
+                      placeholder="{{'PLACEHOLDER.ENTER_EXTERNAL_ID' | translate }}">
+                  </div>
+                </div>
+                <div fxLayout="row" fxLayoutAlign="space-between center" fxLayoutGap="1rem">
+                  <div fxFlex="auto" *ngIf="pageId === 'products' || pageId === 'equipments'">
+                    <label class="form-label" for="brand-input">{{ 'MODULES.ECOMMERCE.MAIN.BRAND' | translate }}</label>
+                    <ng-select [items]="brands$ | async" [multiple]="false" [typeahead]="brandSearchInput$"
+                      [hideSelected]="true" [virtualScroll]="true" [formControlName]="'brand'"
+                      placeholder="Choose Brand" (scrollToEnd)="loadMoreBrands()">
+                      <ng-template ng-label-tmp let-item="item" let-clear="clear">
+                        <span>{{item?.name?.split('_').join(' ') | titlecase}}</span>
+                        <span class="ng-value-icon right" (click)="clear(item)" aria-hidden="true">×</span>
+                      </ng-template>
+                      <ng-template ng-option-tmp let-item="item">
+                        <span>{{item?.name?.split('_').join(' ') | titlecase}}</span>
+                      </ng-template>
+                    </ng-select>
+                  </div>
+                  <div fxFlex="auto" *ngIf="pageId === 'products' || pageId === 'services'">
+                    <label class="form-label" for="product-price-input">{{ 'MODULES.ECOMMERCE.MAIN.PRICE' | translate
+                      }}</label>
+                    <div class="input-group">
+                      <span class="input-group-text" id="product-price-addon">$</span>
+                      <input type="number" class="form-control" aria-label="Price" formControlName="price"
+                        id="product-price-input" placeholder="{{'PLACEHOLDER.ENTER_PRICE' | translate }}"
+                        aria-describedby="product-price-addon">
+                    </div>
+                  </div>
+                  <div fxFlex="auto" *ngIf="pageId === 'products' || pageId === 'services'">
+                    <label class="form-label" for="product-discount-input">{{ 'MODULES.ECOMMERCE.MAIN.DISCOUNT' |
+                      translate }}</label>
+                    <div class="input-group" ngbDropdown formGroupName="discount">
+                      <button ngbDropdownToggle class="btn btn-light" type="button" id="discountType">
+                        {{productForm.get('discount').value.discountType === 'PERCENTAGE' ? '%' : '$'}}
+                      </button>
+                      <ul ngbDropdownMenu aria-labelledby="discountType">
+                        <li><a class="dropdown-item"
+                            (click)="productForm.get('discount.discountType').patchValue('AMOUNT')">$</a></li>
+                        <li><a class="dropdown-item"
+                            (click)="productForm.get('discount.discountType').patchValue('PERCENTAGE')">%</a></li>
+                      </ul>
+                      <input type="number" class="form-control" aria-label="discount" formControlName="amount"
+                        id="product-discount-input" placeholder="{{'PLACEHOLDER.ENTER_DISCOUNT' | translate }}"
+                        aria-describedby="product-discount-addon">
+                    </div>
+                  </div>
+                </div>
+                <ng-container formGroupName="seo">
+                  <div class="row col-lg-12">
+                    <div class="mb-3 col-lg-6">
+                      <label>UrlKey</label>
+                      <input class="form-control" formControlName="urlKey" name="title">
+                    </div>
+                    <div class="mb-3 col-lg-6">
+                      <label>{{'MODULES.INVENTORY.META_TITLE' | translate }}</label>
+                      <input class="form-control" formControlName="metaTitle" name="title">
+                    </div>
+                    <div class="mb-3">
+                      <label>{{'MODULES.INVENTORY.META_DESCRIPTION' | translate }}</label>
+                      <input class="form-control" formControlName="metaDesription" name="title">
+                    </div>
+                  </div>
+                  <div class="row">
+                    <div
+                      *ngFor="let key of productForm.get(['seo', 'metaKeywords'])['controls']; let i = index; let first = first; let last = last;"
+                      class="mt-2">
+                      <div class="row">
+                        <div class="mb-3 col-lg-6">
+                          <label class="control-label">{{'MODULES.INVENTORY.META_KEYWORD_NAME' | translate }}</label>
+                          <input type="text" [formControl]="key.get('name')" class="form-control"
+                            placeholder="{{'PLACEHOLDER.ENTER_META_KEYWORD_NAME' | translate }}">
+                        </div>
+                        <div class="mb-3 col-lg-6">
+                          <label class="control-label">{{'MODULES.INVENTORY.CONTENT' | translate }}</label>
+                          <div class="d-flex align-items-center">
+                            <input type="text" [formControl]="key.get('content')" class="form-control"
+                              placeholder="{{'PLACEHOLDER.ENTER_CONTENT' | translate }}">
+                            <button (click)="removeKeywordField(i)" class="btn btn-danger btn-sm ms-3">
+                              <i class="fs-16 ft ri-delete-bin-2-line"></i>
+                            </button>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <a (click)="addKeywordField()"
+                    class="btn btn-soft-info btn-sm mt-2 mt-sm-0 shadow-none mb-3 col-lg-6"><i
+                      class="ri-add-line align-middle me-1"></i>
+                    {{ 'SHARED.ADD_KEYWORD' | translate }}</a>
+                </ng-container>
+              </div>
+            </div>
+          </div>
+          <div fxFlex.lt-md="100%">
+            <div class="card">
+              <div class="card-header">
+                <h5 class="card-title mb-0">{{'COMMON.STATUS' | translate }}</h5>
+              </div>
+              <div class="card-body">
+                <label for="choices-publish-status-input" class="form-label">{{'COMMON.STATUS' | translate }}</label>
+                <select data-choices class="form-select" formControlName="status" data-choices-search-false
+                  id="choices-publish-status-input">
+                  <option [value]="status" *ngFor="let status of statuses;">{{ status }}</option>
+                </select>
+              </div>
+            </div>
+            <div class="card">
+              <div class="card-header">
+                <h5 class="card-title mb-0">{{'MODULES.INVENTORY.CONDITION' | translate }}</h5>
+              </div>
+              <div class="card-body">
+                <label for="choices-publish-status-input" class="form-label">{{'MODULES.INVENTORY.CONDITION' | translate
+                  }}</label>
+                <select data-choices class="form-select" data-choices-search-false formControlName="condition"
+                  id="choices-publish-status-input">
+                  <option [value]="condition" *ngFor="let condition of conditions;">{{ condition }}</option>
+                </select>
+              </div>
+            </div>
+            <div class="card" *ngIf="pageId === 'products'">
+              <div class="card-header">
+                <h5 class="card-title mb-0">{{ 'SHARED.' + pageId.slice(0, -1) | translate }} Categories</h5>
+              </div>
+              <div class="card-body" fxLayout="column" fxLayoutAlign="center stretch">
+                <mat-form-field class="w-full pr-2" *ngIf="categories$ | async as categories">
+                  <mat-label>{{'COMMON.SELECT' | translate }} {{ 'SHARED.' + pageId.slice(0, -1) | translate }}
+                    category</mat-label>
+                  <mat-select required formControlName="catalogueCategory">
+                    <!-- <mat-select-trigger>{{productForm.get('catalogueCategory').value}}</mat-select-trigger> -->
+                    <ng-template #recursiveNodes let-nodes>
+                      <ng-container *ngFor="let group of nodes">
+                        <mat-optgroup *ngIf="group.hasChildren">
+                          <div class="flex flex-row justify-between items-center cursor-pointer"
+                            [style]="group.layer > 1 ? 'padding-left:' + ((32 * (group.layer) / 2) - 16) + 'px' : 'padding-left: 0px'">
+                            <div>
+                              <span *ngFor="let i of [].constructor(group.layer - 1)">- </span>{{group.name}}
+                            </div>
+                            <mat-icon *ngIf="group?.children?.length">keyboard_arrow_down</mat-icon>
+                            <mat-icon *ngIf="!group?.children?.length">keyboard_arrow_right</mat-icon>
+                          </div>
+                          <ng-container *ngTemplateOutlet="recursiveNodes; context: {$implicit: group?.children}">
+                          </ng-container>
+                        </mat-optgroup>
+                        <mat-option [value]="group.id" *ngIf="!group.hasChildren"
+                          [style]="group.layer > 1 ? 'padding-left:' + (32 * (group.layer) / 2) + 'px' : ''">
+                          <span class="flex flex-row items-center">
+                            <span *ngFor="let i of [].constructor(group.layer - 1)">-</span>
+                            <span class="ml-1 category-name">{{group.name}}</span>
+                          </span>
+                        </mat-option>
+                        <!-- <ng-template #option>
+                        </ng-template> -->
+                      </ng-container>
+                    </ng-template>
+                    <ng-container *ngTemplateOutlet="recursiveNodes; context:{$implicit: categories}">
+                    </ng-container>
+                  </mat-select>
+                </mat-form-field>
+              </div>
+            </div>
+            <!-- <div class="card" *ngIf="pageId === 'products' || pageId === 'services'">
+              <div class="card-header">
+                <h5 class="card-title mb-0">{{ 'SHARED.' + pageId.slice(0, -1) | translate }} Taxes</h5>
+              </div>
+              <div class="card-body">
+                <p class="text-muted mb-2">{{'COMMON.SELECT' | translate }} {{ 'SHARED.' + pageId.slice(0, -1) | translate }} tax</p>
+                <ng-select
+                  bindValue="id"
+                  [addTag]="true"
+                  [multiple]="true"
+                  bindlabel="label"
+                  [clearable]="true"
+                  data-choices="true"
+                  [searchable]="true"
+                  [hideSelected]="true"
+                  formControlName="taxes"
+                  [items]="allTaxes$ | async"
+                  data-choices-removeItem="true"
+                >
+                </ng-select>
+              </div>
+            </div> -->
+            <div class="card">
+              <div class="card-header">
+                <h5 class="card-title mb-0">{{ 'SHARED.' + pageId.slice(0, -1) | translate }} Tags</h5>
+              </div>
+              <div class="card-body">
+                <div class="mb-3">
+                  <label class="form-label" for="product-tags-input">{{ 'SHARED.' + pageId.slice(0, -1) | translate }}
+                    Tags (Press
+                    enter to add item)</label>
+                  <ng-select [items]="[]" class="no-arrow-select" [addTag]="true" [isOpen]="false" [multiple]="true" [selectOnTab]="true"
+                    formControlName="tags">
+                  </ng-select>
+                </div>
+              </div>
+            </div>
+            <div class="card">
+              <div class="card-header">
+                <h5 class="card-title mb-0">{{ 'SHARED.' + pageId.slice(0, -1) | translate }} Flags</h5>
+              </div>
+              <div class="card-body">
+                <div class="mb-3">
+                  <label class="form-label" for="product-tags-input">{{ 'SHARED.' + pageId.slice(0, -1) | translate }}
+                    Flags </label>
+                  <ng-select [items]="flags" [selectableGroup]="true" [closeOnSelect]="true" formControlName="flags"
+                    [multiple]="true" placeholder="{{'PLACEHOLDER.SELECT_FIELD' | translate }}">
+                    <ng-template ng-label-tmp let-item="item" let-clear="clear">
+                      <span class="ng-value-label">
+                        {{
+                            (item === 'HOT' ? 'SHARED.HOT' :
+                            item === 'SALE' ? 'SHARED.SALE' :
+                            item === 'NEW' ? 'SHARED.NEW' :
+                            item === 'BEST_SELLER' ? 'SHARED.BEST_SELLER' :
+                            item === 'TRENDING' ? 'SHARED.TRENDING' :
+                            item === 'LIMITED_EDITION' ? 'SHARED.LIMITED_EDITION' :
+                            item === 'EXCLUSIVE' ? 'SHARED.EXCLUSIVE' :
+                            item === 'FEATURED' ? 'SHARED.FEATURED' :
+                            item === 'DISCOUNTED' ? 'SHARED.DISCOUNTED' :
+                            item === 'POPULAR' ? 'SHARED.POPULAR' :
+                            item === 'SUMMER_COLLECTION' ? 'SHARED.SUMMER_COLLECTION' :
+                            item === 'WINTER_COLLECTION' ? 'SHARED.WINTER_COLLECTION' :
+                            item === 'SPRING_COLLECTION' ? 'SHARED.SPRING_COLLECTION' :
+                            item === 'AUTUMN_COLLECTION' ? 'SHARED.AUTUMN_COLLECTION' :
+                            item === 'HOLIDAY_SPECIAL' ? 'SHARED.HOLIDAY_SPECIAL' :
+                            item === 'BACK_TO_SCHOOL' ? 'SHARED.BACK_TO_SCHOOL' :
+                            item === 'BLACK_FRIDAY' ? 'SHARED.BLACK_FRIDAY' :
+                            item === 'CYBER_MONDAY' ? 'SHARED.CYBER_MONDAY' :
+                            item === 'CHRISTMAS_SPECIAL' ? 'SHARED.CHRISTMAS_SPECIAL' :
+                            item === 'NEW_YEAR_SALE' ? 'SHARED.NEW_YEAR_SALE' :
+                            item === 'BUY_ONE_GET_ONE' ? 'SHARED.BUY_ONE_GET_ONE' :
+                            item === 'FLASH_SALE' ? 'SHARED.FLASH_SALE' :
+                            item === 'CLEARANCE' ? 'SHARED.CLEARANCE' :
+                            item === 'DEAL_OF_THE_DAY' ? 'SHARED.DEAL_OF_THE_DAY' :
+                            item === 'FREE_SHIPPING' ? 'SHARED.FREE_SHIPPING' :
+                            item === 'LIMITED_TIME_OFFER' ? 'SHARED.LIMITED_TIME_OFFER' :
+                            item === 'WEEKEND_SALE' ? 'SHARED.WEEKEND_SALE' :
+                            item === 'MEMBER_EXCLUSIVE' ? 'SHARED.MEMBER_EXCLUSIVE' :
+                            item === 'PRE_ORDER' ? 'SHARED.PRE_ORDER' :
+                            item === 'GIFT_WITH_PURCHASE' ? 'SHARED.GIFT_WITH_PURCHASE' :
+                            item === 'HIGH_QUALITY' ? 'SHARED.HIGH_QUALITY' :
+                            item === 'PREMIUM' ? 'SHARED.PREMIUM' :
+                            item === 'ECO_FRIENDLY' ? 'SHARED.ECO_FRIENDLY' :
+                            item === 'HANDMADE' ? 'SHARED.HANDMADE' :
+                            item === 'ORGANIC' ? 'SHARED.ORGANIC' :
+                            item === 'LUXURY' ? 'SHARED.LUXURY' :
+                            item === 'SUSTAINABLE' ? 'SHARED.SUSTAINABLE' :
+                            item === 'INNOVATIVE' ? 'SHARED.INNOVATIVE' :
+                            item === 'AWARD_WINNING' ? 'SHARED.AWARD_WINNING' :
+                            item === 'CUSTOMER_FAVORITE' ? 'SHARED.CUSTOMER_FAVORITE' :
+                            item === 'IN_STOCK' ? 'SHARED.IN_STOCK' :
+                            item === 'OUT_OF_STOCK' ? 'SHARED.OUT_OF_STOCK' :
+                            item === 'LOW_STOCK' ? 'SHARED.LOW_STOCK' :
+                            item === 'BACK_IN_STOCK' ? 'SHARED.BACK_IN_STOCK' :
+                            item === 'PRE_SALE' ? 'SHARED.PRE_SALE' :
+                            item === 'LIMITED_STOCK' ? 'SHARED.LIMITED_STOCK' :
+                            item === 'LAST_CHANCE' ? 'SHARED.LAST_CHANCE' :
+                            item === 'EXCLUSIVE_ONLINE' ? 'SHARED.EXCLUSIVE_ONLINE' :
+                            item === 'AVAILABLE_NOW' ? 'SHARED.AVAILABLE_NOW' :
+                            item === 'COMING_SOON' ? 'SHARED.COMING_SOON' :
+                            item === 'UNDER_50' ? 'SHARED.UNDER_50' :
+                            item === 'AFFORDABLE' ? 'SHARED.AFFORDABLE' :
+                            item === 'BUDGET_FRIENDLY' ? 'SHARED.BUDGET_FRIENDLY' :
+                            item === 'HIGH_END' ? 'SHARED.HIGH_END' :
+                            item === 'VALUE_PACK' ? 'MODULES.INVOICING.SHARED.VALUE_PACK' :
+                            item === 'PRICE_DROP' ? 'SHARED.PRICE_DROP' :
+                            item === 'CLEARANCE_PRICE' ? 'SHARED.CLEARANCE_PRICE' :
+                            item === 'SPECIAL_OFFER' ? 'SHARED.SPECIAL_OFFER' :
+                            item === 'REDUCED_PRICE' ? 'SHARED.REDUCED_PRICE' :
+                            item === 'AFFORDABLE_LUXURY' ? 'SHARED.AFFORDABLE_LUXURY' :
+                            item === 'BIRTHDAY_SPECIAL' ? 'SHARED.BIRTHDAY_SPECIAL' :
+                            item === 'WEDDING_COLLECTION' ? 'SHARED.WEDDING_COLLECTION' :
+                            item === 'ANNIVERSARY_SPECIAL' ? 'SHARED.ANNIVERSARY_SPECIAL' :
+                            item === 'EASTER_SPECIAL' ? 'SHARED.EASTER_SPECIAL' :
+                            item === 'HALLOWEEN_SPECIAL' ? 'SHARED.HALLOWEEN_SPECIAL' :
+                            item === 'GRADUATION_GIFT' ? 'SHARED.GRADUATION_GIFT' :
+                            item === 'GIFT_IDEAS' ? 'SHARED.GIFT_IDEAS' :
+                            item === 'NEW_ARRIVAL' ? 'SHARED.NEW_ARRIVAL' :
+                            item === 'TOP_RATED' ? 'SHARED.TOP_RATED' :
+                            item === 'MUST_HAVE' ? 'SHARED.MUST_HAVE' :
+                            item === 'JUST_ARRIVED' ? 'SHARED.JUST_ARRIVED' :
+                            item === 'NEW_SEASON' ? 'SHARED.NEW_SEASON' :
+                            item === 'LIMITED_RELEASE' ? 'SHARED.LIMITED_RELEASE' :
+                            item === 'BACK_IN_FASHION' ? 'SHARED.BACK_IN_FASHION' :
+                            item === 'MOST_WISHED_FOR' ? 'SHARED.MOST_WISHED_FOR' :
+                            item === 'HOT_DEAL' ? 'SHARED.HOT_DEAL' :
+                            item === 'EDITORS_PICK' ? 'SHARED.EDITORS_PICK' :
+                            item === 'FATHERS_DAY' ? 'SHARED.FATHERS_DAY' :
+                            item === 'MOTHERS_DAY' ? 'SHARED.MOTHERS_DAY' :
+                            item === 'VALENTINES_DAY' ? 'SHARED.VALENTINES_DAY' :
+                            '') | translate
+                        }}
+                    </span>
+                    </ng-template>
+                    <ng-template ng-option-tmp let-item$="item$" let-item="item">
+                      {{
+                        (item === 'HOT' ? 'SHARED.HOT' :
+                        item === 'SALE' ? 'SHARED.SALE' :
+                        item === 'NEW' ? 'SHARED.NEW' :
+                        item === 'BEST_SELLER' ? 'SHARED.BEST_SELLER' :
+                        item === 'TRENDING' ? 'SHARED.TRENDING' :
+                        item === 'LIMITED_EDITION' ? 'SHARED.LIMITED_EDITION' :
+                        item === 'EXCLUSIVE' ? 'SHARED.EXCLUSIVE' :
+                        item === 'FEATURED' ? 'SHARED.FEATURED' :
+                        item === 'DISCOUNTED' ? 'SHARED.DISCOUNTED' :
+                        item === 'POPULAR' ? 'SHARED.POPULAR' :
+                        item === 'SUMMER_COLLECTION' ? 'SHARED.SUMMER_COLLECTION' :
+                        item === 'WINTER_COLLECTION' ? 'SHARED.WINTER_COLLECTION' :
+                        item === 'SPRING_COLLECTION' ? 'SHARED.SPRING_COLLECTION' :
+                        item === 'AUTUMN_COLLECTION' ? 'SHARED.AUTUMN_COLLECTION' :
+                        item === 'HOLIDAY_SPECIAL' ? 'SHARED.HOLIDAY_SPECIAL' :
+                        item === 'BACK_TO_SCHOOL' ? 'SHARED.BACK_TO_SCHOOL' :
+                        item === 'BLACK_FRIDAY' ? 'SHARED.BLACK_FRIDAY' :
+                        item === 'CYBER_MONDAY' ? 'SHARED.CYBER_MONDAY' :
+                        item === 'CHRISTMAS_SPECIAL' ? 'SHARED.CHRISTMAS_SPECIAL' :
+                        item === 'NEW_YEAR_SALE' ? 'SHARED.NEW_YEAR_SALE' :
+                        item === 'BUY_ONE_GET_ONE' ? 'SHARED.BUY_ONE_GET_ONE' :
+                        item === 'FLASH_SALE' ? 'SHARED.FLASH_SALE' :
+                        item === 'CLEARANCE' ? 'SHARED.CLEARANCE' :
+                        item === 'DEAL_OF_THE_DAY' ? 'SHARED.DEAL_OF_THE_DAY' :
+                        item === 'FREE_SHIPPING' ? 'SHARED.FREE_SHIPPING' :
+                        item === 'LIMITED_TIME_OFFER' ? 'SHARED.LIMITED_TIME_OFFER' :
+                        item === 'WEEKEND_SALE' ? 'SHARED.WEEKEND_SALE' :
+                        item === 'MEMBER_EXCLUSIVE' ? 'SHARED.MEMBER_EXCLUSIVE' :
+                        item === 'PRE_ORDER' ? 'SHARED.PRE_ORDER' :
+                        item === 'GIFT_WITH_PURCHASE' ? 'SHARED.GIFT_WITH_PURCHASE' :
+                        item === 'HIGH_QUALITY' ? 'SHARED.HIGH_QUALITY' :
+                        item === 'PREMIUM' ? 'SHARED.PREMIUM' :
+                        item === 'ECO_FRIENDLY' ? 'SHARED.ECO_FRIENDLY' :
+                        item === 'HANDMADE' ? 'SHARED.HANDMADE' :
+                        item === 'ORGANIC' ? 'SHARED.ORGANIC' :
+                        item === 'LUXURY' ? 'SHARED.LUXURY' :
+                        item === 'SUSTAINABLE' ? 'SHARED.SUSTAINABLE' :
+                        item === 'INNOVATIVE' ? 'SHARED.INNOVATIVE' :
+                        item === 'AWARD_WINNING' ? 'SHARED.AWARD_WINNING' :
+                        item === 'CUSTOMER_FAVORITE' ? 'SHARED.CUSTOMER_FAVORITE' :
+                        item === 'IN_STOCK' ? 'SHARED.IN_STOCK' :
+                        item === 'OUT_OF_STOCK' ? 'SHARED.OUT_OF_STOCK' :
+                        item === 'LOW_STOCK' ? 'SHARED.LOW_STOCK' :
+                        item === 'BACK_IN_STOCK' ? 'SHARED.BACK_IN_STOCK' :
+                        item === 'PRE_SALE' ? 'SHARED.PRE_SALE' :
+                        item === 'LIMITED_STOCK' ? 'SHARED.LIMITED_STOCK' :
+                        item === 'LAST_CHANCE' ? 'SHARED.LAST_CHANCE' :
+                        item === 'EXCLUSIVE_ONLINE' ? 'SHARED.EXCLUSIVE_ONLINE' :
+                        item === 'AVAILABLE_NOW' ? 'SHARED.AVAILABLE_NOW' :
+                        item === 'COMING_SOON' ? 'SHARED.COMING_SOON' :
+                        item === 'UNDER_50' ? 'SHARED.UNDER_50' :
+                        item === 'AFFORDABLE' ? 'SHARED.AFFORDABLE' :
+                        item === 'BUDGET_FRIENDLY' ? 'SHARED.BUDGET_FRIENDLY' :
+                        item === 'HIGH_END' ? 'SHARED.HIGH_END' :
+                        item === 'VALUE_PACK' ? 'MODULES.INVOICING.SHARED.VALUE_PACK' :
+                        item === 'PRICE_DROP' ? 'SHARED.PRICE_DROP' :
+                        item === 'CLEARANCE_PRICE' ? 'SHARED.CLEARANCE_PRICE' :
+                        item === 'SPECIAL_OFFER' ? 'SHARED.SPECIAL_OFFER' :
+                        item === 'REDUCED_PRICE' ? 'SHARED.REDUCED_PRICE' :
+                        item === 'AFFORDABLE_LUXURY' ? 'SHARED.AFFORDABLE_LUXURY' :
+                        item === 'BIRTHDAY_SPECIAL' ? 'SHARED.BIRTHDAY_SPECIAL' :
+                        item === 'WEDDING_COLLECTION' ? 'SHARED.WEDDING_COLLECTION' :
+                        item === 'ANNIVERSARY_SPECIAL' ? 'SHARED.ANNIVERSARY_SPECIAL' :
+                        item === 'EASTER_SPECIAL' ? 'SHARED.EASTER_SPECIAL' :
+                        item === 'HALLOWEEN_SPECIAL' ? 'SHARED.HALLOWEEN_SPECIAL' :
+                        item === 'GRADUATION_GIFT' ? 'SHARED.GRADUATION_GIFT' :
+                        item === 'GIFT_IDEAS' ? 'SHARED.GIFT_IDEAS' :
+                        item === 'NEW_ARRIVAL' ? 'SHARED.NEW_ARRIVAL' :
+                        item === 'TOP_RATED' ? 'SHARED.TOP_RATED' :
+                        item === 'MUST_HAVE' ? 'SHARED.MUST_HAVE' :
+                        item === 'JUST_ARRIVED' ? 'SHARED.JUST_ARRIVED' :
+                        item === 'NEW_SEASON' ? 'SHARED.NEW_SEASON' :
+                        item === 'LIMITED_RELEASE' ? 'SHARED.LIMITED_RELEASE' :
+                        item === 'BACK_IN_FASHION' ? 'SHARED.BACK_IN_FASHION' :
+                        item === 'MOST_WISHED_FOR' ? 'SHARED.MOST_WISHED_FOR' :
+                        item === 'HOT_DEAL' ? 'SHARED.HOT_DEAL' :
+                        item === 'EDITORS_PICK' ? 'SHARED.EDITORS_PICK' :
+                        item === 'FATHERS_DAY' ? 'SHARED.FATHERS_DAY' :
+                        item === 'MOTHERS_DAY' ? 'SHARED.MOTHERS_DAY' :
+                        item === 'VALENTINES_DAY' ? 'SHARED.VALENTINES_DAY' :
+                        '') | translate
+                    }}
+                    </ng-template>
+                  </ng-select>
+                </div>
+              </div>
+            </div>
+            <!-- <div class="card" formGroupName="maintenance" *ngIf="pageId === 'equipments'">
+              <div class="card-header">
+                <h5 class="card-title mb-0">Product Maintenance</h5>
+              </div>
+              <div class="card-body">
+                <div class="mb-3">
+                  <p class="text-muted mb-2">{{'MODULES.INVENTORY.SELECT_OWNER' | translate }}</p>
+                  <ng-select
+                    bindValue="id"
+                    [addTag]="true"
+                    [clearable]="true"
+                    data-choices="true"
+                    [searchable]="true"
+                    bindLabel="firstName"
+                    [hideSelected]="true"
+                    [virtualScroll]="true"
+                    formControlName="owner"
+                    [items]="owners$ | async"
+                    placeholder="{{'PLACEHOLDER.SELECT_OWNER' | translate }}"
+                    (scrollToEnd)="loadMoreOwners()"
+                    *ngIf="owners$ | async as owners"
+                  >
+                    <ng-template *ngIf="ownersPagination$ | async as ownersPagination" ng-header-tmp>
+                      <small class="form-text text-muted">{{'COMMON.LOADED' | translate }} {{owners?.length}} {{'COMMON.OF' | translate }} {{ownersPagination?.length}}</small>
+                    </ng-template>
+                    <ng-template ng-label-tmp let-item="item" let-clear="clear">
+                      <span class="ng-value-label">
+                        <img *ngIf="!item?.picture" class="avatar-xxs rounded-circle" src="assets/images/users/avatar-1.jpg" width="20px" height="20px">
+                        <img *ngIf="item?.picture" class="avatar-xxs rounded-circle" [src]="item?.picture?.baseUrl + '/' + item?.picture?.path" width="20px" height="20px">
+                        {{item?.firstName}}
+                      </span>
+                      <span class="ng-value-icon right" (click)="clear(item)" aria-hidden="true">×</span>
+                    </ng-template>
+                    <ng-template ng-option-tmp let-item$="item$" let-item="item">
+                      <div class="d-flex align-items-center">
+                        <span class="flex-shrink-0">
+                          <img *ngIf="!item?.picture" src="assets/images/users/avatar-1.jpg" alt="" class="avatar-xxs rounded-circle" />
+                          <img *ngIf="item?.picture" [src]="item?.picture?.baseUrl + '/' + item?.picture?.path" alt="" class="avatar-xxs rounded-circle" />
+                        </span>
+                        <span class="flex-grow-1 ms-2">
+                          {{item?.firstName}} {{item?.lastName}}
+                        </span>
+                      </div>
+                    </ng-template>
+                  </ng-select>
+                </div>
+                <div class="mb-3">
+                  <p class="text-muted mb-2">{{'MODULES.INVENTORY.SELECT_TECHNICIAN' | translate }}</p>
+                  <ng-select
+                    bindValue="id"
+                    [addTag]="true"
+                    [clearable]="true"
+                    data-choices="true"
+                    [searchable]="true"
+                    bindLabel="firstName"
+                    [hideSelected]="true"
+                    [virtualScroll]="true"
+                    formControlName="technician"
+                    [items]="technicians$ | async"
+                    placeholder="{{'PLACEHOLDER.SELECT_TECHNICIAN' | translate }}"
+                    (scrollToEnd)="loadMoreTechnicians()"
+                    *ngIf="technicians$ | async as technicians"
+                  >
+                    <ng-template *ngIf="techniciansPagination$ | async as techniciansPagination" ng-header-tmp>
+                      <small class="form-text text-muted">{{'COMMON.LOADED' | translate }} {{technicians?.length}} {{'COMMON.OF' | translate }} {{techniciansPagination?.length}}</small>
+                    </ng-template>
+                    <ng-template ng-label-tmp let-item="item" let-clear="clear">
+                      <span class="ng-value-label">
+                        <img *ngIf="!item?.picture" class="avatar-xxs rounded-circle" src="assets/images/users/avatar-1.jpg" width="20px" height="20px">
+                        <img *ngIf="item?.picture" class="avatar-xxs rounded-circle" [src]="item?.picture?.baseUrl + '/' + item?.picture?.path" width="20px" height="20px">
+                        {{item?.firstName}}
+                      </span>
+                      <span class="ng-value-icon right" (click)="clear(item)" aria-hidden="true">×</span>
+                    </ng-template>
+                    <ng-template ng-option-tmp let-item$="item$" let-item="item">
+                      <div class="d-flex align-items-center">
+                        <span class="flex-shrink-0">
+                          <img *ngIf="!item?.picture" src="assets/images/users/avatar-1.jpg" alt="" class="avatar-xxs rounded-circle" />
+                          <img *ngIf="item?.picture" [src]="item?.picture?.baseUrl + '/' + item?.picture?.path" alt="" class="avatar-xxs rounded-circle" />
+                        </span>
+                        <span class="flex-grow-1 ms-2">
+                          {{item?.firstName}} {{item?.lastName}}
+                        </span>
+                      </div>
+                    </ng-template>
+                  </ng-select>
+                </div>
+                <div class="mb-3">
+                  <label class="form-label" for="product-expectedMeantime-input">{{'MODULES.INVENTORY.EXPECTED_MEANTIME' | translate }}</label>
+                  <div class="input-group">
+                    <input
+                      type="number"
+                      class="form-control"
+                      aria-label="Expected Meantime"
+                      formControlName="expectedMeantime"
+                      id="expected-meantime-input"
+                      placeholder="{{'PLACEHOLDER.ENTER_EXPECTED_MEANTIME' | translate }}"
+                      aria-describedby="product-expectedMeantime-addon"
+                    >
+                    <span class="input-group-text" id="product-expectedMeantime-addon">{{'MODULES.INDEX.DAYS' | translate }}</span>
+                  </div>
+                </div>
+                <div class="mb-3">
+                  <label class="form-label" for="product-maintenanceDuration-input">{{'MODULES.INVENTORY.MAINTENANCE_DURATION' | translate }}</label>
+                  <div class="input-group">
+                    <input
+                      type="number"
+                      class="form-control"
+                      aria-label="Maintenance Duration"
+                      formControlName="maintenanceDuration"
+                      id="maintenance-duration-input"
+                      placeholder="{{'PLACEHOLDER.ENTER_MAINTENANCE_DURATION' | translate }}"
+                      aria-describedby="product-maintenanceDuration-addon"
+                    >
+                    <span class="input-group-text" id="product-maintenanceDuration-addon">{{'MODULES.INVENTORY.HOURS' | translate }}</span>
+                  </div>
+                </div>
+                <div class="mb-3">
+                  <label class="form-label" for="product-prevMaintenanceDuration-input">Previous Maintenance Duration</label>
+                  <div class="input-group">
+                    <input
+                      type="number"
+                      class="form-control"
+                      aria-label="Previous Maintenance Duration"
+                      formControlName="prevMaintenanceDuration"
+                      id="prev-maintenance-duration-input"
+                      placeholder="{{'PLACEHOLDER.ENTER_PREVIOUS_MAINTENANCE_DURATION' | translate }}"
+                      aria-describedby="product-prevMaintenanceDuration-addon"
+                    >
+                    <span class="input-group-text" id="product-prevMaintenanceDuration-addon">{{'MODULES.INDEX.DAYS' | translate }}</span>
+                  </div>
+                </div>
+              </div>
+            </div> -->
+          </div>
+
+        </div>
+        <div class="text-end mb-3">
+          <button [disabled]="isButtonDisabled" type="button" class="btn btn-success w-sm"
+            (click)="save()">{{'COMMON.SAVE' | translate }}</button>
+        </div>
+      </div>
+    </form>
+  </ng-container>
+</ng-container>
+<div *ngIf="navigating$ | async" class="vh-100 py-4 text-center" fxLayout="column" fxLayoutAlign="center center"
+  fxLayoutGap="1rem">
+  <div>
+    <lord-icon trigger="loop" style="width:72px;height:72px"
+      [colors]="'primary:' + primaryColor + ',secondary:' + secondaryColor"
+      src="https://cdn.lordicon.com/msoeawqm.json">
+    </lord-icon>
+  </div>
+  <div class="mt-4">
+    <h5>{{'COMMON.LOADING' | translate }}</h5>
+  </div>
+</div>

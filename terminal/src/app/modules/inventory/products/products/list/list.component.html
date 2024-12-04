@@ -1,0 +1,496 @@
+<ng-container *ngIf="!(navigating$ | async)">
+  <app-breadcrumbs [title]="pageTitle$ | async | translate" [breadcrumbItems]="breadCrumbItems"></app-breadcrumbs>
+  <div fxLayout="row" fxLayout.lt-md="column" fxLayoutAlign="start start" fxLayoutGap="1rem">
+    <!-- <div class="col-xl-3 col-lg-4" *ngIf="hasFilter$ | async"> -->
+    <div fxFlex="20%" fxFlex.lt-md="100%"
+      *ngIf="(hasFilter$ | async) && ((toFilter$ | async)?.catalogueCategories?.length || (toFilter$ | async)?.brands?.length || (toFilter$ | async)?.productAttributesValues?.length)">
+      <div class="card">
+        <div class="card-header">
+          <div class="d-flex mb-3">
+            <div class="flex-grow-1">
+              <h5 class="fs-16">{{ 'MODULES.ECOMMERCE.MAIN.FILTERS' | translate }}</h5>
+            </div>
+            <div class="flex-shrink-0">
+              <a (click)="clearAll()" class="text-decoration-underline cursor-pointer">{{'MODULES.HR.MAIN.CLEAR_ALL' |
+                translate }}</a>
+            </div>
+          </div>
+        </div>
+        <div class="accordion accordion-flush" *ngIf="toFilter$ | async as filter">
+          <div class="card-body border-bottom" *ngIf="filter?.catalogueCategories?.length">
+            <div>
+              <p class="text-muted text-uppercase fs-12 fw-medium mb-2">{{'MODULES.INVENTORY.CATEGORIES' | translate }}
+              </p>
+              <ul class="list-unstyled mb-0 filter-list">
+                <li *ngFor="let category of filter?.catalogueCategories;let i = index;">
+                  <a class="d-flex py-1 align-items-center cursor-pointer"
+                    (click)="filterProducts({ catalogueCategory: category.id })"
+                    [class.active]="includes((filter$ | async)?.catalogueCategory, category.id)">
+                    <div class="flex-grow-1">
+                      <h5 class="fs-13 mb-0 listname">{{category.name}}</h5>
+                    </div>
+                  </a>
+                </li>
+              </ul>
+            </div>
+          </div>
+          <!-- <div class="card-body border-bottom" *ngIf="filter?.priceRange?.max">
+            <form [formGroup]="priceRangeForm" *ngIf="priceRangeForm">
+              <p class="text-muted text-uppercase fs-13 fw-medium mb-4">{{ 'MODULES.ECOMMERCE.MAIN.PRICE' | translate }}</p>
+              <ngx-slider
+                [value]="fromPrice"
+                [highValue]="toPrice"
+                (valueChange)="valueChange($event)"
+                (highValueChange)="highValueChange($event)"
+                [options]="{
+                  ceil: filter?.priceRange?.max || 0,
+                  floor: filter?.priceRange?.min || 0
+                }"
+              >
+              </ngx-slider>
+              <div class="formCost d-flex gap-2 align-items-center mt-3">
+                <input
+                  class="form-control form-control-sm"
+                  type="text"
+                  id="minCost"
+                  formControlName="fromPrice"
+                />
+                <span class="fw-semibold text-muted">{{'COMMON.TO' | translate }}</span>
+                <input
+                  class="form-control form-control-sm"
+                  type="text"
+                  id="maxCost"
+                  formControlName="toPrice"
+                />
+              </div>
+              <div class="mt-3" fxLayout="row" fxLayoutAlign="end center">
+                <button type="button" class="btn btn-success bg-gradient waves-effect waves-light" (click)="updatePriceFilter()">OK</button>
+              </div>
+            </form>
+          </div> -->
+          <ngb-accordion #acc="ngbAccordion" [closeOthers]="true" *ngIf="filter?.brands?.length">
+            <ngb-panel id="static-1">
+              <ng-template ngbPanelTitle>
+                <button class="border-0 bg-transparent" type="button" data-bs-toggle="collapse"
+                  data-bs-target="#gen-ques-collapseOne" aria-expanded="false" aria-controls="gen-ques-collapseOne">
+                  <span class="text-muted text-uppercase fs-13 fw-medium">{{'MODULES.HR.MAIN.BRANDS' | translate
+                    }}</span>
+                  <span class="badge bg-success rounded-pill align-middle ms-1" *ngIf="filter?.brands?.length">{{
+                    filter?.brands?.length || '0' }}</span>
+                </button>
+              </ng-template>
+              <ng-template ngbPanelContent>
+                <div class="accordion-body text-body pt-0">
+                  <div class="search-box search-box-sm">
+                    <input type="text" class="form-control bg-light border-0"
+                      placeholder="{{'PLACEHOLDER.SEARCH_BRANDS' | translate }}...">
+                    <i class="ri-search-line search-icon"></i>
+                  </div>
+                  <div *ngFor="let brand of filter?.brands;let i = index;" class="d-flex flex-column gap-2 mt-3">
+                    <div class="form-check">
+                      <input class="form-check-input" name="checkAll" type="checkbox" value="" id="productBrandRadio5"
+                        (change)="filterProducts({ brands: brand.id })">
+                      <label class="form-check-label" for="productBrandRadio5">{{brand.name}}</label>
+                    </div>
+                  </div>
+
+                </div>
+              </ng-template>
+            </ngb-panel>
+          </ngb-accordion>
+          <div *ngFor="let attribute of filter?.productAttributesValues;let i = index;">
+            <ngb-accordion #acc="ngbAccordion">
+              <ngb-panel id="static-2">
+                <ng-template ngbPanelTitle>
+                  <button class="border-0 bg-transparent" type="button" data-bs-toggle="collapse"
+                    data-bs-target="#flush-collapseDiscount" aria-expanded="true"
+                    aria-controls="flush-collapseDiscount">
+                    <span class="text-muted text-uppercase fs-13 fw-medium">{{attribute?.label}}</span>
+                    <span class="badge bg-success rounded-pill align-middle ms-1"
+                      *ngIf="attribute.attributeValues.length > 0">{{attribute.attributeValues?.length || '0' }}</span>
+                  </button>
+                </ng-template>
+                <ng-template ngbPanelContent>
+                  <div class="d-flex flex-column gap-2">
+                    <div class="search-box search-box-sm">
+                      <input type="text" class="form-control bg-light border-0"
+                        placeholder="{{'PLACEHOLDER.SEARCH' | translate }}{{attribute?.label}} ...">
+                      <i class="ri-search-line search-icon"></i>
+                    </div>
+                    <div
+                      *ngFor="let values of attribute?.attributeValues?.slice(0,allLimits[i]?.min || 1);let i = index;"
+                      class="d-flex flex-column gap-2 mt-3">
+                      <div class="form-check">
+                        <input class="form-check-input" name="checkAll" type="checkbox" value="" [id]="values.id"
+                          (change)="filterProducts({ attributesValues: values.id })">
+                        <label class="form-check-label" [for]="values.id">{{values.label}}</label>
+                      </div>
+                    </div>
+                    <div>
+                      <div>
+                        <div
+                          *ngIf="allLimits[i]?.min === defaultLimit && allLimits[i].min !== attribute?.attributeValues?.length && attribute?.attributeValues?.length > 7"
+                          (click)="allLimits[i].min = attribute?.attributeValues?.length"
+                          class="p1 mt-2 mb-2 cursor-pointer-on link-collapse__default">
+                          <button (click)="allLimits[i].min = attribute?.attributeValues?.length" type="button"
+                            class="btn btn-sm btn-soft-info text-decoration-none text-uppercase fw-medium p-0">+
+
+                            {{'MODULES.HR.MAIN.SHOW_MORE' | translate }}</button>
+                        </div>
+                        <div
+                          *ngIf="allLimits[i].min === attribute?.attributeValues?.length && allLimits[i]?.min > defaultLimit"
+                          (click)="allLimits[i].min = defaultLimit"
+                          class="p1 mt-2 mb-2 cursor-pointer-on link-collapse__active">
+                          <button (click)="allLimits[i].min = attribute?.attributeValues?.length" type="button"
+                            class="btn btn-sm btn-soft-info text-decoration-none text-uppercase fw-medium p-0">{{'MODULES.INVENTORY.SHOW_LESS'
+                            | translate }}</button>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </ng-template>
+              </ngb-panel>
+            </ngb-accordion>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div fxFlex.lt-md="100%"
+      [fxFlex]="((hasFilter$ | async) && ((toFilter$ | async)?.catalogueCategories?.length || (toFilter$ | async)?.brands?.length || (toFilter$ | async)?.productAttributesValues?.length)) ? '80%' : '100%'">
+      <div>
+        <div class="card">
+          <div class="card-header border-0">
+            <div class="row g-4">
+              <div class="col-sm-auto flex-wrap d-flex gap-2">
+                <a class="btn btn-success" [routerLink]="(parentLink$ | async) + '/add'">
+                  <i class="ri-add-line align-bottom me-1"></i> {{'COMMON.ADD' | translate }} {{ pageTitle$ | async |
+                  translate }}
+                </a>
+                <a (click)="openImportModal(importModal)" type="button" class="btn btn-secondary"><i
+                    class="ri-file-upload-line align-bottom me-1"></i>{{'COMMON.IMPORT' | translate }}</a>
+                <a (click)="downloadExcel()" type="button" class="btn btn-primary"><i
+                    class="ri-file-upload-line align-bottom me-1"></i>{{'COMMON.EXPORT' | translate }}</a>
+                <a (click)="openEmailModal(emailModal)" type="button" class="btn btn-secondary"><i
+                    class="ri-send-plane-fill align-bottom me-1"></i>{{'COMMON.SEND' | translate }}</a>
+              </div>
+              <div class="col-sm">
+                <div class="d-flex justify-content-sm-end">
+                  <div class="search-box ms-2">
+                    <form [formGroup]="searchForm">
+                      <input formControlName="searchString" type="text" name="searchTerm" class="form-control"
+                        placeholder="{{'PLACEHOLDER.SEARCH_PRODUCTS' | translate }}...">
+                      <i class="ri-search-line search-icon"></i>
+                    </form>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="card-body">
+            <div class="row align-items-center">
+              <div class="col">
+                <ul ngbNav #nav="ngbNav" [activeId]="selectedNav" (navChange)="onNavChange($event)"
+                  class="nav nav-tabs-custom card-header-tabs border-bottom-0">
+                  <li [ngbNavItem]="nav" *ngFor="let nav of navs">
+                    <a ngbNavLink>
+                      {{'SHARED.' + nav | translate}}
+                      <!-- <span class="badge badge-soft-danger align-middle rounded-pill ms-1">{{ (totalProducts$ | async) || '0' }}</span> -->
+                    </a>
+                    <ng-template ngbNavContent>
+                      <div class="mt-3">
+                        <div class="table-card gridjs-border-none" *ngIf="!(loadingProducts$ | async)">
+                          <div class="table-responsive">
+                            <table class="table align-middle custom-datatable" id="datatableexample">
+                              <thead>
+                                <tr class="bg-light text-muted">
+                                  <th scope="col" *ngFor="let item of listHeader$ | async">{{ item | translate }}</th>
+                                </tr>
+                              </thead>
+                              <tbody
+                                *ngIf="((loadingProducts$ | async) === false || null || undefined) && (products$ | async).length">
+                                <tr *ngFor="let product of products$ | async;let i = index;" id="p_{{product?.id}}">
+                                  <td *ngIf="(pageId$ | async) !== 'services'">
+                                    <input class="form-check-input" type="checkbox" name="checkAll"
+                                      value="{{product.id}}" (change)="onCheckboxChange($event)">
+                                  </td>
+                                  <td>
+                                    <span>
+                                      <div class="d-flex align-items-center">
+                                        <div class="flex-shrink-0 me-3">
+                                          <div class="avatar-sm bg-light p-1 rounded"
+                                            *ngIf="product?.media?.pictures?.length">
+                                            <img
+                                              [src]="product?.media?.pictures[0]?.baseUrl + '/' + product?.media?.pictures[0]?.path"
+                                              class="img-fluid d-block">
+                                          </div>
+                                          <div class="avatar-sm bg-light rounded p-1"
+                                            *ngIf="!product?.media?.pictures?.length">
+                                            <div class="avatar-title bg-soft-success text-success rounded fs-13">
+                                              {{product?.name?.charAt(0) || 'N'}}</div>
+                                          </div>
+                                        </div>
+                                        <div class="flex-grow-1">
+                                          <h5 class="fs-14 mb-1">
+                                            <a class="text-dark"
+                                              [routerLink]="(parentLink$ | async) + ((pageId$ | async) === 'services' ? '/edit/' : '/') + product.id">
+                                              {{product.name}}
+                                            </a>
+                                          </h5>
+                                          <p class="text-muted mb-0" *ngIf="(pageId$ | async) === 'products'">
+                                            {{'MODULES.INVENTORY.CATEGORY' | translate }}:
+                                            <span class="fw-medium"
+                                              *ngFor="let category of product.catalogueCategory; let last = last">
+                                              {{ last ? category.name : '' }}
+                                            </span>
+                                          </p>
+                                        </div>
+                                      </div>
+                                    </span>
+                                  </td>
+                                  <td *ngIf="(pageId$ | async) !== 'services'">
+                                    {{product?.brand?.name}}</td>
+                                  <td *ngIf="(pageId$ | async) === 'services'">{{product?.barcode}}
+                                  </td>
+                                  <td *ngIf="(pageId$ | async) !== 'equipments'">
+                                    {{((product?.price) || 0) | currency:'DT':'symbol':'1.3-3'}}
+                                  </td>
+                                  <td *ngIf="(pageId$ | async) !== 'equipments'">
+                                    <div fxLayout="row wrap" fxLayoutAlign="start center" fxLayoutGap="0.5rem">
+                                      <span *ngFor="let tax of product?.taxes"
+                                        class="badge text-bg-secondary">{{tax.tax?.label}}</span>
+                                    </div>
+                                  </td>
+                                  <td><span>{{product.createdAt | date :'longDate'}}</span></td>
+                                  <td>
+                                    <span>
+                                      <div class="dropdown" ngbDropdown container="body">
+                                        <button class="btn btn-soft-secondary btn-sm dropdown arrow-none" type="button"
+                                          data-bs-toggle="dropdown" aria-expanded="false" ngbDropdownToggle>
+                                          <i class="ri-more-fill"></i>
+                                        </button>
+                                        <ul class="dropdown-menu dropdown-menu-end" ngbDropdownMenu>
+                                          <li>
+                                            <a class="dropdown-item" *ngIf="(pageId$ | async) !== 'services'"
+                                              [routerLink]="(parentLink$ | async) + '/' + product.id"><i
+                                                class="ri-eye-fill align-bottom me-2 text-muted"></i>{{'COMMON.VIEW' |
+                                              translate }} </a>
+                                          </li>
+                                          <li>
+                                            <a class="dropdown-item"
+                                              [routerLink]="(parentLink$ | async) + '/edit/' + product.id">
+                                              <i class="ri-pencil-fill align-bottom me-2 text-muted"></i>{{'COMMON.EDIT'
+                                              | translate }}
+                                            </a>
+                                          </li>
+                                          <li>
+                                            <a class="dropdown-item" href="javascript:void(0);" data-bs-toggle="modal"
+                                              data-bs-target="#removeItemModal"
+                                              (click)="openDeleteProduct(deleteModal, product)"><i
+                                                class="ri-delete-bin-fill align-bottom me-2 text-muted"></i>{{'COMMON.ARCHIVE'
+                                              | translate }}</a>
+                                          </li>
+                                        </ul>
+                                      </div>
+                                    </span>
+                                  </td>
+                                </tr>
+                              </tbody>
+                            </table>
+                          </div>
+                        </div>
+                        <div
+                          *ngIf="((loadingProducts$ | async) === false || null || undefined) && (products$ | async).length"
+                          class="px-3 mt-3">
+                          <div class="row justify-content-md-between align-items-md-center g-0 pagination">
+                            <div class="col-sm-12 col-md-5">
+                              <div role="status" aria-live="polite" id="tickets-table_info"
+                                class="dataTables_info mb-2">{{'COMMON.SHOWING' | translate }}
+                                {{(productsPageIndex - 1) * productsLimit + 1}} {{ 'COMMON.TO' | translate }}
+                                {{((productsPageIndex - 1) * productsLimit +
+                                productsLimit) > (totalProducts$ | async) ?
+                                (totalProducts$ | async) :
+                                (productsPageIndex - 1) * productsLimit +
+                                productsLimit}}
+                                {{'COMMON.OF' | translate }} {{totalProducts$ | async}}
+                                {{'COMMON.ENTRIES' | translate }}
+                              </div>
+                            </div>
+                            <div class="col-sm-12 col-md-5">
+                              <div class="text-md-right float-md-end pagination-rounded gridjs-pagination mb-3">
+                                <ngb-pagination [maxSize]="5" [pageSize]="productsLimit" [(page)]="productsPageIndex"
+                                  (pageChange)="loadPage($event)" [collectionSize]="totalProducts$ | async">
+                                </ngb-pagination>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                        <div id="noresult" class="py-4 mt-4 text-center"
+                          *ngIf="(loadingProducts$ | async) || (!(loadingProducts$ | async) && !(products$ | async).length)">
+                          <div *ngIf="loadingProducts$ | async">
+                            <lord-icon *ngIf="loadingProducts$ | async" trigger="loop" style="width:72px;height:72px"
+                              [colors]="'primary:' + primaryColor + ',secondary:' + secondaryColor"
+                              src="https://cdn.lordicon.com/msoeawqm.json">
+                            </lord-icon>
+                            <h5 class="mt-4">{{'COMMON.LOADING' | translate }}</h5>
+                          </div>
+                          <div *ngIf="!(loadingProducts$ | async) && !(products$ | async).length">
+                            <lord-icon trigger="loop" style="width:72px;height:72px"
+                              [colors]="'primary:' + primaryColor + ',secondary:' + secondaryColor"
+                              src="https://cdn.lordicon.com/vlycxjwx.json">
+                            </lord-icon>
+                            <h5 class="mt-4">{{ 'COMMON.NO_RESULT' | translate }}</h5>
+                          </div>
+                        </div>
+                      </div>
+                      <!-- <div
+                        class="tab-pane alltable d-none"
+                        id="productnav-draft"
+                        role="tabpanel"
+                      >
+                        <div class="py-4 text-center">
+                          <div>
+                            <lord-icon
+                              src="https://cdn.lordicon.com/msoeawqm.json"
+                              trigger="loop"
+                              [colors]="'primary:' + primaryColor + ',secondary:' + secondaryColor"
+                              style="width:72px;height:72px"
+                            >
+                            </lord-icon>
+                          </div>
+                          <div class="mt-4">
+                            <h5>{{ 'COMMON.NO_RESULT' | translate }}</h5>
+                          </div>
+                        </div>
+                      </div> -->
+                    </ng-template>
+                  </li>
+                </ul>
+              </div>
+              <div class="col-auto">
+                <div id="selection-element">
+                  <div class="my-n1 d-flex align-items-center text-muted">{{'COMMON.SELECT' | translate }} <div
+                      id="select-content" class="text-body fw-semibold px-1">1</div>{{ 'MODULES.ECOMMERCE.MAIN.RESULT' |
+                    translate }}<button type="button" class="btn btn-link link-danger p-0 ms-3" data-bs-toggle="modal"
+                      data-bs-target="#removeItemModal" (click)="confirm(content,'')">{{ 'COMMON.REMOVE' | translate
+                      }}</button>
+                  </div>
+                </div>
+              </div>
+              <!-- Tab panes -->
+              <div class="tab-content text-muted mt-3">
+                <!-- <div
+                  id="elmLoader"
+                  *ngIf="isLoading"
+                >
+                  <div
+                    class="spinner-border text-primary avatar-sm"
+                    role="status"
+                  >
+                    <span class="visually-hidden">{{'COMMON.LOADING' | translate }}</span>
+                  </div>
+                </div> -->
+                <div [ngbNavOutlet]="nav"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <ng-template #emailModal role="document" let-modal>
+    <div class="modal-header p-3 bg-soft-info">
+      <h5 class="modal-title" id="exampleModalLabel">{{'COMMON.SEND' | translate }} Email</h5>
+      <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" id="close-modal"
+        (click)="modal.dismiss('Cross click')"></button>
+    </div>
+    <form [formGroup]="emailForm">
+      <div class="modal-body">
+        <div class="row g-3">
+          <div class="col-lg-12 mb-3">
+            <label class="form-label" for="product-tags-input">{{ 'COMMON.EMAILS' | translate }}
+              {{'MODULES.INVENTORY.PRESS_ENTER' | translate }}</label>
+            <ng-select [items]="[]" class="no-arrow-select" [addTag]="true" [isOpen]="false" [multiple]="true"
+              [selectOnTab]="true" formControlName="emails">
+            </ng-select>
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <div class="hstack gap-2 justify-content-end">
+          <button type="button" class="btn btn-light" data-bs-dismiss="modal" (click)="modal.close('Close click')">{{
+            'COMMON.CLOSE' | translate }}</button>
+          <button type="button" [disabled]="isEmailButtonDisabled || emailForm.invalid" (click)="send()"
+            class="btn btn-success" id="add-btn">{{'COMMON.SEND' | translate }}</button>
+        </div>
+      </div>
+    </form>
+  </ng-template>
+  <ng-template #deleteModal let-modal>
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" id="btn-close"
+          (click)="modal.dismiss('Cross click')"></button>
+      </div>
+      <div class="modal-body">
+        <div class="mt-2 text-center">
+          <lord-icon src="https://cdn.lordicon.com/gsqxdxog.json" trigger="loop"
+            colors="primary:#f7b84b,secondary:#f06548" style="width:100px;height:100px"></lord-icon>
+          <div class="mt-4 pt-2 fs-15 mx-4 mx-sm-5">
+            <h4>{{'COMMON.ARE_YOU_SURE' | translate }}</h4>
+            <p class="text-muted mx-4 mb-0">{{'MODULES.INVENTORY.ARCHIVE_PRODUCT_SURE' | translate }}</p>
+          </div>
+        </div>
+        <div class="d-flex gap-2 justify-content-center mt-4 mb-2">
+          <button type="button" class="btn w-sm btn-light" data-bs-dismiss="modal"
+            (click)="modal.close('Close click')">{{'COMMON.CLOSE' | translate }}</button>
+          <button type="button" class="btn w-sm btn-danger " id="delete-product"
+            (click)="archiveProduct()">{{'COMMON.YES_ARCHIVE_IT' | translate }}</button>
+        </div>
+      </div>
+    </div>
+  </ng-template>
+  <ng-template #importModal role="document" let-modal>
+    <div class="modal-header bg-soft-info p-3">
+      <h5 class="modal-title" id="exampleModalLabel">{{'COMMON.UPLOAD_EXCEL' | translate }}</h5>
+      <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" id="close-modal"
+        (click)="modal.dismiss('Cross click')"></button>
+    </div>
+    <div class="modal-body">
+      <p>{{'MODULES.INVENTORY.PARAGRAPH_IMAGE' | translate }}
+      </p>
+    </div>
+    <div class="modal-footer">
+      <div class="hstack gap-2 justify-content-end">
+        <button type="button" class="btn btn-light" data-bs-dismiss="modal"
+          (click)="modal.close('Close click')">{{'COMMON.CLOSE' | translate }}</button>
+        <button type="button" (click)="!loadingImport ? uploadExcel() : null" class="btn btn-primary btn-load">
+          <span *ngIf="!loadingImport">{{'COMMON.IMPORT_EXCEL' | translate }}</span>
+          <span *ngIf="loadingImport" class="d-flex align-items-center">
+            <span class="spinner-border flex-shrink-0" role="status">
+              <span class="visually-hidden">{{'COMMON.LOADING' | translate }}</span> </span>
+            <span class="flex-grow-1 ms-2">{{'COMMON.LOADING' | translate }} </span> </span>
+        </button>
+        <button type="button" (click)="bulkUploadPicture()" class="btn btn-primary btn-load">
+          <span *ngIf="!loadingImportPictures">{{'MODULES.INVENTORY.IMPORT_PICTURES' | translate }}</span>
+          <span *ngIf="loadingImportPictures" class="d-flex align-items-center">
+            <span class="spinner-border flex-shrink-0" role="status">
+              <span class="visually-hidden">{{'COMMON.LOADING' | translate }}</span> </span>
+            <span class="flex-grow-1 ms-2">{{'COMMON.LOADING' | translate }} </span> </span>
+        </button>
+      </div>
+    </div>
+  </ng-template>
+</ng-container>
+<div *ngIf="navigating$ | async" class="vh-100 py-4 text-center" fxLayout="column" fxLayoutAlign="center center"
+  fxLayoutGap="1rem">
+  <div>
+    <lord-icon trigger="loop" style="width:72px;height:72px"
+      [colors]="'primary:' + primaryColor + ',secondary:' + secondaryColor"
+      src="https://cdn.lordicon.com/msoeawqm.json">
+    </lord-icon>
+  </div>
+  <div class="mt-4">
+    <h5>{{'COMMON.LOADING' | translate }}</h5>
+  </div>
+</div>

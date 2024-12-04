@@ -1,0 +1,123 @@
+<?php
+
+
+$userEmail = $block->getCustomerEmail(); 
+$displayDiscount = $block->getDisplayDiscount();
+
+$checkResponse = $block->fetchWalletInformation($userEmail);
+?>
+
+
+<?php
+// Debugging to check if response is valid
+if ($checkResponse) {
+    // Extract wallet details
+
+    if (isset($checkResponse['wallet'])) {
+        $walletAmount = $checkResponse['wallet']['amount'];
+        $walletIconUrl = $checkResponse['wallet']['coin']['picture']['baseUrl'] . '/' . $checkResponse['wallet']['coin']['picture']['path'];
+        $walletAlt = $checkResponse['wallet']['coin']['name'];
+        $unitValue = $checkResponse['wallet']['coin']['unitValue']['amount'];
+    } else {
+        echo "<h2>No wallet information returned. Please check the API response.</h2>";
+    }
+    $firstText = $block->getFirstText();
+    $secondText = $block->getSecondText();
+    $submitText = $block->getSubmitText();
+
+
+
+    ?>
+
+
+<?php if ($block->getDisplayDiscount()): ?>
+<div id="discount-widget" style="display: none;"> 
+    <div class="wallet-block" id="wallet-info">
+        <div class="col-md-special-6" style="margin-bottom: 20px;">
+            <span class="wallet-label"><?= htmlspecialchars($firstText) ?></span>
+            <strong><?= htmlspecialchars($walletAmount) ?></strong>
+            <img class="wallet-img" src="<?= htmlspecialchars($walletIconUrl) ?>" alt="<?= htmlspecialchars($walletAlt) ?>" />
+        </div>
+
+        <div class="col-md-special-6" id="input-coins-step" style="margin-bottom: 20px;">
+            <label for="coins_input" class="coins-label"><?= htmlspecialchars($secondText) ?></label>
+            <img class="wallet-img" src="<?= htmlspecialchars($walletIconUrl) ?>" alt="<?= htmlspecialchars($walletAlt) ?>" />
+            <input type="number" id="coins_input" name="coins_input" min="0" max="<?= htmlspecialchars($walletAmount) ?>" />
+        </div>
+    </div>
+
+    <div id="apply_discount_btn_wrapper" class="submit-button" style="margin-bottom: 20px;">
+        <button id="apply_discount_btn" class="apply-btn" type="button"><?= htmlspecialchars($submitText) ?></button>
+    </div>
+    <div id="custom-alert" class="custom-alert hidden">
+                <span id="alert-message"></span>
+                <button id="alert-close-btn" class="alert-close-btn">&times;</button>
+    </div>
+    <div id="discount-data" data-unit-value="<?php echo $unitValue; ?>" data-wallet-amount="<?php echo $walletAmount; ?>"></div>
+</div>
+<?php endif; ?>
+
+<?php
+} else {
+    echo "<h2>No wallet information returned. Please check the API response.</h2>";
+}
+?>
+
+
+<style>     
+            .wallet-img{
+                margin-bottom: -9px;
+            }
+            .close-button {
+                background: #f8d2d2;;
+                border: none;
+                color: #000; 
+                font-size: 20px; 
+                cursor: pointer; 
+                padding: 0; 
+                }
+            .custom-alert {
+                position: fixed;
+                top: 20px;
+                right: 20px;
+                background-color: #f44336;
+                color: white;
+                padding: 15px;
+                border-radius: 5px;
+                box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+                opacity: 0;
+                z-index: 1000;
+                visibility: hidden;
+                transition: all 0.3s ease-in-out;
+            }
+
+            .custom-alert.visible {
+                opacity: 1;
+                visibility: visible;
+            }
+
+            .custom-alert.hidden {
+                opacity: 0;
+                visibility: hidden;
+            }
+
+            .alert-close-btn {
+                background: none;
+                border: none;
+                color: white;
+                font-size: 18px;
+                cursor: pointer;
+                margin-left: 10px;
+            }
+
+            .alert-close-btn:hover {
+                color: #ddd;
+            }
+            </style>
+
+
+
+<div id="custom-alert" class="custom-alert hidden">
+                <span id="alert-message"></span>
+                <button id="alert-close-btn" class="alert-close-btn">&times;</button>
+</div>

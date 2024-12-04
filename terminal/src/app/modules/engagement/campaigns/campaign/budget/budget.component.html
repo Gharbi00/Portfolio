@@ -1,0 +1,51 @@
+<form class="form">
+  <div class="card">
+    <div class="card-header">
+      <div class="card-title fw-bold">{{'MENUITEMS.CUSTOMERENGAGEMENT.BUDGET.CAMPAIGN_BUDGET' | translate }}</div>
+    </div>
+    <div class="card-body">
+      <form [formGroup]="questForm">
+        <div formGroupName="budget" class="row col-lg-12">
+          <div class="mb-3 col-lg-6">
+            <label class="form-label">{{'MENUITEMS.CUSTOMERENGAGEMENT.BUDGET.MAX_ANSWERS' | translate }}</label>
+            <input [readonly]="quest?.status ==='ONGOING' || quest?.status === 'FINISHED'" formControlName="maxAnswers" required type="number" class="form-control" placeholder="{{'PLACEHOLDER.MAX_ANSWERS' | translate }}"
+              name="manageBudget" />
+          </div>
+          <div class="mb-3 col-lg-6">
+            <label class="form-label">{{'MENUITEMS.CUSTOMERENGAGEMENT.BUDGET.PRICE_PER_USER' | translate }}</label>
+            <div class="input-group">
+              <input readonly formControlName="pricePerUser" type="number" class="form-control"
+                data-kt-dialer-control="input" placeholder="{{'MENUITEMS.CUSTOMERENGAGEMENT.BUDGET.PRICE_PER_USER' | translate }}" name="manageBudget" />
+              <span class="input-group-text">{{quest?.questType?.wallet?.coin?.unitValue?.currency?.name}}</span>
+            </div>
+          </div>
+          <div class="mb-3 col-lg-6">
+            <label class="form-label">{{'MENUITEMS.CUSTOMERENGAGEMENT.BUDGET.BUDGET' | translate }}</label>
+            <div class="input-group">
+              <input formControlName="budget" readonly type="number" class="form-control" placeholder="{{'MENUITEMS.CUSTOMERENGAGEMENT.BUDGET.BUDGET' | translate }}"
+                name="manageBudget" />
+              <span class="input-group-text">{{quest?.questType?.wallet?.coin?.unitValue?.currency?.name}}</span>
+            </div>
+          </div>
+          <div class="mb-3 col-lg-6">
+            <label class="form-label">Remaining Budget</label>
+            <div class="input-group">
+              <input formControlName="remainingBudget" readonly type="number" class="form-control"
+                placeholder="{{'PLACEHOLDER.REMAINING_BUDGET' | translate }}" name="manageBudget" />
+              <span class="input-group-text">{{quest?.questType?.wallet?.coin?.unitValue?.currency?.name}}</span>
+            </div>
+          </div>
+          <div class="mb-3 col-lg-6">
+            <label class="form-label">{{'MENUITEMS.CUSTOMERENGAGEMENT.BUDGET.REMAINING_COINS' | translate }}</label>
+            <input formControlName="remainingCoins" readonly type="number" class="form-control"
+              placeholder="{{'PLACEHOLDER.REMAINING_COINS' | translate }}" name="manageBudget" />
+          </div>
+        </div>
+      </form>
+    </div>
+    <div *ngIf="quest?.status !=='ONGOING' && quest?.status !== 'FINISHED'" class="hstack gap-2 justify-content-end p-3">
+      <button [disabled]="!questForm.get(['budget', 'maxAnswers']).value" (click)="calculateQuestBudget()" type="button" class="btn btn-primary">{{'MENUITEMS.CUSTOMERENGAGEMENT.LIST.CALCULATE' | translate }}</button>
+      <button [disabled]="!questForm.get(['budget', 'maxAnswers']).value" (click)="save()" type="button" class="btn btn-success">{{'COMMON.SAVE' | translate }}</button>
+    </div>
+  </div>
+</form>

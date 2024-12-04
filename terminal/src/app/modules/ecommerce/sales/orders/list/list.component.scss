@@ -1,0 +1,9 @@
+a.disabled {
+  pointer-events: none;
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+agm-map {
+  height: 300px;
+}

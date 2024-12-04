@@ -1,0 +1,53 @@
+<table class="table table-nowrap table-centered align-middle">
+    <thead class="bg-light text-muted">
+        <tr>
+            <th scope="col">Project Name</th>
+            <!-- <th scope="col">Project Lead</th> -->
+            <!-- <th scope="col">Progress</th> -->
+            <th scope="col">Assigned</th>
+            <th scope="col">Status</th>
+            <th scope="col" style="width: 10%;">{{ 'MODULES.ECOMMERCE.MAIN.DEADLINE' | translate }}</th>
+        </tr>
+    </thead>
+
+    <tbody>
+        <tr *ngFor="let data of activeProjects">
+            <td class="fw-medium">{{data.name}}</td>
+            <td>
+              <div *ngIf="data?.members?.length > 1" class="align-items-center d-flex gap-2">
+                <div class="avatar-group flex-nowrap">
+                  <ng-container *ngFor="let member of data?.members.slice(O, 4)">
+                    <a *ngIf="member?.member?.pictures?.length" href="javascript:void(0);" class="avatar-group-item"
+                      data-bs-toggle="tooltip" data-bs-trigger="hover" data-bs-placement="top" title="Brent Gonzalez">
+                      <img [src]="member?.member?.pictures[0]?.baseUrl + '/' + member?.member?.pictures[0]?.path"
+                        alt="" class="avatar-xxs rounded-circle me-2 shadow">
+                    </a>
+                    <a *ngIf="!member?.member?.pictures?.length || (member?.member?.firstName && member?.member?.pictures?.length)" href="javascript: void(0);" class="avatar-group-item shadow"
+                      [matTooltip]="member?.member?.firstName" placement="top">
+                      <div class="avatar-xxs">
+                        <div class="avatar-title rounded-circle bg-danger text-uppercase shadow">
+                          {{ member?.member?.firstName.charAt(0) || 'N'}}
+                        </div>
+                      </div>
+                    </a>
+                  </ng-container>
+                </div>
+              </div>
+            </td>
+            <td>
+              <span
+                class="badge"
+                [ngClass]=" {
+                  'badge-soft-warning': data.status === 'BLOCKED',
+                  'badge-soft-danger': data.status === 'CANCELLED',
+                  'badge-soft-success': data.status === 'ACTIVE',
+                  'badge-soft-info': data.status === 'DELIVERED'
+                }"
+              >
+              {{data.status}}
+              </span>
+            </td>
+            <td class="text-muted">{{data.deadline | date: 'longDate'}}</td>
+        </tr>
+    </tbody>
+</table>

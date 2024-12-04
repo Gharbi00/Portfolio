@@ -1,0 +1,294 @@
+<app-breadcrumbs [title]="title$ | async | translate" [breadcrumbItems]="breadCrumbItems$ | async"></app-breadcrumbs>
+<ng-container *ngIf="!(navigating$ | async)">
+
+  <div class="row justify-content-center">
+    <div class="col-xxl-9" *ngIf="item$ | async as item">
+      <div class="card" id="demo">
+        <div class="row">
+          <div class="col-lg-12">
+            <div class="card-header border-bottom-dashed p-4" fxLayout="column" fxLayoutAlign="start start">
+              <div class="flex-shrink-0 mt-sm-0 mt-3" fxFlexAlign="stretch" fxLayout="row" fxLayoutAlign="space-between start">
+                <div [fxFlex]="100/3">
+                  <img [src]="elevokLogo" class="card-logo card-logo-dark" alt="logo dark" height="50">
+                  <img [src]="elevokLogo" class="card-logo card-logo-light" alt="logo light" height="50">
+                  <div class="mt-sm-5 mt-4">
+                    <h6 class="text-muted text-uppercase fw-semibold">{{(type$ | async) === 'sale' ? 'Customer' : 'Supplier'}}:</h6>
+                    <table class="table capitalized-table-headers table-borderless table-sm table-nowrap align-middle mb-0 text-muted fw-normal">
+                      <tbody>
+                        <tr>
+                          <th scope="row">{{ 'MODULES.INVOICING.SHARED.COMPANY' | translate }}</th>
+                          <td style="width:150px;" colspan="2">{{ (item.customer?.customer || item.supplier?.supplier).name }}</td>
+                        </tr>
+                        <tr>
+                          <th scope="row">{{ 'MODULES.INVOICING.SHARED.REGISTRATION' | translate }}</th>
+                          <td colspan="2">{{ (item.customer?.customer || item.supplier?.supplier).legal?.register }}</td>
+                        </tr>
+                        <tr>
+                          <th scope="row">{{ 'COMMON.ADDRESS' | translate }}</th>
+                          <td colspan="2">
+                            {{ (item.customer?.customer || item.supplier?.supplier).address?.address ?
+                            (item.customer?.customer || item.supplier?.supplier).address?.address + ', ' : '' }}
+                            {{ (item.customer?.customer || item.supplier?.supplier).address?.city ?
+                            (item.customer?.customer || item.supplier?.supplier).address?.city + ', '
+                            : '' }}
+                            {{ (item.customer?.customer || item.supplier?.supplier).address?.postCode ?
+                            (item.customer?.customer || item.supplier?.supplier).address?.postCode
+                            + ', ' : '' }}
+                            {{ (item.customer?.customer || item.supplier?.supplier).address?.country?.name }}
+                          </td>
+                        </tr>
+                        <tr>
+                          <th scope="row">{{ 'COMMON.EMAIL' | translate }}</th>
+                          <td colspan="2">{{ (item.customer?.customer || item.supplier?.supplier).contact?.email }}</td>
+                        </tr>
+                        <ng-container>
+                          <tr *ngFor="let detail of (item.customer?.customer || item.supplier?.supplier).details; let i = index;">
+                            <th scope="row">{{ detail.key }}</th>
+                            <td colspan="2">{{ detail.value }}</td>
+                          </tr>
+                        </ng-container>
+                      </tbody>
+                    </table>
+                  </div>
+                </div>
+                <div fxLayout="row" [fxFlex]="100/3" fxLayoutAlign="end start">
+                  <div fxLayout="column" fxLayoutAlign="space-between start">
+                    <h4 fxLayout="row" fxFlexAlign="stretch" fxLayoutAlign="end center" *ngIf="documentTitle$ | async as documentTitle" class="document-title text-muted fw-normal">
+                      {{ documentTitle }}
+                    </h4>
+                    <h4 *ngIf="item.target?.pos?.company?.name" class="text-muted fw-normal">{{ item.target?.pos?.company?.name }}</h4>
+                    <table class="table capitalized-table-headers table-borderless table-sm align-middle mb-0 text-muted fw-normal company-table">
+                      <tbody>
+                        <tr *ngIf="item.target?.pos?.company?.legal?.vat">
+                          <th scope="row">{{ 'MODULES.INVOICING.SHARED.TAX_NUMBER' | translate }}</th>
+                          <td>{{ item.target?.pos?.company?.legal?.vat }}</td>
+                        </tr>
+                        <tr *ngIf="item.target?.pos?.company?.legal?.register">
+                          <th scope="row">{{ 'MODULES.INVOICING.SHARED.REGISTRATION' | translate }}</th>
+                          <td>{{ item.target?.pos?.company?.legal?.register }}</td>
+                        </tr>
+                        <tr *ngIf="item.target?.pos?.company?.contact?.website">
+                          <th scope="row">{{ 'COMMON.WEBSITE' | translate }}</th>
+                          <td>{{ item.target?.pos?.company?.contact?.website }}</td>
+                        </tr>
+                        <tr *ngIf="item.target?.pos?.company?.contact?.email">
+                          <th scope="row">{{ 'COMMON.EMAIL' | translate }}</th>
+                          <td>{{ item.target?.pos?.company?.contact?.email }}</td>
+                        </tr>
+                        <tr *ngIf="item.target?.pos?.company?.contact?.phone?.number">
+                          <th scope="row">{{ 'MODULES.INVOICING.SHARED.CONTACT_NUMBER' | translate }}</th>
+                          <td>{{ item.target?.pos?.company?.contact?.phone?.number }}</td>
+                        </tr>
+                        <tr>
+                          <th scope="row">{{ 'COMMON.ADDRESS' | translate }}</th>
+                          <td>
+                            {{ item.target?.pos?.company?.address?.address ?
+                            item.target?.pos?.company?.address?.address + ', ' : '' }}
+                            {{ item.target?.pos?.company?.address?.city ?
+                            item.target?.pos?.company?.address?.city + ', ' : '' }}
+                            {{ item.target?.pos?.company?.address?.postCode ?
+                            item.target?.pos?.company?.address?.postCode + ', ' : '' }}
+                            {{ item.target?.pos?.company?.address?.country?.name }}
+                          </td>
+                        </tr>
+                      </tbody>
+                    </table>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="col-lg-12">
+            <div class="card-body p-4">
+              <div class="row g-3">
+                <div class="col-lg-3 col-6">
+                  <p class="text-muted mb-2 text-uppercase fw-semibold">{{ getLabel(pageId$ | async) }} No</p>
+                  <h5 class="fs-15 mb-0">{{ item.number }}</h5>
+                </div>
+                <div class="col-lg-3 col-6">
+                  <p class="text-muted mb-2 text-uppercase fw-semibold">{{ 'COMMON.DATE' | translate }}</p>
+                  <h5 class="fs-15 mb-0">
+                    {{ item.date | date : 'd MMM, y' }}<small id="invoice-time" class="text-muted"> {{ item.date | date : 'h:mm a' }}</small>
+                  </h5>
+                </div>
+                <div class="col-lg-3 col-6">
+                  <p class="text-muted mb-2 text-uppercase fw-semibold">{{'COMMON.STATUS' | translate }}</p>
+                  <span class="badge badge-soft-success fs-11" id="payment-status">{{ item.status }}</span>
+                </div>
+                <div class="col-lg-3 col-6">
+                  <p class="text-muted mb-2 text-uppercase fw-semibold">{{'MODULES.INVOICING.SHARED.TOTAL_AMOUNT' | translate }}</p>
+                  <h5 class="fs-15 mb-0"><span id="total-amount">{{ item.toPay | currency:'DT':'symbol':'1.3-3' }}</span></h5>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="col-lg-12" *ngIf="item.address?.billing || item.address?.shipping">
+            <div class="card-body p-4 border-top border-top-dashed">
+              <div class="row g-3">
+                <div class="col-6" *ngIf="item.address.billing">
+                  <h6 class="text-muted text-uppercase fw-semibold mb-3">{{ 'MODULES.INVOICING.SALES.ORDERS.BILLING_ADDRESS' | translate }}</h6>
+                  <p class="fw-medium mb-2" id="shipping-name">{{ item.address?.billing?.owner?.name }}</p>
+                  <p class="text-muted mb-1" id="billing-address-line-1">
+                    {{ item.address?.billing?.address }}
+                    {{ item.address?.billing?.city }}
+                    {{ item.address?.billing?.postCode }}
+                    {{ item.address?.billing?.country }}
+                  </p>
+                  <p class="text-muted mb-1">
+                    <span>{{ 'COMMON.PHONE' | translate }}: </span>
+                    <span id="billing-phone-no">
+                      +({{ item.address?.billing?.owner?.phone.countryCode }}) {{ item.address?.billing?.owner?.phone.number }}
+                    </span>
+                  </p>
+                </div>
+                <div class="col-6" *ngIf="item.address.shipping">
+                  <h6 class="text-muted text-uppercase fw-semibold mb-3">{{ 'MODULES.INVOICING.SALES.ORDERS.SHIPPING_ADDRESS' | translate }}</h6>
+                  <p class="fw-medium mb-2" id="shipping-name">{{ item.address?.shipping?.owner?.name }}</p>
+                  <p class="text-muted mb-1" id="billing-address-line-1">
+                    {{ item.address?.shipping?.address }}
+                    {{ item.address?.shipping?.city }}
+                    {{ item.address?.shipping?.postCode }}
+                    {{ item.address?.shipping?.country }}
+                  </p>
+                  <p class="text-muted mb-1"><span>{{'COMMON.PHONE' | translate }}: </span><span id="shipping-phone-no">
+                      +({{ item.address?.shipping?.owner?.phone?.countryCode }}) {{
+                      item.address?.shipping?.owner?.phone?.number }}
+                    </span></p>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="col-lg-12">
+            <div class="card-body p-4">
+              <div class="table-responsive">
+                <table class="table table-bordered text-center table-nowrap align-middle mb-0">
+                  <thead>
+                    <tr class="table-active">
+                      <th scope="col" style="width: 50px;">#</th>
+                      <th scope="col">{{'MODULES.INVOICING.SHARED.PRODUCT_DETAILS' | translate }}</th>
+                      <th scope="col">{{'MODULES.INVOICING.SHARED.RATE' | translate }}</th>
+                      <th scope="col">{{'MODULES.INVOICING.SHARED.QUANTITY' | translate }}</th>
+                      <th scope="col" class="text-end">{{'COMMON.AMOUNT' | translate }}</th>
+                    </tr>
+                  </thead>
+                  <tbody id="products-list">
+                    <ng-container *ngFor="let item of item.products; let i = index">
+                      <tr *ngIf="item.kind === ProductKindEnum.PRODUCT">
+                        <th scope="row">{{ item.product?.article?.barcode }}</th>
+                        <td class="text-start">
+                          <span class="fw-semibold">{{ item.product.label }}</span>
+                          <p class="text-muted mb-0">{{ item.product.description }}</p>
+                        </td>
+                        <td>{{ item.product.price | currency:'DT':'symbol':'1.3-3' }}</td>
+                        <td>{{ item.product.quantity }}</td>
+                        <td class="text-end">{{ item.product.total | currency:'DT':'symbol':'1.3-3' }}
+                        </td>
+                      </tr>
+                      <tr *ngIf="item.kind === ProductKindEnum.SEPARATOR">
+                        <td colspan="5">
+                          <hr class="separator">
+                        </td>
+                      </tr>
+                      <tr *ngIf="item.kind === ProductKindEnum.SUBTOTAL">
+                        <td colspan="5">
+                          <div fxLayout="row" fxLayoutAlign="end center">
+                            <div fxLayout="column" fxLayoutAlign="start start">
+                              <div class="title"> {{ 'MODULES.INVOICING.SHARED.SUBTOTAL' | translate }}</div>
+                              <div class="body" *ngIf="!subTotalLoading">{{ item.value | currency:'DT':'symbol':'1.3-3' }}</div>
+                            </div>
+                          </div>
+                        </td>
+                      </tr>
+                      <tr *ngIf="item.kind === ProductKindEnum.TEXT || item.kind === ProductKindEnum.SECTION">
+                        <td colspan="5" class="text-start">{{ item.text }}</td>
+                      </tr>
+                    </ng-container>
+                  </tbody>
+                </table>
+              </div>
+              <div fxLayout="row" fxLayoutAlign="end center" class="border-top border-top-dashed pt-3 mt-3">
+                <table class="table table-borderless table-sm table-nowrap align-middle mb-0 w-25">
+                  <tbody>
+                    <tr>
+                      <th scope="row"> {{ 'MODULES.INVOICING.SHARED.TOTAL_HT' | translate }} </th>
+                      <td class="text-end">
+                        {{ item.totalPrice.net | currency:'DT':'symbol':'1.3-3' }}
+                      </td>
+                    </tr>
+                    <tr>
+                      <th scope="row"> {{ 'MODULES.INVOICING.SHARED.TOTAL_TAXES' | translate }} </th>
+                      <td class="text-end">
+                        {{ item.totalTax | currency:'DT':'symbol':'1.3-3' }}
+                      </td>
+                    </tr>
+                    <tr>
+                      <th scope="row"> {{ 'MODULES.INVOICING.SHARED.TOTAL_TTC' | translate }} </th>
+                      <td class="text-end">
+                        {{ item.totalPrice.gross | currency:'DT':'symbol':'1.3-3' }}
+                      </td>
+                    </tr>
+                    <tr *ngFor="let tax of item.taxes; let i = index">
+                      <th scope="row">{{ tax.tax?.label }}:</th>
+                      <td class="text-end">
+                        {{ ((tax.tax.value.sign === TaxSignEnum.NEGATIVE && +item.toPay > 0) || (tax.tax.value.sign === TaxSignEnum.POSITIVE && +item.toPay < 0) ? '-' : '') }} {{ +tax.tax?.value.value | currency:'DT':'symbol':'1.3-3' }}
+                      </td>
+                    </tr>
+                    <tr class="border-top border-top-dashed">
+                      <th scope="row"> {{ 'MODULES.INVOICING.SHARED.NET_TO_PAY' | translate }}</th>
+                      <td class="text-end">
+                        {{ item.toPay | currency:'DT':'symbol':'1.3-3' }}
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+              <div fxLayout="row" fxLayoutAlign="start center">
+                <div [fxFlex]="100/3">
+                  <h5 for="choices-payment-type" class="form-label text-muted text-uppercase fw-semibold">
+                    {{'MODULES.INVOICING.SHARED.BANK_DETAILS' | translate }}
+                  </h5>
+                  <table class="table table-borderless table-sm table-nowrap align-middle mb-0 text-muted fw-normal">
+                    <tbody>
+                      <tr *ngIf="item.bank?.bank?.name">
+                        <th scope="row"> {{ 'MODULES.INVOICING.SHARED.BANK_NAME' | translate }}</th>
+                        <td colspan="2" style="width:150px;">{{ item.bank?.bank?.name }}</td>
+                      </tr>
+                      <tr *ngIf="item.bank?.iban">
+                        <th scope="row"> {{ 'MODULES.INVOICING.SHARED.IBAN' | translate }}</th>
+                        <td colspan="2">{{ item.bank?.iban }}</td>
+                      </tr>
+                      <tr *ngIf="item.bank?.bank?.bic">
+                        <th scope="row"> {{ 'MODULES.INVOICING.SHARED.SWIFT' | translate }}</th>
+                        <td colspan="2">{{ item.bank?.bank?.bic }}</td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+              <div class="mt-4">
+                <div class="alert alert-info">
+                  <p class="mb-0"><span class="fw-semibold"> {{ 'MODULES.INVOICING.SHARED.NOTES' | translate }}:</span>
+                    <span id="note">{{ item.note }}</span>
+                  </p>
+                </div>
+              </div>
+              <div class="hstack gap-2 justify-content-end d-print-none mt-4">
+                <a href="javascript:window.print()" class="btn btn-info"><i class="ri-printer-line align-bottom me-1"></i>{{'SHARED.PRINT' | translate }}</a>
+                <a (click)="downloadDocument(item)" class="btn btn-primary"><i class="ri-download-2-line align-bottom me-1"></i> {{ 'COMMON.DOWNLOAD' | translate }}</a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</ng-container>
+<div *ngIf="navigating$ | async" class="vh-100 py-4 text-center" fxLayout="column" fxLayoutAlign="center center" fxLayoutGap="1rem">
+  <div>
+    <lord-icon trigger="loop" style="width:72px;height:72px" [colors]="'primary:' + primaryColor + ',secondary:' + secondaryColor" src="https://cdn.lordicon.com/msoeawqm.json">
+    </lord-icon>
+  </div>
+  <div class="mt-4">
+    <h5> {{ 'COMMON.LOADING' | translate }}</h5>
+  </div>
+</div>

@@ -1,0 +1,64 @@
+<form class="form">
+  <div class="card">
+    <div class="card-header">
+      <div class="card-title fw-bold">{{'MENUITEMS.CUSTOMERENGAGEMENT.LIST.REMUNERATION' | translate }}</div>
+    </div>
+    <div class="card-body">
+      <form [formGroup]="questForm">
+        <div class="col-lg-12">
+          <div class="fs-6 fw-semibold required mt-2 mb-3">{{'MENUITEMS.CUSTOMERENGAGEMENT.LIST.REMUNERATION' |
+            translate }}</div>
+          <div *ngIf="remuneration" formArrayName="remuneration" class="ms-3">
+            <ng-container *ngFor="let control of remuneration.controls; let i = index">
+              <ng-container *ngIf="control.get('walletType').value === 'QUANTITATIVE'">
+                <div [formGroupName]="i" class="mb-3 d-flex align-items-end row">
+                  <div class="col-lg-6 col-10">
+                    <ngx-slider formControlName="amount" [options]="quantitativeBarOptions"></ngx-slider>
+                  </div>
+                  <div class="align-items-center col-1 d-flex">
+                    <img *ngIf="(loyaltySettings$ | async)?.aggregator?.coin"
+                      [src]="(loyaltySettings$ | async)?.aggregator?.coin?.picture?.baseUrl + '/' + (loyaltySettings$ | async)?.aggregator?.coin?.picture?.path"
+                      alt="" class="img-fluid rounded-circle avatar-xs">
+                    <img
+                      *ngIf="!(loyaltySettings$ | async)?.aggregator?.coin && (loyaltySettings$ | async)?.quantitative?.coin?.picture?.baseUrl"
+                      [src]="(loyaltySettings$ | async)?.quantitative?.coin?.picture?.baseUrl + '/' + (loyaltySettings$ | async)?.quantitative?.coin?.picture?.path"
+                      alt="" class="img-fluid rounded-circle avatar-xs">
+                    <lord-icon
+                      *ngIf="!(loyaltySettings$ | async)?.quantitative?.coin?.picture?.baseUrl && !(loyaltySettings$ | async)?.aggregator?.coin"
+                      src="https://cdn.lordicon.com/lxizbtuq.json" trigger="loop" delay="2000"
+                      style="width:30px;height:30px">
+                    </lord-icon>
+                    <span class="ms-1">{{(+control.get('amount').value *
+                      +(quest?.questType?.wallet?.coin?.unitValue?.amount))
+                      | customCurrency : quest?.questType?.wallet?.coin?.unitValue?.currency?.name }}
+                      {{quest?.questType?.wallet?.coin?.unitValue?.currency?.name}} </span>
+                  </div>
+                </div>
+              </ng-container>
+              <ng-container *ngIf="control.get('walletType').value === 'QUALITATIVE'">
+                <div *ngIf="(loyaltySettings$ | async)?.qualitative?.active" [formGroupName]="i"
+                  class="mb-3 d-flex align-items-end row">
+                  <div class="col-lg-6 col-10">
+                    <ngx-slider formControlName="amount" [options]="qualitativeBarOptions">
+                    </ngx-slider>
+                  </div>
+                  <img *ngIf="(loyaltySettings$ | async)?.qualitative?.picture?.baseUrl"
+                    [src]="(loyaltySettings$ | async)?.qualitative?.picture?.baseUrl + '/' + (loyaltySettings$ | async)?.qualitative?.picture?.path"
+                    alt="" class="img-fluid h-100 rounded-circle avatar-xs mb-1">
+                  <img class="img-fluid rounded-circle wh-3 mb-1"
+                    *ngIf="!(loyaltySettings$ | async)?.qualitative?.picture?.baseUrl"
+                    src="https://sifca-storage.s3.eu-central-1.amazonaws.com/loyalcraft/reputation_512.gif">
+                </div>
+              </ng-container>
+            </ng-container>
+          </div>
+        </div>
+      </form>
+    </div>
+    <div *ngIf="quest?.status !== 'ONGOING' && quest?.status !== 'FINISHED'"
+      class="d-flex card-footer justify-content-end py-6">
+      <button [disabled]="questForm.invalid || isButtonDisabled" (click)="save()" type="button"
+        class="btn btn-success">{{'COMMON.SAVE' | translate }}</button>
+    </div>
+  </div>
+</form>

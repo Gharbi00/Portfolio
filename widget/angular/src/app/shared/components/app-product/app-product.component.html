@@ -1,0 +1,36 @@
+<div [class.dark-mode]="darkMode" [class.rtl]="rtl">
+  <div class="product-preview">
+    <a (click)="!isDragging ? goToProductPage() : null">
+      <figure class="product-preview-image liquid" [ngStyle]="{
+          'background-image': 'url(' + (product?.barcodes?.length && product?.barcodes[0]?.media?.pictures?.length
+            ? product?.barcodes[0]?.media?.pictures[0]?.baseUrl + '/' + product?.barcodes[0]?.media?.pictures[0]?.path
+            : defaultPicture) + ')',
+          'background-position': 'center',
+          'background-size': 'cover'
+        }">
+      </figure>
+    </a>
+    <div class="product-preview-info">
+      <p class="text-sticker">
+        {{product?.barcodes[0]?.publicPrice | number: '1.3-3'}}
+        <span class="highlighted">DT</span>
+      </p>
+      <p>
+        <a (click)="!isDragging ? goToProductPage() : null" style="cursor: pointer;">{{product?.name | truncate:22}}</a>
+      </p>
+      <p class="product-preview-category digital">
+        <a style="cursor: pointer;">{{ product.catalogueCategory[product.catalogueCategory.length -
+          1]?.name }}</a>
+      </p>
+    </div>
+    <div class="product-preview-meta">
+      <div class="product-preview-author">
+        <a *ngIf="product?.target?.pos?.picture?.baseUrl" [class.p-0]="!product?.target?.pos?.picture?.baseUrl" class="product-preview-author-image user-avatar micro no-border" style="cursor: pointer;">
+          <img class="rounded-circle" width="20" height="20" [src]="product?.target?.pos?.picture?.baseUrl + product?.target?.pos?.picture?.path" alt="">
+        </a>
+        <p class="product-preview-author-title"> {{'POSTED_BY' | translate}} </p>
+        <p class="product-preview-author-text"><a style="cursor: pointer;">{{product?.target?.pos?.name}}</a></p>
+      </div>
+    </div>
+  </div>
+</div>

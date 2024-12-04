@@ -1,0 +1,487 @@
+<ng-container *ngIf="!(navigating$ | async)">
+  <div class="row">
+    <div class="col-lg-12">
+      <div class="card mt-n4 mx-n4 mb-n5">
+        <div class="bg-soft-warning">
+          <div class="card-body pb-4 mb-5">
+            <div class="row">
+              <div class="col-md">
+                <div class="row align-items-center">
+                  <div class="col-md-auto">
+                    <div class="avatar-md mb-md-0 mb-4">
+                      <div class="avatar-title bg-info rounded-circle shadow">
+                        {{ 'COMMON.START' | translate | slice:0:1 }}
+                      </div>
+                    </div>
+                  </div>
+                  <div class="col-md">
+                    <h4 class="fw-semibold" id="ticket-title">#{{ ticket.identifier }} - {{ ticket.name }}
+                    </h4>
+                    <div class="hstack gap-3 flex-wrap">
+                      <div class="text-muted">
+                        {{ 'COMMON.DATE' | translate }}:
+                        <span class="fw-medium" id="create-date">{{ ticket.createdAt | date: 'longDate' }}</span>
+                      </div>
+                      <div class="vr"></div>
+                      <div class="text-muted">
+                        {{ 'COMMON.DUE_DATE' | translate }}:
+                        <span class="fw-medium" id="due-date">{{ ticket.deadline | date: 'longDate' }}</span>
+                      </div>
+                      <div class="vr"></div>
+                      <div class="badge rounded-pill fs-12"
+                        [ngClass]="{ 'bg-danger': ticket.priority === 'HIGH' || ticket.priority === 'CRITICAL', 'bg-success': ticket.priority === 'LOW', 'bg-warning': ticket.priority === 'NORMAL' }"
+                        id="ticket-status">
+                        {{ ticket.priority }}
+                      </div>
+                      <div class="badge rounded-pill fs-12"
+                        [ngClass]="{ 'bg-danger': ticket.status === 'ON_HOLD' || ticket.status === 'BLOCKED', 'bg-success': ticket.status === 'RESOLVED', 'bg-warning': ticket.status === 'IN_PROGRESS', 'bg-info': ticket.status === 'OPEN' }">
+                        {{ ticket.status }}
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="col-md-auto mt-md-0 mt-4">
+                <div class="hstack gap-1 flex-wrap" ngbDropdown>
+                  <button type="button" class="btn avatar-xs mt-n1 p-0 favourite-btn active shadow-none">
+                    <span class="avatar-title bg-transparent fs-15">
+                      <i class="ri-star-fill"></i>
+                    </span>
+                  </button>
+                  <button type="button" class="btn py-0 fs-16 text-body shadow-none arrow-none" id="settingDropdown"
+                    data-bs-toggle="dropdown" ngbDropdownToggle>
+                    <i class="ri-share-line"></i>
+                  </button>
+                  <ul class="dropdown-menu" aria-labelledby="settingDropdown" ngbDropdownMenu>
+                    <li><a class="dropdown-item" href="javascript:void(0);"><i
+                          class="ri-eye-fill align-bottom me-2 text-muted"></i> {{ 'COMMON.VIEW' | translate }}</a></li>
+                    <li><a class="dropdown-item" href="javascript:void(0);"><i
+                          class="ri-share-forward-fill align-bottom me-2 text-muted"></i> {{ 'COMMON.SHARE_WITH' |
+                        translate }}</a></li>
+                    <li><a class="dropdown-item" href="javascript:void(0);"><i
+                          class="ri-delete-bin-fill align-bottom me-2 text-muted"></i> {{ 'COMMON.DELETE' | translate
+                        }}</a></li>
+                  </ul>
+                  <button type="button" class="btn py-0 fs-16 text-body shadow-none">
+                    <i class="ri-flag-line"></i>
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col-xxl-9">
+      <div class="card">
+        <div class="card-body p-4">
+          <div class="d-flex justify-content-between">
+            <h6 class="fw-semibold text-uppercase mb-3">{{ 'MODULES.CRM.TICKETS.TICKET_DESCRIPTION' | translate }}</h6>
+            <a (click)="openTicketModal(ticketModal, data)" class="btn btn-light" data-bs-toggle="tooltip"
+              data-bs-placement="top" title="{{ 'MODULES.COLLABORATION.PROJECTS.EDIT' | translate }}">
+              <i class="ri-pencil-fill align-bottom"></i>
+            </a>
+          </div>
+          <p class="text-muted">{{ ticket?.description }}</p>
+        </div>
+        <div *ngIf="!ticket.description" class="py-4 mt-4 text-center" id="noresult">
+          <lord-icon src="https://cdn.lordicon.com/vlycxjwx.json" trigger="loop"
+            [colors]="'primary:' + primaryColor + ',secondary:' + secondaryColor" style="width:72px;height:72px"></lord-icon>
+          <h5 class="mt-4">{{ 'COMMON.NO_RESULT_FOUND' | translate }}</h5>
+        </div>
+        <app-comments></app-comments>
+      </div>
+    </div>
+    <div class="col-xxl-3">
+      <div class="card">
+        <div class="card-header">
+          <h5 class="card-title mb-0">{{ 'MODULES.CRM.TICKETS.TICKET_DETAILS' | translate }}</h5>
+        </div>
+        <div class="card-body">
+          <div class="table-responsive table-card">
+            <table class="table table-borderless align-middle mb-0">
+              <tbody>
+                <tr>
+                  <td class="fw-medium">{{ 'MODULES.CRM.TICKETS.TICKET' | translate }}</td>
+                  <td>#<span id="t-no">{{ ticket.identifier }}</span></td>
+                </tr>
+                <tr>
+                  <td class="fw-medium">{{ 'MODULES.CRM.TICKETS.CLIENT' | translate }}</td>
+                  <td id="t-client">{{ ticket.customer.name }}</td>
+                </tr>
+                <tr>
+                  <td class="fw-medium">{{ 'MODULES.CRM.TICKETS.ASSIGNED_TO' | translate }} :</td>
+                  <td>
+                    <div class="avatar-group">
+                      <div class="avatar-group-item shadow" *ngFor="let user of ticket?.assignedTo?.slice(0,3)">
+                        <a href="javascript:void(0);" class="d-block" [matTooltip]="user?.firstName" placement="top"
+                          *ngIf="!user?.picture">
+                          <div class="avatar-xxs">
+                            <span class="avatar-title bg-info rounded-circle text-uppercase">
+                              {{user?.firstName?.charAt(0) || 'N'}}
+                            </span>
+                          </div>
+                        </a>
+                        <a href="javascript:void(0);" class="d-block" [matTooltip]="user?.firstName" placement="top"
+                          *ngIf="user?.picture">
+                          <img :src="{{user?.picture.baseUrl}}/{{user?.picture.path}}" alt=""
+                            class="rounded-circle avatar-xxs">
+                        </a>
+                      </div>
+                      <div *ngIf="ticket?.assignedTo?.length > 3" class="avatar-group-item shadow">
+                        <a (click)="openMemberModal(selectedUsersModal)" href="javascript:void(0);" class="d-block">
+                          <div class="avatar-xxs">
+                            <span class="avatar-title bg-info rounded-circle text-uppercase">
+                              ...
+                            </span>
+                          </div>
+                        </a>
+                      </div>
+                      <a href="javascript:void(0);" (click)="openMemberModal(memberModal)"
+                        class="avatar-group-item shadow" matTooltip="{{ 'COMMON.ADD_MEMBERS' | translate }}"
+                        placement="top">
+                        <div class="avatar-xxs">
+                          <div class="avatar-title fs-16 rounded-circle bg-light border-dashed border text-primary">
+                            +
+                          </div>
+                        </div>
+                      </a>
+                    </div>
+                  </td>
+                </tr>
+                <tr>
+                  <td class="fw-medium">{{ 'COMMON.STATUS' | translate }}:</td>
+                  <td>
+                    <select [(ngModel)]="selectedStatus" class="form-control" (change)="onStatusChange($event)">
+                      <option value="" disabled selected>{{ 'COMMON.SELECT_AN_OPTION' | translate }}</option>
+                      <option *ngFor="let state of status" [value]="state">{{ 'COMMON.STATE.' + state | translate }}
+                      </option>
+                    </select>
+                  </td>
+                </tr>
+                <tr>
+                  <td class="fw-medium">{{ 'COMMON.PRIORITY' | translate }}</td>
+                  <td>
+                    <span class="badge" [ngClass]="{
+                        'bg-danger': ticket.priority === 'HIGH' || ticket.priority === 'CRITICAL',
+                        'bg-success': ticket.priority === 'LOW',
+                        'bg-warning': ticket.priority === 'NORMAL'
+                      }" id="t-priority">{{ ticket.priority }}</span>
+                  </td>
+                </tr>
+                <tr>
+                  <td class="fw-medium">{{ 'COMMON.CREATE_DATE' | translate }}</td>
+                  <td id="c-date">{{ ticket.createdAt | date :'longDate' }}</td>
+                </tr>
+                <tr>
+                  <td class="fw-medium">{{ 'COMMON.DUE_DATE' | translate }}</td>
+                  <td id="d-date">{{ ticket.deadline | date :'longDate' }}</td>
+                </tr>
+                <tr>
+                  <td class="fw-medium">{{ 'COMMON.LAST_ACTIVITY' | translate }}</td>
+                  <td>{{ ticket.updatedAt | date :'longDate' }}</td>
+                </tr>
+                <tr>
+                  <td class="fw-medium">{{ 'COMMON.LABELS' | translate }}</td>
+                  <td class="hstack text-wrap gap-1">
+                    <span *ngFor="let tag of ticket.tags" class="badge badge-soft-primary">{{ tag }}</span>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+      <div class="card">
+        <div class="card-header">
+          <h6 class="card-title fw-semibold mb-0">{{ 'MODULES.CRM.CUSTOMERS.FILES_ATTACHMENT' | translate }}</h6>
+        </div>
+        <div *ngIf="ticket?.attachments?.length" class="card-body">
+          <div *ngFor="let attachment of ticket.attachments"
+            class="d-flex align-items-center border border-dashed p-2 rounded">
+            <div class="flex-shrink-0 avatar-sm">
+              <div class="avatar-title bg-light rounded">
+                <img class="w-10 h-10 rounded-md overflow-hidden"
+                  [src]="attachment.content?.type?.image?.background?.svg?.baseUrl + '/' + attachment.content?.type?.image?.background?.svg?.path">
+              </div>
+            </div>
+            <div class="flex-grow-1 ms-3">
+              <h6 class="mb-1"><a href="javascript:void(0);" class="text-body">{{ attachment.name.length > 10 ?
+                  attachment.name.substr(0,7) + '...' : attachment.name }}</a></h6>
+              <small class="text-muted">{{ attachment.size / 1000 | number:'1.0-2' }} KB</small>
+            </div>
+            <div class="hstack gap-3 fs-16">
+              <a (click)="downloadDocument(attachment.id)" class="text-muted"><i class="ri-download-2-line"></i></a>
+              <a href="javascript:void(0);" (click)="removeDocument(attachment.id)" class="text-muted"><i
+                  class="ri-delete-bin-line"></i></a>
+            </div>
+          </div>
+        </div>
+        <div *ngIf="!ticket?.attachments?.length" class="py-4 mt-4 text-center" id="noresult">
+          <lord-icon src="https://cdn.lordicon.com/vlycxjwx.json" trigger="loop"
+            [colors]="'primary:' + primaryColor + ',secondary:' + secondaryColor" style="width:72px;height:72px"></lord-icon>
+          <h5 class="mt-4">{{ 'COMMON.NO_RESULT_FOUND' | translate }}</h5>
+        </div>
+        <div class="uploader-wrapper card-body">
+          <ngx-file-drop class="cursor-pointer" (click)="addedFile()"
+            dropZoneLabel="{{ 'MODULES.COLLABORATION.PROJECTS.DROP_FILES_HERE' | translate }}"
+            (onFileDrop)="dropped($event)" (onFileOver)="fileOver($event)" (onFileLeave)="fileLeave($event)">
+            <ng-template ngx-file-drop-content-tmp let-openFileSelector="openFileSelector">
+              {{ 'MODULES.COLLABORATION.PROJECTS.CLICK_OR_DRAG_FILES' | translate }}
+            </ng-template>
+          </ngx-file-drop>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+  <ng-template #ticketModal role="document" let-modal>
+    <div class="modal-header p-3 bg-soft-info">
+      <h5 class="modal-title" id="exampleModalLabel">{{selectedTicket ? ('EDIT_TICKET' | translate) : ('ADD_TICKET' | translate) }}</h5>
+      <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" id="close-modal" (click)="modal.dismiss('Cross click')"></button>
+    </div>
+    <form [formGroup]="ticketForm">
+      <div class="modal-body">
+        <div class="row g-3">
+          <div class="col-lg-12">
+            <div>
+              <label for="tasksTitle-field" class="form-label">{{ 'MODULES.CRM.TICKETS.TITLE' | translate }}</label>
+              <input type="text" id="tasksTitle-field" class="form-control" placeholder="{{ 'MODULES.CRM.TICKETS.ENTER_TITLE' | translate }}" required formControlName="name"
+                [ngClass]="{ 'is-invalid': ticketForm.get('name')?.touched && ticketForm.get('name').hasError('required') }" />
+              <div class="invalid-feedback" *ngIf="ticketForm.get('name')?.touched && ticketForm.get('name').hasError('required')">
+                {{ 'COMMON.REQUIRED' | translate }}
+              </div>
+            </div>
+          </div>
+          <div class="col-lg-12">
+            <div ngbDropdown>
+              <form [formGroup]="searchCompanyForm">
+                <label class="form-check-label" for="lastname-field">{{ 'MODULES.CRM.TICKETS.CLIENT' | translate }}</label>
+                <input formControlName="searchString" placeholder="{{ 'MODULES.CRM.TICKETS.SELECT_COMPANY' | translate }}" class="cursor-pointer form-select form-control dropdown-toggle" ngbDropdownToggle>
+              </form>
+              <div infiniteScroll [scrollWindow]="false" [infiniteScrollDistance]="2" [infiniteScrollThrottle]="50" (scrolled)="loadMoreLeads()" [infiniteScrollDisabled]="isLeadLastPage$ | async"
+                class="dropdown-menu dropdown-menu-right w-100 h-10 p-3" ngbDropdownMenu>
+                <div *ngFor="let lead of leads$ | async" class="form-check">
+                  <input [value]="lead?.id" formControlName="customer" [checked]="selectedCompany === lead.name" class="form-check-input border-s" type="radio" id="lead{{ lead?.id }}">
+                  <label class="form-check-label" for="lead{{ lead?.id }}">
+                    {{ lead?.name }}
+                  </label>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="col-lg-12">
+            <label class="form-check-label" for="lastname-field">{{ 'MODULES.CRM.TICKETS.OWNER' | translate }}</label>
+            <ng-select [selectableGroup]="true" [closeOnSelect]="false" formControlName="assignedTo" [multiple]="true" [items]="team$ | async" [virtualScroll]="true" placeholder="{{ 'MODULES.CRM.TICKETS.SELECT_AN_OPTION' | translate }}"
+              (scrollToEnd)="loadMoreOwners()" bindLabel="firstName" bindValue="id">
+              <ng-template *ngIf="teamPagination$ | async as teamPagination" ng-header-tmp>
+                <small class="form-text text-muted">{{ 'COMMON.LOADED' | translate }} {{team?.length}} {{ 'COMMON.OF' | translate }} {{teamPagination?.length}}</small>
+              </ng-template>
+              <ng-template ng-label-tmp let-item="item" let-clear="clear">
+                <span class="ng-value-label">
+                  <img *ngIf="item?.picture" class="avatar-xxs rounded-circle" [src]="item?.picture?.baseUrl + '/' + item?.picture?.path" width="20px" height="20px">
+                  <img *ngIf="!item?.picture" class="avatar-xxs rounded-circle" src="assets/images/users/avatar-1.jpg" width="20px" height="20px">
+                  {{item?.firstName}}
+                </span>
+                <span class="ng-value-icon right" (click)="clear(item)" aria-hidden="true">×</span>
+              </ng-template>
+              <ng-template ng-option-tmp let-item$="item$" let-item="item">
+                <div class="d-flex align-items-center">
+                  <input id="item-{{index}}" class="me-2" type="checkbox" [ngModelOptions]="{standalone: true}" [ngModel]="item$.selected" />
+                  <label class="form-check-label d-flex align-items-center" for="anna-adame">
+                    <span class="flex-shrink-0">
+                      <img *ngIf="!item?.picture" src="assets/images/users/avatar-1.jpg" alt="" class="avatar-xxs rounded-circle" />
+                      <img *ngIf="item?.picture" [src]="item?.picture?.baseUrl + '/' + item?.picture?.path" alt="" class="avatar-xxs rounded-circle" />
+                    </span>
+                    <span class="flex-grow-1 ms-2">
+                      {{item?.firstName}}
+                    </span>
+                  </label>
+                </div>
+              </ng-template>
+            </ng-select>
+          </div>
+          <div class="col-lg-12 mb-3">
+            <label for="duedate-field" class="form-label">{{ 'MODULES.CRM.TICKETS.DUE_DATE' | translate }}</label>
+            <div class="input-group d-flex align-items-center">
+              <input class="form-control flatpickr-input" type="text" placeholder="{{ 'MODULES.CRM.TICKETS.DUE_DATE' | translate }}" mwlFlatpickr [altInput]="true" [convertModelValue]="true" [dateFormat]="'Y-m-d H:i'"
+                formControlName="deadline">
+              <a *ngIf="ticketForm.get('deadline').value" (click)="resetDate()">
+                <i class="ri-close-fill fs-16"></i>
+              </a>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-lg-6">
+              <label for="ticket-status" class="form-label">{{ 'MODULES.CRM.TICKETS.STATUS' | translate }}</label>
+              <select class="form-control" data-plugin="choices" name="ticket-status" id="ticket-status" formControlName="status">
+                <option value="" disabled selected>{{ 'COMMON.SELECT_AN_OPTION' | translate }}</option>
+                <option *ngFor="let state of status" [value]="state">{{  'COMMON.STATE.' + state | translate }}</option>
+              </select>
+            </div>
+            <div class="col-lg-6">
+              <label for="priority-field" class="form-label">{{ 'MODULES.CRM.TICKETS.PRIORITY' | translate }}</label>
+              <select class="form-control" data-plugin="choices" name="priority-field" id="priority-field" formControlName="priority">
+                <option value="" disabled selected>{{ 'COMMON.SELECT_PRIORITY' | translate }}</option>
+                <option *ngFor="let pr of priorities" [value]="pr">{{  'COMMON.PRIORITY.' + pr | translate }}</option>
+              </select>
+            </div>
+          </div>
+          <div class="mb-3">
+            <label for="contactNumber" class="form-label">{{ 'MODULES.CRM.TICKETS.DESCRIPTION' | translate }}</label>
+            <textarea formControlName="description" class="form-control" id="exampleFormControlTextarea1" rows="3" placeholder="{{ 'MODULES.CRM.TICKETS.ENTER_DESCRIPTION' | translate }}"></textarea>
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <div class="hstack gap-2 justify-content-end">
+          <button type="button" class="btn btn-light" data-bs-dismiss="modal" (click)="modal.close('Close click')">{{ 'COMMON.CLOSE' | translate }}</button>
+          <button type="button" [disabled]="isButtonDisabled || ticketForm.invalid" (click)="save()" class="btn btn-success" id="add-btn">{{('MODULES.CRM.TICKETS.EDIT_TICKET' | translate)}}</button>
+        </div>
+      </div>
+    </form>
+  </ng-template>
+
+  <ng-template #selectedUsersModal role="document" let-modal>
+    <div class="modal-header p-3 bg-soft-success">
+      <h5 class="modal-title" id="inviteMembersModalLabel">{{ 'MODULES.CRM.TICKETS.MEMBERS' | translate }}</h5>
+      <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"
+        (click)="modal.dismiss('Cross click')"></button>
+    </div>
+    <div class="modal-body p-4">
+      <div class="mb-4 d-flex align-items-center">
+        <div class="me-2">
+          <h5 class="mb-0 fs-13">{{ 'MODULES.CRM.TICKETS.MEMBERS_LABEL' | translate }} :</h5>
+        </div>
+        <div class="avatar-group justify-content-center">
+          <ng-container *ngFor="let member of selectedUsers">
+            <a *ngIf="member?.picture?.baseUrl" href="javascript:void(0);" class="avatar-group-item"
+              data-bs-toggle="tooltip" data-bs-trigger="hover" data-bs-placement="top"
+              title="{{ member.firstName }} {{ member.lastName }}">
+              <div class="avatar-xs">
+                <img [src]="member?.picture?.baseUrl + '/' + member?.picture?.path" alt=""
+                  class="rounded-circle h-100 img-fluid">
+              </div>
+            </a>
+            <a *ngIf="!member?.picture" href="javascript: void(0);" class="avatar-group-item shadow"
+              [matTooltip]="member?.firstName" placement="top">
+              <div class="avatar-xs">
+                <div class="avatar-title rounded-circle bg-info text-uppercase shadow">
+                  {{ member?.firstName?.charAt(0) || 'N'}}
+                </div>
+              </div>
+            </a>
+          </ng-container>
+        </div>
+      </div>
+      <ngx-simplebar class="mx-n4 px-4" style="max-height: 225px;">
+        <div class="vstack gap-3">
+          <div *ngFor="let member of selectedUsers" class="d-flex align-items-center">
+            <div class="avatar-xs flex-shrink-0 me-3">
+              <div *ngIf="!member?.picture" class="col-md-auto">
+                <div class="avatar-xs mb-md-0 mb-4">
+                  <div class="avatar-title rounded-circle bg-info text-uppercase shadow">
+                    {{ member?.firstName?.charAt(0) || 'N'}}
+                  </div>
+                </div>
+              </div>
+              <img *ngIf="member?.picture" [src]="member?.picture?.baseUrl + '/' + member?.picture?.path"
+                class="img-fluid h-100 rounded-circle">
+            </div>
+            <div class="flex-grow-1">
+              <h5 class="fs-13 mb-0"><a href="javascript:void(0);" class="text-body d-block">{{ member?.firstName }}
+                  {{ member?.lastName }}</a>
+              </h5>
+            </div>
+          </div>
+        </div>
+      </ngx-simplebar>
+    </div>
+    <div class="modal-footer">
+      <button type="button" class="btn btn-light w-xs" data-bs-dismiss="modal" (click)="modal.close('Close click')">{{
+        'COMMON.CANCEL' | translate }}</button>
+    </div>
+  </ng-template>
+
+  <ng-template #memberModal role="document" let-modal>
+    <div class="modal-header p-3 bg-soft-success">
+      <h5 class="modal-title" id="inviteMembersModalLabel">{{ 'MODULES.CRM.TICKETS.MEMBERS' | translate }}</h5>
+      <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"
+        (click)="modal.dismiss('Cross click')"></button>
+    </div>
+    <div class="modal-body p-4">
+      <div class="search-box mb-3">
+        <form [formGroup]="searchForm">
+          <input type="text" formControlName="searchString" class="form-control bg-light border-light"
+            placeholder="{{ 'COMMON.SEARCH_HERE' | translate }}">
+          <i class="ri-search-line search-icon"></i>
+        </form>
+      </div>
+      <ngx-simplebar class="mx-n4 px-4" style="max-height: 225px;">
+        <div *ngIf="team?.length" class="vstack gap-3">
+          <div *ngFor="let member of team" class="d-flex align-items-center">
+            <div class="avatar-xs flex-shrink-0 me-3">
+              <div *ngIf="!member?.user?.picture" class="col-md-auto">
+                <div class="avatar-xs mb-md-0 mb-4">
+                  <div class="avatar-title bg-info rounded-circle shadow">
+                    {{ member?.user?.firstName?.charAt(0) || 'N'}}
+                  </div>
+                </div>
+              </div>
+              <img *ngIf="member?.user?.picture"
+                [src]="member?.user.picture?.baseUrl + '/' + member?.user.picture?.path"
+                class="img-fluid h-100 rounded-circle">
+            </div>
+            <div class="flex-grow-1">
+              <h5 class="fs-13 mb-0"><a href="javascript:void(0);" class="text-body d-block">{{ member?.user?.firstName
+                  }}
+                  {{ member?.user?.lastName }}</a>
+              </h5>
+            </div>
+            <div class="flex-shrink-0">
+              <button type="button" (click)="!isAdded(member?.user?.id) ? addMember(member) : removeMember(member)"
+                class="btn btn-light btn-sm">{{ !isAdded(member?.user?.id) ? 'COMMON.ADD' :
+                'COMMON.REMOVE' }}</button>
+            </div>
+          </div>
+        </div>
+        <div *ngIf="!team?.length && !isLoading" class="py-4 mt-4 text-center" id="noresult">
+          <lord-icon src="https://cdn.lordicon.com/vlycxjwx.json" trigger="loop"
+            [colors]="'primary:' + primaryColor + ',secondary:' + secondaryColor" style="width:72px;height:72px"></lord-icon>
+          <h5 class="mt-4">{{ 'COMMON.NO_RESULT_FOUND' | translate }}</h5>
+        </div>
+        <div *ngIf="isLoading" class="py-4 mt-4 text-center" id="noresult">
+          <lord-icon src="https://cdn.lordicon.com/msoeawqm.json" trigger="loop"
+            [colors]="'primary:' + primaryColor + ',secondary:' + secondaryColor" style="width:72px;height:72px"></lord-icon>
+          <h5 class="mt-4">{{ 'COMMON.LOADING' | translate }}</h5>
+        </div>
+        <div class="mt-3 justify-content-center d-flex" *ngIf="isLast === false && team?.length">
+          <button class="btn btn-soft-secondary" (click)="loadMoreMembers()">{{ 'COMMON.LOAD_MORE' | translate
+            }}</button>
+        </div>
+      </ngx-simplebar>
+    </div>
+    <div class="modal-footer">
+      <button type="button" class="btn btn-light w-xs" data-bs-dismiss="modal" (click)="modal.close('Close click')">{{
+        'COMMON.CANCEL' | translate }}</button>
+      <button type="button" [disabled]="isButtonDisabled" (click)="invite()" class="btn btn-success w-xs">{{
+        'COMMON.INVITE' | translate }}</button>
+    </div>
+  </ng-template>
+
+</ng-container>
+<div *ngIf="navigating$ | async" class="vh-100 py-4 text-center" fxLayout="column" fxLayoutAlign="center center"
+  fxLayoutGap="1rem">
+  <div>
+    <lord-icon trigger="loop" style="width:72px;height:72px" [colors]="'primary:' + primaryColor + ',secondary:' + secondaryColor"
+      src="https://cdn.lordicon.com/msoeawqm.json">
+    </lord-icon>
+  </div>
+  <div class="mt-4">
+    <h5>{{ 'COMMON.LOADING' | translate }}</h5>
+  </div>
+</div>

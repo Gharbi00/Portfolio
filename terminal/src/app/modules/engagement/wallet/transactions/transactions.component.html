@@ -1,0 +1,524 @@
+<!-- Start Breadcrumbs -->
+<app-breadcrumbs title="{{ 'MENUITEMS.TITLE.TRANSACTIONS' | translate }}"
+  [breadcrumbItems]="breadCrumbItems"></app-breadcrumbs>
+<!-- End Breadcrumbs -->
+
+<div class="row">
+  <div class="col-xxl-3 col-md-6">
+    <div class="card card-animate">
+      <div class="card-body">
+        <div class="d-flex mb-3">
+          <div class="flex-grow-1">
+            <lord-icon src="https://cdn.lordicon.com/fhtaantg.json" trigger="loop"
+              [colors]="'primary:' + primaryColor + ',secondary:' + secondaryColor" style="width:55px;height:55px">
+            </lord-icon>
+          </div>
+          <div class="flex-shrink-0">
+            <h5 class="fs-13 mb-3">{{'MENUITEMS.CUSTOMERENGAGEMENT.LIST.OVERALL_VOLUME' | translate }}</h5>
+          </div>
+        </div>
+        <h3 [ngClass]="{
+            'text-danger': +(stats$ | async)?.overallVolume?.current < 0
+          }" class="mb-2"><span [ngClass]="{
+              'text-danger': +(stats$ | async)?.overallVolume?.current < 0
+            }" [CountTo]="+(stats$ | async)?.overallVolume?.current | customCurrency:
+            (wallet$ | async)?.[0]?.coin?.unitValue?.currency?.name" class="counter-value" [from]="0" [duration]="1">
+          </span>
+          {{(wallet$ | async)?.[0]?.coin?.unitValue?.currency?.name}}</h3>
+        <p [ngClass]="{
+            'text-danger': +(stats$ | async)?.overallVolume?.previous < 0,
+            'text-muted': +(stats$ | async)?.overallVolume?.previous >= 0
+          }" class="mb-0">
+          {{+(stats$ | async)?.overallVolume?.previous | customCurrency: (wallet$ |
+          async)?.[0]?.coin?.unitValue?.currency?.name}}
+          {{(wallet$ | async)?.[0]?.coin?.unitValue?.currency?.name}} <small [ngClass]="{
+              'badge-soft-danger': +(stats$ | async)?.overallVolume?.percentage < 0,
+              'badge-soft-success': +(stats$ | async)?.overallVolume?.percentage > 0,
+              'badge-soft-info': +(stats$ | async)?.overallVolume?.percentage === 0
+             }" class="badge"><i [ngClass]="{
+                'ri-arrow-right-down-line': +(stats$ | async)?.overallVolume?.percentage < 0,
+                'ri-arrow-right-up-line': +(stats$ | async)?.overallVolume?.percentage > 0
+               }" class="fs-13 align-bottom"></i>{{(stats$ | async)?.overallVolume?.percentage | number: '1.2-2'
+            }}%</small>
+        </p>
+      </div>
+    </div>
+  </div>
+  <div class="col-xxl-3 col-md-6">
+    <div class="card card-animate">
+      <div class="card-body">
+        <div class="d-flex mb-3">
+          <div class="flex-grow-1">
+            <lord-icon src="https://cdn.lordicon.com/qhviklyi.json" trigger="loop"
+              [colors]="'primary:' + primaryColor + ',secondary:' + secondaryColor" style="width:55px;height:55px">
+            </lord-icon>
+          </div>
+          <div class="flex-shrink-0">
+            <h5 class="fs-13 mb-3">{{'MENUITEMS.CUSTOMERENGAGEMENT.LIST.TODAY_VOLUME' | translate }}</h5>
+          </div>
+        </div>
+        <h3 [ngClass]="{
+            'text-danger': +(stats$ | async)?.todayVolume?.current < 0
+          }" class="mb-2"><span [ngClass]="{
+              'text-danger': +(stats$ | async)?.todayVolume?.current < 0
+            }" [CountTo]="+(stats$ | async)?.todayVolume?.current | customCurrency:
+            (wallet$ | async)?.[0]?.coin?.unitValue?.currency?.name" class="counter-value" [from]="0" [duration]="1">
+          </span>
+          {{(wallet$ | async)?.[0]?.coin?.unitValue?.currency?.name}}</h3>
+        <p [ngClass]="{
+            'text-danger': +(stats$ | async)?.todayVolume?.previous < 0,
+            'text-muted': +(stats$ | async)?.todayVolume?.previous >= 0
+          }" class="mb-0">
+          {{+(stats$ | async)?.todayVolume?.previous | customCurrency: (wallet$ |
+          async)?.[0]?.coin?.unitValue?.currency?.name}} {{(wallet$
+          | async)?.[0]?.coin?.unitValue?.currency?.name}} <small [ngClass]="{
+              'badge-soft-danger': +(stats$ | async)?.todayVolume?.percentage < 0,
+              'badge-soft-success': +(stats$ | async)?.todayVolume?.percentage > 0,
+              'badge-soft-info': +(stats$ | async)?.todayVolume?.percentage === 0
+             }" class="badge"><i [ngClass]="{
+                'ri-arrow-right-down-line': +(stats$ | async)?.todayVolume?.percentage < 0,
+                'ri-arrow-right-up-line': +(stats$ | async)?.todayVolume?.percentage > 0
+               }" class="fs-13 align-bottom"></i>{{(stats$ | async)?.todayVolume?.percentage | number: '1.2-2'
+            }}%</small>
+        </p>
+      </div>
+    </div>
+  </div>
+  <div class="col-xxl-3 col-md-6">
+    <div class="card card-animate">
+      <div class="card-body">
+        <div class="d-flex mb-3">
+          <div class="flex-grow-1">
+            <lord-icon src="https://cdn.lordicon.com/yeallgsa.json" trigger="loop"
+              [colors]="'primary:' + primaryColor + ',secondary:' + secondaryColor" style="width:55px;height:55px">
+            </lord-icon>
+          </div>
+          <div class="flex-shrink-0">
+            <a *ngFor="let item of wallet$ | async; let i = index" href="javascript:void(0);" [ngClass]="{
+              'badge-soft-warning': i === 0 || i > 3,
+              'badge-soft-info': i === 1,
+              'badge-soft-primary': i === 2,
+              'badge-soft-danger': i === 3
+            }" class="badge badge-border">{{item?.coin?.code}}
+            </a>
+          </div>
+        </div>
+        <h3 [ngClass]="{
+            'text-danger': +(stats$ | async)?.myWallet?.current < 0
+          }" class="mb-2"><span [ngClass]="{
+              'text-danger': +(stats$ | async)?.myWallet?.current < 0
+            }" [CountTo]="+(stats$ | async)?.myWallet?.current | customCurrency:
+            (wallet$ | async)?.[0]?.coin?.unitValue?.currency?.name" class="counter-value" [from]="0" [duration]="1">
+          </span>
+          {{(wallet$ | async)?.[0]?.coin?.unitValue?.currency?.name}}</h3>
+        <p [ngClass]="{
+            'text-danger': +(stats$ | async)?.myWallet?.previous < 0,
+            'text-muted': +(stats$ | async)?.myWallet?.previous >= 0
+          }" class="mb-0">
+          {{+(stats$ | async)?.myWallet?.previous | customCurrency: (wallet$ |
+          async)?.[0]?.coin?.unitValue?.currency?.name}} {{(wallet$ |
+          async)?.[0]?.coin?.unitValue?.currency?.name}} <small [ngClass]="{
+              'badge-soft-danger': +(stats$ | async)?.myWallet?.percentage < 0,
+              'badge-soft-success': +(stats$ | async)?.myWallet?.percentage > 0,
+              'badge-soft-info': +(stats$ | async)?.myWallet?.percentage === 0
+             }" class="badge"><i [ngClass]="{
+                'ri-arrow-right-down-line': +(stats$ | async)?.myWallet?.percentage < 0,
+                'ri-arrow-right-up-line': +(stats$ | async)?.myWallet?.percentage > 0
+               }" class="fs-13 align-bottom"></i>{{(stats$ | async)?.myWallet?.percentage | number: '1.2-2' }}%</small>
+        </p>
+      </div>
+    </div>
+  </div>
+  <div class="col-xxl-3 col-md-6">
+    <swiper [config]="config">
+      <div class="swiper-wrapper">
+        <div *ngFor="let item of wallet$ | async" class="swiper-slide">
+          <div class="card card-animate">
+            <div class="card-body bg-soft-warning">
+              <div class="d-flex mb-3">
+                <div class="flex-grow-1">
+                  <lord-icon src="https://cdn.lordicon.com/vaeagfzc.json" trigger="loop"
+                    [colors]="'primary:' + primaryColor + ',secondary:' + secondaryColor"
+                    style="width:55px;height:55px">
+                  </lord-icon>
+                </div>
+                <div class="flex-shrink-0">
+                  <a href="javascript:void(0);" class="fw-medium">{{item?.coin?.name}} ({{item?.coin?.code}})</a>
+                </div>
+              </div>
+              <h3 [ngClass]="{'text-danger': +item?.amount < 0 }" class="mb-2">{{item?.amount | number: '1.0-0' }}</h3>
+              <h6 [ngClass]="{
+                'text-danger': +item?.amount < 0,
+                'text-muted': +item?.amount >= 0
+              }" class="mb-0">{{(item?.amount * item?.coin?.unitValue?.amount) | customCurrency:
+                item?.coin?.unitValue?.currency?.name}} {{item?.coin?.unitValue?.currency?.name}} </h6>
+            </div>
+          </div>
+        </div>
+      </div>
+    </swiper>
+  </div>
+</div>
+
+<div class="card" id="contactList">
+  <div class="card-header">
+    <div class="row align-items-center g-3">
+      <div class="col-md-3">
+        <h5 class="card-title mb-0">{{'MENUITEMS.CUSTOMERENGAGEMENT.LIST.ALL_TRANSACTIONS' | translate }}</h5>
+      </div>
+      <div class="col-md-auto gap-1 ms-auto">
+        <button (click)="openFilterModal(filterModal)" class="btn btn-success me-2"><i
+            class="ri-equalizer-line align-bottom me-1"></i>{{ 'MODULES.ECOMMERCE.MAIN.FILTERS' | translate }}</button>
+        <button (click)="downloadDocument()" type="button" class="btn btn-secondary"><i
+            class="ri-file-download-line align-bottom me-1"></i>{{'COMMON.EXPORT' | translate }}</button>
+      </div>
+    </div>
+  </div>
+  <div class="card-body">
+    <div class="table-responsive table-card">
+      <table class="table align-middle table-nowrap" id="customerTable">
+        <thead class="table-light text-muted">
+          <tr>
+            <th style="width: 60px;"></th>
+            <th>{{'MENUITEMS.CUSTOMERENGAGEMENT.LIST.TIMESTAMP' | translate }}</th>
+            <th>{{'MENUITEMS.CUSTOMERENGAGEMENT.LIST.CURRENCY' | translate }}</th>
+            <th>{{'SHARED.AFFECTED' | translate }}</th>
+            <th>{{'MENUITEMS.CUSTOMERENGAGEMENT.LIST.DETAILS' | translate }}</th>
+            <th>{{'MENUITEMS.CUSTOMERENGAGEMENT.LIST.TRANSACTION_ID' | translate }}</th>
+            <!-- <th>{{'COMMON.TYPE' | translate }}</th> -->
+            <th>{{'COMMON.AMOUNT' | translate }}</th>
+            <th>{{'COMMON.STATUS' | translate }}</th>
+          </tr>
+        </thead>
+        <tbody
+          *ngIf="((loadingTransactions$ | async) === false || null || undefined) && (transactions$ | async)?.length"
+          class="list form-check-all">
+          <tr *ngFor="let wallet of transactions$ | async">
+            <td>
+              <div class="avatar-xs">
+                <div [ngClass]="{
+                  'bg-soft-danger text-danger': pos?.id !== wallet?.receiver?.receiver?.pos?.id || user?.id !== wallet?.receiver?.receiver?.user?.id,
+                  'bg-soft-success text-success': pos?.id === wallet?.receiver?.receiver?.pos?.id || user?.id === wallet?.receiver?.receiver?.user?.id
+                }" class="avatar-title rounded-circle fs-16">
+                  <i [ngClass]="{
+                    'ri-arrow-right-down-line': pos?.id !== wallet?.receiver?.receiver?.pos?.id || user?.id !== wallet?.receiver?.receiver?.user?.id,
+                    'ri-arrow-right-up-line': pos?.id === wallet?.receiver?.receiver?.pos?.id || user?.id === wallet?.receiver?.receiver?.user?.id
+                  }"></i>
+                </div>
+              </div>
+            </td>
+            <td> {{ wallet?.updatedAt | date: 'dd MMM yyyy' }} <small class="text-muted"> {{
+                wallet?.updatedAt | date: 'hh:mm a' }}</small> </td>
+            <td class="currency_name">
+              <span *ngIf="wallet?.debitor?.coin">
+                <div class="d-flex gap-2 cursor-pointer align-items-center">
+                  <div class="flex-shrink-0">
+                    <img *ngIf="wallet?.debitor?.coin?.picture?.baseUrl"
+                      [src]="wallet?.debitor?.coin?.picture?.baseUrl + '/' + wallet?.debitor?.coin?.picture?.path"
+                      alt="" class="avatar-xxs shadow rounded-circle" />
+                    <div *ngIf="!wallet?.debitor?.coin?.picture?.baseUrl"
+                      class="avatar-sm bg-light rounded-circle p-1 h-x">
+                      <div class="avatar-title bg-soft-success text-success rounded-circle fs-13">
+                        {{wallet?.debitor?.coin?.name.charAt(0) || 'N'}}</div>
+                    </div>
+                  </div>
+                  <div>
+                    {{wallet?.debitor?.coin?.name}}
+                  </div>
+                </div>
+              </span>
+              <span *ngIf="wallet?.amount?.qualitative && !wallet?.debitor?.coin">
+                <div class="d-flex gap-2 cursor-pointer align-items-center">
+                  <div class="flex-shrink-0">
+                    <img *ngIf="!(loyaltySettings$ | async)?.qualitative?.picture?.baseUrl" class="rounded-circle"
+                      src="https://sifca-storage.s3.eu-central-1.amazonaws.com/loyalcraft/reputation_512.gif"
+                      class="img-fluid h-100 rounded-circle avatar-xxs"
+                      style="margin-top: 5% !important; width: 1.75rem; height: 1.75rem;" />
+                    <img *ngIf="(loyaltySettings$ | async)?.qualitative?.picture?.baseUrl"
+                      [src]="(loyaltySettings$ | async)?.qualitative?.picture?.baseUrl + '/' + (loyaltySettings$ | async)?.qualitative?.picture?.path"
+                      class="img-fluid h-100 rounded-circle"
+                      style="margin-top: 5% !important; width: 1.75rem; height: 1.75rem;" />
+                  </div>
+                  <div>
+                    {{'MENUITEMS.TITLE.REPUTATION' | translate}}
+                  </div>
+                </div>
+              </span>
+            </td>
+            <td>
+              <ngb-highlight [result]="wallet?.receiver ? ((wallet?.receiver?.owner?.pos?.name || wallet?.receiver?.owner?.user?.firstName || '') + ' ' + (wallet?.receiver?.owner?.user?.lastName || '')) :
+                ((wallet?.debitor?.owner?.pos?.name || wallet?.debitor?.owner?.user?.firstName || '') + ' ' + (wallet?.debitor?.owner?.user?.lastName || ''))
+                ">
+              </ngb-highlight>
+            </td>
+            <td>
+              {{
+              (wallet?.reason === 'REDEEM' ? 'SHARED.REDEEM' :
+              wallet?.reason === 'CONVERSION' ? 'SHARED.CONVERSION' :
+              wallet?.reason === 'ORDER_ADDED' ? 'SHARED.ORDER_ADDED' :
+              wallet?.reason === 'WALLET_TOPUP' ? 'SHARED.WALLET_TOPUP' :
+              wallet?.reason === 'QUEST_FULFILLED' ? 'SHARED.QUEST_FULFILLED' :
+              wallet?.reason === 'REPUTATION_LOST' ? 'SHARED.REPUTATION_LOST' :
+              wallet?.reason === 'DEAL_ORDER_ADDED' ? 'SHARED.DEAL_ORDER_ADDED' :
+              wallet?.reason === 'WEB_ONSITE_ACTIVITY' ? 'SHARED.WEB_ONSITE_ACTIVITY' :
+              wallet?.reason === 'MOBILE_ONSITE_ACTIVITY' ? 'SHARED.MOBILE_ONSITE_ACTIVITY' :
+              wallet?.reason === 'PHYSICAL_ONSITE_ACTIVITY' ? 'SHARED.PHYSICAL_ONSITE_ACTIVITY' : '') | translate
+              }}
+            </td>
+            <td><ngb-highlight [result]="wallet?.id"></ngb-highlight></td>
+            <!-- <td>
+              {{pos?.id === wallet?.debitor?.debitor?.pos?.id || user?.id === wallet?.debitor?.debitor?.user?.id ?
+              'Withdraw' : 'Deposit'}}
+            </td> -->
+            <td>
+              <ng-container *ngIf="wallet?.amount?.quantitative">
+                <h6 class="mb-1 amount">
+                  <div class="d-flex gap-1 align-items-center">
+                    <span [ngClass]="{
+                      'text-danger': pos?.id === wallet?.receiver?.receiver?.pos?.id || user?.id !== wallet?.receiver?.receiver?.user?.id,
+                      'text-success': pos?.id === wallet?.receiver?.receiver?.pos?.id || user?.id === wallet?.receiver?.receiver?.user?.id
+                    }">
+                      {{wallet?.amount?.quantitative | number: '1.0-0'}}</span>
+                    <img *ngIf="wallet?.debitor?.coin?.picture?.baseUrl"
+                      [src]="wallet?.debitor?.coin?.picture?.baseUrl + '/' + wallet?.debitor?.coin?.picture?.path"
+                      alt="" class="img-fluid h-100 rounded-circle avatar-xxs">
+                    <lord-icon *ngIf="!wallet?.debitor?.coin?.picture?.baseUrl"
+                      src="https://cdn.lordicon.com/lxizbtuq.json" trigger="loop" delay="2000"
+                      style="width:25px;height:25px">
+                    </lord-icon>
+                  </div>
+                </h6>
+                <p class="text-muted mb-0">{{(wallet?.debitor?.coin?.unitValue?.amount *
+                  wallet?.amount?.quantitative) | number: '1.3-3'}}
+                  {{wallet?.debitor?.coin?.unitValue?.currency?.name}} </p>
+              </ng-container>
+              <ng-container *ngIf="wallet?.amount?.qualitative">
+                <h6 class="mb-1 amount">
+                  <div class="d-flex gap-1 align-items-center">
+                    <span [ngClass]="{
+                      'text-danger': pos?.id === wallet?.receiver?.receiver?.pos?.id || user?.id !== wallet?.receiver?.receiver?.user?.id,
+                      'text-success': pos?.id === wallet?.receiver?.receiver?.pos?.id || user?.id === wallet?.receiver?.receiver?.user?.id
+                    }">
+                      {{wallet?.amount?.qualitative | number: '1.0-0'}}</span>
+                    <img *ngIf="!(loyaltySettings$ | async)?.qualitative?.picture?.baseUrl" class="rounded-circle"
+                      src="https://sifca-storage.s3.eu-central-1.amazonaws.com/loyalcraft/reputation_512.gif"
+                      class="img-fluid h-100 rounded-circle"
+                      style="margin-top: 5% !important; width: 1.75rem; height: 1.75rem;" />
+                    <img *ngIf="(loyaltySettings$ | async)?.qualitative?.picture?.baseUrl"
+                      [src]="(loyaltySettings$ | async)?.qualitative?.picture?.baseUrl + '/' + (loyaltySettings$ | async)?.qualitative?.picture?.path"
+                      class="img-fluid h-100 rounded-circle"
+                      style="margin-top: 5% !important; width: 1.75rem; height: 1.75rem;" />
+
+                    <!-- <img *ngIf="wallet?.debitor?.coin?.picture?.baseUrl"
+                      [src]="wallet?.debitor?.coin?.picture?.baseUrl + '/' + wallet?.debitor?.coin?.picture?.path"
+                      alt="" class="img-fluid h-100 rounded-circle avatar-xxs">
+                    <lord-icon *ngIf="!wallet?.debitor?.coin?.picture?.baseUrl"
+                      src="https://cdn.lordicon.com/lxizbtuq.json" trigger="loop" delay="2000"
+                      style="width:25px;height:25px">
+                    </lord-icon> -->
+                  </div>
+                </h6>
+              </ng-container>
+            </td>
+            <td class="status">
+              <span class="badge badge-soft-success fs-11"><i
+                  class="ri-checkbox-circle-line align-bottom"></i>{{'MENUITEMS.CUSTOMERENGAGEMENT.LIST.SUCCESS' |
+                translate }}</span>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <div *ngIf="((loadingTransactions$ | async) === false || null || undefined) && (transactions$ | async)?.length"
+      class="px-3">
+      <div class="row justify-content-md-between align-items-md-center gy-2">
+        <div class="col col-sm-6">
+          <div class="dataTables_info mb-2" id="tickets-table_info" role="status" aria-live="polite">{{'COMMON.SHOWING'
+            | translate }} {{pagination?.startIndex + 1}}–{{pagination?.endIndex ===
+            pagination?.length ? pagination?.endIndex : pagination?.endIndex + 1}} {{'COMMON.OF' | translate }}
+            {{pagination?.length}} {{'COMMON.ENTRIES' | translate }}
+          </div>
+        </div>
+        <div class="col col-sm-6">
+          <div class="text-sm-right float-end">
+            <ngb-pagination [maxSize]="5" [collectionSize]="pagination?.length" [(page)]="page"
+              (pageChange)="onPageChange($event)" [pageSize]="pagination?.size">
+            </ngb-pagination>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div id="noresult" class="py-4 mt-4 text-center"
+      *ngIf="(loadingTransactions$ | async) || (!(loadingTransactions$ | async) && !(transactions$ | async)?.length)">
+      <div *ngIf="loadingTransactions$ | async">
+        <lord-icon trigger="loop" style="width:72px;height:72px"
+          [colors]="'primary:' + primaryColor + ',secondary:' + secondaryColor"
+          src="https://cdn.lordicon.com/msoeawqm.json">
+        </lord-icon>
+        <h5 class="mt-4">{{'COMMON.LOADING' | translate }}</h5>
+      </div>
+      <div *ngIf="!(loadingTransactions$ | async) && !(transactions$ | async)?.length">
+        <lord-icon trigger="loop" style="width:72px;height:72px"
+          [colors]="'primary:' + primaryColor + ',secondary:' + secondaryColor"
+          src="https://cdn.lordicon.com/vlycxjwx.json">
+        </lord-icon>
+        <h5 class="mt-4">{{ 'COMMON.NO_RESULT' | translate }}</h5>
+      </div>
+    </div>
+  </div>
+</div>
+
+<ng-template #filterModal role="document" let-modal>
+  <div class="modal-header bg-soft-info p-3">
+    <h5 class="modal-title" id="exampleModalLabel">{{ 'COMMON.FILTER' | translate }}</h5>
+    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" id="close-modal"
+      (click)="modal.dismiss('Cross click')"></button>
+  </div>
+  <form [formGroup]="filterForm">
+    <div class="modal-body">
+      <div class="g-3">
+        <div class="mb-3">
+          <label for="choices-privacy-status-input"
+            class="form-label">{{'MENUITEMS.CUSTOMERENGAGEMENT.LIST.TRANSACTION_IDS' | translate }}
+            {{'MODULES.INVENTORY.PRESS_ENTER' | translate }}</label>
+          <ng-select [items]="[]" class="no-arrow-select" [addTag]="true" [isOpen]="false" [multiple]="true"
+            [selectOnTab]="true" formControlName="transactionId">
+          </ng-select>
+        </div>
+        <div class="row mb-3">
+          <div class="col-lg-6">
+            <label class="form-label">{{'MENUITEMS.CUSTOMERENGAGEMENT.LIST.FROM' | translate }} </label>
+            <div class="input-group">
+              <input formControlName="from" [inline]="false" class="form-control bg-light border-light" type="text"
+                mwlFlatpickr [altInput]="true" [convertModelValue]="true"
+                placeholder="{{'PLACEHOLDER.START' | translate }}" id="isDate">
+              <div class="input-group-append">
+                <span (click)="resetDate('from')" class="input-group-text"><i class="ri-delete-bin-line"></i></span>
+              </div>
+            </div>
+          </div>
+          <div class="col-lg-6">
+            <label class="form-label">{{'COMMON.TO' | translate }} </label>
+            <div class="input-group">
+              <input formControlName="to" [inline]="false" class="form-control bg-light border-light" type="text"
+                mwlFlatpickr [altInput]="true" [convertModelValue]="true"
+                placeholder="{{'PLACEHOLDER.END' | translate }}" id="isDate">
+              <div class="input-group-append">
+                <span (click)="resetDate('to')" class="input-group-text"><i class="ri-delete-bin-line"></i></span>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="mb-3">
+          <label class="form-label">{{'MENUITEMS.CUSTOMERENGAGEMENT.LIST.REASON' | translate }} </label>
+          <ng-select placeholder="{{'MENUITEMS.CUSTOMERENGAGEMENT.LIST.CHOOSE_REASON' | translate }}" [items]="reasons"
+            [multiple]="true" [formControlName]="'reason'">
+            <ng-template ng-label-tmp let-item="item" let-clear="clear">
+              <div class="ng-value-label">
+                {{
+                (item === 'REDEEM' ? 'SHARED.REDEEM' :
+                item === 'DONATION' ? 'SHARED.DONATION' :
+                item === 'REFERRAL' ? 'SHARED.REFERRAL' :
+                item === 'CONVERSION' ? 'SHARED.CONVERSION' :
+                item === 'ORDER_ADDED' ? 'SHARED.ORDER_ADDED' :
+                item === 'WALLET_TOPUP' ? 'SHARED.WALLET_TOPUP' :
+                item === 'PHONE_RECHARGE' ? 'SHARED.PHONE_RECHARGE' :
+                item === 'WALLET_WITHDRAW' ? 'SHARED.WALLET_WITHDRAW' :
+                item === 'QUEST_FULFILLED' ? 'SHARED.QUEST_FULFILLED' :
+                item === 'REPUTATION_LOST' ? 'SHARED.REPUTATION_LOST' :
+                item === 'DEAL_ORDER_ADDED' ? 'SHARED.DEAL_ORDER_ADDED' :
+                item === 'WEB_ONSITE_ACTIVITY' ? 'SHARED.WEB_ONSITE_ACTIVITY' :
+                item === 'MOBILE_ONSITE_ACTIVITY' ? 'SHARED.MOBILE_ONSITE_ACTIVITY' :
+                item === 'PROFILE_LEVEL_COMPLETED' ? 'SHARED.PROFILE_LEVEL_COMPLETED' :
+                item === 'PHYSICAL_ONSITE_ACTIVITY' ? 'SHARED.PHYSICAL_ONSITE_ACTIVITY' :
+                '') | translate
+                }}
+              </div>
+              <span class="ng-value-icon right" (click)="clear(item)" aria-hidden="true">×</span>
+            </ng-template>
+            <ng-template ng-option-tmp let-item="item">
+              {{
+              (item === 'REDEEM' ? 'SHARED.REDEEM' :
+              item === 'DONATION' ? 'SHARED.DONATION' :
+              item === 'REFERRAL' ? 'SHARED.REFERRAL' :
+              item === 'CONVERSION' ? 'SHARED.CONVERSION' :
+              item === 'ORDER_ADDED' ? 'SHARED.ORDER_ADDED' :
+              item === 'WALLET_TOPUP' ? 'SHARED.WALLET_TOPUP' :
+              item === 'PHONE_RECHARGE' ? 'SHARED.PHONE_RECHARGE' :
+              item === 'WALLET_WITHDRAW' ? 'SHARED.WALLET_WITHDRAW' :
+              item === 'QUEST_FULFILLED' ? 'SHARED.QUEST_FULFILLED' :
+              item === 'REPUTATION_LOST' ? 'SHARED.REPUTATION_LOST' :
+              item === 'DEAL_ORDER_ADDED' ? 'SHARED.DEAL_ORDER_ADDED' :
+              item === 'WEB_ONSITE_ACTIVITY' ? 'SHARED.WEB_ONSITE_ACTIVITY' :
+              item === 'MOBILE_ONSITE_ACTIVITY' ? 'SHARED.MOBILE_ONSITE_ACTIVITY' :
+              item === 'PROFILE_LEVEL_COMPLETED' ? 'SHARED.PROFILE_LEVEL_COMPLETED' :
+              item === 'PHYSICAL_ONSITE_ACTIVITY' ? 'SHARED.PHYSICAL_ONSITE_ACTIVITY' :
+              '') | translate
+              }}
+            </ng-template>
+          </ng-select>
+        </div>
+        <div class="form-check mb-3">
+          <input formControlName="includeAllCustomers" class="form-check-input" type="checkbox" id="Required">
+          <label class="form-check-label" for="Required">
+            {{'SHARED.INCLUDE_ALL_CUSTOMERS' | translate}}
+          </label>
+        </div>
+        <div *ngIf="filterForm.get('includeAllCustomers').value === false" formArrayName="affected" class="row mb-3">
+          <label class="form-label">{{'MENUITEMS.CUSTOMERENGAGEMENT.LIST.CUSTOMER' | translate }}</label>
+          <div *ngFor="let affected of filterForm.get('affected')['controls']; let i = index" class="mb-2">
+            <div [formGroupName]="i">
+              <div class="d-flex align-items-center gap-2">
+                <ng-select class="col-11" [ngModelOptions]="{standalone: true}"
+                  placeholder="{{'PLACEHOLDER.CHOOSE_A_CUSTOMER' | translate }}" [multiple]="false"
+                  formControlName="user" bindValue="id" [typeahead]="userSearchInput$" [virtualScroll]="true"
+                  (scrollToEnd)="loadMoreUsers()" [items]="users$ | async">
+                  <ng-template ng-label-tmp let-item="item" let-clear="clear">
+                    <span class="ng-value-label">
+                      {{item?.firstName}} {{item?.lastName}}
+                    </span>
+                    <span class="ng-value-icon right" (click)="clear(item)" aria-hidden="true">×</span>
+                  </ng-template>
+                  <ng-template ng-option-tmp let-item$="item$" let-item="item">
+                    <div class="d-flex align-items-center">
+                      <div class="flex-shrink-0 me-3">
+                        <div class="avatar-sm bg-light p-1 rounded-circle" *ngIf="item?.picture?.baseUrl">
+                          <img [src]="item?.picture?.baseUrl + '/' + item?.picture?.path"
+                            class="img-fluid h-100 d-block">
+                        </div>
+                        <div class="avatar-sm bg-light rounded-circle p-1" *ngIf="!item?.picture?.baseUrl">
+                          <div class="avatar-title bg-soft-success text-success rounded-circle fs-13">
+                            {{item?.firstName?.charAt(0) || 'N'}}</div>
+                        </div>
+                      </div>
+                      <span class="flex-grow-1 ms-2">
+                        {{item?.firstName}} {{item?.lastName}}
+                      </span>
+                    </div>
+                  </ng-template>
+                </ng-select>
+                <button *ngIf="filterForm.get('affected').value?.length > 1" class="btn btn-sm btn-danger">
+                  <i (click)="removeAffectedField(i)" class="ri-delete-bin-line fs-6"></i>
+                </button>
+              </div>
+            </div>
+          </div>
+          <div class="mb-4 justify-content-end d-flex">
+            <button (click)="addAffectedField()" type="button" class="btn btn-soft-info btn-sm shadow-none"><i
+                class="ri-add-fill me-1 align-bottom"></i>{{'MENUITEMS.CUSTOMERENGAGEMENT.LIST.ADD_USER' | translate
+              }}</button>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <div class="hstack gap-2 justify-content-end">
+        <button type="button" class="btn btn-light" data-bs-dismiss="modal" (click)="modal.close('Close click')">{{
+          'COMMON.CANCEL' | translate }}</button>
+        <button type="button" (click)="reset()" class="btn btn-primary" id="add-btn">{{'COMMON.RESET' | translate}}</button>
+        <button type="button" [disabled]="isFilterButtonDisabled" (click)="filter()" class="btn btn-success"
+          id="add-btn">{{ 'COMMON.FILTER' | translate }}</button>
+      </div>
+    </div>
+  </form>
+</ng-template>

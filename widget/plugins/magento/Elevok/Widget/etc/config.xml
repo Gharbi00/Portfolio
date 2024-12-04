@@ -1,0 +1,16 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:Config/etc/config.xsd">
+    <default>
+        <elevok_widget>
+            <general>
+                <widget_app_id></widget_app_id>
+                <widget_public_key></widget_public_key>
+                <widget_secret_key></widget_secret_key>
+                <first_text></first_text>
+                <second_text></second_text>
+                <submit_text></submit_text>
+                <widget_style></widget_style>
+            </general>
+        </elevok_widget>
+    </default>
+</config>

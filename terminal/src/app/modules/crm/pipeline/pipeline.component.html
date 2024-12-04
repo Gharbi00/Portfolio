@@ -1,0 +1,351 @@
+<app-breadcrumbs title="{{ 'MODULES.CRM.PIPELINE.DEALS' | translate }}"
+  [breadcrumbItems]="breadCrumbItems"></app-breadcrumbs>
+<ng-container *ngIf="!(navigating$ | async)">
+  <div class="card">
+    <div class="card-body">
+      <div class="row g-3">
+        <div class="col-md-3">
+          <div class="search-box">
+            <form [formGroup]="searchForm">
+              <input type="text" formControlName="searchString" class="form-control search"
+                placeholder="{{ 'MODULES.CRM.PIPELINE.DEALS_SEARCH' | translate }}">
+              <i class="ri-search-line search-icon"></i>
+            </form>
+          </div>
+        </div>
+        <div class="col-md-auto ms-auto">
+          <div class="d-flex hastck gap-2 flex-wrap">
+            <button data-bs-toggle="modal" data-bs-target="#adddeals" class="btn btn-success"
+              (click)="openCardModal(cardModal, null)"><i class="ri-add-fill align-bottom me-1"></i> {{
+              'MODULES.CRM.PIPELINE.ADD_DEAL' | translate }}</button>
+          </div>
+        </div>
+        <div class="col-md-auto">
+          <div class="d-flex hastck gap-2 flex-wrap">
+            <button routerLink="/pipeline/archived/{{boardId}}" data-bs-toggle="modal" data-bs-target="#adddeals"
+              class="btn btn-warning">{{ 'MODULES.CRM.PIPELINE.ARCHIVE' | translate }}</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div *ngIf="((loadingCrm$ | async) === false || null || undefined) && board?.boardLists?.length"
+    class="row row-cols-xxl-5 row-cols-lg-3 row-cols-md-2 row-cols-1">
+    <div *ngFor="let list of board?.boardLists; let index = index" class="col">
+      <ngb-accordion #acc="ngbAccordion" class="kanban-accordion" activeIds="lead-1" [closeOthers]="true">
+        <ngb-panel id="lead-1">
+          <ng-template ngbPanelTitle>
+            <a class="card-header w-100 p-3 text-start d-block" [ngClass]="list.theme" data-bs-toggle="collapse"
+              role="button" aria-expanded="false" aria-controls="leadDiscovered">
+              <h5 class="card-title text-uppercase mb-1 fs-14">{{ 'SHARED.' + list?.name | translate }}</h5>
+              <p class="text-muted mb-0">{{((countTotal(list)) || 0) | currency:'DT':'symbol':'1.3-3' }} - <span
+                  class="fw-medium">{{ list?.boardCards?.length || '0' }}
+                  {{ 'MODULES.CRM.PIPELINE.DEALS' | translate }}</span></p>
+            </a>
+          </ng-template>
+          <ng-template ngbPanelContent>
+            <div *ngIf="list?.boardCards?.length">
+              <ng-container *ngFor="let card of list.boardCards">
+                <ngb-accordion *ngIf="filterCards(card)" class="card" #acc="ngbAccordion" [closeOthers]="true">
+                  <ngb-panel id="card.id">
+                    <ng-template ngbPanelTitle>
+                      <a class="d-flex align-items-center text-start" data-bs-toggle="collapse" role="button"
+                        aria-expanded="false" aria-controls="leadDiscovered1">
+                        <div class="flex-shrink-0">
+                          <img src="assets/images/companies/img-2.png" alt="" class="avatar-xs rounded-circle" />
+                        </div>
+                        <div class="flex-grow-1 ms-3">
+                          <h6 class="fs-13 mb-1">{{ card.title }}</h6>
+                          <p class="text-muted mb-0">{{ (card?.budget | currency:'DT':'symbol':'1.3-3') }} - {{
+                            card.dueDate |
+                            date :'longDate' }}</p>
+                        </div>
+                      </a>
+                    </ng-template>
+                    <ng-template ngbPanelContent>
+                      <div class="card-body">
+                        <h6 class="fs-14 mb-1">{{ card.customer?.name }} <small [ngClass]="{
+                          'badge-soft-danger': (card.updatedAt | cardDate) > 10,
+                          'badge-soft-success': (card.updatedAt | cardDate) <= 10
+                        }" class="badge">{{ (card.updatedAt | cardDate) }} {{ (card.updatedAt | cardDate) > 1 ? 'Days'
+                            : 'Day' }}</small>
+                        </h6>
+                        <p class="text-muted">{{ card.description }}</p>
+                        <ul *ngFor="let procedure of card?.procedure" class="list-unstyled vstack gap-2 mb-0">
+                          <li>
+                            <div class="d-flex">
+                              <div class="flex-shrink-0 avatar-xxs text-muted">
+                                <i [ngClass]="{
+                                  'ri-question-answer-line': procedure.task === 'MEETING',
+                                  'ri-mac-line': procedure.task === 'DEMO',
+                                  'ri-phone-line': procedure.task === 'CALL',
+                                  'ri-customer-service-line': procedure.task === 'CONFERENCE',
+                                  'ri-chat-1-line': procedure.task === 'CHAT'
+                                }"></i>
+                              </div>
+                              <div class="flex-grow-1">
+                                <h6 class="mb-0">{{ procedure.title }}</h6>
+                                <small class="text-muted">{{ procedure.time | date :'longDate' }}</small>
+                              </div>
+                            </div>
+                          </li>
+                        </ul>
+                      </div>
+                      <div class="card-footer d-flex justify-content-center">
+                        <ul class="list-inline cursor-pointer hstack gap-2 mb-0">
+                          <li class="list-inline-item" data-bs-toggle="tooltip" data-bs-trigger="hover" placement="top">
+                            <a (click)="openArchiveModal(archiveModel, card)" class="text-danger d-inline-block">
+                              <i class="ri-archive-line fs-16"></i>
+                            </a>
+                          </li>
+                          <li class="list-inline-item edit" data-bs-toggle="tooltip" data-bs-trigger="hover"
+                            placement="top">
+                            <a href="javascript:void(0);" data-bs-toggle="modal"
+                              class="text-info d-inline-block edit-item-btn" data-bs-toggle="modal" id="create-btn"
+                              data-bs-target="#showModal" (click)="openCardModal(cardModal, card)">
+                              <i class="ri-edit-line fs-16"></i>
+                            </a>
+                          </li>
+                          <li class="list-inline-item edit" data-bs-toggle="tooltip" data-bs-trigger="hover"
+                            placement="top">
+                            <a href="javascript:void(0);" data-bs-toggle="modal"
+                              class="text-success d-inline-block edit-item-btn" data-bs-toggle="modal" id="create-btn"
+                              data-bs-target="#showModal" (click)="openProcedureModal(procedurModal, card)">
+                              <i class="ri-task-line fs-16"></i>
+                            </a>
+                          </li>
+                          <li class="list-inline-item" placement="top" data-bs-toggle="tooltip" data-bs-trigger="hover"
+                            (click)="nextStep(index, card)">
+                            <a class="text-warning d-inline-block remove-item-btn" data-bs-toggle="modal"
+                              data-bs-target="#deleteOrder">
+                              <i class="ri-arrow-right-line fs-16"></i>
+                            </a>
+                          </li>
+                        </ul>
+                      </div>
+                    </ng-template>
+                  </ngb-panel>
+                </ngb-accordion>
+              </ng-container>
+            </div>
+            <div *ngIf="!list.boardCards.length" class="py-4 mt-4 text-center" id="noresult">
+              <lord-icon src="https://cdn.lordicon.com/vlycxjwx.json" trigger="loop"
+                [colors]="'primary:' + primaryColor + ',secondary:' + secondaryColor" style="width:72px;height:72px"></lord-icon>
+              <h5 class="mt-4">{{ 'COMMON.NO_RESULT_FOUND' | translate }}</h5>
+            </div>
+          </ng-template>
+        </ngb-panel>
+      </ngb-accordion>
+    </div>
+  </div>
+
+  <div id="noresult" class="py-4 mt-4 text-center"
+    *ngIf="(loadingCrm$ | async) || (!(loadingCrm$ | async) && !board?.boardLists?.length)">
+    <lord-icon trigger="loop" style="width:72px;height:72px" [colors]="'primary:' + primaryColor + ',secondary:' + secondaryColor"
+      src="https://cdn.lordicon.com/msoeawqm.json">
+    </lord-icon>
+    <h5 class="mt-4" *ngIf="loadingCrm$ | async">{{'COMMON.LOADING' | translate }}</h5>
+    <h5 class="mt-4" *ngIf="!(loadingCrm$ | async) && !board?.boardLists?.length">{{
+      'MODULES.CRM.PIPELINE.NO_RESULT_FOUND' | translate }}</h5>
+  </div>
+  <ng-template #cardModal role="document" let-modal>
+    <div class="modal-header bg-light p-3">
+      <h5 class="modal-title" id="exampleModalLabel">{{ selectedCard ? ('MODULES.CRM.PIPELINE.EDIT_DEAL' | translate) :
+        ('MODULES.CRM.PIPELINE.CREATE_DEAL' | translate) }}</h5>
+      <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"
+        (click)="modal.dismiss('Cross click')"></button>
+    </div>
+    <form [formGroup]="cardForm">
+      <div class="modal-body">
+        <div class="mb-3">
+          <label for="dealTitle" class="form-label">{{ 'MODULES.CRM.PIPELINE.DEAL_TITLE' | translate }}</label>
+          <input required formControlName="title"
+            [ngClass]="{ 'is-invalid': cardForm.get('title')?.touched && cardForm.get('title').hasError('required') }"
+            type="email" class="form-control" id="dealTitle"
+            placeholder="{{ 'MODULES.CRM.PIPELINE.ENTER_TITLE' | translate }}">
+          <div class="text-danger" *ngIf="cardForm.get('title')?.touched && cardForm.get('title').hasError('required')">
+            {{ 'COMMON.REQUIRED' | translate }}
+          </div>
+        </div>
+        <div class="mb-3">
+          <label for="dealValue" class="form-label">{{ 'MODULES.CRM.PIPELINE.VALUE' | translate }} (DT)</label>
+          <input formControlName="budget" type="text"
+            [ngClass]="{ 'is-invalid': cardForm.get('budget')?.touched && cardForm.get('budget').hasError('required') }"
+            class="form-control" id="dealValue" placeholder="{{ 'MODULES.CRM.PIPELINE.ENTER_VALUE' | translate }}">
+          <div class="text-danger"
+            *ngIf="cardForm.get('budget')?.touched && cardForm.get('budget').hasError('required')">
+            {{ 'COMMON.REQUIRED' | translate }}
+          </div>
+        </div>
+        <div class="mb-3">
+          <label for="dueDate" class="form-label">{{ 'MODULES.CRM.PIPELINE.DUE_DATE' | translate }}</label>
+          <input formControlName="dueDate" class="form-control flatpickr-input" type="text" mwlFlatpickr
+            [altInput]="true" [convertModelValue]="true"
+            placeholder="{{ 'MODULES.CRM.PIPELINE.SELECT_DATE' | translate }}">
+        </div>
+        <div class="mb-3">
+          <label class="form-check-label" for="lastname-field">{{ 'MODULES.CRM.PIPELINE.OWNER' | translate }}</label>
+          <ng-select [selectableGroup]="true" [closeOnSelect]="false" formControlName="assignedTo" [multiple]="true"
+            [items]="team$ | async" [virtualScroll]="true"
+            placeholder="{{ 'MODULES.CRM.PIPELINE.SELECT_OWNER' | translate }}" (scrollToEnd)="loadMoreOwners()"
+            bindLabel="firstName" bindValue="id">
+            <ng-template *ngIf="teamPagination$ | async as teamPagination" ng-header-tmp>
+              <small class="form-text text-muted">{{ 'MODULES.CRM.PIPELINE.LOADED' | translate }} {{team?.length}} {{
+                'MODULES.CRM.PIPELINE.OF' | translate }} {{teamPagination?.length}}</small>
+            </ng-template>
+            <ng-template ng-label-tmp let-item="item" let-clear="clear">
+              <span class="ng-value-label">
+                <img *ngIf="item?.picture" class="avatar-xxs rounded-circle"
+                  [src]="item?.picture?.baseUrl + '/' + item?.picture?.path" width="20px" height="20px">
+                <img *ngIf="!item?.picture" class="avatar-xxs rounded-circle" src="assets/images/users/avatar-1.jpg"
+                  width="20px" height="20px">
+                {{item?.firstName}}
+              </span>
+              <span class="ng-value-icon right" (click)="clear(item)" aria-hidden="true">×</span>
+            </ng-template>
+            <ng-template ng-option-tmp let-item$="item$" let-item="item">
+              <div class="d-flex align-items-center">
+                <input id="item-{{index}}" class="me-2" type="checkbox" [ngModelOptions]="{standalone: true}"
+                  [ngModel]="item$.selected" />
+                <label class="form-check-label d-flex align-items-center" for="anna-adame">
+                  <span class="flex-shrink-0">
+                    <img *ngIf="!item?.picture" src="assets/images/users/avatar-1.jpg" alt=""
+                      class="avatar-xxs rounded-circle" />
+                    <img *ngIf="item?.picture" [src]="item?.picture?.baseUrl + '/' + item?.picture?.path" alt=""
+                      class="avatar-xxs rounded-circle" />
+                  </span>
+                  <span class="flex-grow-1 ms-2">
+                    {{item?.firstName}}
+                  </span>
+                </label>
+              </div>
+            </ng-template>
+          </ng-select>
+        </div>
+        <div class="mb-3">
+          <div ngbDropdown>
+            <form [formGroup]="searchCompanyForm">
+              <label class="form-check-label" for="lastname-field">{{ 'MODULES.CRM.PIPELINE.COMPANY' | translate
+                }}</label>
+              <input formControlName="searchString" placeholder="{{ 'MODULES.CRM.PIPELINE.ENTER_COMPANY' | translate }}"
+                class="cursor-pointer form-select form-control dropdown-toggle" ngbDropdownToggle>
+            </form>
+            <div infiniteScroll [scrollWindow]="false" [infiniteScrollDistance]="2" [infiniteScrollThrottle]="50"
+              (scrolled)="loadMoreLeads()" [infiniteScrollDisabled]="isLeadLastPage$ | async"
+              class="dropdown-menu dropdown-menu-right w-100 h-7 p-3" ngbDropdownMenu>
+              <div *ngFor="let lead of leads" class="form-check">
+                <input [value]="lead?.id" formControlName="customer" [checked]="selectedCompany === lead.name"
+                  class="form-check-input border-s" type="radio" id="lead{{ lead?.id }}">
+                <label class="form-check-label" for="lead{{ lead?.id }}">
+                  {{ lead?.name }}
+                </label>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="mb-3">
+          <label for="contactNumber" class="form-label">{{ 'COMMON.DESCRIPTION' | translate }}</label>
+          <textarea formControlName="description" class="form-control" id="exampleFormControlTextarea1" rows="3"
+            placeholder="{{ 'COMMON.ENTER_DESCRIPTION' | translate }}"></textarea>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-light" data-bs-dismiss="modal" (click)="modal.close('Close click')">{{
+          'COMMON.CLOSE' | translate }}</button>
+        <button type="button" [disabled]="isButtonDisabled || cardForm.invalid" (click)="save()"
+          class="btn btn-success"><i class="ri-save-line align-bottom me-1"></i>
+          {{ selectedCard ? ('COMMON.EDIT' | translate) : ('COMMON.CREATE' | translate)}}</button>
+      </div>
+    </form>
+  </ng-template>
+
+  <ng-template #procedurModal role="document" let-modal>
+    <div class="modal-header bg-light p-3">
+      <h5 class="modal-title" id="exampleModalLabel">{{ 'MODULES.CRM.PIPELINE.PROCEDURE' | translate }}</h5>
+      <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"
+        (click)="modal.dismiss('Cross click')"></button>
+    </div>
+    <form [formGroup]="procedureForm">
+      <div class="modal-body">
+        <div formArrayName="procedure" class="row">
+          <div *ngFor="let key of procedures.controls; let i = index; let first = first; let last = last;" class="mt-2">
+            <div [formGroupName]="i" class="row">
+              <div class="col-4">
+                <label class="control-label">{{ 'MODULES.CRM.PIPELINE.TITLE' | translate }}</label>
+                <input type="text" formControlName="title" class="form-control"
+                  placeholder="{{ 'MODULES.CRM.PIPELINE.ENTER_PROCEDURE_TITLE' | translate }}">
+              </div>
+              <div class="col-4">
+                <label class="control-label">{{ 'MODULES.CRM.PIPELINE.TASK' | translate }}</label>
+                <select class="form-select form-control-line" formControlName="task">
+                  <option value="" disabled selected>{{ 'MODULES.COMMON.SELECT_AN_OPTION' | translate }}</option>
+                  <option *ngFor="let task of tasks" [value]="task">{{ task.split('_').join(' ') | titlecase | translate
+                    }}</option>
+                </select>
+              </div>
+              <div class="col-4">
+                <label class="control-label">{{ 'MODULES.CRM.PIPELINE.TIME' | translate }}</label>
+                <div class="d-flex align-items-center">
+                  <input formControlName="time" class="form-control sm:mr-2 flatpickr-input" type="text" mwlFlatpickr
+                    [altInput]="true" [convertModelValue]="true"
+                    placeholder="{{ 'MODULES.CRM.PIPELINE.SELECT_DATE' | translate }}">
+                  <i *ngIf="!first" (click)="removeProcedureField(i)" class="ri-delete-bin-2-line"></i>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="mt-2">
+          <button (click)="addProcedureField()" type="button" class="btn btn-soft-info btn-sm shadow-none"><i
+              class="ri-add-fill me-1 align-bottom"></i>
+            {{ 'MODULES.CRM.PIPELINE.ADD_PROCEDURE' | translate }}</button>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-light" data-bs-dismiss="modal" (click)="modal.close('Close click')">{{
+          'COMMON.CLOSE' | translate }}</button>
+        <button type="button" [disabled]="isProcedureButtonDisabled || procedureForm.invalid" (click)="saveProcedure()"
+          class="btn btn-success"><i class="ri-save-line align-bottom me-1"></i>
+          {{ 'MODULES.COMMON.SAVE' | translate }}</button>
+      </div>
+    </form>
+  </ng-template>
+
+  <ng-template #archiveModel let-modal>
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" id="deleteRecord-close"
+          (click)="modal.dismiss('Cross click')"></button>
+      </div>
+      <div class="modal-body">
+        <div class="mt-2 text-center">
+          <lord-icon src="https://cdn.lordicon.com/gsqxdxog.json" trigger="loop"
+            colors="primary:#f7b84b,secondary:#f06548" style="width:100px;height:100px"></lord-icon>
+          <div class="mt-4 pt-2 fs-15 mx-4 mx-sm-5">
+            <h4>{{ 'MODULES.COMMON.ARE_YOU_SURE' | translate }}</h4>
+            <p class="text-muted mx-4 mb-0">{{ 'MODULES.CRM.PIPELINE.ARE_YOU_SURE_ARCHIVE' | translate }}</p>
+          </div>
+        </div>
+        <div class="d-flex gap-2 justify-content-center mt-4 mb-2">
+          <button type="button" class="btn w-sm btn-danger " id="delete-product" (click)="archiveCard()">{{
+            'MODULES.COMMON.YES_ARCHIVE_IT' | translate }}</button>
+          <button type="button" class="btn w-sm btn-light" data-bs-dismiss="modal"
+            (click)="modal.close('Close click')">{{ 'COMMON.CLOSE' | translate }}</button>
+        </div>
+      </div>
+    </div>
+  </ng-template>
+
+</ng-container>
+<div *ngIf="navigating$ | async" class="vh-100 py-4 text-center" fxLayout="column" fxLayoutAlign="center center"
+  fxLayoutGap="1rem">
+  <div>
+    <lord-icon trigger="loop" style="width:72px;height:72px" [colors]="'primary:' + primaryColor + ',secondary:' + secondaryColor"
+      src="https://cdn.lordicon.com/msoeawqm.json">
+    </lord-icon>
+  </div>
+  <div class="mt-4">
+    <h5>{{ 'COMMON.LOADING' | translate }}</h5>
+  </div>
+</div>

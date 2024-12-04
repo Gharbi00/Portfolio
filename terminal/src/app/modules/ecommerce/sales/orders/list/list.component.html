@@ -1,0 +1,778 @@
+<app-breadcrumbs title="{{ 'MENUITEMS.TITLE.ORDERS' | translate }}"
+  [breadcrumbItems]="breadCrumbItems"></app-breadcrumbs>
+<ng-container *ngIf="!(navigating$ | async)">
+
+  <div class="row">
+    <div class="col-lg-12">
+      <div class="card">
+        <div class="card-header">
+          <div class="row justify-content-between gy-3">
+            <div class="col-lg-3">
+              <div class="search-box">
+                <form [formGroup]="searchForm">
+                  <input formControlName="searchString" type="text" class="form-control search"
+                    placeholder="{{'PLACEHOLDER.SEARCH_FOR_ORDERS' | translate }}...">
+                  <i class="ri-search-line search-icon"></i>
+                </form>
+              </div>
+            </div>
+            <div class="col-sm-auto flex-wrap hstack gap-2">
+              <button [routerLink]="['/ecommerce/sales/orders/add-order']" class="btn btn-info add-btn"><i
+                  class="ri-add-fill me-1 align-bottom"></i>{{ 'MODULES.ECOMMERCE.MAIN.ADD_ORDER' | translate
+                }}</button>
+              <button (click)="openFilterModal(filterModal)" type="button" class="btn btn-primary"> <i
+                  class="ri-equalizer-fill me-1 align-bottom"></i>{{ 'MODULES.ECOMMERCE.MAIN.FILTERS' | translate }}
+              </button>
+              <button (click)="openEmailModal(emailModal)" type="button" class="btn btn-secondary"><i
+                  class="ri-send-plane-fill align-bottom me-1"></i>{{'COMMON.SEND' | translate }}</button>
+              <button (click)="exportDocument()" type="button" class="btn btn-secondary"><i
+                  class="ri-file-download-line align-bottom"></i>{{ 'COMMON.EXPORT' | translate }}</button>
+              <button (click)="openImportModal(importModal)" type="button" class="btn btn-secondary">
+                <i class="ri-file-upload-line align-bottom"></i> {{ 'COMMON.IMPORT' | translate }}
+              </button>
+            </div>
+          </div>
+        </div>
+        <div class="card-body">
+          <div class="table-card gridjs-border-none">
+            <div class="table-responsive">
+              <table class="table align-middle custom-datatable" id="datatableexample">
+                <thead>
+                  <tr class="bg-light text-uppercase text-muted">
+                    <th>{{ 'MODULES.ECOMMERCE.MAIN.ORDER_ID' | translate }}</th>
+                    <th>{{ 'COMMON.CUSTOMER' | translate }}</th>
+                    <th>{{ 'COMMON.DATE' | translate }}</th>
+                    <th>{{'COMMON.TOTAL' | translate }}</th>
+                    <th>{{ 'MODULES.ECOMMERCE.MAIN.ORDER_TYPE' | translate }}</th>
+                    <th>{{ 'COMMON.ACTION' | translate }}s</th>
+                  </tr>
+                </thead>
+                <tbody *ngIf="((loadingOrders$ | async) === false || null || undefined) && (orders$ | async).length">
+                  <tr *ngFor="let order of orders$ | async;let i = index;" id="p_{{order?.id}}">
+                    <td (click)="openOrderModal(orderModal, order)" class="fw-medium cursor-pointer link-primary">
+                      {{'#'+order?.number}}</td>
+                    <td>
+                      <span>
+                        <div class="d-flex cursor-pointer align-items-center">
+                          <div class="flex-shrink-0 me-3">
+                            <div class="avatar-sm bg-light p-1 rounded-circle h-x"
+                              *ngIf="order?.user?.pictures?.length">
+                              <img [src]="order?.user?.pictures[0]?.baseUrl + '/' + order?.user?.pictures[0]?.path"
+                                class="img-fluid h-100 rounded-circle">
+                            </div>
+                            <div class="avatar-sm bg-light rounded-circle p-1 h-x"
+                              *ngIf="!order?.user?.pictures?.length">
+                              <div class="avatar-title bg-soft-success text-success rounded-circle fs-13">
+                                {{order?.guestUser ? order?.guestUser?.firstName?.charAt(0) :
+                                order?.user?.firstName?.charAt(0) || 'N'}}</div>
+                            </div>
+                          </div>
+                          <div [routerLink]="['/ecommerce/customers/customers', order?.user?.id]" class="flex-grow-1">
+                            <h5 class="fs-14 mb-1">
+                              <a class="cursor-pointer fw-medium link-primary">
+                                {{ order?.guestUser ? (order?.guestUser?.firstName || '') + ' ' +
+                                (order?.guestUser?.lastName ||
+                                '') : (order?.user?.firstName || '') + ' ' +
+                                (order?.user?.lastName ||
+                                '') }}
+                              </a>
+                            </h5>
+                          </div>
+                        </div>
+                      </span>
+                    </td>
+                    <td>{{order.orderTime | date: 'dd-MM-yyyy'}}</td>
+                    <td>{{order.shoppingCart.price?.gross?.afterReduction | currency:'DT':'symbol':'1.3-3'}}</td>
+                    <td>{{order.orderType.split('_').join(' ') | titlecase}}</td>
+                    <td>
+                      <ul class="list-inline hstack gap-2 mb-0">
+                        <li class="list-inline-item">
+                          <a (click)="downloadDocument(order)" href="javascript:void(0);" matTooltip="Generate Invoice"
+                            class="text-info d-inline-block edit-item-btn">
+                            <i class="ri-file-2-line fs-16"></i>
+                          </a>
+                        </li>
+                        <li class="list-inline-item">
+                          <a matTooltip="View" (click)="openOrderModal(orderModal, order)" href="javascript:void(0);"
+                            data-bs-toggle="modal" class="text-info d-inline-block edit-item-btn">
+                            <i class="ri-eye-fill fs-16"></i>
+                          </a>
+                        </li>
+                        <li *ngIf="order?.orderType === 'DELIVERY'" class="list-inline-item">
+                          <a matTooltip="Delivery Details" (click)="openDeliveryModal(deliveryModal, order)"
+                            href="javascript:void(0);" data-bs-toggle="modal"
+                            class="text-info d-inline-block edit-item-btn">
+                            <i class="ri-truck-fill fs-16"></i>
+                          </a>
+                        </li>
+                        <li class="list-inline-item">
+                          <div class="dropdown" ngbDropdown>
+                            <button class="btn btn-soft-secondary btn-sm dropdown arrow-none" type="button"
+                              data-bs-toggle="dropdown" aria-expanded="false" ngbDropdownToggle>
+                              <i class="ri-more-fill align-middle"></i>
+                            </button>
+                            <ul class="dropdown-menu cursor-pointer dropdown-menu-end" ngbDropdownMenu>
+                              <li>
+                                <a [class.disabled]="!isPaymentExist(order)"
+                                  (click)="isPaymentExist(order) ? openEditInstallmentModal(editInstallmentModal, order) : null"
+                                  class="dropdown-item edit-item-btn" data-bs-toggle="modal"><i
+                                    class="ri-pencil-fill align-bottom me-2 text-info fs-16"></i>{{
+                                  'MODULES.ECOMMERCE.MAIN.EDIT_INSTALLMENT' | translate }}</a>
+                              </li>
+                              <li>
+                                <a [class.disabled]="isCancelProducts(order)"
+                                  (click)="!isCancelProducts(order) ? openCancelList(deleteModal, order) : null"
+                                  class="dropdown-item edit-item-btn"><i
+                                    class="ri-close-line align-bottom me-2 text-info fs-16"></i>{{
+                                  'MODULES.ECOMMERCE.MAIN.CANCEL_ORDER' | translate }}</a>
+                              </li>
+                              <li>
+                                <a [class.disabled]="!isPaymentExist(order)"
+                                  (click)="isPaymentExist(order) ? openPayInstallmentsModal(installmentModal, order) : null"
+                                  class="dropdown-item edit-item-btn"><i
+                                    class="ri-check-line align-bottom me-2 text-info fs-16"></i>{{
+                                  'MODULES.ECOMMERCE.MAIN.PAY_INSTALLMENTS' | translate }}</a>
+                              </li>
+                            </ul>
+                          </div>
+                        </li>
+                      </ul>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+          <div *ngIf="((loadingOrders$ | async) === false || null || undefined) && (orders$ | async).length"
+            class="px-3">
+            <div class="row justify-content-md-between align-items-md-center gy-2">
+              <div class="col col-sm-6">
+                <div class="dataTables_info mb-2" id="tickets-table_info" role="status" aria-live="polite">{{
+                  'COMMON.SHOWING' | translate }} {{pagination?.startIndex + 1}}–{{pagination?.endIndex ===
+                  pagination?.length ? pagination?.endIndex : pagination?.endIndex + 1}} {{ 'COMMON.OF' | translate }}
+                  {{pagination?.length}}{{ 'COMMON.ENTRIES' | translate }}
+                </div>
+              </div>
+              <div class="col col-sm-6">
+                <div class="text-sm-right float-end listjs-pagination">
+                  <ngb-pagination [maxSize]="5" [collectionSize]="pagination?.length" [(page)]="page"
+                    (pageChange)="onPageChange($event)" [pageSize]="pagination?.size">
+                  </ngb-pagination>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div id="noresult" class="py-4 mt-4 text-center"
+            *ngIf="(loadingOrders$ | async) || (!(loadingOrders$ | async) && !(orders$ | async).length)">
+            <div *ngIf="loadingOrders$ | async">
+              <lord-icon trigger="loop" style="width:72px;height:72px"
+                [colors]="'primary:' + primaryColor + ',secondary:' + secondaryColor"
+                src="https://cdn.lordicon.com/msoeawqm.json">
+              </lord-icon>
+              <h5 class="mt-4">{{ 'COMMON.LOADING' | translate }}</h5>
+            </div>
+            <div *ngIf="!(loadingOrders$ | async) && !(orders$ | async).length">
+              <lord-icon trigger="loop" style="width:72px;height:72px"
+                [colors]="'primary:' + primaryColor + ',secondary:' + secondaryColor"
+                src="https://cdn.lordicon.com/msoeawqm.json">
+              </lord-icon>
+              <h5 class="mt-4">{{ 'COMMON.NO_RESULT' |
+                translate }}</h5>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <ng-template #importModal role="document" let-modal>
+    <div class="modal-header bg-soft-info p-3">
+      <h5 class="modal-title" id="exampleModalLabel">{{ 'MODULES.CRM.CUSTOMERS.UPLOAD_EXCEL' | translate }}</h5>
+      <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" id="close-modal"
+        (click)="modal.dismiss('Cross click')"></button>
+    </div>
+    <div class="modal-body">
+      <p>
+        {{ 'MODULES.CRM.CUSTOMERS.UPLOAD_EXCEL_PARAGRAPH' | translate }}
+      </p>
+    </div>
+    <div class="modal-footer">
+      <div class="hstack gap-2 justify-content-end">
+        <button type="button" class="btn btn-light" data-bs-dismiss="modal" (click)="modal.close('Close click')">{{
+          'COMMON.CLOSE' | translate }}</button>
+        <button type="button" (click)="!loadingImport ? uploadExcel() : null" class="btn btn-primary btn-load">
+          <span *ngIf="!loadingImport">{{ 'MODULES.CRM.CUSTOMERS.IMPORT_EXCEL' | translate }}</span>
+          <span *ngIf="loadingImport" class="d-flex align-items-center">
+            <span class="spinner-border flex-shrink-0" role="status">
+              <span class="visually-hidden">{{ 'COMMON.LOADING' | translate }}</span>
+            </span>
+            <span class="flex-grow-1 ms-2">{{ 'COMMON.LOADING' | translate }}</span>
+          </span>
+        </button>
+      </div>
+    </div>
+  </ng-template>
+
+  <ng-template #deleteModal let-modal>
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" id="btn-close"
+          (click)="modal.dismiss('Cross click')"></button>
+      </div>
+      <div class="modal-body">
+        <div class="mt-2 text-center">
+          <lord-icon src="https://cdn.lordicon.com/gsqxdxog.json" trigger="loop"
+            colors="primary:#405189,secondary:#f06548" style="width:90px;height:90px"></lord-icon>
+          <div class="mt-4 pt-2 fs-15 mx-4 mx-sm-5">
+            <h4>{{ 'COMMON.CANCEL' | translate }} product list</h4>
+            <p class="text-muted mx-4 mb-0">{{
+              'MODULES.ECOMMERCE.MAIN.ARE_YOU_SURE_YOU_WANT_TO_CANCEL_THIS_LIST_OF_PRODUCTS' | translate }}
+            </p>
+          </div>
+        </div>
+        <div class="d-flex gap-2 justify-content-center mt-4 mb-2">
+          <button class="btn btn-link link-success fw-medium text-decoration-none" data-bs-dismiss="modal"
+            (click)="modal.close('Close click')" id="deleteRecord-close"><i
+              class="ri-close-line me-1 align-middle"></i>{{ 'COMMON.CLOSE' | translate }}</button>
+          <button type="button" class="btn w-sm btn-danger " id="delete-product" (click)="cancelProductList()"
+            (click)="modal.close('Close click')">{{ 'COMMON.YES_DELETE_IT' | translate }}</button>
+        </div>
+      </div>
+    </div>
+  </ng-template>
+
+  <ng-template #editInstallmentModal role="document" let-modal>
+    <div class="modal-header bg-light p-3">
+      <h5 class="modal-title" id="exampleModalLabel">{{'COMMON.EDIT' | translate }} installment</h5>
+      <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" id="close-modal"
+        (click)="modal.dismiss('Cross click')"></button>
+    </div>
+    <div class="modal-body">
+      <div class="table-responsive table-card">
+        <form [formGroup]="installmentForm">
+          <table class="table table-borderless align-middle mb-0">
+            <thead class="table-light text-muted">
+              <tr>
+                <th scope="col">{{ 'COMMON.AMOUNT' | translate }}</th>
+                <th scope="col">{{ 'MODULES.ECOMMERCE.MAIN.PAYMENT_METHOD' | translate }}</th>
+                <th scope="col">{{ 'MODULES.ECOMMERCE.MAIN.DEADLINE' | translate }}</th>
+                <th scope="col">{{ 'COMMON.ACTION' | translate }}</th>
+              </tr>
+            </thead>
+            <tbody>
+              <ng-container formArrayName="installments">
+                <tr *ngFor="let key of installments['controls']; let i = index; let last = last; let first = first"
+                  [formGroupName]="i">
+                  <td>
+                    <input type="number" id="email_id-field" class="form-control"
+                      placeholder="{{'PLACEHOLDER.ENTER_AMOUNT' | translate }}" required formControlName="amount" />
+                  </td>
+                  <td>
+                    <select class="form-control form-select" formControlName="paymentMethod" name="paymentMethod"
+                      id="paymentMethodID">
+                      <option *ngFor="let payment of paymentMethods$ | async" [ngValue]="payment?.id">
+                        {{payment?.name}}
+                      </option>
+                    </select>
+                  </td>
+                  <td>
+                    <div class="input-group d-flex align-items-center">
+                      <input formControlName="deadline" [inline]="false" class="form-control bg-light border-light"
+                        type="text" mwlFlatpickr [altInput]="true" [convertModelValue]="true"
+                        placeholder="{{ 'COMMON.SELECT_DATE_RANGE' | translate }}" id="isDate">
+                      <a *ngIf="key?.value?.deadline" (click)="resetInstallDate(i)">
+                        <i class="ri-close-fill fs-16"></i>
+                      </a>
+                    </div>
+                  </td>
+                  <td>
+                    <div class="d-flex gap-1">
+                      <button *ngIf="last" [disabled]="installmentForm.get('installments').at(i).invalid"
+                        (click)="saveInstall()" class="btn btn-sm btn-soft-success">
+                        <i class="ri-save-line fs-16"></i>
+                      </button>
+                      <button (click)="deleteInstall(i)" *ngIf="!first" class="btn btn-sm btn-soft-danger">
+                        <i class="ri-delete-bin-fill fs-16"></i>
+                      </button>
+                      <button [disabled]="resAmount <= 0" *ngIf="last" (click)="addInstallment()"
+                        class="btn btn-sm btn-soft-info">
+                        <i class="ri-add-line fs-16"></i>
+                      </button>
+                    </div>
+                  </td>
+                </tr>
+              </ng-container>
+            </tbody>
+          </table>
+        </form>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <div class="hstack gap-2 justify-content-between">
+        <div>
+          <span class="text-danger">
+            Balance: {{ resAmount | currency:'DT':'symbol':'1.3-3' }}
+          </span>
+        </div>
+        <div class="d-flex gap-1">
+          <button type="button" class="btn btn-light" data-bs-dismiss="modal" (click)="modal.close('Close click')">{{
+            'COMMON.CLOSE' | translate }}</button>
+          <button type="button"
+            [disabled]="installmentForm.invalid || isInstButtonDisabled || resAmount > 0 || resAmount < 0"
+            (click)="saveInstallment()" class="btn btn-success" id="add-btn">{{'COMMON.SAVE' | translate }}</button>
+        </div>
+      </div>
+    </div>
+  </ng-template>
+
+  <ng-template #installmentModal role="document" let-modal>
+    <div class="modal-header bg-soft-info p-3">
+      <h5 class="modal-title" id="exampleModalLabel">{{ 'MODULES.ECOMMERCE.MAIN.INSTALLMENTS' | translate }}</h5>
+      <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" id="close-modal"
+        (click)="modal.dismiss('Cross click')"></button>
+    </div>
+    <div class="modal-body">
+      <div *ngIf="selectedOrder?.installments" class="table-responsive table-card">
+        <table class="table table-borderless align-middle  mb-0">
+          <thead class="table-light text-muted">
+            <tr>
+              <th scope="col">{{ 'COMMON.AMOUNT' | translate }}</th>
+              <th scope="col">{{ 'MODULES.ECOMMERCE.MAIN.PAYMENT_METHOD' | translate }}</th>
+              <th scope="col">{{ 'MODULES.ECOMMERCE.MAIN.DEADLINE' | translate }}</th>
+              <th>{{ 'COMMON.ACTION' | translate }}s</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let installment of selectedOrder?.installments; let i = index">
+              <td> {{ +installment.amount | currency:'DT':'symbol':'1.3-3' }} </td>
+              <td>
+                <div class="d-flex align-items-center">
+                  <div class="flex-shrink-0 me-3">
+                    <div class="avatar-sm bg-light p-1 rounded-circle"
+                      *ngIf="installment?.paymentMethod?.images?.svg?.default?.baseUrl">
+                      <img
+                        [src]="installment?.paymentMethod?.images?.svg?.default?.baseUrl + '/' + installment?.paymentMethod?.images?.svg?.default?.path"
+                        class="img-fluid h-100 d-block">
+                    </div>
+                    <div class="avatar-sm bg-light rounded-circle p-1"
+                      *ngIf="!installment?.paymentMethod?.images?.svg?.default?.baseUrl">
+                      <div class="avatar-title bg-soft-success text-success rounded-circle fs-13">
+                        {{installment?.paymentMethod?.name?.charAt(0) || 'N'}}</div>
+                    </div>
+                  </div>
+                  <span class="flex-grow-1 ms-2">
+                    {{installment?.paymentMethod?.name}}
+                  </span>
+                </div>
+              </td>
+              <td>
+                {{ installment?.deadline | date: 'dd/MM/YYYY' }}
+              </td>
+              <td>
+                <button [disabled]="isPayButtonDisabled" (click)="payInstallment(i)"
+                  *ngIf="installment.paymentStatus === 'OPEN'" class="btn-sm btn-soft-success">Pay</button>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <div class="hstack justify-content-end">
+        <button type="button" class="btn btn-light" data-bs-dismiss="modal" (click)="modal.close('Close click')">{{
+          'COMMON.CLOSE' | translate }}</button>
+        <button type="button" [disabled]="isPayButtonDisabled" (click)="payAll()" class="btn btn-success"
+          id="add-btn">Pay All</button>
+      </div>
+    </div>
+  </ng-template>
+
+  <ng-template #filterModal role="document" let-modal>
+    <div class="modal-header bg-soft-info p-3">
+      <h5 class="modal-title" id="exampleModalLabel">{{ 'COMMON.FILTER' | translate }}</h5>
+      <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" id="close-modal"
+        (click)="modal.dismiss('Cross click')"></button>
+    </div>
+    <form [formGroup]="filterForm">
+      <div class="modal-body">
+        <div class="row g-3 mt-3">
+          <div class="col-lg-12 row">
+            <div class="mb-3">
+              <label for="email_id-field" class="form-label">{{ 'COMMON.NUMBER' | translate }}</label>
+              <input type="text" id="email_id-field" class="form-control"
+                placeholder="{{'PLACEHOLDER.ENTER_ORDER_NUMBER' | translate }}" required formControlName="number" />
+            </div>
+            <div class="mb-3">
+              <label for="choices-privacy-status-input" class="form-label">{{ 'MODULES.ECOMMERCE.MAIN.PAYMENT_METHOD' |
+                translate }}</label>
+              <ng-select placeholder="{{'PLACEHOLDER.CHOOSE_PAYMENT_METHOD' | translate }}" [multiple]="true"
+                [items]="payments" [formControlName]="'paymentMethod'">
+                <ng-template ng-label-tmp let-item="item">
+                  <div class="">
+                    {{
+                    (item === 'CASH' ? 'MODULES.COLLABORATION.CASH' :
+                    item === 'CHECK' ? 'MODULES.COLLABORATION.CHECK' :
+                    item === 'APP_COINS' ? 'MODULES.COLLABORATION.APP_COINS' :
+                    item === 'CREDIT_CARD' ? 'MODULES.COLLABORATION.CREDIT_CARD' :
+                    item === 'BANK_TRANSFER' ? 'MODULES.COLLABORATION.BANK_TRANSFER' :
+                    item === 'MOBILE_PAYMENT' ? 'MODULES.COLLABORATION.MOBILE_PAYMENT' :
+                    item === 'AUTOMATIC_DEBIT' ? 'MODULES.COLLABORATION.AUTOMATIC_DEBIT' :
+                    'MODULES.COLLABORATION.BILL_OF_EXCHANGE') | translate
+                    }}
+
+                  </div>
+                </ng-template>
+                <ng-template ng-option-tmp let-item="item">
+                  <div class="">
+                    {{
+                    (item === 'CASH' ? 'MODULES.COLLABORATION.CASH' :
+                    item === 'CHECK' ? 'MODULES.COLLABORATION.CHECK' :
+                    item === 'APP_COINS' ? 'MODULES.COLLABORATION.APP_COINS' :
+                    item === 'CREDIT_CARD' ? 'MODULES.COLLABORATION.CREDIT_CARD' :
+                    item === 'BANK_TRANSFER' ? 'MODULES.COLLABORATION.BANK_TRANSFER' :
+                    item === 'MOBILE_PAYMENT' ? 'MODULES.COLLABORATION.MOBILE_PAYMENT' :
+                    item === 'AUTOMATIC_DEBIT' ? 'MODULES.COLLABORATION.AUTOMATIC_DEBIT' :
+                    'MODULES.COLLABORATION.BILL_OF_EXCHANGE') | translate
+                    }}
+                  </div>
+                </ng-template>
+              </ng-select>
+            </div>
+            <div class="mb-3">
+              <label for="choices-priority-input" class="form-label">{{ 'MODULES.ECOMMERCE.MAIN.ORDER_TYPE' | translate
+                }}</label>
+              <ng-select placeholder="{{'PLACEHOLDER.CHOOSE_ORDER_TYPE' | translate }}" [multiple]="true"
+                [items]="orderTypes" [formControlName]="'orderType'">
+                <ng-template ng-label-tmp let-item="item">
+                  <div class="">
+                    {{
+                    (item === 'ORDER_AHEAD' ? 'SHARED.ORDER_AHEAD' :
+                    item === 'PICKUP' ? 'SHARED.PICKUP' :
+                    item === 'DELIVERY' ? 'SHARED.DELIVERY' :
+                    'SHARED.IN_HOUSE') | translate
+                    }}
+                  </div>
+                </ng-template>
+                <ng-template ng-option-tmp let-item="item">
+                  <div class="">
+                    {{
+                    (item === 'ORDER_AHEAD' ? 'SHARED.ORDER_AHEAD' :
+                    item === 'PICKUP' ? 'SHARED.PICKUP' :
+                    item === 'DELIVERY' ? 'SHARED.DELIVERY' :
+                    'SHARED.IN_HOUSE') | translate
+                    }}
+                  </div>
+                </ng-template>
+              </ng-select>
+            </div>
+            <div class="mb-3">
+              <label for="choices-priority-input" class="form-label">{{ 'MODULES.ECOMMERCE.MAIN.ORDER_STATUS' |
+                translate }}</label>
+              <ng-select placeholder="{{'PLACEHOLDER.CHOOSE_ORDER_STATUS' | translate }}" [multiple]="true"
+                [items]="orderStatus" [formControlName]="'orderStatus'">
+                <ng-template ng-label-tmp let-item="item">
+                  {{
+                  (item === 'OPEN' ? 'SHARED.OPEN' :
+                  item === 'CONFIRMED' ? 'SHARED.CONFIRMED' :
+                  item === 'ASSIGNED' ? 'SHARED.ASSIGNED' :
+                  item === 'READY_FOR_PICKUP' ? 'SHARED.READY_FOR_PICKUP' :
+                  item === 'DELIVERED' ? 'SHARED.DELIVERED' :
+                  'COMMON.STATE.CANCELED') | translate
+                  }}
+                </ng-template>
+                <ng-template ng-option-tmp let-item="item">
+                  {{
+                  (item === 'OPEN' ? 'SHARED.OPEN' :
+                  item === 'CONFIRMED' ? 'SHARED.CONFIRMED' :
+                  item === 'ASSIGNED' ? 'SHARED.ASSIGNED' :
+                  item === 'READY_FOR_PICKUP' ? 'SHARED.READY_FOR_PICKUP' :
+                  item === 'DELIVERED' ? 'SHARED.DELIVERED' :
+                  'COMMON.STATE.CANCELED') | translate
+                  }}
+                </ng-template>
+              </ng-select>
+            </div>
+            <div class="mb-3 col-lg-6">
+              <label for="choices-privacy-status-input" class="form-label">{{ 'COMMON.FROM' | translate }}</label>
+              <div class="input-group d-flex align-items-center">
+                <input formControlName="from" [inline]="false" class="form-control bg-light border-light" type="text"
+                  mwlFlatpickr [altInput]="true" [convertModelValue]="true"
+                  placeholder="{{'PLACEHOLDER.SELECT_DATE' | translate }}" id="isDate">
+                <a *ngIf="filterForm.get('from').value" (click)="resetDate('from')">
+                  <i class="ri-close-fill fs-16"></i>
+                </a>
+              </div>
+            </div>
+            <div class="mb-3 col-lg-6">
+              <label for="choices-privacy-status-input" class="form-label">{{'COMMON.TO' | translate }}</label>
+              <div class="input-group d-flex align-items-center">
+                <input formControlName="to" [inline]="false" class="form-control bg-light border-light" type="text"
+                  mwlFlatpickr [altInput]="true" [convertModelValue]="true"
+                  placeholder="{{'PLACEHOLDER.SELECT_DATE' | translate }}" id="isDate">
+                <a *ngIf="filterForm.get('to').value" (click)="resetDate('to')">
+                  <i class="ri-close-fill fs-16"></i>
+                </a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <div class="hstack gap-2 justify-content-end">
+          <button type="button" class="btn btn-light" data-bs-dismiss="modal" (click)="modal.close('Close click')">{{
+            'COMMON.CLOSE' | translate }}</button>
+          <button type="button" [disabled]="isFilterButtonDisabled" (click)="saveFilter()" class="btn btn-success"
+            id="add-btn">{{ 'COMMON.FILTER' | translate }}</button>
+        </div>
+      </div>
+    </form>
+  </ng-template>
+
+  <ng-template #deliveryModal role="document" let-modal>
+    <div class="modal-header bg-soft-info p-3">
+      <h5 class="modal-title" id="exampleModalLabel">{{ 'MODULES.ECOMMERCE.MAIN.DELIVERY_DETAILS' | translate }}</h5>
+      <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" id="close-modal"
+        (click)="modal.dismiss('Cross click')"></button>
+    </div>
+    <div class="modal-body">
+      <agm-map *ngIf="selectedOrder?.deliveryAddress?.location?.coordinates" [latitude]="36.60650973504423"
+        [longitude]="9.633264627829647" [zoom]="6">
+        <!-- <agm-marker *ngIf="cords" [latitude]="cords?.lat" [longitude]="cords.lng">
+        </agm-marker> -->
+      </agm-map>
+      <div class="mt-3">
+        <span class="fs-15">{{ 'MODULES.ECOMMERCE.MAIN.DELIVERY_ADDRESS' | translate }}</span>
+        <div class="mt-3">
+          <div *ngIf="selectedOrder?.deliveryAddress?.owner?.name" class="mb-3">
+            <label for="email_id-field" class="col-12 form-label">{{ 'MODULES.ECOMMERCE.MAIN.RECEPIENT' | translate
+              }}</label>
+            <span class="text-muted mb-0">{{ selectedOrder?.deliveryAddress?.owner?.name }}</span>
+          </div>
+          <div *ngIf="selectedOrder?.deliveryAddress?.owner?.phone?.number" class="mb-3">
+            <label for="email_id-field" class="col-12 form-label">{{ 'COMMON.PHONE' | translate }}</label>
+            <span class="text-muted mb-0">+{{ selectedOrder?.deliveryAddress?.owner?.phone?.countryCode + ' ' +
+              selectedOrder?.deliveryAddress?.owner?.phone?.number}}</span>
+          </div>
+          <div *ngIf="selectedOrder?.deliveryAddress?.address" class="mb-3">
+            <label for="email_id-field" class="col-12 form-label">{{'COMMON.ADDRESS' | translate }}</label>
+            <span class="text-muted mb-0">{{ selectedOrder?.deliveryAddress?.address }}</span>
+          </div>
+          <div *ngIf="selectedOrder?.deliveryAddress?.city" class="mb-3">
+            <label for="email_id-field" class="col-12 form-label">{{'COMMON.CITY' | translate }}</label>
+            <span class="text-muted mb-0">{{ selectedOrder?.deliveryAddress?.city }}</span>
+          </div>
+          <div *ngIf="selectedOrder?.deliveryAddress?.postCode" class="mb-3">
+            <label for="email_id-field" class="col-12 form-label">Post Code</label>
+            <span class="text-muted mb-0">{{ selectedOrder?.deliveryAddress?.postCode }}</span>
+          </div>
+          <div *ngIf="selectedOrder?.deliveryAddress?.country" class="mb-3">
+            <label for="email_id-field" class="col-12 form-label">State</label>
+            <span class="text-muted mb-0">{{ selectedOrder?.deliveryAddress?.state?.name }}</span>
+          </div>
+          <div *ngIf="selectedOrder?.deliveryAddress?.country" class="mb-3">
+            <label for="email_id-field" class="col-12 form-label">{{'COMMON.COUNTRY' | translate }}</label>
+            <span class="text-muted mb-0">{{ selectedOrder?.deliveryAddress?.country?.name }}</span>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <div class="justify-content-end">
+        <button type="button" class="btn btn-light" data-bs-dismiss="modal" (click)="modal.close('Close click')">{{
+          'COMMON.CLOSE' | translate }}</button>
+      </div>
+    </div>
+  </ng-template>
+
+  <ng-template #orderModal role="document" let-modal>
+    <div class="modal-header bg-soft-info p-3">
+      <h5 class="modal-title" id="exampleModalLabel">{{ 'MODULES.INVOICING.PURCHASES.SUPPLIERS.ORDERS' | translate }}
+      </h5>
+      <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" id="close-modal"
+        (click)="modal.dismiss('Cross click')"></button>
+    </div>
+    <div class="modal-body">
+      <h4 class="mb-3">{{ 'COMMON.ARTICLE' | translate }}s</h4>
+      <div *ngFor="let product of selectedOrder?.shoppingCart?.products; let first = first; let last = last"
+        class="d-flex mb-2">
+        <div class="flex-shrink-0 me-3">
+          <div class="avatar-sm">
+            <span *ngIf="product?.barcode?.media?.pictures?.length" class="avatar-title bg-soft-warning">
+              <img
+                [src]="product?.barcode?.media?.pictures[0]?.baseUrl + '/' + product?.barcode?.media?.pictures[0]?.path"
+                alt="" class="h-100 img-fluid">
+            </span>
+            <div *ngIf="!product?.barcode?.media?.pictures?.length"
+              class="avatar-title text-uppercase bg-soft-info text-danger shadow">
+              {{product?.barcode?.name?.charAt(0) || 'N'}}
+            </div>
+          </div>
+        </div>
+        <div class="flex-grow-1 d-flex justify-content-between align-items-center">
+          <div>
+            <div class="align-items-center d-flex">
+              <h5 class="fs-15 me-1 mb-0"><a class="text-dark">{{product?.barcode?.name}}</a></h5>
+              <span>
+                <i class="fs-17" [ngClass]="{
+                  'ri-information-line text-warning': product?.orderProductStatus === 'OPEN',
+                  'ri-truck-line text-secondary': product?.orderProductStatus === 'READY_FOR_PICKUP',
+                  'ri-close-circle-line text-danger': product?.orderProductStatus === 'CANCELED',
+                  'ri-shopping-bag-line text-success': product?.orderProductStatus === 'DELIVERED',
+                  'ri-checkbox-circle-line text-primary': product?.orderProductStatus === 'CONFIRMED'
+                }">
+                </i>
+              </span>
+            </div>
+            <p class="text-muted text-truncate-two-lines mb-3">
+              {{ product?.price.unitNet | currency:'DT':'symbol':'1.3-3'}} X {{ product?.quantity }}</p>
+          </div>
+          <div *ngIf="product?.orderProductStatus !== 'CANCELED'">
+            <div class="dropdown" ngbDropdown>
+              <button class="btn btn-link text-muted p-1 mt-n2 py-0 text-decoration-none fs-15 shadow-none arrow-none"
+                data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="true" ngbDropdownToggle>
+                <i class="ri-more-2-fill fs-17"></i>
+              </button>
+              <div class="dropdown-menu cursor-pointer dropdown-menu-end" ngbDropdownMenu>
+                <a *ngIf="product?.orderProductStatus === 'CONFIRMED' || product?.orderProductStatus === 'READY_FOR_PICKUP'"
+                  (click)="updateProductStatus(selectedOrder, product, 'DELIVERED')"
+                  class="align-items-center d-flex dropdown-item">
+                  <i class="ri-check-fill align-bottom me-2 text-muted fs-19"></i>{{ 'MODULES.ECOMMERCE.MAIN.DELIVER' |
+                  translate }}
+                </a>
+                <a *ngIf="product?.orderProductStatus === 'OPEN'"
+                  (click)="updateProductStatus(selectedOrder, product, 'CONFIRMED')"
+                  class="align-items-center d-flex dropdown-item">
+                  <i class="ri-shopping-bag-line align-bottom me-2 text-muted fs-19"></i>{{
+                  'MODULES.ECOMMERCE.MAIN.CONFIRM' | translate }}
+                </a>
+                <a *ngIf="product?.orderProductStatus === 'DELIVERED'"
+                  (click)="updateProductStatus(selectedOrder, product, 'OPEN')"
+                  class="align-items-center d-flex dropdown-item">
+                  <i class="ri-shopping-bag-line align-bottom me-2 text-muted fs-19"></i>{{
+                  'MODULES.ECOMMERCE.MAIN.OPEN' | translate }}
+                </a>
+                <a *ngIf="product?.orderProductStatus !== 'DELIVERED' && product?.orderProductStatus !== 'CANCELED'"
+                  (click)="cancelProduct(selectedOrder.id, product?.barcode?.id)"
+                  class="align-items-center d-flex dropdown-item">
+                  <i class="ri-close-line align-bottom me-2 text-muted fs-19"></i>{{
+                  'MODULES.ECOMMERCE.MAIN.CANCEL_ARTICLE' | translate }}
+                </a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="border-top border-top-dashed d-flex justify-content-end mt-3 pt-3">
+        <table class="align-middle mb-0 table table-borderless table-nowrap table-sm w-40">
+          <tbody>
+            <tr>
+              <th scope="row">{{ 'COMMON.TOTAL' | translate }}(HT):</th>
+              <td class="text-end">
+                {{ selectedOrder?.shoppingCart?.price?.net?.beforeReduction |
+                currency:'DT':'symbol':'1.3-3' }}
+              </td>
+            </tr>
+            <tr>
+              <th scope="row">{{ 'COMMON.TAX' | translate }}:</th>
+              <td class="text-end">
+                {{ selectedOrder?.shoppingCart?.taxValue?.afterReduction | number: '1.3-3' }} DT
+              </td>
+            </tr>
+            <tr *ngIf="selectedOrder?.shoppingCart?.discount?.discountType">
+              <th scope="row">{{ 'MODULES.ECOMMERCE.MAIN.TOTAL_WITHOUT_DISCOUNT' | translate }}:</th>
+              <td class="text-end">
+                {{ selectedOrder?.shoppingCart?.price?.gross?.beforeReduction | number: '1.3-3' }} DT
+              </td>
+            </tr>
+            <tr *ngIf="selectedOrder?.shoppingCart?.discount?.discountType">
+              <th scope="row">{{ 'MODULES.ECOMMERCE.MAIN.DISCOUNT' | translate }}:</th>
+              <td *ngIf="selectedOrder?.shoppingCart?.discount?.discountType === 'AMOUNT'" class="text-end">
+                {{ selectedOrder?.shoppingCart?.discount?.amount | number: '1.3-3' }} DT
+              </td>
+              <td *ngIf="selectedOrder?.shoppingCart?.discount?.discountType === 'PERCENTAGE'" class="text-end">
+                {{ selectedOrder?.shoppingCart?.discount?.amount }} %
+              </td>
+            </tr>
+            <tr>
+              <th scope="row">{{ 'COMMON.SUBTOTAL' | translate }}:</th>
+              <td class="text-end">
+                {{ (+selectedOrder?.shoppingCart?.price?.gross?.afterReduction) | number: '1.3-3' }} DT
+              </td>
+            </tr>
+            <tr *ngIf="selectedOrder?.orderType === 'DELIVERY'">
+              <th>{{ 'MODULES.ECOMMERCE.MAIN.DELIVERY_FEES' | translate }}:</th>
+              <td class="col-4">
+                <div class="input-group">
+                  <input readonly type="text" id="cart-subtotal" placeholder="$0.00" readonly
+                    [value]="selectedOrder?.deliveryFees" class="form-control bg-light border-0">
+                  <span class="input-group-text">DT</span>
+                </div>
+              </td>
+            </tr>
+            <tr *ngFor="let fee of selectedOrder?.extraFees">
+              <th scope="row">{{fee?.key}}:</th>
+              <td class="text-end">
+                {{ fee?.value |
+                currency:'DT':'symbol':'1.3-3' }}
+              </td>
+            </tr>
+            <tr>
+              <th>{{'COMMON.TOTAL' | translate }}:</th>
+              <td class="text-end">
+                {{
+                selectedOrder?.shoppingCart?.price?.toPay?.afterReduction | currency:'DT':'symbol':'1.3-3' }}
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <div class="hstack justify-content-end">
+        <button type="button" class="btn btn-light" data-bs-dismiss="modal" (click)="modal.close('Close click')">{{
+          'COMMON.CLOSE' | translate }}</button>
+      </div>
+    </div>
+  </ng-template>
+
+  <ng-template #emailModal role="document" let-modal>
+    <div class="modal-header p-3 bg-soft-info">
+      <h5 class="modal-title" id="exampleModalLabel">{{'COMMON.SEND' | translate }} Email</h5>
+      <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" id="close-modal"
+        (click)="modal.dismiss('Cross click')"></button>
+    </div>
+    <form [formGroup]="emailForm">
+      <div class="modal-body">
+        <div class="row g-3">
+          <div class="col-lg-12 mb-3">
+            <label class="form-label" for="product-tags-input">{{ 'COMMON.EMAIL' | translate }}s
+              {{'MODULES.INVENTORY.PRESS_ENTER' | translate }}</label>
+            <ng-select [items]="[]" class="no-arrow-select" [addTag]="true" [isOpen]="false" [multiple]="true" [selectOnTab]="true"
+              formControlName="emails">
+            </ng-select>
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <div class="hstack gap-2 justify-content-end">
+          <button type="button" class="btn btn-light" data-bs-dismiss="modal" (click)="modal.close('Close click')">{{
+            'COMMON.CLOSE' | translate }}</button>
+          <button type="button" [disabled]="isEmailButtonDisabled || emailForm.invalid" (click)="send()"
+            class="btn btn-success" id="add-btn">{{'COMMON.SEND' | translate }}</button>
+        </div>
+      </div>
+    </form>
+  </ng-template>
+</ng-container>
+<div *ngIf="navigating$ | async" class="vh-100 py-4 text-center" fxLayout="column" fxLayoutAlign="center center"
+  fxLayoutGap="1rem">
+  <div>
+    <lord-icon trigger="loop" style="width:72px;height:72px"
+      [colors]="'primary:' + primaryColor + ',secondary:' + secondaryColor"
+      src="https://cdn.lordicon.com/msoeawqm.json">
+    </lord-icon>
+  </div>
+  <div class="mt-4">
+    <h5>{{ 'COMMON.LOADING' | translate }}</h5>
+  </div>
+</div>

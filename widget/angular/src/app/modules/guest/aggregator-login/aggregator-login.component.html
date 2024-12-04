@@ -1,0 +1,61 @@
+<div *ngIf="true===true" [class.dark-mode]="darkMode" [class.rtl]="rtl">
+  <div class="player-mode content-grid col-md-12 header-margin" style="padding: 00 0 !important">
+    <div class="section-banner"
+      [ngStyle]="{ background: 'url(' + headerImagePath + ') no-repeat center center / cover' }">
+      <img class="section-banner-icon" [src]="badgesIcon?.baseUrl + '/' + badgesIcon?.path" alt="newsfeed-icon" />
+      <p class="section-banner-title"> {{'CONTINUE_WITH_LOYALCRAFT' | translate}}
+      </p>
+      <p class="section-banner-text text-truncate"> {{'UNLOCK_BENEFITS' | translate}} </p>
+    </div>
+  </div>
+  <div style="overflow-y: auto;" class="badge-item-stat special-height d-sm-flex flex-container">
+    <div class="qrcode-container order-2 order-sm-1">
+      <div class="qrcode-wrapper">
+        <qrcode style="pointer-events: auto;" [qrdata]="qrText" class="displayed-center" [errorCorrectionLevel]="'M'"
+          height="200" width="200">
+        </qrcode>
+        <img src="https://sifca-storage.s3.eu-central-1.amazonaws.com/loyalcraft/app-icon.svg" class="qr-center-image">
+      </div>
+      <div class="checkbox-line mb-small">
+        <div [class.dark-mode]="darkMode" class="checkbox-wrap">
+          <input [checked]="true" type="checkbox" [id]="'category'" name="category_all" />
+          <div class="checkbox-box">
+            <svg class="icon-cross">
+              <use xlink:href="#svg-cross"></use>
+            </svg>
+          </div>
+          <label [class.text-white]="darkMode" [for]="'category'"> {{'KEEP_ME_LOGGED_IN' | translate}} </label>
+        </div>
+      </div>
+    </div>
+    <div class="col-lg-8 mb-4 order-1 order-sm-2">
+      <p class="m-0 mb-2 badge-stat-text"
+        [ngClass]="{'text-right': rtl, 'text-left': !rtl}"
+        style="margin: 0px !important; font-size: 1.5rem !important; font-weight: 600; width: 100% !important;">
+        {{'TO_USE_WIDGET_ON_COMPUTER' | translate}}
+      </p>
+      <p class="mt-1 badge-stat-text" style="width: 100% !important;">
+        {{'1_OPEN_LOYALCRAFT' | translate}}
+      </p>
+      <p class="mt-1 badge-stat-text" style="width: 100% !important;">
+        {{'2_SIGN_IN' | translate}}
+      </p>
+      <p class="mt-1 badge-stat-text" style="width: 100% !important;">
+        {{'3_TAP_ON_LINK_ACCOUNT' | translate}}
+      </p>
+      <p class="mt-1 badge-stat-text" style="width: 100% !important;">
+        {{'4_SCAN_QRCODE' | translate}}
+      </p>
+    </div>
+  </div>
+</div>
+<svg style="display: none">
+  <symbol id="svg-plus-small" viewBox="0 0 8 8" preserveAspectRatio="xMinYMin meet">
+    <path d="M8,5H5v3H3V5H0V3h3V0h2v3h3V5z" />
+  </symbol>
+</svg>
+<svg style="display: none">
+  <symbol id="svg-cross" viewBox="0 0 12 12" preserveAspectRatio="xMinYMin meet">
+    <path d="M12,9.6L9.6,12L6,8.399L2.4,12L0,9.6L3.6,6L0,2.4L2.4,0L6,3.6L9.6,0L12,2.4L8.399,6L12,9.6z" />
+  </symbol>
+</svg>

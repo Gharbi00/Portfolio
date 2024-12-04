@@ -1,0 +1,217 @@
+<app-breadcrumbs title="{{ 'MENUITEMS.TITLE.PAGE' | translate }}" [breadcrumbItems]="breadCrumbItems"></app-breadcrumbs>
+<ng-container *ngIf="!(navigating$ | async)">
+
+
+  <form *ngIf="slideForm" [formGroup]="slideForm">
+    <div
+      *ngIf="(website$ | async)?.multilanguage?.active === true && (website$ | async)?.multilanguage?.languages?.length && !fullPath.includes('new-slide')"
+      class="card" id="ticketsList">
+      <div class="card-header border-0">
+        <form [formGroup]="slideForm">
+          <div formGroupName="translation" class="row">
+            <h5 class="card-title col-lg-4 flex-grow-1">{{'COMMON.LANGUAGE' | translate }}</h5>
+            <ng-select bindLabel="name" formControlName="language" (change)="onChangeLanguage($event)" class="col-lg-8"
+              [closeOnSelect]="true" [multiple]="false" [items]="languages" placeholder="{{'PLACEHOLDER.SELECT_LANGUAGE' | translate }}"
+              [searchable]="false" [clearable]="false">
+              <ng-template ng-label-tmp let-item="item" let-clear="clear">
+                <div class="d-flex gap-1">
+                  <span *ngIf="item?.name !== 'Default'">{{item?.iconFlag}}</span>
+                  <span>{{item?.name}}</span>
+                </div>
+              </ng-template>
+              <ng-template ng-option-tmp let-item$="item$" let-item="item">
+                <div class="d-flex gap-1">
+                  <span *ngIf="item?.name !== 'Default'">{{item?.iconFlag}}</span>
+                  <span>{{item?.name}}</span>
+                </div>
+              </ng-template>
+            </ng-select>
+          </div>
+        </form>
+      </div>
+    </div>
+    <ng-container *ngIf="translation?.value?.language?.name === 'Default'">
+      <div class="row">
+        <div class="mb-3 col-lg-6">
+          <label for="firstnameInput" class="form-label">{{'MODULES.WEBSITE.VISUAL_TYPE' | translate }}</label>
+          <select
+            [ngClass]="{ 'is-invalid': slideForm.get('visualType')?.touched && slideForm.get('visualType').hasError('required') }"
+            required class="form-select form-control-line" [formControlName]="'visualType'">
+            <option *ngFor="let type of visualTypes" [value]="type">{{ type.split('_').join(' ') |
+              titlecase }}</option>
+          </select>
+          <div class="text-danger"
+            *ngIf="slideForm.get('visualType')?.touched && slideForm.get('visualType').hasError('required')">{{'COMMON.REQUIRED' | translate }}
+          </div>
+        </div>
+        <div class="col-lg-6 mb-3">
+          <label for="lastnameInput" class="form-label">{{'MODULES.WEBSITE.SLIDE_REFERENCE' | translate }}</label>
+          <input required
+            [ngClass]="{ 'is-invalid': slideForm.get('reference')?.touched && slideForm.get('reference').hasError('required') }"
+            formControlName="reference" type="text" class="form-control" id="lastnameInput"
+            placeholder="{{'PLACEHOLDER.ENTER_REFERENCE' | translate }}">
+          <div class="text-danger"
+            *ngIf="slideForm.get('reference')?.touched && slideForm.get('reference').hasError('required')">{{'COMMON.REQUIRED' | translate }}
+          </div>
+        </div>
+      </div>
+      <div class="mt-4">
+        <h4 class="mb-4 flex-grow-1">{{'MODULES.INVENTORY.CONTENT' | translate }}</h4>
+        <ng-container formArrayName="content">
+          <div class="sm:col-span-4 row"
+            *ngFor="let content of slideForm.get('content').controls; let i=index; let last = last" [formGroupName]="i">
+            <div *ngIf="slideForm.get('visualType').value === 'PICTURE'" class="sm:col-span-4 mb-3 md:col-span-2">
+              <label for="firstnameInput" class="form-label">{{'COMMON.IMAGE' | translate }}</label>
+              <div *ngIf="content?.get('image')?.value?.baseUrl" class="img-wrap w-30 h-30 me-3 mb-2">
+                <span class="delete-icon w-6 h-6 flex items-center justify-center cursor-pointer"
+                  (click)="removePicture(i)">
+                  <i class="ri-delete-bin-fill ft text-danger"></i>
+                </span>
+                <img (click)="upload(i)" class="w-30 h-30 rounded object-cover"
+                  [src]="content?.get('image')?.value?.baseUrl + '/' + content?.get('image')?.value?.path"
+                  alt="Blog picture">
+              </div>
+              <div (click)="upload(i)" *ngIf="!content?.get('image')?.value?.baseUrl"
+                class="w-30 mb-3 h-30 border rounded overflow-hidden cursor-pointer d-flex align-items-center justify-content-center">
+                <span class="fs-5 fw-bold">{{'COMMON.UPLOAD' | translate }}</span>
+              </div>
+            </div>
+            <div *ngIf="slideForm.get('visualType').value === 'ICON'" class="mb-3 col-lg-6">
+              <label for="firstnameInput" class="form-label">{{'COMMON.ICON' | translate }}</label>
+              <input formControlName="icon" type="text" class="form-control" id="firstnameInput"
+                placeholder="{{'PLACEHOLDER.ENTER_ICON' | translate }}">
+            </div>
+            <div class="mb-3 col-lg-6">
+              <label for="firstnameInput" class="form-label">{{'COMMON.TITLE' | translate }}</label>
+              <input required formControlName="title" type="text" class="form-control" id="firstnameInput"
+                placeholder="{{'PLACEHOLDER.ENTER_TITLE' | translate }}">
+            </div>
+            <div class="mb-sm-6 mb-7">
+              <label for="firstnameInput" class="form-label">{{'COMMON.DESCRIPTION' | translate }}</label>
+              <quill-editor class="custom-quill-editor" formControlName="description"></quill-editor>
+            </div>
+            <h5 class="mb-4 flex-grow-1">{{'MODULES.WEBSITE.CALL_TO_ACTION' | translate }}</h5>
+            <div class="row" formGroupName="calltoaction">
+              <div class="mb-3 col-lg-6">
+                <label for="firstnameInput" class="form-label">{{'MODULES.INVENTORY.LABEL' | translate }}</label>
+                <input formControlName="label" type="text" class="form-control" id="firstnameInput"
+                  placeholder="{{'PLACEHOLDER.ENTER_CALL_TO_ACTION_LABEL' | translate }}">
+              </div>
+              <div class="mb-3 col-lg-6">
+                <label for="firstnameInput" class="form-label">Link</label>
+                <input formControlName="link" type="text" class="form-control" id="firstnameInput"
+                  placeholder="{{'PLACEHOLDER.ENTER_CALL_TO_ACTION_LINK' | translate }}">
+              </div>
+            </div>
+            <div class="col-lg-12">
+              <div class="hstack justify-content-end gap-2 mt-4 mb-4">
+                <button *ngIf="slideForm.get('content').value?.length > 1" type="button" (click)="deleteContent(i)" class="btn btn-danger"><i
+                    class="ri-delete-bin-fill align-bottom"></i>{{ 'COMMON.DELETE' | translate }}</button>
+                <button (click)="newContent()" type="button" class="btn btn-primary add-btn"
+                  id="create-btn"><i class="ri-add-line align-bottom me-1"></i>{{'MODULES.INVENTORY.CONTENT' | translate }}</button>
+              </div>
+            </div>
+          </div>
+        </ng-container>
+      </div>
+    </ng-container>
+    <ng-container *ngIf="translation?.value?.language?.name !== 'Default'">
+      <div class="row">
+        <form *ngIf="slideForm" [formGroup]="slideForm">
+            <div class="col-lg-12">
+              <div class="card" id="invoiceList">
+                <div class="card-header border-0">
+                  <h4 class="mb-0 flex-grow-1">{{'MODULES.WEBSITE.SLIDE' | translate }}</h4>
+                </div>
+                <div class="card-body">
+                  <div formGroupName="translation" class="mt-4">
+                    <h4 class="mb-4 flex-grow-1">{{'MODULES.INVENTORY.CONTENT' | translate }}</h4>
+                    <ng-container formArrayName="content">
+                      <div class="sm:col-span-4 row"
+                        *ngFor="let content of translation.get('content').controls; let j=index; let last = last"
+                        [formGroupName]="j">
+                        <div *ngIf="slideForm.get('visualType').value === 'PICTURE'"
+                          class="sm:col-span-4 mb-3 md:col-span-2">
+                          <label for="firstnameInput" class="form-label">{{'COMMON.IMAGE' | translate }}</label>
+                          <div *ngIf="content?.get('image')?.value?.baseUrl" class="img-wrap w-30 h-30 me-3 mb-2">
+                            <span class="delete-icon w-6 h-6 flex items-center justify-center cursor-pointer"
+                              (click)="removePicture(j)">
+                              <i class="ri-delete-bin-fill ft text-danger"></i>
+                            </span>
+                            <img (click)="upload(j)" class="w-30 h-30 rounded object-cover"
+                              [src]="content?.get('image')?.value?.baseUrl + '/' + content?.get('image')?.value?.path"
+                              alt="Blog picture">
+                          </div>
+                          <div (click)="upload(j)" *ngIf="!content?.get('image')?.value?.baseUrl"
+                            class="w-30 mb-3 h-30 border rounded overflow-hidden cursor-pointer d-flex align-items-center justify-content-center">
+                            <span class="fs-5 fw-bold">{{'COMMON.UPLOAD' | translate }}</span>
+                          </div>
+                        </div>
+                        <div *ngIf="slideForm.get('visualType').value === 'ICON'" class="mb-3 col-lg-6">
+                          <label for="firstnameInput" class="form-label">{{'COMMON.ICON' | translate }}</label>
+                          <input formControlName="icon" type="text" class="form-control" id="firstnameInput"
+                            placeholder="{{'PLACEHOLDER.ENTER_ICON' | translate }}">
+                        </div>
+                        <div class="mb-3 col-lg-6">
+                          <label for="firstnameInput" class="form-label">{{'COMMON.TITLE' | translate }}</label>
+                          <input formControlName="title" type="text" class="form-control" id="firstnameInput"
+                            placeholder="{{'PLACEHOLDER.ENTER_TITLE' | translate }}">
+                        </div>
+                        <div class="mb-3 col-lg-6">
+                          <label for="firstnameInput" class="form-label">{{'COMMON.DESCRIPTION' | translate }}</label>
+                          <textarea class="form-control" id="description-field" rows="3" placeholder="{{'COMMON.ENTER_DESCRIPTION' | translate }}"
+                            formControlName="description"></textarea>
+                        </div>
+                        <h5 class="mb-4 flex-grow-1">{{'MODULES.WEBSITE.CALL_TO_ACTION' | translate }}</h5>
+                        <div class="row" formGroupName="calltoaction">
+                          <div class="mb-3 col-lg-6">
+                            <label for="firstnameInput" class="form-label">{{'MODULES.INVENTORY.LABEL' | translate }}</label>
+                            <input formControlName="label" type="text" class="form-control" id="firstnameInput"
+                              placeholder="{{'PLACEHOLDER.ENTER_CALL_TO_ACTION_LABEL' | translate }}">
+                          </div>
+                          <div class="mb-3 col-lg-6">
+                            <label for="firstnameInput" class="form-label">{{'COMMON.LINK' | translate }}</label>
+                            <input formControlName="link" type="text" class="form-control" id="firstnameInput"
+                              placeholder="{{'PLACEHOLDER.ENTER_CALL_TO_ACTION_LINK' | translate }}">
+                          </div>
+                        </div>
+                        <div class="col-lg-12">
+                          <div class="hstack justify-content-end gap-2 mt-4 mb-4">
+                            <button *ngIf="translation.get('content').value?.length > 1" type="button"
+                              (click)="deleteContent(j)" class="btn btn-danger"><i
+                                class="ri-delete-bin-fill align-bottom"></i>{{ 'COMMON.DELETE' | translate }}</button>
+                            <button (click)="newContent()" type="button" class="btn btn-primary add-btn"
+                              id="create-btn"><i class="ri-add-line align-bottom me-1"></i>{{'MODULES.WEBSITE.CONTENT' | translate }}</button>
+                          </div>
+                        </div>
+                      </div>
+                    </ng-container>
+                  </div>
+                </div>
+              </div>
+            </div>
+        </form>
+      </div>
+    </ng-container>
+    <div class="mb-4 col-lg-12">
+      <div class="hstack justify-content-end gap-2 mt-3">
+        <button (click)="back()" type="button" class="btn btn-soft-danger">
+          Back</button>
+        <button [disabled]="isButtonDisabled || slideForm.invalid" (click)="save()" type="button"
+          class="btn btn-success">{{'COMMON.SAVE' | translate }}</button>
+      </div>
+    </div>
+  </form>
+
+</ng-container>
+<div *ngIf="navigating$ | async" class="vh-100 py-4 text-center" fxLayout="column" fxLayoutAlign="center center"
+  fxLayoutGap="1rem">
+  <div>
+    <lord-icon trigger="loop" style="width:72px;height:72px" [colors]="'primary:' + primaryColor + ',secondary:' + secondaryColor"
+      src="https://cdn.lordicon.com/msoeawqm.json">
+    </lord-icon>
+  </div>
+  <div class="mt-4">
+    <h5>{{'COMMON.LOADING' | translate }}</h5>
+  </div>
+</div>

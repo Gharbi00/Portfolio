@@ -1,0 +1,48 @@
+<table class="table table-hover table-centered align-middle table-nowrap mb-0">
+  <tbody>
+    <tr *ngFor="let data of BestSelling">
+      <td>
+        <div class="d-flex align-items-center">
+          <div class="avatar-group flex-nowrap">
+            <div *ngIf="data?.barcode?.media?.pictures" href="javascript:void(0);" class="avatar-group-item">
+              <img [src]="data?.barcode?.media?.pictures[0]?.baseUrl + '/' + data?.barcode?.media?.pictures[0]?.path"
+                alt="" class="avatar-sm rounded-3 me-2 shadow">
+            </div>
+            <div *ngIf="!data?.barcode?.media?.pictures?.length" class="avatar-group-item shadow" placement="top">
+              <div class="avatar-sm">
+                <div class="avatar-title rounded-3 bg-danger text-uppercase shadow">
+                  {{ data?.barcode?.name.charAt(0) || 'N'}}
+                </div>
+              </div>
+            </div>
+          </div>
+          <div>
+            <h5 class="fs-14 my-1">
+              <a class="text-reset">{{ data?.barcode?.name}}</a>
+            </h5>
+            <span class="text-muted">{{data.barcode?.createdAt | date: 'longDate'}}</span>
+          </div>
+        </div>
+      </td>
+      <td>
+        <h5 class="fs-14 my-1 fw-normal">{{data.price?.price | currency:'DT':'symbol':'1.3-3'}}</h5>
+        <span class="text-muted">{{ 'MODULES.ECOMMERCE.MAIN.PRICE' | translate }}</span>
+      </td>
+      <td>
+        <h5 class="fs-14 my-1 fw-normal">{{data.orders}}</h5>
+        <span class="text-muted"> {{'MODULES.HR.MAIN.ORDERS' | translate }}</span>
+      </td>
+      <td>
+        <h5 class="fs-14 my-1 fw-normal" *ngIf="data.stock !== 'Out of stock'">{{data.stock}}</h5>
+        <h5 class="fs-14 my-1 fw-normal"><span class="badge badge-soft-danger"
+            *ngIf="data.stock === 'Out of stock'">{{data.stock}}</span></h5>
+
+        <span class="text-muted"> {{'MODULES.HR.MAIN.STOCK' | translate }}</span>
+      </td>
+      <td>
+        <h5 class="fs-14 my-1 fw-normal">{{data.amount | currency:'DT':'symbol':'1.3-3'}}</h5>
+        <span class="text-muted">{{'COMMON.AMOUNT' | translate }}</span>
+      </td>
+    </tr>
+  </tbody>
+</table>

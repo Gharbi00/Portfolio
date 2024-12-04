@@ -1,0 +1,47 @@
+<app-breadcrumbs title="{{ 'MENUITEMS.TITLE.BRAND_DETAILS' | translate }}" [breadcrumbItems]="breadCrumbItems"></app-breadcrumbs>
+
+<div class="row">
+    <div class="col-lg-12">
+        <div class="card">
+            <div class="card-body">
+                <div class="row gx-lg-5">
+                    <div class="col-xl-4 col-md-8 mx-auto">
+                        <div *ngIf="brand?.picture?.length" class="product-img-slider sticky-side-div">
+                            <div class="swiper-slide">
+                                <img [src]="brand.picture?.baseUrl + '/' + brand.picture?.path"
+                                    alt="" class="img-fluid d-block" />
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-xl-8">
+                        <div class="mt-xl-0 mt-5">
+                            <div class="d-flex">
+                                <div class="flex-grow-1">
+                                    <h4>{{brand?.name}}</h4>
+                                    <div class="hstack gap-3 flex-wrap">
+                                        <div class="text-muted">{{'COMMON.STATE.PUBLISHED' | translate }}: <span
+                                                class="text-body fw-medium">{{brand.createdAt |
+                                                date:'longDate'}}</span></div>
+                                    </div>
+                                </div>
+                                <div class="flex-shrink-0">
+                                    <div>
+                                        <a routerLink="/ecommerce/add-product" class="btn btn-light"
+                                            data-bs-toggle="tooltip" data-bs-placement="top" title="Edit"><i
+                                                class="ri-pencil-fill align-bottom"></i></a>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div *ngIf="brand?.website" class="mt-4 text-muted">
+                                <h5 class="fs-14">{{'COMMON.WEBSITE' | translate }}:</h5>
+                                {{brand?.website}}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

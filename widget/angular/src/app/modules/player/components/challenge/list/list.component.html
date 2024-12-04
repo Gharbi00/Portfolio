@@ -1,0 +1,926 @@
+<div [class.dark-mode]="darkMode" [class.rtl]="rtl">
+  <div class="challenges content-grid col-md-12 header-margin">
+    <div class="section-banner"
+      [ngStyle]="{ background: 'url(' + headerImagePath + ') no-repeat center center / cover' }">
+      <img class="section-banner-icon" [src]="challengesIcon?.baseUrl + '/' + challengesIcon?.path"
+        alt="newsfeed-icon" />
+      <p class="section-banner-title">{{'CHALLENGES' | translate}}</p>
+      <p class="section-banner-text text-truncate">{{'COMPLETE_CHALLENGES_GAIN_EXP_LEVEL_UP' | translate}}</p>
+    </div>
+  </div>
+
+  <!-- <div class="challenges col-md-12">
+    <owl-carousel-o [options]="questCarousel" class="quest-carousel">
+      <ng-container *ngFor="let data of challenges$ | async">
+        <ng-template carouselSlide>
+          <div class="quest-item" (click)="toggleModal('challengesDetails')" style="cursor: pointer;">
+            <figure class="quest-item-cover liquid"
+              [ngStyle]="{ background: 'url(' + baseUrl + '/assets/img/quest/cover/02.png) center center / cover no-repeat' }">
+              <img [src]="baseUrl + '/assets/img/quest/cover/01.png'" alt="cover-01" style="display: none" />
+            </figure>
+            <p class="text-sticker small-text">
+              <svg class="text-sticker-icon icon-plus-small">
+                <use xlink:href="#svg-plus-small"></use>
+              </svg>
+              60
+              <img class="rounded-circle" src="https://sifca-storage.s3.eu-central-1.amazonaws.com/loyalcraft/reputation_512.gif"
+                class="assets/img-fluid rounded-circle avatar-xxs mb-1"
+                style="margin-top: 5% !important; width: 25px !important" />
+            </p>
+            <div class="quest-item-info">
+              <div class="quest-item-badge">
+                <img [src]="baseUrl + '/assets/img/quest/openq-b.png'" alt="openq-b" />
+              </div>
+              <p class="quest-item-title">Social King</p>
+              <p class="quest-item-text">You have linked at least 8 social networks to your profile</p>
+              <div class="progress-stat">
+                <div id="quest-sk" class="progress-stat-bar" style="width: 228px; height: 4px; position: relative">
+                  <canvas width="228" height="4" style="position: absolute; top: 0px; left: 0px"></canvas><canvas
+                    width="228" height="4" style="position: absolute; top: 0px; left: 0px"></canvas>
+                </div>
+                <div class="bar-progress-wrap small">
+                  <p class="bar-progress-info negative start">
+                    <span class="bar-progress-text no-space">7<span class="bar-progress-unit">/</span>8</span>completed
+                  </p>
+                </div>
+              </div>
+              <div class="quest-item-meta">
+                <div class="user-avatar-list">
+                  <div class="user-avatar micro no-stats">
+                    <div class="user-avatar-border">
+                      <div class="hexagon-22-24" style="width: 22px; height: 24px; position: relative">
+                        <canvas width="22" height="24" style="position: absolute; top: 0px; left: 0px"></canvas>
+                      </div>
+                    </div>
+                    <div class="user-avatar-content">
+                      <div class="hexagon-image-18-20" [src]="baseUrl + '/assets/img/avatar/08.jpg'"
+                        style="width: 18px; height: 20px; position: relative">
+                        <canvas width="18" height="20" style="position: absolute; top: 0px; left: 0px"></canvas>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="user-avatar micro no-stats">
+                    <div class="user-avatar-border">
+                      <div class="hexagon-22-24" style="width: 22px; height: 24px; position: relative">
+                        <canvas width="22" height="24" style="position: absolute; top: 0px; left: 0px"></canvas>
+                      </div>
+                    </div>
+                    <div class="user-avatar-content">
+                      <div class="hexagon-image-18-20" [src]="baseUrl + '/assets/img/avatar/16.jpg'"
+                        style="width: 18px; height: 20px; position: relative">
+                        <canvas width="18" height="20" style="position: absolute; top: 0px; left: 0px"></canvas>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="user-avatar micro no-stats">
+                    <div class="user-avatar-border">
+                      <div class="hexagon-22-24" style="width: 22px; height: 24px; position: relative">
+                        <canvas width="22" height="24" style="position: absolute; top: 0px; left: 0px"></canvas>
+                      </div>
+                    </div>
+                    <div class="user-avatar-content">
+                      <div class="hexagon-image-18-20" [src]="baseUrl + '/assets/img/avatar/06.jpg'"
+                        style="width: 18px; height: 20px; position: relative">
+                        <canvas width="18" height="20" style="position: absolute; top: 0px; left: 0px"></canvas>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="user-avatar micro no-stats">
+                    <div class="user-avatar-border">
+                      <div class="hexagon-22-24" style="width: 22px; height: 24px; position: relative">
+                        <canvas width="22" height="24" style="position: absolute; top: 0px; left: 0px"></canvas>
+                      </div>
+                    </div>
+                    <div class="user-avatar-content">
+                      <div class="hexagon-image-18-20" [src]="baseUrl + '/assets/img/avatar/07.jpg'"
+                        style="width: 18px; height: 20px; position: relative">
+                        <canvas width="18" height="20" style="position: absolute; top: 0px; left: 0px"></canvas>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="user-avatar micro no-stats">
+                    <div class="user-avatar-border">
+                      <div class="hexagon-22-24" style="width: 22px; height: 24px; position: relative">
+                        <canvas width="22" height="24" style="position: absolute; top: 0px; left: 0px"></canvas>
+                      </div>
+                    </div>
+                    <div class="user-avatar-content">
+                      <div class="hexagon-image-18-20" [src]="baseUrl + '/assets/img/avatar/02.jpg'"
+                        style="width: 18px; height: 20px; position: relative">
+                        <canvas width="18" height="20" style="position: absolute; top: 0px; left: 0px"></canvas>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="user-avatar micro no-stats">
+                    <div class="user-avatar-border">
+                      <div class="hexagon-22-24" style="width: 22px; height: 24px; position: relative">
+                        <canvas width="22" height="24" style="position: absolute; top: 0px; left: 0px"></canvas>
+                      </div>
+                    </div>
+                    <div class="user-avatar-content">
+                      <div class="hexagon-image-18-20" [src]="baseUrl + '/assets/img/avatar/10.jpg'"
+                        style="width: 18px; height: 20px; position: relative">
+                        <canvas width="18" height="20" style="position: absolute; top: 0px; left: 0px"></canvas>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="user-avatar micro no-stats">
+                    <div class="user-avatar-border">
+                      <div class="hexagon-22-24" style="width: 22px; height: 24px; position: relative">
+                        <canvas width="22" height="24" style="position: absolute; top: 0px; left: 0px"></canvas>
+                      </div>
+                    </div>
+                    <div class="user-avatar-content">
+                      <div class="hexagon-image-18-20" [src]="baseUrl + '/assets/img/avatar/05.jpg'"
+                        style="width: 18px; height: 20px; position: relative">
+                        <canvas width="18" height="20" style="position: absolute; top: 0px; left: 0px"></canvas>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="user-avatar micro no-stats">
+                    <div class="user-avatar-border">
+                      <div class="hexagon-22-24" style="width: 22px; height: 24px; position: relative">
+                        <canvas width="22" height="24" style="position: absolute; top: 0px; left: 0px"></canvas>
+                      </div>
+                    </div>
+                    <div class="user-avatar-content">
+                      <div class="hexagon-image-18-20" [src]="baseUrl + '/assets/img/avatar/03.jpg'"
+                        style="width: 18px; height: 20px; position: relative">
+                        <canvas width="18" height="20" style="position: absolute; top: 0px; left: 0px"></canvas>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="quest-item-meta-info">
+                  <p class="quest-item-meta-title">+24 friends</p>
+                  <p class="quest-item-meta-text">completed this quest</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </ng-template>
+        <ng-template carouselSlide>
+          <div class="quest-item" (click)="toggleModal('challengesDetails')" style="cursor: pointer;">
+            <figure class="quest-item-cover liquid"
+              [ngStyle]="{ background: 'url(' + baseUrl + '/assets/img/quest/cover/02.png) center center / cover no-repeat' }">
+              <img [src]="baseUrl + '/assets/img/quest/cover/02.png'" alt="cover-02" style="display: none" />
+            </figure>
+            <p class="text-sticker small-text">
+              <svg class="text-sticker-icon icon-plus-small">
+                <use xlink:href="#svg-plus-small"></use>
+              </svg>
+              40
+              <img class="rounded-circle" src="https://sifca-storage.s3.eu-central-1.amazonaws.com/loyalcraft/reputation_512.gif"
+                class="assets/img-fluid rounded-circle avatar-xxs mb-1"
+                style="margin-top: 5% !important; width: 25px !important" />
+            </p>
+            <div class="quest-item-info">
+              <div class="quest-item-badge">
+                <img [src]="baseUrl + '/assets/img/quest/completedq-b.png'" alt="completedq-b" />
+              </div>
+              <p class="quest-item-title">Friendly User</p>
+              <p class="quest-item-text">Give 50 like and/or love reactions on your friends' posts</p>
+              <div class="progress-stat">
+                <div id="quest-fu" class="progress-stat-bar" style="width: 228px; height: 4px; position: relative">
+                  <canvas width="228" height="4" style="position: absolute; top: 0px; left: 0px"></canvas><canvas
+                    width="228" height="4" style="position: absolute; top: 0px; left: 0px"></canvas>
+                </div>
+                <div class="bar-progress-wrap small">
+                  <p class="bar-progress-info negative start">
+                    <span class="bar-progress-text no-space">50<span
+                        class="bar-progress-unit">/</span>50</span>completed
+                  </p>
+                </div>
+              </div>
+              <div class="quest-item-meta">
+                <div class="user-avatar-list">
+                  <div class="user-avatar micro no-stats">
+                    <div class="user-avatar-border">
+                      <div class="hexagon-22-24" style="width: 22px; height: 24px; position: relative">
+                        <canvas width="22" height="24" style="position: absolute; top: 0px; left: 0px"></canvas>
+                      </div>
+                    </div>
+                    <div class="user-avatar-content">
+                      <div class="hexagon-image-18-20" [src]="baseUrl + '/assets/img/avatar/14.jpg'"
+                        style="width: 18px; height: 20px; position: relative">
+                        <canvas width="18" height="20" style="position: absolute; top: 0px; left: 0px"></canvas>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="user-avatar micro no-stats">
+                    <div class="user-avatar-border">
+                      <div class="hexagon-22-24" style="width: 22px; height: 24px; position: relative">
+                        <canvas width="22" height="24" style="position: absolute; top: 0px; left: 0px"></canvas>
+                      </div>
+                    </div>
+                    <div class="user-avatar-content">
+                      <div class="hexagon-image-18-20" [src]="baseUrl + '/assets/img/avatar/16.jpg'"
+                        style="width: 18px; height: 20px; position: relative">
+                        <canvas width="18" height="20" style="position: absolute; top: 0px; left: 0px"></canvas>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="user-avatar micro no-stats">
+                    <div class="user-avatar-border">
+                      <div class="hexagon-22-24" style="width: 22px; height: 24px; position: relative">
+                        <canvas width="22" height="24" style="position: absolute; top: 0px; left: 0px"></canvas>
+                      </div>
+                    </div>
+                    <div class="user-avatar-content">
+                      <div class="hexagon-image-18-20" [src]="baseUrl + '/assets/img/avatar/11.jpg'"
+                        style="width: 18px; height: 20px; position: relative">
+                        <canvas width="18" height="20" style="position: absolute; top: 0px; left: 0px"></canvas>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="user-avatar micro no-stats">
+                    <div class="user-avatar-border">
+                      <div class="hexagon-22-24" style="width: 22px; height: 24px; position: relative">
+                        <canvas width="22" height="24" style="position: absolute; top: 0px; left: 0px"></canvas>
+                      </div>
+                    </div>
+                    <div class="user-avatar-content">
+                      <div class="hexagon-image-18-20" [src]="baseUrl + '/assets/img/avatar/08.jpg'"
+                        style="width: 18px; height: 20px; position: relative">
+                        <canvas width="18" height="20" style="position: absolute; top: 0px; left: 0px"></canvas>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="user-avatar micro no-stats">
+                    <div class="user-avatar-border">
+                      <div class="hexagon-22-24" style="width: 22px; height: 24px; position: relative">
+                        <canvas width="22" height="24" style="position: absolute; top: 0px; left: 0px"></canvas>
+                      </div>
+                    </div>
+                    <div class="user-avatar-content">
+                      <div class="hexagon-image-18-20" [src]="baseUrl + '/assets/img/avatar/15.jpg'"
+                        style="width: 18px; height: 20px; position: relative">
+                        <canvas width="18" height="20" style="position: absolute; top: 0px; left: 0px"></canvas>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="user-avatar micro no-stats">
+                    <div class="user-avatar-border">
+                      <div class="hexagon-22-24" style="width: 22px; height: 24px; position: relative">
+                        <canvas width="22" height="24" style="position: absolute; top: 0px; left: 0px"></canvas>
+                      </div>
+                    </div>
+                    <div class="user-avatar-content">
+                      <div class="hexagon-image-18-20" [src]="baseUrl + '/assets/img/avatar/05.jpg'"
+                        style="width: 18px; height: 20px; position: relative">
+                        <canvas width="18" height="20" style="position: absolute; top: 0px; left: 0px"></canvas>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="user-avatar micro no-stats">
+                    <div class="user-avatar-border">
+                      <div class="hexagon-22-24" style="width: 22px; height: 24px; position: relative">
+                        <canvas width="22" height="24" style="position: absolute; top: 0px; left: 0px"></canvas>
+                      </div>
+                    </div>
+                    <div class="user-avatar-content">
+                      <div class="hexagon-image-18-20" [src]="baseUrl + '/assets/img/avatar/04.jpg'"
+                        style="width: 18px; height: 20px; position: relative">
+                        <canvas width="18" height="20" style="position: absolute; top: 0px; left: 0px"></canvas>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="user-avatar micro no-stats">
+                    <div class="user-avatar-border">
+                      <div class="hexagon-22-24" style="width: 22px; height: 24px; position: relative">
+                        <canvas width="22" height="24" style="position: absolute; top: 0px; left: 0px"></canvas>
+                      </div>
+                    </div>
+                    <div class="user-avatar-content">
+                      <div class="hexagon-image-18-20" [src]="baseUrl + '/assets/img/avatar/13.jpg'"
+                        style="width: 18px; height: 20px; position: relative">
+                        <canvas width="18" height="20" style="position: absolute; top: 0px; left: 0px"></canvas>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="quest-item-meta-info">
+                  <p class="quest-item-meta-title">+33 friends</p>
+                  <p class="quest-item-meta-text">completed this quest</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </ng-template>
+        <ng-template carouselSlide>
+          <div class="quest-item" (click)="toggleModal('challengesDetails')" style="cursor: pointer;">
+            <figure class="quest-item-cover liquid"
+              [ngStyle]="{ background: 'url(' + baseUrl + '/assets/img/quest/cover/03.png) center center / cover no-repeat' }">
+              <img [src]="baseUrl + '/assets/img/quest/cover/03.png'" alt="cover-03" style="display: none" />
+            </figure>
+            <p class="text-sticker small-text">
+              <svg class="text-sticker-icon icon-plus-small">
+                <use xlink:href="#svg-plus-small"></use>
+              </svg>
+              40
+              <img class="rounded-circle" src="https://sifca-storage.s3.eu-central-1.amazonaws.com/loyalcraft/reputation_512.gif"
+                class="assets/img-fluid rounded-circle avatar-xxs mb-1"
+                style="margin-top: 5% !important; width: 25px !important" />
+            </p>
+            <div class="quest-item-info">
+              <div class="quest-item-badge">
+                <img [src]="baseUrl + '/assets/img/quest/openq-b.png'" alt="openq-b" />
+              </div>
+              <p class="quest-item-title">Nothing to Hide</p>
+              <p class="quest-item-text">You have completed all your profile information fields</p>
+              <div class="progress-stat">
+                <div id="quest-nth" class="progress-stat-bar" style="width: 228px; height: 4px; position: relative">
+                  <canvas width="228" height="4" style="position: absolute; top: 0px; left: 0px"></canvas><canvas
+                    width="228" height="4" style="position: absolute; top: 0px; left: 0px"></canvas>
+                </div>
+                <div class="bar-progress-wrap small">
+                  <p class="bar-progress-info negative start">
+                    <span class="bar-progress-text no-space">67<span class="bar-progress-unit">%</span></span>completed
+                  </p>
+                </div>
+              </div>
+              <div class="quest-item-meta">
+                <div class="user-avatar-list">
+                  <div class="user-avatar micro no-stats">
+                    <div class="user-avatar-border">
+                      <div class="hexagon-22-24" style="width: 22px; height: 24px; position: relative">
+                        <canvas width="22" height="24" style="position: absolute; top: 0px; left: 0px"></canvas>
+                      </div>
+                    </div>
+                    <div class="user-avatar-content">
+                      <div class="hexagon-image-18-20" [src]="baseUrl + '/assets/img/avatar/10.jpg'"
+                        style="width: 18px; height: 20px; position: relative">
+                        <canvas width="18" height="20" style="position: absolute; top: 0px; left: 0px"></canvas>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="user-avatar micro no-stats">
+                    <div class="user-avatar-border">
+                      <div class="hexagon-22-24" style="width: 22px; height: 24px; position: relative">
+                        <canvas width="22" height="24" style="position: absolute; top: 0px; left: 0px"></canvas>
+                      </div>
+                    </div>
+                    <div class="user-avatar-content">
+                      <div class="hexagon-image-18-20" [src]="baseUrl + '/assets/img/avatar/04.jpg'"
+                        style="width: 18px; height: 20px; position: relative">
+                        <canvas width="18" height="20" style="position: absolute; top: 0px; left: 0px"></canvas>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="user-avatar micro no-stats">
+                    <div class="user-avatar-border">
+                      <div class="hexagon-22-24" style="width: 22px; height: 24px; position: relative">
+                        <canvas width="22" height="24" style="position: absolute; top: 0px; left: 0px"></canvas>
+                      </div>
+                    </div>
+                    <div class="user-avatar-content">
+                      <div class="hexagon-image-18-20" [src]="baseUrl + '/assets/img/avatar/13.jpg'"
+                        style="width: 18px; height: 20px; position: relative">
+                        <canvas width="18" height="20" style="position: absolute; top: 0px; left: 0px"></canvas>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="user-avatar micro no-stats">
+                    <div class="user-avatar-border">
+                      <div class="hexagon-22-24" style="width: 22px; height: 24px; position: relative">
+                        <canvas width="22" height="24" style="position: absolute; top: 0px; left: 0px"></canvas>
+                      </div>
+                    </div>
+                    <div class="user-avatar-content">
+                      <div class="hexagon-image-18-20" [src]="baseUrl + '/assets/img/avatar/03.jpg'"
+                        style="width: 18px; height: 20px; position: relative">
+                        <canvas width="18" height="20" style="position: absolute; top: 0px; left: 0px"></canvas>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="user-avatar micro no-stats">
+                    <div class="user-avatar-border">
+                      <div class="hexagon-22-24" style="width: 22px; height: 24px; position: relative">
+                        <canvas width="22" height="24" style="position: absolute; top: 0px; left: 0px"></canvas>
+                      </div>
+                    </div>
+                    <div class="user-avatar-content">
+                      <div class="hexagon-image-18-20" [src]="baseUrl + '/assets/img/avatar/02.jpg'"
+                        style="width: 18px; height: 20px; position: relative">
+                        <canvas width="18" height="20" style="position: absolute; top: 0px; left: 0px"></canvas>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="user-avatar micro no-stats">
+                    <div class="user-avatar-border">
+                      <div class="hexagon-22-24" style="width: 22px; height: 24px; position: relative">
+                        <canvas width="22" height="24" style="position: absolute; top: 0px; left: 0px"></canvas>
+                      </div>
+                    </div>
+                    <div class="user-avatar-content">
+                      <div class="hexagon-image-18-20" [src]="baseUrl + '/assets/img/avatar/22.jpg'"
+                        style="width: 18px; height: 20px; position: relative">
+                        <canvas width="18" height="20" style="position: absolute; top: 0px; left: 0px"></canvas>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="user-avatar micro no-stats">
+                    <div class="user-avatar-border">
+                      <div class="hexagon-22-24" style="width: 22px; height: 24px; position: relative">
+                        <canvas width="22" height="24" style="position: absolute; top: 0px; left: 0px"></canvas>
+                      </div>
+                    </div>
+                    <div class="user-avatar-content">
+                      <div class="hexagon-image-18-20" [src]="baseUrl + '/assets/img/avatar/14.jpg'"
+                        style="width: 18px; height: 20px; position: relative">
+                        <canvas width="18" height="20" style="position: absolute; top: 0px; left: 0px"></canvas>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="user-avatar micro no-stats">
+                    <div class="user-avatar-border">
+                      <div class="hexagon-22-24" style="width: 22px; height: 24px; position: relative">
+                        <canvas width="22" height="24" style="position: absolute; top: 0px; left: 0px"></canvas>
+                      </div>
+                    </div>
+                    <div class="user-avatar-content">
+                      <div class="hexagon-image-18-20" [src]="baseUrl + '/assets/img/avatar/12.jpg'"
+                        style="width: 18px; height: 20px; position: relative">
+                        <canvas width="18" height="20" style="position: absolute; top: 0px; left: 0px"></canvas>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="quest-item-meta-info">
+                  <p class="quest-item-meta-title">+24 friends</p>
+                  <p class="quest-item-meta-text">completed this quest</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </ng-template>
+        <ng-template carouselSlide>
+          <div class="quest-item" (click)="toggleModal('challengesDetails')" style="cursor: pointer;">
+            <figure class="quest-item-cover liquid"
+              [ngStyle]="{ background: 'url(' + baseUrl + '/assets/img/quest/cover/04.png) center center / cover no-repeat' }">
+              <img [src]="baseUrl + '/assets/img/quest/cover/04.png'" alt="cover-04" style="display: none" />
+            </figure>
+            <p class="text-sticker small-text">
+              <svg class="text-sticker-icon icon-plus-small">
+                <use xlink:href="#svg-plus-small"></use>
+              </svg>
+              100
+              <img class="rounded-circle" src="https://sifca-storage.s3.eu-central-1.amazonaws.com/loyalcraft/reputation_512.gif"
+                class="assets/img-fluid rounded-circle avatar-xxs mb-1"
+                style="margin-top: 5% !important; width: 25px !important" />
+            </p>
+            <div class="quest-item-info">
+              <div class="quest-item-badge">
+                <img [src]="baseUrl + '/assets/img/quest/openq-b.png'" alt="openq-b" />
+              </div>
+              <p class="quest-item-title">Store Manager</p>
+              <p class="quest-item-text">You have uploaded at least 10 items in your shop</p>
+              <div class="progress-stat">
+                <div id="quest-sm" class="progress-stat-bar" style="width: 228px; height: 4px; position: relative">
+                  <canvas width="228" height="4" style="position: absolute; top: 0px; left: 0px"></canvas><canvas
+                    width="228" height="4" style="position: absolute; top: 0px; left: 0px"></canvas>
+                </div>
+                <div class="bar-progress-wrap small">
+                  <p class="bar-progress-info negative start">
+                    <span class="bar-progress-text no-space">5<span class="bar-progress-unit">/</span>10</span>completed
+                  </p>
+                </div>
+              </div>
+              <div class="quest-item-meta">
+                <div class="user-avatar-list">
+                  <div class="user-avatar micro no-stats">
+                    <div class="user-avatar-border">
+                      <div class="hexagon-22-24" style="width: 22px; height: 24px; position: relative">
+                        <canvas width="22" height="24" style="position: absolute; top: 0px; left: 0px"></canvas>
+                      </div>
+                    </div>
+                    <div class="user-avatar-content">
+                      <div class="hexagon-image-18-20" [src]="baseUrl + '/assets/img/avatar/15.jpg'"
+                        style="width: 18px; height: 20px; position: relative">
+                        <canvas width="18" height="20" style="position: absolute; top: 0px; left: 0px"></canvas>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="user-avatar micro no-stats">
+                    <div class="user-avatar-border">
+                      <div class="hexagon-22-24" style="width: 22px; height: 24px; position: relative">
+                        <canvas width="22" height="24" style="position: absolute; top: 0px; left: 0px"></canvas>
+                      </div>
+                    </div>
+                    <div class="user-avatar-content">
+                      <div class="hexagon-image-18-20" [src]="baseUrl + '/assets/img/avatar/07.jpg'"
+                        style="width: 18px; height: 20px; position: relative">
+                        <canvas width="18" height="20" style="position: absolute; top: 0px; left: 0px"></canvas>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="user-avatar micro no-stats">
+                    <div class="user-avatar-border">
+                      <div class="hexagon-22-24" style="width: 22px; height: 24px; position: relative">
+                        <canvas width="22" height="24" style="position: absolute; top: 0px; left: 0px"></canvas>
+                      </div>
+                    </div>
+                    <div class="user-avatar-content">
+                      <div class="hexagon-image-18-20" [src]="baseUrl + '/assets/img/avatar/03.jpg'"
+                        style="width: 18px; height: 20px; position: relative">
+                        <canvas width="18" height="20" style="position: absolute; top: 0px; left: 0px"></canvas>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="user-avatar micro no-stats">
+                    <div class="user-avatar-border">
+                      <div class="hexagon-22-24" style="width: 22px; height: 24px; position: relative">
+                        <canvas width="22" height="24" style="position: absolute; top: 0px; left: 0px"></canvas>
+                      </div>
+                    </div>
+                    <div class="user-avatar-content">
+                      <div class="hexagon-image-18-20" [src]="baseUrl + '/assets/img/avatar/11.jpg'"
+                        style="width: 18px; height: 20px; position: relative">
+                        <canvas width="18" height="20" style="position: absolute; top: 0px; left: 0px"></canvas>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="user-avatar micro no-stats">
+                    <div class="user-avatar-border">
+                      <div class="hexagon-22-24" style="width: 22px; height: 24px; position: relative">
+                        <canvas width="22" height="24" style="position: absolute; top: 0px; left: 0px"></canvas>
+                      </div>
+                    </div>
+                    <div class="user-avatar-content">
+                      <div class="hexagon-image-18-20" [src]="baseUrl + '/assets/img/avatar/14.jpg'"
+                        style="width: 18px; height: 20px; position: relative">
+                        <canvas width="18" height="20" style="position: absolute; top: 0px; left: 0px"></canvas>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="user-avatar micro no-stats">
+                    <div class="user-avatar-border">
+                      <div class="hexagon-22-24" style="width: 22px; height: 24px; position: relative">
+                        <canvas width="22" height="24" style="position: absolute; top: 0px; left: 0px"></canvas>
+                      </div>
+                    </div>
+                    <div class="user-avatar-content">
+                      <div class="hexagon-image-18-20" [src]="baseUrl + '/assets/img/avatar/13.jpg'"
+                        style="width: 18px; height: 20px; position: relative">
+                        <canvas width="18" height="20" style="position: absolute; top: 0px; left: 0px"></canvas>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="user-avatar micro no-stats">
+                    <div class="user-avatar-border">
+                      <div class="hexagon-22-24" style="width: 22px; height: 24px; position: relative">
+                        <canvas width="22" height="24" style="position: absolute; top: 0px; left: 0px"></canvas>
+                      </div>
+                    </div>
+                    <div class="user-avatar-content">
+                      <div class="hexagon-image-18-20" [src]="baseUrl + '/assets/img/avatar/05.jpg'"
+                        style="width: 18px; height: 20px; position: relative">
+                        <canvas width="18" height="20" style="position: absolute; top: 0px; left: 0px"></canvas>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="user-avatar micro no-stats">
+                    <div class="user-avatar-border">
+                      <div class="hexagon-22-24" style="width: 22px; height: 24px; position: relative">
+                        <canvas width="22" height="24" style="position: absolute; top: 0px; left: 0px"></canvas>
+                      </div>
+                    </div>
+                    <div class="user-avatar-content">
+                      <div class="hexagon-image-18-20" [src]="baseUrl + '/assets/img/avatar/22.jpg'"
+                        style="width: 18px; height: 20px; position: relative">
+                        <canvas width="18" height="20" style="position: absolute; top: 0px; left: 0px"></canvas>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="quest-item-meta-info">
+                  <p class="quest-item-meta-title">+5 friends</p>
+                  <p class="quest-item-meta-text">completed this quest</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </ng-template>
+        <ng-template carouselSlide>
+          <div class="quest-item" (click)="toggleModal('challengesDetails')" style="cursor: pointer;">
+            <figure class="quest-item-cover liquid"
+              [ngStyle]="{ background: 'url(' + baseUrl + '/assets/img/quest/cover/03.png) center center / cover no-repeat' }">
+              <img [src]="baseUrl + '/assets/img/quest/cover/03.png'" alt="cover-03" style="display: none" />
+            </figure>
+            <p class="text-sticker small-text">
+              <svg class="text-sticker-icon icon-plus-small">
+                <use xlink:href="#svg-plus-small"></use>
+              </svg>
+              40
+              <img class="rounded-circle" src="https://sifca-storage.s3.eu-central-1.amazonaws.com/loyalcraft/reputation_512.gif"
+                class="assets/img-fluid rounded-circle avatar-xxs mb-1"
+                style="margin-top: 5% !important; width: 25px !important" />
+            </p>
+            <div class="quest-item-info">
+              <div class="quest-item-badge">
+                <img [src]="baseUrl + '/assets/img/quest/openq-b.png'" alt="openq-b" />
+              </div>
+              <p class="quest-item-title">Nothing to Hide</p>
+              <p class="quest-item-text">You have completed all your profile information fields</p>
+              <div class="progress-stat">
+                <div id="quest-nth" class="progress-stat-bar" style="width: 228px; height: 4px; position: relative">
+                  <canvas width="228" height="4" style="position: absolute; top: 0px; left: 0px"></canvas><canvas
+                    width="228" height="4" style="position: absolute; top: 0px; left: 0px"></canvas>
+                </div>
+                <div class="bar-progress-wrap small">
+                  <p class="bar-progress-info negative start">
+                    <span class="bar-progress-text no-space">67<span class="bar-progress-unit">%</span></span>completed
+                  </p>
+                </div>
+              </div>
+              <div class="quest-item-meta">
+                <div class="user-avatar-list">
+                  <div class="user-avatar micro no-stats">
+                    <div class="user-avatar-border">
+                      <div class="hexagon-22-24" style="width: 22px; height: 24px; position: relative">
+                        <canvas width="22" height="24" style="position: absolute; top: 0px; left: 0px"></canvas>
+                      </div>
+                    </div>
+                    <div class="user-avatar-content">
+                      <div class="hexagon-image-18-20" [src]="baseUrl + '/assets/img/avatar/10.jpg'"
+                        style="width: 18px; height: 20px; position: relative">
+                        <canvas width="18" height="20" style="position: absolute; top: 0px; left: 0px"></canvas>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="user-avatar micro no-stats">
+                    <div class="user-avatar-border">
+                      <div class="hexagon-22-24" style="width: 22px; height: 24px; position: relative">
+                        <canvas width="22" height="24" style="position: absolute; top: 0px; left: 0px"></canvas>
+                      </div>
+                    </div>
+                    <div class="user-avatar-content">
+                      <div class="hexagon-image-18-20" [src]="baseUrl + '/assets/img/avatar/04.jpg'"
+                        style="width: 18px; height: 20px; position: relative">
+                        <canvas width="18" height="20" style="position: absolute; top: 0px; left: 0px"></canvas>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="user-avatar micro no-stats">
+                    <div class="user-avatar-border">
+                      <div class="hexagon-22-24" style="width: 22px; height: 24px; position: relative">
+                        <canvas width="22" height="24" style="position: absolute; top: 0px; left: 0px"></canvas>
+                      </div>
+                    </div>
+                    <div class="user-avatar-content">
+                      <div class="hexagon-image-18-20" [src]="baseUrl + '/assets/img/avatar/13.jpg'"
+                        style="width: 18px; height: 20px; position: relative">
+                        <canvas width="18" height="20" style="position: absolute; top: 0px; left: 0px"></canvas>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="user-avatar micro no-stats">
+                    <div class="user-avatar-border">
+                      <div class="hexagon-22-24" style="width: 22px; height: 24px; position: relative">
+                        <canvas width="22" height="24" style="position: absolute; top: 0px; left: 0px"></canvas>
+                      </div>
+                    </div>
+                    <div class="user-avatar-content">
+                      <div class="hexagon-image-18-20" [src]="baseUrl + '/assets/img/avatar/03.jpg'"
+                        style="width: 18px; height: 20px; position: relative">
+                        <canvas width="18" height="20" style="position: absolute; top: 0px; left: 0px"></canvas>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="user-avatar micro no-stats">
+                    <div class="user-avatar-border">
+                      <div class="hexagon-22-24" style="width: 22px; height: 24px; position: relative">
+                        <canvas width="22" height="24" style="position: absolute; top: 0px; left: 0px"></canvas>
+                      </div>
+                    </div>
+                    <div class="user-avatar-content">
+                      <div class="hexagon-image-18-20" [src]="baseUrl + '/assets/img/avatar/02.jpg'"
+                        style="width: 18px; height: 20px; position: relative">
+                        <canvas width="18" height="20" style="position: absolute; top: 0px; left: 0px"></canvas>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="user-avatar micro no-stats">
+                    <div class="user-avatar-border">
+                      <div class="hexagon-22-24" style="width: 22px; height: 24px; position: relative">
+                        <canvas width="22" height="24" style="position: absolute; top: 0px; left: 0px"></canvas>
+                      </div>
+                    </div>
+                    <div class="user-avatar-content">
+                      <div class="hexagon-image-18-20" [src]="baseUrl + '/assets/img/avatar/22.jpg'"
+                        style="width: 18px; height: 20px; position: relative">
+                        <canvas width="18" height="20" style="position: absolute; top: 0px; left: 0px"></canvas>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="user-avatar micro no-stats">
+                    <div class="user-avatar-border">
+                      <div class="hexagon-22-24" style="width: 22px; height: 24px; position: relative">
+                        <canvas width="22" height="24" style="position: absolute; top: 0px; left: 0px"></canvas>
+                      </div>
+                    </div>
+                    <div class="user-avatar-content">
+                      <div class="hexagon-image-18-20" [src]="baseUrl + '/assets/img/avatar/14.jpg'"
+                        style="width: 18px; height: 20px; position: relative">
+                        <canvas width="18" height="20" style="position: absolute; top: 0px; left: 0px"></canvas>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="user-avatar micro no-stats">
+                    <div class="user-avatar-border">
+                      <div class="hexagon-22-24" style="width: 22px; height: 24px; position: relative">
+                        <canvas width="22" height="24" style="position: absolute; top: 0px; left: 0px"></canvas>
+                      </div>
+                    </div>
+                    <div class="user-avatar-content">
+                      <div class="hexagon-image-18-20" [src]="baseUrl + '/assets/img/avatar/12.jpg'"
+                        style="width: 18px; height: 20px; position: relative">
+                        <canvas width="18" height="20" style="position: absolute; top: 0px; left: 0px"></canvas>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="quest-item-meta-info">
+                  <p class="quest-item-meta-title">+24 friends</p>
+                  <p class="quest-item-meta-text">completed this quest</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </ng-template>
+      </ng-container>
+    </owl-carousel-o>
+  </div> -->
+
+  <div class="quests section-header col-md-12 special-margin displayed-center">
+    <div class="section-header-info">
+      <div class="section-pretitle displayed-center">{{'GAIN_EXP_LEVEL_UP' | translate}}</div>
+      <h2 class="section-title displayed-center">{{'BROWSE_ALL_QUESTS' | translate}}</h2>
+    </div>
+  </div>
+
+  <div class="quests section-filters-bar v2 col-md-12 special-margin">
+    <form class="form">
+      <div class="form-item split medium">
+        <div class="form-select">
+          <label for="quest-filter-show">{{'SHOW' | translate}}</label>
+          <select (change)="onChangeChallenges($event.target.value)" id="quest-filter-show" name="quest_filter_show">
+            <option selected value="onGoing">{{'LIVE_CHALLENGES' | translate}}</option>
+            <option value="upComing">{{'UPCOMING_CHALLENGES' | translate}}</option>
+          </select>
+          <svg class="form-select-icon icon-small-arrow">
+            <use xlink:href="#svg-small-arrow"></use>
+          </svg>
+        </div>
+        <div class="form-select">
+          <label for="quest-filter-criteria">{{'FILTER' | translate}}</label>
+          <select (change)="filterChallenges($event.target.value)" id="quest-filter-criteria"
+            name="quest_filter_criteria">
+            <option selected value="all">{{'ALL' | translate}}</option>
+            <option value="challenge">{{'CHALLENGE' | translate}}</option>
+            <option value="donation">{{'DONATION' | translate}}</option>
+          </select>
+          <svg class="form-select-icon icon-small-arrow">
+            <use xlink:href="#svg-small-arrow"></use>
+          </svg>
+        </div>
+
+        <button [disabled]="isFilterButtonDisabled" (click)="filter()" class="button secondary">{{'FILTER_CHALLENGES' |
+          translate}}</button>
+      </div>
+    </form>
+  </div>
+
+  <div class="earn section-header-info col-md-12 special-margin special-margin-bottom">
+    <ng-container
+      *ngIf="((loadingChallenges$ | async) === false || null || undefined) && (challenges$ | async)?.length">
+      <div class="table table-quests split-rows">
+        <div class="table-header">
+          <div class="table-header-column">
+            <p class="table-header-title">{{'BUTTON' | translate}}</p>
+          </div>
+          <div *ngIf="!isMobile" class="table-header-column">
+            <p class="table-header-title">{{'DESCRIPTION' | translate}}</p>
+          </div>
+          <div class="table-header-column centered padded-big-left">
+            <p class="table-header-title">
+              {{(isFuture(todayDate, (challenges$ | async)?.[0]?.startDate) ? 'STARTS_IN' : 'ENDS_IN') | translate}}
+            </p>
+          </div>
+        </div>
+        <div class="table-body same-color-rows">
+          <div *ngFor="let data of challenges$ | async" class="table-row small btn" (click)="handleClick(data)">
+            <div class="table-column first-column-padding p-3">
+              <div class="table-information">
+                <p class="table-title">{{data?.title}}</p>
+              </div>
+            </div>
+            <div *ngIf="!isMobile" class="table-column" [ngStyle]="{'31%': data?.donation}">
+              <div *ngIf="data?.donation" class="progress-stat">
+                <div class="d-flex justify-content-md-between justify-content-end" style="font-weight: 600;">
+                  <p class="d-flex align-items-center">{{data?.donation?.currentAmount | number: '1.0-0'}}
+                    <img *ngIf="data?.donation?.donation?.donation?.cause?.coin?.picture?.baseUrl"
+                      [src]="data?.donation?.donation?.donation?.cause?.coin?.picture?.baseUrl + '/' + data?.donation?.donation?.donation?.cause?.coin?.picture?.path"
+                      class="assets/img-fluid rounded-circle ml-1 mr-1" style="width: 15px !important" />
+                    <lord-icon *ngIf="!data?.donation?.donation?.donation?.cause?.coin?.picture?.baseUrl"
+                      src="https://cdn.lordicon.com/lxizbtuq.json" src="https://cdn.lordicon.com/lxizbtuq.json"
+                      trigger="loop" delay="2000" class="ml-1 mr-1" style="width:15px;height:15px">
+                    </lord-icon>
+                    /{{data?.donation?.objective | number: '1.0-0'}}
+                    <img *ngIf="data?.donation?.donation?.donation?.cause?.coin?.picture?.baseUrl"
+                      [src]="data?.donation?.donation?.donation?.cause?.coin?.picture?.baseUrl + '/' + data?.donation?.donation?.donation?.cause?.coin?.picture?.path"
+                      class="assets/img-fluid rounded-circle ml-1" style="width: 15px !important" />
+                    <lord-icon *ngIf="!data?.donation?.donation?.donation?.cause?.coin?.picture?.baseUrl"
+                      src="https://cdn.lordicon.com/lxizbtuq.json" src="https://cdn.lordicon.com/lxizbtuq.json"
+                      trigger="loop" delay="2000" class="ml-1" style="width:15px;height:15px">
+                    </lord-icon>
+                  </p>
+                  <p class="d-none d-md-block">{{data?.donation?.numberOfParticipants || 0}} <span
+                      style="font-size: small;">{{data?.donation?.numberOfParticipants > 1 ? 'PARTICIPANTS' :
+                      'PARTICIPANT' | translate}}</span></p>
+                </div>
+                <div class="progress-stat">
+                  <div appProgressBar [height]="1" [lineColor]="'#e7e8ee'" [start]="0" [end]="100"
+                    [stop]="((data?.donation?.currentAmount / data?.donation?.objective)*100) > 100 ? 100 : (data?.donation?.currentAmount / data?.donation?.objective)*100"
+                    [gradientColors]="[progressBarColor, progressBarColor]" class="progress-stat-bar"
+                    style="height: 4px; position: relative"></div>
+                </div>
+                <div class="d-flex d-block d-md-none justify-content-end mt-3" style="font-weight: 600;">
+                  <p>{{data?.donation?.numberOfParticipants}} <span
+                      style="font-size: small;">{{data?.donation?.numberOfParticipants > 1 ? 'PARTICIPANTS' :
+                      'PARTICIPANT'}}</span></p>
+                </div>
+              </div>
+
+              <quill-view-html *ngIf="!data?.donation" [content]="data?.description | truncate:40"
+                theme="snow"></quill-view-html>
+            </div>
+            <div class="table-column centered padded-big-left p-0">
+              <p *ngIf="!isFuture(todayDate, data?.startDate)" class="p-sm-4 countdown" style="font-weight: 600;">
+                {{
+                (getCountdown(data?.endDate)?.days || 0) + ' : ' + (getCountdown(data?.endDate)?.hours || 0) + ' : ' +
+                (getCountdown(data?.endDate)?.minutes || 0) + ' : ' + (getCountdown(data?.endDate)?.seconds || 0)
+                }}
+              </p>
+              <p *ngIf="isFuture(todayDate, data?.startDate)" class="p-sm-4 countdown" style="font-weight: 600;">
+                {{
+                (getCountdown(data?.startDate)?.days || 0) + ' : ' + (getCountdown(data?.startDate)?.hours || 0) + ' : '
+                +
+                (getCountdown(data?.startDate)?.minutes || 0) + ' : ' + (getCountdown(data?.startDate)?.seconds || 0)
+                }}
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </ng-container>
+    <widget-pagination *ngIf="pagination?.length > perPage" [loaded]="((loadingChallenges$ | async) === false || null || undefined) && (challenges$ | async)?.length" (pageChanged)="onPageChange($event)" [perPage]="perPage"
+      [total]="pagination?.length"></widget-pagination>
+    <div *ngIf="(loadingChallenges$ | async) || (!(loadingChallenges$ | async) && !(challenges$ | async)?.length)"
+      class="widget-box">
+      <div id="noresult" class="py-4 mt-4 text-center">
+        <div *ngIf="loadingChallenges$ | async">
+          <div class="page-loader-indicator loader-bars">
+            <div class="loader-bar"></div>
+            <div class="loader-bar"></div>
+            <div class="loader-bar"></div>
+            <div class="loader-bar"></div>
+            <div class="loader-bar"></div>
+            <div class="loader-bar"></div>
+            <div class="loader-bar"></div>
+            <div class="loader-bar"></div>
+          </div>
+        </div>
+        <div *ngIf="!(loadingChallenges$ | async) && !(challenges$ | async)?.length">
+          <div class="notification-section animate-slide-down special-margin-bottom">
+            <div class="displayed-center mb-5">
+              <svg class="empty-fill" width="150">
+                <use xlink:href="#svg-trophy"></use>
+              </svg>
+            </div>
+            <p class="mb-2" style="font-size: larger; font-weight: 600;">{{'GET_READY' | translate}}</p>
+            <p style="font-weight: 500;">{{'BE_PART' | translate}}</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<svg style="display: none">
+  <symbol id="svg-artstation" viewBox="0 0 100 100" preserveAspectRatio="xMinYMin meet">
+    <path
+      d="M0,77.114l8.412,16.545c1.7,3.754,5.102,6.341,8.981,6.341h56.038l-11.62-22.886H0z M98.391,71.002L65.502,6.122C63.797,2.47,60.491,0,56.617,0H39.224l50.755,99.889l8.035-15.79c1.515-3.001,1.986-4.29,1.986-6.877C100,74.967,99.432,72.819,98.391,71.002z M31,16.217L8.315,60.799h45.276L31,16.217z" />
+  </symbol>
+</svg>
+
+<svg style="display: none">
+  <symbol id="svg-plus-small" viewBox="0 0 8 8" preserveAspectRatio="xMinYMin meet">
+    <path d="M8,5H5v3H3V5H0V3h3V0h2v3h3V5z" />
+  </symbol>
+</svg>
+<svg style="display: none">
+  <symbol id="svg-trophy" viewBox="0 0 20 20" preserveAspectRatio="xMinYMin meet">
+    <path
+      d="M19.968,4.031C19.941,5.666,19.579,11,15.99,11h-0.125c-0.426,2.357-2.111,2.999-5.858,2.999c-3.748,0-5.434-0.642-5.859-2.999H4.009c-3.588,0-3.951-5.333-3.977-6.969L0,2h2.028h1.98h0.015V0H15.99v2l0,0h1.981H20L19.968,4.031z M4.009,3.999L1.994,4c0,0,0.112,4.999,2.015,4.999V3.999z M13.993,2H6.02v7.6c0,2.385,0.741,2.399,3.987,2.399c3.245,0,3.986-0.014,3.986-2.399V2z M17.972,3.999H15.99v5C17.893,8.999,18.006,4,18.006,4L17.972,3.999z M11.005,15.999H13c2.206,0,3.993,1.789,3.993,4h-1.989h-0.006c0-1.104-0.896-2.001-1.998-2.001h-1.995H9.009H7.013c-1.102,0-1.996,0.896-1.996,2.001H4.996H3.02c0-2.211,1.788-4,3.993-4h1.996v-2.001h0.998h0.998V15.999z" />
+  </symbol>
+</svg>

@@ -1,0 +1,12 @@
+::ng-deep.swal2-html-container {
+  font-weight: 600 !important;
+}
+::ng-deep.swal2-popup {
+  border-radius: 12px !important;
+  font-family: Rajdhani, sans-serif !important;
+}
+::ng-deep.swal2-title {
+  font-weight: 800 !important;
+}
+
+

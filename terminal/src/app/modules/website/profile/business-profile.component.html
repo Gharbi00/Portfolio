@@ -1,0 +1,659 @@
+<ng-container *ngIf="!(navigating$ | async)">
+
+  <div class="position-relative mx-n4 mt-n4">
+    <div class="profile-wid-bg profile-setting-img">
+      <img src="assets/images/profile-bg.jpg" class="profile-wid-img" alt="">
+      <div class="overlay-content">
+        <div class="text-end p-3">
+          <div class="p-0 ms-auto rounded-circle profile-photo-edit">
+            <input id="profile-foreground-img-file-input" type="file" class="profile-foreground-img-file-input">
+            <label for="profile-foreground-img-file-input" class="profile-photo-edit btn btn-light">
+              <i class="ri-image-edit-line align-bottom me-1"></i>{{'MODULES.HR.MAIN.CHANGE_COVER' | translate }}
+            </label>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col-xxl-3">
+      <div *ngIf="pos$ | async as pos" class="card mt-n5">
+        <div class="card-body p-4">
+          <div class="text-center">
+            <div class="profile-user position-relative d-inline-block mx-auto mb-4">
+              <img *ngIf="pos?.picture?.baseUrl" [src]="pos?.picture?.baseUrl + '/' + pos?.picture?.path"
+                class="rounded-circle avatar-xl img-thumbnail user-profile-image shadow" alt="user-profile-image">
+              <div class="avatar-lg" *ngIf="!pos?.picture?.baseUrl"
+                class="avatar-title me-3 h-8 w-8 bg-soft-info text-danger rounded-circle shadow">
+                {{pos?.title?.charAt(0) || 'N'}}
+              </div>
+              <div (click)="upload()" class="avatar-xs p-0 rounded-circle profile-photo-edit">
+                <label for="profile-img-file-input" class="profile-photo-edit avatar-xs">
+                  <span class="avatar-title rounded-circle bg-light text-body shadow">
+                    <i class="ri-camera-fill"></i>
+                  </span>
+                </label>
+              </div>
+            </div>
+            <h5 class="fs-16 mb-1">{{pos?.title}}</h5>
+            <p class="text-muted mb-0">{{ pos?.subtitle?.length > 14 ? pos?.subtitle?.substr(0,14) + '...' :
+              pos?.subtitle
+              }}</p>
+          </div>
+        </div>
+      </div>
+      <div class="card">
+        <div class="card-body">
+          <div class="d-flex align-items-center mb-5">
+            <div class="flex-grow-1">
+              <h5 class="card-title mb-0">{{'MODULES.HR.MAIN.COMPLETE_YOUR_PROFILE' | translate }}</h5>
+            </div>
+            <div class="flex-shrink-0">
+              <a href="javascript:void(0);" class="badge bg-light text-primary fs-12"><i
+                  class="ri-edit-box-line align-bottom me-1"></i>{{'COMMON.EDIT' | translate }}</a>
+            </div>
+          </div>
+          <div class="progress animated-progess custom-progress progress-label">
+            <div class="progress-bar bg-danger" role="progressbar" style="width: 30%" aria-valuenow="30"
+              aria-valuemin="0" aria-valuemax="100">
+              <div class="label">30%</div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="card">
+        <div class="card-body">
+          <div class="d-flex align-items-center mb-4">
+            <div class="flex-grow-1">
+              <h5 class="card-title mb-0">{{'MODULES.HR.MAIN.PORTFOLIO' | translate }}</h5>
+            </div>
+            <div class="flex-shrink-0">
+              <div class="col-lg-12">
+                <div class="hstack gap-2 justify-content-end">
+                  <button type="button" [disabled]="isSocialButtonDisabled" (click)="editSocial()"
+                    class="btn btn-soft-info btn-sm shadow-none"><i class="ri-upload-2-fill me-1 align-bottom"></i>
+                    {{'COMMON.SAVE' | translate }}</button>
+                </div>
+              </div>
+            </div>
+          </div>
+          <form [formGroup]="socialForm">
+            <div class="mb-3 d-flex">
+              <ng-container formGroupName="facebook">
+                <div class="avatar-xs d-block flex-shrink-0 me-3">
+                  <span style="background-color: #4267B2 !important"
+                    class="avatar-title rounded-circle fs-16 bg-dark text-light shadow">
+                    <i style="color: #ffff !important;" class="ri-facebook-circle-fill"></i>
+                  </span>
+                </div>
+                <input class="form-control" [placeholder]="'Facebook'" formControlName="value">
+              </ng-container>
+            </div>
+            <div class="mb-3 d-flex">
+              <ng-container formGroupName="instagram">
+                <div class="avatar-xs d-block flex-shrink-0 me-3">
+                  <span style="background-color: #C13584 !important"
+                    class="avatar-title rounded-circle fs-16 bg-dark text-light shadow">
+                    <i style="color: #ffff !important;" class="ri-instagram-fill"></i>
+                  </span>
+                </div>
+                <input class="form-control" [placeholder]="'Instagram'" formControlName="value">
+              </ng-container>
+            </div>
+            <div class="mb-3 d-flex">
+              <ng-container formGroupName="twitter">
+                <div class="avatar-xs d-block flex-shrink-0 me-3">
+                  <span style="background-color: #00acee !important"
+                    class="avatar-title rounded-circle fs-16 bg-dark text-light shadow">
+                    <i style="color: #ffff !important;" class="ri-twitter-fill"></i>
+                  </span>
+                </div>
+                <input class="form-control" [placeholder]="'Twitter'" formControlName="value">
+              </ng-container>
+            </div>
+            <div class="mb-3 d-flex">
+              <ng-container formGroupName="youtube">
+                <div class="avatar-xs d-block flex-shrink-0 me-3">
+                  <span style="background-color: #c4302b !important"
+                    class="avatar-title rounded-circle fs-16 bg-dark text-light shadow">
+                    <i style="color: #ffff !important;" class="ri-youtube-fill"></i>
+                  </span>
+                </div>
+                <input class="form-control" [placeholder]="'Youtube'" formControlName="value">
+              </ng-container>
+            </div>
+            <div class="mb-3 d-flex">
+              <ng-container formGroupName="linkedin">
+                <div class="avatar-xs d-block flex-shrink-0 me-3">
+                  <span style="background-color: #0e76a8 !important"
+                    class="avatar-title rounded-circle fs-16 bg-dark text-light shadow">
+                    <i style="color: #ffff !important;" class="ri-linkedin-fill"></i>
+                  </span>
+                </div>
+                <input class="form-control" [placeholder]="'Linkedin'" formControlName="value">
+              </ng-container>
+            </div>
+            <div class="mb-3 d-flex">
+              <ng-container formGroupName="pinterest">
+                <div class="avatar-xs d-block flex-shrink-0 me-3">
+                  <span style="background-color: #c8232c !important"
+                    class="avatar-title rounded-circle fs-16 bg-dark text-light shadow">
+                    <i style="color: #ffff !important;" class="ri-pinterest-fill"></i>
+                  </span>
+                </div>
+                <input class="form-control" [placeholder]="'pinterest'" formControlName="value">
+              </ng-container>
+            </div>
+          </form>
+        </div>
+      </div>
+      <div class="card">
+        <div class="card-body">
+          <div class="d-flex align-items-center mb-4">
+            <div class="flex-grow-1">
+              <h5 class="card-title mb-0">{{'MODULES.SYSTEM.CHAT' | translate }}</h5>
+            </div>
+            <div class="flex-shrink-0">
+              <div class="col-lg-12">
+                <div class="hstack gap-2 justify-content-end">
+                  <button type="button" [disabled]="isChatButtonDisabled || chatContactForm.invalid"
+                    (click)="editSocial()" class="btn btn-soft-info btn-sm shadow-none"><i
+                      class="ri-upload-2-fill me-1 align-bottom"></i>
+                    {{'COMMON.SAVE' | translate }}</button>
+                </div>
+              </div>
+            </div>
+          </div>
+          <form [formGroup]="chatContactForm">
+            <div class="mb-3 d-flex">
+              <ng-container formGroupName="messenger">
+                <div class="avatar-xs d-block flex-shrink-0 me-3">
+                  <span style="background-color: #0099FF !important"
+                    class="avatar-title rounded-circle fs-16 bg-dark text-light shadow">
+                    <i style="color: #ffff !important;" class="ri-messenger-fill"></i>
+                  </span>
+                </div>
+                <input class="form-control" [placeholder]="'Messenger'" formControlName="value">
+              </ng-container>
+            </div>
+            <div class="mb-3 d-flex">
+              <ng-container formGroupName="whatsapp">
+                <div class="avatar-xs d-block flex-shrink-0 me-3">
+                  <span style="background-color: #075E54 !important"
+                    class="avatar-title rounded-circle fs-16 bg-dark text-light shadow">
+                    <i style="color: #ffff !important;" class="ri-whatsapp-fill"></i>
+                  </span>
+                </div>
+                <input class="form-control" [placeholder]="'Whatsapp'" formControlName="value">
+              </ng-container>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+    <div class="col-xxl-9">
+      <div class="card mt-xxl-n5">
+        <div class="card-header">
+          <ul ngbNav #customNav="ngbNav" [activeId]="1"
+            class="nav nav-tabs-custom rounded card-header-tabs border-bottom-0" role="tablist">
+            <li [ngbNavItem]="1" class="nav-item">
+              <a ngbNavLink class="nav-link" data-bs-toggle="tab" role="tab">
+                <i class="fas fa-home"></i>{{'MODULES.WEBSITE.INFORMATIONS' | translate }}
+              </a>
+              <ng-template ngbNavContent>
+                <form [formGroup]="infoForm">
+                  <div class="row">
+                    <div class="col-lg-6">
+                      <div class="mb-3">
+                        <label for="firstnameInput" class="form-label">{{'COMMON.TITLE' | translate }}</label>
+                        <input formControlName="title" type="text" class="form-control" id="firstnameInput"
+                          placeholder="{{'PLACEHOLDER.ENTER_TITLE' | translate }}" value="Dave">
+                      </div>
+                    </div>
+                    <div class="col-lg-6">
+                      <div class="mb-3">
+                        <label for="lastnameInput" class="form-label">{{'MODULES.WEBSITE.SUBTITLE' | translate
+                          }}</label>
+                        <input formControlName="subtitle" type="text" class="form-control" id="lastnameInput"
+                          placeholder="{{'PLACEHOLDER.ENTER_SUBTITLE' | translate }}" value="Adame">
+                      </div>
+                    </div>
+                  </div>
+                  <div class="mb-7 mb-sm-6">
+                    <label for="exampleFormControlTextarea" class="form-label">{{'COMMON.DESCRIPTION' | translate
+                      }}</label>
+                    <quill-editor class="custom-quill-editor" formControlName="description"></quill-editor>
+                  </div>
+                  <div class="row">
+                    <div class="col-lg-6">
+                      <div class="mb-3 mb-lg-0">
+                        <label for="colorPicker" class="form-label">{{'MODULES.HR.MAIN.COLOR' | translate
+                          }}</label>
+                        <input type="color" class="form-control form-control-color w-100" id="colorPicker"
+                          [formControlName]="'brandColor'">
+                      </div>
+                    </div>
+                    <div class="col-lg-6">
+                      <div class="mb-3">
+                        <label class="form-label" for="product-tags-input">{{'COMMON.TAGS' | translate }}
+                          {{'MODULES.INVENTORY.PRESS_ENTER' | translate }}</label>
+                        <ng-select [items]="[]" class="no-arrow-select" [addTag]="true" [isOpen]="false" [multiple]="true" [selectOnTab]="true"
+                          formControlName="tags">
+                        </ng-select>
+                      </div>
+                    </div>
+                    <div class="col-lg-6">
+                      <div class="mb-3">
+                        <label for="choices-status-input" class="form-label">{{ 'MODULES.ECOMMERCE.MAIN.PAYMENT_METHODS'
+                          | translate }}</label>
+                        <ng-select placeholder="{{'PLACEHOLDER.ENTER_YOUR_PAYMENT_METHODS' | translate }}"
+                          [items]="paymentMethods" [multiple]="true" bindLabel="name" bindValue="id"
+                          [formControlName]="'paymentMethods'">
+                          <ng-template ng-label-tmp let-item="item" let-clear="clear">
+                            <span class="ng-value-label">
+                              {{item.name?.split('_').join(' ') | titlecase}}
+                            </span>
+                            <span class="ng-value-icon right" (click)="clear(item)" aria-hidden="true">×</span>
+                          </ng-template>
+                          <ng-template ng-option-tmp let-item="item">
+                            <div class="d-flex align-items-center">
+                              <img class="wh" *ngIf="item?.images?.svg?.default?.baseUrl"
+                                [src]="item?.images?.svg?.default?.baseUrl + '/' + item?.images?.svg?.default?.path">
+                              <div class="ms-3">
+                                {{item.name?.split('_').join(' ') | titlecase}}
+                              </div>
+                            </div>
+                          </ng-template>
+                        </ng-select>
+                      </div>
+                    </div>
+                    <div class="col-lg-6">
+                      <div class="mb-3">
+                        <label for="choices-status-input"
+                          class="form-label">{{'MENUITEMS.CUSTOMERENGAGEMENT.LIST.CURRENCY' | translate }}</label>
+                        <ng-select
+                          [typeahead]="currencySearchInput$"
+                          [virtualScroll]="true"
+                          placeholder="{{'PLACEHOLDER.ENTER_YOUR_CURRENCY' | translate }}" [items]="currencies"
+                          [multiple]="true" [formControlName]="'currencies'">
+                          <ng-template ng-label-tmp let-item="item" let-clear="clear">
+                            <span class="ng-value-label">
+                              {{item.name?.split('_').join(' ') | titlecase}}
+                            </span>
+                            <span class="ng-value-icon right" (click)="clear(item)" aria-hidden="true">×</span>
+                          </ng-template>
+                          <ng-template ng-option-tmp let-item="item">
+                            {{item?.name?.split('_').join(' ') | titlecase}}
+                          </ng-template>
+                        </ng-select>
+                      </div>
+                    </div>
+                    <div class="col-lg-6">
+                      <div class="mb-3">
+                        <label for="choices-status-input" class="form-label">{{'COMMON.LANGUAGE' | translate }}</label>
+                        <ng-select [hideSelected]="true" [virtualScroll]="true" (scrollToEnd)="loadMoreLanguages()"
+                          placeholder="{{'PLACEHOLDER.ENTER_YOUR_LANGUAGE' | translate }}" [items]="languages$ | async"
+                          [multiple]="true" [formControlName]="'languages'">
+                          <ng-template ng-label-tmp let-item="item" let-clear="clear">
+                            <span class="ng-value-label">
+                              {{item.name?.split('_').join(' ') | titlecase}}
+                            </span>
+                            <span class="ng-value-icon right" (click)="clear(item)" aria-hidden="true">×</span>
+                          </ng-template>
+                          <ng-template ng-option-tmp let-item="item">
+                            {{item?.name?.split('_').join(' ') | titlecase}}
+                          </ng-template>
+                        </ng-select>
+                      </div>
+                    </div>
+                    <div class="col-lg-12">
+                      <div class="hstack gap-2 justify-content-end">
+                        <button type="button" (click)="save()" [disabled]="isButtonDisabled || infoForm.invalid"
+                          class="btn btn-primary">{{'COMMON.SAVE' | translate }}</button>
+                      </div>
+                    </div>
+                  </div>
+                </form>
+              </ng-template>
+            </li>
+            <li [ngbNavItem]="2" class="nav-item">
+              <a ngbNavLink class="nav-link" data-bs-toggle="tab" role="tab">
+                <i class="far fa-user"></i>
+                {{'COMMON.ADDRESS' | translate }}
+              </a>
+              <ng-template ngbNavContent>
+                <form [formGroup]="addressForm">
+                  <div class="row g-2 mb-3">
+                    <div class="col-lg-6">
+                      <label for="E+emails" class="form-label">{{ 'COMMON.EMAILS' | translate }}</label>
+                      <ng-select class="no-arrow-select" [items]="[]" class="no-arrow-select" [addTag]="true" [isOpen]="false" [multiple]="true" [selectOnTab]="true"
+                        formControlName="email">
+                      </ng-select>
+                    </div>
+                    <div class="col-lg-6">
+                      <label for="newpasswordInput" class="form-label">{{ 'COMMON.PHONES' | translate }}</label>
+                      <ng-select [items]="[]" class="no-arrow-select" [addTag]="true" [isOpen]="false" [multiple]="true" [selectOnTab]="true"
+                        formControlName="phone">
+                      </ng-select>
+                    </div>
+                  </div>
+                  <div class="col-lg-6 mb-3">
+                    <label class="form-label">{{'COMMON.WEBSITE' | translate }}</label>
+                    <input formControlName="website" type="text" class="form-control" id="confirmpasswordInput"
+                      placeholder="{{'PLACEHOLDER.ENTER_YOUR_WEBSITE' | translate }}">
+                  </div>
+                  <div class="d-flex flex-wrap gap-3 mt-2 mb-4">
+                    <div (click)="onSelectShip(i)" *ngFor="let address of pos?.locations; let i = index"
+                      class="col-lg-3 gy-3">
+                      <div class="form-check card-radio">
+                        <input [checked]="selectedLocIndex === i" id="shippingAddress{{i}}" name="shippingAddress"
+                          type="radio" class="form-check-input">
+                        <label class="form-check-label" for="shippingAddress01">
+                          <span class="mb-4 fw-semibold d-block text-muted text-uppercase">{{'COMMON.LOCATION' |
+                            translate }} Address</span>
+                          <div class="fs-14 mb-2 d-block">
+                            {{ address?.country?.name }} {{ address?.state?.name }}
+                          </div>
+                          <div>{{ address?.city }} </div>
+                          <div class="text-muted fw-normal text-wrap mb-1 d-block">{{address?.address}}</div>
+                          <div *ngIf="address?.phone?.number" class="text-muted fw-normal d-block">
+                            {{'+' + (address?.phone?.countryCode || '216')}} {{address?.phone?.number}}
+                          </div>
+                        </label>
+                      </div>
+                      <div class="d-flex flex-wrap p-2 py-1 bg-light rounded-bottom border mt-n1">
+                        <div>
+                          <a href="javascript:void(0);" class="d-block text-body p-1 px-2" data-bs-toggle="modal"
+                            data-bs-target="#addAddressModal" (click)="openLocationModal(locationModal, address, i)"><i
+                              class="ri-pencil-fill text-muted align-bottom me-1"></i>{{ 'COMMON.EDIT' | translate
+                            }}</a>
+                        </div>
+                        <div>
+                          <a href="javascript:void(0);" class="d-block text-body p-1 px-2" data-bs-toggle="modal"
+                            data-bs-target="#removeItemModal" (click)="openDeleteModal(deleteModel, i)">
+                            <i class="ri-delete-bin-fill text-muted align-bottom me-1"></i>
+                            {{'COMMON.REMOVE' | translate }}
+                          </a>
+                        </div>
+                      </div>
+                    </div>
+                    <div (click)="openLocationModal(locationModal, null)" [ngClass]="{'h-10': !pos?.locations?.length}"
+                      class="col-lg-3 mb-3 col-4 border rounded overflow-hidden cursor-pointer d-flex align-items-center justify-content-center">
+                      <div class="fs-3 fw-bold">
+                        <i class="ri-add-fill"></i>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="mt-4 text-end">
+                    <button type="button" (click)="saveAddress()"
+                      [disabled]="isAddressButtonDisabled || addressForm.invalid"
+                      class="btn btn-success">{{'COMMON.SAVE' | translate }}</button>
+                  </div>
+                </form>
+              </ng-template>
+            </li>
+
+            <li [ngbNavItem]="3" class="nav-item">
+              <a ngbNavLink class="nav-link" data-bs-toggle="tab" role="tab">
+                <i class="far fa-user"></i>{{'MODULES.WEBSITE.OPENING_HOURS' | translate }}
+              </a>
+              <ng-template ngbNavContent>
+                <form [formGroup]="addressForm">
+                  <ng-container formGroupName="openingHours">
+                    <div class="col-lg-5 mb-3">
+                      <label for="E+emails" class="form-label">{{'COMMON.STATUS' | translate }}</label>
+                      <ng-select placeholder="{{'PLACEHOLDER.ENTER_STATUS' | translate }}" formControlName="status"
+                        [items]="openingStatus" [multiple]="false">
+                        <ng-template ng-label-tmp let-item="item" let-clear="clear">
+                          <span class="ng-value-label">
+                            {{
+                            (item === 'ALWAYS_OPEN' ? 'SHARED.ALWAYS_OPEN':
+                            item === 'NOT_AVAILABLE' ? 'SHARED.NOT_AVAILABLE':
+                            item === 'SELECTED_HOURS' ? 'SHARED.SELECTED_HOURS':
+                            item === 'PERMANENTLY_CLOSED' ? 'SHARED.PERMANENTLY_CLOSED': '') | translate
+                            }}
+                          </span>
+                        </ng-template>
+                        <ng-template ng-option-tmp let-item="item">
+                          <span class="ng-value-label">
+                            {{
+                            (item === 'ALWAYS_OPEN' ? 'SHARED.ALWAYS_OPEN':
+                            item === 'NOT_AVAILABLE' ? 'SHARED.NOT_AVAILABLE':
+                            item === 'SELECTED_HOURS' ? 'SHARED.SELECTED_HOURS':
+                            item === 'PERMANENTLY_CLOSED' ? 'SHARED.PERMANENTLY_CLOSED': '') | translate
+                            }}
+                          </span>
+                        </ng-template>
+                      </ng-select>
+                    </div>
+                    <div class="row">
+                      <ng-container formArrayName="hours">
+                        <div *ngFor="let hour of hours['controls']; let i=index; let last = last" [formGroupName]="i">
+                          <div class="row mb-3">
+                            <div class="col-lg-4">
+                              <label class="form-label">{{'MODULES.WEBSITE.DAY' | translate }}</label>
+                              <ng-select placeholder="{{'PLACEHOLDER.ENTER_DAY' | translate }}" formControlName="day"
+                                [items]="filteredDays" [multiple]="false">
+                                <ng-template ng-label-tmp let-item="item" let-clear="clear">
+                                  <span class="ng-value-label">
+                                    {{
+                                    (item === 'MONDAY' ? 'SHARED.MONDAY':
+                                    item === 'TUESDAY' ? 'SHARED.TUESDAY':
+                                    item === 'WEDNESDAY' ? 'SHARED.WEDNESDAY':
+                                    item === 'THURSDAY' ? 'SHARED.THURSDAY':
+                                    item === 'FRIDAY' ? 'SHARED.FRIDAY':
+                                    item === 'SATURDAY' ? 'SHARED.SATURDAY':
+                                    item === 'SUNDAY' ? 'SHARED.SUNDAY': '') | translate
+                                    }}
+                                  </span>
+                                </ng-template>
+                                <ng-template ng-option-tmp let-item="item">
+                                  <span class="ng-value-label">
+                                    {{
+                                    (item === 'MONDAY' ? 'SHARED.MONDAY':
+                                    item === 'TUESDAY' ? 'SHARED.TUESDAY':
+                                    item === 'WEDNESDAY' ? 'SHARED.WEDNESDAY':
+                                    item === 'THURSDAY' ? 'SHARED.THURSDAY':
+                                    item === 'FRIDAY' ? 'SHARED.FRIDAY':
+                                    item === 'SATURDAY' ? 'SHARED.SATURDAY':
+                                    item === 'SUNDAY' ? 'SHARED.SUNDAY': '') | translate
+                                    }}
+                                  </span>
+                                </ng-template>
+                              </ng-select>
+                            </div>
+                            <div class="col-lg-4">
+                              <label for="email_id-field" class="align-items-center d-flex form-label me-2">{{
+                                'COMMON.FROM' | translate }}</label>
+                              <div class="input-group">
+                                <input [(ngModel)]="hour.value.from" [ngxMatTimepicker]="pickerDTFrom"
+                                  class="form-control" name="pickupTimeStart" format="24" placeholder="00:00"
+                                  [ngModelOptions]="{standalone: true}" readonly />
+                                <div (click)="pickerDTFrom.open()" class="input-group-append cursor-pointer">
+                                  <span class="input-group-text"><i class="ri-time-fill"></i></span>
+                                </div>
+                              </div>
+                              <ngx-mat-timepicker (timeSet)="onChangeTime($event, i, 'from')"
+                                [ngModelOptions]="{standalone: true}" #pickerDTFrom></ngx-mat-timepicker>
+                            </div>
+                            <div class="col-lg-4">
+                              <label for="email_id-field"
+                                class="align-items-center d-flex form-label me-2">{{'COMMON.TO' | translate }}</label>
+                              <div class="input-group">
+                                <input class="form-control" matInput name="pickupTimeEnd" format="24"
+                                  [(ngModel)]="hour.value.to" [ngxMatTimepicker]="pickerDTTo" placeholder="00:00"
+                                  [ngModelOptions]="{standalone: true}" readonly />
+                                <div (click)="pickerDTTo.open()" class="input-group-append cursor-pointer">
+                                  <span class="input-group-text"><i class="ri-time-fill"></i></span>
+                                </div>
+                              </div>
+                              <ngx-mat-timepicker (timeSet)="onChangeTime($event, i, 'to')"
+                                #pickerDTTo></ngx-mat-timepicker>
+                            </div>
+                          </div>
+                          <div class="hstack justify-content-end gap-2">
+                            <button type="button" (click)="deleteHour(i)" class="btn btn-sm btn-danger"><i
+                                class="ri-delete-bin-fill align-bottom"></i>
+                              {{'COMMON.DELETE' | translate }}</button>
+                            <button *ngIf="last && hours?.value?.length < 7" (click)="addHour()" type="button"
+                              class="btn btn-primary btn-sm add-btn" id="create-btn"><i
+                                class="ri-add-line align-bottom me-1"></i>{{'MODULES.WEBSITE.DAY' | translate
+                              }}</button>
+                          </div>
+                        </div>
+                      </ng-container>
+                    </div>
+                  </ng-container>
+                  <div class="mt-4 text-end">
+                    <button type="button" (click)="saveAddress()"
+                      [disabled]="isAddressButtonDisabled || addressForm.invalid"
+                      class="btn btn-success">{{'COMMON.SAVE' | translate }}</button>
+                  </div>
+                </form>
+              </ng-template>
+            </li>
+          </ul>
+        </div>
+        <div class="card-body p-4">
+          <div class="tab-content">
+            <div [ngbNavOutlet]="customNav"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <ng-template #deleteModel let-modal>
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" id="btn-close"
+          (click)="modal.dismiss('Cross click')"></button>
+      </div>
+      <div class="modal-body">
+        <div class="mt-2 text-center">
+          <lord-icon src="https://cdn.lordicon.com/gsqxdxog.json" trigger="loop"
+            colors="primary:#405189,secondary:#f06548" style="width:90px;height:90px"></lord-icon>
+          <div class="mt-4 pt-2 fs-15 mx-4 mx-sm-5">
+            <h4>{{'MENUITEMS.CUSTOMERENGAGEMENT.CAMPAIGN.YOU_ARE_ABOUT_TO_DELETE_A_SHIPPING_ADDRESS' | translate }} ?
+            </h4>
+            <p class="text-muted mx-4 mb-0">
+              {{'MENUITEMS.CUSTOMERENGAGEMENT.CAMPAIGN.DELETING_YOUR_SHIPPING_ADDRESS_DATA_BASE_REMOVE' | translate }}
+            </p>
+          </div>
+        </div>
+        <div class="d-flex gap-2 justify-content-center mt-4 mb-2">
+          <button class="btn btn-link link-success fw-medium text-decoration-none" data-bs-dismiss="modal"
+            (click)="modal.close('Close click')" id="deleteRecord-close"><i
+              class="ri-close-line me-1 align-middle"></i>{{'COMMON.CLOSE' | translate }}</button>
+          <button type="button" class="btn w-sm btn-danger " id="delete-product" (click)="deleteShippingAddress()"
+            (click)="modal.close('Close click')">{{'COMMON.YES_DELETE_IT' | translate }}</button>
+        </div>
+      </div>
+    </div>
+  </ng-template>
+
+  <ng-template #locationModal role="document" let-modal>
+    <div class="modal-header bg-light p-3">
+      <h5 class="modal-title" id="exampleModalLabel">{{selectedAddress ? 'Edit location address' : 'Add location
+        address'}}</h5>
+      <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" id="close-modal"
+        (click)="modal.dismiss('Cross click')"></button>
+    </div>
+    <div class="modal-body">
+      <ng-container *ngIf="step === 1">
+        <agm-map [zoom]="4" [scrollwheel]="false" [latitude]="position.lat ? position.lat : 33.886917"
+          [longitude]="position.lng ? position.lng : 9.537499" (mapClick)="pickAddress($event)">
+          <agm-marker *ngIf="position" [latitude]="position.lat" [longitude]="position.lng">
+          </agm-marker>
+        </agm-map>
+        <div class="d-flex justify-content-center mt-3">
+          <button type="button" [disabled]="!position.lng" (click)="next()" class="btn btn-primary"
+            id="add-btn">{{'MODULES.WEBSITE.NEXT' | translate }}</button>
+        </div>
+      </ng-container>
+      <div *ngIf="step === 2">
+        <form [formGroup]="locationForm">
+          <div class="row g-3">
+            <div class="mb-3">
+              <label for="billinginfo-address" class="form-label">{{'COMMON.ADDRESS' | translate }} line*</label>
+              <textarea required formControlName="address" class="form-control" id="billinginfo-address"
+                placeholder="{{'PLACEHOLDER.ENTER_ADDRESS' | translate }}" rows="3"></textarea>
+            </div>
+            <div class="row">
+              <div class="col-sm-6">
+                <div class="mb-3">
+                  <label for="choices-status-input" class="form-label">{{ 'COMMON.COUNTRIES' | translate }}</label>
+                  <ng-select (change)="onChangeCountry($event)" [hideSelected]="true" [virtualScroll]="true"
+                    placeholder="{{'PLACEHOLDER.ENTER_COUNTRIES' | translate }}" [typeahead]="countrySearchInput$"
+                    [items]="countries" [multiple]="false" [formControlName]="'country'">
+                    <ng-template ng-label-tmp let-item="item" let-clear="clear">
+                      <span class="me-1" *ngIf="item?.iconFlag">{{item?.iconFlag}}</span>
+                      <span>{{item?.name?.split('_').join(' ') | titlecase}}</span>
+                      <span class="ng-value-icon right" (click)="clear(item)" aria-hidden="true">×</span>
+                    </ng-template>
+                    <ng-template ng-option-tmp let-item="item">
+                      <span class="me-1" *ngIf="item?.iconFlag">{{item?.iconFlag}}</span>
+                      <span>{{item?.name?.split('_').join(' ') | titlecase}}</span>
+                    </ng-template>
+                  </ng-select>
+                </div>
+              </div>
+
+              <div class="col-sm-6">
+                <div class="mb-3">
+                  <label for="choices-status-input" class="form-label">{{ 'COMMON.STATES' | translate }}</label>
+                  <ng-select [items]="states" [multiple]="false" [typeahead]="stateSearchInput$" [hideSelected]="true"
+                    [virtualScroll]="true" [formControlName]="'state'"
+                    placeholder="{{'PLACEHOLDER.ENTER_STATE' | translate }}" (scrollToEnd)="loadMoreStates()">
+                    <ng-template ng-label-tmp let-item="item" let-clear="clear">
+                      <span>{{item?.name?.split('_').join(' ') | titlecase}}</span>
+                      <span class="ng-value-icon right" (click)="clear(item)" aria-hidden="true">×</span>
+                    </ng-template>
+                    <ng-template ng-option-tmp let-item="item">
+                      <span>{{item?.name?.split('_').join(' ') | titlecase}}</span>
+                    </ng-template>
+                  </ng-select>
+                </div>
+              </div>
+
+              <div class="mb-3 col-sm-6">
+                <label for="zip" class="form-label">{{'COMMON.CITY' | translate }}*</label>
+                <input required formControlName="city" type="text" class="form-control" id="zip"
+                  placeholder="{{'PLACEHOLDER.ENTER_ZIP_CODE' | translate }}">
+              </div>
+              <div class="mb-3 col-sm-6">
+                <div class="mb-3">
+                  <label for="zip" class="form-label">{{'COMMON.ZIP_CODE' | translate }}*</label>
+                  <input required formControlName="postCode" type="text" class="form-control" id="zip"
+                    placeholder="{{'PLACEHOLDER.ENTER_ZIP_CODE' | translate }}">
+                </div>
+              </div>
+            </div>
+          </div>
+        </form>
+      </div>
+    </div>
+    <div *ngIf="step === 2" class="modal-footer">
+      <div class="hstack gap-2 justify-content-end">
+        <button type="button" class="btn btn-light" data-bs-dismiss="modal"
+          (click)="modal.close('Close click')">{{'COMMON.CLOSE' | translate }}</button>
+        <button type="button" [disabled]="isLocationButtonDisabled || locationForm.invalid" (click)="saveLocation()"
+          class="btn btn-success" id="add-btn">{{'COMMON.SAVE' | translate }}</button>
+      </div>
+    </div>
+  </ng-template>
+
+</ng-container>
+<div *ngIf="navigating$ | async" class="vh-100 py-4 text-center" fxLayout="column" fxLayoutAlign="center center"
+  fxLayoutGap="1rem">
+  <div>
+    <lord-icon trigger="loop" style="width:72px;height:72px"
+      [colors]="'primary:' + primaryColor + ',secondary:' + secondaryColor"
+      src="https://cdn.lordicon.com/msoeawqm.json">
+    </lord-icon>
+  </div>
+  <div class="mt-4">
+    <h5>{{'COMMON.LOADING' | translate }}</h5>
+  </div>
+</div>

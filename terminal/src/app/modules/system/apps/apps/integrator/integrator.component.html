@@ -1,0 +1,253 @@
+<ng-container *ngIf="!(navigating$ | async)">
+
+  <div class="position-relative mx-n4 mt-n4">
+    <div class="profile-wid-bg profile-setting-img">
+      <img src="assets/images/profile-bg.jpg" class="profile-wid-img" alt="">
+      <div class="overlay-content">
+        <div class="text-end p-3">
+          <div class="p-0 ms-auto rounded-circle profile-photo-edit">
+            <input id="profile-foreground-img-file-input" type="file" class="profile-foreground-img-file-input">
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-xxl-3">
+      <div class="card mt-n5">
+        <div class="card-body p-4">
+          <div *ngIf="plugin$ | async as plugin" class="text-center">
+            <div class="profile-user position-relative d-inline-block mx-auto mb-4">
+              <div class="avatar-lg mb-3">
+                <div class="avatar-title bg-soft-success fs-24 text-success">
+                  <i [ngClass]="plugin?.icon"></i>
+                </div>
+              </div>
+            </div>
+            <h5 class="fs-16 mb-1">{{plugin?.name}}</h5>
+            <p class="text-muted mb-0">{{plugin?.description}}</p>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="col-xxl-9">
+      <div class="card mt-xxl-n5">
+        <div class="card-header">
+          <ul ngbNav #customNav="ngbNav" [activeId]="1" class="nav nav-tabs-custom rounded card-header-tabs border-bottom-0" role="tablist">
+            <li [ngbNavItem]="1" class="nav-item">
+              <a ngbNavLink class="nav-link" data-bs-toggle="tab" role="tab">
+                <i class="far fa-envelope"></i>{{'MODULES.SYSTEM.SETTINGS' | translate }}
+              </a>
+              <ng-template ngbNavContent>
+                <div class="mb-3 col-lg-12">
+                  <div for="firstnameInput" class="card-title">{{'MODULES.SYSTEM.INTEGRATOR_PREFERENCES' | translate }}</div>
+                  <div class="text-muted">{{'MODULES.SYSTEM.YOU_CAN_ADAPT_YOUR_GOOGLE_TAG_WITH_THESE_PREFERENCES' | translate }}</div>
+                </div>
+                <div class="col-lg-12 d-flex justify-content-between mb-3">
+                  <div>
+                    <div for="firstnameInput" class="">{{'MODULES.SYSTEM.ENABLE_INTEGRATOR' | translate }}</div>
+                    <div class="text-muted">{{'MODULES.SYSTEM.ALLOW_YOUR_WEBSITE_TO_PUSH_EVENTS_TO_GOOGLE_TAG' | translate }}</div>
+                  </div>
+                  <div class="flex-shrink-0 d-flex fs-18 gap-1">
+                    <div class="form-check form-switch">
+                      <input [checked]="erpIntegration?.active" (change)="onSettingsChange($event)" class="form-check-input" type="checkbox" role="switch" id="flexSwitchCheckDefault">
+                    </div>
+                  </div>
+                </div>
+              </ng-template>
+            </li>
+            <li [ngbNavItem]="2" class="nav-item">
+              <a ngbNavLink class="nav-link" data-bs-toggle="tab" role="tab">
+                <i class="far fa-envelope"></i>{{'MODULES.SYSTEM.EVENTS' | translate }}
+              </a>
+              <ng-template ngbNavContent>
+                <div class="col-lg-12 d-flex justify-content-between mb-3">
+                  <div>
+                    <div for="firstnameInput">{{'MODULES.SYSTEM.PRODUCTS' | translate }}</div>
+                    <div class="text-muted">{{'MODULES.SYSTEM.GET_PRODUCTS_UPDATES' | translate }}.</div>
+                  </div>
+                  <div class="flex-shrink-0 d-flex fs-18 gap-1">
+                    <div class="form-check form-switch">
+                      <input [checked]="erpIntegration?.events[0]?.active" (change)="onChange($event?.target?.checked,'PRODUCTS')" class="form-check-input" type="checkbox" role="switch"
+                        id="flexSwitchCheckDefault">
+                    </div>
+                  </div>
+                </div>
+                <div class="col-lg-12 d-flex justify-content-between mb-3">
+                  <div>
+                    <div for="firstnameInput">{{'MODULES.HR.MAIN.SERVICES' | translate }}</div>
+                    <div class="text-muted">{{'MODULES.SYSTEM.GET_SERVICES_UPDATES' | translate }}.</div>
+                  </div>
+                  <div class="flex-shrink-0 d-flex fs-18 gap-1">
+                    <div class="form-check form-switch">
+                      <input [checked]="erpIntegration?.events[1]?.active" (change)="onChange($event?.target?.checked,'SERVICES')" class="form-check-input" type="checkbox" role="switch"
+                        id="flexSwitchCheckDefault">
+                    </div>
+                  </div>
+                </div>
+                <div class="col-lg-12 d-flex justify-content-between mb-3">
+                  <div>
+                    <div for="firstnameInput">{{'MODULES.SYSTEM.EQUIPMENTS' | translate }}</div>
+                    <div class="text-muted">{{'MODULES.SYSTEM.GET_EQUIPMENTS_REQUESTS' | translate }}.</div>
+                  </div>
+                  <div class="flex-shrink-0 d-flex fs-18 gap-1">
+                    <div class="form-check form-switch">
+                      <input [checked]="erpIntegration?.events[2]?.active" (change)="onChange($event?.target?.checked,'EQUIPMENTS')" class="form-check-input" type="checkbox" role="switch"
+                        id="flexSwitchCheckDefault">
+                    </div>
+                  </div>
+                </div>
+                <div class="col-lg-12 d-flex justify-content-between mb-3">
+                  <div>
+                    <div for="firstnameInput">{{'MENUITEMS.CUSTOMERENGAGEMENT.LIST.CUSTOMERS' | translate }}</div>
+                    <div class="text-muted">{{'MODULES.SYSTEM.GET_CUSTOMERS_REQUESTS' | translate }}.</div>
+                  </div>
+                  <div class="flex-shrink-0 d-flex fs-18 gap-1">
+                    <div class="form-check form-switch">
+                      <input [checked]="erpIntegration?.events[3]?.active" (change)="onChange($event?.target?.checked,'CUSTOMERS')" class="form-check-input" type="checkbox" role="switch"
+                        id="flexSwitchCheckDefault">
+                    </div>
+                  </div>
+                </div>
+                <div class="col-lg-12 d-flex justify-content-between mb-3">
+                  <div>
+                    <div for="firstnameInput">{{'MODULES.SYSTEM.CONTACTS' | translate }}</div>
+                    <div class="text-muted">{{'MODULES.SYSTEM.GET_CONTACTS_EVENT' | translate }}.</div>
+                  </div>
+                  <div class="flex-shrink-0 d-flex fs-18 gap-1">
+                    <div class="form-check form-switch">
+                      <input [checked]="erpIntegration?.events[4]?.active" (change)="onChange($event?.target?.checked,'CONTACTS')" class="form-check-input" type="checkbox" role="switch"
+                        id="flexSwitchCheckDefault">
+                    </div>
+                  </div>
+                </div>
+                <div class="col-lg-12 d-flex justify-content-between mb-3">
+                  <div>
+                    <div for="firstnameInput">{{'MODULES.SYSTEM.SUPPLIERS' | translate }}</div>
+                    <div class="text-muted">{{'MODULES.SYSTEM.GET_SUPPLIERS_UPDATES' | translate }}.</div>
+                  </div>
+                  <div class="flex-shrink-0 d-flex fs-18 gap-1">
+                    <div class="form-check form-switch">
+                      <input [checked]="erpIntegration?.events[5]?.active" (change)="onChange($event?.target?.checked,'SUPPLIERS')" class="form-check-input" type="checkbox" role="switch"
+                        id="flexSwitchCheckDefault">
+                    </div>
+                  </div>
+                </div>
+                <div class="col-lg-12 d-flex justify-content-between mb-3">
+                  <div>
+                    <div for="firstnameInput">{{'MODULES.SYSTEM.QUOTATIONS' | translate }}</div>
+                    <div class="text-muted">{{'MODULES.SYSTEM.GET_QUOTATIONS_UPDATES' | translate }}.</div>
+                  </div>
+                  <div class="flex-shrink-0 d-flex fs-18 gap-1">
+                    <div class="form-check form-switch">
+                      <input [checked]="erpIntegration?.events[6]?.active" (change)="onChange($event?.target?.checked,'QUOTATIONS')" class="form-check-input" type="checkbox" role="switch"
+                        id="flexSwitchCheckDefault">
+                    </div>
+                  </div>
+                </div>
+                <div class="col-lg-12 d-flex justify-content-between mb-3">
+                  <div>
+                    <div for="firstnameInput">{{'MODULES.SYSTEM.SALE_ORDERS' | translate }}</div>
+                    <div class="text-muted">{{'MODULES.SYSTEM.GET_SALE_ORDERS_UPDATES' | translate }}.</div>
+                  </div>
+                  <div class="flex-shrink-0 d-flex fs-18 gap-1">
+                    <div class="form-check form-switch">
+                      <input [checked]="erpIntegration?.events[7]?.active" (change)="onChange($event?.target?.checked,'SALE_ORDERS')" class="form-check-input" type="checkbox" role="switch"
+                        id="flexSwitchCheckDefault">
+                    </div>
+                  </div>
+                </div>
+                <div class="col-lg-12 d-flex justify-content-between mb-3">
+                  <div>
+                    <div for="firstnameInput">{{'MODULES.SYSTEM.SALE_INVOICES' | translate }}</div>
+                    <div class="text-muted">{{'MODULES.SYSTEM.GET_SALE_INVOICES_UPDATES' | translate }}.</div>
+                  </div>
+                  <div class="flex-shrink-0 d-flex fs-18 gap-1">
+                    <div class="form-check form-switch">
+                      <input [checked]="erpIntegration?.events[8]?.active" (change)="onChange($event?.target?.checked,'SALE_INVOICES')" class="form-check-input" type="checkbox" role="switch"
+                        id="flexSwitchCheckDefault">
+                    </div>
+                  </div>
+                </div>
+                <div class="col-lg-12 d-flex justify-content-between mb-3">
+                  <div>
+                    <div for="firstnameInput">{{'MODULES.SYSTEM.SALE_DELIVERY_NOTES' | translate }}</div>
+                    <div class="text-muted">{{'MODULES.SYSTEM.GET_SALE_DELIVERY_NOTES_UPDATES' | translate }}.</div>
+                  </div>
+                  <div class="flex-shrink-0 d-flex fs-18 gap-1">
+                    <div class="form-check form-switch">
+                      <input [checked]="erpIntegration?.events[9]?.active" (change)="onChange($event?.target?.checked,'SALE_DELIVERY_NOTES')" class="form-check-input" type="checkbox" role="switch"
+                        id="flexSwitchCheckDefault">
+                    </div>
+                  </div>
+                </div>
+                <div class="col-lg-12 d-flex justify-content-between mb-3">
+                  <div>
+                    <div for="firstnameInput">{{'MODULES.SYSTEM.SALE_ISSUE_NOTES' | translate }}</div>
+                    <div class="text-muted">{{'MODULES.SYSTEM.GET_SALE_ISSUE_NOTES_UPDATES' | translate }}.</div>
+                  </div>
+                  <div class="flex-shrink-0 d-flex fs-18 gap-1">
+                    <div class="form-check form-switch">
+                      <input [checked]="erpIntegration?.events[10]?.active" (change)="onChange($event?.target?.checked,'SALE_ISSUE_NOTES')" class="form-check-input" type="checkbox" role="switch"
+                        id="flexSwitchCheckDefault">
+                    </div>
+                  </div>
+                </div>
+                <div class="col-lg-12 d-flex justify-content-between mb-3">
+                  <div>
+                    <div for="firstnameInput">{{'MODULES.SYSTEM.PURCHASE_INVOICES' | translate }}</div>
+                    <div class="text-muted">{{'MODULES.SYSTEM.GET_PURCHASE_INVOICES_UPDATES' | translate }}.</div>
+                  </div>
+                  <div class="flex-shrink-0 d-flex fs-18 gap-1">
+                    <div class="form-check form-switch">
+                      <input [checked]="erpIntegration?.events[11]?.active" (change)="onChange($event?.target?.checked,'PURCHASE_INVOICES')" class="form-check-input" type="checkbox" role="switch"
+                        id="flexSwitchCheckDefault">
+                    </div>
+                  </div>
+                </div>
+                <div class="col-lg-12 d-flex justify-content-between mb-3">
+                  <div>
+                    <div for="firstnameInput">{{'MODULES.SYSTEM.PURCHASE_DELIVERY_NOTES' | translate }}</div>
+                    <div class="text-muted">{{'MODULES.SYSTEM.GET_PURCHASE_DELIVERY_NOTES_UPDATES' | translate }}.</div>
+                  </div>
+                  <div class="flex-shrink-0 d-flex fs-18 gap-1">
+                    <div class="form-check form-switch">
+                      <input [checked]="erpIntegration?.events[12]?.active" (change)="onChange($event?.target?.checked,'PURCHASE_DELIVERY_NOTES')" class="form-check-input" type="checkbox" role="switch"
+                        id="flexSwitchCheckDefault">
+                    </div>
+                  </div>
+                </div>
+                <div class="col-lg-12 d-flex justify-content-between mb-3">
+                  <div>
+                    <div for="firstnameInput">{{'MODULES.SYSTEM.PURCHASE_ORDERS' | translate }}</div>
+                    <div class="text-muted">{{'MODULES.SYSTEM.GET_PURCHASE_ORDERS_UPDATES' | translate }}.</div>
+                  </div>
+                  <div class="flex-shrink-0 d-flex fs-18 gap-1">
+                    <div class="form-check form-switch">
+                      <input [checked]="erpIntegration?.events[13]?.active" (change)="onChange($event?.target?.checked,'PURCHASE_ORDERS')" class="form-check-input" type="checkbox" role="switch"
+                        id="flexSwitchCheckDefault">
+                    </div>
+                  </div>
+                </div>
+              </ng-template>
+            </li>
+          </ul>
+        </div>
+        <div class="card-body p-4">
+          <div class="tab-content">
+            <div [ngbNavOutlet]="customNav"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</ng-container>
+<div *ngIf="navigating$ | async" class="vh-100 py-4 text-center" fxLayout="column" fxLayoutAlign="center center" fxLayoutGap="1rem">
+  <div>
+    <lord-icon trigger="loop" style="width:72px;height:72px" [colors]="'primary:' + primaryColor + ',secondary:' + secondaryColor" src="https://cdn.lordicon.com/msoeawqm.json">
+    </lord-icon>
+  </div>
+  <div class="mt-4">
+    <h5>{{'COMMON.LOADING' | translate }}</h5>
+  </div>
+</div>

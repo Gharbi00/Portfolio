@@ -1,0 +1,31 @@
+FROM node:14.15-alpine AS builder
+
+ARG CI_SERVER_HOST
+ARG CI_PROJECT_ID
+ARG CI_JOB_TOKEN
+
+WORKDIR /usr/src/app
+ENV API_SERVER=widget.sifca.app
+ENV NODE_OPTIONS="--max-old-space-size=16000"
+
+COPY libs ./libs
+COPY apps/widget/angular ./apps/widget/angular
+COPY ./package.json ./package-lock.json ./nx.json ./tsconfig.base.json ./tsconfig.json ./tslint.json ./schema.gql ./webpack.config.js ./
+
+RUN echo "@diktup:registry=https://${CI_SERVER_HOST}/api/v4/projects/${CI_PROJECT_ID}/packages/npm/" > .npmrc
+RUN echo "//${CI_SERVER_HOST}/api/v4/projects/${CI_PROJECT_ID}/packages/npm/:_authToken=${CI_JOB_TOKEN}" >> .npmrc
+RUN apk add --update python3 make g++ && rm -rf /var/cache/apk/*
+RUN npm ci
+
+RUN npm install -g @angular/cli@12.0.1
+RUN npm install -g @nrwl/cli@12.0.1
+RUN npm run build:sandbox:widget
+RUN npm run bundle:widget
+
+FROM nginx:alpine
+COPY --from=builder /usr/src/app/dist/apps/widget/angular/browser /usr/share/nginx/html
+COPY ./docker/nginx.conf /etc/nginx/nginx.conf
+COPY ./apps/widget/angular/nginx.conf /etc/nginx/conf.d/default.conf
+
+EXPOSE 80
+CMD ["/bin/sh", "-c", "exec nginx -g 'daemon off;'"]

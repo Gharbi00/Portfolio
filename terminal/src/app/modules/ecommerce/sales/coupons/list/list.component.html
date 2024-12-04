@@ -1,0 +1,375 @@
+<app-breadcrumbs title="{{ 'MENUITEMS.TITLE.COUPONS' | translate }}" [breadcrumbItems]="breadCrumbItems"></app-breadcrumbs>
+<ng-container *ngIf="!(navigating$ | async)">
+
+  <div class="row">
+    <div class="col-lg-12">
+      <div class="card" id="ticketsList">
+        <div class="card-header border-0">
+          <div class="d-flex align-items-center">
+            <h5 class="card-title mb-0 flex-grow-1">{{ 'MODULES.ECOMMERCE.MAIN.COUPONS' | translate }}</h5>
+            <div class="flex-shrink-0 d-flex gap-1">
+              <a (click)="openCouponModal(couponModal, null)" class="btn btn-success add-btn"><i class="ri-add-line align-bottom me-1"></i>{{ 'MODULES.ECOMMERCE.MAIN.ADD_NEW' | translate }}</a>
+              <a (click)="openCouponModal(generateCouponModal, null)" class="btn btn-primary add-btn"><i class="bx bx-collection me-1"></i>{{ 'MODULES.ECOMMERCE.MAIN.GENERATE' | translate }}</a>
+              <button (click)="openEmailModal(emailModal)" type="button" class="btn btn-primary"><i class="ri-send-plane-fill align-bottom me-1"></i>{{'COMMON.SEND' | translate }}</button>
+              <button (click)="downloadDocument()" type="button" class="btn btn-secondary"><i class="ri-file-download-line align-bottom me-1"></i>{{ 'COMMON.EXPORT' | translate }}</button>
+            </div>
+          </div>
+        </div>
+        <div class="card-body border border-dashed border-end-0 border-start-0">
+          <div class="row g-3 d-flex justify-content-between">
+            <div class="col-xxl-10 col-sm-8 col-lg-10 col-6">
+              <div class="search-box">
+                <form [formGroup]="searchForm">
+                  <input type="text" formControlName="searchString" name="searchTerm" class="form-control search bg-light border-light" placeholder="{{'PLACEHOLDER.SEARCH_FOR_COUPONS_OR_SOMETHING' | translate }}...">
+                  <i class="ri-search-line search-icon"></i>
+                </form>
+              </div>
+            </div>
+            <div class="col-2 col-sm-4 col-lg-2">
+              <button (click)="openFilterModal(filterModal)" type="button" class="btn btn-primary w-100">
+                <i class="ri-equalizer-fill me-1 align-bottom"></i>{{ 'MODULES.ECOMMERCE.MAIN.FILTERS' | translate }}
+              </button>
+            </div>
+          </div>
+        </div>
+        <div class="card-body">
+          <div class="table-responsive table-card mb-3">
+            <table class="table align-middle table-nowrap mb-0" id="ticketTable">
+              <thead>
+                <tr class="bg-light text-muted text-uppercase">
+                  <th>{{ 'MODULES.ECOMMERCE.MAIN.COUPON_CODE' | translate }}</th>
+                  <th>{{ 'MODULES.ECOMMERCE.MAIN.BENEFICIARY' | translate }}</th>
+                  <th>{{ 'COMMON.TYPE' | translate }}</th>
+                  <th>{{ 'MODULES.ECOMMERCE.MAIN.DISCOUNT' | translate }}</th>
+                  <th>{{'COMMON.START_DATE' | translate }}
+                  </th>
+                  <th>{{ 'MODULES.ECOMMERCE.MAIN.END_DATE' | translate }}
+                  </th>
+                  <th>{{ 'COMMON.STATUS' | translate }}
+                  </th>
+                  <th>{{ 'COMMON.ACTION' | translate }}</th>
+                </tr>
+              </thead>
+              <tbody *ngIf="((loadingCoupons$ | async) === false || null || undefined) && (coupons$ | async).length" class="list form-check-all" id="ticket-list-data">
+                <tr *ngFor="let coupon of coupons$ | async" id="t_{{coupon.id}}">
+                  <td><ngb-highlight [result]="coupon?.couponCode"></ngb-highlight></td>
+                  <td>
+                    <div *ngIf="coupon?.user" class="flex-shrink-0 me-3 d-flex align-items-center">
+                      <div class="avatar-sm p-1 bg-light rounded-circle" *ngIf="coupon?.user?.picture?.baseUrl">
+                        <img [src]="coupon?.user?.picture?.baseUrl + '/' + coupon?.user?.picture?.path" class="img-fluid h-100 rounded-circle h-100 d-block">
+                      </div>
+                      <div *ngIf="!coupon?.user?.picture?.baseUrl" class="avatar-sm bg-light rounded-circle p-1">
+                        <div class="avatar-title bg-soft-success text-success rounded-circle fs-13">
+                          {{coupon.user.firstName?.charAt(0) + coupon.user.lastName?.charAt(0) || 'N'}}</div>
+                      </div>
+                      <h5 class="fs-14 ms-2 mb-1">
+                        <a class="text-dark">
+                          {{coupon.user.firstName}} {{coupon.user?.lastName?.length > 7 ?
+                          coupon.user?.lastName.substr(0,7) + '...' :
+                          coupon.user.lastName}}
+                        </a>
+                      </h5>
+                    </div>
+                  </td>
+                  <td><ngb-highlight [result]="'SHARED.'+ coupon?.discount?.discountType| translate"></ngb-highlight>
+                  </td>
+                  <td>
+                    <ngb-highlight *ngIf="coupon?.discount?.discountType === 'PERCENTAGE'" [result]="coupon?.discount?.amount + ' %'"></ngb-highlight>
+                    <ngb-highlight *ngIf="coupon?.discount?.discountType !== 'PERCENTAGE'" [result]="coupon?.discount?.amount |
+                  currency:'DT':'symbol':'1.3-3'"></ngb-highlight>
+                  </td>
+                  <td><ngb-highlight [result]="coupon?.from | date:'dd MMM yyyy'"></ngb-highlight></td>
+                  <td><ngb-highlight [result]="coupon?.to | date:'dd MMM yyyy'"></ngb-highlight></td>
+                  <td class="status">
+                    <span class="badge text-uppercase" [ngClass]="{
+                      'badge-soft-success': coupon?.redeemed,
+                      'badge-soft-warning': !coupon?.redeemed
+                    }">
+                      {{(coupon?.redeemed ? 'SHARED.REDEEMED' : 'SHARED.AVAILABLE') | translate}}
+                    </span>
+                  </td>
+                  <td>
+                    <div class="dropdown" ngbDropdown>
+                      <button class="btn btn-soft-secondary btn-sm dropdown arrow-none" type="button" data-bs-toggle="dropdown" aria-expanded="false" ngbDropdownToggle>
+                        <i class="ri-more-fill align-middle"></i>
+                      </button>
+                      <ul class="dropdown-menu cursor-pointer dropdown-menu-end" ngbDropdownMenu>
+                        <li><a (click)="openCouponModal(couponModal, coupon)" class="dropdown-item edit-item-btn" data-bs-toggle="modal"><i class="ri-pencil-fill align-bottom me-2 text-muted"></i>{{ 'COMMON.EDIT' | translate }}</a>
+                        </li>
+                        <li>
+                          <a *ngIf="!compare(coupon?.to)" (click)="openDisableCouponModal(disableCouponModal, coupon)" class="dropdown-item remove-item-btn" data-bs-toggle="modal">
+                            <i class="ri-delete-bin-fill align-bottom me-2 text-muted"></i>{{ 'MODULES.ECOMMERCE.MAIN.DISABLE' | translate }}
+                          </a>
+                        </li>
+                      </ul>
+                    </div>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+        <div *ngIf="((loadingCoupons$ | async) === false || null || undefined) && (coupons$ | async).length" class="px-3">
+          <div class="row justify-content-md-between align-items-md-center gy-2">
+            <div class="col col-sm-6">
+              <div class="dataTables_info mb-2" id="tickets-table_info" role="status" aria-live="polite">{{'COMMON.SHOWING' | translate }} {{pagination?.startIndex + 1}}–{{pagination?.endIndex ===
+                pagination?.length ? pagination?.endIndex : pagination?.endIndex + 1}}{{ 'COMMON.OF' | translate }}
+                {{pagination?.length}}{{ 'COMMON.ENTRIES' | translate }}
+              </div>
+            </div>
+            <div class="col col-sm-6">
+              <div class="text-sm-right float-end listjs-pagination">
+                <ngb-pagination [maxSize]="5" [collectionSize]="pagination?.length" [(page)]="page" (pageChange)="onPageChange($event)" [pageSize]="pagination?.size">
+                </ngb-pagination>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div id="noresult" class="py-4 mt-4 text-center" *ngIf="(loadingCoupons$ | async) || (!(loadingCoupons$ | async) && !(coupons$ | async).length)">
+          <div *ngIf="loadingCoupons$ | async">
+            <lord-icon trigger="loop" style="width:72px;height:72px" [colors]="'primary:' + primaryColor + ',secondary:' + secondaryColor" src="https://cdn.lordicon.com/msoeawqm.json">
+            </lord-icon>
+            <h5 class="mt-4">{{ 'COMMON.LOADING' | translate }}</h5>
+          </div>
+          <div *ngIf="!(loadingCoupons$ | async) && !(coupons$ | async).length">
+            <lord-icon trigger="loop" style="width:72px;height:72px" [colors]="'primary:' + primaryColor + ',secondary:' + secondaryColor" src="https://cdn.lordicon.com/vlycxjwx.json">
+            </lord-icon>
+            <h5 class="mt-4">{{ 'COMMON.NO_RESULT' | translate }}</h5>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <ng-template #filterModal role="document" let-modal>
+    <div class="modal-header bg-soft-info p-3">
+      <h5 class="modal-title" id="exampleModalLabel">{{ 'COMMON.FILTER' | translate }}</h5>
+      <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" id="close-modal" (click)="modal.dismiss('Cross click')"></button>
+    </div>
+    <div class="modal-body">
+      <div class="row g-3">
+        <form [formGroup]="filterForm">
+          <div class="col-lg-12">
+            <div class="col-lg-12 mb-3">
+              <label for="email_id-field" class="form-label">{{ 'MODULES.ECOMMERCE.MAIN.COUPON_CODE' | translate }}</label>
+              <input type="text" id="email_id-field" class="form-control" placeholder="{{'PLACEHOLDER.ENTER_COUPON_CODE' | translate }}" formControlName="couponCode" />
+            </div>
+            <div class="col-lg-12 mb-3">
+              <label for="email_id-field" class="form-label">{{ 'MODULES.ECOMMERCE.MAIN.DISCOUNT_TYPE' | translate }}</label>
+              <select class="form-control" formControlName="discountType" name="choices-single-default" id="idStatus">
+                <option value="All" selected>{{'COMMON.ALL' | translate }}</option>
+                <option *ngFor="let type of discountTypes" [value]="type">
+                  {{ 'COMMON.' + type | translate }}
+                </option>
+              </select>
+            </div>
+            <div class="col-lg-12 mb-3">
+              <input formControlName="expired" class="form-check-input me-3" type="checkbox">
+              <label class="form-check-label" for="anna-adame">{{ 'MODULES.ECOMMERCE.MAIN.EXPIRED' | translate }}
+              </label>
+            </div>
+            <div class="col-lg-12 mb-3">
+              <input formControlName="redeemed" class="form-check-input me-3" type="checkbox">
+              <label class="form-check-label" for="anna-adame">{{ 'MODULES.ECOMMERCE.MAIN.REDEEMED' | translate }}
+              </label>
+            </div>
+          </div>
+        </form>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <div class="hstack gap-2 justify-content-end">
+        <button type="button" class="btn btn-light" data-bs-dismiss="modal" (click)="modal.close('Close click')">{{ 'COMMON.CLOSE' | translate }}</button>
+        <button type="button" (click)="resetForm()" class="btn btn-primary" id="add-btn">{{'COMMON.RESET' | translate }}</button>
+        <button type="button" (click)="saveFilter()" [disabled]="isFilterButtonDisabled" class="btn btn-success" id="add-btn">{{'COMMON.SAVE' | translate }}</button>
+      </div>
+    </div>
+  </ng-template>
+
+  <ng-template #couponModal role="document" let-modal>
+    <div class="modal-header bg-soft-info p-3">
+      <h5 class="modal-title" id="exampleModalLabel">{{(selectedCoupon ? 'SHARED.EDIT_COUPON' : 'SHARED.NEW_COUPON') | translate}}</h5>
+      <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" id="close-modal" (click)="modal.dismiss('Cross click')"></button>
+    </div>
+    <div class="modal-body">
+      <div class="row g-3">
+        <form [formGroup]="couponForm">
+          <div class="col-lg-12 row">
+            <ng-container formGroupName="discount">
+              <div class="col-lg-6 mb-3">
+                <label for="email_id-field" class="form-label">{{ 'COMMON.AMOUNT' | translate }}</label>
+                <input required type="text" id="email_id-field" class="form-control" placeholder="{{'PLACEHOLDER.ENTER_DISCOUNT_AMOUNT' | translate }}" required formControlName="amount"
+                  [ngClass]="{ 'is-invalid': couponForm.get(['discount', 'amount'])?.touched && couponForm.get(['discount', 'amount']).hasError('required') }" />
+                <div class="invalid-feedback" *ngIf="couponForm.get(['discount', 'amount'])?.touched && couponForm.get(['discount', 'amount']).hasError('required')">{{'COMMON.REQUIRED' | translate }}
+                </div>
+              </div>
+              <div class="col-lg-6 mb-3">
+                <label for="email_id-field" class="form-label">{{ 'MODULES.ECOMMERCE.MAIN.DISCOUNT_TYPE' | translate }}</label>
+                <select [ngClass]="{ 'is-invalid': couponForm.get(['discount', 'discountType'])?.touched && couponForm.get(['discount', 'discountType']).hasError('required') }" class="form-control"
+                  formControlName="discountType" name="choices-single-default" id="idStatus">
+                  <option disabled value="" selected>{{ 'MODULES.ECOMMERCE.MAIN.SELECT_DISCOUNT_TYPE' | translate }}</option>
+                  <option *ngFor="let type of discountTypes" [value]="type">
+                    {{ 'SHARED.'+ type |translate }}
+                  </option>
+                </select>
+                <div class="invalid-feedback" *ngIf="couponForm.get(['discount', 'discountType'])?.touched && couponForm.get(['discount', 'discountType']).hasError('required')">{{'COMMON.REQUIRED' | translate }}
+                </div>
+              </div>
+            </ng-container>
+            <div class="col-lg-6 mb-3">
+              <label for="email_id-field" class="form-label">{{ 'COMMON.FROM' | translate }}</label>
+              <div class="input-group">
+                <input class="form-control flatpickr-input" type="text" placeholder="{{'PLACEHOLDER.TO' | translate }}" mwlFlatpickr [altInput]="true" [enableTime]="false" [convertModelValue]="true" [dateFormat]="'Y-m-d H:i'"
+                  formControlName="from">
+                <div class="input-group-append">
+                  <span class="input-group-text"><i class="ri-calendar-event-fill"></i></span>
+                </div>
+              </div>
+            </div>
+            <div class="col-lg-6 mb-3">
+              <label for="email_id-field" class="form-label">{{'COMMON.TO' | translate }}</label>
+              <div class="input-group">
+                <input class="form-control flatpickr-input" type="text" placeholder="{{'PLACEHOLDER.TO' | translate }}" mwlFlatpickr [altInput]="true" [enableTime]="false" [convertModelValue]="true" [dateFormat]="'Y-m-d H:i'"
+                  formControlName="to">
+                <div class="input-group-append">
+                  <span class="input-group-text"><i class="ri-calendar-event-fill"></i></span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </form>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <div class="hstack gap-2 justify-content-end">
+        <button type="button" class="btn btn-light" data-bs-dismiss="modal" (click)="modal.close('Close click')">{{ 'COMMON.CLOSE' | translate }}</button>
+        <button type="button" (click)="addCoupon()" [disabled]="isButtonDisabled || couponForm.invalid" class="btn btn-success" id="add-btn">{{(selectedCoupon ? 'COMMON.EDIT' : 'COMMON.ADD')|translate}}</button>
+      </div>
+    </div>
+  </ng-template>
+
+  <ng-template #generateCouponModal role="document" let-modal>
+    <div class="modal-header bg-soft-info p-3">
+      <h5 class="modal-title" id="exampleModalLabel">{{ 'MODULES.ECOMMERCE.MAIN.GENERATE_COUPONS' | translate }}</h5>
+      <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" id="close-modal" (click)="modal.dismiss('Cross click')"></button>
+    </div>
+    <div class="modal-body">
+      <div class="row g-3">
+        <form [formGroup]="couponForm">
+          <div class="col-lg-12 row">
+            <ng-container formGroupName="discount">
+              <div class="col-lg-6 mb-3">
+                <label for="email_id-field" class="form-label">{{ 'COMMON.AMOUNT' | translate }}</label>
+                <input required type="text" id="email_id-field" class="form-control" placeholder="{{'PLACEHOLDER.ENTER_DISCOUNT_AMOUNT' | translate }}" required formControlName="amount"
+                  [ngClass]="{ 'is-invalid': couponForm.get(['discount', 'amount'])?.touched && couponForm.get(['discount', 'amount']).hasError('required') }" />
+                <div class="invalid-feedback" *ngIf="couponForm.get(['discount', 'amount'])?.touched && couponForm.get(['discount', 'amount']).hasError('required')">{{'COMMON.REQUIRED' | translate }}
+                </div>
+              </div>
+              <div class="col-lg-6 mb-3">
+                <label for="email_id-field" class="form-label">{{ 'MODULES.ECOMMERCE.MAIN.DISCOUNT_TYPE' | translate }}</label>
+                <select [ngClass]="{ 'is-invalid': couponForm.get(['discount', 'discountType'])?.touched && couponForm.get(['discount', 'discountType']).hasError('required') }" class="form-control"
+                  formControlName="discountType" name="choices-single-default" id="idStatus">
+                  <option disabled value="" selected>{{ 'COMMON.SELECT_OPTION' | translate }}</option>
+                  <option *ngFor="let type of discountTypes" [value]="type">
+                    {{ 'SHARED.'+ type |translate }}
+                  </option>
+                </select>
+                <div class="invalid-feedback" *ngIf="couponForm.get(['discount', 'discountType'])?.touched && couponForm.get(['discount', 'discountType']).hasError('required')">{{'COMMON.REQUIRED' | translate }}
+                </div>
+              </div>
+            </ng-container>
+            <div class="col-lg-6 mb-3">
+              <label for="email_id-field" class="form-label">{{ 'COMMON.FROM' | translate }}</label>
+              <div class="input-group">
+                <input class="form-control flatpickr-input" type="text" placeholder="{{'PLACEHOLDER.TO' | translate }}" mwlFlatpickr [altInput]="true" [enableTime]="false" [convertModelValue]="true" [dateFormat]="'Y-m-d H:i'"
+                  formControlName="from">
+                <div class="input-group-append">
+                  <span class="input-group-text"><i class="ri-calendar-event-fill"></i></span>
+                </div>
+              </div>
+            </div>
+            <div class="col-lg-6 mb-3">
+              <label for="email_id-field" class="form-label">{{'COMMON.TO' | translate }}</label>
+              <div class="input-group">
+                <input class="form-control flatpickr-input" type="text" placeholder="{{'PLACEHOLDER.TO' | translate }}" mwlFlatpickr [altInput]="true" [enableTime]="false" [convertModelValue]="true" [dateFormat]="'Y-m-d H:i'"
+                  formControlName="to">
+                <div class="input-group-append">
+                  <span class="input-group-text"><i class="ri-calendar-event-fill"></i></span>
+                </div>
+              </div>
+            </div>
+            <div class="col-lg-12 mb-3">
+              <label for="email_id-field" class="form-label">{{ 'MODULES.ECOMMERCE.MAIN.QUANTITY' | translate }}</label>
+              <input required type="number" id="email_id-field" class="form-control" placeholder="{{'PLACEHOLDER.ENTER_QUANTITY' | translate }}" required formControlName="quantity"
+                [ngClass]="{ 'is-invalid': couponForm.get('quantity')?.touched && couponForm.get('quantity').hasError('required') }" />
+              <div class="invalid-feedback" *ngIf="couponForm.get('quantity')?.touched && couponForm.get('quantity').hasError('required')">{{'COMMON.REQUIRED' | translate }}
+              </div>
+            </div>
+          </div>
+        </form>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <div class="hstack gap-2 justify-content-end">
+        <button type="button" class="btn btn-light" data-bs-dismiss="modal" (click)="modal.close('Close click')">{{ 'COMMON.CLOSE' | translate }}</button>
+        <button type="button" (click)="generateCoupon()" [disabled]="isButtonDisabled || couponForm.invalid" class="btn btn-success" id="add-btn">{{ 'MODULES.ECOMMERCE.MAIN.GENERATE' | translate }}</button>
+      </div>
+    </div>
+  </ng-template>
+
+  <ng-template #disableCouponModal let-modal>
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" id="btn-close" (click)="modal.dismiss('Cross click')"></button>
+      </div>
+      <div class="modal-body">
+        <div class="mt-2 text-center">
+          <lord-icon src="https://cdn.lordicon.com/gsqxdxog.json" trigger="loop" colors="primary:#405189,secondary:#f06548" style="width:90px;height:90px"></lord-icon>
+          <div class="mt-4 pt-2 fs-15 mx-4 mx-sm-5">
+            <h4>{{ 'MODULES.ECOMMERCE.MAIN.DISABLE_COUPON' | translate }}</h4>
+            <p class="text-muted mx-4 mb-0">{{ 'MODULES.ECOMMERCE.MAIN.ARE_YOU_SURE_DISABLE' | translate }} {{coupon?.couponCod}}?
+            </p>
+          </div>
+        </div>
+        <div class="d-flex gap-2 justify-content-center mt-4 mb-2">
+          <button class="btn btn-link link-success fw-medium text-decoration-none" data-bs-dismiss="modal" (click)="modal.close('Close click')" id="deleteRecord-close"><i
+              class="ri-close-line me-1 align-middle"></i>{{ 'COMMON.CLOSE' | translate }}</button>
+          <button type="button" class="btn w-sm btn-danger " id="delete-product" (click)="disableCoupon()" (click)="modal.close('Close click')">{{ 'COMMON.YES_DELETE_IT' | translate }}</button>
+        </div>
+      </div>
+    </div>
+  </ng-template>
+
+  <ng-template #emailModal role="document" let-modal>
+    <div class="modal-header p-3 bg-soft-info">
+      <h5 class="modal-title" id="exampleModalLabel">{{'COMMON.SEND' | translate }} Email</h5>
+      <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" id="close-modal" (click)="modal.dismiss('Cross click')"></button>
+    </div>
+    <form [formGroup]="emailForm">
+      <div class="modal-body">
+        <div class="row g-3">
+          <div class="col-lg-12 mb-3">
+            <label class="form-label" for="product-tags-input">{{ 'COMMON.EMAILS' | translate }} {{'MODULES.INVENTORY.PRESS_ENTER' | translate }}</label>
+            <ng-select [items]="[]" class="no-arrow-select" [addTag]="true" [isOpen]="false" [multiple]="true" [selectOnTab]="true" formControlName="emails">
+            </ng-select>
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <div class="hstack gap-2 justify-content-end">
+          <button type="button" class="btn btn-light" data-bs-dismiss="modal" (click)="modal.close('Close click')">{{ 'COMMON.CLOSE' | translate }}</button>
+          <button type="button" [disabled]="isEmailButtonDisabled || emailForm.invalid" (click)="send()" class="btn btn-success" id="add-btn">{{'COMMON.SEND' | translate }}</button>
+        </div>
+      </div>
+    </form>
+  </ng-template>
+</ng-container>
+<div *ngIf="navigating$ | async" class="vh-100 py-4 text-center" fxLayout="column" fxLayoutAlign="center center" fxLayoutGap="1rem">
+  <div>
+    <lord-icon trigger="loop" style="width:72px;height:72px" [colors]="'primary:' + primaryColor + ',secondary:' + secondaryColor" src="https://cdn.lordicon.com/msoeawqm.json">
+    </lord-icon>
+  </div>
+  <div class="mt-4">
+    <h5>{{ 'COMMON.LOADING' | translate }}</h5>
+  </div>
+</div>

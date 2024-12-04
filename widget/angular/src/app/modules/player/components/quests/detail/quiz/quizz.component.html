@@ -1,0 +1,88 @@
+<div *ngIf="true===true" [class.dark-mode]="darkMode" [class.rtl]="rtl">
+
+  <div [class.dark-mode]="darkMode">
+    <div class="special-widget-box pb-0">
+      <div class="widget-box-content survey-content mb-0" style="margin: 4%">
+        <figure class="widget-box-picture popup-picture-trigger">
+          <img [src]="quizz?.picture?.baseUrl + '/' + quizz?.picture?.path" alt="cover-04" />
+        </figure>
+        <form [formGroup]="quizzForm" class="form">
+          <div class="poll-box">
+            <p [class.text-white]="darkMode" class="poll-title">{{
+              (gameType === 'GUESS_THE_PRICE' ? 'GUESS_THE_PRICE' :
+              gameType === 'FIND_HIDDEN_OBJECT' ? 'FIND_HIDDEN_OBJECT' :
+              'GUESS_MISSING_ELEMENT') | translate
+              }}</p>
+            <div *ngIf="quizz.quizzType === 'MULTIPLE_CHOICE'" class="marketplace-sidebar">
+              <div class="sidebar-box">
+                <div class="sidebar-box-items">
+                  <div *ngFor="let choice of quizz?.choices; let i = index" class="checkbox-line">
+                    <div class="checkbox-wrap">
+                      <input (change)="onChangeMultipleChoice($event.target.checked, choice?.item)" type="checkbox"
+                        [id]="'category-' + i" name="category_all" />
+                      <div class="checkbox-box">
+                        <svg class="icon-cross">
+                          <use xlink:href="#svg-cross"></use>
+                        </svg>
+                      </div>
+                      <label [for]="'category-' + i">{{ choice?.item }}</label>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div *ngIf="quizz.quizzType === 'SINGLE_CHOICE'" class="form-poll">
+              <div class="form-row">
+                <div *ngFor="let choice of quizz?.choices; let i = index" class="form-item form-item-margin">
+                  <div [class.dark-mode]="darkMode" class="checkbox-wrap">
+                    <input (change)="onChangeSingleChoice(choice?.item)" type="radio" [id]="choice?.item"
+                      name="poll_option" [value]="choice?.item" />
+                    <div class="checkbox-box round"></div>
+                    <label [for]="choice?.item">{{choice?.item}}</label>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </form>
+        <span class="poll-title text-danger" *ngIf="showAlert">
+          {{'SELECTED_OPTIONS_INCORRECT' | translate}}
+        </span>
+      </div>
+    </div>
+    <div class="d-flex justify-content-end p-3">
+      <button *ngIf="!isLastActivity" [disabled]="
+        quizz.quizzType === 'SINGLE_CHOICE' ? !selectedChoice : !selectedChoices?.length"
+        [class.white-solid]="quizz.quizzType === 'SINGLE_CHOICE' ? !selectedChoice : !selectedChoices?.length"
+        [class.primary]="quizz.quizzType === 'SINGLE_CHOICE' ? selectedChoice : selectedChoices?.length"
+        (click)="navigateNextSlide()" class="button">
+        <div>
+          <span>
+            {{'NEXT' | translate}}
+          </span> <svg style="fill: white;" class="slider-control-icon icon-custom-arrow">
+            <use xlink:href="#svg-small-arrow"></use>
+          </svg>
+        </div>
+      </button>
+      <button [class.white-solid]="quizz.quizzType === 'SINGLE_CHOICE' ? !selectedChoice : !selectedChoices?.length"
+        *ngIf="isLastActivity" [disabled]="
+        quizz.quizzType === 'SINGLE_CHOICE' ? !selectedChoice : !selectedChoices?.length"
+        [class.white-solid]="quizz.quizzType === 'SINGLE_CHOICE' ? !selectedChoice : !selectedChoices?.length" (click)="navigateNextSlide()"
+        class="button">
+        <div>
+          <span> {{'SUBMIT' | translate}} </span>
+        </div>
+      </button>
+    </div>
+  </div>
+</div>
+<svg style="display: none">
+  <symbol id="svg-small-arrow" viewBox="0 0 6 8" preserveAspectRatio="xMinYMin meet">
+    <path d="M6,4L1.5,8L0,6.665L3,4L0,1.333L1.5,0l3,2.666l0,0L6,4z" />
+  </symbol>
+</svg>
+<svg style="display: none">
+  <symbol id="svg-cross" viewBox="0 0 12 12" preserveAspectRatio="xMinYMin meet">
+    <path d="M12,9.6L9.6,12L6,8.399L2.4,12L0,9.6L3.6,6L0,2.4L2.4,0L6,3.6L9.6,0L12,2.4L8.399,6L12,9.6z" />
+  </symbol>
+</svg>

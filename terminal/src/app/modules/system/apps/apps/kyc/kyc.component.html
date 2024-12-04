@@ -1,0 +1,259 @@
+<ng-container *ngIf="!(navigating$ | async)">
+  <div class="position-relative mx-n4 mt-n4">
+    <div class="profile-wid-bg profile-setting-img">
+      <img src="assets/images/profile-bg.jpg" class="profile-wid-img" alt="">
+      <div class="overlay-content">
+        <div class="text-end p-3">
+          <div class="p-0 ms-auto rounded-circle profile-photo-edit">
+            <input id="profile-foreground-img-file-input" type="file" class="profile-foreground-img-file-input">
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-xxl-3">
+      <div class="card mt-n5">
+        <div class="card-body p-4">
+          <div *ngIf="plugin$ | async as plugin" class="text-center">
+            <div class="profile-user position-relative d-inline-block mx-auto mb-4">
+              <div class="avatar-lg mb-3">
+                <div class="avatar-title bg-soft-success fs-24 text-success">
+                  <i [ngClass]="plugin?.icon"></i>
+                </div>
+              </div>
+            </div>
+            <h5 class="fs-16 mb-1">{{plugin?.name}}</h5>
+            <p class="text-muted mb-0">{{plugin?.description}}</p>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="col-xxl-9">
+      <div class="card mt-xxl-n5">
+        <div class="card-header">
+          <form class="p-4" [formGroup]="loyaltyForm">
+            <div formGroupName="profileComplete">
+              <div class="col-lg-12 d-flex justify-content-between mb-3">
+                <div>
+                  <div for="firstnameInput">{{'SHARED.ENABLE_COMPLETE_PROFILE'| translate }}</div>
+                  <div class="text-muted">{{'MODULES.SYSTEM.ALLOW_YOU_TO_VIEW' | translate }}</div>
+                </div>
+                <div class="flex-shrink-0 d-flex fs-18 gap-1">
+                  <div class="form-check form-switch">
+                    <input (change)="onChangeStatus($event?.target?.checked)"
+                      [checked]="loyaltySettings?.profileComplete?.enable === true" class="form-check-input"
+                      type="checkbox" role="switch" id="flexSwitchCheckDefault">
+                  </div>
+                </div>
+              </div>
+              <ng-container formArrayName="levels">
+                <div *ngFor="let control of profileCompleteLevels.controls; let i = index; let last = last"
+                  [formGroupName]="i">
+                  <div class="row">
+                    <div class="mb-3 col-lg-5">
+                      <label for="customername-field" class="form-label">{{'SHARED.NAME'| translate }}</label>
+                      <input type="text" id="customername-field" class="form-control" formControlName="name"
+                        placeholder="Name" />
+                    </div>
+                    <div class="mb-3 col-lg-5">
+                      <label for="customername-field" class="form-label">{{'SHARED.PERCENTAGE'| translate
+                        }}</label>
+                      <div class="input-group">
+                        <input type="number" id="customername-field" class="form-control"
+                          formControlName="percentage" placeholder="Percentage" />
+                        <div class="input-group-append">
+                          <span class="input-group-text">%</span>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="col-lg-5 mb-3">
+                      <label for="choices-status-input" class="form-label">{{'SHARED.ELEMENTS'| translate
+                        }}</label>
+                      <ng-select placeholder="Elements" [items]="elements" [multiple]="true"
+                        [formControlName]="'elements'">
+                        <ng-template ng-label-tmp let-item="item" let-clear="clear">
+                          <span class="ng-value-label">
+                            {{
+                            (item === 'ABOUT' ? 'MENUITEMS.TITLE.ABOUT' :
+                            item === 'EMAIL' ? 'COMMON.EMAIL' :
+                            item === 'VERIFY_EMAIL' ? 'ACCOUNT.VERIFY_EMAIL' :
+                            item === 'PHONE' ? 'COMMON.PHONE' :
+                            item === 'VERIFY_PHONE' ? 'ACCOUNT.VERIFY_PHONE' :
+                            item === 'BIRTHDATE' ? 'ACCOUNT.BIRTHDATE' :
+                            item === 'MARITAL_STATUS' ? 'COMMON.MARITAL_STATUS' :
+                            item === 'GENDER' ? 'COMMON.GENDER' :
+                            item === 'HOBBIES' ? 'SHARED.HOBBIES' :
+                            item === 'INTERESTS' ? 'SHARED.INTERESTS' :
+                            item === 'SOCIAL_MEDIA' ? 'COMMON.SOCIAL_MEDIA' :
+                            item === 'PROFILE_PICTURE' ? 'COMMON.PROFILE_PICTURE' :
+                            item === 'RESIDENTIAL_ADDRESS' ? 'COMMON.RESIDENTIAL_ADDRESS' :
+                            item === 'GEOLOCATION' ? 'COMMON.GEOLOCATION' :
+                            item === 'JOBS' ? 'COMMON.JOBS' :
+                            item === 'EDUCATION' ? 'SHARED.EDUCATION' :
+                            '') | translate
+                            }}
+                          </span>
+                          <span class="ng-value-icon right" (click)="clear(item)" aria-hidden="true">×</span>
+                        </ng-template>
+                        <ng-template ng-option-tmp let-item="item">
+                          {{
+                          (item === 'ABOUT' ? 'MENUITEMS.TITLE.ABOUT' :
+                          item === 'EMAIL' ? 'COMMON.EMAIL' :
+                          item === 'VERIFY_EMAIL' ? 'ACCOUNT.VERIFY_EMAIL' :
+                          item === 'PHONE' ? 'COMMON.PHONE' :
+                          item === 'VERIFY_PHONE' ? 'ACCOUNT.VERIFY_PHONE' :
+                          item === 'BIRTHDATE' ? 'ACCOUNT.BIRTHDATE' :
+                          item === 'MARITAL_STATUS' ? 'COMMON.MARITAL_STATUS' :
+                          item === 'GENDER' ? 'COMMON.GENDER' :
+                          item === 'HOBBIES' ? 'SHARED.HOBBIES' :
+                          item === 'INTERESTS' ? 'SHARED.INTERESTS' :
+                          item === 'SOCIAL_MEDIA' ? 'COMMON.SOCIAL_MEDIA' :
+                          item === 'PROFILE_PICTURE' ? 'COMMON.PROFILE_PICTURE' :
+                          item === 'RESIDENTIAL_ADDRESS' ? 'COMMON.RESIDENTIAL_ADDRESS' :
+                          item === 'GEOLOCATION' ? 'COMMON.GEOLOCATION' :
+                          item === 'JOBS' ? 'COMMON.JOBS' :
+                          item === 'EDUCATION' ? 'SHARED.EDUCATION' :
+                          '') | translate
+                          }}
+                        </ng-template>
+                      </ng-select>
+                    </div>
+                  </div>
+                  <ng-container formGroupName="remuneration">
+                    <div formGroupName="qualitative" class="mb-3 col-lg-6">
+                      <label for="customername-field" class="form-label">{{'MODULES.SYSTEM.QUALITATIVE_AMOUNT' |
+                        translate }}</label>
+                      <div class="input-group">
+                        <input required type="text" id="customername-field" class="form-control"
+                          placeholder="{{'PLACEHOLDER.ENTER_QUALITATIVE_AMOUNT' | translate }}"
+                          formControlName="amount" />
+                        <div class="input-group-append">
+                          <span class="input-group-text">
+                            <img *ngIf="(loyaltySettings$ | async)?.qualitative?.picture?.baseUrl"
+                              [src]="(loyaltySettings$ | async)?.qualitative?.picture?.baseUrl + '/' + (loyaltySettings$ | async)?.qualitative?.picture?.path"
+                              alt="" class="img-fluid rounded-circle avatar-xxs mb-1">
+                            <img class="img-fluid rounded-circle avatar-xxs mb-1"
+                              *ngIf="!(loyaltySettings$ | async)?.qualitative?.picture?.baseUrl"
+                              src="https://sifca-storage.s3.eu-central-1.amazonaws.com/loyalcraft/reputation_512.gif">
+                          </span>
+                        </div>
+                      </div>
+                    </div>
+                    <div formGroupName="quantitative" class="row">
+                      <div class="mb-3 col-lg-6">
+                        <label for="choices-status-input"
+                          class="form-label">{{'MENUITEMS.CUSTOMERENGAGEMENT.LIST.WALLET' | translate }}*</label>
+                        <ng-select bindValue="id" required [virtualScroll]="true"
+                          (scrollToEnd)="loadMoreWallets()"
+                          placeholder="{{'PLACEHOLDER.ENTER_YOUR_COIN' | translate }}" [items]="wallet$ | async"
+                          [multiple]="false" [formControlName]="'wallet'">
+                          <ng-template ng-label-tmp let-item="item" let-clear="clear">
+                            <div class="col-3 d-flex align-items-center">
+                              <div class="flex-shrink-0">
+                                <div *ngIf="!item?.coin?.picture?.baseUrl" class="avatar-xxs">
+                                  <div class="avatar-title text-danger bg-soft-info rounded-circle shadow">
+                                    {{item?.coin?.name?.charAt(0) || 'N'}}
+                                  </div>
+                                </div>
+                                <div *ngIf="item?.coin?.picture?.baseUrl">
+                                  <img [src]="item?.coin?.picture?.baseUrl + '/' + item?.coin?.picture?.path"
+                                    alt="" class="avatar-xxs shadow rounded-circle" />
+                                </div>
+                              </div>
+                              <div class="flex-grow-1 ms-3">
+                                <span class="mb-1">{{item?.coin?.name}} ({{item?.fee}}%)</span>
+                              </div>
+                            </div>
+                            <span class="ng-value-icon right" (click)="clear(item)" aria-hidden="true">×</span>
+                          </ng-template>
+                          <ng-template ng-option-tmp let-item="item">
+                            <div class="col-3 d-flex">
+                              <div class="flex-shrink-0">
+                                <div *ngIf="!item?.coin?.picture?.baseUrl" class="avatar-xxs">
+                                  <div class="avatar-title text-danger bg-soft-info rounded-circle shadow">
+                                    {{item?.coin?.name?.charAt(0) || 'N'}}
+                                  </div>
+                                </div>
+                                <div *ngIf="item?.coin?.picture?.baseUrl">
+                                  <img [src]="item?.coin?.picture?.baseUrl + '/' + item?.coin?.picture?.path"
+                                    alt="" class="avatar-xxs shadow rounded-circle" />
+                                </div>
+                              </div>
+                              <div class="flex-grow-1 ms-3">
+                                <h6 class="mb-1">{{item?.coin?.name}} <span class="text-muted">
+                                    ({{item?.coin?.code}}) </span></h6>
+                                <div *ngIf="item?.coin?.unitValue?.amount">
+                                  <h6 [ngClass]="{
+                                                            'text-danger': +item?.amount < 0,
+                                                            'text-success': +item?.amount > 0,
+                                                            'text-info': +item?.amount === 0
+                                                        }" class="text-danger mb-0"> {{item?.amount | number:
+                                    '1.0-0'}} <span class="text-muted"> ({{item?.fee}}%) </span> </h6>
+                                </div>
+                              </div>
+                            </div>
+                          </ng-template>
+                        </ng-select>
+                      </div>
+                      <div class="mb-3 col-lg-6">
+                        <label for="customername-field" class="form-label">{{'MODULES.SYSTEM.QUANTITATIVE_AMOUNT'
+                          |
+                          translate }}</label>
+                        <div class="input-group">
+                          <input type="text" id="customername-field" class="form-control"
+                            placeholder="{{'PLACEHOLDER.ENTER_QUALITATIVE_AMOUNT' | translate }}"
+                            formControlName="amount" />
+                          <div class="input-group-append">
+                            <span class="input-group-text">
+                              <img *ngIf="(loyaltySettings$ | async)?.quantitative?.coin?.picture?.baseUrl"
+                                [src]="(loyaltySettings$ | async)?.quantitative?.coin?.picture?.baseUrl + '/' + (loyaltySettings$ | async)?.quantitative?.coin?.picture?.path"
+                                alt="" class="img-fluid rounded-circle avatar-xxs mb-1">
+                              <lord-icon *ngIf="!(loyaltySettings$ | async)?.quantitative?.coin?.picture?.baseUrl"
+                                src="https://cdn.lordicon.com/lxizbtuq.json" trigger="loop" delay="2000"
+                                style="width:30px;height:30px">
+                              </lord-icon>
+                            </span>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </ng-container>
+                  <div class="d-flex mt-3 mb-3 gap-2 justify-content-end">
+                    <button *ngIf="last" (click)="addLevelField(profileCompleteLevels)" type="button"
+                      class="btn btn-soft-info btn-sm shadow-none"><i class="ri-add-fill me-1 align-bottom"></i>
+                      {{'SHARED.ADD_LEVEL' | translate}}</button>
+                    <button *ngIf="profileCompleteLevels.value?.length > 1"
+                      (click)="removeLevelField(profileCompleteLevels, i)" type="button"
+                      class="btn btn-soft-danger btn-sm shadow-none"><i
+                        class="ri-delete-bin-fill me-1 align-bottom"></i>
+                      {{'SHARED.REMOVE_LEVEL' | translate}}</button>
+                  </div>
+                </div>
+              </ng-container>
+              <div class="col-lg-12">
+                <div class="hstack justify-content-end gap-2 mt-3">
+                  <button *ngIf="loyaltyForm" (click)="saveProfileComplete()" type="button"
+                    [disabled]="isButtonDisabled || loyaltyForm.get('profileComplete').invalid"
+                    class="btn btn-success">{{'COMMON.SAVE' | translate }}</button>
+                </div>
+              </div>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</ng-container>
+<div *ngIf="navigating$ | async" class="vh-100 py-4 text-center" fxLayout="column" fxLayoutAlign="center center"
+  fxLayoutGap="1rem">
+  <div>
+    <lord-icon trigger="loop" style="width:72px;height:72px" [colors]="'primary:' + primaryColor + ',secondary:' + secondaryColor"
+      src="https://cdn.lordicon.com/msoeawqm.json">
+    </lord-icon>
+  </div>
+  <div class="mt-4">
+    <h5>{{'COMMON.LOADING' | translate }}</h5>
+  </div>
+</div>

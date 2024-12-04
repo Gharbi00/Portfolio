@@ -1,0 +1,118 @@
+<div class="row">
+  <div class="card">
+    <div class="card-body">
+      <form [formGroup]="challengeForm">
+        <div class="row g-3">
+          <div class="col-lg-12">
+            <div class="mb-3 row">
+              <div class="col-xl-3">
+                <label class="form-label" for="project-thumbnail-img">{{'MENUITEMS.CUSTOMERENGAGEMENT.LIST.CAMPAIGN_ICON' | translate }}</label>
+              </div>
+              <div class="mt-2 col-lg-8 df-flex">
+                <div class="img-wrap w-30 h-30 me-3 mb-2">
+                  <ng-container *ngIf="pictures?.value[0]?.baseUrl">
+                    <span class="delete-icon w-6 h-6 flex items-center justify-center cursor-pointer"
+                      (click)="challenge?.status !=='ONGOING' && challenge?.status !== 'FINISHED' ? removePicture() : null">
+                      <i class="ri-delete-bin-fill ft text-danger"></i>
+                    </span>
+                    <img (click)="challenge?.status !=='ONGOING' && challenge?.status !== 'FINISHED' ? upload() : null"
+                      class="w-30 h-30 rounded object-cover"
+                      [src]="pictures?.value[0]?.baseUrl + '/' + pictures?.value[0]?.path">
+                  </ng-container>
+                  <div *ngIf="!pictures?.value[0]?.baseUrl"
+                    (click)="challenge?.status !=='ONGOING' && challenge?.status !== 'FINISHED' ? upload() : null"
+                    class="w-30 h-30 mb-3 col-4 border rounded overflow-hidden cursor-pointer d-flex align-items-center justify-content-center">
+                    <span class="fs-5 fw-bold">{{'COMMON.UPLOAD' | translate }}</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="mb-3 row">
+              <label for="email_id-field" class="form-label col-xl-3">{{'MENUITEMS.CUSTOMERENGAGEMENT.LIST.CAMPAIGN_NAME' | translate }}*</label>
+              <div class="col-lg-8">
+                <input [readonly]="challenge?.status ==='ONGOING' || challenge?.status === 'FINISHED'" type="text"
+                  id="email_id-field" class="form-control" required placeholder="{{'PLACEHOLDER.ENTER_CAMPAIGN_NAME' | translate }}"
+                  formControlName="title"
+                  [ngClass]="{ 'is-invalid': challengeForm.get('title')?.touched && challengeForm.get('title').hasError('required') }" />
+                <div class="invalid-feedback"
+                  *ngIf="challengeForm.get('title')?.touched && challengeForm.get('title').hasError('required')">{{'COMMON.REQUIRED' | translate }}
+                </div>
+              </div>
+            </div>
+            <div class="mb-3 row">
+              <label for="email_id-field" class="form-label col-xl-3">{{'MENUITEMS.CUSTOMERENGAGEMENT.LIST.CAMPAIGN_DESCRIPTION' | translate }}*</label>
+              <div class="col-lg-8 mb-sm-6 mb-7">
+                <quill-editor *ngIf="challenge?.status !== 'ONGOING' && challenge?.status !== 'FINISHED'" class="custom-quill-editor" required formControlName="description"></quill-editor>
+                <quill-view-html *ngIf="challenge?.status ==='ONGOING' || challenge?.status === 'FINISHED'" [content]="challenge?.description" theme="snow"></quill-view-html>
+              </div>
+            </div>
+            <div class="mb-3 row">
+              <label for="email_id-field" class="form-label col-xl-3 required">{{'COMMON.STATUS' | translate }}*</label>
+              <div class="col-lg-8">
+                <ng-select
+                  (change)="getStatusDisplay($event)"
+                  required [selectableGroup]="true" [closeOnSelect]="true"
+                  formControlName="status" [multiple]="false" [items]="currentStatus" [clearable]="false"
+                  placeholder="{{'PLACEHOLDER.SELECT_STATUS' | translate }}">
+                  <ng-template ng-label-tmp let-item="item" let-clear="clear">
+                    {{
+                      (item === 'DRAFT' ? 'COMMON.STATE.DRAFT':
+                      item === 'ONGOING' ? 'COMMON.STATE.ONGOING' :
+                      item === 'FINISHED' ? 'COMMON.STATE.COMPLETED' : '') | translate
+                      }}
+                  </ng-template>
+                  <ng-template ng-option-tmp let-item$="item$" let-item="item">
+                    {{
+                      (item === 'DRAFT' ? 'COMMON.STATE.DRAFT':
+                      item === 'ONGOING' ? 'COMMON.STATE.ONGOING' :
+                      item === 'FINISHED' ? 'COMMON.STATE.COMPLETED' : '') | translate
+                      }}
+                  </ng-template>
+                </ng-select>
+                <div class="invalid-feedback"
+                  *ngIf="challengeForm.get('status')?.touched && challengeForm.get('status').hasError('required')">{{'COMMON.REQUIRED' | translate }}
+                </div>
+              </div>
+            </div>
+            <div class="mb-3 row">
+              <label for="dueDate" class="col-xl-3 form-label">{{'COMMON.START_DATE' | translate }}</label>
+              <div class="col-lg-8">
+                <div class="input-group">
+                  <input formControlName="startDate" [inline]="false" class="form-control bg-light border-light"
+                    type="text" mwlFlatpickr [altInput]="true" [convertModelValue]="true" placeholder="{{'PLACEHOLDER.START_DATE' | translate }}"
+                    id="isDate">
+                  <div class="input-group-append">
+                    <span (click)="resetDate('startDate')" class="input-group-text"><i
+                        class="ri-delete-bin-line"></i></span>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="mb-3 row">
+              <label for="dueDate" class="col-xl-3 form-label">{{'COMMON.END_DATE' | translate }}</label>
+              <div class="col-lg-8">
+                <div class="input-group">
+                  <input formControlName="endDate" [inline]="false" class="form-control bg-light border-light"
+                    type="text" mwlFlatpickr [altInput]="true" [convertModelValue]="true" placeholder="End Date"
+                    id="isDate">
+                  <div class="input-group-append">
+                    <span (click)="resetDate('endDate')" class="input-group-text"><i
+                        class="ri-delete-bin-line"></i></span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div *ngIf="challenge?.status !=='ONGOING' && challenge?.status !== 'FINISHED'" class="modal-footer mt-5">
+          <div class="hstack gap-2 justify-content-end">
+            <button type="button" class="btn btn-danger" data-bs-dismiss="modal"
+              (click)="exit()">{{'MODULES.ECOMMERCE.MAIN.BACK' | translate }}</button>
+            <button [disabled]="isButtonDisabled || challengeForm.invalid" type="button" (click)="save()"
+              class="btn btn-success" id="add-btn">{{'COMMON.SAVE' | translate }}</button>
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>

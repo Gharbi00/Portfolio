@@ -1,0 +1,546 @@
+<app-breadcrumbs
+  [title]="project ? 'MODULES.COLLABORATION.PROJECTS.BREADCRUMBS_EDIT_PROJECT' : 'MODULES.COLLABORATION.PROJECTS.BREADCRUMBS_CREATE_PROJECT' | translate"
+  [breadcrumbItems]="breadCrumbItems"></app-breadcrumbs><ng-container *ngIf="!(navigating$ | async)">
+
+  <form *ngIf="projectForm" [formGroup]="projectForm">
+    <div class="row">
+      <div class="col-lg-8">
+        <div class="card">
+          <div class="card-body">
+            <div class="mb-3">
+              <label class="form-label" for="project-title-input">{{ 'MODULES.COLLABORATION.PROJECTS.PROJECT_TITLE' |
+                translate }}</label>
+              <input formControlName="name" required
+                [ngClass]="{ 'is-invalid': projectForm.get('name')?.touched && projectForm.get('name').hasError('required') }"
+                type="text" class="form-control" id="project-title-input"
+                placeholder="{{ 'MODULES.COLLABORATION.PROJECTS.ENTER_PROJECT_TITLE' | translate }}">
+              <div class="text-danger"
+                *ngIf="projectForm.get('name')?.touched && projectForm.get('name').hasError('required')">
+                {{ 'MODULES.COLLABORATION.PROJECTS.REQUIRED' | translate }}
+              </div>
+            </div>
+
+            <div class="mb-3">
+              <div>
+                <label class="form-label" for="project-thumbnail-img">{{
+                  'MODULES.COLLABORATION.PROJECTS.THUMBNAIL_IMAGE' | translate }}</label>
+              </div>
+              <div class="mt-2 df-flex">
+                <div class="img-wrap w-30 h-30 me-3 mb-2">
+                  <ng-container *ngIf="picture.value?.baseUrl">
+                    <span class="delete-icon w-6 h-6 flex items-center justify-center cursor-pointer"
+                      (click)="removePicture()">
+                      <i class="ri-delete-bin-fill ft text-danger"></i>
+                    </span>
+                    <img (click)="upload()" class="w-30 h-30 rounded object-cover"
+                      [src]="picture?.value?.baseUrl + '/' + picture?.value?.path"
+                      alt="{{ 'MODULES.COLLABORATION.PROJECTS.BLOG_PICTURE' | translate }}">
+                  </ng-container>
+                  <div *ngIf="!picture.value?.baseUrl" (click)="upload()"
+                    class="w-30 h-30 mb-3 col-4 border rounded overflow-hidden cursor-pointer d-flex align-items-center justify-content-center">
+                    <span class="fs-5 fw-bold">{{ 'MODULES.COLLABORATION.PROJECTS.UPLOAD' | translate }}</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="mb-3">
+              <label class="form-label">{{ 'MODULES.COLLABORATION.PROJECTS.PROJECT_DESCRIPTION' | translate }}</label>
+              <textarea required formControlName="description"
+                [ngClass]="{ 'is-invalid': projectForm.get('description')?.touched && projectForm.get('description').hasError('required') }"
+                name="description" id="comments" rows="3" class="form-control bg-light border-light"
+                placeholder="{{ 'MODULES.COLLABORATION.PROJECTS.ENTER_PROJECT_DESCRIPTION' | translate }}"></textarea>
+              <div class="text-danger"
+                *ngIf="projectForm.get('description')?.touched && projectForm.get('description').hasError('required')">
+                {{ 'MODULES.COLLABORATION.PROJECTS.REQUIRED' | translate }}
+              </div>
+            </div>
+
+            <div class="row mb-3">
+              <div class="col-lg-6">
+                <div class="mb-3 mb-lg-0">
+                  <label for="choices-priority-input" class="form-label">{{ 'MODULES.COLLABORATION.PROJECTS.PRIORITY' |
+                    translate }}</label>
+                  <select
+                    [ngClass]="{ 'is-invalid': projectForm.get('priority')?.touched && projectForm.get('priority').hasError('required') }"
+                    required class="form-select form-control-line" [formControlName]="'priority'">
+                    <option selected disabled value="">{{ 'MODULES.COLLABORATION.PROJECTS.SELECT_OPTION' | translate }}
+                    </option>
+                    <option *ngFor="let pr of priorities" [value]="pr">{{ 'COMMON.PRIORITY.' + pr |
+                      translate }}</option>
+                  </select>
+                  <div class="text-danger"
+                    *ngIf="projectForm.get('priority')?.touched && projectForm.get('priority').hasError('required')">
+                    {{ 'MODULES.COLLABORATION.PROJECTS.REQUIRED' | translate }}
+                  </div>
+                </div>
+              </div>
+              <div class="col-lg-6">
+                <div class="mb-3 mb-lg-0">
+                  <label for="choices-status-input" class="form-label">{{ 'MODULES.COLLABORATION.PROJECTS.STATUS' |
+                    translate }}</label>
+                  <select required
+                    [ngClass]="{ 'is-invalid': projectForm.get('status')?.touched && projectForm.get('status').hasError('required') }"
+                    class="form-select form-control-line" [formControlName]="'status'">
+                    <option selected disabled value="">{{ 'MODULES.COLLABORATION.PROJECTS.SELECT_OPTION' | translate }}
+                    </option>
+                    <option *ngFor="let state of status" [value]="state">{{ 'SHARED.' + state |
+                      translate }}</option>
+                  </select>
+                  <div class="text-danger"
+                    *ngIf="projectForm.get('status')?.touched && projectForm.get('status').hasError('required')">
+                    {{ 'MODULES.COLLABORATION.PROJECTS.REQUIRED' | translate }}
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-lg-6">
+                <div>
+                  <label for="datepicker-deadline-input" class="form-label">{{ 'MODULES.COLLABORATION.PROJECTS.DEADLINE'
+                    | translate }}</label>
+                  <input required
+                    [ngClass]="{ 'is-invalid': projectForm.get('deadline')?.touched && projectForm.get('deadline').hasError('required') }"
+                    class="form-control flatpickr-input" formControlName="deadline" type="text"
+                    placeholder="{{ 'MODULES.COLLABORATION.PROJECTS.ENTER_DEADLINE' | translate }}" mwlFlatpickr
+                    [altInput]="true" [convertModelValue]="true" [dateFormat]="'Y-m-d'">
+                  <div class="text-danger"
+                    *ngIf="projectForm.get('deadline')?.touched && projectForm.get('deadline').hasError('required')">
+                    {{ 'MODULES.COLLABORATION.PROJECTS.REQUIRED' | translate }}
+                  </div>
+                </div>
+              </div>
+              <div class="col-lg-6">
+                <div class="mb-3 mb-lg-0">
+                  <label for="choices-status-input" class="form-label">{{ 'MODULES.COLLABORATION.PROJECTS.COLOR' |
+                    translate }}</label>
+                  <ng-select
+                    [ngClass]="{ 'is-invalid': projectForm.get('color')?.touched && projectForm.get('color').hasError('required') }"
+                    [items]="brandColors" [multiple]="false" bindLabel="key" bindValue="value"
+                    [formControlName]="'color'">
+                    <ng-template ng-label-tmp let-item="item" let-clear="clear">
+                      <span class="ng-value-label d-flex align-items-center">
+                        <div class="avatar-xs flex-shrink-0 me-3">
+                          <div class="col-md-auto">
+                            <div class="avatar-xs mb-md-0 mb-4">
+                              <div [ngStyle]="{'background': item.value }"
+                                class="avatar-title text-danger rounded-circle shadow"></div>
+                            </div>
+                          </div>
+                        </div>
+                        {{item.key?.split('_').join(' ') | titlecase}}
+                      </span>
+                      <span class="ng-value-icon right" (click)="clear(item)" aria-hidden="true">×</span>
+                    </ng-template>
+                    <ng-template ng-option-tmp let-item="item">
+                      <div class="d-flex align-items-center">
+                        <div class="avatar-xs flex-shrink-0 me-3">
+                          <div class="col-md-auto">
+                            <div class="avatar-xs mb-md-0 mb-4">
+                              <div [ngStyle]="{'background': item.value }"
+                                class="avatar-title text-danger rounded-circle shadow"></div>
+                            </div>
+                          </div>
+                        </div>
+                        {{item.key?.split('_').join(' ') | titlecase}}
+                      </div>
+                    </ng-template>
+                  </ng-select>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="card">
+          <div class="card-header">
+            <h5 class="card-title mb-0">{{ 'MODULES.COLLABORATION.PROJECTS.RESOURCE_FILES' | translate }}</h5>
+          </div>
+          <div *ngIf="resources?.value?.length" class="card-body row g-3">
+            <div *ngFor="let resource of resources.value" style="width: auto">
+              <div class="d-flex align-items-center border border-dashed p-2 rounded">
+                <div class="flex-shrink-0 avatar-sm">
+                  <div class="avatar-title bg-light rounded">
+                    <img class="w-10 h-10 rounded-md overflow-hidden"
+                      [src]="resource.content?.type?.image?.background?.svg?.baseUrl + '/' + resource.content?.type?.image?.background?.svg?.path">
+                  </div>
+                </div>
+                <div class="flex-grow-1 ms-3">
+                  <h6 class="mb-1"><a href="javascript:void(0);" class="text-body">{{resource?.length > 10 ?
+                      resource?.name?.substr(0,7) + '...' : resource?.name}}</a></h6>
+                  <small class="text-muted">{{resource?.size / 1000 | number:'1.0-2'}} KB</small>
+                </div>
+                <div class="hstack gap-3 fs-16">
+                  <a (click)="downloadDocument(resource?.id)" class="text-muted"><i class="ri-download-2-line"></i></a>
+                  <a href="javascript:void(0);" (click)="removeDocument(resource?.id, 'resource')" class="text-muted"><i
+                      class="ri-delete-bin-line"></i></a>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="card-body">
+            <div class="uploader-wrapper">
+              <ngx-file-drop class="cursor-pointer" (click)="addedFile('resources')"
+                dropZoneLabel="{{ 'MODULES.COLLABORATION.PROJECTS.DROP_FILES_HERE' | translate }}"
+                (onFileDrop)="dropped($event)" (onFileOver)="fileOver($event)" (onFileLeave)="fileLeave($event)">
+                <ng-template ngx-file-drop-content-tmp let-openFileSelector="openFileSelector">
+                  {{ 'MODULES.COLLABORATION.PROJECTS.CLICK_OR_DRAG_FILES' | translate }}
+                </ng-template>
+              </ngx-file-drop>
+            </div>
+          </div>
+        </div>
+        <div class="text-end mb-4">
+          <div class="d-flex gap-1 justify-content-end">
+            <button type="click" (click)="save()" [disabled]="isButtonDisabled || projectForm.invalid"
+              class="btn btn-success w-sm">{{ 'MODULES.COLLABORATION.PROJECTS.CREATE_OR_UPDATE' | translate }}</button>
+          </div>
+        </div>
+      </div>
+      <div class="col-lg-4">
+        <div class="card">
+          <div class="card-header">
+            <h5 class="card-title mb-0">{{ 'MODULES.COLLABORATION.PROJECTS.PRIVACY' | translate }}</h5>
+          </div>
+          <div class="card-body">
+            <div>
+              <label for="choices-privacy-status-input" class="form-label">{{ 'MODULES.COLLABORATION.PROJECTS.PRIVACY' |
+                translate }}</label>
+              <select
+                [ngClass]="{ 'is-invalid': projectForm.get('privacy')?.touched && projectForm.get('privacy').hasError('required') }"
+                class="form-select form-control-line" [formControlName]="'privacy'">
+                <option selected disabled value="">{{ 'MODULES.COLLABORATION.PROJECTS.SELECT_OPTION' | translate }}
+                </option>
+                <option *ngFor="let privacy of privacies" [value]="privacy">{{ 'SHARED.' + privacy
+                  | translate }}</option>
+              </select>
+              <div class="text-danger"
+                *ngIf="projectForm.get('privacy')?.touched && projectForm.get('privacy').hasError('required')">
+                {{ 'MODULES.COLLABORATION.PROJECTS.REQUIRED' | translate }}
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="card">
+          <div class="card-header">
+            <h5 class="card-title mb-0">{{ 'MODULES.COLLABORATION.PROJECTS.TAGS' | translate }}</h5>
+          </div>
+          <div class="card-body">
+            <div class="mb-3">
+              <label class="form-label" for="project-tags-input">{{ 'MODULES.COLLABORATION.PROJECTS.PROJECT_TAGS' |
+                translate }}</label>
+              <ng-select class="no-arrow-select" [items]="[]" [addTag]="true" [isOpen]="false" [multiple]="true" [selectOnTab]="true"
+                formControlName="tags">
+              </ng-select>
+            </div>
+          </div>
+        </div>
+        <div class="card">
+          <div class="card-header">
+            <h5 class="card-title mb-0">{{ 'MODULES.COLLABORATION.PROJECTS.SETTINGS' | translate }}</h5>
+          </div>
+          <div class="card-body">
+            <div class="mb-3">
+              <label for="choices-lead-input" class="form-label">{{ 'MODULES.COLLABORATION.PROJECTS.TEAM_LEAD' |
+                translate }}</label>
+              <div class="avatar-group">
+                <ng-container *ngFor="let user of selectedLead.slice(0, 4)">
+                  <a *ngIf="user?.picture" href="javascript: void(0);" class="avatar-group-item shadow"
+                    [matTooltip]="user?.firstName" placement="top">
+                    <div class="avatar-xs">
+                      <img [src]="user?.picture.baseUrl + '/' + user?.picture.path" alt=""
+                        class="rounded-circle h-100 img-fluid">
+                    </div>
+                  </a>
+                  <a *ngIf="!user?.picture" href="javascript: void(0);" class="avatar-group-item shadow"
+                    [matTooltip]="user?.firstName" placement="top">
+                    <div class="avatar-xs">
+                      <div class="avatar-title rounded-circle bg-info">
+                        {{user?.firstName?.charAt(0) || 'N'}}
+                      </div>
+                    </div>
+                  </a>
+                </ng-container>
+                <div *ngIf="selectedLead?.length > 4" class="avatar-group-item shadow">
+                  <a (click)="openMemberModal(selectedUsersModal, 'member')" href="javascript:void(0);" class="d-block">
+                    <div class="avatar-xs">
+                      <span class="avatar-title bg-info rounded-circle text-uppercase">
+                        ...
+                      </span>
+                    </div>
+                  </a>
+                </div>
+                <a href="javascript: void(0);" (click)="openMemberModal(memberModal, 'lead')"
+                  class="avatar-group-item shadow"
+                  [matTooltip]="'MODULES.COLLABORATION.PROJECTS.ADD_MEMBERS' | translate" placement="top">
+                  <div class="avatar-xs" data-bs-toggle="modal" data-bs-target="#inviteMembersModal">
+                    <div class="avatar-title fs-16 rounded-circle bg-light border-dashed border text-primary">
+                      +
+                    </div>
+                  </div>
+                </a>
+              </div>
+            </div>
+            <div>
+              <label class="form-label">{{ 'MODULES.COLLABORATION.PROJECTS.TEAM_MEMBERS' | translate }}</label>
+              <div class="avatar-group">
+                <ng-container *ngFor="let user of selectedMembers.slice(0, 4)">
+                  <a *ngIf="user?.picture" href="javascript: void(0);" class="avatar-group-item shadow"
+                    [matTooltip]="user?.firstName" placement="top">
+                    <div class="avatar-xs">
+                      <img [src]="user?.picture.baseUrl + '/' + user?.picture.path" alt=""
+                        class="rounded-circle h-100 img-fluid">
+                    </div>
+                  </a>
+                  <a *ngIf="!user?.picture" href="javascript: void(0);" class="avatar-group-item shadow"
+                    [matTooltip]="user?.firstName" placement="top">
+                    <div class="avatar-xs">
+                      <div class="avatar-title rounded-circle bg-info shadow">
+                        {{user?.firstName?.charAt(0) || 'N'}}
+                      </div>
+                    </div>
+                  </a>
+                </ng-container>
+                <div *ngIf="selectedMembers?.length > 4" class="avatar-group-item shadow">
+                  <a (click)="openMemberModal(selectedUsersModal, 'member')" href="javascript:void(0);" class="d-block">
+                    <div class="avatar-xs">
+                      <span class="avatar-title bg-info rounded-circle text-uppercase">
+                        ...
+                      </span>
+                    </div>
+                  </a>
+                </div>
+                <a href="javascript: void(0);" (click)="openMemberModal(memberModal, 'member')"
+                  class="avatar-group-item shadow"
+                  [matTooltip]="'MODULES.COLLABORATION.PROJECTS.ADD_MEMBERS' | translate" placement="top">
+                  <div class="avatar-xs" data-bs-toggle="modal" data-bs-target="#inviteMembersModal">
+                    <div class="avatar-title fs-16 rounded-circle bg-light border-dashed border text-primary">
+                      +
+                    </div>
+                  </div>
+                </a>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div *ngIf="project" class="card">
+          <div class="card-header">
+            <h6 class="card-title fw-semibold mb-0">{{ 'MODULES.COLLABORATION.PROJECTS.FILES_ATTACHMENT' | translate }}
+            </h6>
+          </div>
+          <div *ngIf="attachments?.value?.length" class="card-body">
+            <div *ngFor="let attachment of attachments.value"
+              class="d-flex align-items-center border border-dashed p-2 rounded">
+              <div class="flex-shrink-0 avatar-sm">
+                <div class="avatar-title bg-light rounded">
+                  <img class="w-10 h-10 rounded-md overflow-hidden"
+                    [src]="attachment.content?.type?.image?.background?.svg?.baseUrl + '/' + attachment.content?.type?.image?.background?.svg?.path">
+                </div>
+              </div>
+              <div class="flex-grow-1 ms-3">
+                <h6 class="mb-1"><a href="javascript:void(0);" class="text-body">{{ attachment.name.length > 10 ?
+                    attachment.name.substr(0, 7) + '...' : attachment.name }}</a></h6>
+                <small class="text-muted">{{ (attachment.size / 1000) | number: '1.0-2' }} KB</small>
+              </div>
+              <div class="hstack gap-3 fs-16">
+                <a (click)="downloadDocument(attachment.id)" class="text-muted"><i class="ri-download-2-line"></i></a>
+                <a href="javascript:void(0);" (click)="removeDocument(attachment.id, 'attachment')"
+                  class="text-muted"><i class="ri-delete-bin-line"></i></a>
+              </div>
+            </div>
+          </div>
+          <div *ngIf="isBrowser" class="uploader-wrapper card-body">
+            <ngx-file-drop class="cursor-pointer" (click)="addedFile('attachments')"
+              dropZoneLabel="{{ 'MODULES.COLLABORATION.PROJECTS.DROP_FILES_HERE' | translate }}"
+              (onFileDrop)="dropped($event)" (onFileOver)="fileOver($event)" (onFileLeave)="fileLeave($event)">
+              <ng-template ngx-file-drop-content-tmp let-openFileSelector="openFileSelector">
+                {{ 'MODULES.COLLABORATION.PROJECTS.CLICK_OR_DRAG_FILES' | translate }}
+              </ng-template>
+            </ngx-file-drop>
+          </div>
+        </div>
+      </div>
+    </div>
+  </form>
+
+  <ng-template #selectedUsersModal role="document" let-modal>
+    <div class="modal-header p-3 bg-soft-success">
+      <h5 class="modal-title" id="inviteMembersModalLabel">{{ 'MODULES.COLLABORATION.PROJECTS.MEMBERS' | translate }}
+      </h5>
+      <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"
+        (click)="modal.dismiss('Cross click')"></button>
+    </div>
+    <div class="modal-body p-4">
+      <div class="mb-4 d-flex align-items-center">
+        <div class="me-2">
+          <h5 class="mb-0 fs-13">{{ 'MODULES.COLLABORATION.PROJECTS.MEMBERS' | translate }} :</h5>
+        </div>
+        <div class="avatar-group justify-content-center">
+          <ng-container *ngFor="let member of selectedMembers">
+            <a *ngIf="member?.picture?.baseUrl" href="javascript:void(0);" class="avatar-group-item"
+              data-bs-toggle="tooltip" data-bs-trigger="hover" data-bs-placement="top" title="{{ member.firstName }}">
+              <div class="avatar-xs">
+                <img [src]="member?.picture?.baseUrl + '/' + member?.picture?.path" alt=""
+                  class="rounded-circle h-100 img-fluid">
+              </div>
+            </a>
+            <a *ngIf="!member?.picture" href="javascript: void(0);" class="avatar-group-item shadow"
+              [matTooltip]="member?.firstName" placement="top">
+              <div class="avatar-xs">
+                <div class="avatar-title rounded-circle bg-info text-uppercase shadow">
+                  {{ member?.firstName?.charAt(0) || 'N'}}
+                </div>
+              </div>
+            </a>
+          </ng-container>
+        </div>
+      </div>
+      <ngx-simplebar class="mx-n4 px-4" style="max-height: 225px;">
+        <div class="vstack gap-3">
+          <div *ngFor="let member of selectedMembers" class="d-flex align-items-center">
+            <div class="avatar-xs flex-shrink-0 me-3">
+              <div *ngIf="!member?.picture" class="col-md-auto">
+                <div class="avatar-xs mb-md-0 mb-4">
+                  <div class="avatar-title rounded-circle bg-info text-uppercase shadow">
+                    {{ member?.firstName?.charAt(0) || 'N'}}
+                  </div>
+                </div>
+              </div>
+              <img *ngIf="member?.picture" [src]="member?.picture?.baseUrl + '/' + member?.picture?.path"
+                class="img-fluid h-100 rounded-circle">
+            </div>
+            <div class="flex-grow-1">
+              <h5 class="fs-13 mb-0"><a href="javascript:void(0);" class="text-body d-block">{{ member?.firstName }} {{
+                  member?.lastName }}</a></h5>
+            </div>
+          </div>
+        </div>
+      </ngx-simplebar>
+    </div>
+    <div class="modal-footer">
+      <button type="button" class="btn btn-light w-xs" data-bs-dismiss="modal" (click)="modal.close('Close click')">{{
+        'COMMON.CANCEL' | translate }}</button>
+    </div>
+  </ng-template>
+  <ng-template #memberModal role="document" let-modal>
+    <div class="modal-header p-3 bg-soft-success">
+      <h5 class="modal-title" id="inviteMembersModalLabel">{{ 'MODULES.COLLABORATION.PROJECTS.MEMBERS' | translate }}
+      </h5>
+      <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"
+        (click)="modal.dismiss('Cross click')"></button>
+    </div>
+    <div class="modal-body p-4">
+      <div class="search-box mb-3">
+        <form [formGroup]="searchForm">
+          <input type="text" formControlName="searchString" class="form-control bg-light border-light"
+            placeholder="{{ 'MODULES.COLLABORATION.PROJECTS.SEARCH_HERE' | translate }}">
+          <i class="ri-search-line search-icon"></i>
+        </form>
+      </div>
+      <div *ngIf="selectedItem === 'member' && selectedMembers?.length" class="mb-4 d-flex align-items-center">
+        <div class="me-2">
+          <h5 class="mb-0 fs-13">{{ 'MODULES.COLLABORATION.PROJECTS.MEMBERS' | translate }} :</h5>
+        </div>
+        <div *ngIf="selectedItem === 'member'" class="avatar-group justify-content-center">
+          <ng-container *ngFor="let member of selectedMembers">
+            <a *ngIf="member?.picture?.baseUrl" href="javascript:void(0);" class="avatar-group-item"
+              data-bs-toggle="tooltip" data-bs-trigger="hover" data-bs-placement="top" title="{{ member.firstName }}">
+              <div class="avatar-xs">
+                <img [src]="member?.picture?.baseUrl + '/' + member?.picture?.path" alt=""
+                  class="rounded-circle h-100 img-fluid">
+              </div>
+            </a>
+            <a *ngIf="!member?.picture" href="javascript: void(0);" class="avatar-group-item shadow"
+              [matTooltip]="member?.firstName" placement="top">
+              <div class="avatar-xs">
+                <div class="avatar-title rounded-circle bg-info shadow">
+                  {{ member?.firstName?.charAt(0) || 'N'}}
+                </div>
+              </div>
+            </a>
+          </ng-container>
+        </div>
+      </div>
+      <div *ngIf="selectedItem === 'lead' && selectedLead?.length" class="mb-4 d-flex align-items-center">
+        <div class="me-2">
+          <h5 class="mb-0 fs-13">{{ 'MODULES.COLLABORATION.PROJECTS.MEMBERS' | translate }} :</h5>
+        </div>
+        <div class="avatar-group justify-content-center">
+          <ng-container *ngFor="let member of selectedLead">
+            <a *ngIf="member?.picture?.baseUrl" href="javascript:void(0);" class="avatar-group-item"
+              data-bs-toggle="tooltip" data-bs-trigger="hover" data-bs-placement="top" title="{{ member.firstName }}">
+              <div class="avatar-xs">
+                <img [src]="member?.picture?.baseUrl + '/' + member?.picture?.path" alt=""
+                  class="rounded-circle h-100 img-fluid">
+              </div>
+            </a>
+            <a *ngIf="!member?.picture" href="javascript: void(0);" class="avatar-group-item shadow"
+              [matTooltip]="member?.firstName" placement="top">
+              <div class="avatar-xs">
+                <div class="avatar-title rounded-circle bg-info shadow">
+                  {{ member?.firstName?.charAt(0) || 'N'}}
+                </div>
+              </div>
+            </a>
+          </ng-container>
+        </div>
+      </div>
+      <ngx-simplebar class="mx-n4 px-4" style="max-height: 225px;">
+        <div *ngIf="team?.length" class="vstack gap-3">
+          <div *ngFor="let member of team" class="d-flex align-items-center">
+            <div class="avatar-xs flex-shrink-0 me-3">
+              <div *ngIf="!member?.user?.picture" class="col-md-auto">
+                <div class="avatar-xs mb-md-0 mb-4">
+                  <div class="avatar-title rounded-circle bg-info shadow">
+                    {{ member?.user?.firstName?.charAt(0) || 'N'}}
+                  </div>
+                </div>
+              </div>
+              <img *ngIf="member?.user?.picture"
+                [src]="member?.user.picture?.baseUrl + '/' + member?.user.picture?.path"
+                class="img-fluid h-100 rounded-circle">
+            </div>
+            <div class="flex-grow-1">
+              <h5 class="fs-13 mb-0"><a href="javascript:void(0);" class="text-body d-block">{{ member?.user?.firstName
+                  }} {{ member?.user?.lastName }}</a></h5>
+            </div>
+            <div class="flex-shrink-0">
+              <button type="button"
+                (click)="!isAdded(member?.user?.id) ? addMember(member) : removeMember(member?.user?.id)"
+                class="btn btn-light btn-sm">{{ !isAdded(member?.user?.id) ? 'Add' : 'Remove' }}</button>
+            </div>
+          </div>
+        </div>
+        <div *ngIf="!team?.length && !isMemberLoading" class="py-4 mt-4 text-center" id="noresult">
+          <lord-icon src="https://cdn.lordicon.com/vlycxjwx.json" trigger="loop"
+            [colors]="'primary:' + primaryColor + ',secondary:' + secondaryColor" style="width:72px;height:72px"></lord-icon>
+          <h5 class="mt-4">{{ 'COMMON.NO_RESULT' | translate }}</h5>
+        </div>
+        <div *ngIf="isMemberLoading" class="py-4 mt-4 text-center" id="noresult">
+          <lord-icon src="https://cdn.lordicon.com/msoeawqm.json" trigger="loop"
+            [colors]="'primary:' + primaryColor + ',secondary:' + secondaryColor" style="width:72px;height:72px"></lord-icon>
+          <h5 class="mt-4">{{ 'COMMON.LOADING' | translate }}</h5>
+        </div>
+        <div class="mt-3 justify-content-center d-flex" *ngIf="isLast === false && team?.length">
+          <button class="btn btn-soft-secondary" (click)="loadMoreMembers()">{{ 'COMMON.LOAD_MORE' | translate
+            }}</button>
+        </div>
+      </ngx-simplebar>
+    </div>
+    <div class="modal-footer">
+      <button type="button" class="btn btn-light w-xs" data-bs-dismiss="modal" (click)="modal.close('Close click')">{{
+        'COMMON.CANCEL' | translate }}</button>
+    </div>
+  </ng-template>
+
+</ng-container>
+<div *ngIf="navigating$ | async" class="vh-100 py-4 text-center" fxLayout="column" fxLayoutAlign="center center"
+  fxLayoutGap="1rem">
+  <div>
+    <lord-icon trigger="loop" style="width:72px;height:72px" [colors]="'primary:' + primaryColor + ',secondary:' + secondaryColor"
+      src="https://cdn.lordicon.com/msoeawqm.json">
+    </lord-icon>
+  </div>
+  <div class="mt-4">
+    <h5>{{ 'COMMON.LOADING' | translate }}</h5>
+  </div>
+</div>

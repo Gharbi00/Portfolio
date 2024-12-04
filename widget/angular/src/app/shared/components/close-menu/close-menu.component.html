@@ -1,0 +1,20 @@
+<div class="text-center" #imgClose>
+  <svg style="border-radius: 50%;"
+    width="30"
+    height="30"
+    [ngStyle]="{
+       'transform': ishovering ? 'scale(1.5)' : 'scale(1)',
+      'background-image': ishovering ? 'url('+'https://res.cloudinary.com/sifca/image/upload/f_auto/woodfan/product/default' + ')' : ''
+    }"
+    class="svg-icon"
+  >
+    <use xlink:href="#svg-cross"></use>
+  </svg>
+</div>
+
+<!-- Ensure this part is included in your index.html or at the top of your component template -->
+<svg style="display: none;" >
+  <symbol id="svg-cross" viewBox="0 0 12 12" preserveAspectRatio="xMinYMin meet">
+    <path d="M12,9.6L9.6,12L6,8.399L2.4,12L0,9.6L3.6,6L0,2.4L2.4,0L6,3.6L9.6,0L12,2.4L8.399,6L12,9.6z" />
+  </symbol>
+</svg>

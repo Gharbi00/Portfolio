@@ -1,0 +1,118 @@
+.custom-quill-editor .ql-editor {
+  min-height: 8rem;
+}
+
+.mrg-x {
+  margin-right: 0.5rem;
+}
+
+.cursor{
+  cursor: pointer;
+}
+
+.header-container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 1rem;
+}
+
+.border-x {
+border: solid 1px #b5b2b4;
+}
+
+.custom-checkbox-width {
+width: 16px;
+height: 16px;
+}
+
+.text-decoration-linethrougth {
+text-decoration: line-through;
+}
+
+.border-md-left {
+border-start: 3px solid blue;
+}
+
+.border-md-left-none {
+  border-start: 0;
+}
+
+.drag-list .drag-icon {
+  visibility: hidden;
+}
+
+.drag-list:hover .drag-icon {
+  visibility: visible;
+}
+
+@media (max-width: 767px) {
+  .drag-list .drag-icon {
+      visibility: visible;
+  }
+}
+.cdk-drag-animating {
+transition: transform 250ms cubic-bezier(0, 0, 0.2, 1);
+
+}
+.cdk-drop-list-dragging .example-box:not(.cdk-drag-placeholder) {
+transition: transform 250ms cubic-bezier(0, 0, 0.2, 1);
+
+}
+.h-12 {
+height: 3rem !important;
+}
+.h-14 {
+height: 3.5rem !important;
+}
+.h-16 {
+height: 4rem !important;
+}
+.mr-2 {
+margin-right: 1rem !important;
+}
+.text-hint {
+color: #9CA3AF;
+}
+.ht {
+height: 100%;
+font-size: 1.125rem; /* equivalent to text-lg in tailwind */
+font-weight: 600; /* equivalent to font-semibold in tailwind */
+background-color: #f9fafb; /* equivalent to bg-gray-50 in tailwind */
+color: inherit;
+}
+a.disabled {
+pointer-events: none;
+opacity: 0.5;
+}
+.border-t {
+border-top: 1px solid #575757;
+}
+
+.h-30 {
+  height: 7.5rem;
+}
+.w-30 {
+  width: 7.5rem;
+}
+.img-wrap {
+  position: relative;
+}
+
+.delete-icon {
+  position: absolute;
+  top: 0;
+  right: 0;
+  z-index: 1;
+  background-color: white;
+  border-radius: 50%;
+  width: 24px;
+  height: 24px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.df-flex {
+  display: flex;
+  flex-wrap: wrap;
+}

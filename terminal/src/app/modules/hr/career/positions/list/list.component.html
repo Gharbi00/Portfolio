@@ -1,0 +1,196 @@
+<app-breadcrumbs title=" {{ 'MODULES.HR.CAREER.POSITIONS.JOB_POSITIONS' | translate }}" [breadcrumbItems]="breadCrumbItems"></app-breadcrumbs>
+<ng-container *ngIf="!(navigating$ | async)">
+
+  <div class="row">
+    <div class="col-lg-12">
+      <div class="card" id="customerList">
+        <div class="card-header border-bottom-dashed">
+          <div class="row g-4 align-items-center">
+            <div class="col-sm">
+              <div>
+                <h5 class="card-title mb-0"> {{ 'MODULES.HR.CAREER.POSITIONS.JOB_POSITIONS' | translate }}</h5>
+              </div>
+            </div>
+            <div class="col-sm-auto">
+              <button type="button" routerLink="/hr/career/positions/new-job" class="btn btn-success me-1 add-btn" data-bs-toggle="modal" id="create-btn" data-bs-target="#showModal"><i
+                  class="ri-add-line align-bottom me-1"></i> {{ 'MODULES.HR.CAREER.POSITIONS.ADD_POSITION' | translate }}</button>
+              <button (click)="openEmailModal(emailModal)" type="button" class="btn btn-primary me-1"><i class="ri-send-plane-fill align-bottom me-1"></i>{{ 'COMMON.SEND' | translate }}</button>
+              <button (click)="downloadDocument()" type="button" class="btn btn-secondary me-1"><i class="ri-file-download-line align-bottom me-1"></i>
+                {{ 'COMMON.EXPORT' | translate }}</button>
+            </div>
+          </div>
+        </div>
+        <div class="card-body border-bottom-dashed border-bottom">
+          <div class="row d-flex justify-content-between g-3">
+            <div class="col-lg-8 col-md-6">
+              <div class="search-box">
+                <form [formGroup]="searchForm">
+                  <input type="text" formControlName="searchString" name="searchTerm" class="form-control"
+                    placeholder="{{ 'COMMON.ENTER' | translate }} {{ 'COMMON.SEARCH_FOR_POSITIONS' | translate }}">
+                  <i class="ri-search-line search-icon"></i>
+                </form>
+              </div>
+            </div>
+            <div class="col-lg-2 col-md-3">
+              <select (change)="onStatusChnange($event)" class="form-control form-select">
+                <option selected value="all">{{ 'COMMON.ALL' | translate }}</option>
+                <option *ngFor="let state of jobDefinitionStatus" [value]="state">{{'COMMON.STATE.'+ state | translate }}
+                </option>
+              </select>
+            </div>
+          </div>
+        </div>
+        <div class="card-body">
+          <div class="table-responsive table-card mb-1">
+            <table class="table align-middle table-nowrap">
+              <thead class="table-light text-uppercase text-muted">
+                <tr>
+                  <th> {{ 'MODULES.HR.CAREER.POSITIONS.POSITION' | translate }}</th>
+                  <th> {{ 'COMMON.DESCRIPTION' | translate }}</th>
+                  <th> {{ 'COMMON.STATUS' | translate }}</th>
+                  <th> {{ 'MODULES.HR.CAREER.POSITIONS.DEPARTMENT' | translate }}</th>
+                  <th class="d-flex justify-content-center"> {{ 'COMMON.ACTION' | translate }}</th>
+                </tr>
+              </thead>
+              <tbody *ngIf="((loadingjobDefinitions$ | async) === false || null || undefined) && (jobDefinitions$ | async).length">
+                <tr *ngFor="let data of jobDefinitions$ | async" id="c_{{data.id}}">
+                  <td><ngb-highlight [result]="data?.title"></ngb-highlight></td>
+                  <td>
+                    <div>
+                      {{data?.description?.description?.length > 15 ?
+                      data?.description?.description.substr(0,15) + '...' :
+                      data?.description?.description}}
+                    </div>
+                  </td>
+                  <td>
+                    <span [ngClass]="{
+                        'badge-soft-warning': data?.status === 'DRAFT',
+                        'badge-soft-primary': data?.status === 'ONGOING',
+                        'badge-soft-success': data?.status === 'HIRED',
+                        'badge-soft-danger': data?.status === 'CANCELED'}" class="badge text-uppercase">
+                      {{'COMMON.STATE.'+ data.status | translate }}
+                    </span>
+                    <div>
+                    </div>
+                  </td>
+                  <td><ngb-highlight [result]="data?.department?.name"></ngb-highlight></td>
+                  <td>
+                    <ul class="d-flex justify-content-center list-inline hstack gap-2 mb-0">
+                      <li routerLink="/hr/career/positions/{{data.id}}" class="list-inline-item edit" matTooltip="Edit" placement="top">
+                        <a href="javascript:void(0);" data-bs-toggle="modal" class="text-primary d-inline-block edit-item-btn">
+                          <i class="ri-eye-fill fs-16"></i>
+                        </a>
+                      </li>
+                      <li (click)="openTaskModal(taskModal, element)" class="list-inline-item edit" matTooltip="Edit" placement="top">
+                        <a (click)="openStatusModal(statusModal, data)" href="javascript:void(0);" data-bs-toggle="modal" class="text-primary d-inline-block edit-item-btn">
+                          <i class="ri-pencil-fill fs-16"></i>
+                        </a>
+                      </li>
+                    </ul>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <div *ngIf="((loadingjobDefinitions$ | async) === false || null || undefined) && (jobDefinitions$ | async).length" class="px-3">
+            <div class="row justify-content-md-between align-items-md-center gy-2">
+              <div class="col col-sm-6">
+                <div class="dataTables_info mb-2" id="tickets-table_info" role="status" aria-live="polite">
+                  {{ 'COMMON.SHOWING' | translate }} {{pagination?.startIndex + 1}}–{{pagination?.endIndex ===
+                  pagination?.length ? pagination?.endIndex : pagination?.endIndex + 1}} {{ 'COMMON.OF' | translate }}
+                  {{pagination?.length}} {{ 'COMMON.ENTRIES' | translate }}
+                </div>
+              </div>
+              <div class="col col-sm-6">
+                <div class="text-sm-right float-end listjs-pagination">
+                  <ngb-pagination [maxSize]="5" [collectionSize]="pagination?.length" [(page)]="page" (pageChange)="onPageChange($event)" [pageSize]="pagination?.size">
+                  </ngb-pagination>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div id="noresult" class="py-4 mt-4 text-center" *ngIf="(loadingjobDefinitions$ | async) || (!(loadingjobDefinitions$ | async) && !(jobDefinitions$ | async).length)">
+            <div *ngIf="loadingjobDefinitions$ | async">
+              <lord-icon trigger="loop" style="width:72px;height:72px" [colors]="'primary:' + primaryColor + ',secondary:' + secondaryColor" src="https://cdn.lordicon.com/msoeawqm.json">
+              </lord-icon>
+              <h5 class="mt-4"> {{'COMMON.LOADING' | translate }}</h5>
+            </div>
+            <div *ngIf="!(loadingjobDefinitions$ | async) && !(jobDefinitions$ | async).length">
+              <lord-icon trigger="loop" style="width:72px;height:72px" [colors]="'primary:' + primaryColor + ',secondary:' + secondaryColor" src="https://cdn.lordicon.com/msoeawqm.json">
+              </lord-icon>
+              <h5 class="mt-4"> {{ 'COMMON.NO_RESULT' | translate }}</h5>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <ng-template #statusModal role="document" let-modal>
+    <div class="modal-header bg-soft-info p-3">
+      <h5 class="modal-title" id="exampleModalLabel"> {{ 'MODULES.HR.CAREER.POSITIONS.POSITION_STATUS' | translate }}</h5>
+      <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" id="close-modal" (click)="modal.dismiss('Cross click')"></button>
+    </div>
+    <form [formGroup]="statusForm">
+      <div class="modal-body">
+        <div class="row g-3">
+          <div class="col-lg-12">
+            <div>
+              <label for="email_id-field" class="form-label"> {{ 'COMMON.STATUS' | translate }}</label>
+              <select class="form-control form-select" [ngClass]="{ 'is-invalid': statusForm.get('status')?.touched && statusForm.get('status').hasError('required') }" [formControlName]="'status'"
+                required>
+                <option selected value="" disabled> {{ 'COMMON.SELECT_OPTION' | translate }} </option>
+                <option *ngFor="let state of jobDefinitionStatus" [value]="state">
+                  {{'COMMON.STATE.'+ state | translate }}
+                </option>
+              </select>
+              <div class="invalid-feedback" *ngIf="statusForm.get('status')?.touched && statusForm.get('status').hasError('required')">
+                {{ 'MODULES.HR.CAREER.POSITIONS.REQUIRED' | translate }}!
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <div class="hstack gap-2 justify-content-end">
+          <button type="button" class="btn btn-light" data-bs-dismiss="modal" (click)="modal.close('Close click')"> {{ 'COMMON.CLOSE' | translate }}</button>
+          <button type="button" [disabled]="statusForm.invalid || isButtonDisabled" (click)="save()" class="btn btn-success" id="add-btn"> {{ 'COMMON.SAVE' | translate }}</button>
+        </div>
+      </div>
+    </form>
+  </ng-template>
+
+  <ng-template #emailModal role="document" let-modal>
+    <div class="modal-header p-3 bg-soft-info">
+      <h5 class="modal-title" id="exampleModalLabel">{{ 'COMMON.SEND' | translate }} Email</h5>
+      <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" id="close-modal" (click)="modal.dismiss('Cross click')"></button>
+    </div>
+    <form [formGroup]="emailForm">
+      <div class="modal-body">
+        <div class="row g-3">
+          <div class="col-lg-12 mb-3">
+            <label class="form-label" for="product-tags-input">{{ 'COMMON.EMAILS' | translate }} ( {{ 'COMMON.PRESS_ENTER_TO_ADD' | translate }})</label>
+            <ng-select [items]="[]" class="no-arrow-select" [addTag]="true" [isOpen]="false" [multiple]="true" [selectOnTab]="true" formControlName="emails">
+            </ng-select>
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <div class="hstack gap-2 justify-content-end">
+          <button type="button" class="btn btn-light" data-bs-dismiss="modal" (click)="modal.close('Close click')"> {{ 'COMMON.CLOSE' | translate }}</button>
+          <button type="button" [disabled]="isEmailButtonDisabled || emailForm.invalid" (click)="send()" class="btn btn-success" id="add-btn">{{ 'COMMON.SEND' | translate }}</button>
+        </div>
+      </div>
+    </form>
+  </ng-template>
+</ng-container>
+<div *ngIf="navigating$ | async" class="vh-100 py-4 text-center" fxLayout="column" fxLayoutAlign="center center" fxLayoutGap="1rem">
+  <div>
+    <lord-icon trigger="loop" style="width:72px;height:72px" [colors]="'primary:' + primaryColor + ',secondary:' + secondaryColor" src="https://cdn.lordicon.com/msoeawqm.json">
+    </lord-icon>
+  </div>
+  <div class="mt-4">
+    <h5> {{ 'COMMON.LOADING' | translate }}</h5>
+  </div>
+</div>

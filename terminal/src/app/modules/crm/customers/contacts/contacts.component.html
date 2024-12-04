@@ -1,0 +1,418 @@
+<ng-container *ngIf="!(navigating$ | async)">
+  <app-breadcrumbs title="{{ 'MODULES.CRM.CUSTOMERS.CONTACTS' | translate }}" [breadcrumbItems]="breadCrumbItems"></app-breadcrumbs>
+  <div class="row">
+    <div class="col-lg-12">
+      <div class="card">
+        <div class="card-header">
+          <div class="d-flex align-items-center flex-wrap gap-2">
+            <div class="flex-grow-1">
+              <button class="btn btn-info add-btn" data-bs-toggle="modal" data-bs-target="#showModal" (click)="openContactModal(content, null)"><i class="ri-add-fill align-bottom"></i> {{
+                'MODULES.CRM.CUSTOMERS.ADD_CONTACTS' | translate }}</button>
+            </div>
+            <div class="col-sm-auto hstack gap-2">
+              <button (click)="openImportModal(importModal)" type="button" class="btn btn-secondary"><i class="ri-file-upload-line align-bottom"></i>
+                {{ 'COMMON.IMPORT' | translate }}</button>
+              <button (click)="downloadExcel()" type="button" class="btn btn-primary"><i class="ri-file-download-line align-bottom"></i>
+                {{ 'COMMON.EXPORT' | translate }}</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="col-xxl-9">
+      <div class="card" id="contactList">
+        <div class="card-header">
+          <div class="row g-3">
+            <div class="col-md-4">
+              <div class="search-box">
+                <form [formGroup]="searchForm">
+                  <input type="text" formControlName="searchString" name="searchTerm" class="form-control" placeholder="{{ 'MODULES.CRM.CUSTOMERS.SEARCH_FOR_CONTACT' | translate }}">
+                  <i class="ri-search-line search-icon"></i>
+                </form>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="card-body">
+          <div class="table-responsive table-card mb-2">
+            <table class="table align-middle table-nowrap">
+              <thead>
+                <tr class="bg-light text-muted text-uppercase">
+                  <th scope="col">{{ 'COMMON.NAME' | translate }}</th>
+                  <th scope="col">{{ 'COMMON.COMPANY' | translate }}</th>
+                  <th scope="col">{{ 'COMMON.EMAIL' | translate }}</th>
+                  <th scope="col">{{ 'COMMON.PHONE' | translate }}</th>
+                  <th scope="col">{{ 'COMMON.LEAD_SCORE' | translate }}</th>
+                  <th scope="col">{{ 'COMMON.TAGS' | translate }}</th>
+                  <th scope="col">{{ 'MODULES.CRM.CUSTOMERS.LAST_CONTACTED' | translate }}</th>
+                  <th scope="col">{{ 'COMMON.ACTION' | translate }}</th>
+                </tr>
+              </thead>
+              <tbody *ngIf="((loadingContacts$ | async) === false || null || undefined) && (contacts$ | async).length">
+                <tr *ngFor="let data of contacts$ | async" id="c_{{data.id}}">
+                  <td class="name">
+                    <div class="d-flex align-items-center">
+                      <div class="flex-shrink-0">
+                        <img *ngIf="data.media?.pictures?.length" [src]="data.media?.pictures[0].baseUrl + '/' + data.media?.pictures[0].path" class="avatar-xxs rounded-circle image_src">
+                        <div *ngIf="!data?.media?.pictures?.length" class="avatar-xxs rounded-circle bg-light">
+                          <span class="avatar-title-x text-success">
+                            {{data?.name?.charAt(0) ||
+                            'N'}}
+                          </span>
+                        </div>
+                      </div>
+                      <div (click)="openContactModal(content, data)" class="flex-grow-1 fw-medium link-primary cursor-pointer ms-2 name">
+                        {{data.firstName}} {{data.lastName}}</div>
+                    </div>
+                  </td>
+                  <td><ngb-highlight [result]="data.company?.name"></ngb-highlight></td>
+                  <td><ngb-highlight [result]="data.email"></ngb-highlight></td>
+                  <td><ngb-highlight [result]="data.phone?.number"></ngb-highlight></td>
+                  <td><ngb-highlight [result]="data.leadScore"></ngb-highlight></td>
+                  <td class="tags">
+                    <div class="d-flex gap-1">
+                      <span class="badge badge-soft-primary" *ngFor="let tag of data.tags.slice(0,2)">{{tag}}</span>
+                    </div>
+                  </td>
+                  <td class="date">{{data?.lastContacted | date :'longDate'}}</td>
+                  <td>
+                    <ul class="list-inline hstack gap-2 mb-0">
+                      <li *ngIf="data?.phone?.number" class="list-inline-item edit" placement="top">
+                        <a href="tel:+{{data?.phone?.countryCode}}{{data?.phone?.number}}" class="text-primary d-inline-block">
+                          <i class="ri-phone-line fs-16"></i>
+                        </a>
+                      </li>
+                      <li *ngIf="data?.phone?.number" class="list-inline-item edit" placement="top">
+                        <a target="_blank" href="https://wa.me/+{{data?.phone?.countryCode}}{{data?.phone?.number}}" class="text-primary d-inline-block">
+                          <i class="ri-question-answer-line fs-16"></i>
+                        </a>
+                      </li>
+                      <li><a class="dropdown-item" href="javascript:void(0);" (click)="contactPreview(data)"><i class="ri-eye-fill align-bottom me-2 text-primary"></i>
+                        </a></li>
+                      <li><a class="dropdown-item edit-item-btn" data-bs-toggle="modal" (click)="openContactModal(content, data)"><i class="ri-pencil-fill align-bottom me-2 text-primary"></i></a></li>
+                      <li>
+                        <a class="dropdown-item remove-item-btn" data-bs-toggle="modal" (click)="openDeleteModal(deleteModel,data)">
+                          <i class="ri-delete-bin-fill align-bottom me-2 text-danger"></i>
+                        </a>
+                      </li>
+                    </ul>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <div *ngIf="((loadingContacts$ | async) === false || null || undefined) && (contacts$ | async).length" class="px-3">
+            <div class="row justify-content-md-between align-items-md-center gy-2">
+              <div class="col col-sm-6">
+                <div class="dataTables_info mb-2" id="tickets-table_info" role="status" aria-live="polite">
+                  {{ 'COMMON.SHOWING' | translate }} {{pagination?.startIndex + 1}}–{{pagination?.endIndex ===
+                  pagination?.length ? pagination?.endIndex : pagination?.endIndex + 1}} {{ 'COMMON.OF' | translate }}
+                  {{pagination?.length}} {{ 'COMMON.ENTRIES' | translate }}
+                </div>
+              </div>
+              <div class="col col-sm-6">
+                <div class="text-sm-right float-end listjs-pagination">
+                  <ngb-pagination [maxSize]="5" [collectionSize]="pagination?.length" [(page)]="page" (pageChange)="onPageChange($event)" [pageSize]="pagination?.size">
+                  </ngb-pagination>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div id="noresult" class="py-4 mt-4 text-center" *ngIf="(loadingContacts$ | async) || (!(loadingContacts$ | async) && !(contacts$ | async).length)">
+            <div *ngIf="loadingContacts$ | async">
+              <lord-icon trigger="loop" style="width:72px;height:72px" [colors]="'primary:' + primaryColor + ',secondary:' + secondaryColor" src="https://cdn.lordicon.com/msoeawqm.json">
+              </lord-icon>
+              <h5 class="mt-4">{{ 'COMMON.LOADING' | translate }}</h5>
+            </div>
+            <div *ngIf="!(loadingContacts$ | async) && !(contacts$ | async).length">
+              <lord-icon trigger="loop" style="width:72px;height:72px" [colors]="'primary:' + primaryColor + ',secondary:' + secondaryColor" src="https://cdn.lordicon.com/msoeawqm.json">
+              </lord-icon>
+              <h5 class="mt-4">{{ 'COMMON.NO_RESULT_FOUND' | translate }}</h5>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="col-xxl-3" id="contact-view-detail">
+      <div class="card">
+        <div class="card-body text-center contact-details">
+          <div class="position-relative d-inline-block">
+            <div class="avatar-md">
+              <div class="avatar-title bg-light rounded-circle shadow">
+                <div class="avatar-xs bg-light rounded-circle p-1 h-x" *ngIf="!selectedProfile?.media?.pictures?.length">
+                  <div class="text-success fs-18">
+                    {{selectedProfile?.firstName?.charAt(0) || 'N'}}
+                  </div>
+                </div>
+                <img *ngIf="selectedProfile?.media?.pictures?.length && selectedProfile?.media?.pictures[0]?.baseUrl"
+                  [src]="selectedProfile.media.pictures[0].baseUrl + '/' + selectedProfile.media.pictures[0].path" alt="" class="avatar-lg rounded-circle">
+              </div>
+            </div>
+          </div>
+          <h5 class="mt-4 mb-1">{{selectedProfile?.firstName}} {{selectedProfile?.lastName}}</h5>
+          <p class="text-muted">{{selectedProfile?.company?.name}}</p>
+          <ul class="list-inline mb-0">
+            <li *ngIf="selectedProfile?.phone?.number" class="list-inline-item avatar-xs">
+              <a href="tel:+{{selectedProfile?.phone?.countryCode}}{{selectedProfile?.phone?.number}}" class="avatar-title bg-soft-success text-success fs-15 rounded">
+                <i class="ri-phone-line"></i>
+              </a>
+            </li>
+            <li *ngIf="selectedProfile?.email" class="list-inline-item avatar-xs">
+              <a href="mailto:{{selectedProfile?.email}}" href="javascript:void(0);" class="avatar-title bg-soft-danger text-danger fs-15 rounded">
+                <i class="ri-mail-line"></i>
+              </a>
+            </li>
+            <li *ngIf="selectedProfile?.phone?.number" class="list-inline-item avatar-xs">
+              <a target="_blank" href="https://wa.me/+{{selectedProfile?.phone?.countryCode}}{{selectedProfile?.phone?.number}}" class="avatar-title bg-soft-warning text-warning fs-15 rounded">
+                <i class="ri-question-answer-line"></i>
+              </a>
+            </li>
+          </ul>
+        </div>
+        <div class="card-body">
+          <div class="table-responsive table-card">
+            <table class="table table-borderless mb-0">
+              <tbody>
+                <tr>
+                  <td class="fw-medium" scope="row">{{ 'COMMON.EMAIL' | translate }}</td>
+                  <td class="email">{{selectedProfile?.email}}</td>
+                </tr>
+                <tr>
+                  <td class="fw-medium" scope="row">{{ 'COMMON.PHONE' | translate }}</td>
+                  <td *ngIf="selectedProfile?.phone?.number" class="phone"> {{ selectedProfile?.phone?.countryCode }} {{
+                    selectedProfile?.phone?.number }}</td>
+                </tr>
+                <tr>
+                  <td class="fw-medium" scope="row">{{ 'MODULES.CRM.CUSTOMERS.LEAD_SCORE' | translate }}</td>
+                  <td class="l_score">{{selectedProfile?.leadScore}}</td>
+                </tr>
+                <tr>
+                  <td class="fw-medium" scope="row">{{ 'COMMON.TAGS' | translate }}</td>
+                  <td class="tags-list">
+                    <div class="d-flex gap-1">
+                      <span *ngFor="let tag of selectedProfile?.tags" class="badge badge-soft-primary">{{tag}}</span>
+                    </div>
+                  </td>
+                </tr>
+                <tr>
+                  <td class="fw-medium" scope="row">{{ 'MODULES.CRM.CUSTOMERS.LAST_CONTACTED' | translate }}</td>
+                  <td class="contacted_date">{{ selectedProfile?.lastContacted | date}}</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <ng-template #content role="document" let-modal>
+    <div class="modal-header bg-soft-info p-3">
+      <h5 class="modal-title" id="exampleModalLabel">{{[selectedContact ? ('MODULES.CRM.CUSTOMERS.EDIT_CONTACT' | translate) : ('MODULES.CRM.CUSTOMERS.ADD_CONTACT' | translate)]}}</h5>
+      <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" id="close-modal" (click)="modal.dismiss('Cross click')"></button>
+    </div>
+    <form *ngIf="contactsForm" [formGroup]="contactsForm">
+      <div class="modal-body">
+        <div class="row g-3">
+          <div class="col-lg-12 row">
+            <div class="text-center mb-3 mt-3">
+              <div (click)="upload()" class="position-relative d-inline-block">
+                <div class="position-absolute  bottom-0 end-0">
+                  <label for="customer-image-input" class="mb-0" data-bs-toggle="tooltip" data-bs-placement="right" title="{{'COMMON.SELECT_IMAGE' | translate}}">
+                    <div class="avatar-xs cursor-pointer">
+                      <div class="avatar-title bg-light border rounded-circle text-muted">
+                        <i class="ri-image-fill"></i>
+                      </div>
+                    </div>
+                  </label>
+                </div>
+                <div class="avatar-lg p-1">
+                  <div class="avatar-title bg-light rounded-circle">
+                    <img *ngIf="pictures.value[0]?.baseUrl === ''" src="assets/images/users/multi-user.jpg" id="companylogo-img" class="avatar-md rounded-circle object-cover" />
+                    <img *ngIf="pictures.value[0]?.baseUrl !== ''" [src]="pictures.value[0].baseUrl + '/' + pictures.value[0].path" id="companylogo-img"
+                      class="avatar-md rounded-circle object-cover" />
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div *ngIf="!selectedContact" class="mb-3">
+              <div class="form-check form-check-inline">
+                <input [checked]="selectedOption === 'company'" (change)="onSelectOption('company')" class="form-check-input" type="radio" name="name" id="firstname-field" value="first" required>
+                <label class="form-check-label" for="firstname-field">{{'COMMON.COMPANY' | translate}}</label>
+              </div>
+              <div class="form-check form-check-inline">
+                <input (change)="onSelectOption('leads')" [checked]="selectedOption === 'leads'" class="form-check-input" type="radio" name="name" id="lastname-field" value="last" required>
+                <label class="form-check-label" for="lastname-field">{{'MODULES.CRM.CUSTOMERS.LEADS' | translate}}</label>
+              </div>
+            </div>
+            <div *ngIf="(contacts$ | async)?.length && selectedOption === 'company' && !selectedContact" class="mb-3">
+              <label class="form-check-label" for="lastname-field">{{'MODULES.CRM.CUSTOMERS.COMPANIES' | translate}}</label>
+              <ng-select placeholder="{{'MODULES.CRM.CUSTOMERS.SELECT_COMPANY' | translate}}" [items]="contacts$ | async" [virtualScroll]="true" (scrollToEnd)="loadMoreLeads()" [multiple]="false" bindLabel="name"
+                bindValue="company.id" [formControlName]="'company'">
+                <ng-template ng-label-tmp let-item="item" let-clear="clear">
+                  <span class="ng-value-label d-flex align-items-center">
+                    {{item?.company?.name}}
+                  </span>
+                  <span class="ng-value-icon right" (click)="clear(item)" aria-hidden="true">×</span>
+                </ng-template>
+                <ng-template ng-option-tmp let-item="item">
+                  <div class="d-flex align-items-center">
+                    {{item?.company?.name}}
+                  </div>
+                </ng-template>
+              </ng-select>
+            </div>
+            <div *ngIf="(leads$ | async)?.length && selectedOption === 'leads' && !selectedContact" class="mb-3">
+              <label class="form-check-label" for="lastname-field">{{'MODULES.CRM.CUSTOMERS.LEADS' | translate}}</label>
+              <ng-select [selectableGroup]="true" [closeOnSelect]="false" formControlName="company" [multiple]="false" [items]="leads$ | async" [virtualScroll]="true"
+                placeholder="{{'MODULES.CRM.CUSTOMERS.SELECT_LEAD' | translate}}" (scrollToEnd)="loadMoreLeads()" bindLabel="name" bindValue="id">
+                <ng-template ng-label-tmp let-item="item" let-clear="clear">
+                  <span class="ng-value-label d-flex align-items-center">
+                    {{item?.name}}
+                  </span>
+                  <span class="ng-value-icon right" (click)="clear(item)" aria-hidden="true">×</span>
+                </ng-template>
+                <ng-template ng-option-tmp let-item="item">
+                  <div class="d-flex align-items-center">
+                    {{item?.name}}
+                  </div>
+                </ng-template>
+              </ng-select>
+            </div>
+            <div class="col-lg-6 mb-3">
+              <label for="name-field" class="form-label">{{'COMMON.FIRST_NAME' | translate}}</label>
+              <input type="text" id="customername-field" class="form-control" placeholder="{{'COMMON.ENTER_NAME' | translate}}" required formControlName="firstName"
+                [ngClass]="{ 'is-invalid': contactsForm.get('firstName')?.touched && contactsForm.get('firstName').hasError('required') }" />
+              <div class="invalid-feedback" *ngIf="contactsForm.get('firstName')?.touched && contactsForm.get('firstName').hasError('required')">
+                {{'COMMON.REQUIRED' | translate}}
+              </div>
+            </div>
+            <div class="col-lg-6 mb-3">
+              <label for="name-field" class="form-label">{{'COMMON.LAST_NAME' | translate}}</label>
+              <input type="text" id="customername-field" class="form-control" placeholder="{{'COMMON.ENTER_NAME' | translate}}" required formControlName="lastName"
+                [ngClass]="{ 'is-invalid': contactsForm.get('lastName')?.touched && contactsForm.get('lastName').hasError('required') }" />
+              <div class="invalid-feedback" *ngIf="contactsForm.get('lastName')?.touched && contactsForm.get('lastName').hasError('required')">
+                {{'COMMON.REQUIRED' | translate}}
+              </div>
+            </div>
+            <div class="col-lg-6 mb-3">
+              <label for="name-field" class="form-label">{{'COMMON.EXTERNAL_ID' | translate}}</label>
+              <input type="text" id="customername-field" class="form-control" placeholder="{{'COMMON.ENTER_EXTERNAL_ID' | translate}}" formControlName="externalId" />
+            </div>
+            <div class="col-lg-6 mb-3">
+              <div>
+                <label for="email_id-field" class="form-label">{{'COMMON.EMAIL' | translate}}</label>
+                <input type="text" id="email_id-field" class="form-control" placeholder="{{'COMMON.ENTER_EMAIL' | translate}}" required formControlName="email"
+                  [ngClass]="{ 'is-invalid': contactsForm.get('email')?.touched && contactsForm.get('email').hasError('required') }" />
+                <div class="invalid-feedback" *ngIf="contactsForm.get('email')?.touched && contactsForm.get('email').hasError('required')">
+                  {{'COMMON.REQUIRED' | translate}}
+                </div>
+              </div>
+            </div>
+            <div class="col-lg-6 mb-3">
+              <ng-container formGroupName="phone">
+                <label for="phone-field" class="form-label">{{'COMMON.PHONE' | translate}}</label>
+                <input type="text" id="phone-field" class="form-control" placeholder="{{'COMMON.ENTER_PHONE' | translate}}" formControlName="number"
+                  [ngClass]="{ 'is-invalid': contactsForm.get(['phone', 'number'])?.touched && contactsForm.get(['phone', 'number']).hasError('required') }" />
+                <div class="invalid-feedback" *ngIf="contactsForm.get(['phone', 'number'])?.touched && contactsForm.get(['phone', 'number']).hasError('required')">
+                  {{'COMMON.REQUIRED' | translate}}
+                </div>
+              </ng-container>
+            </div>
+            <div class="col-lg-6 mb-3">
+              <div>
+                <label for="lead_score-field" class="form-label">{{'MODULES.CRM.CUSTOMERS.LEAD_SCORE' | translate}}</label>
+                <input type="text" id="lead_score-field" class="form-control" placeholder="{{'MODULES.CRM.CUSTOMERS.ENTER_LEAD_SCORE' | translate}}" required formControlName="leadScore"
+                  [ngClass]="{ 'is-invalid': contactsForm.get('leadScore')?.touched && contactsForm.get('leadScore').hasError('required') }" />
+                <div class="invalid-feedback" *ngIf="contactsForm.get('leadScore')?.touched && contactsForm.get('leadScore').hasError('required')">
+                  {{'COMMON.REQUIRED' | translate}}
+                </div>
+              </div>
+            </div>
+            <div class="col-lg-12 mb-3">
+              <label class="form-label" for="product-tags-input">{{'COMMON.TAGS' | translate}}</label>
+              <ng-select [items]="[]" class="no-arrow-select" [addTag]="true" [isOpen]="false" [multiple]="true" [selectOnTab]="false" formControlName="tags">
+              </ng-select>
+            </div>
+            <div class="mb-3">
+              <label for="date-field" class="form-label">{{'COMMON.LAST_CONTACTED' | translate}}</label>
+              <div class="input-group d-flex align-items-center">
+                <input placeholder="{{'COMMON.LAST_CONTACTED' | translate}}" class="form-control flatpickr-input" type="text" mwlFlatpickr [altInput]="true" [convertModelValue]="true"
+                  formControlName="lastContacted">
+                <a *ngIf="contactsForm.get('lastContacted').value" (click)="resetDate()">
+                  <i class="ri-close-fill fs-16"></i>
+                </a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <div class="hstack gap-2 justify-content-end">
+          <button type="button" class="btn btn-light" data-bs-dismiss="modal" (click)="modal.close('Close click')">{{'COMMON.CLOSE' | translate}}</button>
+          <button type="button" [disabled]="contactsForm.invalid || isButtonDisabled" (click)="save()" class="btn btn-success" id="add-btn">{{selectedContact ? ('MODULES.CRM.CUSTOMERS.EDIT_CONTACT' |
+            translate) : ('MODULES.CRM.CUSTOMERS.ADD_CONTACT' | translate)}}</button>
+        </div>
+      </div>
+    </form>
+  </ng-template>
+
+  <ng-template #deleteModel let-modal>
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" id="deleteRecord-close" (click)="modal.dismiss('Cross click')"></button>
+      </div>
+      <div class="modal-body">
+        <div class="mt-2 text-center">
+          <lord-icon src="https://cdn.lordicon.com/gsqxdxog.json" trigger="loop" colors="primary:#405189,secondary:#f06548" style="width:90px;height:90px"></lord-icon>
+          <div class="mt-4 pt-2 fs-15 mx-4 mx-sm-5">
+            <h4>{{'COMMON.ARE_YOU_SURE_DELETE' | translate}}</h4>
+            <p class="text-muted mx-4 mb-0">{{'COMMON.DELETE_WARNING' | translate}}</p>
+          </div>
+        </div>
+        <div class="d-flex gap-2 justify-content-center mt-4 mb-2">
+          <button class="btn btn-link link-success fw-medium text-decoration-none" data-bs-dismiss="modal" (click)="modal.close('Close click')" id="deleteRecord-close"><i
+              class="ri-close-line me-1 align-middle"></i>
+            {{'COMMON.CLOSE' | translate}}</button>
+          <button type="button" class="btn w-sm btn-danger " id="delete-product" (click)="deleteCompanyContact()">{{'COMMON.YES_DELETE_IT' | translate}}</button>
+        </div>
+      </div>
+    </div>
+  </ng-template>
+
+  <ng-template #importModal role="document" let-modal>
+    <div class="modal-header bg-soft-info p-3">
+      <h5 class="modal-title" id="exampleModalLabel">{{'COMMON.UPLOAD_EXCEL' | translate}}</h5>
+      <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" id="close-modal" (click)="modal.dismiss('Cross click')"></button>
+    </div>
+    <div class="modal-body">
+      <p>
+        {{'MODULES.CRM.CUSTOMERS.A_PARAGRAPH' | translate}}
+      </p>
+    </div>
+    <div class="modal-footer">
+      <div class="hstack gap-2 justify-content-end">
+        <button type="button" class="btn btn-light" data-bs-dismiss="modal" (click)="modal.close('Close click')">{{'COMMON.CLOSE' | translate}}</button>
+        <button type="button" (click)="!loadingImport ? uploadExcel() : null" class="btn btn-primary btn-load">
+          <span *ngIf="!loadingImport">{{'COMMON.IMPORT_EXCEL' | translate}}</span>
+          <span *ngIf="loadingImport" class="d-flex align-items-center">
+            <span class="spinner-border flex-shrink-0" role="status">
+              <span class="visually-hidden">{{'COMMON.LOADING' | translate}}</span>
+            </span>
+            <span class="flex-grow-1 ms-2">{{'COMMON.LOADING' | translate}}</span>
+          </span>
+        </button>
+      </div>
+    </div>
+  </ng-template>
+
+</ng-container>
+<div *ngIf="navigating$ | async" class="vh-100 py-4 text-center" fxLayout="column" fxLayoutAlign="center center" fxLayoutGap="1rem">
+  <div>
+    <lord-icon trigger="loop" style="width:72px;height:72px" [colors]="'primary:' + primaryColor + ',secondary:' + secondaryColor" src="https://cdn.lordicon.com/msoeawqm.json">
+    </lord-icon>
+  </div>
+  <div class="mt-4">
+    <h5>{{ 'COMMON.LOADING' | translate }}</h5>
+  </div>
+</div>

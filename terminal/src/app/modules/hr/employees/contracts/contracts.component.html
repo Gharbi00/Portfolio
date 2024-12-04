@@ -1,0 +1,226 @@
+<!-- Start Breadcrumbs -->
+<app-breadcrumbs title="{{ 'MENUITEMS.TITLE.EMPLOYEES_CONTRACTS' | translate }}" [breadcrumbItems]="breadCrumbItems"></app-breadcrumbs>
+<!-- End Breadcrumbs -->
+
+<div class="row">
+  <div class="col-lg-12">
+      <div class="card"  id="customerList">
+          <div class="card-header border-bottom-dashed">
+
+              <div class="row g-4 align-items-center">
+                  <div class="col-sm">
+                      <div >
+                          <h5 class="card-title mb-0">{{ 'MODULES.HR.MAIN.CONTRACTS' | translate }}</h5>
+                      </div>
+                  </div>
+                  <div class="col-sm-auto">
+                      <div class="d-flex gap-2">
+                        <button class="btn btn-soft-danger" (click)="deleteMultiple(deleteModel)"><i class="ri-delete-bin-2-line"></i></button>
+                          <button type="button" class="btn btn-success add-btn" data-bs-toggle="modal" id="create-btn" data-bs-target="#showModal" (click)="openModal(content)"><i class="ri-add-line align-bottom me-1"></i> Add Customer</button>
+                          <button type="button" class="btn btn-info" (click)="csvFileExport()"><i class="ri-file-download-line align-bottom me-1"></i> Export</button>
+                      </div>
+                  </div>
+              </div>
+          </div>
+          <div class="card-body border-bottom-dashed border-bottom">
+            <div class="row g-3">
+                <div class="col-xl-6">
+                    <div class="search-box">
+                        <input type="text"  name="searchTerm" class="form-control" placeholder="{{'PLACEHOLDER.SEARCH_FOR_CUSTOMER_EMAIL_PHONE_STATUS_OR_SOMETHING' | translate }}..." [(ngModel)]="service.searchTerm">
+                        <i class="ri-search-line search-icon"></i>
+                    </div>
+                </div>
+                <!--end col-->
+                <div class="col-xl-6">
+                    <div class="row g-3">
+                        <div class="col-sm-4">
+                            <div class="">
+                            <input class="form-control flatpickr-input" type="text" mwlFlatpickr [altInput]="true" [convertModelValue]="true" placeholder="{{'PLACEHOLDER.SELECT_DATE' | translate }}" id="isDate" [(ngModel)]="service.date">
+                            </div>
+                        </div>
+                        <!--end col-->
+                        <div class="col-sm-4">
+                            <div>
+                                <select class="form-control" data-plugin="choices" data-choices data-choices-search-false name="choices-single-default" id="idStatus" [(ngModel)]="service.status">
+                                    <option value="">{{'COMMON.STATUS' | translate }}</option>
+                                    <option value="Active">{{ 'COMMON.ACTIVE' | translate }}</option>
+                                    <option value="Block">{{ 'COMMON.BLOCK' | translate }}</option>
+                                </select>
+                            </div>
+                        </div>
+                        <!--end col-->
+
+                        <div class="col-sm-4">
+                            <div>
+                                <button type="button" class="btn btn-primary w-100"> <i class="ri-equalizer-fill me-2 align-bottom"></i>{{ 'MODULES.ECOMMERCE.MAIN.FILTERS' | translate }}</button>
+                            </div>
+                        </div>
+                        <!--end col-->
+                    </div>
+                </div>
+            </div>
+            <!--end row-->
+          </div>
+          <div class="card-body">
+              <div>
+                  <div class="table-responsive table-card mb-1">
+                    <table class="table align-middle table-nowrap">
+                      <thead class="table-light text-muted">
+                        <tr>
+                          <th scope="col" style="width: 50px;">
+                              <div class="form-check">
+                                  <input class="form-check-input" type="checkbox" id="checkAll" value="option" [(ngModel)]="masterSelected" (change)="checkUncheckAll($event)">
+                              </div>
+                          </th>
+                          <th class="sort" data-sort="customer_name">{{ 'MODULES.HR.MAIN.EMPLOYEE' | translate }}</th>
+                          <th class="sort" data-sort="email">{{ 'COMMON.EMAIL' | translate }}</th>
+                          <th class="sort" data-sort="phone">{{ 'COMMON.PHONE' | translate }}</th>
+                          <th class="sort" data-sort="date">{{ 'MODULES.HR.MAIN.JOINING_DATE' | translate }}</th>
+                          <th class="sort" data-sort="status">{{'COMMON.STATUS' | translate }}</th>
+                          <th class="sort" data-sort="action">{{'COMMON.ACTION' | translate }}</th>
+                      </tr>
+                      </thead>
+                      <tbody>
+                        <tr *ngFor="let data of customers" id="c_{{data._id}}">
+                            <th scope="row">
+                            <div class="form-check">
+                                <input class="form-check-input" type="checkbox" name="checkAll" value="{{data._id}}" [(ngModel)]="data.state">
+                            </div>
+                            </th>
+                            <td><ngb-highlight [result]="data.customer" [term]="service.searchTerm"></ngb-highlight></td>
+                            <td><ngb-highlight [result]="data.email" [term]="service.searchTerm"></ngb-highlight></td>
+                            <td><ngb-highlight [result]="data.phone" [term]="service.searchTerm"></ngb-highlight></td>
+                            <td><ngb-highlight [result]="data.date | date :'longDate'" [term]="service.searchTerm"></ngb-highlight></td>
+                            <td class="status"><span class="badge text-uppercase" [ngClass]=" { 'badge-soft-success': data.status === 'Active', 'badge-soft-danger': data.status === 'Block' }">{{data.status}}</span></td>
+                            <td>
+                                <ul class="list-inline hstack gap-2 mb-0">
+                                    <li class="list-inline-item edit" ngbTooltip="Edit" placement="top">
+                                        <a href="javascript:void(0);" data-bs-toggle="modal" class="text-primary d-inline-block edit-item-btn" (click)="editDataGet(data._id,content)">
+                                            <i class="ri-pencil-fill fs-16"></i>
+                                        </a>
+                                    </li>
+                                    <li class="list-inline-item" ngbTooltip="Remove" placement="top">
+                                        <a class="text-danger d-inline-block remove-item-btn" data-bs-toggle="modal" data-bs-target="#deleteRecordModal" (click)="confirm(deleteModel,data._id)">
+                                            <i class="ri-delete-bin-5-fill fs-16"></i>
+                                        </a>
+                                    </li>
+                                </ul>
+                            </td>
+                      </tr>
+                      </tbody>
+                    </table>
+                  </div>
+                  <div class="row justify-content-md-between align-items-md-center">
+                    <div class="col col-sm-6">
+                        <div class="dataTables_info mb-2" id="tickets-table_info" role="status" aria-live="polite">{{ 'COMMON.SHOWING' | translate }}
+                            {{service.startIndex}} {{ 'COMMON.TO' | translate }}
+                            {{service.endIndex}} {{'COMMON.OF' | translate }} {{service.totalRecords}} {{ 'COMMON.ENTRIES' | translate }}
+                        </div>
+                    </div>
+                    <!-- Pagination -->
+                    <div class="col col-sm-6">
+                        <div class="text-sm-right float-end listjs-pagination">
+                          <ngb-pagination
+                          [collectionSize]="(total | async)!" [(page)]="service.page" [pageSize]="service.pageSize">
+                        </ngb-pagination>
+                        </div>
+                    </div>
+                    <!-- End Pagination -->
+                  </div>
+              </div>
+
+            <!-- Customer Create Model -->
+            <ng-template #content role="document" let-modal>
+              <div class="modal-header bg-light p-3">
+                <h5 class="modal-title" id="exampleModalLabel">{{ 'MODULES.HR.MAIN.ADD_CUSTOMER' | translate }}</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" id="close-modal" (click)="modal.dismiss('Cross click')"></button>
+              </div>
+              <form (ngSubmit)="saveUser()" [formGroup]="customerForm">
+                <div class="modal-body">
+                    <input type="hidden" name="id" value="" formControlName="ids"/>
+                    <div class="mb-3">
+                        <label for="customername-field" class="form-label">{{ 'MODULES.HR.MAIN.CUSTOMER_NAME' | translate }}</label>
+                        <input type="text" id="customername-field" class="form-control" placeholder="{{'PLACEHOLDER.ENTER_NAME' | translate }}" required formControlName="customer" [ngClass]="{ 'is-invalid': submitted && form['customer'].errors }"/>
+                        <div *ngIf="submitted && form['customer'].errors" class="invalid-feedback" align="left">
+                          <div *ngIf="form['customer'].errors['required']">{{ 'MODULES.HR.MAIN.CUSTOMER_NAME' | translate }} is required</div>
+                        </div>
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="email-field" class="form-label">{{ 'COMMON.EMAIL' | translate }}</label>
+                        <input type="email" id="email-field" class="form-control" placeholder="{{'PLACEHOLDER.ENTER_EMAIL' | translate }}" required formControlName="email" [ngClass]="{ 'is-invalid': submitted && form['email'].errors }"/>
+                        <div *ngIf="submitted && form['email'].errors" class="invalid-feedback" align="left">
+                          <div *ngIf="form['email'].errors['required']">{{ 'MODULES.HR.MAIN.EMAIL_REQUIRED' | translate }}</div>
+                        </div>
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="phone-field" class="form-label">{{ 'COMMON.PHONE' | translate }}</label>
+                        <input type="text" id="phone-field" class="form-control"  placeholder="{{'PLACEHOLDER.ENTER_PHONE_NUMBER' | translate }}" mask="000-000-0000" required formControlName="phone" [ngClass]="{ 'is-invalid': submitted && form['phone'].errors }"/>
+                        <div *ngIf="submitted && form['phone'].errors" class="invalid-feedback" align="left">
+                          <div *ngIf="form['phone'].errors['required']">{{ 'MODULES.ECOMMERCE.MAIN.PHONE_IS_REQUIRED' | translate }}</div>
+                        </div>
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="date-field" class="form-label">{{ 'MODULES.HR.MAIN.JOINING_DATE' | translate }}</label>
+                        <input class="form-control flatpickr-input" type="text" mwlFlatpickr [altInput]="true" [convertModelValue]="true" formControlName="date" [ngClass]="{ 'is-invalid': submitted && form['date'].errors }">
+                        <div *ngIf="submitted && form['date'].errors" class="invalid-feedback" align="left">
+                            <div *ngIf="form['date'].errors['required']">{{ 'MODULES.HR.MAIN.JOINING_DATE_REQUIRED' | translate }}</div>
+                        </div>
+                    </div>
+
+                    <div>
+                        <label for="status-field" class="form-label">{{'COMMON.STATUS' | translate }}</label>
+                        <select class="form-control" data-trigger name="status-field" id="status-field" formControlName="status" [ngClass]="{ 'is-invalid': submitted && form['status'].errors }">
+                            <option value="">{{'COMMON.STATUS' | translate }}</option>
+                            <option value="Active">{{ 'COMMON.ACTIVE' | translate }}</option>
+                            <option value="Block">{{ 'COMMON.BLOCK' | translate }}</option>
+                        </select>
+                        <div *ngIf="submitted && form['status'].errors" class="invalid-feedback" align="left">
+                          <div *ngIf="form['status'].errors['required']">{{ 'MODULES.HR.MAIN.STATUS_REQUIRED' | translate }}</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <div class="hstack gap-2 justify-content-end">
+                        <button type="button" class="btn btn-light" data-bs-dismiss="modal" (click)="modal.close('Close click')">{{'COMMON.CLOSE' | translate }}</button>
+                        <button type="submit" class="btn btn-success" id="add-btn">{{ 'MODULES.HR.MAIN.ADD_CUSTOMER' | translate }}</button>
+                    </div>
+                </div>
+              </form>
+            </ng-template>
+            <!--End Modal -->
+              <!--end modal -->
+              <div id="elmLoader">
+                <div class="spinner-border text-primary avatar-sm" role="status">
+                    <span class="visually-hidden">{{'COMMON.LOADING' | translate }}</span>
+                </div>
+            </div>
+          </div>
+      </div>
+
+  </div><!--end col-->
+</div><!--end row-->
+
+<!-- removeItemModal -->
+<ng-template #deleteModel let-modal>
+    <div class="modal-content">
+      <div class="modal-header">
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" id="deleteRecord-close" (click)="modal.dismiss('Cross click')"></button>
+      </div>
+      <div class="modal-body">
+          <div class="mt-2 text-center">
+            <lord-icon src="https://cdn.lordicon.com/gsqxdxog.json" trigger="loop" colors="primary:#f7b84b,secondary:#f06548" style="width:100px;height:100px"></lord-icon>
+            <div class="mt-4 pt-2 fs-15 mx-4 mx-sm-5">
+                <h4>{{'COMMON.ARE_YOU_SURE' | translate }}</h4>
+                <p class="text-muted mx-4 mb-0">{{ 'MODULES.HR.MAIN.ARE_YOU_SURE_YOU_WANT_TO_REMOVE_THIS_RECORD' | translate }}</p>
+            </div>
+          </div>
+          <div class="d-flex gap-2 justify-content-center mt-4 mb-2">
+            <button type="button" class="btn w-sm btn-light" data-bs-dismiss="modal" (click)="modal.close('Close click')">{{'COMMON.CLOSE' | translate }}</button>
+            <button type="button" class="btn w-sm btn-danger " id="delete-product" (click)="deleteData(deleteId)" (click)="modal.close('Close click')">{{'COMMON.YES_DELETE_IT' | translate }}</button>
+          </div>
+      </div>
+    </div><!-- /.modal-content -->
+</ng-template>

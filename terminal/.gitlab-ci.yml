@@ -1,0 +1,84 @@
+variables:
+  TERMINAL_TAG: sifca-terminal-1.0
+  TERMINAL_PROD_TAG: sifca-terminal-prod-1.0.1
+
+##########################################
+## STAGE: BUILD                         ##
+##########################################
+
+build:terminal:
+  stage: build
+  dependencies:
+    - cleanup
+  script:
+    - echo "Build Started ..."
+
+##########################################
+## STAGE: VERIFY                        ##
+##########################################
+
+verify:terminal:
+  stage: verify
+  dependencies:
+    - build:terminal
+  script:
+    - echo "Verfify Terminal Started ..."
+
+##########################################
+## STAGE: CONTAINERIZE                  ##
+##########################################
+
+containerize:terminal:
+  stage: containerize
+  dependencies:
+    - verify:terminal
+  image: docker:23.0.5
+  services:
+    - docker:23.0.5-dind
+  script:
+    - docker system prune -a -f
+    - docker build -t $IMAGE_NAME:$TERMINAL_TAG --build-arg CI_SERVER_HOST=$CI_SERVER_HOST --build-arg CI_PROJECT_ID=$CI_PROJECT_ID --build-arg CI_JOB_TOKEN=$CI_JOB_TOKEN -f apps/terminal/Dockerfile.ssr.sandbox .
+    - docker tag $IMAGE_NAME:$TERMINAL_TAG $CI_REGISTRY_IMAGE:$TERMINAL_TAG
+    - docker push $CI_REGISTRY_IMAGE:$TERMINAL_TAG
+  when: manual
+
+containerize:terminal:prod:
+  stage: containerize
+  dependencies:
+    - verify:terminal
+  image: docker:23.0.5
+  services:
+    - docker:23.0.5-dind
+  script:
+    - docker system prune -a -f
+    - docker build -t $IMAGE_NAME:$TERMINAL_PROD_TAG --build-arg CI_SERVER_HOST=$CI_SERVER_HOST --build-arg CI_PROJECT_ID=$CI_PROJECT_ID --build-arg CI_JOB_TOKEN=$CI_JOB_TOKEN -f apps/terminal/Dockerfile.ssr .
+    - docker tag $IMAGE_NAME:$TERMINAL_PROD_TAG $CI_REGISTRY_IMAGE:$TERMINAL_PROD_TAG
+    - docker push $CI_REGISTRY_IMAGE:$TERMINAL_PROD_TAG
+  when: manual
+
+##########################################
+## STAGE: DEPLOY                        ##
+##########################################
+
+deploy:terminal:
+  stage: deploy
+  dependencies:
+    - containerize:terminal
+  variables:
+    CONTAINER_NAME: sifca-terminal
+  script:
+    - ssh -o StrictHostKeyChecking=no -i $SSH_KEY ubuntu@"$DEV_SERVER" "
+        docker login -u $CI_REGISTRY_USER -p $CI_REGISTRY_PASSWORD $CI_REGISTRY &&
+        docker pull $CI_REGISTRY_IMAGE:$TERMINAL_TAG &&
+        RUNNING_CONTAINER=\$(docker ps -aqf "name=$CONTAINER_NAME") &&
+        if [ -n \"\$RUNNING_CONTAINER\" ]; then
+            echo stopping and removing container $RUNNING_CONTAINER &&
+            docker stop \$RUNNING_CONTAINER &&
+            docker rm \$RUNNING_CONTAINER;
+        fi &&
+        docker system prune -a -f &&
+        docker run -d -p 801:4000 -e API_SERVER=sbx-trmnl.sifca.app -e BACKEND_SERVER=sfca-sbx-bck.diktup.cloud --name $CONTAINER_NAME $CI_REGISTRY_IMAGE:$TERMINAL_TAG"
+  when: manual
+  # rules:
+  #   - if: '$CI_COMMIT_MESSAGE =~ /terminal/'  # trigger the build step if the commit message contains the word "terminal"
+  #     when: always

@@ -1,0 +1,131 @@
+<app-breadcrumbs title="{{ 'MENUITEMS.TITLE.PAGES' | translate }}" [breadcrumbItems]="breadCrumbItems"></app-breadcrumbs>
+<ng-container *ngIf="!(navigating$ | async)">
+
+  <div class="row">
+    <div class="col-lg-12">
+      <div class="card" id="ticketsList">
+        <div class="card-header border-0">
+          <div class="d-flex align-items-center">
+            <h5 class="card-title mb-0 flex-grow-1">{{ 'MODULES.ECOMMERCE.MAIN.REVIEWS' | translate }}
+            </h5>
+            <div class="flex-shrink-0 d-flex gap-1">
+              <a (click)="openReviewModal(reviewModal)" class="btn btn-success add-btn"><i class="ri-add-line align-bottom me-1"></i>{{ 'MODULES.ECOMMERCE.MAIN.ADD_NEW' | translate }}</a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div *ngIf="corporateRatingAssignments?.length" class="row">
+    <div class="col-lg-12">
+      <div class="card-body">
+        <div class="row">
+          <div class="row row-cols-xxl-5 row-cols-lg-3 row-cols-1">
+            <div *ngFor="let corporateRatingAssignment of corporateRatingAssignments" class="col-lg-3">
+              <div class="mt-3 row-cols-1">
+                <div class="card h-11 card-body">
+                  <div class="d-flex flex-column">
+                    <div class="d-flex justify-content-between">
+                      <div class="flex items-center">
+                        <div class="rounded-circle h-50 w-50 bg-success text-white d-flex align-items-center justify-content-center">
+                          <i [class]="icons[corporateRatingAssignment?.reviewDefinition.reviewType] + ' fs-23'"></i>
+                        </div>
+                      </div>
+                      <div class="flex-shrink-0 d-flex justify-content-center">
+                        <div class="d-flex gap-1 align-items-center">
+                          <div class="flex items-center">
+                            <i [ngClass]="{
+                              'ri-checkbox-circle-fill text-success': corporateRatingAssignment?.active === true,
+                              'ri-file-info-line text-warning': corporateRatingAssignment?.active === false
+                            }" class="fs-18"></i>
+                          </div>
+                          <div class="dropdown" ngbDropdown>
+                            <button class="btn btn-link text-muted p-1 mt-n2 py-0 text-decoration-none fs-15 shadow-none arrow-none" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="true"
+                              ngbDropdownToggle>
+                              <i class="ri-more-fill align-middle"></i>
+                            </button>
+                            <div class="dropdown-menu dropdown-menu-end cursor-pointer" ngbDropdownMenu>
+                              <a *ngIf="corporateRatingAssignment?.active === false" (click)="onChangeStatus(corporateRatingAssignment?.id, 'publish')" class="dropdown-item d-flex">{{'MODULES.WEBSITE.PUBLISH' | translate }}</a>
+                              <a *ngIf="corporateRatingAssignment?.active === true" (click)="onChangeStatus(corporateRatingAssignment?.id, 'draft')" class="dropdown-item d-flex">{{'COMMON.STATE.DRAFT' | translate }}</a>
+                              <a (click)="openDeleteModal(deleteModel, corporateRatingAssignment)" class="dropdown-item d-flex">{{'COMMON.DELETE' | translate }}</a>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="mt-auto fs-18">{{'MENUITEMS.TITLE.' + corporateRatingAssignment?.reviewDefinition.reviewType | translate}}</div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div *ngIf="!corporateRatingAssignments?.length" class="py-4 mt-4 text-center" id="noresult">
+    <lord-icon src="https://cdn.lordicon.com/vlycxjwx.json" trigger="loop" [colors]="'primary:' + primaryColor + ',secondary:' + secondaryColor" style="width:72px;height:72px"></lord-icon>
+    <h5 class="mt-4">{{ 'COMMON.NO_RESULT' | translate }}</h5>
+  </div>
+
+  <ng-template #reviewModal role="document" let-modal>
+    <div class="modal-header bg-soft-info p-3">
+      <h5 class="modal-title" id="exampleModalLabel">{{ 'MODULES.ECOMMERCE.MAIN.REVIEW' | translate }}</h5>
+      <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" id="close-modal" (click)="modal.dismiss('Cross click')"></button>
+    </div>
+    <form [formGroup]="reviewForm">
+      <div class="modal-body">
+        <div class="row g-3">
+          <div class="col-lg-12">
+            <label for="email_id-field" class="form-label">Review type</label>
+            <select class="form-select form-control-line" [formControlName]="'reviewDefinition'" [required]="true">
+              <option value="" disabled selected>{{'COMMON.SELECT_OPTION' | translate }}</option>
+              <option *ngFor="let type of ratingDefinitions" [value]="type.id">
+                {{ 'MENUITEMS.TITLE.' + type.reviewType | translate }}
+              </option>
+            </select>
+            <div class="invalid-feedback" *ngIf="reviewForm.get('reviewDefinition')?.touched && reviewForm.get('reviewDefinition').hasError('required')">{{'COMMON.REQUIRED' | translate }}
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <div class="hstack gap-2 justify-content-end">
+          <button type="button" class="btn btn-light" data-bs-dismiss="modal" (click)="modal.close('Close click')">{{'COMMON.CLOSE' | translate }}</button>
+          <button type="button" [disabled]="reviewForm.invalid || isButtonDisabled" (click)="save()" class="btn btn-success" id="add-btn">{{'COMMON.SAVE' | translate }}</button>
+        </div>
+      </div>
+    </form>
+  </ng-template>
+
+  <ng-template #deleteModel let-modal>
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" id="deleteRecord-close" (click)="modal.dismiss('Cross click')"></button>
+      </div>
+      <div class="modal-body">
+        <div class="mt-2 text-center">
+          <lord-icon src="https://cdn.lordicon.com/gsqxdxog.json" trigger="loop" colors="primary:#f7b84b,secondary:#f06548" style="width:100px;height:100px"></lord-icon>
+          <div class="mt-4 pt-2 fs-15 mx-4 mx-sm-5">
+            <h4>{{'COMMON.ARE_YOU_SURE' | translate }}</h4>
+            <p class="text-muted mx-4 mb-0">{{ 'MODULES.ECOMMERCE.MAIN.REMOVE_REVIEW'| translate }}</p>
+          </div>
+        </div>
+        <div class="d-flex gap-2 justify-content-center mt-4 mb-2">
+          <button type="button" class="btn w-sm btn-light" data-bs-dismiss="modal" (click)="modal.close('Close click')">{{'COMMON.CLOSE' | translate }}</button>
+          <button type="button" class="btn w-sm btn-danger " id="delete-product" (click)="deleteReview()">{{'COMMON.YES_DELETE_IT' | translate }}</button>
+        </div>
+      </div>
+    </div>
+  </ng-template>
+</ng-container>
+<div *ngIf="navigating$ | async" class="vh-100 py-4 text-center" fxLayout="column" fxLayoutAlign="center center" fxLayoutGap="1rem">
+  <div>
+    <lord-icon trigger="loop" style="width:72px;height:72px" [colors]="'primary:' + primaryColor + ',secondary:' + secondaryColor" src="https://cdn.lordicon.com/msoeawqm.json">
+    </lord-icon>
+  </div>
+  <div class="mt-4">
+    <h5>{{'COMMON.LOADING' | translate }}</h5>
+  </div>
+</div>

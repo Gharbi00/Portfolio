@@ -1,0 +1,226 @@
+<div [class.rtl]="rtl">
+  <div class="player-mode content-grid col-md-12 header-margin" style="padding: 00 0 !important">
+    <div class="section-banner"
+      [ngStyle]="{ background: 'url(' + headerImagePath + ') no-repeat center center / cover' }">
+      <img class="section-banner-icon" [src]="groupPicture?.baseUrl + '/' + groupPicture?.path" alt="newsfeed-icon" />
+      <p class="section-banner-title">{{'LEADERBOARD' | translate}}</p>
+      <p class="section-banner-text text-truncate">{{'UNLOCK_EXCLUSIVE_BENEFITS_AND_STAY_CONNECTED' | translate}}</p>
+    </div>
+  </div>
+  <div *ngIf="leaderboard?.[0]?.cycle && !(loadingLeaderboard$ | async)" [class.dark-mode]="darkMode"
+    class="special-margin col-md-12 header-margin section-filters-bar v1 widget-box"
+    style="padding: 15px 25px !important">
+    <div class="simple-tab-items">
+      <p (click)="onChangeLeaderboard('overall')" [class.active]="selectedCycle === 'overall'" class="simple-tab-item">
+        {{'OVERALL' | translate}}</p>
+      <p (click)="onChangeLeaderboard('daily')" [class.active]="selectedCycle === 'daily'" class="simple-tab-item">
+        {{'DAILY' | translate}}</p>
+      <p (click)="onChangeLeaderboard('weekly')" [class.active]="selectedCycle === 'weekly'" class="simple-tab-item">
+        {{'WEEKLY' | translate}}</p>
+      <p (click)="onChangeLeaderboard('monthly')" [class.active]="selectedCycle === 'monthly'" class="simple-tab-item">
+        {{'MONTHLY' | translate}}</p>
+    </div>
+  </div>
+  <div *ngIf="!(loadingLeaderboard$ | async)" [class.dark-mode]="darkMode"
+    class="grid-column col-md-12 special-margin special-margin-bottom widget-box" style="padding: 0 !important;">
+    <div class="special-widget-box">
+      <div class="table table-top-friends join-rows table-body" style="display: grid; place-items: center">
+        <div class="user-data-leaderboard table-row tiny">
+          <div class="table-column" style="width: auto !important; padding-left: 20px">
+            <div class="user-status">
+              <a class="user-status-avatar" style="direction: ltr;">
+                <div class="profile-cnt" style="left: -10px; scale: 1.4; top: -10px">
+                  <div style="left: 7%; position: absolute; top: 5%">
+                    <div class="small-profile-image"
+                      *ngIf="!(currentUser$ | async)?.user?.picture?.baseUrl; else showImage">
+                      <span style="display: flex;
+                      align-items: center;
+                      justify-content: center;
+                      height: 100%;
+                      width: 100%;
+                      font-size: 24px;
+                      color: #ffffff;
+                      opacity: 0.8;
+                      font-size: 16px;
+                      font-weight: 900;
+                      " [ngStyle]="{
+                        'background-color': (widgetSettings$ | async)?.theme || '#7750f8'
+                      }" class="profile-text"> {{(currentUser$ | async)?.user?.firstName?.charAt(0) || 'N'}} </span>
+                    </div>
+                    <ng-template #showImage>
+                      <div class="small-profile-image" [ngStyle]="{
+                        'background-image': 'url(' + (currentUser$ | async)?.user?.picture?.baseUrl + '/' + (currentUser$ | async)?.user?.picture?.path + ')',
+                        'background-position': 'center',
+                        'background-size': 'cover'
+                      }"></div>
+                    </ng-template>
+                    <div class="progress-bar">
+                      <svg class="small-progress progress noselect" x="0px" y="0px" viewBox="0 0 776 628">
+                        <path class="track" d="M723 314L543 625.77 183 625.77 3 314 183 2.23 543 2.23 723 314z">
+                        </path>
+                        <path class="fill" #fill d="M723 314L543 625.77 183 625.77 3 314 183 2.23 543 2.23 723 314z">
+                        </path>
+                      </svg>
+                    </div>
+                  </div>
+                  <div
+                    [style.background-color]="(currentUser$ | async)?.rank === 1 ? '#FFD700' : (currentUser$ | async)?.rank === 2 ? '#C0C0C0' : (currentUser$ | async)?.rank === 3 ? '#CD7F32' :  widgetSettings?.theme"
+                    class="profile-avatar-badge-small">
+                    <p class="special-badge-text white-color" style="font-size: 0.6rem !important">
+                      {{ (currentUser$ | async)?.rank }}
+                    </p>
+                  </div>
+                  <div class="level-cover"></div>
+                </div>
+              </a>
+
+              <p class="user-status-title"><a class="bold" class="white-color">{{(currentUser$ |
+                  async)?.user?.firstName}}
+                  {{(currentUser$ | async)?.user?.lastName}}</a></p>
+              <p class="user-status-text small white-color">{{'YOU' | translate}}</p>
+            </div>
+          </div>
+          <div class="table-column centered padded header-row mr-small">
+            <p class="table-title white-color">
+              {{(currentUser$ | async)?.credit | number: '1.0-0'}}
+              <img class="rounded-circle"
+                src="https://sifca-storage.s3.eu-central-1.amazonaws.com/loyalcraft/reputation_512.gif"
+                style="width: 25px;" />
+            </p>
+          </div>
+        </div>
+      </div>
+      <p class="widget-box-title">{{'TOP_FRIENDS_ACTIVITY' | translate}}</p>
+
+      <div class="widget-box-content no-margin-top">
+        <div class="table table-top-friends join-rows">
+          <div class="table-header">
+            <div class="table-header-column">
+              <p class="table-header-title">{{'FRIEND' | translate}}</p>
+            </div>
+            <div class="table-header-column centered padded" style="padding-right: 10px">
+              <p class="table-header-title">{{'POINTS' | translate}}</p>
+            </div>
+          </div>
+          <div class="table-body">
+            <div *ngFor="let data of leaderboard; let i = index" class="table-row tiny">
+              <div class="table-column">
+                <div class="user-status">
+                  <a class="user-status-avatar" style="direction: ltr;">
+                    <div class="profile-cnt" style="left: -10px; scale: 1.4; top: -10px">
+                      <div style="left: 7%; position: absolute; top: 5%">
+                        <div class="small-profile-image" *ngIf="!data?.user?.picture?.baseUrl; else showImage">
+                          <span style="
+                              display: flex;
+                              align-items: center;
+                              justify-content: center;
+                              height: 100%;
+                              width: 100%;
+                              font-size: 24px;
+                              color: #ffffff;
+                              opacity: 0.8;
+                              font-size: 16px;
+                              font-weight: 900;
+                            " [ngStyle]="{
+                                'filter': data?.cycle ? (blur && data?.user?.id !== (currentUser$ | async)?.user?.id ? 'blur(4px)' : 'none') : (challenge?.leaderboard?.blur ? 'blur(4px)' : 'none'),
+                                'background-color': (widgetSettings$ | async)?.theme || '#7750f8'
+                              }" class="profile-text">
+                            {{data?.user?.firstName ? data?.user?.firstName?.charAt(0) : data?.user?.lastName ?
+                            data?.user?.lastName?.charAt(0) : 'N'}}
+                          </span>
+                        </div>
+                        <ng-template #showImage>
+                          <div class="small-profile-image" [ngStyle]="{
+                                'filter': data?.cycle ? (blur && data?.user?.id !== (currentUser$ | async)?.user?.id ? 'blur(4px)' : 'none') : (challenge?.leaderboard?.blur ? 'blur(4px)' : 'none'),
+                                'background-image': 'url(' + data?.user?.picture?.baseUrl + '/' + data?.user?.picture?.path + ')',
+                                'background-position': 'center',
+                                'background-size': 'cover'
+                              }">
+                          </div>
+                        </ng-template>
+                        <div *ngIf="data?.cycle" class="progress-bar">
+                          <svg class="small-progress progress noselect" x="0px" y="0px" viewBox="0 0 776 628">
+                            <path class="track" d="M723 314L543 625.77 183 625.77 3 314 183 2.23 543 2.23 723 314z">
+                            </path>
+                            <path class="fillLeaderboard fill{{i + 1}}"
+                              d="M723 314L543 625.77 183 625.77 3 314 183 2.23 543 2.23 723 314z"></path>
+                          </svg>
+                        </div>
+                      </div>
+                      <div *ngIf="data?.cycle" class="profile-avatar-badge-small" [ngStyle]="{
+                        'background-color':
+                          data?.rank < 4 ?
+                            (data?.rank === 1 ? '#FFD700' : data?.rank === 2 ? '#C0C0C0' : data?.rank === 3 ? '#CD7F32' : '') :
+                            widgetSettings?.theme
+                      }">
+                        <p class="special-badge-text" style="font-size: 0.6rem !important"> {{data?.rank}}
+                        </p>
+                      </div>
+                      <div *ngIf="data?.cycle" class="level-cover"></div>
+                    </div>
+                  </a>
+
+                  <p class="user-status-title">
+                    <a *ngIf="data?.cycle" class="bold">
+                      {{blur ? data?.user?.firstName?.charAt(0) : data?.user?.firstName}} {{blur ? ('. ' +
+                      data?.user?.lastName?.charAt(0)) : data?.user?.lastName}}
+                    </a>
+                    <a *ngIf="!data?.cycle" class="bold">
+                      {{challenge?.leaderboard?.blur ? data?.user?.firstName?.charAt(0) : data?.user?.firstName}}
+                      {{challenge?.leaderboard?.blur ? ('. ' + data?.user?.lastName?.charAt(0)) : data?.user?.lastName}}
+                    </a>
+                  </p>
+                  <p class="user-status-text small">{{'JOINED' | translate}}: {{data?.user?.createdAt | date:
+                    'longDate'}}</p>
+                </div>
+              </div>
+              <div class="table-column centered padded">
+                <p class="table-title">
+                  {{data?.credit | number: '1.0-0'}}
+                  <img style="width: 25px;" class="rounded-circle"
+                    src="https://sifca-storage.s3.eu-central-1.amazonaws.com/loyalcraft/reputation_512.gif">
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <widget-pagination [loaded]="!(loadingLeaderboard$ | async)" *ngIf="pagination?.length > perPage" (pageChanged)="onPageChange($event)" [perPage]="perPage"
+    [total]="pagination?.length"></widget-pagination>
+  <div *ngIf="(loadingLeaderboard$ | async) || (!(loadingLeaderboard$ | async) && !leaderboard?.length)" id="noresult"
+    class="py-4 mt-4 text-center">
+    <div *ngIf="(loadingLeaderboard$ | async)" class="page-loader-indicator loader-bars">
+      <div class="loader-bar"></div>
+      <div class="loader-bar"></div>
+      <div class="loader-bar"></div>
+      <div class="loader-bar"></div>
+      <div class="loader-bar"></div>
+      <div class="loader-bar"></div>
+      <div class="loader-bar"></div>
+      <div class="loader-bar"></div>
+    </div>
+    <div *ngIf="!(loadingLeaderboard$ | async) && !leaderboard?.length">
+      <div class="notification-section animate-slide-down special-margin-bottom">
+        <div class="displayed-center mb-5">
+          <svg class="empty-fill" width="150">
+            <use xlink:href="#svg-overview"></use>
+          </svg>
+        </div>
+        <p class="mb-2" style="font-size: larger; font-weight: 600;">{{'AIM_TOP' | translate}}</p>
+        <p style="font-weight: 500;">{{'LEADERBOARD_SHOWCASES' | translate}}</p>
+      </div>
+    </div>
+  </div>
+</div>
+<svg style="display: none">
+  <symbol id="svg-overview" viewBox="0 0 20 20" preserveAspectRatio="xMinYMin meet">
+    <path
+      d="M18,8v10h-2V8H18 M18,6h-2c-1.104,0-2,0.896-2,2v10c0,1.104,0.896,2,2,2h2c1.104,0,2-0.896,2-2V8C20,6.896,19.104,6,18,6L18,6z" />
+    <path
+      d="M11,2v16H9V2H11 M11,0H9C7.896,0,7,0.896,7,2v16c0,1.104,0.896,2,2,2h2c1.104,0,2-0.896,2-2V2C13,0.896,12.104,0,11,0L11,0z" />
+    <path
+      d="M4,14v4H2v-4H4 M4,12H2c-1.104,0-2,0.896-2,2v4c0,1.104,0.896,2,2,2h2c1.104,0,2-0.896,2-2v-4C6,12.896,5.104,12,4,12L4,12z" />
+  </symbol>
+</svg>

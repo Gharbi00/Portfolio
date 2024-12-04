@@ -1,0 +1,51 @@
+@import '../../../../assets/css/style.css';
+@import '../../../../assets/css/responsive.css';
+
+::-webkit-scrollbar {
+  width: 5px;
+}
+
+::-webkit-scrollbar-track {
+  background: #fff;
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--blue-dark);
+  border-radius: 0;
+}
+
+:host {
+  --text-color: #73737B;
+  --text-light: #888888;
+  --heading: #101621;
+  --blue-dark: #6F55FF;
+  --red-light: #FD6A5E;
+  --yellow-deep: #FFB840;
+  --blue-light: #3BB0D7;
+  --purple-blue: #655C97;
+  --vin-red: #973C56;
+}
+
+::selection {
+  background-color: #6F55FF;
+  color: #fff;
+}
+
+.theme-btn-one {
+  font-size: 16px;
+  font-weight: 500;
+  color: #fff;
+  line-height: 50px;
+  background: var(--blue-dark);
+  padding: 0 42px;
+  border-radius: 4px;
+  transition: all 0.3s ease-in-out;
+}
+
+.theme-btn-one:hover {
+  background: #FFBA12;
+}
+
+.fw-bold {
+  font-weight: bold;
+}

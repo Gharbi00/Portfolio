@@ -1,0 +1,33 @@
+<?php
+/** @var \Elevok\Widget\Block\WidgetSettings $block */
+$widgetStyles=$block->getWidgetStyle(); 
+?>
+<script>
+    window.widgetInit = {
+        appId: '<?php echo $block->escapeJs($block->getWidgetAppId()); ?>',
+        publicKey: '<?php echo $block->escapeJs($block->getWidgetPublicKey()); ?>',
+        secretKey: '<?php echo $block->escapeJs($block->getWidgetSecretKey()); ?>',
+        theme: 'dark',
+        embed: false,
+        locale: 'fr-fr'
+    };
+
+    window.onload = function() {
+        var script = document.createElement('script');
+        script.src = "https://widgt-sbx-app.bosk.app/sdk.js";
+        script.async = true;
+        script.defer = true;
+        script.onload = function() {
+            window.widgetInit = {
+                appId: '<?php echo $block->escapeJs($block->getWidgetAppId()); ?>',
+                locale: 'fr-fr',
+                theme: 'light'
+            };
+        };
+        document.head.appendChild(script);
+    };
+</script>
+
+<style>
+<?= $widgetStyles; ?>
+</style>

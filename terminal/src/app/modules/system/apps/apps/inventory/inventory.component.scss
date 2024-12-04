@@ -1,0 +1,34 @@
+.br {
+  border: solid
+}
+.h-9 {
+  height: 9rem;
+}
+
+.h-30 {
+  height: 7.5rem;
+}
+.w-30 {
+  width: 7.5rem;
+}
+.img-wrap {
+  position: relative;
+}
+
+.delete-icon {
+  top: 0;
+  right: 0;
+  z-index: 1;
+  width: 24px;
+  height: 24px;
+  display: flex;
+  position: absolute;
+  border-radius: 50%;
+  align-items: center;
+  background-color: white;
+  justify-content: center;
+}
+.df-flex {
+  display: flex;
+  flex-wrap: wrap;
+}

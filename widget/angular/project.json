@@ -1,0 +1,238 @@
+{
+  "name": "widget",
+  "$schema": "../../../node_modules/nx/schemas/project-schema.json",
+  "projectType": "application",
+  "sourceRoot": "apps/widget/angular/src",
+  "prefix": "sifca-widget",
+  "targets": {
+    "build": {
+      "executor": "@angular-builders/custom-webpack:browser",
+      "outputs": [
+        "{options.outputPath}"
+      ],
+      "options": {
+        "customWebpackConfig": {
+          "path": "apps/widget/angular/extra-webpack.config.js"
+        },
+        "outputPath": "dist/apps/widget/angular/browser",
+        "index": "apps/widget/angular/src/index.html",
+        "main": "apps/widget/angular/src/main.ts",
+        "polyfills": "apps/widget/angular/src/polyfills.ts",
+        "tsConfig": "apps/widget/angular/tsconfig.app.json",
+        "inlineStyleLanguage": "scss",
+        "allowedCommonJsDependencies": [
+          "subscriptions-transport-ws",
+          "ngx-lightbox",
+          "ngx-barcode",
+          "headbreaker",
+          "qrcode",
+          "fast-xml-parser",
+          "@aws-crypto/sha1-browser",
+          "@aws-crypto/sha256-browser",
+          "@aws-crypto/crc32",
+          "@aws-crypto/crc32c",
+          "core-js/modules/es.array.filter.js",
+          "core-js/modules/es.array.iterator.js",
+          "core-js/modules/es.array.reduce.js",
+          "core-js/modules/es.function.name.js",
+          "core-js/modules/es.object.assign.js",
+          "core-js/modules/es.object.to-string.js",
+          "core-js/modules/es.parse-int.js",
+          "core-js/modules/es.regexp.exec.js",
+          "core-js/modules/es.string.iterator.js",
+          "core-js/modules/es.string.match.js",
+          "core-js/modules/es.string.replace.js",
+          "core-js/modules/web.dom-collections.iterator.js"
+        ],
+        "assets": [
+          "apps/widget/angular/src/assets"
+        ],
+        "styles": [
+          {
+            "bundleName": "main",
+            "input": "apps/widget/angular/src/styles.scss",
+            "inject": false
+          }
+        ],
+        "scripts": [
+          "apps/widget/angular/src/assets/js/utils/app.js",
+          "apps/widget/angular/src/assets/js/utils/page-loader.js",
+          "apps/widget/angular/src/assets/js/vendor/simplebar.min.js",
+          "apps/widget/angular/src/assets/js/utils/liquidify.js",
+          "apps/widget/angular/src/assets/js/vendor/xm_plugins.min.js",
+          "apps/widget/angular/src/assets/js/global/global.hexagons.js",
+          "apps/widget/angular/src/assets/js/global/global.tooltips.js",
+          "apps/widget/angular/src/assets/js/header/header.js",
+          "apps/widget/angular/src/assets/js/sidebar/sidebar.js",
+          "apps/widget/angular/src/assets/js/content/content.js",
+          "apps/widget/angular/src/assets/js/form/form.utils.js",
+          "apps/widget/angular/src/assets/js/bundle/app.bundle.js"
+        ]
+      },
+      "configurations": {
+        "production": {
+          "budgets": [
+            {
+              "type": "initial",
+              "maximumWarning": "80mb",
+              "maximumError": "100mb"
+            },
+            {
+              "type": "anyComponentStyle",
+              "maximumWarning": "100mb",
+              "maximumError": "100mb"
+            }
+          ],
+          "fileReplacements": [
+            {
+              "replace": "apps/widget/angular/src/environments/environment.ts",
+              "with": "apps/widget/angular/src/environments/environment.prod.ts"
+            }
+          ],
+          "aot": true,
+          "outputHashing": "media",
+          "sourceMap": false,
+          "namedChunks": false,
+          "extractLicenses": true,
+          "vendorChunk": false,
+          "optimization": true,
+          "buildOptimizer": true
+        },
+        "sandbox": {
+          "fileReplacements": [
+            {
+              "replace": "apps/widget/angular/src/environments/environment.ts",
+              "with": "apps/widget/angular/src/environments/environment.sandbox.ts"
+            }
+          ],
+          "aot": true,
+          "outputHashing": "media",
+          "sourceMap": false,
+          "namedChunks": false,
+          "extractLicenses": true,
+          "vendorChunk": false,
+          "optimization": true,
+          "buildOptimizer": true,
+          "budgets": [
+            {
+              "type": "initial",
+              "maximumWarning": "120mb",
+              "maximumError": "140mb"
+            },
+            {
+              "type": "anyComponentStyle",
+              "maximumWarning": "120mb",
+              "maximumError": "140mb"
+            }
+          ]
+        },
+        "development": {
+          "buildOptimizer": false,
+          "optimization": false,
+          "vendorChunk": true,
+          "extractLicenses": false,
+          "sourceMap": true,
+          "namedChunks": true
+        }
+      },
+      "defaultConfiguration": "development"
+    },
+    "serve": {
+      "executor": "@angular-devkit/build-angular:dev-server",
+      "configurations": {
+        "production": {
+          "browserTarget": "widget:build:production"
+        },
+        "development": {
+          "browserTarget": "widget:build:development"
+        }
+      },
+      "defaultConfiguration": "development"
+    },
+    "extract-i18n": {
+      "executor": "@angular-devkit/build-angular:extract-i18n",
+      "options": {
+        "browserTarget": "widget:build"
+      }
+    },
+    "lint": {
+      "executor": "@nrwl/linter:eslint",
+      "options": {
+        "lintFilePatterns": [
+          "apps/widget/angular/**/*.ts",
+          "apps/widget/angular/**/*.html"
+        ]
+      }
+    },
+    "test": {
+      "executor": "@nrwl/jest:jest",
+      "outputs": [
+        "{workspaceRoot}/coverage/{projectRoot}"
+      ],
+      "options": {
+        "jestConfig": "apps/widget/angular/jest.config.ts",
+        "passWithNoTests": true
+      }
+    },
+    "server": {
+      "executor": "@angular-devkit/build-angular:server",
+      "options": {
+        "outputPath": "dist/apps/widget/angular/server",
+        "main": "apps/widget/angular/src/ssr.server.ts",
+        "tsConfig": "apps/widget/angular/tsconfig.server.json",
+        "optimization": false,
+        "sourceMap": true,
+        "extractLicenses": false,
+        "inlineStyleLanguage": "scss"
+      },
+      "configurations": {
+        "production": {
+          "outputHashing": "media",
+          "fileReplacements": [
+            {
+              "replace": "apps/widget/angular/src/environments/environment.ts",
+              "with": "apps/widget/angular/src/environments/environment.prod.ts"
+            }
+          ],
+          "optimization": true,
+          "sourceMap": false,
+          "extractLicenses": true,
+          "namedChunks": false
+        },
+        "sandbox": {
+          "outputHashing": "media",
+          "fileReplacements": [
+            {
+              "replace": "apps/widget/angular/src/environments/environment.ts",
+              "with": "apps/widget/angular/src/environments/environment.sandbox.ts"
+            }
+          ],
+          "optimization": true,
+          "sourceMap": false,
+          "extractLicenses": true
+        },
+        "development": {
+          "optimization": false,
+          "sourceMap": true,
+          "extractLicenses": false
+        }
+      },
+      "defaultConfiguration": "production"
+    },
+    "serve-ssr": {
+      "executor": "@nguniversal/builders:ssr-dev-server",
+      "configurations": {
+        "development": {
+          "browserTarget": "widget:build:development",
+          "serverTarget": "widget:server:development"
+        },
+        "production": {
+          "browserTarget": "widget:build:production",
+          "serverTarget": "widget:server:production"
+        }
+      },
+      "defaultConfiguration": "production"
+    }
+  },
+  "tags": []
+}

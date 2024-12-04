@@ -1,0 +1,345 @@
+<app-breadcrumbs title="{{'MODULES.INVOICING.SALES.ORDERS.ORDERS' | translate }}" [breadcrumbItems]="breadCrumbItems"></app-breadcrumbs>
+<ng-container *ngIf="!(navigating$ | async)">
+
+  <div *ngIf="stats$ | async as state" class="row">
+    <div class="col-xl-3 col-md-6">
+      <div class="card card-animate">
+        <div class="card-body">
+          <div class="d-flex align-items-center">
+            <div class="flex-grow-1">
+              <p class="text-uppercase fw-medium text-muted mb-0">{{'MODULES.INVOICING.SALES.ORDERS.OPENED_ORDERS' | translate }}</p>
+            </div>
+            <div *ngIf="state.OPEN?.difference?.price?.percentage" class="flex-shrink-0">
+              <h5 [ngClass]="{
+              'text-success': state.OPEN?.difference?.price?.percentage > 0,
+              'text-danger': state.OPEN?.difference?.price?.percentage < 0
+            }" class="fs-14 mb-0">
+                <i [ngClass]="{
+                'ri-arrow-right-up-line': state.OPEN?.difference?.price?.percentage > 0,
+                'ri-arrow-right-down-line': state.OPEN?.difference?.price?.percentage < 0
+              }" class="fs-13 align-middle"></i> {{state.OPEN?.difference?.price?.percentage}} %
+              </h5>
+            </div>
+            <div *ngIf="!state.OPEN?.difference?.price?.percentage">-</div>
+          </div>
+          <div class="d-flex align-items-end justify-content-between mt-4">
+            <div>
+              <h4 class="fs-22 fw-semibold ff-secondary mb-4">
+                <div> {{state.OPEN?.current.price | numberWithSuffix:'DT'}} </div>
+              </h4>
+              <span class="badge bg-warning me-1">{{state.OPEN?.current?.count}}</span> <span class="text-muted">{{'MODULES.INVOICING.SALES.ORDERS.OPENED_ORDERS' | translate }}</span>
+            </div>
+            <div class="avatar-sm flex-shrink-0">
+              <span class="avatar-title bg-light rounded fs-3">
+                <i-feather name="file-text" class="text-success icon-dual-success feather-icon-align"></i-feather>
+              </span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-xl-3 col-md-6">
+      <div class="card card-animate">
+        <div class="card-body">
+          <div class="d-flex align-items-center">
+            <div class="flex-grow-1">
+              <p class="text-uppercase fw-medium text-muted mb-0">{{'MODULES.INVOICING.SALES.ORDERS.CONFIRMED_ORDERS' | translate }}</p>
+            </div>
+            <div *ngIf="state.CONFIRMED?.difference?.price?.percentage" class="flex-shrink-0">
+              <h5 [ngClass]="{
+              'text-success': state.CONFIRMED?.difference?.price?.percentage > 0,
+              'text-danger': state.CONFIRMED?.difference?.price?.percentage < 0
+            }" class="fs-14 mb-0">
+                <i [ngClass]="{
+                'ri-arrow-right-up-line': state.CONFIRMED?.difference?.price?.percentage > 0,
+                'ri-arrow-right-down-line': state.CONFIRMED?.difference?.price?.percentage < 0
+              }" class="fs-13 align-middle"></i> {{state.CONFIRMED?.difference?.price?.percentage}} %
+              </h5>
+            </div>
+            <div *ngIf="!state.CONFIRMED?.difference?.price?.percentage">-</div>
+          </div>
+          <div class="d-flex align-items-end justify-content-between mt-4">
+            <div>
+              <h4 class="fs-22 fw-semibold ff-secondary mb-4">
+                <div> {{state.CONFIRMED?.current.price | numberWithSuffix:'DT'}} </div>
+              </h4>
+              <span class="badge bg-warning me-1">{{state.CONFIRMED?.current?.count}}</span> <span class="text-muted">{{'MODULES.INVOICING.SALES.ORDERS.CONFIRMED_ORDERS' | translate }}</span>
+            </div>
+            <div class="avatar-sm flex-shrink-0">
+              <span class="avatar-title bg-light rounded fs-3">
+                <i-feather name="check-square" class="text-success icon-dual-success feather-icon-align"></i-feather>
+              </span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-xl-3 col-md-6">
+      <div class="card card-animate">
+        <div class="card-body">
+          <div class="d-flex align-items-center">
+            <div class="flex-grow-1">
+              <p class="text-uppercase fw-medium text-muted mb-0">{{'MODULES.INVOICING.SALES.ORDERS.DRAFT_ORDERS' | translate }}</p>
+            </div>
+            <div *ngIf="state.DRAFT?.difference?.price?.percentage" class="flex-shrink-0">
+              <h5 [ngClass]="{
+              'text-success': state.DRAFT?.difference?.price?.percentage > 0,
+              'text-danger': state.DRAFT?.difference?.price?.percentage < 0
+            }" class="fs-14 mb-0">
+                <i [ngClass]="{
+                'ri-arrow-right-up-line': state.DRAFT?.difference?.price?.percentage > 0,
+                'ri-arrow-right-down-line': state.DRAFT?.difference?.price?.percentage < 0
+              }" class="fs-13 align-middle"></i> {{state.DRAFT?.difference?.price?.percentage}} %
+              </h5>
+            </div>
+            <div *ngIf="!state.DRAFT?.difference?.price?.percentage">-</div>
+          </div>
+          <div class="d-flex align-items-end justify-content-between mt-4">
+            <div>
+              <h4 class="fs-22 fw-semibold ff-secondary mb-4">
+                <div> {{state.DRAFT?.current.price | numberWithSuffix:'DT'}} </div>
+              </h4>
+              <span class="badge bg-warning me-1">{{state.DRAFT?.current?.count}}</span> <span class="text-muted">{{
+                'MODULES.INVOICING.PURCHASES.INVOICES.DRAFTED_BY_CLIENTS' | translate }}
+              </span>
+            </div>
+            <div class="avatar-sm flex-shrink-0">
+              <span class="avatar-title bg-light rounded fs-3">
+                <i-feather name="clock" class="text-success icon-dual-success feather-icon-align"></i-feather>
+              </span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-xl-3 col-md-6">
+      <div class="card card-animate">
+        <div class="card-body">
+          <div class="d-flex align-items-center">
+            <div class="flex-grow-1">
+              <p class="text-uppercase fw-medium text-muted mb-0">{{'MODULES.INVOICING.SALES.ORDERS.CANCELED_ORDERS' | translate }}</p>
+            </div>
+            <div *ngIf="state.CANCELED?.difference?.price?.percentage" class="flex-shrink-0">
+              <h5 [ngClass]="{
+              'text-success': state.CANCELED?.difference?.price?.percentage > 0,
+              'text-danger': state.CANCELED?.difference?.price?.percentage < 0
+            }" class="fs-14 mb-0">
+                <i [ngClass]="{
+                'ri-arrow-right-up-line': state.CANCELED?.difference?.price?.percentage > 0,
+                'ri-arrow-right-down-line': state.CANCELED?.difference?.price?.percentage < 0
+              }" class="fs-13 align-middle"></i> {{state.CANCELED?.difference?.price?.percentage}} %
+              </h5>
+            </div>
+            <div *ngIf="!state.CANCELED?.difference?.price?.percentage">-</div>
+          </div>
+          <div class="d-flex align-items-end justify-content-between mt-4">
+            <div>
+              <h4 class="fs-22 fw-semibold ff-secondary mb-4">
+                <div> {{state.CANCELED?.current.price | numberWithSuffix:'DT'}} </div>
+              </h4>
+              <span class="badge bg-warning me-1">{{state.CANCELED?.current?.count}}</span> <span class="text-muted">{{
+                'MODULES.INVOICING.PURCHASES.INVOICES.CANCELED_BY_CLIENTS' | translate }}</span>
+            </div>
+            <div class="avatar-sm flex-shrink-0">
+              <span class="avatar-title bg-light rounded fs-3">
+                <i-feather name="x-octagon" class="text-success icon-dual-success feather-icon-align"></i-feather>
+              </span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-lg-12">
+      <div class="card" id="orderList">
+        <div class="card-header  border-0">
+          <div class="d-flex align-items-center">
+            <h5 class="card-title mb-0 flex-grow-1">{{'MODULES.INVOICING.SALES.ORDERS.ORDER_HISTORY' | translate }}</h5>
+            <div class="flex-shrink-0 hstack gap-2">
+              <button type="button" class="btn btn-success add-btn" data-bs-toggle="modal" id="create-btn" data-bs-target="#showModal" routerLink="/sales/orders/create"><i
+                  class="ri-add-line align-bottom me-1"></i> {{'MODULES.INVOICING.SALES.ORDERS.CREATE_ORDER' | translate }}</button>
+            </div>
+          </div>
+        </div>
+        <div class="card-body bg-soft-light border border-dashed border-start-0 border-end-0">
+          <form [formGroup]="filterForm">
+            <div class="row g-3">
+              <div class="col-xxl-3 col-sm-12">
+                <div class="search-box">
+                  <form [formGroup]="searchForm">
+                    <input type="text" formControlName="searchString" name="searchTerm" class="form-control search bg-light border-light"
+                      placeholder="{{'MODULES.INVOICING.SALES.ORDERS.SEARCH_FOR_SALES' | translate }}">
+                    <i class="ri-search-line search-icon"></i>
+                  </form>
+                </div>
+              </div>
+              <div class="col-xxl-3 col-sm-4">
+                <div class="input-wrapper input-group d-flex align-items-center">
+                  <input formControlName="date" [inline]="false" mode="range" class="form-control bg-light border-light" type="text" (flatpickrClose)="onDateChange($event)" mwlFlatpickr
+                    [altInput]="true" [convertModelValue]="true" placeholder="{{ 'COMMON.SELECT_DATE_RANGE' | translate }}" id="isDate">
+                  <a *ngIf="filterForm.get('date').value" (click)="resetDate()">
+                    <i class="ri-close-fill fs-16"></i>
+                  </a>
+                </div>
+              </div>
+              <div class="col-xxl-3 col-sm-4">
+                <div class="input-light">
+                  <div ngbDropdown>
+                    <input [value]="selectedStatus.join(', ')" placeholder="{{ 'MODULES.INVOICING.PURCHASES.INVOICES.CHOOSE_STATUS' | translate }}"
+                      class="cursor-pointer form-select form-control dropdown-toggle" ngbDropdownToggle>
+                    <div class="dropdown-menu dropdown-menu-right w-100 h-7 p-3" ngbDropdownMenu>
+                      <div *ngFor="let state of status" class="form-check">
+                        <input (change)="onStatusChange(state, $event.target.checked)" class="form-check-input me-3" type="checkbox" [value]="state">
+                        <label class="form-check-label d-flex align-items-center" for="anna-adame">
+                          {{ 'MODULES.INVOICING.SALES.SHARED.' + state | translate }}
+                        </label>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="col-xxl-3 col-sm-4">
+                <ng-select (change)="onChangeNumber($event)" [items]="[]" class="no-arrow-select" placeholder="{{ 'COMMON.ENTER_NUMBERS' | translate }}" [addTag]="true" [isOpen]="false" [multiple]="true"
+                  [selectOnTab]="true">
+                </ng-select>
+              </div>
+            </div>
+          </form>
+        </div>
+        <div class="card-body">
+          <div>
+            <div class="table-responsive table-card mb-0">
+              <table class="table">
+                <thead>
+                  <tr class="bg-light text-muted text-uppercase">
+                    <th>{{ 'MODULES.ECOMMERCE.MAIN.ORDER_ID' | translate }}</th>
+                    <th>{{ 'COMMON.CUSTOMER' | translate }}</th>
+                    <th>{{ 'COMMON.EMAIL' | translate }}</th>
+                    <th>{{ 'COMMON.COUNTRY' | translate }}</th>
+                    <th>{{ 'MODULES.INVOICING.SALES.ORDERS.ORDER_DATE' | translate }}</th>
+                    <th>{{ 'COMMON.AMOUNT' | translate }}</th>
+                    <th>{{ 'MODULES.ECOMMERCE.MAIN.DELIVERY_STATUS' | translate }}</th>
+                    <th>{{ 'COMMON.ACTION' | translate }}</th>
+                  </tr>
+                </thead>
+                <tbody *ngIf="((loadingOrders$ | async) === false || null || undefined) && (orders$ | async).length">
+                  <tr *ngFor="let data of orders$ | async" id="o_{{data.id}}">
+                    <td><a routerLink="/sales/orders/{{data.id}}"><ngb-highlight class="fw-medium link-primary" [result]="'#'+data.number"></ngb-highlight></a>
+                    </td>
+                    <td class="customer_name">
+                      <div class="d-flex align-items-center" *ngIf="data.img">
+                        <img src="assets/images/users/{{data.img}}" class="avatar-xs rounded-circle me-2" alt="">
+                        {{data.quotations?.quotations?.name}}
+                      </div>
+                      <div class="d-flex align-items-center" *ngIf="!data.img">
+                        <div class="flex-shrink-0 avatar-xs me-2">
+                          <div class="avatar-title bg-soft-success text-success rounded-circle fs-13">
+                            {{ data?.customer?.customer?.name.charAt(0) || 'N'}}
+                          </div>
+                        </div>
+                        {{data?.customer?.customer?.name}}
+                      </div>
+                    </td>
+                    <td><ngb-highlight [result]="data?.customer?.customer?.contact?.email"></ngb-highlight></td>
+                    <td><ngb-highlight [result]="data?.customer?.customer?.address?.country?.name"></ngb-highlight></td>
+                    <td><ngb-highlight [result]="data?.createdAt | date :'longDate'"></ngb-highlight></td>
+                    <td><ngb-highlight [result]="data?.toPay"></ngb-highlight></td>
+                    <td class="status"><span class="badge text-uppercase"
+                        [ngClass]=" { 'badge-soft-warning': data.status === 'DRAFT', 'badge-soft-danger': data.status === 'CANCELED', 'badge-soft-secondary': data.status === 'OPEN', 'badge-soft-success': data.status === 'CONFIRMED' }">{{'COMMON.STATE.' + data.status |translate}}</span>
+                    </td>
+                    <td>
+                      <ul class="list-inline hstack gap-2 mb-0">
+                        <li class="list-inline-item" data-bs-toggle="tooltip" data-bs-trigger="hover" ngbTooltip="View" placement="top">
+                          <a routerLink="/sales/orders/{{data.id}}" class="text-primary d-inline-block">
+                            <i class="ri-eye-fill fs-16"></i>
+                          </a>
+                        </li>
+                        <li class="list-inline-item edit" data-bs-toggle="tooltip" data-bs-trigger="hover" ngbTooltip="Edit" placement="top">
+                          <a data-bs-toggle="modal" class="text-primary d-inline-block edit-item-btn" data-bs-toggle="modal" id="create-btn" data-bs-target="#showModal"
+                            [routerLink]="['edit', data.id]">
+                            <i class="ri-pencil-fill fs-16"></i>
+                          </a>
+                        </li>
+                        <li class="list-inline-item" ngbTooltip="Remove" placement="top" data-bs-toggle="tooltip" data-bs-trigger="hover" (click)="confirm(deleteModel,data._id)">
+                          <a class="text-danger d-inline-block remove-item-btn" data-bs-toggle="modal" data-bs-target="#deleteOrder">
+                            <i class="ri-delete-bin-5-fill fs-16"></i>
+                          </a>
+                        </li>
+                      </ul>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+            <div *ngIf="((loadingOrders$ | async) === false || null || undefined) && (orders$ | async).length" class="px-3">
+              <div class="row justify-content-md-between align-items-md-center gy-2">
+                <div class="col col-sm-6">
+                  <div class="dataTables_info mb-2" id="tickets-table_info" role="status" aria-live="polite">{{
+                    'COMMON.SHOWING' | translate }} {{pagination?.startIndex + 1}}–{{pagination?.endIndex ===
+                    pagination?.length ? pagination?.endIndex : pagination?.endIndex + 1}} {{ 'COMMON.OF' | translate }}
+                    {{pagination?.length}} {{ 'COMMON.ENTRIES' | translate }}
+                  </div>
+                </div>
+                <div class="col col-sm-6">
+                  <div class="text-sm-right float-end listjs-pagination">
+                    <ngb-pagination [maxSize]="5" [collectionSize]="pagination?.length" [(page)]="page" (pageChange)="onPageChange($event)" [pageSize]="pagination?.size">
+                    </ngb-pagination>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div id="noresult" class="py-4 mt-4 text-center" *ngIf="(loadingOrders$ | async) || (!(loadingOrders$ | async) && !(orders$ | async).length)">
+              <div *ngIf="loadingOrders$ | async">
+                <lord-icon trigger="loop" style="width:72px;height:72px" [colors]="'primary:' + primaryColor + ',secondary:' + secondaryColor" src="https://cdn.lordicon.com/msoeawqm.json">
+                </lord-icon>
+                <h5 class="mt-4">{{ 'COMMON.LOADING' | translate }}</h5>
+              </div>
+              <div *ngIf="!(loadingOrders$ | async) && !(orders$ | async).length">
+                <lord-icon trigger="loop" style="width:72px;height:72px" [colors]="'primary:' + primaryColor + ',secondary:' + secondaryColor" src="https://cdn.lordicon.com/msoeawqm.json">
+                </lord-icon>
+                <h5 class="mt-4">{{ 'COMMON.NO_RESULT' | translate }}</h5>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+
+    <ng-template #deleteModel let-modal>
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" id="deleteRecord-close" (click)="modal.dismiss('Cross click')"></button>
+        </div>
+        <div class="modal-body">
+          <div class="mt-2 text-center">
+            <lord-icon src="https://cdn.lordicon.com/gsqxdxog.json" trigger="loop" colors="primary:#405189,secondary:#f06548" style="width:90px;height:90px"></lord-icon>
+            <div class="mt-4 pt-2 fs-15 mx-4 mx-sm-5">
+              <h4>{{'MODULES.INVOICING.SALES.ORDERS.DELETE_AN_ORDER' | translate }} ?</h4>
+              <p class="text-muted mx-4 mb-0">{{ 'MODULES.INVOICING.PURCHASES.PURCHASES.DELETING_YOUR_ORDER_DB' | translate }}
+              </p>
+            </div>
+          </div>
+          <div class="d-flex gap-2 justify-content-center mt-4 mb-2">
+            <button class="btn btn-link link-success fw-medium text-decoration-none" data-bs-dismiss="modal" (click)="modal.close('Close click')"><i class="ri-close-line me-1 align-middle"></i>
+              {{ 'COMMON.CLOSE' | translate }}</button>
+            <button type="button" class="btn w-sm btn-danger " id="delete-product" (click)="deleteData(deleteId)" (click)="modal.close('Close click')">{{ 'COMMON.YES_DELETE_IT' | translate }}</button>
+          </div>
+        </div>
+      </div>
+    </ng-template>
+  </div>
+</ng-container>
+<div *ngIf="navigating$ | async" class="vh-100 py-4 text-center" fxLayout="column" fxLayoutAlign="center center" fxLayoutGap="1rem">
+  <div>
+    <lord-icon trigger="loop" style="width:72px;height:72px" [colors]="'primary:' + primaryColor + ',secondary:' + secondaryColor" src="https://cdn.lordicon.com/msoeawqm.json">
+    </lord-icon>
+  </div>
+  <div class="mt-4">
+    <h5>{{ 'COMMON.LOADING' | translate }}</h5>
+  </div>
+</div>

@@ -1,0 +1,256 @@
+<!-- Start Breadcrumbs -->
+<app-breadcrumbs title="{{ 'MENUITEMS.TITLE.GALLERY' | translate }}" [breadcrumbItems]="breadCrumbItems"></app-breadcrumbs>
+<ng-container *ngIf="!(navigating$ | async)">
+
+  <div class="card-body">
+    <div class="row">
+      <div class="col-lg-12">
+        <div class="text-center">
+          <ul class="list-inline categories-filter animation-nav" id="filter">
+            <li (click)="onChangeTab('logos')" class="list-inline-item"><a class="categories active" data-filter="*"
+                [ngClass]="{'active': galleryFilter ==='logos'}">{{'MODULES.WEBSITE.LOGOS' | translate }}</a></li>
+            <li (click)="onChangeTab('favicons')" class="list-inline-item"><a class="categories"
+                [ngClass]="{'active': galleryFilter ==='favicons'}">{{'MODULES.WEBSITE.FAVICONS' | translate }}</a></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+    <div class="card">
+      <div class="card-body">
+        <div *ngIf="galleryFilter === 'logos'" class="row g-3 mt-4 d-flex justify-content-lg-around">
+          <div class="col-sm-6 col-md-4 col-lg-3 col-xl-2">
+            <label for="firstnameInput" class="form-label fs-5">{{'MODULES.WEBSITE.LOGO_SQUARE' | translate }}</label>
+            <div class="mt-2 df-flex">
+              <div class="img-wrap w-30 h-30 me-3 mb-2">
+                <button (click)="openAltMoadal('square')" type="button" class="btn btn-outline-info btn-sm wrap-img m-2">
+                  <i class="ri-coupon-2-line"></i>
+                </button>
+                <button *ngIf="visualsForm.get('square').value.baseUrl" (click)="removePictue('square')" type="button"
+                  class="btn btn-outline-danger btn-icon btn-sm img-wrap-2 me-2">
+                  <i class="ri-delete-bin-5-line"></i>
+                </button>
+                <img *ngIf="visualsForm.get('square').value.baseUrl" (click)="upload('square')"
+                  class="cover h-30 product-picture w-30"
+                  [src]="visualsForm.get( 'square').value.baseUrl + '/' + visualsForm.get('square').value.path">
+                <div *ngIf="!visualsForm.get('square').value.baseUrl && !loadingPictureSquare" (click)="upload('square')"
+                  class="w-30 mb-3 h-30 border rounded overflow-hidden cursor-pointer d-flex align-items-center justify-content-center">
+                  <span class="fs-5 fw-bold">{{'COMMON.UPLOAD' | translate }}</span>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="col-sm-6 col-md-4 col-lg-3 col-xl-2">
+            <label for="firstnameInput" class="form-label fs-5">{{'MODULES.WEBSITE.LOGO' | translate }}</label>
+            <div class="mt-2 df-flex">
+              <div class="img-wrap w-30 h-30 me-3 mb-2">
+                <button (click)="openAltMoadal('logo')" type="button" class="btn btn-outline-info btn-sm wrap-img m-2">
+                  <i class="ri-coupon-2-line"></i>
+                </button>
+                <button *ngIf="visualsForm.get('logo').value.baseUrl" (click)="removePictue('logo')" type="button"
+                  class="btn btn-outline-danger btn-icon btn-sm img-wrap-2 me-2">
+                  <i class="ri-delete-bin-5-line"></i>
+                </button>
+                <img *ngIf="visualsForm.get('logo').value.baseUrl" (click)="upload('logo')"
+                  class="cover h-30 product-picture w-30"
+                  [src]="visualsForm.get('logo').value.baseUrl + '/' + visualsForm.get('logo').value.path">
+                <div *ngIf="!visualsForm.get('logo').value.baseUrl && !loadingPictureSquare" (click)="upload('logo')"
+                  class="w-30 mb-3 h-30 border rounded overflow-hidden cursor-pointer d-flex align-items-center justify-content-center">
+                  <span class="fs-5 fw-bold">{{'COMMON.UPLOAD' | translate }}</span>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="col-lg-2">
+            <label for="firstnameInput" class="form-label fs-5">{{'MODULES.WEBSITE.LOGO_WIDE' | translate }}</label>
+            <div class="img-wrap w-30 h-30 me-3 mb-2">
+              <button (click)="openAltMoadal('wide')" type="button" class="btn btn-outline-info btn-sm wrap-img m-2">
+                <i class="ri-coupon-2-line"></i>
+              </button>
+              <button *ngIf="visualsForm.get('wide').value.baseUrl" (click)="removePictue('wide')" type="button"
+                class="btn btn-outline-danger btn-icon btn-sm img-wrap-2 me-2">
+                <i class="ri-delete-bin-5-line"></i>
+              </button>
+              <img *ngIf="visualsForm.get('wide').value.baseUrl" (click)="upload('wide')"
+                class="cover h-30 product-picture w-30"
+                [src]="visualsForm.get('wide').value.baseUrl + '/' + visualsForm.get('wide').value.path">
+              <div *ngIf="!visualsForm.get('wide').value.baseUrl && !loadingPictureSquare" (click)="upload('wide')"
+                class="w-30 mb-3 h-30 border rounded overflow-hidden cursor-pointer d-flex align-items-center justify-content-center">
+                <span class="fs-5 fw-bold">{{'COMMON.UPLOAD' | translate }}</span>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div *ngIf="galleryFilter === 'favicons'" class="row g-3 mt-4">
+          <div class="col-sm-6 col-md-4 col-lg-3 col-xl-2">
+            <label for="firstnameInput" class="form-label fs-5">{{'MODULES.WEBSITE.FAVICON' | translate }} 16</label>
+            <div *ngIf="visualsForm.get(['favicon', 'size16']).value.baseUrl">
+              <img (click)="uploadFav('size16')" class="w-30 mb-3 h-30 rounded object-cover"
+                [src]="visualsForm.get(['favicon', 'size16']).value.baseUrl + '/' + visualsForm.get(['favicon', 'size16']).value.path"
+                alt="Wide image">
+            </div>
+            <div *ngIf="!visualsForm.get(['favicon', 'size16']).value.baseUrl" (click)="uploadFav('size16')"
+              class="w-30 mb-3 h-30 border rounded overflow-hidden cursor-pointer d-flex align-items-center justify-content-center">
+              <span class="fs-5 fw-bold">{{'COMMON.UPLOAD' | translate }}</span>
+            </div>
+          </div>
+          <div class="col-sm-6 col-md-4 col-lg-3 col-xl-2">
+            <label for="firstnameInput" class="form-label fs-5">{{'MODULES.WEBSITE.FAVICON' | translate }} 32</label>
+            <div *ngIf="visualsForm.get(['favicon', 'size32']).value.baseUrl">
+              <img (click)="uploadFav('size32')" class="w-30 mb-3 h-30 rounded object-cover"
+                [src]="visualsForm.get(['favicon', 'size32']).value.baseUrl + '/' + visualsForm.get(['favicon', 'size32']).value.path"
+                alt="Wide image">
+            </div>
+            <div *ngIf="!visualsForm.get(['favicon', 'size32']).value.baseUrl" (click)="uploadFav('size32')"
+              class="w-30 mb-3 h-30 border rounded overflow-hidden cursor-pointer d-flex align-items-center justify-content-center">
+              <span class="fs-5 fw-bold">{{'COMMON.UPLOAD' | translate }}</span>
+            </div>
+          </div>
+          <div class="col-sm-6 col-md-4 col-lg-3 col-xl-2">
+            <label for="firstnameInput" class="form-label fs-5">{{'MODULES.WEBSITE.FAVICON' | translate }} 57</label>
+            <div *ngIf="visualsForm.get(['favicon', 'size57']).value.baseUrl">
+              <img (click)="uploadFav('size57')" class="w-30 mb-3 h-30 rounded object-cover"
+                [src]="visualsForm.get(['favicon', 'size57']).value.baseUrl + '/' + visualsForm.get(['favicon', 'size57']).value.path"
+                alt="Wide image">
+            </div>
+            <div *ngIf="!visualsForm.get(['favicon', 'size57']).value.baseUrl" (click)="uploadFav('size57')"
+              class="w-30 mb-3 h-30 border rounded overflow-hidden cursor-pointer d-flex align-items-center justify-content-center">
+              <span class="fs-5 fw-bold">{{'COMMON.UPLOAD' | translate }}</span>
+            </div>
+          </div>
+          <div class="col-sm-6 col-md-4 col-lg-3 col-xl-2">
+            <label for="firstnameInput" class="form-label fs-5">{{'MODULES.WEBSITE.FAVICON' | translate }} 60</label>
+            <div *ngIf="visualsForm.get(['favicon', 'size60']).value.baseUrl">
+              <img (click)="uploadFav('size60')" class="w-30 mb-3 h-30 rounded object-cover"
+                [src]="visualsForm.get(['favicon', 'size60']).value.baseUrl + '/' + visualsForm.get(['favicon', 'size60']).value.path"
+                alt="Wide image">
+            </div>
+            <div *ngIf="!visualsForm.get(['favicon', 'size60']).value.baseUrl" (click)="uploadFav('size60')"
+              class="w-30 mb-3 h-30 border rounded overflow-hidden cursor-pointer d-flex align-items-center justify-content-center">
+              <span class="fs-5 fw-bold">{{'COMMON.UPLOAD' | translate }}</span>
+            </div>
+          </div>
+          <div class="col-sm-6 col-md-4 col-lg-3 col-xl-2">
+            <label for="firstnameInput" class="form-label fs-5">{{'MODULES.WEBSITE.FAVICON' | translate }} 72</label>
+            <div *ngIf="visualsForm.get(['favicon', 'size72']).value.baseUrl">
+              <img (click)="uploadFav('size72')" class="w-30 mb-3 h-30 rounded object-cover"
+                [src]="visualsForm.get(['favicon', 'size72']).value.baseUrl + '/' + visualsForm.get(['favicon', 'size72']).value.path"
+                alt="Wide image">
+            </div>
+            <div *ngIf="!visualsForm.get(['favicon', 'size72']).value.baseUrl" (click)="uploadFav('size72')"
+              class="w-30 mb-3 h-30 border rounded overflow-hidden cursor-pointer d-flex align-items-center justify-content-center">
+              <span class="fs-5 fw-bold">{{'COMMON.UPLOAD' | translate }}</span>
+            </div>
+          </div>
+          <div class="col-sm-6 col-md-4 col-lg-3 col-xl-2">
+            <label for="firstnameInput" class="form-label fs-5">{{'MODULES.WEBSITE.FAVICON' | translate }} 76</label>
+            <div *ngIf="visualsForm.get(['favicon', 'size76']).value.baseUrl">
+              <img (click)="uploadFav('size76')" class="w-30 mb-3 h-30 rounded object-cover"
+                [src]="visualsForm.get(['favicon', 'size76']).value.baseUrl + '/' + visualsForm.get(['favicon', 'size76']).value.path"
+                alt="Wide image">
+            </div>
+            <div *ngIf="!visualsForm.get(['favicon', 'size76']).value.baseUrl" (click)="uploadFav('size76')"
+              class="w-30 mb-3 h-30 border rounded overflow-hidden cursor-pointer d-flex align-items-center justify-content-center">
+              <span class="fs-5 fw-bold">{{'COMMON.UPLOAD' | translate }}</span>
+            </div>
+          </div>
+          <div class="col-sm-6 col-md-4 col-lg-3 col-xl-2">
+            <label for="firstnameInput" class="form-label fs-5">{{'MODULES.WEBSITE.FAVICON' | translate }} 96</label>
+            <div *ngIf="visualsForm.get(['favicon', 'size96']).value.baseUrl">
+              <img (click)="uploadFav('size96')" class="w-30 mb-3 h-30 rounded object-cover"
+                [src]="visualsForm.get(['favicon', 'size96']).value.baseUrl + '/' + visualsForm.get(['favicon', 'size96']).value.path"
+                alt="Wide image">
+            </div>
+            <div *ngIf="!visualsForm.get(['favicon', 'size96']).value.baseUrl" (click)="uploadFav('size96')"
+              class="w-30 mb-3 h-30 border rounded overflow-hidden cursor-pointer d-flex align-items-center justify-content-center">
+              <span class="fs-5 fw-bold">{{'COMMON.UPLOAD' | translate }}</span>
+            </div>
+          </div>
+          <div class="col-sm-6 col-md-4 col-lg-3 col-xl-2">
+            <label for="firstnameInput" class="form-label fs-5">{{'MODULES.WEBSITE.FAVICON' | translate }} 114</label>
+            <div *ngIf="visualsForm.get(['favicon', 'size114']).value.baseUrl">
+              <img (click)="uploadFav('size114')" class="w-30 mb-3 h-30 rounded object-cover"
+                [src]="visualsForm.get(['favicon', 'size114']).value.baseUrl + '/' + visualsForm.get(['favicon', 'size114']).value.path"
+                alt="Wide image">
+            </div>
+            <div *ngIf="!visualsForm.get(['favicon', 'size114']).value.baseUrl" (click)="uploadFav('size114')"
+              class="w-30 mb-3 h-30 border rounded overflow-hidden cursor-pointer d-flex align-items-center justify-content-center">
+              <span class="fs-5 fw-bold">{{'COMMON.UPLOAD' | translate }}</span>
+            </div>
+          </div>
+          <div class="col-sm-6 col-md-4 col-lg-3 col-xl-2">
+            <label for="firstnameInput" class="form-label fs-5">{{'MODULES.WEBSITE.FAVICON' | translate }} 120</label>
+            <div *ngIf="visualsForm.get(['favicon', 'size120']).value.baseUrl">
+              <img (click)="uploadFav('size120')" class="w-30 mb-3 h-30 rounded object-cover"
+                [src]="visualsForm.get(['favicon', 'size120']).value.baseUrl + '/' + visualsForm.get(['favicon', 'size120']).value.path"
+                alt="Wide image">
+            </div>
+            <div *ngIf="!visualsForm.get(['favicon', 'size120']).value.baseUrl" (click)="uploadFav('size120')"
+              class="w-30 mb-3 h-30 border rounded overflow-hidden cursor-pointer d-flex align-items-center justify-content-center">
+              <span class="fs-5 fw-bold">{{'COMMON.UPLOAD' | translate }}</span>
+            </div>
+          </div>
+          <div class="col-sm-6 col-md-4 col-lg-3 col-xl-2">
+            <label for="firstnameInput" class="form-label fs-5">{{'MODULES.WEBSITE.FAVICON' | translate }} 144</label>
+            <div *ngIf="visualsForm.get(['favicon', 'size144']).value.baseUrl">
+              <img (click)="uploadFav('size144')" class="w-30 mb-3 h-30 rounded object-cover"
+                [src]="visualsForm.get(['favicon', 'size144']).value.baseUrl + '/' + visualsForm.get(['favicon', 'size144']).value.path"
+                alt="Wide image">
+            </div>
+            <div *ngIf="!visualsForm.get(['favicon', 'size144']).value.baseUrl" (click)="uploadFav('size144')"
+              class="w-30 mb-3 h-30 border rounded overflow-hidden cursor-pointer d-flex align-items-center justify-content-center">
+              <span class="fs-5 fw-bold">{{'COMMON.UPLOAD' | translate }}</span>
+            </div>
+          </div>
+          <div class="col-sm-6 col-md-4 col-lg-3 col-xl-2">
+            <label for="firstnameInput" class="form-label fs-5">{{'MODULES.WEBSITE.FAVICON' | translate }} 152</label>
+            <div *ngIf="visualsForm.get(['favicon', 'size152']).value.baseUrl">
+              <img (click)="uploadFav('size152')" class="w-30 mb-3 h-30 rounded object-cover"
+                [src]="visualsForm.get(['favicon', 'size152']).value.baseUrl + '/' + visualsForm.get(['favicon', 'size152']).value.path"
+                alt="Wide image">
+            </div>
+            <div *ngIf="!visualsForm.get(['favicon', 'size152']).value.baseUrl" (click)="uploadFav('size152')"
+              class="w-30 mb-3 h-30 border rounded overflow-hidden cursor-pointer d-flex align-items-center justify-content-center">
+              <span class="fs-5 fw-bold">{{'COMMON.UPLOAD' | translate }}</span>
+            </div>
+          </div>
+          <div class="col-sm-6 col-md-4 col-lg-3 col-xl-2">
+            <label for="firstnameInput" class="form-label fs-5">{{'MODULES.WEBSITE.FAVICON' | translate }} 180</label>
+            <div *ngIf="visualsForm.get(['favicon', 'size180']).value.baseUrl">
+              <img (click)="uploadFav('size180')" class="w-30 mb-3 h-30 rounded object-cover"
+                [src]="visualsForm.get(['favicon', 'size180']).value.baseUrl + '/' + visualsForm.get(['favicon', 'size180']).value.path"
+                alt="Wide image">
+            </div>
+            <div *ngIf="!visualsForm.get(['favicon', 'size180']).value.baseUrl" (click)="uploadFav('size180')"
+              class="w-30 mb-3 h-30 border rounded overflow-hidden cursor-pointer d-flex align-items-center justify-content-center">
+              <span class="fs-5 fw-bold">{{'COMMON.UPLOAD' | translate }}</span>
+            </div>
+          </div>
+          <div class="col-sm-6 col-md-4 col-lg-3 col-xl-2">
+            <label for="firstnameInput" class="form-label fs-5">{{'MODULES.WEBSITE.FAVICON' | translate }} 192</label>
+            <div *ngIf="visualsForm.get(['favicon', 'size192']).value.baseUrl">
+              <img (click)="uploadFav('size192')" class="w-30 mb-3 h-30 rounded object-cover"
+                [src]="visualsForm.get(['favicon', 'size192']).value.baseUrl + '/' + visualsForm.get(['favicon', 'size192']).value.path"
+                alt="Wide image">
+            </div>
+            <div *ngIf="!visualsForm.get(['favicon', 'size192']).value.baseUrl" (click)="uploadFav('size192')"
+              class="w-30 mb-3 h-30 border rounded overflow-hidden cursor-pointer d-flex align-items-center justify-content-center">
+              <span class="fs-5 fw-bold">{{'COMMON.UPLOAD' | translate }}</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</ng-container>
+<div *ngIf="navigating$ | async" class="vh-100 py-4 text-center" fxLayout="column" fxLayoutAlign="center center"
+  fxLayoutGap="1rem">
+  <div>
+    <lord-icon trigger="loop" style="width:72px;height:72px" [colors]="'primary:' + primaryColor + ',secondary:' + secondaryColor"
+      src="https://cdn.lordicon.com/msoeawqm.json">
+    </lord-icon>
+  </div>
+  <div class="mt-4">
+    <h5>{{'COMMON.LOADING' | translate }}</h5>
+  </div>
+</div>

@@ -1,0 +1,79 @@
+<ng-container *ngIf="activeModal === 'connectUser'">
+  <app-connect-user></app-connect-user>
+</ng-container>
+
+<ng-container *ngIf="activeModal === 'chat'">
+  <app-chat></app-chat>
+</ng-container>
+
+<div class="special-padding displayed-center special-margin display-view" style="filter: blur(0px)"
+  [ngClass]="{'chat-special-view': activeModal === 'chat'}" *ngIf="activeModal != 'chat'">
+
+  <ng-container *ngIf="activeModal === 'marketplace'">
+    <app-marketplace></app-marketplace>
+  </ng-container>
+
+  <ng-container *ngIf="activeModal === 'home'">
+    <app-home [connectButton]="connectButton"></app-home>
+  </ng-container>
+
+  <ng-container *ngIf="activeModal === 'reputations'">
+    <app-reputation></app-reputation>
+  </ng-container>
+
+  <ng-container *ngIf="activeModal === 'transactions'">
+    <app-transactions></app-transactions>
+  </ng-container>
+
+  <ng-container *ngIf="activeModal === 'redeem'">
+    <app-redeem></app-redeem>
+  </ng-container>
+
+  <ng-container *ngIf="activeModal === 'buttons'">
+    <app-buttons></app-buttons>
+  </ng-container>
+
+  <ng-container *ngIf="activeModal === 'earn'">
+    <app-earn></app-earn>
+  </ng-container>
+
+  <ng-container *ngIf="activeModal === 'notifications'">
+    <app-notification></app-notification>
+  </ng-container>
+
+  <ng-container *ngIf="activeModal === 'profile'">
+    <app-profile-detail></app-profile-detail>
+  </ng-container>
+
+  <ng-container *ngIf="activeModal === 'editProfile'">
+    <app-profile-edit></app-profile-edit>
+  </ng-container>
+
+  <ng-container *ngIf="activeModal === 'questsList'">
+    <app-quest-list></app-quest-list>
+  </ng-container>
+
+  <ng-container *ngIf="activeModal === 'questsDetails'">
+    <app-quest-detail></app-quest-detail>
+  </ng-container>
+
+  <ng-container *ngIf="activeModal === 'challengeList'">
+    <app-challenge-list></app-challenge-list>
+  </ng-container>
+
+  <ng-container *ngIf="activeModal === 'challengesDetails'">
+    <app-challenge-details></app-challenge-details>
+  </ng-container>
+
+  <ng-container *ngIf="activeModal === 'donationDetails'">
+    <app-donation-details></app-donation-details>
+  </ng-container>
+
+  <ng-container *ngIf="activeModal === 'leaderboard'">
+    <app-leaderboard></app-leaderboard>
+  </ng-container>
+
+  <ng-container *ngIf="activeModal === 'badges'">
+    <app-badge></app-badge>
+  </ng-container>
+</div>

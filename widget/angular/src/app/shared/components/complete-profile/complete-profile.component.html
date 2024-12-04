@@ -1,0 +1,792 @@
+<div [class.dark-mode]="darkMode" [class.mt-3]="!(isCompleteProfile$ | async)" class="col-md-12 widget-box mt-3 p-0">
+  <div [class.dark-mode]="darkMode" class="special-widget-box">
+    <div *ngIf="(isCompleteProfile$ | async)" class="d-flex justify-content-end">
+      <a (click)="skipCompleteProfile()" style="cursor: pointer; text-decoration: underline; font-size: 14.4px;">{{'SKIP' | translate }}</a>
+    </div>
+    <div *ngIf="(isCompleteProfile$ | async)" class="progress-arc-summary mb-5 mt-5">
+      <div class="progress-arc-wrap">
+        <div class="progress-arc">
+          <div class="chartjs-size-monitor">
+            <div class="chartjs-size-monitor-expand">
+              <div></div>
+            </div>
+            <div class="chartjs-size-monitor-shrink">
+              <div></div>
+            </div>
+          </div>
+          <div *ngIf="completeProfile?.progress" class="progress-stat">
+            <div appProgressBar [height]="4" [lineColor]="'#e7e8ee'" [start]="0" [end]="100"
+            [stop]="+(completeProfile?.progress)" [gradientColors]="[progressBarColor, progressBarColor]"
+              [shape]="'circle'" class="progress-stat-bar" style="stroke-width: 4px"></div>
+          </div>
+        </div>
+        <div *ngIf="completeProfile?.progress" class="progress-arc-info">
+          <p class="progress-arc-title">{{completeProfile?.progress | number: '1.0-0'}}%</p>
+        </div>
+      </div>
+      <div class="progress-arc-summary-info">
+        <p class="progress-arc-summary-title">{{'PROFILE_COMPLETION' | translate}}
+        </p>
+      </div>
+    </div>
+    <owl-carousel-o [options]="profileCarousel" id="profile-header-social-links-slider"
+      class="profile-header-social-links tns-slider tns-carousel tns-subpixel tns-calc tns-horizontal">
+      <ng-container *ngFor="let level of levels; let i = index">
+        <ng-template carouselSlide class="profile-header-social-link tns-item tns-slide-active"
+          id="profile-header-social-links-slider-item0">
+          <div [ngStyle]="{ height: (isEmborded$ | async) ? '224px' : '400px' }" style="overflow-y: auto !important; overflow-x: hidden;" class="p-2">
+            <div>
+              <p class="widget-box-title mb-3">{{'WANT_TO_EARN_POINTS' | translate}}</p>
+            </div>
+            <div class="align-items-center d-sm-flex gap-2 mb-3">
+              <p class="mb-2 mb-sm-0" style="font-weight: 500; font-size: 16px;">
+                {{'COMPLETE_SECTION' | translate}}
+              </p>
+              <div class="d-flex gap-2">
+                <p [class.dark-mode]="darkMode" style="min-width: 68px !important; height: 23px;"
+                  class="align-items-center d-flex text-sticker mt-1">
+                  <svg class="text-sticker-icon icon-plus-small">
+                    <use xlink:href="#svg-plus-small"></use>
+                  </svg>
+                  {{ level?.remuneration?.qualitative?.amount | number: '1.0-0' }}
+                  <img *ngIf="!(loyaltySettings$ | async)?.qualitative?.picture?.baseUrl" class="rounded-circle"
+                    src="https://sifca-storage.s3.eu-central-1.amazonaws.com/loyalcraft/reputation_512.gif"
+                    class="assets/img-fluid rounded-circle mb-1"
+                    style="margin-top: 5% !important;width: 20px !important" />
+                  <img *ngIf="(loyaltySettings$ | async)?.qualitative?.picture?.baseUrl"
+                    [src]="(loyaltySettings$ | async)?.qualitative?.picture?.baseUrl + '/' + (loyaltySettings$ | async)?.qualitative?.picture?.path"
+                    class="assets/img-fluid rounded-circle mb-1"
+                    style="margin-top: 5% !important;width: 20px !important" />
+                </p>
+                <p [class.dark-mode]="darkMode" style="min-width: 68px !important; height: 23px;"
+                  class="align-items-center d-flex ng-star-inserted text-sticker mb-1">
+                  <svg class="text-sticker-icon icon-plus-small">
+                    <use xlink:href="#svg-plus-small"></use>
+                  </svg>
+                  {{ level?.remuneration?.quantitative?.amount | number: '1.0-0' }}
+                  <img *ngIf="level?.remuneration?.quantitative?.wallet?.coin?.picture?.baseUrl"
+                    [src]="level?.remuneration?.quantitative?.wallet?.coin?.picture?.baseUrl + '/' + level?.remuneration?.quantitative?.wallet?.coin?.picture?.path"
+                    class="assets/img-fluid rounded-circle avatar-xxs mb-1"
+                    style="margin-top: 5% !important; width: 20px !important" />
+                  <lord-icon *ngIf="!level?.remuneration?.quantitative?.wallet?.coin?.picture?.baseUrl"
+                    src="https://cdn.lordicon.com/lxizbtuq.json" src="https://cdn.lordicon.com/lxizbtuq.json"
+                    trigger="loop" delay="2000" style="width: 20px;height:20px">
+                  </lord-icon>
+                </p>
+              </div>
+            </div>
+            <form [formGroup]="userForm">
+              <ng-container *ngFor="let item of level?.missingElements">
+                <div *ngIf="item === 'BIRTHDATE'">
+                  <p class="widget-box-title mb-3">{{'DATE_OF_BIRTH' | translate}}
+                  </p>
+                  <div class="form-item col-lg-6 mb-4 col-12 mb-lg-0 p-0 mb-x">
+                    <div [class.dark-mode]="darkMode" class="form-input small mid-textarea active">
+                      <input formControlName="dateOfBirth" [static]="true" [inline]="false"
+                        class="form-control flatpickr-dark-mode" type="text" mwlFlatpickr [altInput]="true"
+                        [convertModelValue]="true" placeholder="{{'DATE_OF_BIRTH' | translate}}" id="isDate">
+                    </div>
+                  </div>
+                </div>
+                <div *ngIf="item === 'VERIFY_PHONE'" class="mb-5">
+                  <p style="font-size: 19.2px !important;" class="widget-box-title mb-4">{{'VERIFY_PHONE' | translate}}
+                  </p>
+                  <ng-container *ngIf="!isValidSmsCode">
+                    <p class="mb-3">{{ 'SEND' | translate }} <span>{{ 'OPT' | translate }}</span> {{ 'PHONE_NUMBER' |
+                      translate
+                      }}</p>
+                  </ng-container>
+                  <ng-container *ngIf="isValidSmsCode">
+                    <p class="mb-3">{{ 'WILL_GET' | translate }} <span>{{ 'OPT' | translate }}</span> {{'VIA_SMS' |
+                      translate
+                      }}
+                    </p>
+                  </ng-container>
+                  <div class="row align-items-baseline">
+                    <div class="form-row split col-lg-8 p-0">
+                      <div class="form-item">
+                        <div [class.dark-mode]="darkMode" class="form-input small active">
+                          <ng-container *ngIf="!isValidSmsCode">
+                            <form [formGroup]="validationForm">
+                              <div class="form-input-decorated ml-1">
+                                <div class="form-input small active" style="padding: 0px 2%">
+                                  <input placeholder="{{ 'ENTER_PHONE' | translate }}" formControlName="number"
+                                    class="input-padding" type="text" id="profile-birthday" name="profile_birthday" />
+                                </div>
+                                <p style="
+                                  position: absolute;
+                                  font-size: 18px;
+                                  line-height: 49px;
+                                  left: 80px;
+                                  top: 0;
+                                  ">
+                                  <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
+                                    style="pointer-events: auto; opacity: 1;" type="button"
+                                    xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 36 36"
+                                    aria-hidden="true" role="img" class="form-input-icon mr-2"
+                                    preserveAspectRatio="xMidYMid meet">
+                                    <path fill="#E70013"
+                                      d="M32 5H4a4 4 0 0 0-4 4v18a4 4 0 0 0 4 4h28a4 4 0 0 0 4-4V9a4 4 0 0 0-4-4z" />
+                                    <circle fill="#FFF" cx="18" cy="18" r="6.5" />
+                                    <path fill="#E70013"
+                                      d="M15.4 18a3.9 3.9 0 0 1 6.541-2.869a4.875 4.875 0 1 0 0 5.738A3.9 3.9 0 0 1 15.4 18z" />
+                                    <path fill="#E70013"
+                                      d="M19.645 16.937l-1.249-1.719v2.125L16.375 18l2.021.657v2.125l1.249-1.719l2.021.656L20.417 18l1.249-1.719z" />
+                                  </svg>
+                                </p>
+                              </div>
+                              <p style="font-size: 0.9rem; font-weight: 600; color: #dc3545 !important"
+                                class="text-danger mt-1" *ngIf="showAlert && validationForm.get('number').value">
+                                {{ 'ACCOUNT_NOT_FOUND' | translate }}.
+                              </p>
+                            </form>
+                          </ng-container>
+                          <ng-container *ngIf="isValidSmsCode">
+                            <div class="interactive-input">
+                              <input placeholder="{{ 'VALIDATION_CODE' | translate }}"
+                                [formControl]="smsCodeInputControl" type="text" id="firstnameInput">
+                            </div>
+                            <p class="mt-2 m-3" style="font-size: 0.9rem;">{{ 'DID_NOT_RECEIVE_OPT' | translate }} <a
+                                style="cursor: pointer; text-decoration: underline" (click)="sendCode('sms')">{{
+                                'RESEND' | translate }}</a> </p>
+                            <p style="font-size: 0.9rem; font-weight: 600; color: #dc3545 !important"
+                              class="text-danger mt-3" *ngIf="isWrongCode">
+                              {{ 'INVALID_CODE' | translate }}.
+                            </p>
+                          </ng-container>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="col-lg-4">
+                      <button [class.dark-mode]="darkMode" *ngIf="!isValidSmsCode"
+                        [disabled]="!validationForm.get('number').value" (click)="sendCode('sms')"
+                        [ngClass]="{'primary': validationForm.get('number').value}" class="small button">{{
+                        'GET_OTP' | translate }} </button>
+                      <button [class.dark-mode]="darkMode" *ngIf="isValidSmsCode"
+                        [ngClass]="{'primary': smsCodeInputControl.value}" [disabled]="!smsCodeInputControl.value"
+                        (click)="verifyPhone()" class="small button">{{
+                        'VERIFY' | translate }}</button>
+                    </div>
+                  </div>
+                </div>
+                <div *ngIf="item === 'VERIFY_EMAIL'" class="mb-5">
+                  <p style="font-size: 19.2px !important;" class="widget-box-title mb-4">{{'VERIFY_EMAIL' | translate}}
+                  </p>
+                  <ng-container *ngIf="!isValidEmailCode">
+                    <p class="mb-3">{{ 'SEND' | translate }} <span>{{ 'OPT' | translate }}</span> {{'ON_EMAIL' |
+                      translate }}
+                    </p>
+                  </ng-container>
+                  <ng-container *ngIf="isValidEmailCode">
+                    <p class="mb-3">{{ 'WILL_GET' | translate }} <span>{{ 'OPT' | translate }}</span> {{'VIA_EMAIL' |
+                      translate
+                      }} </p>
+                  </ng-container>
+                  <div class="row align-items-baseline">
+                    <div class="form-row split col-lg-8 p-0">
+                      <div class="form-item">
+                        <div [class.dark-mode]="darkMode" class="form-input small active">
+                          <ng-container *ngIf="!isValidEmailCode">
+                            <form [formGroup]="validationForm">
+                              <div class="form-input-decorated">
+                                <div class="form-input small ml-3 active">
+                                  <input placeholder="{{ 'ENTER_EMAIL' | translate }}" formControlName="login"
+                                    type="text" id="profile-birthday" name="profile_birthday" />
+                                </div>
+                              </div>
+                              <p style="font-size: 0.9rem; font-weight: 600; color: #dc3545 !important"
+                                class="text-danger mt-1" *ngIf="showAlert && validationForm.get('login').value">
+                                {{ 'ACCOUNT_NOT_FOUND' | translate }}.
+                              </p>
+                            </form>
+                          </ng-container>
+                          <ng-container *ngIf="isValidEmailCode">
+                            <div class="interactive-input">
+                              <input placeholder="{{ 'VALIDATION_CODE' | translate }}"
+                                [formControl]="emailCodeInputControl" type="text" id="firstnameInput">
+                            </div>
+                            <p class="mt-2" style="font-size: 0.9rem;">{{ 'DID_NOT_RECEIVE_OPT' | translate }} <a
+                                style="cursor: pointer; text-decoration: underline !important;"
+                                (click)="sendCode('email')">{{
+                                'RESEND' | translate }}</a> </p>
+                            <p style="font-size: 0.9rem; font-weight: 600; color: #dc3545 !important"
+                              class="text-danger mt-3" *ngIf="isWrongCode">
+                              {{ 'INVALID_CODE' | translate }}.
+                            </p>
+                          </ng-container>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="col-lg-4">
+                      <button [class.dark-mode]="darkMode" *ngIf="!isValidEmailCode"
+                        [disabled]="!validationForm.get('login').value" (click)="sendCode('email')"
+                        [ngClass]="{'primary': validationForm.get('login').value && validationForm.valid}"
+                        class="small button">{{ 'GET_OTP' | translate }} </button>
+                      <button [class.dark-mode]="darkMode" *ngIf="isValidEmailCode" style="font-size: 14px !important"
+                        [ngClass]="{'primary': emailCodeInputControl.value}" [disabled]="!emailCodeInputControl.value"
+                        (click)="verifyEmail()" class="small button">{{
+                        'VERIFY' | translate }}</button>
+                    </div>
+                  </div>
+                </div>
+                <div *ngIf="item === 'SOCIAL_MEDIA'" class="mb-5">
+                  <p class="widget-box-title">{{'YOUR_SOCIAL_ACCOUNTS' |
+                    translate}}</p>
+                  <div formGroupName="socialMedia" class="widget-box-content">
+                    <div class="form-row split">
+                      <div class="form-item">
+                        <div formGroupName="facebook" [class.dark-mode]="darkMode"
+                          class="form-input social-input small active">
+                          <div class="social-link no-hover facebook">
+                            <svg class="icon-facebook">
+                              <use xlink:href="#svg-facebook"></use>
+                            </svg>
+                          </div>
+                          <label for="social-account-facebook">{{'FB_ACCOUNT' | translate}}</label>
+                          <input formControlName="value" type="text" id="social-account-facebook"
+                            name="social_account_facebook" />
+                        </div>
+                      </div>
+                      <div class="form-item">
+                        <div formGroupName="twitter" [class.dark-mode]="darkMode"
+                          class="form-input social-input small active">
+                          <div class="social-link no-hover bg-dark">
+                            <svg height="20" class="mt-1" xmlns="http://www.w3.org/2000/svg" version="1.1"
+                              viewBox="-5.0 -10.0 110.0 135.0">
+                              <path
+                                d="m61.379 93.5c0.82812 0 1.5 0.67188 1.5 1.5s-0.67188 1.5-1.5 1.5h-47.547c-2.8398 0-5.4258-1.1641-7.2969-3.0391-1.8711-1.8711-3.0312-4.457-3.0312-7.293v-72.332c0-2.8438 1.1641-5.4297 3.0312-7.2969l0.089844-0.082031c1.8672-1.8242 4.418-2.9531 7.2109-2.9531h4.2188c0.82812 0 1.5 0.67188 1.5 1.5s-0.67188 1.5-1.5 1.5h-4.2188c-1.9805 0-3.7891 0.79688-5.1406 2.1172-1.3633 1.3672-2.1914 3.1992-2.1914 5.2148v72.332c0 2.0195 0.82422 3.8555 2.1562 5.1836 1.3242 1.3242 3.1602 2.1484 5.1758 2.1484h47.547zm-10.145-52.488 18.965-23.062c0.26953-0.39062 0.72266-0.64844 1.2344-0.64844h8.4492c0.33594 0.007813 0.67188 0.11719 0.94922 0.34766 0.63672 0.52344 0.73047 1.4688 0.20312 2.1055l-24.113 29.32 22.066 31.258c0.47656 0.67578 0.3125 1.6094-0.36328 2.0859-0.26172 0.18359-0.5625 0.27344-0.85938 0.27344l-11.484 0.003906c-0.53906 0-1.0117-0.28516-1.2773-0.71094l-16.23-22.996-18.965 23.059c-0.26953 0.39062-0.72266 0.64844-1.2344 0.64844h-8.4492c-0.33594-0.007812-0.67188-0.11719-0.94922-0.34766-0.63672-0.52344-0.73047-1.4688-0.20312-2.1055l24.113-29.316-22.066-31.262c-0.47656-0.67578-0.3125-1.6094 0.36328-2.0859 0.26172-0.18359 0.5625-0.27344 0.85938-0.27344h11.484c0.53906 0 1.0117 0.28516 1.2773 0.71094l16.234 23zm-12.609-34.512c-0.82812 0-1.5-0.67188-1.5-1.5s0.67188-1.5 1.5-1.5h47.543c2.8438 0 5.4297 1.1641 7.3008 3.0312l0.082031 0.089844c1.8242 1.8672 2.9531 4.418 2.9531 7.2109v72.332c0 2.8359-1.1641 5.4219-3.0391 7.3008-1.875 1.875-4.4609 3.0352-7.2969 3.0352h-4.2148c-0.82812 0-1.5-0.67188-1.5-1.5s0.67188-1.5 1.5-1.5h4.2148c2.0195 0 3.8555-0.82422 5.1797-2.1484 1.332-1.3281 2.1562-3.1641 2.1562-5.1836v-72.332c0-1.9844-0.79688-3.7891-2.1172-5.1406-1.3672-1.3633-3.1992-2.1914-5.2148-2.1914h-47.543z" />
+                            </svg>
+                          </div>
+                          <label for="social-account-twitter">{{'X_ACCOUNT' | translate}}</label>
+                          <input formControlName="value" type="text" id="social-account-twitter"
+                            name="social_account_twitter" />
+                        </div>
+                      </div>
+                      <div class="form-item">
+                        <div formGroupName="tikTok" [class.dark-mode]="darkMode"
+                          class="form-input social-input small active">
+                          <div class="social-link no-hover bg-dark">
+                            <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
+                              width="20" height="20" viewBox="0 0 24 24" version="1.1">
+                              <title>tiktok_fill</title>
+                              <g id="页面-1" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+                                <g id="Brand" transform="translate(-720.000000, -48.000000)">
+                                  <g id="tiktok_fill" transform="translate(720.000000, 48.000000)">
+                                    <path
+                                      d="M24,0 L24,24 L0,24 L0,0 L24,0 Z M12.5934901,23.257841 L12.5819402,23.2595131 L12.5108777,23.2950439 L12.4918791,23.2987469 L12.4918791,23.2987469 L12.4767152,23.2950439 L12.4056548,23.2595131 C12.3958229,23.2563662 12.3870493,23.2590235 12.3821421,23.2649074 L12.3780323,23.275831 L12.360941,23.7031097 L12.3658947,23.7234994 L12.3769048,23.7357139 L12.4804777,23.8096931 L12.4953491,23.8136134 L12.4953491,23.8136134 L12.5071152,23.8096931 L12.6106902,23.7357139 L12.6232938,23.7196733 L12.6232938,23.7196733 L12.6266527,23.7031097 L12.609561,23.275831 C12.6075724,23.2657013 12.6010112,23.2592993 12.5934901,23.257841 L12.5934901,23.257841 Z M12.8583906,23.1452862 L12.8445485,23.1473072 L12.6598443,23.2396597 L12.6498822,23.2499052 L12.6498822,23.2499052 L12.6471943,23.2611114 L12.6650943,23.6906389 L12.6699349,23.7034178 L12.6699349,23.7034178 L12.678386,23.7104931 L12.8793402,23.8032389 C12.8914285,23.8068999 12.9022333,23.8029875 12.9078286,23.7952264 L12.9118235,23.7811639 L12.8776777,23.1665331 C12.8752882,23.1545897 12.8674102,23.1470016 12.8583906,23.1452862 L12.8583906,23.1452862 Z M12.1430473,23.1473072 C12.1332178,23.1423925 12.1221763,23.1452606 12.1156365,23.1525954 L12.1099173,23.1665331 L12.0757714,23.7811639 C12.0751323,23.7926639 12.0828099,23.8018602 12.0926481,23.8045676 L12.108256,23.8032389 L12.3092106,23.7104931 L12.3186497,23.7024347 L12.3186497,23.7024347 L12.3225043,23.6906389 L12.340401,23.2611114 L12.337245,23.2485176 L12.337245,23.2485176 L12.3277531,23.2396597 L12.1430473,23.1473072 Z"
+                                      id="MingCute" fill-rule="nonzero">
+                                    </path>
+                                    <path
+                                      d="M14,2 C15.1046,2 16,2.89543 16,4 C16,5.44733 17.03,6.6618 18.3984,6.93991 C19.4808,7.15992 20.1799,8.21575 19.9599,9.29819 C19.7399,10.3806 18.6841,11.0798 17.6016,10.8598 C17.0406,10.7457 16.5037,10.5646 16,10.3252 L16,16 C16,19.3137 13.3137,22 10,22 C6.68629,22 4,19.3137 4,16 C4,13.2015 5.91407,10.8551 8.50148,10.1891 C9.57119,9.91382 10.6616,10.5578 10.9369,11.6275 C11.2122,12.6972 10.5682,13.7876 9.49852,14.0629 C8.63547,14.285 8,15.0708 8,16 C8,17.1046 8.89543,18 10,18 C11.1046,18 12,17.1046 12,16 L12,4 C12,2.89543 12.8954,2 14,2 Z"
+                                      id="路径" fill="#FFFFFF">
+                                    </path>
+                                  </g>
+                                </g>
+                              </g>
+                            </svg>
+                          </div>
+                          <label for="social-account-twitter">{{'TIKTOK_ACCOUNT' | translate}}</label>
+                          <input formControlName="value" type="text" id="social-account-twitter"
+                            name="social_account_twitter" />
+                        </div>
+                      </div>
+                    </div>
+                    <div class="form-row split">
+                      <div class="form-item">
+                        <div formGroupName="instagram" [class.dark-mode]="darkMode"
+                          class="form-input social-input small active">
+                          <div class="social-link no-hover instagram">
+                            <svg class="icon-instagram">
+                              <use xlink:href="#svg-instagram"></use>
+                            </svg>
+                          </div>
+                          <label for="social-account-instagram">{{'INSTAGRAM_ACCOUNT' | translate}}</label>
+                          <input formControlName="value" type="text" id="social-account-instagram"
+                            name="social_account_instagram" />
+                        </div>
+                      </div>
+                      <div class="form-item">
+                        <div formGroupName="pinterest" [class.dark-mode]="darkMode"
+                          class="form-input social-input small active">
+                          <div class="social-link no-hover" style="background-color: #cd2121;">
+                            <svg style="height: 20px !important; background-color: #cd2121;"
+                              xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
+                              version="1.1" id="Capa_1" viewBox="0 0 455.731 455.731" xml:space="preserve">
+                              <g>
+                                <rect x="0" y="0" style="fill:#C9353D;" width="455.731" height="455.731" />
+                                <path style="fill:#FFFFFF;"
+                                  d="M160.601,382C86.223,350.919,37.807,262.343,68.598,172.382   C99.057,83.391,197.589,36.788,286.309,69.734c88.972,33.04,132.978,131.213,98.486,219.22   c-35.709,91.112-131.442,123.348-203.22,100.617c5.366-13.253,11.472-26.33,15.945-39.943c4.492-13.672,7.356-27.878,10.725-41.037   c2.9,2.44,5.814,5.027,8.866,7.439c15.861,12.535,33.805,13.752,52.605,9.232c19.977-4.803,35.764-16.13,47.455-32.78   c19.773-28.16,26.751-60.019,21.972-93.546c-4.942-34.668-25.469-59.756-57.65-72.389c-48.487-19.034-94.453-12.626-134.269,22.259   c-30.622,26.83-40.916,72.314-26.187,107.724c5.105,12.274,13.173,21.907,25.379,27.695c6.186,2.933,8.812,1.737,10.602-4.724   c0.133-0.481,0.295-0.955,0.471-1.422c3.428-9.04,2.628-16.472-3.473-25.199c-11.118-15.906-9.135-34.319-3.771-51.961   c10.172-33.455,40.062-55.777,75.116-56.101c9.39-0.087,19.056,0.718,28.15,2.937c27.049,6.599,44.514,27.518,46.264,55.253   c1.404,22.242-2.072,43.849-11.742,64.159c-4.788,10.055-11.107,18.996-20.512,25.325c-8.835,5.945-18.496,8.341-28.979,5.602   c-14.443-3.774-22.642-16.95-18.989-31.407c3.786-14.985,8.685-29.69,12.399-44.69c1.57-6.344,2.395-13.234,1.751-19.696   c-1.757-17.601-18.387-25.809-33.933-17.216c-10.889,6.019-16.132,16.079-18.564,27.719c-2.505,11.992-1.292,23.811,2.61,35.439   c0.784,2.337,0.9,5.224,0.347,7.634c-7.063,30.799-14.617,61.49-21.306,92.369c-1.952,9.011-1.59,18.527-2.239,27.815   C160.495,377.839,160.601,379.635,160.601,382z" />
+                              </g>
+                            </svg>
+                          </div>
+                          <label for="social-account-instagram">{{'PINTEREST_ACCOUNT' | translate}}</label>
+                          <input formControlName="value" type="text" id="social-account-instagram"
+                            name="social_account_instagram" />
+                        </div>
+                      </div>
+                      <div class="form-item">
+                        <div formGroupName="linkedin" [class.dark-mode]="darkMode"
+                          class="form-input social-input small active">
+                          <div style="background-color: #0077B7;" class="social-link no-hover">
+                            <svg style="background-color: #0077B7;" xmlns="http://www.w3.org/2000/svg"
+                              xmlns:xlink="http://www.w3.org/1999/xlink" height="15" width="15" version="1.1"
+                              id="Layer_1" viewBox="0 0 382 382" xml:space="preserve">
+                              <path style="fill: white;"
+                                d="M347.445,0H34.555C15.471,0,0,15.471,0,34.555v312.889C0,366.529,15.471,382,34.555,382h312.889  C366.529,382,382,366.529,382,347.444V34.555C382,15.471,366.529,0,347.445,0z M118.207,329.844c0,5.554-4.502,10.056-10.056,10.056  H65.345c-5.554,0-10.056-4.502-10.056-10.056V150.403c0-5.554,4.502-10.056,10.056-10.056h42.806  c5.554,0,10.056,4.502,10.056,10.056V329.844z M86.748,123.432c-22.459,0-40.666-18.207-40.666-40.666S64.289,42.1,86.748,42.1  s40.666,18.207,40.666,40.666S109.208,123.432,86.748,123.432z M341.91,330.654c0,5.106-4.14,9.246-9.246,9.246H286.73  c-5.106,0-9.246-4.14-9.246-9.246v-84.168c0-12.556,3.683-55.021-32.813-55.021c-28.309,0-34.051,29.066-35.204,42.11v97.079  c0,5.106-4.139,9.246-9.246,9.246h-44.426c-5.106,0-9.246-4.14-9.246-9.246V149.593c0-5.106,4.14-9.246,9.246-9.246h44.426  c5.106,0,9.246,4.14,9.246,9.246v15.655c10.497-15.753,26.097-27.912,59.312-27.912c73.552,0,73.131,68.716,73.131,106.472  L341.91,330.654L341.91,330.654z" />
+                            </svg>
+                          </div>
+                          <label for="social-account-instagram">{{'LINKEDIN_ACCOUNT' | translate}}</label>
+                          <input formControlName="value" type="text" id="social-account-instagram"
+                            name="social_account_instagram" />
+                        </div>
+                      </div>
+                      <div class="form-item">
+                        <div formGroupName="youtube" [class.dark-mode]="darkMode"
+                          class="form-input social-input small active">
+                          <div class="social-link no-hover youtube">
+                            <svg class="icon-youtube">
+                              <use xlink:href="#svg-youtube"></use>
+                            </svg>
+                          </div>
+                          <label for="social-account-youtube">{{'YOUTUBE_ACCOUNT' | translate}}</label>
+                          <input formControlName="value" type="text" id="social-account-youtube"
+                            name="social_account_youtube" />
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div *ngIf="item === 'PROFILE_PICTURE'">
+                  <p class="widget-box-title mb-3">{{'CHANGE_AVATAR' | translate}}
+                  </p>
+                  <div class="d-flex justify-content-center mb-5">
+                    <div (click)="upload()" [class.dark-mode]="darkMode"
+                      class="col-lg-4 upload-box edit-profile-card avatar-box">
+                      <svg class="upload-box-icon icon-members">
+                        <use xlink:href="#svg-members"></use>
+                      </svg>
+                      <p class="upload-box-title">{{'CHANGE_AVATAR' | translate}}</p>
+                      <p class="upload-box-text">{{'AVATAR_SIZE' | translate}}</p>
+                    </div>
+                  </div>
+                </div>
+                <div *ngIf="item === 'PHONE'">
+                  <p class="widget-box-title mb-3">{{'PHONE' | translate}}</p>
+                  <div formGroupName="phone" class="form-row split d-flex gap-2 mb-5">
+                    <div class="col-lg-3">
+                      <div [class.dark-mode]="darkMode" class="form-input small active">
+                        <label for="profile-name">{{'COUNTRY_CODE' | translate}}</label>
+                        <input formControlName="countryCode" type="text" id="firstnameInput" placeholder="123">
+                      </div>
+                    </div>
+                    <div class="col-lg-8">
+                      <div [class.dark-mode]="darkMode" class="form-input small active">
+                        <label for="profile-name">{{'NUMBER' | translate}}</label>
+                        <input formControlName="number" type="text" id="firstnameInput"
+                          placeholder="{{'ENTER_PHONE_NO' | translate}}">
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div *ngIf="item === 'MARITAL_STATUS'">
+                  <p class="widget-box-title mb-3">{{'MARITAL_STATUS_' |
+                    translate}}</p>
+                  <div class="form-row split mb-5">
+                    <div class="form-item">
+                      <div [class.dark-mode]="darkMode" class="form-select">
+                        <div ngbDropdown placement="top-end">
+                          <input formControlName="maritalStatus" readonly ngbDropdownToggle class="mt-2" type="text"
+                            id="firstnameInput" placeholder="{{'ENTER_MARITAL_STATUS' | translate}}">
+                          <div class="dropdown-menu dropdown-menu-end w-100" style="cursor: pointer;" ngbDropdownMenu>
+                            <div [class.active]="item === userForm.get('maritalStatus').value"
+                              *ngFor="let item of maritalStatus" (click)="onChangeField(item, 'maritalStatus')"
+                              class="dropdown-item gap-2 d-flex align-items-center" style="cursor: pointer;">
+                              {{
+                              (item === 'SINGLE' ? 'MARITAL_STATUS_SINGLE' :
+                              item === 'MARRIED' ? 'MARITAL_STATUS_MARRIED' :
+                              item === 'ENGAGED' ? 'MARITAL_STATUS_ENGAGED' :
+                              item === 'WIDOWED' ? 'MARITAL_STATUS_WIDOWED' :
+                              item === 'DIVORCED' ? 'MARITAL_STATUS_DIVORCED' :
+                              item === 'SEPERATED' ? 'MARITAL_STATUS_SEPARATED' :
+                              item === 'IN_RELATIONSHIP' ? 'MARITAL_STATUS_IN_A_RELATIONSHIP' :
+                              '') | translate
+                              }}
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div *ngIf="item === 'GENDER'">
+                  <p class="widget-box-title mb-3">{{'GENDER' | translate}}</p>
+                  <div class="form-row split mb-5">
+                    <div class="form-item">
+                      <div [class.dark-mode]="darkMode" class="form-select">
+                        <div ngbDropdown placement="top-end">
+                          <input formControlName="gender" readonly ngbDropdownToggle class="mt-2" type="text"
+                            id="firstnameInput" placeholder="{{'ENTER_GENDER' | translate}}">
+                          <div class="dropdown-menu dropdown-menu-end w-100" style="cursor: pointer;" ngbDropdownMenu>
+                            <div [class.active]="item === userForm.get('gender').value" *ngFor="let item of genders"
+                              (click)="onChangeField(item, 'gender')"
+                              class="dropdown-item gap-2 d-flex align-items-center" style="cursor: pointer;">
+                              {{(item === 'MALE' ?
+                              'MALE' : item === 'FEMALE' ? 'FEMALE' : '') | translate}}
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div *ngIf="item === 'HOBBIES'" class="mb-5" [class.dark-mode]="darkMode">
+                  <p class="widget-box-title mb-3">{{'HOBBIES' | translate}}</p>
+                  <div class="widget-box-content">
+                    <div class="tag-list">
+                      <a *ngFor="let tag of hobbies.value; let i = index" class="tag-item secondary text-white">
+                        <span style="font-size: 0.9rem;" class="mr-2">{{tag}}</span>
+                        <span (click)="removeHobby(i)" class="tag-delete"
+                          style="cursor: pointer; font-size: 0.9rem;">x</span>
+                      </a>
+                    </div>
+                    <div class="p-0 form-row split mt-3 col-lg-6">
+                      <div class="form-item">
+                        <div [class.dark-mode]="darkMode" class="form-input small active">
+                          <input [formControl]="hobbyControl" (keyup.enter)="addHobby()" type="text"
+                            id="profile-job-1-title" name="profile_job_1_title"
+                            placeholder="{{'CLICK_ENTER_HOBBY' | translate}}" />
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div *ngIf="item === 'INTERESTS'" class="mb-5" [class.dark-mode]="darkMode">
+                  <p class="widget-box-title mb-3">{{'INTERESTS' | translate}}</p>
+                  <div class="widget-box-content">
+                    <div class="tag-list">
+                      <a *ngFor="let tag of interests.value; let i = index" class="tag-item secondary text-white">
+                        <span style="font-size: 0.9rem;" class="mr-2">{{tag}}</span>
+                        <span (click)="removeInterest(i)" class="tag-delete"
+                          style="cursor: pointer; font-size: 0.9rem;">x</span>
+                      </a>
+                    </div>
+                    <div class="p-0 form-row split mt-3 col-lg-6">
+                      <div class="form-item">
+                        <div [class.dark-mode]="darkMode" class="form-input small active">
+                          <input [formControl]="interestControl" (keyup.enter)="addInterest()" type="text"
+                            id="profile-job-1-title" name="profile_job_1_title"
+                            placeholder="{{'CLICK_ENTER' | translate}}" />
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div *ngIf="item === 'ABOUT'">
+                  <p class="widget-box-title mb-3">{{'ABOUT' | translate}}</p>
+                  <div class="form-row">
+                    <div class="form-item">
+                      <div [class.dark-mode]="darkMode" class="form-input small mid-textarea active">
+                        <textarea formControlName="about" id="profile-job-1-description"
+                          name="profile_job_1_description"></textarea>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div *ngIf="item === 'JOBS'" class="mb-5 mt-5" [class.dark-mode]="darkMode">
+                  <p style="font-size: 19.2px !important;" class="widget-box-title mb-4">{{'JOBS' | translate}}</p>
+                  <div formArrayName="work" class="widget-box-content">
+                    <div class="mb-5" (click)="selectWork(i)"
+                      *ngFor="let key of work.controls; let i = index; let first = first; let last = last;"
+                      [formGroupName]="i">
+                      <div class="form-row split">
+                        <div class="form-item">
+                          <div [class.dark-mode]="darkMode" class="form-input small active">
+                            <label for="profile-job-1-title">{{'COMPANY_NAME' | translate}}</label>
+                            <input formControlName="company" type="text" id="profile-job-1-title"
+                              name="profile_job_1_title" placeholder="{{'COMPANY_NAME' | translate}}" />
+                          </div>
+                        </div>
+                        <div class="form-item">
+                          <div [class.dark-mode]="darkMode" class="form-input small active">
+                            <label for="profile-job-1-title">{{'POSITION' | translate}}</label>
+                            <input formControlName="position" type="text" id="profile-job-1-title"
+                              name="profile_job_1_title" placeholder="{{'POSITION' | translate}}" />
+                          </div>
+                        </div>
+                        <div class="form-row mb-5 row">
+                          <div class="form-item col-lg-5">
+                            <div [class.dark-mode]="darkMode" class="form-select">
+                              <label for="profile-city">{{'COUNTRY' | translate}}</label>
+                              <div ngbDropdown>
+                                <input formControlName="countryName" readonly ngbDropdownToggle class="mt-2" type="text"
+                                  id="firstnameInput" placeholder="{{'CHOOSE_COUNTRY' | translate}}">
+                                <div class="dropdown-menu dropdown-menu-end w-100 overflow-auto"
+                                  style="cursor: pointer; max-height: 160px;" ngbDropdownMenu>
+                                  <a [class.active]="item?.name === key.get('countryName').value"
+                                    *ngFor="let item of countries" (click)="onChangeWorkCountry(item, key)"
+                                    class="dropdown-item" style="cursor: pointer;">
+                                    {{item?.name}}
+                                    {{item?.iconFlag}}</a>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                          <div class="form-item col-lg-5">
+                            <div [class.dark-mode]="darkMode" class="form-select">
+                              <label for="profile-city">{{'STATE' | translate}}</label>
+                              <div ngbDropdown>
+                                <input formControlName="stateName" readonly ngbDropdownToggle class="mt-2" type="text"
+                                  id="firstnameInput" placeholder="{{'CHOOSE_STATE' | translate}}">
+                                <div *ngIf="key.get('countryName').value"
+                                  class="dropdown-menu dropdown-menu-end w-100 overflow-auto"
+                                  style="cursor: pointer; max-height: 160px;" ngbDropdownMenu>
+                                  <a [class.active]="item?.name === key.get('stateName').value"
+                                    *ngFor="let item of key.get('states').value" (click)="onChangeWorkState(item, key)"
+                                    class="dropdown-item" style="cursor: pointer;"> {{item?.name}}</a>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                        <div class="d-flex form-item gap-2 align-items-center">
+                          <p>{{'CURRENT' | translate}}</p>
+                          <div class="form-switch" [class.active]="key.get('current').value === true"
+                            (click)="onCurrentWorkChange(key)" type="button">
+                            <div class="form-switch-button"></div>
+                          </div>
+                        </div>
+                      </div>
+                      <p style="font-size: 16px;" class="widget-box-title mt-5 mb-5">{{'EXPERIENCE_YEARS' |
+                        translate}}</p>
+                      <div class="form-row row">
+                        <div class="form-item col-lg-6">
+                          <div [class.dark-mode]="darkMode" class="form-input small mid-textarea active">
+                            <label [class.right-0]="rtl" style="top: -11px !important;"
+                              for="profile-job-1-description">{{'FROM' |
+                              translate}}</label>
+                            <input formControlName="from" placeholder="{{'ENTER_DATE' | translate}}"
+                              class="form-control" type="text" mwlFlatpickr [altInput]="true" [convertModelValue]="true"
+                              [static]="true" [inline]="false">
+                          </div>
+                        </div>
+                        <div *ngIf="key.get('current').value === false" class="form-item mb-4 col-lg-6">
+                          <div [class.dark-mode]="darkMode" class="form-input small mid-textarea active">
+                            <label [class.right-0]="rtl" style="top: -11px !important;"
+                              for="profile-job-1-description">{{'TO' |
+                              translate}}</label>
+                            <input placeholder="{{'ENTER_DATE' | translate}}" formControlName="to" class="form-control"
+                              type="text" mwlFlatpickr [altInput]="true" [convertModelValue]="true" [static]="true"
+                              [inline]="false">
+                          </div>
+                        </div>
+                      </div>
+                      <div class="form-row mb-3">
+                        <div class="form-item">
+                          <div [class.dark-mode]="darkMode" class="form-input small mid-textarea active">
+                            <label for="profile-job-1-description">{{'JOB_DESCRIPTION' | translate}}</label>
+                            <textarea formControlName="description" id="profile-job-1-description"
+                              name="profile_job_1_description"></textarea>
+                          </div>
+                        </div>
+                      </div>
+                      <div class="d-flex gap-2 mt-4">
+                        <p *ngIf="last" (click)="addWorkField()"
+                          style="width: 128px; font-size: 16px; font-weight: bold;" class="button small secondary">
+                          {{'ADD_NEW_FIELD' | translate}} </p>
+                        <p *ngIf="work.value.length > 1" style="width: 128px; font-size: 16px; font-weight: bold;"
+                          (click)="removeWorkField(i)" class="button small">
+                          {{'REMOVE_FIELD' | translate}}</p>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div *ngIf="item === 'EDUCATION'" [class.dark-mode]="darkMode">
+                  <p style="font-size: 19.2px !important;" class="widget-box-title mb-4">{{'EDUCATION' | translate}}</p>
+                  <div formArrayName="education" class="widget-box-content">
+                    <div class="mb-4" (click)="selectEducation(i)"
+                      *ngFor="let key of education.controls; let i = index; let first = first; let last = last;"
+                      [formGroupName]="i">
+                      <div class="form-row split">
+                        <div class="form-item">
+                          <div [class.dark-mode]="darkMode" class="form-input small active">
+                            <label for="profile-job-1-title">{{'SCHOOL' | translate}}</label>
+                            <input placeholder="{{'SCHOOL_NAME' | translate}}" formControlName="name" type="text"
+                              id="profile-job-1-title" name="profile_job_1_title" />
+                          </div>
+                        </div>
+                      </div>
+                      <div class="form-row split">
+                        <div class="form-item">
+                          <div [class.dark-mode]="darkMode" class="form-select">
+                            <label for="profile-job-1-year-started">{{'ACADEMIC_LEVEL' | translate}}</label>
+                            <select placeholder="{{'ACADEMIC_LEVEL' | translate}}" formControlName="level"
+                              id="profile-job-1-year-started" name="profile_job_1_year_started">
+                              <option [value]="null" selected>{{'SELECT_LEVEL' | translate}}</option>
+                              <option *ngFor="let item of academicLevels" [value]="item">{{(item === 'PRIMARY' ?
+                                'PRIMARY' : item ===
+                                'HIGH_SCHOOL' ? 'HIGH_SCHOOL' : 'UNIVERSITY') | translate}}</option>
+                            </select>
+                            <svg class="form-select-icon icon-small-arrow">
+                              <use xlink:href="#svg-small-arrow"></use>
+                            </svg>
+                          </div>
+                        </div>
+                      </div>
+                      <div class="form-row row mb-5">
+                        <div class="form-item col-lg-5">
+                          <div [class.dark-mode]="darkMode" class="form-select">
+                            <label for="profile-city">{{'COUNTRY' | translate}}</label>
+                            <div ngbDropdown>
+                              <input formControlName="countryName" readonly ngbDropdownToggle class="mt-2" type="text"
+                                id="firstnameInput" placeholder="{{'CHOOSE_COUNTRY' | translate}}">
+                              <div class="dropdown-menu dropdown-menu-end w-100 overflow-auto"
+                                style="cursor: pointer; max-height: 160px;" ngbDropdownMenu>
+                                <a [class.active]="item?.name === key.get('countryName').value"
+                                  *ngFor="let item of countries" (click)="onChangeEducationCountry(item, key)"
+                                  class="dropdown-item" style="cursor: pointer;">
+                                  {{item?.name}}
+                                  {{item?.iconFlag}}</a>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                        <div class="form-item col-lg-5">
+                          <div [class.dark-mode]="darkMode" class="form-select">
+                            <label for="profile-city">{{'STATE' | translate}}</label>
+                            <div ngbDropdown>
+                              <input formControlName="stateName" readonly ngbDropdownToggle class="mt-2" type="text"
+                                id="firstnameInput" placeholder="{{'CHOOSE_STATE' | translate}}">
+                              <div *ngIf="key.get('countryName').value"
+                                class="dropdown-menu dropdown-menu-end w-100 overflow-auto"
+                                style="cursor: pointer; max-height: 160px;" ngbDropdownMenu>
+                                <a [class.active]="item?.name === key.get('stateName').value"
+                                  *ngFor="let item of key.get('states').value"
+                                  (click)="onChangeEducationState(item, key)" class="dropdown-item"
+                                  style="cursor: pointer;"> {{item?.name}}</a>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                      <div class="d-flex form-item gap-2 align-items-center">
+                        <p>{{'GRADUATED' | translate}}</p>
+                        <div class="form-switch" [class.active]="key.get('graduated').value === true"
+                          (click)="onGraduatedChange(key)" type="button">
+                          <div class="form-switch-button"></div>
+                        </div>
+                      </div>
+                      <p style="font-size: 16px;" class="widget-box-title mt-5 mb-5">{{'EDUCATION_YEARS' |
+                        translate}}</p>
+                      <div class="form-row row">
+                        <div class="form-item col-lg-6">
+                          <div [class.dark-mode]="darkMode" class="form-input small mid-textarea active">
+                            <label [class.right-0]="rtl" style="top: -11px !important;"
+                              for="profile-job-1-description">{{'FROM' |
+                              translate}}</label>
+                            <input placeholder="{{'ENTER_DATE' | translate}}" formControlName="from"
+                              class="form-control" type="text" mwlFlatpickr [altInput]="true" [convertModelValue]="true"
+                              [static]="true" [inline]="false">
+                          </div>
+                        </div>
+                        <div *ngIf="key.get('graduated').value === false" class="form-item col-lg-6">
+                          <div [class.dark-mode]="darkMode" class="form-input small mid-textarea active">
+                            <label [class.right-0]="rtl" style="top: -11px !important;"
+                              for="profile-job-1-description">{{'TO' |
+                              translate}}</label>
+                            <input placeholder="{{'ENTER_DATE' | translate}}" formControlName="to" class="form-control"
+                              type="text" mwlFlatpickr [altInput]="true" [convertModelValue]="true" [static]="true"
+                              [inline]="false">
+                          </div>
+                        </div>
+                      </div>
+                      <div class="form-row mb-3">
+                        <div class="form-item">
+                          <div [class.dark-mode]="darkMode" class="form-input small mid-textarea active">
+                            <label for="profile-job-1-description">{{'DESCRIPTION' | translate}}</label>
+                            <textarea formControlName="description" id="profile-job-1-description"
+                              name="profile_job_1_description"></textarea>
+                          </div>
+                        </div>
+                      </div>
+                      <div class="d-flex gap-2 mt-4">
+                        <p *ngIf="last" (click)="addEducationField()"
+                          style="width: 128px; font-size: 16px; font-weight: bold;" class="button small secondary">
+                          {{'ADD_NEW_FIELD' | translate}} </p>
+                        <p *ngIf="education.value.length > 1" style="width: 128px; font-size: 16px; font-weight: bold;"
+                          (click)="removeEducationField(i)" class="button small">{{'REMOVE_FIELD' | translate}}
+                        </p>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div *ngIf="item === 'GEOLOCATION'" [class.dark-mode]="darkMode">
+                  <p class="widget-box-title mb-3">{{'YOUR_LOCATION' | translate}}
+                  </p>
+                  <agm-map [zoom]="4" [scrollwheel]="false" [latitude]="position?.lat ? position?.lat : 33.886917"
+                    [longitude]="position?.lng ? position?.lng : 9.537499" (mapClick)="pickAddress($event)">
+                    <agm-marker *ngIf="position" [latitude]="position?.lat" [longitude]="position?.lng">
+                    </agm-marker>
+                  </agm-map>
+                </div>
+              </ng-container>
+            </form>
+          </div>
+          <div *ngIf="level?.saveButton" class="d-flex justify-content-end mt-2 mr-3">
+            <button [disabled]="isButtonDisabled" style="font-size: 14px !important"
+              (click)="saveProfile()"
+              [ngClass]="{'secondary': !darkMode && !isButtonDisabled, 'white': darkMode || isButtonDisabled, 'primary': darkMode && !isButtonDisabled}"
+              type="button" class="button small col-lg-3" [class.dark-mode]="darkMode">
+              {{'SAVE' | translate}}
+            </button>
+          </div>
+        </ng-template>
+      </ng-container>
+    </owl-carousel-o>
+  </div>
+</div>
+
+<svg style="display: none;">
+  <symbol id="svg-cross" viewBox="0 0 12 12" preserveAspectRatio="xMinYMin meet">
+    <path d="M12,9.6L9.6,12L6,8.399L2.4,12L0,9.6L3.6,6L0,2.4L2.4,0L6,3.6L9.6,0L12,2.4L8.399,6L12,9.6z" />
+  </symbol>
+</svg>
+
+<svg style="display: none">
+  <symbol id="svg-plus-small" viewBox="0 0 8 8" preserveAspectRatio="xMinYMin meet">
+    <path d="M8,5H5v3H3V5H0V3h3V0h2v3h3V5z" />
+  </symbol>
+</svg>
+
+<svg style="display: none">
+  <symbol id="svg-members" viewBox="0 0 20 20" preserveAspectRatio="xMinYMin meet">
+    <path
+      d="M10,10c2.762,0,5-2.238,5-5c0-2.762-2.238-5-5-5S5,2.238,5,5C5,7.761,7.238,10,10,10z M10,2c1.654,0,3,1.346,3,3s-1.346,3-3,3S7,6.654,7,5S8.346,2,10,2z M13,12H7c-3.313,0-6,2.686-6,6v2h2v-2c0-2.205,1.794-4,4-4h6c2.206,0,4,1.795,4,4v2h2v-2C19,14.686,16.313,12,13,12z" />
+  </symbol>
+</svg>
+
+<svg style="display: none">
+  <symbol id="svg-facebook" viewBox="0 0 18 18" preserveAspectRatio="xMinYMin meet">
+    <path
+      d="M16.313,18h-4.504v-6.192h3.087V8.671h-3.087V7.135V6.831V6.814l0,0c0.01-0.328,0.277-0.591,0.607-0.591h0.067h1.113h1.62V3.086h-2.733l0,0l-0.009,0.018h-0.092c-2.051,0-3.712,1.661-3.712,3.711v0.911v0.945H6.191v3.137h2.479V18H1.687C0.755,18,0,17.242,0,16.313V1.686C0,0.754,0.755,0,1.687,0h14.626C17.244,0,18,0.754,18,1.686v14.627C18,17.242,17.244,18,16.313,18z" />
+  </symbol>
+</svg>
+<svg style="display: none">
+  <symbol id="svg-youtube" viewBox="0 0 100 100" preserveAspectRatio="xMinYMin meet">
+    <path
+      d="M97.911,24.557c-1.149-4.549-4.538-8.13-8.842-9.347C81.271,13,49.999,13,49.999,13s-31.271,0-39.07,2.21c-4.302,1.216-7.69,4.798-8.84,9.347C0,32.8,0,50.001,0,50.001s0,17.2,2.089,25.443c1.15,4.549,4.538,8.132,8.84,9.348C18.729,87,49.999,87,49.999,87s31.271,0,39.07-2.208c4.304-1.216,7.692-4.799,8.842-9.348C100,67.201,100,50.001,100,50.001S100,32.8,97.911,24.557z M39.999,65.858V34.144L65.98,50.001L39.999,65.858z" />
+  </symbol>
+</svg>
+<svg style="display: none">
+  <symbol id="svg-instagram" viewBox="0 0 100 100" preserveAspectRatio="xMinYMin meet">
+    <path
+      d="M72.402,0H27.595C12.379,0,0,12.381,0,27.597v44.809C0,87.619,12.379,100,27.595,100h44.807C87.621,100,100,87.619,100,72.406V27.597C100,12.381,87.621,0,72.402,0z M88.691,71.078c0,9.711-7.902,17.613-17.615,17.613H28.923c-9.712,0-17.613-7.902-17.613-17.613V28.926c0-9.715,7.901-17.618,17.613-17.618h42.153c9.713,0,17.615,7.903,17.615,17.618V71.078z M50.001,26.779c-12.804,0-23.22,10.426-23.22,23.22c0,12.804,10.416,23.22,23.22,23.22c12.801,0,23.217-10.416,23.217-23.22C73.219,37.205,62.803,26.779,50.001,26.779z M50.001,63.689c-7.548,0-13.688-6.139-13.688-13.691c0-7.545,6.14-13.684,13.688-13.684c7.545,0,13.686,6.139,13.686,13.684C63.688,57.551,57.547,63.689,50.001,63.689z M75.658,17.864c-1.711,0-4.383,0.724-5.711,2.056c-1.332,1.328-2.098,3.178-2.098,5.065c0,1.882,0.766,3.727,2.098,5.063c1.326,1.325,3.172,2.098,5.051,2.098c1.885,0,3.723-0.772,5.055-2.098c1.332-1.336,2.094-3.184,2.094-5.063c0-1.888-0.762-3.737-2.094-5.065C78.729,18.587,77.373,17.864,75.658,17.864z" />
+  </symbol>
+</svg>
+
+<svg style="display: none;">
+  <symbol id="svg-send-message" viewBox="0 0 20 20" preserveAspectRatio="xMinYMin meet">
+    <path
+      d="M19.993,0.94c-0.005-0.091-0.022-0.179-0.052-0.265c-0.011-0.031-0.021-0.062-0.035-0.093  c-0.049-0.107-0.109-0.208-0.195-0.294s-0.188-0.147-0.294-0.195c-0.031-0.014-0.062-0.024-0.093-0.035c-0.086-0.03-0.173-0.046-0.263-0.052C19.034,0.005,19.009,0,18.981,0c-0.104,0.002-0.207,0.017-0.308,0.052L0.67,6.353C0.283,6.488,0.018,6.846,0.001,7.256C-0.016,7.666,0.22,8.044,0.594,8.21l7.75,3.446l3.444,7.75C11.948,19.769,12.308,20,12.702,20
+    c0.014,0,0.027,0,0.041-0.002c0.409-0.016,0.768-0.28,0.903-0.668l6.302-18.003c0.035-0.101,0.05-0.206,0.052-0.309C20,0.991,19.994,0.967,19.993,0.94z M15.197,3.388L8.88,9.706L3.711,7.408L15.197,3.388z M12.592,16.288l-2.298-5.169l6.317-6.316L12.592,16.288z" />
+  </symbol>
+</svg>

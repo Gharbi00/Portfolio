@@ -1,0 +1,769 @@
+<header id="page-topbar" data-scroll-header (window:scroll)="windowScroll()">
+  <div class="layout-width">
+    <div class="navbar-header">
+      <div class="d-flex">
+        <!-- LOGO -->
+        <div class="navbar-brand-box horizontal-logo">
+          <a href="javascript:void(0);" class="logo logo-dark">
+            <span class="logo-sm">
+              <img [src]="elevokSmallLogo" alt="" height="50">
+            </span>
+            <span class="logo-lg">
+              <img [src]="elevokLogo" alt="" height="50">
+            </span>
+          </a>
+
+          <a href="javascript:void(0);" class="logo logo-light">
+            <span class="logo-sm">
+              <img [src]="elevokSmallLogo" alt="" height="50">
+            </span>
+            <span class="logo-lg">
+              <img [src]="elevokLogo" alt="" height="50">
+            </span>
+          </a>
+        </div>
+
+        <button type="button" class="btn btn-sm px-3 fs-16 header-item vertical-menu-btn topnav-hamburger shadow-none"
+          id="topnav-hamburger-icon" (click)="toggleMobileMenu($event)">
+          <span class="hamburger-icon">
+            <span></span>
+            <span></span>
+            <span></span>
+          </span>
+        </button>
+
+        <form [formGroup]="searchForm" class="app-search d-none d-md-block">
+          <div class="position-relative">
+            <input formControlName="searchString" type="text" class="form-control"
+              placeholder="{{ 'HEADER.SEARCH.SEARCH' | translate }}" autocomplete="off" id="search-options" value=""
+              (keyup.enter)="search()" (keyup)="searchBar()">
+            <span class="mdi mdi-magnify search-widget-icon"></span>
+            <span class="mdi mdi-close-circle search-widget-icon search-widget-icon-close d-none"
+              id="search-close-options" (click)="closeBtn()"></span>
+          </div>
+          <div class="dropdown-menu dropdown-menu-lg" id="search-dropdown">
+            <ngx-simplebar style="max-height: 320px;">
+              <div class="dropdown-header">
+                <h6 class="text-overflow text-muted mb-0 text-uppercase">{{ 'HEADER.SEARCH.RECENT_SEARCHES' | translate
+                  }}</h6>
+              </div>
+
+              <div class="dropdown-item bg-transparent text-wrap">
+                <a [routerLink]="['/faq']" class="btn btn-soft-secondary btn-sm btn-rounded"> Frequently asked questions
+                  <i class="mdi mdi-magnify ms-1"></i></a>
+              </div>
+              <!-- item-->
+              <div class="gallery-light p-3">
+                <ng-container *ngIf="((loadingItems$ | async) === false || null || undefined) && searchedItems?.length">
+                  <ng-container *ngFor="let searchedItem of searchedItems">
+                    <h6 *ngIf="searchedItems?.items?.length" class="text-overflow text-muted mb-1 text-uppercase">
+                      {{searchedItem?.label}} </h6>
+                    <ng-container *ngFor="let item of searchedItem?.items">
+                      <div class="pb-3">
+                        <h5 class="mb-1"><a href="javascript:void(0);">
+                            {{
+                            (searchedItem?.label === 'campaigns' || searchedItem?.label === 'blogs') ? item?.title :
+                            (searchedItem?.label === 'products' || searchedItem?.label === 'projects' ||
+                            searchedItem?.label === 'articles') ? item?.name :
+                            ((searchedItem?.label === 'customers' && item?.firstName && item?.lastName) ||
+                            (item?.firstName && item?.lastName)) ? (item?.firstName + ' ' + item?.lastName) :
+                            ''
+                            }}
+                          </a>
+                        </h5>
+                        <p [routerLink]="searchedItem?.label === 'customers' ? [searchedItem?.router] : [searchedItem?.router, item?.id]"
+                          class="text-success cursor-pointer mb-2">
+                          {{
+                          searchedItem?.label === 'campaigns' ?
+                          'https://sbx-trmnl.sifca.app/engagement/campaigns/campaigns' +
+                          item?.title :
+                          searchedItem?.label === 'products' ?
+                          'https://sbx-trmnl.sifca.app/inventory/products/products/' + item?.name :
+                          searchedItem?.label === 'customers' ?
+                          'https://sbx-trmnl.sifca.app/ecommerce/customers/customers/' :
+                          searchedItem?.label === 'projects' ?
+                          'https://sbx-trmnl.sifca.app/collaboration/projects/all/' + item?.name :
+                          searchedItem?.label === 'blogs' ? 'https://sbx-trmnl.sifca.app/website/blog/' + item?.title :
+                          searchedItem?.label === 'articles' ?
+                          'https://sbx-trmnl.sifca.app/iinventory/products/articles/' + item?.name : ''
+                          }}
+                        </p>
+                      </div>
+                      <div class="border border-dashed mb-3 mb-3"></div>
+                    </ng-container>
+                  </ng-container>
+                </ng-container>
+                <div id="noresult" class="py-4 mt-4 text-center"
+                  *ngIf="(loadingItems$ | async) === true || ((loadingItems$ | async) === false && !searchedItems?.length)">
+                  <div *ngIf="(loadingItems$ | async)">
+                    <lord-icon trigger="loop" style="width:72px;height:72px"
+                      [colors]="'primary:' + primaryColor + ',secondary:' + secondaryColor"
+                      src="https://cdn.lordicon.com/msoeawqm.json">
+                    </lord-icon>
+                    <h5 class="mt-4">{{'COMMON.LOADING' | translate }}</h5>
+                  </div>
+                  <div *ngIf="(loadingItems$ | async) === false && !searchedItems?.length">
+                    <lord-icon trigger="loop" style="width:72px;height:72px"
+                      [colors]="'primary:' + primaryColor + ',secondary:' + secondaryColor"
+                      src="https://cdn.lordicon.com/vlycxjwx.json">
+                    </lord-icon>
+                    <h5 class="mt-4">{{ 'COMMON.NO_RESULT' | translate }}</h5>
+                  </div>
+                </div>
+              </div>
+              <!-- item-->
+              <a href="javascript:void(0);" class="dropdown-item notify-item">
+                <i class="ri-bubble-chart-line align-middle fs-18 text-muted me-2"></i>
+                <span>{{ 'HEADER.SEARCH.ANALYTICS_DASHBOARD' | translate }}</span>
+              </a>
+
+              <!-- item-->
+              <a href="javascript:void(0);" class="dropdown-item notify-item">
+                <i class="ri-lifebuoy-line align-middle fs-18 text-muted me-2"></i>
+                <span>{{ 'HEADER.SEARCH.HELP_CENTER' | translate }}</span>
+              </a>
+
+              <!-- item-->
+              <a href="javascript:void(0);" class="dropdown-item notify-item">
+                <i class="ri-user-settings-line align-middle fs-18 text-muted me-2"></i>
+                <span>{{ 'HEADER.SEARCH.MY_ACCOUNT_SETTINGS' | translate }}</span>
+              </a>
+
+              <div class="notification-list">
+                <!-- item -->
+                <a href="javascript:void(0);" class="dropdown-item notify-item py-2">
+                  <div class="d-flex">
+                    <img src="assets/images/users/avatar-2.jpg" class="me-3 rounded-circle avatar-xs" alt="user-pic">
+                    <div class="flex-1">
+                      <h6 class="m-0">{{ 'HEADER.SEARCH.ANGELA_BERNIER' | translate }}</h6>
+                      <span class="fs-11 mb-0 text-muted">{{ 'HEADER.SEARCH.MANAGER' | translate }}</span>
+                    </div>
+                  </div>
+                </a>
+                <!-- item -->
+                <a href="javascript:void(0);" class="dropdown-item notify-item py-2">
+                  <div class="d-flex">
+                    <img src="assets/images/users/avatar-3.jpg" class="me-3 rounded-circle avatar-xs" alt="user-pic">
+                    <div class="flex-1">
+                      <h6 class="m-0">{{ 'HEADER.SEARCH.DAVID_GRASSO' | translate }}</h6>
+                      <span class="fs-11 mb-0 text-muted">{{ 'HEADER.SEARCH.WEB_DESIGNER' | translate }}</span>
+                    </div>
+                  </div>
+                </a>
+                <!-- item -->
+                <a href="javascript:void(0);" class="dropdown-item notify-item py-2">
+                  <div class="d-flex">
+                    <img src="assets/images/users/avatar-5.jpg" class="me-3 rounded-circle avatar-xs" alt="user-pic">
+                    <div class="flex-1">
+                      <h6 class="m-0">{{ 'HEADER.SEARCH.MIKE_BUNCH' | translate }}</h6>
+                      <span class="fs-11 mb-0 text-muted">{{ 'HEADER.SEARCH.REACT_DEVELOPER' | translate }}</span>
+                    </div>
+                  </div>
+                </a>
+              </div>
+            </ngx-simplebar>
+
+            <div class="text-center pt-3 pb-1">
+              <a (click)="closeBtn('route')" routerLink="/" class="btn btn-primary btn-sm">{{
+                'HEADER.SEARCH.VIEW_ALL_RESULTS' | translate }} <i class="ri-arrow-right-line ms-1"></i></a>
+            </div>
+          </div>
+        </form>
+
+
+      </div>
+
+      <div class="d-flex align-items-center">
+
+        <div class="dropdown d-md-none topbar-head-dropdown header-item" ngbDropdown>
+          <button type="button" class="btn btn-icon btn-topbar btn-ghost-secondary rounded-circle shadow-none"
+            id="page-header-search-dropdown" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false"
+            ngbDropdownToggle>
+            <i class="bx bx-search fs-22"></i>
+          </button>
+          <div class="dropdown-menu dropdown-menu-lg dropdown-menu-end p-0"
+            aria-labelledby="page-header-search-dropdown" ngbDropdownMenu>
+            <form class="p-3">
+              <div class="form-group m-0">
+                <div class="input-group">
+                  <input type="text" class="form-control" placeholder="{{ 'HEADER.SEARCH' | translate }}"
+                    aria-label="Recipient's username">
+                  <button class="btn btn-primary" type="submit"><i class="mdi mdi-magnify"></i></button>
+                </div>
+              </div>
+            </form>
+          </div>
+        </div>
+
+        <div class="dropdown ms-1 topbar-head-dropdown header-item" ngbDropdown>
+          <button type="button" class="btn btn-icon btn-topbar btn-ghost-secondary rounded-circle shadow-none"
+            data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false" ngbDropdownToggle>
+            <img *ngIf="flagvalue !== undefined" src="{{flagvalue}}" alt="Header Language" height="20" class="rounded">
+            <img *ngIf="flagvalue === undefined" src="{{valueset}}" alt="Header Language" height="20" class="rounded">
+          </button>
+          <div class="dropdown-menu dropdown-menu-end" ngbDropdownMenu>
+            <a href="javascript:void(0);" class="dropdown-item notify-item language py-2" data-lang="eng"
+              *ngFor="let item of listLang" (click)="setLanguage(item.text, item.lang, item.flag)"
+              [ngClass]="{'active': cookieValue === item.lang}">
+              <img src="{{item.flag}}" alt="user-image" class="me-2 rounded" height="18"> <span
+                class="align-middle">{{item.text}}</span>
+            </a>
+          </div>
+        </div>
+
+        <div class="dropdown ms-1 topbar-head-dropdown header-item" ngbDropdown>
+          <button type="button" class="btn btn-icon btn-topbar btn-ghost-secondary rounded-circle shadow-none"
+            data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false" ngbDropdownToggle>
+            <img *ngIf="account?.targets?.pos[0].picture" [src]="selectedPos?.picture?.baseUrl + '/' + selectedPos?.picture?.path" alt="Header Language" height="20" class="rounded">
+            <div *ngIf="!account?.targets?.pos[0].picture" class="avatar-xxs">
+              <div class="avatar-title text-danger bg-soft-info rounded-circle shadow">
+                {{account?.targets?.pos[0]?.title?.charAt(0) || 'N'}}
+              </div>
+            </div>
+          </button>
+          <div class="dropdown-menu dropdown-menu-end" ngbDropdownMenu>
+            <a href="javascript:void(0);" class="dropdown-item notify-item language py-2 align-items-center d-flex" data-lang="eng"
+              *ngFor="let pos of account?.targets?.pos; let i = index"
+              [ngClass]="{'active': selectedPos?.partner?.pos?.id === pos?.partner?.pos?.id }" (click)="switchPos(pos, i)">
+              <img *ngIf="pos?.picture" [src]="pos?.picture?.baseUrl + '/' + pos?.picture?.path" alt="user-image"
+                class="me-2 rounded" height="18">
+                <!-- <div *ngIf="!pos?.picture" class="avatar-title me-3 h-8 w-8 bg-soft-info text-danger shadow">
+                {{pos?.title?.charAt(0) || 'N'}}</div> -->
+                <div *ngIf="!pos?.picture" class="avatar-xxs me-2">
+                  <div class="avatar-title text-danger bg-soft-info rounded-circle shadow">
+                    {{pos?.title?.charAt(0) || 'N'}}
+                  </div>
+                </div>
+                <span class="align-middle">{{pos?.title}}</span>
+              </a>
+          </div>
+        </div>
+
+        <div class="dropdown topbar-head-dropdown ms-1 header-item" ngbDropdown>
+          <button type="button" class="btn btn-icon btn-topbar btn-ghost-secondary rounded-circle shadow-none"
+            data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false" ngbDropdownToggle>
+            <i class='bx bx-category-alt fs-22'></i>
+          </button>
+          <div class="dropdown-menu dropdown-menu-lg p-0 dropdown-menu-end" ngbDropdownMenu>
+            <div class="p-3 border-top-0 border-start-0 border-end-0 border-dashed border">
+              <div class="row align-items-center">
+                <div class="col d-flex">
+                  <h6 class="m-0 fw-semibold fs-15">{{ 'HEADER.SHORTCUTS.SHORTCUTS_TITLE' | translate }}</h6>
+                  <ng-container *ngIf="shortMode !== 'view'">
+                    <span class="ms-1">
+                      <ng-container *ngIf="shortMode === 'add'">{{ 'HEADER.SHORTCUTS.ADD_NEW' | translate
+                        }}</ng-container>
+                      <ng-container *ngIf="shortMode === 'modify' || shortMode === 'edit'">{{ 'HEADER.SHORTCUTS.EDITING'
+                        | translate }}</ng-container>
+                    </span>
+                  </ng-container>
+                </div>
+                <div class="col-auto gap-2 hstack">
+                  <ng-container *ngIf="shortMode === 'view'">
+                    <a (click)="changeShortMode('modify')" href="javascript:void(0);" data-bs-toggle="modal"
+                      class="d-inline-block edit-item-btn">
+                      <i class="ri-pencil-line fs-16"></i>
+                    </a>
+                    <a (click)="newShortcut()" href="javascript:void(0);" data-bs-toggle="modal"
+                      class="d-inline-block edit-item-btn">
+                      <i class="ri-add-circle-line fs-16"></i>
+                    </a>
+                  </ng-container>
+                  <a *ngIf="shortMode === 'modify'" (click)="changeShortMode('view')" href="javascript:void(0);"
+                    data-bs-toggle="modal" class="d-inline-block edit-item-btn">
+                    <i class="ri-checkbox-circle-line fs-16"></i>
+                  </a>
+                  <a *ngIf="shortMode === 'add' || shortMode === 'edit'"
+                    (click)="shortMode === 'add' ? changeShortMode('view') : changeShortMode('modify')"
+                    href="javascript:void(0);" data-bs-toggle="modal" class="d-inline-block edit-item-btn">
+                    <i class="ri-close-circle-line fs-16"></i>
+                  </a>
+                </div>
+              </div>
+            </div>
+            <ng-container *ngIf="shortMode === 'add' || shortMode === 'edit'">
+              <form [formGroup]="shortcutForm">
+                <div class="row g-3 p-3">
+                  <div class="col-lg-12">
+                    <div class="mb-3">
+                      <label for="email_id-field" class="form-label">{{ 'HEADER.SHORTCUTS.LABEL' | translate }}*</label>
+                      <input type="text" id="email_id-field" class="form-control"
+                        placeholder="{{ 'HEADER.SHORTCUTS.ENTER_LABEL' | translate }}" required formControlName="label"
+                        [ngClass]="{ 'is-invalid': shortcutForm.get('label')?.touched && shortcutForm.get('label').hasError('required') }" />
+                      <div class="invalid-feedback"
+                        *ngIf="shortcutForm.get('label')?.touched && shortcutForm.get('label').hasError('required')">
+                        {{ 'COMMON.REQUIRED' | translate }}
+                      </div>
+                    </div>
+                    <div class="mb-3">
+                      <label for="description-field" class="form-label">{{ 'HEADER.SHORTCUTS.DESCRIPTION' | translate
+                        }}</label>
+                      <input type="text" id="description-field" class="form-control"
+                        placeholder="{{ 'HEADER.SHORTCUTS.ENTER_DESCRIPTION' | translate }}"
+                        formControlName="description" />
+                    </div>
+                    <div class="mb-3">
+                      <label for="icon-field" class="form-label">{{ 'HEADER.SHORTCUTS.ICON' | translate }}*</label>
+                      <ng-select [clearable]="false" placeholder="{{ 'HEADER.SHORTCUTS.CHOOSE_ICON' | translate }}"
+                        [ngClass]="{ 'is-invalid': shortcutForm.get('icon')?.touched && shortcutForm.get('icon').hasError('required') }"
+                        required [items]="icons" [formControlName]="'icon'">
+                        <ng-template ng-label-tmp let-item="item">
+                          <div>
+                            <i-feather [name]="item" class="icon-sm"></i-feather>
+                            {{item.split('_').join(' ') | titlecase}}
+                          </div>
+                        </ng-template>
+                        <ng-template ng-option-tmp let-item="item">
+                          <div class="d-flex align-items-center">
+                            <i-feather [name]="item" class="icon-sm"></i-feather>
+                            <div class="d-flex icon-sm ms-2">
+                              {{item.split('_').join(' ') | titlecase}}
+                            </div>
+                          </div>
+                        </ng-template>
+                      </ng-select>
+                      <div class="invalid-feedback"
+                        *ngIf="shortcutForm.get('icon')?.touched && shortcutForm.get('icon').hasError('required')">
+                        {{ 'COMMON.REQUIRED' | translate }}
+                      </div>
+                    </div>
+                    <div class="mb-3">
+                      <label for="link-field" class="form-label">{{ 'HEADER.SHORTCUTS.LINK' | translate }}*</label>
+                      <input type="text" id="link-field" class="form-control"
+                        placeholder="{{ 'HEADER.SHORTCUTS.ENTER_LINK' | translate }}" required formControlName="link"
+                        [ngClass]="{ 'is-invalid': shortcutForm.get('link')?.touched && shortcutForm.get('link').hasError('required') }" />
+                      <div class="invalid-feedback"
+                        *ngIf="shortcutForm.get('link')?.touched && shortcutForm.get('link').hasError('required')">
+                        {{ 'COMMON.REQUIRED' | translate }}
+                      </div>
+                    </div>
+                    <div class="flex-shrink-0 d-flex gap-1">
+                      <div class="form-check form-switch">
+                        <input [formControlName]="'router'" class="form-check-input" type="checkbox" role="switch"
+                          id="flexSwitchCheckDefault">
+                        <label class="form-check-label" for="flexSwitchCheckDefault">{{
+                          'HEADER.SHORTCUTS.USE_ROUTER_FOR_LINK' | translate }}</label>
+                      </div>
+                    </div>
+                    <div class="hstack justify-content-end gap-2 mt-3">
+                      <button [disabled]="isButtonDisabled || shortcutForm.invalid" (click)="save()" type="button"
+                        class="btn btn-success">
+                        <i [ngClass]="{
+                          'ri-add-line': shortMode === 'add',
+                          'ri-pencil-line': shortMode === 'edit'
+                        }" class="align-bottom me-1"></i>
+                        <span>{{ (shortMode === 'add' ? 'HEADER.SHORTCUTS.ADD_SHORTCUT' :
+                          'HEADER.SHORTCUTS.UPDATE_SHORTCUT') | translate }}</span>
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              </form>
+            </ng-container>
+            <ng-container *ngIf="(shortMode === 'view' || shortMode === 'modify') && (shortcuts$ | async)?.length">
+              <div class="p-2">
+                <div class="row overflow-auto h-11 g-0">
+                  <div *ngFor="let shortcut of shortcuts$ | async"
+                    (click)="shortMode === 'modify' ? editShortcut(shortcut) : null" class="col-4 cursor-pointer">
+                    <div (click)="shortMode !== 'modify' ? navigateByUrl(shortcut) : null" class="dropdown-icon-item">
+                      <i-feather [name]="shortcut?.icon" class="icon-xxl"></i-feather>
+                      <div>{{ shortcut?.label }}</div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </ng-container>
+            <div id="noresult" class="mb-4 text-center" *ngIf="!(shortcuts$ | async)?.length && shortMode !== 'add'">
+              <div>
+                <i class="ri-search-line fs-2"></i>
+              </div>
+              <h5>{{ 'HEADER.SHORTCUTS.ADD_A_SHORTCUT' | translate }}</h5>
+            </div>
+          </div>
+        </div>
+
+        <div class="ms-1 header-item d-none d-sm-flex">
+          <button type="button" class="btn btn-icon btn-topbar btn-ghost-secondary rounded-circle shadow-none"
+            data-toggle="fullscreen" (click)="fullscreen()">
+            <i class='bx bx-fullscreen fs-22'></i>
+          </button>
+        </div>
+
+        <div class="ms-1 header-item d-none d-sm-flex">
+          <button type="button"
+            class="btn btn-icon btn-topbar btn-ghost-secondary rounded-circle light-dark-mode shadow-none">
+            <i class='bx bx-moon fs-22' (click)="changeMode('dark')"></i>
+            <i class='bx bx-sun fs-22' (click)="changeMode('light')"></i>
+          </button>
+        </div>
+
+        <!-- messages -->
+        <!-- <div class="dropdown topbar-head-dropdown ms-1 header-item" ngbDropdown>
+          <button type="button" class="btn btn-icon btn-topbar btn-ghost-secondary rounded-circle shadow-none"
+            id="page-header-notifications-dropdown" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false"
+            ngbDropdownToggle>
+            <i class='bx bx-chat fs-22'></i>
+            <span class="position-absolute topbar-badge fs-10 translate-middle badge rounded-pill bg-danger">1<span
+                class="visually-hidden">unread messages</span></span>
+          </button>
+          <div class="dropdown-menu dropdown-menu-lg dropdown-menu-end p-0"
+            aria-labelledby="page-header-notifications-dropdown" ngbDropdownMenu>
+
+            <div class="dropdown-head bg-primary bg-pattern rounded-top">
+              <div class="p-3">
+                <div class="row align-items-center">
+                  <div class="col">
+                    <h6 class="m-0 fs-16 fw-semibold text-white"> Messages </h6>
+                  </div>
+                  <div class="col-auto dropdown-tabs">
+                    <span class="badge badge-soft-light fs-13"> 4 New</span>
+                  </div>
+                </div>
+              </div>
+
+              <div class="px-2 pt-2">
+                <ul ngbNav #nav="ngbNav" [activeId]="1" class="nav nav-tabs dropdown-tabs nav-tabs-custom"
+                  id="notificationItemsTab">
+                  <li [ngbNavItem]="1">
+                    <a ngbNavLink>
+                      Messages
+                    </a>
+                    <ng-template ngbNavContent>
+                      <div class="tab-pane fade show active py-2 ps-2" id="all-noti-tab" role="tabpanel">
+                        <ngx-simplebar style="max-height: 300px;">
+                          <div class="pe-2">
+                            <div class="text-reset notification-item d-block dropdown-item">
+                              <div class="d-flex">
+                                <img src="assets/images/users/avatar-3.jpg" class="me-3 rounded-circle avatar-xs"
+                                  alt="user-pic">
+                                <div class="flex-1">
+                                  <a href="javascript:void(0);" class="stretched-link">
+                                    <h6 class="mt-0 mb-1 fs-13 fw-semibold">James
+                                      Lemire</h6>
+                                  </a>
+                                  <div class="fs-13 text-muted">
+                                    <p class="mb-1">We talked about a project on
+                                      linkedin.</p>
+                                  </div>
+                                  <p class="mb-0 fs-11 fw-medium text-uppercase text-muted">
+                                    <span><i class="mdi mdi-clock-outline"></i> 30
+                                      min ago</span>
+                                  </p>
+                                </div>
+                                <div class="px-2 fs-15">
+                                  <input class="form-check-input" type="checkbox">
+                                </div>
+                              </div>
+                            </div>
+
+                            <div class="text-reset notification-item d-block dropdown-item">
+                              <div class="d-flex">
+                                <img src="assets/images/users/avatar-2.jpg" class="me-3 rounded-circle avatar-xs"
+                                  alt="user-pic">
+                                <div class="flex-1">
+                                  <a href="javascript:void(0);" class="stretched-link">
+                                    <h6 class="mt-0 mb-1 fs-13 fw-semibold">Angela
+                                      Bernier</h6>
+                                  </a>
+                                  <div class="fs-13 text-muted">
+                                    <p class="mb-1">Answered to your comment on the
+                                      cash flow forecast's
+                                      graph 🔔.</p>
+                                  </div>
+                                  <p class="mb-0 fs-11 fw-medium text-uppercase text-muted">
+                                    <span><i class="mdi mdi-clock-outline"></i> 2
+                                      hrs ago</span>
+                                  </p>
+                                </div>
+                                <div class="px-2 fs-15">
+                                  <input class="form-check-input" type="checkbox">
+                                </div>
+                              </div>
+                            </div>
+
+                            <div class="text-reset notification-item d-block dropdown-item">
+                              <div class="d-flex">
+                                <img src="assets/images/users/avatar-6.jpg" class="me-3 rounded-circle avatar-xs"
+                                  alt="user-pic">
+                                <div class="flex-1">
+                                  <a href="javascript:void(0);" class="stretched-link">
+                                    <h6 class="mt-0 mb-1 fs-13 fw-semibold">Kenneth
+                                      Brown</h6>
+                                  </a>
+                                  <div class="fs-13 text-muted">
+                                    <p class="mb-1">Mentionned you in his comment on
+                                      📃 invoice #12501. </p>
+                                  </div>
+                                  <p class="mb-0 fs-11 fw-medium text-uppercase text-muted">
+                                    <span><i class="mdi mdi-clock-outline"></i> 10
+                                      hrs ago</span>
+                                  </p>
+                                </div>
+                                <div class="px-2 fs-15">
+                                  <input class="form-check-input" type="checkbox">
+                                </div>
+                              </div>
+                            </div>
+
+                            <div class="text-reset notification-item d-block dropdown-item">
+                              <div class="d-flex">
+                                <img src="assets/images/users/avatar-8.jpg" class="me-3 rounded-circle avatar-xs"
+                                  alt="user-pic">
+                                <div class="flex-1">
+                                  <a href="javascript:void(0);" class="stretched-link">
+                                    <h6 class="mt-0 mb-1 fs-13 fw-semibold">Maureen
+                                      Gibson</h6>
+                                  </a>
+                                  <div class="fs-13 text-muted">
+                                    <p class="mb-1">We talked about a project on
+                                      linkedin.</p>
+                                  </div>
+                                  <p class="mb-0 fs-11 fw-medium text-uppercase text-muted">
+                                    <span><i class="mdi mdi-clock-outline"></i> 3
+                                      days ago</span>
+                                  </p>
+                                </div>
+                                <div class="px-2 fs-15">
+                                  <input class="form-check-input" type="checkbox">
+                                </div>
+                              </div>
+                            </div>
+
+                            <div class="my-3 text-center">
+                              <button type="button" class="btn btn-soft-success waves-effect waves-light">{{ 'COMMON.VIEW' | translate }}
+                                All Messages <i class="ri-arrow-right-line align-middle"></i></button>
+                            </div>
+                          </div>
+                        </ngx-simplebar>
+                      </div>
+                    </ng-template>
+                  </li>
+                </ul>
+              </div>
+
+            </div>
+
+            <div class="tab-content" id="notificationItemsTabContent">
+              <div class="tab-content text-muted">
+                <div [ngbNavOutlet]="nav"></div>
+              </div>
+            </div>
+          </div>
+        </div> -->
+
+        <!-- notifications -->
+        <!-- <div class="dropdown topbar-head-dropdown ms-1 header-item" ngbDropdown>
+          <button type="button" class="btn btn-icon btn-topbar btn-ghost-secondary rounded-circle shadow-none"
+            id="page-header-notifications-dropdown" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false"
+            ngbDropdownToggle>
+            <i class='bx bx-bell fs-22'></i>
+            <span class="position-absolute topbar-badge fs-10 translate-middle badge rounded-pill bg-danger">3<span
+                class="visually-hidden">unread messages</span></span>
+          </button>
+          <div class="dropdown-menu dropdown-menu-lg dropdown-menu-end p-0"
+            aria-labelledby="page-header-notifications-dropdown" ngbDropdownMenu>
+
+            <div class="dropdown-head bg-primary bg-pattern rounded-top">
+              <div class="p-3">
+                <div class="row align-items-center">
+                  <div class="col">
+                    <h6 class="m-0 fs-16 fw-semibold text-white"> Notifications </h6>
+                  </div>
+                  <div class="col-auto dropdown-tabs">
+                    <span class="badge badge-soft-light fs-13"> 4 New</span>
+                  </div>
+                </div>
+              </div>
+
+              <div class="px-2 pt-2">
+                <ul ngbNav #nav="ngbNav" [activeId]="1" class="nav nav-tabs dropdown-tabs nav-tabs-custom"
+                  id="notificationItemsTab">
+                  <li [ngbNavItem]="1">
+                    <a ngbNavLink>
+                      Notifications
+                    </a>
+                    <ng-template ngbNavContent>
+                      <div class="tab-pane fade show active py-2 ps-2" id="all-noti-tab" role="tabpanel">
+                        <ngx-simplebar style="max-height: 300px;">
+                          <div class="pe-2">
+                            <div class="text-reset notification-item d-block dropdown-item position-relative">
+                              <div class="d-flex">
+                                <div class="avatar-xs me-3">
+                                  <span class="avatar-title bg-soft-info rounded-circle fs-16">
+                                    <i class="bx bx-badge-check"></i>
+                                  </span>
+                                </div>
+                                <div class="flex-1">
+                                  <a href="javascript:void(0);" class="stretched-link">
+                                    <h6 class="mt-0 mb-2 lh-base">Your <b>Elite</b>
+                                      author Graphic
+                                      Optimization <span class="text-secondary">reward</span> is
+                                      ready!
+                                    </h6>
+                                  </a>
+                                  <p class="mb-0 fs-11 fw-medium text-uppercase text-muted">
+                                    <span><i class="mdi mdi-clock-outline"></i> Just
+                                      30 sec ago</span>
+                                  </p>
+                                </div>
+                                <div class="px-2 fs-15">
+                                  <input class="form-check-input" type="checkbox">
+                                </div>
+                              </div>
+                            </div>
+
+                            <div class="text-reset notification-item d-block dropdown-item position-relative">
+                              <div class="d-flex">
+                                <img src="assets/images/users/avatar-2.jpg" class="me-3 rounded-circle avatar-xs"
+                                  alt="user-pic">
+                                <div class="flex-1">
+                                  <a href="javascript:void(0);" class="stretched-link">
+                                    <h6 class="mt-0 mb-1 fs-13 fw-semibold">Angela
+                                      Bernier</h6>
+                                  </a>
+                                  <div class="fs-13 text-muted">
+                                    <p class="mb-1">Answered to your comment on the
+                                      cash flow forecast's
+                                      graph 🔔.</p>
+                                  </div>
+                                  <p class="mb-0 fs-11 fw-medium text-uppercase text-muted">
+                                    <span><i class="mdi mdi-clock-outline"></i> 48
+                                      min ago</span>
+                                  </p>
+                                </div>
+                                <div class="px-2 fs-15">
+                                  <input class="form-check-input" type="checkbox">
+                                </div>
+                              </div>
+                            </div>
+
+                            <div class="text-reset notification-item d-block dropdown-item position-relative">
+                              <div class="d-flex">
+                                <div class="avatar-xs me-3">
+                                  <span class="avatar-title bg-soft-danger text-danger rounded-circle fs-16">
+                                    <i class='bx bx-message-square-dots'></i>
+                                  </span>
+                                </div>
+                                <div class="flex-1">
+                                  <a href="javascript:void(0);" class="stretched-link">
+                                    <h6 class="mt-0 mb-2 fs-13 lh-base">You have
+                                      received <b class="text-success">20</b> new
+                                      messages in the conversation</h6>
+                                  </a>
+                                  <p class="mb-0 fs-11 fw-medium text-uppercase text-muted">
+                                    <span><i class="mdi mdi-clock-outline"></i> 2
+                                      hrs ago</span>
+                                  </p>
+                                </div>
+                                <div class="px-2 fs-15">
+                                  <input class="form-check-input" type="checkbox">
+                                </div>
+                              </div>
+                            </div>
+
+                            <div class="text-reset notification-item d-block dropdown-item position-relative">
+                              <div class="d-flex">
+                                <img src="assets/images/users/avatar-8.jpg" class="me-3 rounded-circle avatar-xs"
+                                  alt="user-pic">
+                                <div class="flex-1">
+                                  <a href="javascript:void(0);" class="stretched-link">
+                                    <h6 class="mt-0 mb-1 fs-13 fw-semibold">Maureen
+                                      Gibson</h6>
+                                  </a>
+                                  <div class="fs-13 text-muted">
+                                    <p class="mb-1">We talked about a project on
+                                      linkedin.</p>
+                                  </div>
+                                  <p class="mb-0 fs-11 fw-medium text-uppercase text-muted">
+                                    <span><i class="mdi mdi-clock-outline"></i> 4
+                                      hrs ago</span>
+                                  </p>
+                                </div>
+                                <div class="px-2 fs-15">
+                                  <input class="form-check-input" type="checkbox">
+                                </div>
+                              </div>
+                            </div>
+
+                            <div class="my-3 text-center">
+                              <button type="button" class="btn btn-soft-success waves-effect waves-light">{{ 'COMMON.VIEW' | translate }}
+                                All Notifications <i class="ri-arrow-right-line align-middle"></i></button>
+                            </div>
+                          </div>
+                        </ngx-simplebar>
+                      </div>
+                    </ng-template>
+                  </li>
+                </ul>
+              </div>
+
+            </div>
+
+            <div class="tab-content" id="notificationItemsTabContent">
+              <div class="tab-content text-muted">
+                <div [ngbNavOutlet]="nav"></div>
+              </div>
+            </div>
+          </div>
+        </div> -->
+
+        <div class="dropdown ms-sm-3 header-item topbar-user" ngbDropdown>
+          <button type="button" class="btn shadow-none" id="page-header-user-dropdown" data-bs-toggle="dropdown"
+            aria-haspopup="true" aria-expanded="false" ngbDropdownToggle>
+            <span class="d-flex align-items-center">
+              <ng-container *ngIf="userData?.picture?.baseUrl">
+                <img alt="Avatar" class="rounded-circle header-profile-user"
+                  [src]="userData?.picture?.baseUrl + '/' + userData?.picture?.path" />
+              </ng-container>
+              <div class="avatar-sm bg-light rounded p-1" *ngIf="!userData?.picture?.baseUrl">
+                <div class="avatar-title bg-soft-success text-success rounded fs-13">
+                  {{userData?.firstName?.charAt(0) || 'N'}}
+                </div>
+              </div>
+              <span class="text-start ms-xl-2">
+                <span class="d-none d-xl-inline-block ms-1 fw-medium user-name-text">{{ 'HEADER.PROFILE.WELCOME' |
+                  translate }} {{ userData?.firstName }} {{ userData?.lastName }}</span>
+                <span class="d-none d-xl-block ms-1 fs-12 text-muted user-name-sub-text">{{ userData?.permission?.name
+                  }}</span>
+              </span>
+            </span>
+          </button>
+          <div class="dropdown-menu dropdown-menu-end" ngbDropdownMenu>
+            <h6 class="dropdown-header">{{ 'HEADER.PROFILE.WELCOME' | translate }} {{ userData?.firstName }}!</h6>
+            <a class="dropdown-item" routerLink="/system/team/details/{{ userData?.id }}"><i
+                class="mdi mdi-account-circle text-muted fs-16 align-middle me-1"></i> <span class="align-middle">{{
+                'HEADER.PROFILE.PROFILE' | translate }}</span></a>
+            <a class="dropdown-item" routerLink="/collaboration/chat/all"><i
+                class="mdi mdi-message-text-outline text-muted fs-16 align-middle me-1"></i> <span
+                class="align-middle">{{
+                'HEADER.PROFILE.MESSAGES' | translate }}</span></a>
+            <a class="dropdown-item" routerLink="/collaboration/tasks/all"><i
+                class="mdi mdi-calendar-check-outline text-muted fs-16 align-middle me-1"></i> <span
+                class="align-middle">{{
+                'HEADER.PROFILE.TASKBOARD' | translate }}</span></a>
+            <a class="dropdown-item" routerLink="/faq"><i
+                class="mdi mdi-lifebuoy text-muted fs-16 align-middle me-1"></i> <span class="align-middle">{{
+                'HEADER.PROFILE.HELP' | translate }}</span></a>
+            <div class="dropdown-divider"></div>
+            <a class="dropdown-item" routerLink="/engagement/wallet"><i
+                class="mdi mdi-wallet text-muted fs-16 align-middle me-1"></i> <span class="align-middle">{{
+                'HEADER.PROFILE.BALANCE' | translate }} : <b>$5971.67</b></span></a>
+            <a class="dropdown-item" routerLink="/system/team/{{ userData?.id }}"><span
+                class="badge bg-soft-success text-success mt-1 float-end">{{ 'HEADER.PROFILE.NEW' | translate
+                }}</span><i class="mdi mdi-cog-outline text-muted fs-16 align-middle me-1"></i> <span
+                class="align-middle">{{ 'HEADER.PROFILE.SETTINGS' | translate }}</span></a>
+            <a class="dropdown-item" routerLink="/auth/lockscreen"><i
+                class="mdi mdi-lock text-muted fs-16 align-middle me-1"></i> <span class="align-middle">{{
+                'HEADER.PROFILE.LOCK_SCREEN' | translate }}</span></a>
+            <a class="dropdown-item" href="javascript: void(0);" (click)="logout()"><i
+                class="mdi mdi-logout text-muted fs-16 align-middle me-1"></i> <span class="align-middle"
+                data-key="t-logout">{{
+                'HEADER.PROFILE.LOGOUT' | translate }}</span></a>
+          </div>
+        </div>
+
+
+      </div>
+    </div>
+  </div>
+</header>

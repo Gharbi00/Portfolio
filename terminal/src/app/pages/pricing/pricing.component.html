@@ -1,0 +1,512 @@
+<!-- Start Breadcrumbs -->
+<app-breadcrumbs title="{{ 'MENUITEMS.TITLE.PRICING' | translate }}" [breadcrumbItems]="breadCrumbItems"></app-breadcrumbs>
+<!-- End Breadcrumbs -->
+
+<div class="row justify-content-center mt-4">
+  <div class="col-lg-5">
+      <div class="text-center mb-4">
+          <h4 class="fw-semibold fs-22">{{ 'PAGES.PLANS_PRICING' | translate }}</h4>
+          <p class="text-muted mb-4 fs-15">{{ 'PAGES.SIMPLE_PRICING' | translate }}</p>
+
+          <div class="d-inline-flex">
+              <ul ngbNav #customNav="ngbNav" [activeId]="1"  class="nav nav-pills arrow-navtabs plan-nav rounded mb-3 p-1" id="pills-tab" role="tablist" role="tablist">
+                <li [ngbNavItem]="1" class="nav-item">
+                    <a ngbNavLink class="nav-link" data-bs-toggle="tab" role="tab">
+                        {{ 'PAGES.MONTHLY' | translate }}
+                    </a>
+                    <ng-template ngbNavContent>
+                        <div class="row">
+                            <div class="col-lg-4" *ngFor="let data of pricingPlan">
+                                <div class="card pricing-box" [ngClass]=" { 'ribbon-box right': data.ribbon === true}">
+                                    <div class="card-body p-4 m-2">
+                                      <div class="ribbon-two ribbon-two-danger" [ngClass]=" { 'd-none': data.ribbon !== true}"><span>Popular</span></div>
+                                        <div class="d-flex align-items-center">
+                                            <div class="flex-grow-1">
+                                                <h5 class="mb-1 fw-semibold">{{data.type}}</h5>
+                                                <p class="text-muted mb-0">{{data.purpose}}</p>
+                                            </div>
+                                            <div class="avatar-sm">
+                                                <div class="avatar-title bg-light rounded-circle text-primary">
+                                                    <i class="{{data.planIcon}} fs-20"></i>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="pt-4">
+                                            <h2><sup><small>€</small></sup>{{data.rate}} <span class="fs-13 text-muted">/Month</span></h2>
+                                        </div>
+                                        <hr class="my-4 text-muted">
+                                        <div>
+                                            <ul class="list-unstyled text-muted vstack gap-3">
+                                                <li>
+                                                    <div class="d-flex">
+                                                        <div class="flex-shrink-0 text-success me-1">
+                                                            <i class="ri-checkbox-circle-fill fs-15 align-middle"></i>
+                                                        </div>
+                                                        <div class="flex-grow-1">{{ 'PAGES.BASIC_DASHBOARD' | translate }}
+                                                        </div>
+                                                    </div>
+                                                </li>
+                                                <li>
+                                                    <div class="d-flex">
+                                                        <div class="flex-shrink-0 text-success me-1">
+                                                            <i class="ri-checkbox-circle-fill fs-15 align-middle"></i>
+                                                        </div>
+                                                        <div class="flex-grow-1">{{ 'PAGES.INVENTORY' | translate }}
+                                                        </div>
+                                                    </div>
+                                                </li>
+                                                <li>
+                                                    <div class="d-flex">
+                                                        <div class="flex-shrink-0 text-success me-1">
+                                                            <i class="ri-checkbox-circle-fill fs-15 align-middle"></i>
+                                                        </div>
+                                                        <div class="flex-grow-1">{{ 'PAGES.STOCK' | translate }}
+                                                        </div>
+                                                    </div>
+                                                </li>
+                                                <li>
+                                                    <div class="d-flex">
+                                                        <div class="flex-shrink-0 text-success me-1">
+                                                            <i class="ri-checkbox-circle-fill fs-15 align-middle"></i>
+                                                        </div>
+                                                        <div class="flex-grow-1">{{ 'PAGES.MAINTENANCE' | translate }}
+                                                        </div>
+                                                    </div>
+                                                </li>
+                                                <li>
+                                                    <div class="d-flex">
+                                                        <div class="flex-shrink-0 text-success me-1">
+                                                            <i class="ri-checkbox-circle-fill fs-15 align-middle"></i>
+                                                        </div>
+                                                        <div class="flex-grow-1">
+                                                            CRM
+                                                        </div>
+                                                    </div>
+                                                </li>
+                                                <li>
+                                                    <div class="d-flex">
+                                                        <div class="flex-shrink-0 text-success me-1">
+                                                            <i class="ri-checkbox-circle-fill fs-15 align-middle"></i>
+                                                        </div>
+                                                        <div class="flex-grow-1">{{ 'PAGES.PIPELINE' | translate }}
+                                                        </div>
+                                                    </div>
+                                                </li>
+                                                <li>
+                                                    <div class="d-flex">
+                                                        <div class="flex-shrink-0 text-success me-1">
+                                                            <i class="ri-checkbox-circle-fill fs-15 align-middle"></i>
+                                                        </div>
+                                                        <div class="flex-grow-1">{{ 'PAGES.TICKETS' | translate }}
+                                                        </div>
+                                                    </div>
+                                                </li>
+                                                <li>
+                                                    <div class="d-flex">
+                                                        <div class="flex-shrink-0 text-success me-1">
+                                                            <i class="ri-checkbox-circle-fill fs-15 align-middle"></i>
+                                                        </div>
+                                                        <div class="flex-grow-1">{{ 'PAGES.SALES' | translate }}
+                                                        </div>
+                                                    </div>
+                                                </li>
+                                                <li>
+                                                    <div class="d-flex">
+                                                        <div class="flex-shrink-0 text-success me-1">
+                                                            <i class="ri-checkbox-circle-fill fs-15 align-middle"></i>
+                                                        </div>
+                                                        <div class="flex-grow-1">{{ 'PAGES.INVOICING' | translate }}
+                                                        </div>
+                                                    </div>
+                                                </li>
+                                                <li>
+                                                    <div class="d-flex">
+                                                        <div class="flex-shrink-0 text-success me-1">
+                                                            <i class="ri-checkbox-circle-fill fs-15 align-middle"></i>
+                                                        </div>
+                                                        <div class="flex-grow-1">{{ 'PAGES.RENTAL' | translate }}
+                                                        </div>
+                                                    </div>
+                                                </li>
+                                                <li>
+                                                    <div class="d-flex">
+                                                        <div class="flex-shrink-0 text-success me-1">
+                                                            <i class="ri-checkbox-circle-fill fs-15 align-middle"></i>
+                                                        </div>
+                                                        <div class="flex-grow-1">{{ 'PAGES.PURCHASE' | translate }}
+                                                        </div>
+                                                    </div>
+                                                </li>
+                                                <li>
+                                                    <div class="d-flex">
+                                                        <div class="flex-shrink-0 text-{{data.pmSymbol}} me-1">
+                                                            <i class="ri-{{data.pmClassSymbol}}-circle-fill fs-15 align-middle"></i>
+                                                        </div>
+                                                        <div class="flex-grow-1">{{ 'PAGES.PROJECT_MANAGEMENT' | translate }}
+                                                        </div>
+                                                    </div>
+                                                </li>
+                                                <li>
+                                                    <div class="d-flex">
+                                                        <div class="flex-shrink-0 text-{{data.pmSymbol}} me-1">
+                                                            <i class="ri-{{data.pmClassSymbol}}-circle-fill fs-15 align-middle"></i>
+                                                        </div>
+                                                        <div class="flex-grow-1">{{ 'PAGES.PLANNING' | translate }}
+                                                        </div>
+                                                    </div>
+                                                </li>
+                                                <li>
+                                                    <div class="d-flex">
+                                                        <div class="flex-shrink-0 text-{{data.pmSymbol}} me-1">
+                                                            <i class="ri-{{data.pmClassSymbol}}-circle-fill fs-15 align-middle"></i>
+                                                        </div>
+                                                        <div class="flex-grow-1">{{ 'PAGES.CALENDAR' | translate }}
+                                                        </div>
+                                                    </div>
+                                                </li>
+                                                <li>
+                                                    <div class="d-flex">
+                                                        <div class="flex-shrink-0 text-{{data.pmSymbol}} me-1">
+                                                            <i class="ri-{{data.pmClassSymbol}}-circle-fill fs-15 align-middle"></i>
+                                                        </div>
+                                                        <div class="flex-grow-1">{{ 'PAGES.MESSAGING' | translate }}
+                                                        </div>
+                                                    </div>
+                                                </li>
+                                                <li>
+                                                    <div class="d-flex">
+                                                        <div class="flex-shrink-0 text-{{data.pmSymbol}} me-1">
+                                                            <i class="ri-{{data.pmClassSymbol}}-circle-fill fs-15 align-middle"></i>
+                                                        </div>
+                                                        <div class="flex-grow-1">{{ 'PAGES.DOCUMENTS' | translate }}
+                                                        </div>
+                                                    </div>
+                                                </li>
+                                                <li>
+                                                    <div class="d-flex">
+                                                        <div class="flex-shrink-0 text-{{data.hrClass}} me-1">
+                                                            <i class="ri-{{data.hrClassSymbol}}-circle-fill fs-15 align-middle"></i>
+                                                        </div>
+                                                        <div class="flex-grow-1">{{ 'PAGES.EMPLOYEES' | translate }}
+                                                        </div>
+                                                    </div>
+                                                </li>
+                                                <li>
+                                                    <div class="d-flex">
+                                                        <div class="flex-shrink-0 text-{{data.hrClass}} me-1">
+                                                            <i class="ri-{{data.hrClassSymbol}}-circle-fill fs-15 align-middle"></i>
+                                                        </div>
+                                                        <div class="flex-grow-1">{{ 'PAGES.PAYROLL' | translate }}
+                                                        </div>
+                                                    </div>
+                                                </li>
+                                                <li>
+                                                    <div class="d-flex">
+                                                        <div class="flex-shrink-0 text-{{data.hrClass}} me-1">
+                                                            <i class="ri-{{data.hrClassSymbol}}-circle-fill fs-15 align-middle"></i>
+                                                        </div>
+                                                        <div class="flex-grow-1">{{ 'PAGES.RECRUITMENT' | translate }}
+                                                        </div>
+                                                    </div>
+                                                </li>
+                                                <li>
+                                                    <div class="d-flex">
+                                                        <div class="flex-shrink-0 text-{{data.hrClass}} me-1">
+                                                            <i class="ri-{{data.hrClassSymbol}}-circle-fill fs-15 align-middle"></i>
+                                                        </div>
+                                                        <div class="flex-grow-1">{{ 'PAGES.FLEET' | translate }}
+                                                        </div>
+                                                    </div>
+                                                </li>
+                                                <li>
+                                                    <div class="d-flex">
+                                                        <div class="flex-shrink-0 text-{{data.mobileClass}} me-1">
+                                                            <i class="ri-{{data.mobileClassSymbol}}-circle-fill fs-15 align-middle"></i>
+                                                        </div>
+                                                        <div class="flex-grow-1">{{ 'PAGES.INTEGRATION' | translate }}
+                                                        </div>
+                                                    </div>
+                                                </li>
+                                                <li>
+                                                    <div class="d-flex">
+                                                        <div class="flex-shrink-0 text-{{data.mobileClass}} me-1">
+                                                            <i class="ri-{{data.mobileClassSymbol}}-circle-fill fs-15 align-middle"></i>
+                                                        </div>
+                                                        <div class="flex-grow-1">{{ 'PAGES.MOBILE' | translate }}
+                                                        </div>
+                                                    </div>
+                                                </li>
+                                                <li>
+                                                    <div class="d-flex">
+                                                        <div class="flex-shrink-0 text-{{data.mobileClass}} me-1">
+                                                            <i class="ri-{{data.mobileClassSymbol}}-circle-fill fs-15 align-middle"></i>
+                                                        </div>
+                                                        <div class="flex-grow-1">{{ 'PAGES.MOBILE' | translate }}
+                                                        </div>
+                                                    </div>
+                                                </li>
+                                            </ul>
+                                            <div class="mt-4">
+                                                <a href="javascript:void(0);" class="btn btn-{{data.planButtonClassname}} w-100 waves-effect waves-light">{{'MODULES.COLLABORATION.MAIN.UPGRADE_NOW' | translate }}</a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div><!--end col-->
+                        </div><!--end row-->
+                    </ng-template>
+                </li>
+                <li [ngbNavItem]="2" class="nav-item">
+                    <a ngbNavLink class="nav-link" data-bs-toggle="tab" role="tab">{{ 'PAGES.ANNUALLY' | translate }} <span class="badge bg-success">25% Off</span>
+                    </a>
+                    <ng-template ngbNavContent>
+                        <div class="row">
+                            <div class="col-lg-4" *ngFor="let data of pricingPlan">
+                                <div class="card pricing-box" [ngClass]=" { 'ribbon-box right': data.ribbon === true}">
+                                    <div class="card-body p-4 m-2">
+                                        <div class="ribbon-two ribbon-two-danger" [ngClass]=" { 'd-none': data.ribbon !== true}"><span>Popular</span></div>
+                                        <div class="d-flex align-items-center">
+                                            <div class="flex-grow-1">
+                                                <h5 class="mb-1 fw-semibold">{{data.type}}</h5>
+                                                <p class="text-muted mb-0">{{data.purpose}}</p>
+                                            </div>
+                                            <div class="avatar-sm">
+                                                <div class="avatar-title bg-light rounded-circle text-primary">
+                                                    <i class="{{data.planIcon}} fs-20"></i>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="pt-4">
+                                            <h2><sup><small>€</small></sup>{{data.rate}} <span class="fs-13 text-muted">/Month</span></h2>
+                                        </div>
+                                        <hr class="my-4 text-muted">
+                                        <div>
+                                            <ul class="list-unstyled text-muted vstack gap-3">
+                                                <li>
+                                                    <div class="d-flex">
+                                                        <div class="flex-shrink-0 text-success me-1">
+                                                            <i class="ri-checkbox-circle-fill fs-15 align-middle"></i>
+                                                        </div>
+                                                        <div class="flex-grow-1">{{ 'PAGES.BASIC_DASHBOARD' | translate }}
+                                                        </div>
+                                                    </div>
+                                                </li>
+                                                <li>
+                                                    <div class="d-flex">
+                                                        <div class="flex-shrink-0 text-success me-1">
+                                                            <i class="ri-checkbox-circle-fill fs-15 align-middle"></i>
+                                                        </div>
+                                                        <div class="flex-grow-1">{{ 'PAGES.INVENTORY' | translate }}
+                                                        </div>
+                                                    </div>
+                                                </li>
+                                                <li>
+                                                    <div class="d-flex">
+                                                        <div class="flex-shrink-0 text-success me-1">
+                                                            <i class="ri-checkbox-circle-fill fs-15 align-middle"></i>
+                                                        </div>
+                                                        <div class="flex-grow-1">{{ 'PAGES.STOCK' | translate }}
+                                                        </div>
+                                                    </div>
+                                                </li>
+                                                <li>
+                                                    <div class="d-flex">
+                                                        <div class="flex-shrink-0 text-success me-1">
+                                                            <i class="ri-checkbox-circle-fill fs-15 align-middle"></i>
+                                                        </div>
+                                                        <div class="flex-grow-1">{{ 'PAGES.MAINTENANCE' | translate }}
+                                                        </div>
+                                                    </div>
+                                                </li>
+                                                <li>
+                                                    <div class="d-flex">
+                                                        <div class="flex-shrink-0 text-success me-1">
+                                                            <i class="ri-checkbox-circle-fill fs-15 align-middle"></i>
+                                                        </div>
+                                                        <div class="flex-grow-1">
+                                                            CRM
+                                                        </div>
+                                                    </div>
+                                                </li>
+                                                <li>
+                                                    <div class="d-flex">
+                                                        <div class="flex-shrink-0 text-success me-1">
+                                                            <i class="ri-checkbox-circle-fill fs-15 align-middle"></i>
+                                                        </div>
+                                                        <div class="flex-grow-1">{{ 'PAGES.PIPELINE' | translate }}
+                                                        </div>
+                                                    </div>
+                                                </li>
+                                                <li>
+                                                    <div class="d-flex">
+                                                        <div class="flex-shrink-0 text-success me-1">
+                                                            <i class="ri-checkbox-circle-fill fs-15 align-middle"></i>
+                                                        </div>
+                                                        <div class="flex-grow-1">{{ 'PAGES.TICKETS' | translate }}
+                                                        </div>
+                                                    </div>
+                                                </li>
+                                                <li>
+                                                    <div class="d-flex">
+                                                        <div class="flex-shrink-0 text-success me-1">
+                                                            <i class="ri-checkbox-circle-fill fs-15 align-middle"></i>
+                                                        </div>
+                                                        <div class="flex-grow-1">{{ 'PAGES.SALES' | translate }}
+                                                        </div>
+                                                    </div>
+                                                </li>
+                                                <li>
+                                                    <div class="d-flex">
+                                                        <div class="flex-shrink-0 text-success me-1">
+                                                            <i class="ri-checkbox-circle-fill fs-15 align-middle"></i>
+                                                        </div>
+                                                        <div class="flex-grow-1">{{ 'PAGES.INVOICING' | translate }}
+                                                        </div>
+                                                    </div>
+                                                </li>
+                                                <li>
+                                                    <div class="d-flex">
+                                                        <div class="flex-shrink-0 text-success me-1">
+                                                            <i class="ri-checkbox-circle-fill fs-15 align-middle"></i>
+                                                        </div>
+                                                        <div class="flex-grow-1">{{ 'PAGES.RENTAL' | translate }}
+                                                        </div>
+                                                    </div>
+                                                </li>
+                                                <li>
+                                                    <div class="d-flex">
+                                                        <div class="flex-shrink-0 text-success me-1">
+                                                            <i class="ri-checkbox-circle-fill fs-15 align-middle"></i>
+                                                        </div>
+                                                        <div class="flex-grow-1">{{ 'PAGES.PURCHASE' | translate }}
+                                                        </div>
+                                                    </div>
+                                                </li>
+                                                <li>
+                                                    <div class="d-flex">
+                                                        <div class="flex-shrink-0 text-{{data.pmSymbol}} me-1">
+                                                            <i class="ri-{{data.pmClassSymbol}}-circle-fill fs-15 align-middle"></i>
+                                                        </div>
+                                                        <div class="flex-grow-1">{{ 'PAGES.PROJECT_MANAGEMENT' | translate }}
+                                                        </div>
+                                                    </div>
+                                                </li>
+                                                <li>
+                                                    <div class="d-flex">
+                                                        <div class="flex-shrink-0 text-{{data.pmSymbol}} me-1">
+                                                            <i class="ri-{{data.pmClassSymbol}}-circle-fill fs-15 align-middle"></i>
+                                                        </div>
+                                                        <div class="flex-grow-1">{{ 'PAGES.PLANNING' | translate }}
+                                                        </div>
+                                                    </div>
+                                                </li>
+                                                <li>
+                                                    <div class="d-flex">
+                                                        <div class="flex-shrink-0 text-{{data.pmSymbol}} me-1">
+                                                            <i class="ri-{{data.pmClassSymbol}}-circle-fill fs-15 align-middle"></i>
+                                                        </div>
+                                                        <div class="flex-grow-1">{{ 'PAGES.CALENDAR' | translate }}
+                                                        </div>
+                                                    </div>
+                                                </li>
+                                                <li>
+                                                    <div class="d-flex">
+                                                        <div class="flex-shrink-0 text-{{data.pmSymbol}} me-1">
+                                                            <i class="ri-{{data.pmClassSymbol}}-circle-fill fs-15 align-middle"></i>
+                                                        </div>
+                                                        <div class="flex-grow-1">{{ 'PAGES.MESSAGING' | translate }}
+                                                        </div>
+                                                    </div>
+                                                </li>
+                                                <li>
+                                                    <div class="d-flex">
+                                                        <div class="flex-shrink-0 text-{{data.pmSymbol}} me-1">
+                                                            <i class="ri-{{data.pmClassSymbol}}-circle-fill fs-15 align-middle"></i>
+                                                        </div>
+                                                        <div class="flex-grow-1">{{ 'PAGES.DOCUMENTS' | translate }}
+                                                        </div>
+                                                    </div>
+                                                </li>
+                                                <li>
+                                                    <div class="d-flex">
+                                                        <div class="flex-shrink-0 text-{{data.hrClass}} me-1">
+                                                            <i class="ri-{{data.hrClassSymbol}}-circle-fill fs-15 align-middle"></i>
+                                                        </div>
+                                                        <div class="flex-grow-1">{{ 'PAGES.EMPLOYEES' | translate }}
+                                                        </div>
+                                                    </div>
+                                                </li>
+                                                <li>
+                                                    <div class="d-flex">
+                                                        <div class="flex-shrink-0 text-{{data.hrClass}} me-1">
+                                                            <i class="ri-{{data.hrClassSymbol}}-circle-fill fs-15 align-middle"></i>
+                                                        </div>
+                                                        <div class="flex-grow-1">{{ 'PAGES.PAYROLL' | translate }}
+                                                        </div>
+                                                    </div>
+                                                </li>
+                                                <li>
+                                                    <div class="d-flex">
+                                                        <div class="flex-shrink-0 text-{{data.hrClass}} me-1">
+                                                            <i class="ri-{{data.hrClassSymbol}}-circle-fill fs-15 align-middle"></i>
+                                                        </div>
+                                                        <div class="flex-grow-1">{{ 'PAGES.RECRUITMENT' | translate }}
+                                                        </div>
+                                                    </div>
+                                                </li>
+                                                <li>
+                                                    <div class="d-flex">
+                                                        <div class="flex-shrink-0 text-{{data.hrClass}} me-1">
+                                                            <i class="ri-{{data.hrClassSymbol}}-circle-fill fs-15 align-middle"></i>
+                                                        </div>
+                                                        <div class="flex-grow-1">{{ 'PAGES.FLEET' | translate }}
+                                                        </div>
+                                                    </div>
+                                                </li>
+                                                <li>
+                                                    <div class="d-flex">
+                                                        <div class="flex-shrink-0 text-{{data.mobileClass}} me-1">
+                                                            <i class="ri-{{data.mobileClassSymbol}}-circle-fill fs-15 align-middle"></i>
+                                                        </div>
+                                                        <div class="flex-grow-1">{{ 'PAGES.INTEGRATION' | translate }}
+                                                        </div>
+                                                    </div>
+                                                </li>
+                                                <li>
+                                                    <div class="d-flex">
+                                                        <div class="flex-shrink-0 text-{{data.mobileClass}} me-1">
+                                                            <i class="ri-{{data.mobileClassSymbol}}-circle-fill fs-15 align-middle"></i>
+                                                        </div>
+                                                        <div class="flex-grow-1">{{ 'PAGES.MOBILE' | translate }}
+                                                        </div>
+                                                    </div>
+                                                </li>
+                                                <li>
+                                                    <div class="d-flex">
+                                                        <div class="flex-shrink-0 text-{{data.mobileClass}} me-1">
+                                                            <i class="ri-{{data.mobileClassSymbol}}-circle-fill fs-15 align-middle"></i>
+                                                        </div>
+                                                        <div class="flex-grow-1">{{ 'PAGES.MOBILE' | translate }}
+                                                        </div>
+                                                    </div>
+                                                </li>
+                                            </ul>
+                                            <div class="mt-4">
+                                                <a href="javascript:void(0);" class="btn btn-{{data.planButtonClassname}} w-100 waves-effect waves-light">{{'MODULES.COLLABORATION.MAIN.UPGRADE_NOW' | translate }}</a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div><!--end col-->
+                        </div><!--end row-->
+                    </ng-template>
+                </li>
+              </ul>
+          </div>
+      </div>
+  </div><!--end col-->
+</div><!--end row-->
+
+<div class="row">
+  <div [ngbNavOutlet]="customNav"></div>
+</div><!--end row-->

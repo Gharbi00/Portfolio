@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <base href="/" />
+  <meta charset="utf-8" />
+  <title>Sifca Widget</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <style>
+    section {
+      display: flex;
+      height: 500px;
+      align-items: center;
+      flex-direction: row;
+      place-content: center;
+      box-sizing: border-box;
+    }
+
+    .container {
+      width: 80%;
+      height: 50%;
+      display: flex;
+      padding: 16px;
+      background: teal;
+      align-items: start;
+      flex-direction: row;
+      place-content: center;
+      box-sizing: border-box;
+    }
+
+    button.share {
+      border: none;
+      cursor: pointer;
+      padding: 3.2px 16px;
+      border-radius: 4.8px;
+      box-shadow: 0 3px 1px -2px rgba(0, 0, 0, 0.2), 0 2px 2px 0 rgba(0, 0, 0, 0.14),
+        0 1px 5px 0 rgba(0, 0, 0, 0.12);
+    }
+
+    button.share:active {
+      box-shadow: 0px 5px 5px -3px rgba(0, 0, 0, 0.2), 0px 8px 10px 1px rgba(0, 0, 0, 0.14),
+        0px 3px 14px 2px rgba(0, 0, 0, 0.12);
+    }
+  </style>
+  <script src="https://apis.google.com/js/api:client.js"></script>
+  <script src="https://www.youtube.com/iframe_api"></script>
+  <script async defer crossorigin="anonymous" src="https://connect.facebook.net/en_US/sdk.js"></script>
+</head>
+
+<body>
+  <div id="inner"></div>
+  <section>
+    <div class="container">
+      <button class="test-2 share _660c173576b69b0012af96f9" data-url="google.com">Facebook share post</button>
+    </div>
+  </section>
+  <section>
+    <div class="container">
+      <button class="test-2 share _6523d20f844a980904cca476">Facebook share page</button>
+    </div>
+  </section>
+  <section>
+    <div class="container">
+      <button class="test-2 share _65a980f9bf0d72588da3d668">PURCHASE PRODUCTS ONLINE</button>
+    </div>
+  </section>
+  <section>
+    <div class="container">
+      <button class="test-2 share _65a9811fbf0d72588da3d66a" data-url="google.com">Facebook checkin</button>
+    </div>
+  </section>
+  <section>
+    <div class="container">
+      <button class="test-2 share _5fe36fdd94e2d9637a352c2b">Share an article</button>
+    </div>
+  </section>
+  <section>
+    <div class="container">
+      <button class="test-2 share _60aca1227e6c7d251a85247a">Rate product</button>
+    </div>
+  </section>
+  <section>
+    <div class="container">
+      <button class="test-2 share _5fe3703e94e2d9637a352c33">Watch youtube video</button>
+    </div>
+  </section>
+  <script>
+    // 660297f9e94b1449abf94b3b
+    // 6553989ea06c6f0a87799a1a
+    // 66d5cd88c139853504b5037a
+    // 6641d8c6c2fff17ac4b0e551
+    // 66faba00e39990424d89c27b
+    window.widgetInit = { appId: '66faba00e39990424d89c27b', embed: false, locale: 'fr-fr', theme: 'dark' };
+    window.fbAsyncInit = function () {
+      FB.init({
+        appId: '278013208459559',
+        autoLogAppEvents: true,
+        xfbml: true,
+        version: 'v12.0'
+      });
+    }
+  </script>
+</body>
+
+</html>

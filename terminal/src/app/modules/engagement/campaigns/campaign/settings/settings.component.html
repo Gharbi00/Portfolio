@@ -1,0 +1,169 @@
+<div class="row">
+  <div class="card">
+    <div class="card-body">
+      <form [formGroup]="questForm">
+        <div class="row g-3">
+          <div class="col-lg-12">
+            <div class="mb-3 row">
+              <div class="col-xl-3">
+                <label class="form-label"
+                  for="project-thumbnail-img">{{'MENUITEMS.CUSTOMERENGAGEMENT.LIST.CAMPAIGN_ICON' | translate }}</label>
+              </div>
+              <div class="mt-2 col-lg-8 df-flex">
+                <div class="img-wrap w-30 h-30 me-3 mb-2">
+                  <ng-container *ngIf="pictures?.value[0]?.baseUrl">
+                    <span class="delete-icon w-6 h-6 flex items-center justify-center cursor-pointer"
+                      (click)="quest?.status !=='ONGOING' && quest?.status !== 'FINISHED' ? removePicture() : null">
+                      <i class="ri-delete-bin-fill ft text-danger"></i>
+                    </span>
+                    <img (click)="quest?.status !=='ONGOING' && quest?.status !== 'FINISHED' ? upload() : null"
+                      class="w-30 h-30 rounded object-cover"
+                      [src]="pictures?.value[0]?.baseUrl + '/' + pictures?.value[0]?.path">
+                  </ng-container>
+                  <div *ngIf="!pictures?.value[0]?.baseUrl"
+                    (click)="quest?.status !=='ONGOING' && quest?.status !== 'FINISHED' ? upload() : null"
+                    class="w-30 h-30 mb-3 col-4 border rounded overflow-hidden cursor-pointer d-flex align-items-center justify-content-center">
+                    <span class="fs-5 fw-bold">{{'COMMON.UPLOAD' | translate }}</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="mb-3 row">
+              <label for="email_id-field"
+                class="form-label col-xl-3">{{'MENUITEMS.CUSTOMERENGAGEMENT.LIST.CAMPAIGN_NAME' | translate }}*</label>
+              <div class="col-lg-8">
+                <input [readonly]="quest?.status ==='ONGOING' || quest?.status === 'FINISHED'" type="text"
+                  id="email_id-field" class="form-control" required
+                  placeholder="{{'PLACEHOLDER.ENTER_CAMPAIGN_NAME' | translate }}" formControlName="title"
+                  [ngClass]="{ 'is-invalid': questForm.get('title')?.touched && questForm.get('title').hasError('required') }" />
+                <div class="invalid-feedback"
+                  *ngIf="questForm.get('title')?.touched && questForm.get('title').hasError('required')">
+                  {{'COMMON.REQUIRED' | translate }}
+                </div>
+              </div>
+            </div>
+            <div class="mb-3 row">
+              <label for="email_id-field"
+                class="form-label col-xl-3">{{'MENUITEMS.CUSTOMERENGAGEMENT.LIST.CAMPAIGN_DESCRIPTION' | translate
+                }}*</label>
+              <div class="col-lg-8 mb-sm-6 mb-7">
+                <quill-editor *ngIf="quest?.status !== 'ONGOING' && quest?.status !== 'FINISHED'"
+                  class="custom-quill-editor" formControlName="description"></quill-editor>
+                <quill-view-html *ngIf="quest?.status ==='ONGOING' || quest?.status === 'FINISHED'"
+                  [content]="quest?.description" theme="snow"></quill-view-html>
+              </div>
+            </div>
+            <div *ngIf="quest" class="mb-3 row">
+              <label for="email_id-field" class="form-label col-xl-3 required">{{'COMMON.STATUS' | translate }}*</label>
+              <div class="col-lg-8">
+                <ng-select (change)="getStatusDisplay($event)" required [selectableGroup]="true" [closeOnSelect]="true"
+                  formControlName="status" [multiple]="false" [items]="currentStatus" [clearable]="false"
+                  placeholder="{{'PLACEHOLDER.SELECT_STATUS' | translate }}">
+                  <ng-template ng-label-tmp let-item="item" let-clear="clear">
+                    {{
+                    (item === 'DRAFT' ? 'COMMON.STATE.DRAFT':
+                    item === 'ONGOING' && posId !== campaign?.advertiser?.pos?.id ? 'COMMON.STATE.ONGOING' :
+                    item === 'ON_HOLD' ? 'COMMON.STATE.ON_HOLD' :
+                    item === 'IN_REVIEW' ? 'COMMON.STATE.IN_REVIEW' :
+                    item === 'FINISHED' ? 'COMMON.STATE.COMPLETED' : '') | translate
+                    }}
+
+                  </ng-template>
+                  <ng-template ng-option-tmp let-item$="item$" let-item="item">
+                    {{
+                    (item === 'DRAFT' ? 'COMMON.STATE.DRAFT':
+                    item === 'ONGOING' && posId !== campaign?.advertiser?.pos?.id ? 'COMMON.STATE.ONGOING' :
+                    item === 'ON_HOLD' ? 'COMMON.STATE.ON_HOLD' :
+                    item === 'IN_REVIEW' ? 'COMMON.STATE.IN_REVIEW' :
+                    item === 'FINISHED' ? 'COMMON.STATE.COMPLETED' : '') | translate
+                    }}
+                  </ng-template>
+                </ng-select>
+                <div class="invalid-feedback"
+                  *ngIf="questForm.get('status')?.touched && questForm.get('status').hasError('required')">
+                  {{'COMMON.REQUIRED' | translate }}
+                </div>
+              </div>
+            </div>
+            <div class="mb-3 row">
+              <label for="email_id-field" class="form-label col-xl-3">{{'MENUITEMS.CUSTOMERENGAGEMENT.LIST.CATEGORY' |
+                translate }}*</label>
+              <div class="col-lg-8">
+                <ng-select [readonly]="quest?.status ==='ONGOING' || quest?.status === 'FINISHED'" required
+                  [selectableGroup]="true" [closeOnSelect]="true" formControlName="category" [multiple]="false"
+                  [items]="categories" [clearable]="false" placeholder="{{'PLACEHOLDER.SELECT_CATEGORY' | translate }}">
+                  <ng-template ng-label-tmp let-item="item" let-clear="clear">
+
+                    {{
+                    (item === 'INDUSTRY' ? 'SHARED.INDUSTRY' :
+                    item === 'FAMILY' ? 'SHARED.FAMILY' :
+                    item === 'FITNESS' ? 'SHARED.FITNESS' :
+                    item === 'GASTRONOMY' ? 'SHARED.GASTRONOMY' :
+                    '') | translate
+                    }}
+                  </ng-template>
+                  <ng-template ng-option-tmp let-item$="item$" let-item="item">
+                    {{
+                    (item === 'INDUSTRY' ? 'SHARED.INDUSTRY' :
+                    item === 'FAMILY' ? 'SHARED.FAMILY' :
+                    item === 'FITNESS' ? 'SHARED.FITNESS' :
+                    item === 'GASTRONOMY' ? 'SHARED.GASTRONOMY' :
+                    '') | translate
+                    }}
+                  </ng-template>
+                </ng-select>
+                <div class="invalid-feedback"
+                  *ngIf="questForm.get('category')?.touched && questForm.get('category').hasError('required')">
+                  {{'COMMON.REQUIRED' | translate }}
+                </div>
+              </div>
+            </div>
+            <div class="mb-3 row">
+              <label for="dueDate" class="col-xl-3 form-label">{{'COMMON.START_DATE' | translate }}</label>
+              <div class="col-lg-8">
+                <div class="input-group">
+                  <input [readonly]="quest?.status ==='ONGOING' || quest?.status === 'FINISHED'"
+                    formControlName="startDate" [inline]="false" class="form-control bg-light border-light" type="text"
+                    mwlFlatpickr [altInput]="true" [convertModelValue]="true"
+                    placeholder="{{'PLACEHOLDER.START_DATE' | translate }}" id="isDate">
+                  <div class="input-group-append">
+                    <span (click)="resetDate('startDate')" class="input-group-text"><i
+                        class="ri-delete-bin-line"></i></span>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="mb-3 row">
+              <label for="dueDate" class="col-xl-3 form-label">{{ 'MODULES.CRM.PIPELINE.DUE_DATE' | translate }}</label>
+              <div class="col-lg-8">
+                <div class="input-group">
+                  <input [readonly]="quest?.status ==='ONGOING' || quest?.status === 'FINISHED'"
+                    formControlName="dueDate" [inline]="false" class="form-control bg-light border-light" type="text"
+                    mwlFlatpickr [altInput]="true" [convertModelValue]="true"
+                    placeholder="{{'PLACEHOLDER.DUE_DATE' | translate }}" id="isDate">
+                  <div class="input-group-append">
+                    <span (click)="resetDate('dueDate')" class="input-group-text"><i
+                        class="ri-delete-bin-line"></i></span>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="form-check col-lg-4 mb-2">
+              <input [readonly]="quest?.status ==='ONGOING' || quest?.status === 'FINISHED'"
+                [formControlName]="'sponsored'" class="form-check-input" type="checkbox" id="Required">
+              <label class="form-check-label" for="Required">{{'MENUITEMS.CUSTOMERENGAGEMENT.LIST.SPONSORED' | translate
+                }}
+              </label>
+            </div>
+          </div>
+        </div>
+        <div *ngIf="quest?.status !=='ONGOING' && quest?.status !== 'FINISHED'"
+          class="hstack gap-2 justify-content-end">
+          <button type="button" class="btn btn-light" data-bs-dismiss="modal">{{'COMMON.CLOSE' | translate }}</button>
+          <button type="button" (click)="save()" [disabled]="isButtonDisabled || questForm.invalid"
+            class="btn btn-success" id="add-btn">{{'COMMON.SAVE' | translate }}</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>

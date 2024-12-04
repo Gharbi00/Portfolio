@@ -1,0 +1,291 @@
+<ng-container *ngIf="!(navigating$ | async)">
+  <div class="row">
+    <div
+      *ngIf="(website$ | async)?.multilanguage?.active === true && (website$ | async)?.multilanguage?.languages?.length && !fullPath.includes('new-blog')"
+      class="card" id="ticketsList">
+      <div class="card-header border-0">
+        <form [formGroup]="blogForm">
+          <div formGroupName="translation" class="row">
+            <h5 class="card-title col-lg-4 flex-grow-1">{{'COMMON.LANGUAGE' | translate }}</h5>
+            <ng-select bindLabel="name" formControlName="language" (change)="onChangeLanguage($event)" class="col-lg-8"
+              [closeOnSelect]="true" [multiple]="false" [items]="languages" placeholder="{{'PLACEHOLDER.SELECT_LANGUAGE' | translate }}"
+              [searchable]="false" [clearable]="false">
+              <ng-template ng-label-tmp let-item="item" let-clear="clear">
+                <div class="d-flex gap-1">
+                  <span *ngIf="item?.name !== 'Default'">{{item?.iconFlag}}</span>
+                  <span>{{item?.name}}</span>
+                </div>
+              </ng-template>
+              <ng-template ng-option-tmp let-item$="item$" let-item="item">
+                <div class="d-flex gap-1">
+                  <span *ngIf="item?.name !== 'Default'">{{item?.iconFlag}}</span>
+                  <span>{{item?.name}}</span>
+                </div>
+              </ng-template>
+            </ng-select>
+          </div>
+        </form>
+      </div>
+    </div>
+    <div class="col-lg-12">
+      <div class="card">
+        <div class="card-header border-0">
+          <h4 class="mb-0 flex-grow-1">{{'MODULES.WEBSITE.BLOG' | translate }}</h4>
+        </div>
+        <ng-container *ngIf="translation?.value?.language?.name !== 'Default'">
+          <form [formGroup]="blogForm">
+            <div formGroupName="translation" class="col-lg-12">
+              <div class="card">
+                <div class="card-body">
+                  <h4 class="mb-4 mt-4 flex-grow-1">{{'MODULES.WEBSITE.TRANSLATION_SECTIONS' | translate }}</h4>
+                  <ng-container formGroupName="content">
+                    <div class="col-lg-6 mb-3">
+                      <div class="form-label">
+                        <label for="firstnamefloatingInput">{{'COMMON.TITLE' | translate }}</label>
+                        <input required formControlName="title" type="text" class="form-control"
+                          id="firstnamefloatingInput" placeholder="{{'PLACEHOLDER.ENTER_TITLE' | translate }}" />
+                      </div>
+                    </div>
+                    <ng-container formArrayName="sectionData">
+                      <div
+                        *ngFor="let section of translation.get(['content', 'sectionData'])['controls']; let j=index; let last = last"
+                        [formGroupName]="j">
+                        <div class="row g-3">
+                          <div class="col-lg-6 mb-3">
+                            <div class="form-label">
+                              <label for="firstnamefloatingInput">{{'MODULES.WEBSITE.SECTION_TITLE' | translate }}</label>
+                              <input formControlName="sectionTitle" type="text" class="form-control"
+                                id="firstnamefloatingInput" placeholder="{{'PLACEHOLDER.ENTER_SECTION_TITLE' | translate }}">
+                            </div>
+                          </div>
+                          <div class="col-lg-6 mb-3">
+                            <div class="form-label">
+                              <label for="firstnamefloatingInput">{{'MODULES.WEBSITE.SECTION_REFERENCE' | translate }}</label>
+                              <input formControlName="sectionReference" type="text" class="form-control"
+                                id="firstnamefloatingInput" placeholder="{{'PLACEHOLDER.ENTER_SECTION_REFERENCE' | translate }}">
+                            </div>
+                          </div>
+                          <div class="mb-3 col-lg-6">
+                            <label for="firstnameInput" class="form-label">{{'MODULES.WEBSITE.SECTION_CONTENT' | translate }}</label>
+                            <textarea class="form-control" id="description-field" rows="3"
+                              placeholder="{{'PLACEHOLDER.ENTER_SECTION_CONTENT' | translate }}" formControlName="sectionContent"></textarea>
+                          </div>
+
+                          <div class="mt-2 df-flex">
+                            <div class="img-wrap image-area"
+                              *ngFor="let picture of section.get('sectionPictures')['controls']; let k = index; trackBy: trackByFn">
+                              <button (click)="openAltModal(j, 'sectionData', k)" type="button"
+                                class="btn btn-outline-info btn-sm wrap-img m-2">
+                                <i class="ri-coupon-2-line"></i>
+                              </button>
+                              <img class="cover h-30 product-picture w-30"
+                                [src]="picture?.value?.baseUrl + '/' + picture?.value?.path" alt="Blog picture">
+                              <button (click)="removeSectionPicture(j, k)" type="button"
+                                class="delete-button btn btn-outline-danger btn-icon waves-effect mb-1 waves-light btn-sm">
+                                <i class="ri-delete-bin-5-line"></i>
+                              </button>
+                            </div>
+
+                            <div (click)="upload('sectionData', j)"
+                              class="w-30 h-30 mb-3 col-4 border rounded overflow-hidden cursor-pointer d-flex align-items-center justify-content-center">
+                              <span class="fs-5 fw-bold">{{'COMMON.UPLOAD' | translate }}</span>
+                            </div>
+                          </div>
+                        </div>
+                        <div class="col-lg-12">
+                          <div class="hstack justify-content-end gap-2 mt-4 mb-4">
+                            <button *ngIf="translation.get(['content', 'sectionData']).value?.length > 1" type="button"
+                              (click)="deleteSection(j)" class="btn btn-danger"><i
+                                class="ri-delete-bin-fill align-bottom"></i>
+                              Delete</button>
+                            <button *ngIf="last" (click)="newSection()" type="button" class="btn btn-primary add-btn"
+                              id="create-btn"><i class="ri-add-line align-bottom me-1"></i>{{'MODULES.WEBSITE.SECTION' | translate }}</button>
+                          </div>
+                        </div>
+                      </div>
+                    </ng-container>
+                    <div class="col-lg-12">
+                      <div class="justify-content-end gap-2 d-flex">
+                        <button (click)="exit()" class="btn btn-soft-danger btn-sm mt-2 mt-sm-0 shadow-none"><i
+                            class="mdi mdi-archive-remove-outline align-middle me-1"></i>{{'COMMON.BACK' | translate }} </button>
+                        <button [disabled]="isButtonDisabled || blogForm.invalid" (click)="save()" type="button"
+                          class="btn btn-success">{{'COMMON.SAVE' | translate }}</button>
+                      </div>
+                    </div>
+                  </ng-container>
+                </div>
+              </div>
+            </div>
+          </form>
+        </ng-container>
+        <ng-container *ngIf="translation?.value?.language?.name === 'Default'">
+          <div class="card-body">
+            <div class="live-preview">
+              <form [formGroup]="blogForm">
+                <ng-container>
+                  <div class="row g-3">
+                    <div class="col-lg-6 mb-3">
+                      <div class="form-label">
+                        <label for="firstnamefloatingInput">{{'COMMON.TITLE' | translate }}</label>
+                        <input required formControlName="title" type="text" class="form-control"
+                          id="firstnamefloatingInput" placeholder="{{'PLACEHOLDER.ENTER_TITLE' | translate }}"
+                          [ngClass]="{ 'is-invalid': blogForm.get('title')?.touched && blogForm.get('title').hasError('required') }" />
+                        <div class="invalid-feedback"
+                          *ngIf="blogForm.get('title')?.touched && blogForm.get('title').hasError('required')">
+                          Required!
+                        </div>
+                      </div>
+                    </div>
+                    <div class="mb-3 col-lg-6">
+                      <label for="firstnameInput" class="form-label">Url</label>
+                      <input formControlName="url" type="text" class="form-control" id="firstnamefloatingInput"
+                        placeholder="{{'PLACEHOLDER.ENTER_URL' | translate }}">
+                    </div>
+                    <div class="col-lg-6 mb-3">
+                      <label class="form-label" for="product-tags-input">{{'MODULES.WEBSITE.BLOG_TAGS' | translate }} {{'MODULES.INVENTORY.PRESS_ENTER' | translate }}</label>
+                      <ng-select [items]="[]" [addTag]="true" class="no-arrow-select" [isOpen]="false" [multiple]="true" [selectOnTab]="true"
+                        formControlName="tags">
+                      </ng-select>
+                    </div>
+                    <div class="mt-2 df-flex">
+                      <div class="img-wrap image-area"
+                        *ngFor="let picture of pictures['controls']; let i = index; trackBy: trackByFn">
+                        <button (click)="openAltModal(i)" type="button"
+                          class="btn btn-outline-info btn-sm wrap-img m-2">
+                          <i class="ri-coupon-2-line"></i>
+                        </button>
+                        <img class="cover h-30 product-picture w-30"
+                          [src]="picture?.value?.baseUrl + '/' + picture?.value?.path" alt="Blog picture">
+                        <button (click)="removePicture(i)" type="button"
+                          class="delete-button btn btn-outline-danger btn-icon waves-effect mb-1 waves-light btn-sm">
+                          <i class="ri-delete-bin-5-line"></i>
+                        </button>
+                      </div>
+                      <div (click)="upload(null)"
+                        class="w-30 h-30 mb-3 col-4 border rounded overflow-hidden cursor-pointer d-flex align-items-center justify-content-center">
+                        <span class="fs-5 fw-bold">{{'COMMON.UPLOAD' | translate }}</span>
+                      </div>
+                    </div>
+                    <ng-container formGroupName="seo">
+                      <div class="mb-3 col-lg-6">
+                        <label for="firstnameInput" class="form-label">{{'MODULES.INVENTORY.META_TITLE' | translate }}</label>
+                        <input formControlName="metaTitle" type="text" class="form-control" id="firstnamefloatingInput"
+                          placeholder="{{'PLACEHOLDER.ENTER_META_TITLE' | translate }}">
+                      </div>
+                      <div class="mb-3 col-lg-6">
+                        <label for="firstnameInput" class="form-label">{{'MODULES.INVENTORY.META_DESCRIPTION' | translate }}</label>
+                        <textarea class="form-control" id="description-field" rows="3"
+                          placeholder="{{'PLACEHOLDER.ENTER_META_DESCRIPTION' | translate }}" formControlName="metaDesription"></textarea>
+                      </div>
+                      <div>
+                        <div formArrayName="metaKeywords" class="row">
+                          <div
+                            *ngFor="let key of blogForm.get(['seo', 'metaKeywords'])['controls']; let i = index; let first = first; let last = last;"
+                            class="mt-2">
+                            <div [formGroupName]="i" class="row">
+                              <div class="mb-3 col-lg-6">
+                                <label class="control-label">{{'MODULES.INVENTORY.META_KEYWORD_NAME' | translate }}</label>
+                                <input type="text" formControlName="name" class="form-control"
+                                  placeholder="{{'PLACEHOLDER.ENTER_META_KEYWORD_NAME' | translate }}">
+                              </div>
+                              <div class="mb-3 col-lg-6">
+                                <label class="control-label">{{'MODULES.INVENTORY.CONTENT' | translate }}</label>
+                                <div class="d-flex align-items-center">
+                                  <input type="text" formControlName="content" class="form-control"
+                                    placeholder="{{'PLACEHOLDER.ENTER_CONTENT' | translate }}">
+                                  <button (click)="removeKeywordField(i)" class="btn btn-danger btn-sm ms-3">
+                                    <i class="fs-16 ft ri-delete-bin-2-line"></i>
+                                  </button>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                        <a (click)="addKeywordField()" class="btn btn-soft-info btn-sm mt-2 mt-sm-0 shadow-none"><i
+                            class="ri-add-line align-middle me-1"></i>{{'MODULES.WEBSITE.ADD_KEYWORD' | translate }}</a>
+                      </div>
+                    </ng-container>
+                  </div>
+                  <h4 class="mb-4 mt-4 flex-grow-1">{{'MODULES.WEBSITE.BLOG_SECTIONS' | translate }}</h4>
+                  <ng-container formArrayName="sectionData">
+                    <div *ngFor="let section of blogForm.get('sectionData')['controls']; let i=index; let last = last"
+                      [formGroupName]="i">
+                      <div class="row g-3">
+                        <div class="col-lg-6 mb-3">
+                          <div class="form-label">
+                            <label for="firstnamefloatingInput">{{'MODULES.WEBSITE.SECTION_TITLE' | translate }}</label>
+                            <input formControlName="sectionTitle" type="text" class="form-control"
+                              id="firstnamefloatingInput" placeholder="{{'PLACEHOLDER.ENTER_SECTION_TITLE' | translate }}">
+                          </div>
+                        </div>
+                        <div class="col-lg-6 mb-3">
+                          <div class="form-label">
+                            <label for="firstnamefloatingInput">{{'MODULES.WEBSITE.SECTION_REFERENCE' | translate }}</label>
+                            <input formControlName="sectionReference" type="text" class="form-control"
+                              id="firstnamefloatingInput" placeholder="{{'PLACEHOLDER.ENTER_SECTION_REFERENCE' | translate }}">
+                          </div>
+                        </div>
+                      </div>
+                      <div class="mb-7 mb-sm-6">
+                        <label for="firstnameInput" class="form-label">{{'MODULES.WEBSITE.SECTION_CONTENT' | translate }}</label>
+                        <quill-editor class="custom-quill-editor" formControlName="sectionContent"></quill-editor>
+                      </div>
+                      <div class="mt-2 df-flex">
+                        <div class="img-wrap image-area"
+                          *ngFor="let picture of section.get('sectionPictures')['controls']; let j = index; trackBy: trackByFn">
+                          <button (click)="openAltModal(i, j, 'sectionData')" type="button"
+                            class="btn btn-outline-info btn-sm wrap-img m-2">
+                            <i class="ri-coupon-2-line"></i>
+                          </button>
+                          <img class="cover h-30 product-picture w-30"
+                            [src]="picture?.value?.baseUrl + '/' + picture?.value?.path" alt="Blog picture">
+                          <button (click)="removeSectionPicture(i,j)" type="button"
+                            class="delete-button btn btn-outline-danger btn-icon waves-effect mb-1 waves-light btn-sm">
+                            <i class="ri-delete-bin-5-line"></i>
+                          </button>
+                        </div>
+
+                        <div (click)="upload('sectionData', i)"
+                          class="w-30 h-30 mb-3 col-4 border rounded overflow-hidden cursor-pointer d-flex align-items-center justify-content-center">
+                          <span class="fs-5 fw-bold">{{'COMMON.UPLOAD' | translate }}</span>
+                        </div>
+                      </div>
+                      <div class="col-lg-12">
+                        <div class="hstack justify-content-end gap-2 mt-4 mb-4">
+                          <button *ngIf="sectionData?.value?.length > 1" type="button" (click)="deleteSection(i)"
+                            class="btn btn-danger"><i class="ri-delete-bin-fill align-bottom"></i>
+                            Delete</button>
+                          <button *ngIf="last" (click)="newSection()" type="button" class="btn btn-primary add-btn"
+                            id="create-btn"><i class="ri-add-line align-bottom me-1"></i>{{'MODULES.WEBSITE.SECTION' | translate }}</button>
+                        </div>
+                      </div>
+                    </div>
+                  </ng-container>
+                </ng-container>
+                <div class="col-lg-12">
+                  <div class="justify-content-end gap-2 d-flex">
+                    <button (click)="exit()" class="btn btn-soft-danger btn-sm mt-2 mt-sm-0 shadow-none"><i
+                        class="mdi mdi-archive-remove-outline align-middle me-1"></i>{{'COMMON.BACK' | translate }} </button>
+                    <button (click)="save()" [disabled]="isButtonDisabled || blogForm.invalid" type="button"
+                      class="btn btn-success">{{'COMMON.SAVE' | translate }}</button>
+                  </div>
+                </div>
+              </form>
+            </div>
+          </div>
+        </ng-container>
+      </div>
+    </div>
+  </div>
+</ng-container>
+<div *ngIf="navigating$ | async" class="vh-100 py-4 text-center" fxLayout="column" fxLayoutAlign="center center"
+  fxLayoutGap="1rem">
+  <div>
+    <lord-icon trigger="loop" style="width:72px;height:72px" [colors]="'primary:' + primaryColor + ',secondary:' + secondaryColor"
+      src="https://cdn.lordicon.com/msoeawqm.json">
+    </lord-icon>
+  </div>
+  <div class="mt-4">
+    <h5>{{'COMMON.LOADING' | translate }}</h5>
+  </div>
+</div>

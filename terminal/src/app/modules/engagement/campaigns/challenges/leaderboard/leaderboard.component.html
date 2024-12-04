@@ -1,0 +1,206 @@
+<ng-container *ngIf="((loadingLeaderboard$ | async) === false || null || undefined) && leaderboard$ | async">
+  <div class="row">
+    <div class="col-lg-12">
+      <div class="card" id="ticketsList">
+        <div class="card-header border-0">
+          <div class="row g-4 align-items-center">
+            <div class="col-sm">
+              <div>
+                <h5 class="card-title mb-0">{{'MENUITEMS.CUSTOMERENGAGEMENT.LIST.LEADERBOARDS' | translate }}</h5>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="card-body">
+          <div class="table-card gridjs-border-none">
+            <div class="table-responsive">
+              <table class="table align-middle custom-datatable" id="datatableexample">
+                <thead>
+                  <tr class="bg-light text-muted">
+                    <th>{{'MENUITEMS.CUSTOMERENGAGEMENT.LIST.RANK' | translate }}</th>
+                    <th>{{'MENUITEMS.CUSTOMERENGAGEMENT.LIST.CUSTOMER' | translate }}</th>
+                    <th>Credit</th>
+                    <th class="d-flex justify-content-center">{{'COMMON.ACTIONS' | translate }}</th>
+                  </tr>
+                </thead>
+                <tbody *ngIf="((loadingLeaderboard$ | async) === false || null || undefined) && (leaderboard$ | async)?.length">
+                  <tr *ngFor="let leaderboard of leaderboard$ | async;let i = index;" id="p_{{leaderboard?.id}}">
+                    <td>
+                      <span>
+                        <div class="d-flex cursor-pointer align-items-center">
+                          <div class="me-1">
+                            {{leaderboard?.rank}}
+                          </div>
+                          <div *ngIf="leaderboard?.rankDifference < 0" class="fs-19">
+                            <i class="ri-arrow-down-circle-line text-danger"></i>
+                          </div>
+                          <div *ngIf="leaderboard?.rankDifference === 0" class="fs-19">
+                            <i class="ri-pause-mini-line text-info"></i>
+                          </div>
+                          <div *ngIf="leaderboard?.rankDifference > 0" class="fs-19">
+                            <i class="ri-arrow-up-circle-line text-success"></i>
+                          </div>
+                        </div>
+                      </span>
+                    </td>
+                    <td>
+                      <span>
+                        <div class="d-flex cursor-pointer align-items-center">
+                          <div class="flex-shrink-0 me-3">
+                            <div class="avatar-sm bg-light p-1 rounded-circle h-x" *ngIf="leaderboard?.user?.pictures?.length">
+                              <img [src]="leaderboard?.user?.pictures[0]?.baseUrl + '/' + leaderboard?.user?.pictures[0]?.path" class="img-fluid h-100 rounded-circle">
+                            </div>
+                            <div class="avatar-sm bg-light rounded-circle p-1 h-x" *ngIf="!leaderboard?.user?.pictures?.length">
+                              <div class="avatar-title bg-soft-success text-success rounded-circle fs-13">
+                                {{leaderboard?.user?.firstName?.charAt(0) || 'N'}}
+                              </div>
+                            </div>
+                          </div>
+                          <div [routerLink]="['/ecommerce/customers/customers', leaderboard?.user?.id]" class="flex-grow-1">
+                            <h5 class="fs-14 mb-1">
+                              <a class="cursor-pointer fw-medium link-primary">
+                                {{ (leaderboard?.user?.firstName || '') + ' ' +
+                                (leaderboard?.user?.lastName ||
+                                '') }}
+                              </a>
+                            </h5>
+                          </div>
+                        </div>
+                      </span>
+                    </td>
+                    <td> {{leaderboard?.credit}} </td>
+                    <td>
+                      <span class="d-flex justify-content-center">
+                        <div class="dropdown" ngbDropdown>
+                          <button class="btn btn-soft-secondary btn-sm dropdown arrow-none" type="button" data-bs-toggle="dropdown" aria-expanded="false" ngbDropdownToggle>
+                            <i class="ri-more-fill"></i>
+                          </button>
+                          <ul class="dropdown-menu dropdown-menu-end" ngbDropdownMenu>
+                            <li>
+                              <a (click)="openCustomerModal(customerModal, leaderboard?.user)" class="dropdown-item cursor-pointer"><i class="ri-eye-fill align-bottom me-2 text-primary"></i>{{'COMMON.VIEW' | translate }} </a>
+                            </li>
+                          </ul>
+                        </div>
+                      </span>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+          <div *ngIf="((loadingLeaderboard$ | async) === false || null || undefined) && (leaderboard$ | async)?.length" class="px-3">
+            <div class="row justify-content-md-between align-items-md-center gy-2">
+              <div class="col col-sm-6">
+                <div class="dataTables_info mb-2" id="tickets-table_info" role="status" aria-live="polite">{{'COMMON.SHOWING' | translate }}{{pagination?.startIndex + 1}}–{{pagination?.endIndex ===
+                  pagination?.length ? pagination?.endIndex : pagination?.endIndex + 1}} {{'COMMON.OF' | translate }}
+                  {{pagination?.length}} {{'COMMON.ENTRIES' | translate }}
+                </div>
+              </div>
+              <div class="col col-sm-6">
+                <div class="text-sm-right float-end listjs-pagination">
+                  <ngb-pagination [maxSize]="5" [collectionSize]="pagination?.length" [(page)]="page" (pageChange)="onPageChange($event)" [pageSize]="pagination?.size">
+                  </ngb-pagination>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div id="noresult" class="py-4 mt-4 text-center" *ngIf="(loadingLeaderboard$ | async) || (!(loadingLeaderboard$ | async) && !(leaderboard$ | async)?.length)">
+            <div *ngIf="loadingLeaderboard$ | async">
+              <lord-icon trigger="loop" style="width:72px;height:72px" [colors]="'primary:' + primaryColor + ',secondary:' + secondaryColor" src="https://cdn.lordicon.com/msoeawqm.json">
+              </lord-icon>
+              <h5 class="mt-4">{{'COMMON.LOADING' | translate }}</h5>
+            </div>
+            <div *ngIf="!(loadingLeaderboard$ | async) && !(leaderboard$ | async)?.length">
+              <lord-icon trigger="loop" style="width:72px;height:72px" [colors]="'primary:' + primaryColor + ',secondary:' + secondaryColor" src="https://cdn.lordicon.com/vlycxjwx.json">
+              </lord-icon>
+              <h5 class="mt-4">{{ 'COMMON.NO_RESULT' | translate }}</h5>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <ng-template #customerModal role="document" let-modal>
+    <div class="modal-header bg-soft-info p-3">
+      <h5 class="modal-title" id="exampleModalLabel">{{'MENUITEMS.CUSTOMERENGAGEMENT.LIST.CUSTOMER_DETAILS' | translate }}</h5>
+      <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" id="close-modal" (click)="modal.dismiss('Cross click')"></button>
+    </div>
+    <form *ngIf="customerForm" [formGroup]="customerForm">
+      <div class="modal-body">
+        <div class="row g-3">
+          <div class="col-lg-12 mb-3">
+            <div class="text-center">
+              <div class="position-relative d-inline-block">
+                <div class="cursor-pointer avatar-lg p-1">
+                  <div class="avatar-title bg-light rounded-circle">
+                    <div class="avatar-lg bg-light rounded-circle p-1 h-x" *ngIf="!pictures.value?.length">
+                      <div class="text-success fs-18">
+                        {{customerForm?.get('firstName')?.value?.charAt(0) ||
+                        'N'}}</div>
+                    </div>
+                    <img *ngIf="pictures.value?.length" [src]="pictures.value[0].baseUrl + '/' + pictures.value[0].path" id="companylogo-img" class="avatar-md rounded-circle object-cover" />
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="col-lg-12 row">
+            <div class="col-lg-6 mb-3">
+              <label for="email_id-field" class="form-label">{{'COMMON.FIRST_NAME' | translate }}</label>
+              <input readonly type="text" id="email_id-field" class="form-control" placeholder="{{'PLACEHOLDER.FIRST_NAME' | translate }}" formControlName="firstName" />
+            </div>
+            <div class="col-lg-6 mb-3">
+              <label for="email_id-field" class="form-label">{{'COMMON.LAST_NAME' | translate }}</label>
+              <input readonly type="text" id="email_id-field" class="form-control" placeholder="{{'PLACEHOLDER.ENTER_LAST_NAME' | translate }}" formControlName="lastName" />
+            </div>
+            <div class="col-lg-6 mb-3">
+              <label for="email_id-field" class="form-label">{{'COMMON.TITLE' | translate }}</label>
+              <input readonly type="text" id="email_id-field" class="form-control" placeholder="{{'PLACEHOLDER.ENTER_TITLE' | translate }}" formControlName="title" />
+            </div>
+            <div class="col-lg-6 mb-3">
+              <label for="email_id-field" class="form-label">{{'COMMON.EMAIL' | translate }}</label>
+              <input readonly type="email" id="email_id-field" class="form-control" placeholder="Email" required formControlName="email" />
+            </div>
+            <div class="col-lg-12 mb-3">
+              <ng-container formGroupName="residentialAddress">
+                <label for="email_id-field" class="form-label">{{'COMMON.ADDRESS' | translate }}</label>
+                <input readonly type="email" id="email_id-field" class="form-control" placeholder="{{'PLACEHOLDER.ADDRESS' | translate }}" formControlName="address" />
+              </ng-container>
+            </div>
+            <div class="col-lg-12 mb-3">
+              <ng-container formGroupName="phone">
+                <div class="row">
+                  <div class="col-lg-4 mb-3">
+                    <label for="countryCode-field" class="form-label">{{'COMMON.COUNTRY_CODE' | translate }}</label>
+                    <input readonly type="text" id="countryCode-field" class="form-control" placeholder="{{'PLACEHOLDER.COUNTRY_CODE' | translate }}" formControlName="countryCode" [ngModelOptions]="{standalone: true}" />
+                  </div>
+                  <div class="col-lg-8 mb-3">
+                    <label for="phone-field" class="form-label">{{'COMMON.PHONE_NUMBER' | translate }}</label>
+                    <input readonly type="tel" id="phone-field" class="form-control" placeholder="{{'PLACEHOLDER.PHONE_NUMBER' | translate }}" formControlName="number" [ngModelOptions]="{standalone: true}" />
+                  </div>
+                </div>
+              </ng-container>
+            </div>
+
+            <div class="mb-3 col-lg-12">
+              <label for="firstnameInput" class="form-label">{{'COMMON.ABOUT' | translate }}</label>
+              <textarea readonly class="form-control" id="description-field" rows="3" placeholder="{{'PLACEHOLDER.ABOUT' | translate }}" formControlName="about"></textarea>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <div class="hstack gap-2 justify-content-end">
+          <button type="button" class="btn btn-light" data-bs-dismiss="modal" (click)="modal.close('Close click')">{{'COMMON.CLOSE' | translate }}</button>
+        </div>
+      </div>
+    </form>
+  </ng-template>
+</ng-container>
+
+<div id="noresult" class="py-4 mt-4 text-center" *ngIf="(loadingLeaderboard$ | async)">
+  <lord-icon trigger="loop" style="width:72px;height:72px" [colors]="'primary:' + primaryColor + ',secondary:' + secondaryColor" src="https://cdn.lordicon.com/msoeawqm.json">
+  </lord-icon>
+  <h5 class="mt-4">{{ 'COMMON.LOADING' | translate }}</h5>
+</div>

@@ -1,0 +1,34 @@
+<div class="card card-animate">
+  <div class="card-body">
+    <div class="d-flex justify-content-between">
+      <div>
+        <p class="fw-medium text-muted mb-0">{{title}}</p>
+        <h2 class="mt-4 ff-secondary fw-semibold"><span [CountTo]="value" class="counter-value" [from]="0"
+            [duration]="1"></span><span *ngIf="title == 'Users' || title == 'Sessions'">K</span><span
+            *ngIf="title == 'Avg. Visit Duration'">sec</span><span *ngIf="title == 'Bounce Rate'">%</span></h2>
+        <p class="mb-0 text-muted">
+          <span class="badge bg-light mb-0" [ngClass]=" {
+                    'text-danger': profit === 'down',
+                    'text-success': profit === 'up',
+                    'text-primary': profit === 'equal'
+                  }">
+            <i class="align-middle" [ngClass]="{
+                        'ri-arrow-up-line': profit === 'up',
+                        'ri-arrow-down-line': profit === 'down',
+                        'ri-arrow-right-line': profit === 'equal'
+                      }">
+            </i>
+            {{percentage | number:'1.2-2'}} %
+          </span>{{'MODULES.INVENTORY.VS_PREVIOUS_MOUNTH' | translate }}
+        </p>
+      </div>
+      <div>
+        <div class="avatar-sm flex-shrink-0">
+          <span class="avatar-title {{icon_bg_color}} rounded-circle fs-2">
+            <i-feather name="{{icon}}" class="feather-icon-align top"></i-feather>
+          </span>
+        </div>
+      </div>
+    </div>
+  </div><!-- end card body -->
+</div> <!-- end card-->

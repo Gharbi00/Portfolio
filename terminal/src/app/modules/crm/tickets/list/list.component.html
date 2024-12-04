@@ -1,0 +1,483 @@
+<app-breadcrumbs title="{{ 'MODULES.CRM.TICKETS.TICKETS_LIST' | translate }}" [breadcrumbItems]="breadCrumbItems"></app-breadcrumbs>
+<ng-container *ngIf="!(navigating$ | async)">
+  <div *ngIf="stats$ | async as state" class="row">
+    <div class="col-xl-3 col-md-6">
+      <div class="card card-animate">
+        <div class="card-body">
+          <div class="d-flex align-items-center">
+            <div class="flex-grow-1">
+              <p class="text-uppercase fw-medium text-muted mb-0">{{ 'MODULES.CRM.TICKETS.OPENED_TICKETS' | translate }}</p>
+            </div>
+            <div *ngIf="state.OPEN?.difference?.price?.percentage" class="flex-shrink-0">
+              <h5 [ngClass]="{
+                'text-success': state.OPEN?.difference?.price?.percentage > 0,
+                'text-danger': state.OPEN?.difference?.price?.percentage < 0
+              }" class="fs-14 mb-0">
+                <i [ngClass]="{
+                  'ri-arrow-right-up-line': state.OPEN?.difference?.price?.percentage > 0,
+                  'ri-arrow-right-down-line': state.OPEN?.difference?.price?.percentage < 0
+                }" class="fs-13 align-middle"></i> {{ state.OPEN?.difference?.price?.percentage }} %
+              </h5>
+            </div>
+            <div *ngIf="!state.OPEN?.difference?.price?.percentage">-</div>
+          </div>
+          <div class="d-flex align-items-end justify-content-between mt-4">
+            <div>
+              <h4 class="fs-22 fw-semibold ff-secondary mb-4">
+                <div> {{ state.OPEN?.current.price | numberWithSuffix:'' }} </div>
+              </h4>
+              <span class="badge bg-warning me-1">{{ state.OPEN?.current?.count }}</span> <span class="text-muted">{{ 'MODULES.CRM.TICKETS.OPENED_TICKETS' | translate }}</span>
+            </div>
+            <div class="avatar-sm flex-shrink-0">
+              <span class="avatar-title bg-light rounded fs-3">
+                <i-feather name="file-text" class="text-success icon-dual-success feather-icon-align"></i-feather>
+              </span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-xl-3 col-md-6">
+      <div class="card card-animate">
+        <div class="card-body">
+          <div class="d-flex align-items-center">
+            <div class="flex-grow-1">
+              <p class="text-uppercase fw-medium text-muted mb-0">{{ 'MODULES.CRM.TICKETS.IN_PROGRESS_TICKETS' | translate }}</p>
+            </div>
+            <div *ngIf="state.IN_PROGRESS?.difference?.price?.percentage" class="flex-shrink-0">
+              <h5 [ngClass]="{
+                'text-success': state.IN_PROGRESS?.difference?.price?.percentage > 0,
+                'text-danger': state.IN_PROGRESS?.difference?.price?.percentage < 0
+              }" class="fs-14 mb-0">
+                <i [ngClass]="{
+                  'ri-arrow-right-up-line': state.IN_PROGRESS?.difference?.price?.percentage > 0,
+                  'ri-arrow-right-down-line': state.IN_PROGRESS?.difference?.price?.percentage < 0
+                }" class="fs-13 align-middle"></i> {{ state.IN_PROGRESS?.difference?.price?.percentage }} %
+              </h5>
+            </div>
+            <div *ngIf="!state.IN_PROGRESS?.difference?.price?.percentage">-</div>
+          </div>
+          <div class="d-flex align-items-end justify-content-between mt-4">
+            <div>
+              <h4 class="fs-22 fw-semibold ff-secondary mb-4">
+                <div> {{ state.IN_PROGRESS?.current.price | numberWithSuffix:'' }} </div>
+              </h4>
+              <span class="badge bg-warning me-1">{{ state.IN_PROGRESS?.current?.count }}</span> <span class="text-muted">{{ 'MODULES.CRM.TICKETS.IN_PROGRESS_TICKETS' | translate }}</span>
+            </div>
+            <div class="avatar-sm flex-shrink-0">
+              <span class="avatar-title bg-light rounded fs-3">
+                <i-feather name="clock" class="text-success icon-dual-success feather-icon-align"></i-feather>
+              </span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-xl-3 col-md-6">
+      <div class="card card-animate">
+        <div class="card-body">
+          <div class="d-flex align-items-center">
+            <div class="flex-grow-1">
+              <p class="text-uppercase fw-medium text-muted mb-0">{{ 'MODULES.CRM.TICKETS.RESOLVED_TICKETS' | translate }}</p>
+            </div>
+            <div *ngIf="state.RESOLVED?.difference?.price?.percentage" class="flex-shrink-0">
+              <h5 [ngClass]="{
+                'text-success': state.RESOLVED?.difference?.price?.percentage > 0,
+                'text-danger': state.RESOLVED?.difference?.price?.percentage < 0
+              }" class="fs-14 mb-0">
+                <i [ngClass]="{
+                  'ri-arrow-right-up-line': state.RESOLVED?.difference?.price?.percentage > 0,
+                  'ri-arrow-right-down-line': state.RESOLVED?.difference?.price?.percentage < 0
+                }" class="fs-13 align-middle"></i> {{ state.RESOLVED?.difference?.price?.percentage }} %
+              </h5>
+            </div>
+            <div *ngIf="!state.RESOLVED?.difference?.price?.percentage">-</div>
+          </div>
+          <div class="d-flex align-items-end justify-content-between mt-4">
+            <div>
+              <h4 class="fs-22 fw-semibold ff-secondary mb-4">
+                <div> {{ state.RESOLVED?.current.price | numberWithSuffix:'' }} </div>
+              </h4>
+              <span class="badge bg-warning me-1">{{ state.RESOLVED?.current?.count }}</span> <span class="text-muted">{{ 'MODULES.CRM.TICKETS.RESOLVED_TICKETS' | translate }}</span>
+            </div>
+            <div class="avatar-sm flex-shrink-0">
+              <span class="avatar-title bg-light rounded fs-3">
+                <i-feather name="check-square" class="text-success icon-dual-success feather-icon-align"></i-feather>
+              </span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-xl-3 col-md-6">
+      <div class="card card-animate">
+        <div class="card-body">
+          <div class="d-flex align-items-center">
+            <div class="flex-grow-1">
+              <p class="text-uppercase fw-medium text-muted mb-0">{{ 'MODULES.CRM.TICKETS.BLOCKED_TICKETS' | translate }}</p>
+            </div>
+            <div *ngIf="state.BLOCKED?.difference?.price?.percentage" class="flex-shrink-0">
+              <h5 [ngClass]="{
+                'text-success': state.BLOCKED?.difference?.price?.percentage > 0,
+                'text-danger': state.BLOCKED?.difference?.price?.percentage < 0
+              }" class="fs-14 mb-0">
+                <i [ngClass]="{
+                  'ri-arrow-right-up-line': state.BLOCKED?.difference?.price?.percentage > 0,
+                  'ri-arrow-right-down-line': state.BLOCKED?.difference?.price?.percentage < 0
+                }" class="fs-13 align-middle"></i> {{ state.BLOCKED?.difference?.price?.percentage }} %
+              </h5>
+            </div>
+            <div *ngIf="!state.BLOCKED?.difference?.price?.percentage">-</div>
+          </div>
+          <div class="d-flex align-items-end justify-content-between mt-4">
+            <div>
+              <h4 class="fs-22 fw-semibold ff-secondary mb-4">
+                <div> {{ state.BLOCKED?.current.price | numberWithSuffix:'' }} </div>
+              </h4>
+              <span class="badge bg-warning me-1">{{ state.BLOCKED?.current?.count }}</span> <span class="text-muted">{{ 'MODULES.CRM.TICKETS.BLOCKED_TICKETS' | translate }}</span>
+            </div>
+            <div class="avatar-sm flex-shrink-0">
+              <span class="avatar-title bg-light rounded fs-3">
+                <i-feather name="x-octagon" class="text-success icon-dual-success feather-icon-align"></i-feather>
+              </span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col-lg-12">
+      <div class="card" id="ticketsList">
+        <div class="card-header border-0">
+          <div class="d-sm-flex align-items-center">
+            <h5 class="card-title mb-1 flex-grow-1">{{ 'MODULES.CRM.TICKETS.TITLE' | translate }}</h5>
+            <div class="flex-shrink-0 d-flex gap-1">
+              <button class="btn btn-success add-btn" data-bs-toggle="modal" data-bs-target="#showModal" (click)="openTicketModal(ticketModal, null)">
+                <i class="ri-add-line align-bottom me-1"></i>
+                {{ 'MODULES.CRM.TICKETS.CREATE_TICKET' | translate }}
+              </button>
+              <button type="button" (click)="openEmailModal(emailModal)" class="btn btn-primary">
+                <i class="ri-send-plane-fill align-bottom me-1"></i> {{ 'COMMON.SEND' | translate }}
+              </button>
+              <button type="button" (click)="downloadDocument()" class="btn btn-secondary">
+                <i class="ri-file-download-line align-bottom me-1"></i> {{ 'COMMON.EXPORT' | translate }}
+              </button>
+            </div>
+          </div>
+        </div>
+        <div class="card-body border border-dashed border-end-0 border-start-0">
+          <form [formGroup]="filterForm" class="row g-3">
+            <div class="col-xxl-5 col-sm-12">
+              <div class="search-box">
+                <form [formGroup]="searchForm">
+                  <input formControlName="searchString" type="text" name="searchTerm" class="form-control search bg-light border-light" placeholder="{{ 'COMMON.SEARCH_HERE' | translate }}">
+                  <i class="ri-search-line search-icon"></i>
+                </form>
+              </div>
+            </div>
+            <div class="col-xxl-3 col-sm-4">
+              <div class="input-wrapper input-group d-flex align-items-center">
+                <input formControlName="date" [inline]="false" mode="range" class="form-control bg-light border-light" type="text" mwlFlatpickr [altInput]="true" [convertModelValue]="true"
+                  placeholder="{{ 'COMMON.SELECT_DATE_RANGE' | translate }}" id="isDate">
+                <a *ngIf="filterForm.get('date').value" (click)="resetDate('filter')">
+                  <i class="ri-close-fill fs-16"></i>
+                </a>
+              </div>
+            </div>
+            <div class="col-xxl-2 col-sm-4">
+              <div ngbDropdown>
+                <input [value]="selectedPriorities.join(', ')" formControlName="priority" placeholder="{{ 'MODULES.CRM.TICKETS.ENTER_PRIORITY' | translate }}"
+                  class="cursor-pointer form-select form-control dropdown-toggle" ngbDropdownToggle>
+                <div class="dropdown-menu dropdown-menu-right w-100 h-10 p-3" ngbDropdownMenu>
+                  <div *ngFor="let pr of priorities" class="form-check">
+                    <input (change)="onPriorityChange(pr, $event.target.checked, false)" class="form-check-input me-3" type="checkbox" [value]="">
+                    <label class="form-check-label d-flex align-items-center" for="anna-adame">
+                      {{ 'COMMON.PRIORITY.'+ pr | translate }}
+                    </label>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="col-xxl-2 col-sm-4">
+              <div ngbDropdown>
+                <input [value]="selectedStatus.join(', ')" placeholder="{{ 'MODULES.CRM.TICKETS.ENTER_STATUS' | translate }}" class="cursor-pointer form-select form-control dropdown-toggle"
+                  ngbDropdownToggle>
+                <div class="dropdown-menu dropdown-menu-right w-100 h-10 p-3" ngbDropdownMenu>
+                  <div *ngFor="let state of status" class="form-check">
+                    <input (change)="onStatusChange(state, $event.target.checked, isModal)" class="form-check-input me-3" type="checkbox">
+                    <label class="form-check-label d-flex align-items-center" for="anna-adame">
+                      {{ 'SHARED.'+ state | translate }}
+                    </label>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </form>
+        </div>
+        <div class="card-body">
+          <div class="table-responsive table-card mb-3">
+            <table class="table align-middle table-nowrap mb-0" id="ticketTable">
+              <thead>
+                <tr class="bg-light text-muted">
+                  <th class="text-uppercase">{{'COMMON.ID' | translate }}</th>
+                  <th class="text-uppercase">{{ 'COMMON.TITLE' | translate }}</th>
+                  <th class="text-uppercase">{{ 'COMMON.CLIENT' | translate }}</th>
+                  <th class="text-uppercase">{{ 'MODULES.CRM.TICKETS.ASSIGNED_TO' | translate }}</th>
+                  <th class="text-uppercase">{{ 'COMMON.CREATE_DATE' | translate }}</th>
+                  <th class="text-uppercase">{{ 'COMMON.DUE_DATE' | translate }}</th>
+                  <th class="text-uppercase">{{ 'COMMON.STATUS' | translate }}</th>
+                  <th class="text-uppercase">{{ 'COMMON.PRIORITY_TEXT' | translate }}</th>
+                  <th class="text-uppercase">{{ 'COMMON.ACTION' | translate }}</th>
+                </tr>
+              </thead>
+              <tbody *ngIf="((loadingTickets$ | async) === false || null || undefined) && (tickets$ | async).length">
+                <tr *ngFor="let data of tickets$ | async" id="t_{{data.id}}">
+                  <td class="id"><a routerLink="/tickets/{{data.id}}" class="fw-medium link-primary">#{{data?.identifier}}</a></td>
+                  <td><ngb-highlight [result]="data?.name"></ngb-highlight></td>
+                  <td><ngb-highlight [result]="data?.customer?.name"></ngb-highlight></td>
+                  <td><ngb-highlight [result]="data?.assignedTo?.length ? data?.assignedTo[0]?.firstName : ''"></ngb-highlight></td>
+                  <td><ngb-highlight [result]="data?.createdAt | date :'longDate'"></ngb-highlight></td>
+                  <td><ngb-highlight [result]="data?.deadline | date :'longDate'"></ngb-highlight></td>
+                  <td class="status"><span class="badge text-uppercase"
+                      [ngClass]=" { 'badge-soft-danger': data?.status === 'BLOCKED', 'badge-soft-success': data.status === 'RESOLVED', 'badge-soft-info': data?.status === 'IN_PROGRESS', 'badge-soft-info': data?.status === 'OPEN', 'badge-soft-warning': data?.status === 'ON_HOLD'}">{{'SHARED.' + data?.status | translate}}</span>
+                  </td>
+                  <td class="priority"><span class="badge text-uppercase"
+                      [ngClass]=" { 'bg-success ': data?.priority === 'LOW', 'bg-danger': data?.priority === 'HIGH', 'bg-danger': data?.priority === 'CRITICAL', 'bg-warning': data?.priority === 'NORMAL'}">{{'COMMON.PRIORITY.' + data?.priority | translate}}</span>
+                  </td>
+                  <td>
+                    <a href="javascript:void(0);" data-bs-toggle="modal" class="text-primary d-inline-block edit-item-btn" data-bs-toggle="modal" id="create-btn" data-bs-target="#showModal"
+                      (click)="openTicketModal(ticketModal, data)">
+                      <i class="ri-pencil-fill fs-16"></i>
+                    </a>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <div *ngIf="((loadingTickets$ | async) === false || null || undefined) && (tickets$ | async).length" class="px-3">
+            <div class="row justify-content-md-between align-items-md-center gy-2">
+              <div class="col col-sm-6">
+                <div class="dataTables_info mb-2" id="tickets-table_info" role="status" aria-live="polite">
+                  {{ 'COMMON.ENTRIES' | translate: { startIndex: pagination?.startIndex + 1, endIndex: (pagination?.endIndex === pagination?.length ? pagination?.endIndex : pagination?.endIndex + 1),
+                  length: pagination?.length } }}
+                </div>
+              </div>
+              <div class="col col-sm-6">
+                <div class="text-sm-right float-end listjs-pagination">
+                  <ngb-pagination [maxSize]="5" [collectionSize]="pagination?.length" [(page)]="page" (pageChange)="onPageChange($event)" [pageSize]="pagination?.size">
+                  </ngb-pagination>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div id="noresult" class="py-4 mt-4 text-center" *ngIf="(loadingTickets$ | async) || (!(loadingTickets$ | async) && !(tickets$ | async).length)">
+            <div *ngIf="loadingTickets$ | async">
+              <lord-icon trigger="loop" style="width:72px;height:72px" [colors]="'primary:' + primaryColor + ',secondary:' + secondaryColor" src="https://cdn.lordicon.com/msoeawqm.json">
+              </lord-icon>
+              <h5 class="mt-4">{{ 'COMMON.LOADING' | translate }}</h5>
+            </div>
+            <div *ngIf="!(loadingTickets$ | async) && !(tickets$ | async).length">
+              <lord-icon trigger="loop" style="width:72px;height:72px" [colors]="'primary:' + primaryColor + ',secondary:' + secondaryColor" src="https://cdn.lordicon.com/msoeawqm.json">
+              </lord-icon>
+              <h5 class="mt-4">{{ 'COMMON.NO_RESULT_FOUND' | translate }}</h5>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <ng-template #emailModal role="document" let-modal>
+    <div class="modal-header p-3 bg-soft-info">
+      <h5 class="modal-title" id="exampleModalLabel">{{ 'COMMON.SEND_EMAIL' | translate }}</h5>
+      <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" id="close-modal" (click)="modal.dismiss('Cross click')"></button>
+    </div>
+    <form [formGroup]="emailForm">
+      <div class="modal-body">
+        <div class="row g-3">
+          <div class="col-lg-12 mb-3">
+            <label class="form-label" for="product-tags-input">{{ 'COMMON.EMAILS' | translate }} ({{ 'COMMON.PRESS_ENTER_TO_ADD' | translate }})</label>
+            <ng-select [items]="[]" class="no-arrow-select" [addTag]="true" [isOpen]="false" [multiple]="true" [selectOnTab]="true" formControlName="emails">
+            </ng-select>
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <div class="hstack gap-2 justify-content-end">
+          <button type="button" class="btn btn-light" data-bs-dismiss="modal" (click)="modal.close('Close click')">{{ 'COMMON.CLOSE' | translate }}</button>
+          <button type="button" [disabled]="isEmailButtonDisabled || emailForm.invalid" (click)="send()" class="btn btn-success" id="add-btn">{{ 'COMMON.SEND' | translate }}</button>
+        </div>
+      </div>
+    </form>
+  </ng-template>
+
+  <ng-template #ticketModal role="document" let-modal>
+    <div class="modal-header p-3 bg-soft-info">
+      <h5 class="modal-title" id="exampleModalLabel">{{selectedTicket ? ('EDIT_TICKET' | translate) : ('ADD_TICKET' | translate) }}</h5>
+      <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" id="close-modal" (click)="modal.dismiss('Cross click')"></button>
+    </div>
+    <form [formGroup]="ticketForm">
+      <div class="modal-body">
+        <div class="row g-3">
+          <div class="col-lg-12">
+            <div>
+              <label for="tasksTitle-field" class="form-label">{{ 'MODULES.CRM.TICKETS.TITLE' | translate }}</label>
+              <input type="text" id="tasksTitle-field" class="form-control" placeholder="{{ 'MODULES.CRM.TICKETS.ENTER_TITLE' | translate }}" required formControlName="name"
+                [ngClass]="{ 'is-invalid': ticketForm.get('name')?.touched && ticketForm.get('name').hasError('required') }" />
+              <div class="invalid-feedback" *ngIf="ticketForm.get('name')?.touched && ticketForm.get('name').hasError('required')">
+                {{ 'COMMON.REQUIRED' | translate }}
+              </div>
+            </div>
+          </div>
+          <div class="col-lg-12">
+            <div ngbDropdown>
+              <form [formGroup]="searchCompanyForm">
+                <label class="form-check-label" for="lastname-field">{{ 'MODULES.CRM.TICKETS.CLIENT' | translate }}</label>
+                <input formControlName="searchString" placeholder="{{ 'MODULES.CRM.TICKETS.SELECT_COMPANY' | translate }}" class="cursor-pointer form-select form-control dropdown-toggle"
+                  ngbDropdownToggle>
+              </form>
+              <div infiniteScroll [scrollWindow]="false" [infiniteScrollDistance]="2" [infiniteScrollThrottle]="50" (scrolled)="loadMoreLeads()" [infiniteScrollDisabled]="isLeadLastPage$ | async"
+                class="dropdown-menu dropdown-menu-right w-100 h-10 p-3" ngbDropdownMenu>
+                <div *ngFor="let lead of leads$ | async" class="form-check">
+                  <input [value]="lead?.id" formControlName="customer" [checked]="selectedCompany === lead.name" class="form-check-input border-s" type="radio" id="lead{{ lead?.id }}">
+                  <label class="form-check-label" for="lead{{ lead?.id }}">
+                    {{ lead?.name }}
+                  </label>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="col-lg-12">
+            <label class="form-check-label" for="lastname-field">{{ 'MODULES.CRM.TICKETS.OWNER' | translate }}</label>
+            <ng-select [selectableGroup]="true" [closeOnSelect]="false" formControlName="assignedTo" [multiple]="true" [items]="team$ | async" [virtualScroll]="true"
+              placeholder="{{ 'MODULES.CRM.TICKETS.SELECT_AN_OPTION' | translate }}" (scrollToEnd)="loadMoreOwners()" bindLabel="firstName" bindValue="id">
+              <ng-template *ngIf="teamPagination$ | async as teamPagination" ng-header-tmp>
+                <small class="form-text text-muted">{{ 'COMMON.LOADED' | translate }} {{team?.length}} {{ 'COMMON.OF' | translate }} {{teamPagination?.length}}</small>
+              </ng-template>
+              <ng-template ng-label-tmp let-item="item" let-clear="clear">
+                <span class="ng-value-label">
+                  <img *ngIf="item?.picture" class="avatar-xxs rounded-circle" [src]="item?.picture?.baseUrl + '/' + item?.picture?.path" width="20px" height="20px">
+                  <img *ngIf="!item?.picture" class="avatar-xxs rounded-circle" src="assets/images/users/avatar-1.jpg" width="20px" height="20px">
+                  {{item?.firstName}}
+                </span>
+                <span class="ng-value-icon right" (click)="clear(item)" aria-hidden="true">×</span>
+              </ng-template>
+              <ng-template ng-option-tmp let-item$="item$" let-item="item">
+                <div class="d-flex align-items-center">
+                  <input id="item-{{index}}" class="mr-2" type="checkbox" [ngModelOptions]="{standalone: true}" [ngModel]="item$.selected" />
+                  <label class="form-check-label d-flex align-items-center" for="anna-adame">
+                    <span class="flex-shrink-0">
+                      <img *ngIf="!item?.picture" src="assets/images/users/avatar-1.jpg" alt="" class="avatar-xxs rounded-circle" />
+                      <img *ngIf="item?.picture" [src]="item?.picture?.baseUrl + '/' + item?.picture?.path" alt="" class="avatar-xxs rounded-circle" />
+                    </span>
+                    <span class="flex-grow-1 ms-2">
+                      {{item?.firstName}}
+                    </span>
+                  </label>
+                </div>
+              </ng-template>
+            </ng-select>
+          </div>
+          <div class="col-lg-12 mb-3">
+            <label for="duedate-field" class="form-label">{{ 'MODULES.CRM.TICKETS.DUE_DATE' | translate }}</label>
+            <div class="input-group d-flex align-items-center">
+              <input class="form-control flatpickr-input" type="text" placeholder="{{ 'MODULES.CRM.TICKETS.DUE_DATE' | translate }}" mwlFlatpickr [altInput]="true" [convertModelValue]="true"
+                [dateFormat]="'Y-m-d H:i'" formControlName="deadline">
+              <a *ngIf="ticketForm.get('deadline').value" (click)="resetDate()">
+                <i class="ri-close-fill fs-16"></i>
+              </a>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-lg-6">
+              <label for="ticket-status" class="form-label">{{ 'MODULES.CRM.TICKETS.STATUS' | translate }}</label>
+              <select class="form-control" data-plugin="choices" name="ticket-status" id="ticket-status" formControlName="status">
+                <option value="" disabled selected>{{ 'COMMON.SELECT_AN_OPTION' | translate }}</option>
+                <option *ngFor="let state of status" [value]="state">{{  'COMMON.STATE.' + state | translate }}</option>
+              </select>
+            </div>
+            <div class="col-lg-6">
+              <label for="priority-field" class="form-label">{{ 'MODULES.CRM.TICKETS.PRIORITY' | translate }}</label>
+              <select class="form-control" data-plugin="choices" name="priority-field" id="priority-field" formControlName="priority">
+                <option value="" disabled selected>{{ 'COMMON.SELECT_PRIORITY' | translate }}</option>
+                <option *ngFor="let pr of priorities" [value]="pr">{{  'COMMON.PRIORITY.' + pr | translate }}</option>
+              </select>
+            </div>
+          </div>
+          <div class="mb-3">
+            <label for="contactNumber" class="form-label">{{ 'MODULES.CRM.TICKETS.DESCRIPTION' | translate }}</label>
+            <textarea formControlName="description" class="form-control" id="exampleFormControlTextarea1" rows="3" placeholder="{{ 'MODULES.CRM.TICKETS.ENTER_DESCRIPTION' | translate }}"></textarea>
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <div class="hstack gap-2 justify-content-end">
+          <button type="button" class="btn btn-light" data-bs-dismiss="modal" (click)="modal.close('Close click')">{{ 'COMMON.CLOSE' | translate }}</button>
+          <button type="button" [disabled]="isButtonDisabled || ticketForm.invalid" (click)="save()" class="btn btn-success" id="add-btn">{{selectedTicket ? ('MODULES.CRM.TICKETS.EDIT_TICKET' |
+            translate) : ('MODULES.CRM.TICKETS.ADD_TICKET' | translate) }}</button>
+        </div>
+      </div>
+    </form>
+  </ng-template>
+
+  <ng-template #filterModal role="document" let-modal>
+    <form [formGroup]="filterForm">
+      <div class="modal-body">
+        <div class="mb-3">
+          <input formControlName="modalDate" [inline]="true" mode="range" class="form-control bg-light border-light" type="text" mwlFlatpickr [altInput]="true" [convertModelValue]="true"
+            placeholder="{{ 'MODULES.CRM.TICKETS.SELECT_DATE_RANGE' | translate }}" id="isDate">
+        </div>
+        <div class="row g-3">
+          <div class="mb-3 col-6">
+            <div ngbDropdown>
+              <input [value]="selectedPriorities.join(', ')" placeholder="{{ 'MODULES.CRM.TICKETS.SELECT_PRIORITY' | translate }}" class="cursor-pointer form-select form-control dropdown-toggle"
+                ngbDropdownToggle>
+              <div class="dropdown-menu dropdown-menu-right w-100 h-10 p-3" ngbDropdownMenu>
+                <div *ngFor="let pr of priorities" class="form-check">
+                  <input (change)="onPriorityChange(pr, $event.target.checked, true)" class="form-check-input me-3" type="checkbox">
+                  <label class="form-check-label d-flex align-items-center" for="anna-adame">
+                    {{ 'COMMON.PRIORITY.' + pr | translate }}
+                  </label>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="mb-3 col-6">
+            <div ngbDropdown>
+              <input [value]="selectedStatus.join(', ')" placeholder="{{ 'MODULES.CRM.TICKETS.STATUS' | translate }}" class="cursor-pointer form-select form-control dropdown-toggle" ngbDropdownToggle>
+              <div class="dropdown-menu dropdown-menu-right w-100 h-10 p-3" ngbDropdownMenu>
+                <div *ngFor="let state of status" class="form-check">
+                  <input (change)="onStatusChange(state, $event.target.checked, isModal)" class="form-check-input me-3" type="checkbox">
+                  <label class="form-check-label d-flex align-items-center" for="anna-adame">
+                    {{ state.split('_').join(' ') | titlecase }}
+                  </label>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <div class="hstack gap-2 justify-content-end">
+          <button type="button" class="btn btn-light" data-bs-dismiss="modal" (click)="modal.close('Close click')">{{ 'COMMON.CLOSE' | translate }}</button>
+          <button type="button" [disabled]="isFilterButtonDisabled" (click)="saveFilter()" class="btn btn-success" id="add-btn">{{ 'COMMON.SAVE' | translate }}</button>
+        </div>
+      </div>
+    </form>
+  </ng-template>
+
+</ng-container>
+<div *ngIf="navigating$ | async" class="vh-100 py-4 text-center" fxLayout="column" fxLayoutAlign="center center" fxLayoutGap="1rem">
+  <div>
+    <lord-icon trigger="loop" style="width:72px;height:72px" [colors]="'primary:' + primaryColor + ',secondary:' + secondaryColor" src="https://cdn.lordicon.com/msoeawqm.json">
+    </lord-icon>
+  </div>
+  <div class="mt-4">
+    <h5>{{ 'COMMON.LOADING' | translate }}</h5>
+  </div>
+</div>

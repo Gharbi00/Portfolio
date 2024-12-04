@@ -1,0 +1,701 @@
+<div class="row">
+  <div class="col-lg-12">
+    <div class="card">
+      <div class="card-body">
+        <div class="row gx-lg-5">
+          <div class="col-xl-4 col-md-8 mx-auto">
+            <div class="d-flex mb-3">
+              <div *ngIf="!isUploadButtonDisabled" (click)="addImageToSelectedBarcode()"><i
+                  class="ri-gallery-fill fs-15"></i></div>
+              <div *ngIf="pictures?.value?.length && !isRemoveButtonDisabled" class="ms-1 fs-15"
+                (click)="openAltMoadal(i)"><i class="ri-coupon-2-line"></i></div>
+              <div *ngIf="pictures?.value?.length && !isRemoveButtonDisabled" class="ms-1 fs-15"
+                (click)="removePicture()"><i class="ri-delete-bin-5-fill"></i></div>
+            </div>
+            <div class="product-img-slider sticky-side-div">
+              <div class="mx-auto">
+                <div class="product-img-slider sticky-side-div d-flex justify-content-center align-items-center">
+                  <div *ngIf="isLoading" class="spinner-border text-primary mt-5" role="status">
+                    <span class="sr-only">{{'COMMON.LOADING' | translate }}</span>
+                  </div>
+                </div>
+                <div *ngIf="pictures.value?.length && !isLoading" class="product-img-slider sticky-side-div">
+                  <swiper [config]="config">
+                    <div class="swiper-wrapper">
+                      <div class="swiper-slide">
+                        <img
+                          [src]="pictures?.value[currentImageIndex.value]?.baseUrl + '/'  + pictures?.value[currentImageIndex.value]?.path"
+                          alt="" class="img-fluid w-100 d-block" />
+                      </div>
+                    </div>
+                    <div class="swiper-button-next" (click)="cycleImages(true)"></div>
+                    <div class="swiper-button-prev" (click)="cycleImages(false)"></div>
+                  </swiper>
+                </div>
+                <div *ngIf="!pictures?.value?.length && !isLoading" (click)="addImageToSelectedBarcode()"
+                  class="d-flex justify-content-center">
+                  <div
+                    class="w-10 h-44 border rounded overflow-hidden cursor-pointer d-flex align-items-center justify-content-center">
+                    <span class="fs-5 fw-bold">{{'COMMON.UPLOAD' | translate }} picture</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="col-xl-8">
+            <div class="mt-xl-0 mt-5">
+              <div class="d-flex">
+                <div class="flex-grow-1">
+                  <h4>{{ barcode?.name }}</h4>
+                  <div class="hstack gap-3 flex-wrap">
+                    <div *ngIf="barcode?.internalProduct?.brand?.name" class="text-muted">{{'MODULES.INVENTORY.BRAND' | translate }}: <span class="text-body fw-medium">{{ barcode?.internalProduct?.brand?.name }}</span>
+                    </div>
+                    <div class="vr" *ngIf="barcode?.internalProduct?.brand?.name"></div>
+                    <div class="text-muted">
+                      {{'COMMON.STATE.PUBLISHED' | translate }}: <span class="text-body fw-medium">{{ barcode?.createdAt | date:'longDate' }}</span>
+                    </div>
+                  </div>
+                </div>
+                <div class="flex-shrink-0">
+                  <div>
+                    <a (click)="openAddBarcodeModal(addBarcodeModal)" class="btn me-2 btn-info" data-bs-toggle="tooltip"
+                      data-bs-placement="top" title="Edit"><i class="ri-price-tag-3-fill align-bottom"></i></a>
+                      <!-- (click)="openBarcodeModal(barcodeModal)"  -->
+                      <a [routerLink]="[parentLink$ | async,'edit', barcode?.id]" class="btn btn-light" data-bs-toggle="tooltip"
+                      data-bs-placement="top" title="Edit"><i class="ri-pencil-fill align-bottom"></i></a>
+                  </div>
+                </div>
+              </div>
+              <div class="row mt-4">
+                <div class="col-lg-3 col-sm-6">
+                  <div class="p-2 border border-dashed rounded">
+                    <div class="d-flex align-items-center">
+                      <div class="avatar-sm me-2">
+                        <div class="avatar-title rounded bg-transparent text-success fs-24">
+                          <i class="ri-money-dollar-circle-fill"></i>
+                        </div>
+                      </div>
+                      <div class="flex-grow-1">
+                        <p class="text-muted mb-1">{{'MODULES.HR.MAIN.PRICE' | translate }}:</p>
+                        <h5 class="mb-0">{{ ((barcode?.price) || 0) | currency:'DT':'symbol':'1.3-3' }}</h5>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="col-lg-3 col-sm-6">
+                  <div class="p-2 border border-dashed rounded">
+                    <div class="d-flex align-items-center">
+                      <div class="avatar-sm me-2">
+                        <div class="avatar-title rounded bg-transparent text-success fs-24">
+                          <i class="ri-file-copy-2-fill"></i>
+                        </div>
+                      </div>
+                      <div class="flex-grow-1">
+                        <p class="text-muted mb-1">{{'MODULES.HR.MAIN.NUMBER_OF_ORDERS' | translate }}:</p>
+                        <h5 class="mb-0">{{ (barcodeStats$ | async)?.numberOfOrders }}</h5>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="col-lg-3 col-sm-6">
+                  <div class="p-2 border border-dashed rounded">
+                    <div class="d-flex align-items-center">
+                      <div class="avatar-sm me-2">
+                        <div class="avatar-title rounded bg-transparent text-success fs-24">
+                          <i class="ri-stack-fill"></i>
+                        </div>
+                      </div>
+                      <div class="flex-grow-1">
+                        <p class="text-muted mb-1">{{'MODULES.HR.MAIN.AVAILABLE_STOCKS' | translate }}:</p>
+                        <h5 class="mb-0">{{ barcode?.stock?.currentStock || 0 }}</h5>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="col-lg-3 col-sm-6">
+                  <div class="p-2 border border-dashed rounded">
+                    <div class="d-flex align-items-center">
+                      <div class="avatar-sm me-2">
+                        <div class="avatar-title rounded bg-transparent text-success fs-24">
+                          <i class="ri-inbox-archive-fill"></i>
+                        </div>
+                      </div>
+                      <div class="flex-grow-1">
+                        <p class="text-muted mb-1">{{'MODULES.HR.MAIN.TOTAL_REVENUE' | translate }}:</p>
+                        <h5 class="mb-0">{{ (barcodeStats$ | async)?.totalRevenue | currency:'DT':'symbol':'1.3-3' }}
+                        </h5>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div *ngIf="barcode?.barcode" class="mt-4 text-muted">
+                <h5 class="fs-14">{{'MODULES.INVENTORY.BARCODE' | translate }}:</h5>
+                <div *ngIf="validateBarcode(barcode?.barcode)" class="col-3">
+                  <ngx-barcode [bc-height]="25" [bc-width]="2" [bc-font-size]="12" [bc-format]="'EAN13'"
+                    class="cursor-pointer" [bc-element-type]="'svg'" [bc-display-value]="true"
+                    [bc-background]="'#EEEEEE'" [bc-value]="barcode?.barcode" matTooltip="Copy Barcode"
+                    (click)="copyText(barcode?.barcode)">
+                  </ngx-barcode>
+                </div>
+                <div *ngIf="!validateBarcode(barcode?.barcode)">
+                  <div (click)="copyText(barcode?.barcode)" fxLayout="row" fxLayoutAlign="start center">
+                    {{ barcode?.barcode }}
+                    <i matTooltip="This is not a valid EAN13 barcode"
+                      class="fs-20 ms-1 ri-error-warning-line text-warning"></i>
+                  </div>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-xl-6">
+                  <div *ngFor="let attribute of attributePairs" class="d-flex mt-4">
+                    <h5 class="fs-14">{{ attribute?.key }}:</h5>
+                    <div class="d-flex ms-2">
+                      <label *ngFor="let label of attribute?.value" class="badge text-uppercase me-1 badge-soft-info"
+                        for="productsize-radio1">{{ label }}</label>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="product-content mt-5">
+                <ul ngbNav #customNav="ngbNav" [activeId]="1" class="nav nav-tabs nav-tabs-custom nav-success"
+                  role="tablist">
+                  <li *ngIf="priceList?.length" [ngbNavItem]="1" class="nav-item">
+                    <a ngbNavLink class="nav-link" data-bs-toggle="tab" role="tab">{{'MODULES.INVENTORY.PRICE_LIST' | translate }}
+                    </a>
+                    <ng-template ngbNavContent>
+                      <div class="tab-pane fade show active" id="nav-speci" role="tabpanel"
+                        aria-labelledby="nav-speci-tab">
+                        <div class="table-responsive">
+                          <form [formGroup]="priceListForm">
+                            <div class="d-flex mb-2 justify-content-end">
+                              <button class="btn btn-sm btn-soft-success remove-list"
+                                [disabled]="isPriceListButtonDisabled" (click)="savePriceList()">
+                                <i class="ri-save-fill ms-1 align-bottom"></i>
+                                {{'COMMON.SAVE' | translate }}
+                              </button>
+                            </div>
+                            <table class="align-middle mb-0 table table-nowrap">
+                              <thead>
+                                <tr class="text-muted text-uppercase">
+                                  <th>{{'MODULES.INVENTORY.LABEL' | translate }}</th>
+                                  <th class="d-flex justify-content-center">{{ 'MODULES.ECOMMERCE.MAIN.PRICE' | translate }}</th>
+                                </tr>
+                              </thead>
+                              <tbody class="list form-check-all">
+                                <tr *ngFor="let list of allList.controls; let i = index;">
+                                  <td>{{ list?.value?.label }}</td>
+                                  <td class="hstack d-flex justify-content-center gap-2">
+                                    <ng-container formArrayName="allList">
+                                      <div [formGroupName]="i">
+                                        <input (keyUp.enter)="savePriceList(i)" type="text" formControlName="value"
+                                          class="form-control" id="dealTitle" placeholder="{{'PLACEHOLDER.ENTER_PRICE' | translate }}">
+                                      </div>
+                                    </ng-container>
+                                  </td>
+                                </tr>
+                              </tbody>
+                            </table>
+                          </form>
+                        </div>
+                        <div *ngIf="!(priceList$ | async).length" class="py-4 mt-4 text-center" id="noresult">
+                          <lord-icon src="https://cdn.lordicon.com/vlycxjwx.json" trigger="loop"
+                            [colors]="'primary:' + primaryColor + ',secondary:' + secondaryColor" style="width:72px;height:72px"></lord-icon>
+                          <h5 class="mt-4">{{ 'COMMON.NO_RESULT' | translate }}</h5>
+                        </div>
+                      </div>
+                    </ng-template>
+                  </li>
+                  <li [ngbNavItem]="priceList?.length ? 2 : 1" class="nav-item">
+                    <a ngbNavLink class="nav-link" data-bs-toggle="tab" role="tab">
+                      Price Credit
+                    </a>
+                    <ng-template ngbNavContent>
+                      <div class="tab-pane fade show active" id="nav-speci" role="tabpanel"
+                        aria-labelledby="nav-speci-tab">
+                        <div class="table-responsive overflow-hidden">
+                          <div class="d-flex mb-2 justify-content-end">
+                            <button class="btn btn-sm btn-soft-success remove-list"
+                              (click)="openCreditModal(creditModal, null, null)">{{'COMMON.ADD' | translate }}
+                              <i class="ri-add-fill ms-1 align-bottom"></i>
+                            </button>
+                          </div>
+                          <table class="table mb-0">
+                            <thead>
+                              <tr class="text-muted text-uppercase">
+                                <th scope="col" data-sort="id">{{'MODULES.INVENTORY.PERIOD_CYCLE' | translate }}</th>
+                                <th scope="col" data-sort="tasks_name">{{'MODULES.INVENTORY.PERIOD' | translate }}</th>
+                                <th scope="col" data-sort="client_name">{{'MODULES.INVENTORY.CREDIT' | translate }}</th>
+                                <th scope="col" data-sort="action">{{'COMMON.ACTION' | translate }}</th>
+                              </tr>
+                            </thead>
+                            <tbody>
+                              <ng-container *ngIf="barcode?.priceCredit?.length">
+                                <tr *ngFor="let credit of barcode?.priceCredit; let i = index">
+                                  <td>{{ credit.periodCycle }}</td>
+                                  <td>{{ credit?.periodValue }}</td>
+                                  <td>{{ credit?.amount }}</td>
+                                  <td class="hstack gap-2">
+                                    <button class="btn btn-sm btn-soft-info remove-list" data-bs-toggle="modal"
+                                      data-bs-target="#removeTaskItemModal"
+                                      (click)="openCreditModal(creditModal, credit, i)">
+                                      <i class="ri-pencil-fill align-bottom"></i>
+                                    </button>
+                                    <button class="btn btn-sm btn-soft-danger remove-list" data-bs-toggle="modal"
+                                      data-bs-target="#createTask" data-edit-id="15"
+                                      (click)="openDeleteCreditModal(deleteCreditModal, i)">
+                                      <i class="ri-delete-bin-5-fill align-bottom"></i>
+                                    </button>
+                                  </td>
+                              </ng-container>
+                            </tbody>
+                          </table>
+                        </div>
+                        <div *ngIf="!barcode?.priceCredit?.length" class="py-4 mt-4 text-center" id="noresult">
+                          <lord-icon src="https://cdn.lordicon.com/vlycxjwx.json" trigger="loop"
+                            [colors]="'primary:' + primaryColor + ',secondary:' + secondaryColor" style="width:72px;height:72px"></lord-icon>
+                          <h5 class="mt-4">{{ 'COMMON.NO_RESULT' | translate }}</h5>
+                        </div>
+                      </div>
+                    </ng-template>
+                  </li>
+                  <li [ngbNavItem]="priceList?.length ? 3 : 2" class="nav-item"
+                    *ngIf="(pageId$ | async) === 'equipments-articles'">
+                    <a ngbNavLink class="nav-link" data-bs-toggle="tab" role="tab">{{'MODULES.INVENTORY.MAINTENANCE' | translate }}
+                    </a>
+                    <ng-template ngbNavContent>
+                      <div id="nav-speci" role="tabpanel" fxLayout="column" fxLayoutAlign="start start"
+                        aria-labelledby="nav-speci-tab" class="tab-pane fade show active">
+                        <div class="table-responsive w-100">
+                          <form [formGroup]="maintenanceForm">
+                            <div class="d-flex mb-2 justify-content-end">
+                              <button (click)="saveMaintenance()" [disabled]="isMaintenanceButtonDisabled"
+                                class="btn btn-sm btn-soft-success remove-list">
+                                <i class="ri-save-fill ms-1 align-bottom"></i>{{'COMMON.SAVE' | translate }}
+                              </button>
+                            </div>
+                            <table class="table mb-0">
+                              <tbody>
+                                <tr>
+                                  <th scope="row">{{'MODULES.INVENTORY.OWNER' | translate }}</th>
+                                  <td>
+                                    <ng-select bindValue="id" [addTag]="true" appendTo="body" [clearable]="true"
+                                      data-choices="true" [searchable]="true" bindLabel="firstName"
+                                      [hideSelected]="true" [virtualScroll]="true" formControlName="owner"
+                                      [items]="owners$ | async" placeholder="{{'PLACEHOLDER.SELECT_OWNER' | translate }}"
+                                      (scrollToEnd)="loadMoreOwners()" *ngIf="owners$ | async as owners">
+                                      <ng-template *ngIf="ownersPagination$ | async as ownersPagination" ng-header-tmp>
+                                        <small class="form-text text-muted">{{'COMMON.LOADED' | translate }} {{owners?.length}} {{'COMMON.OF' | translate }}
+                                          {{ownersPagination?.length}}</small>
+                                      </ng-template>
+                                      <ng-template ng-label-tmp let-item="item" let-clear="clear">
+                                        <span class="ng-value-label">
+                                          <img *ngIf="!item?.picture" class="avatar-xxs rounded-circle"
+                                            src="assets/images/users/avatar-1.jpg" width="20px" height="20px">
+                                          <img *ngIf="item?.picture" class="avatar-xxs rounded-circle"
+                                            [src]="item?.picture?.baseUrl + '/' + item?.picture?.path" width="20px"
+                                            height="20px">
+                                          {{item?.firstName}}
+                                        </span>
+                                        <span class="ng-value-icon right" (click)="clear(item)"
+                                          aria-hidden="true">×</span>
+                                      </ng-template>
+                                      <ng-template ng-option-tmp let-item$="item$" let-item="item">
+                                        <div class="d-flex align-items-center">
+                                          <span class="flex-shrink-0">
+                                            <img *ngIf="!item?.picture" src="assets/images/users/avatar-1.jpg" alt=""
+                                              class="avatar-xxs rounded-circle" />
+                                            <img *ngIf="item?.picture"
+                                              [src]="item?.picture?.baseUrl + '/' + item?.picture?.path" alt=""
+                                              class="avatar-xxs rounded-circle" />
+                                          </span>
+                                          <span class="flex-grow-1 ms-2">
+                                            {{item?.firstName}} {{item?.lastName}}
+                                          </span>
+                                        </div>
+                                      </ng-template>
+                                    </ng-select>
+                                  </td>
+                                </tr>
+                                <tr>
+                                  <th scope="row">Technician</th>
+                                  <td>
+                                    <ng-select bindValue="id" [addTag]="true" appendTo="body" [clearable]="true"
+                                      data-choices="true" [searchable]="true" bindLabel="firstName"
+                                      [hideSelected]="true" [virtualScroll]="true" formControlName="technician"
+                                      [items]="technicians$ | async" placeholder="{{'PLACEHOLDER.SELECT_TECHNICIAN' | translate }}"
+                                      (scrollToEnd)="loadMoreTechnicians()" *ngIf="technicians$ | async as technicians">
+                                      <ng-template *ngIf="techniciansPagination$ | async as techniciansPagination"
+                                        ng-header-tmp>
+                                        <small class="form-text text-muted">{{'COMMON.LOADED' | translate }} {{technicians?.length}} {{'COMMON.OF' | translate }}
+                                          {{techniciansPagination?.length}}</small>
+                                      </ng-template>
+                                      <ng-template ng-label-tmp let-item="item" let-clear="clear">
+                                        <span class="ng-value-label">
+                                          <img *ngIf="!item?.picture" class="avatar-xxs rounded-circle"
+                                            src="assets/images/users/avatar-1.jpg" width="20px" height="20px">
+                                          <img *ngIf="item?.picture" class="avatar-xxs rounded-circle"
+                                            [src]="item?.picture?.baseUrl + '/' + item?.picture?.path" width="20px"
+                                            height="20px">
+                                          {{item?.firstName}}
+                                        </span>
+                                        <span class="ng-value-icon right" (click)="clear(item)"
+                                          aria-hidden="true">×</span>
+                                      </ng-template>
+                                      <ng-template ng-option-tmp let-item$="item$" let-item="item">
+                                        <div class="d-flex align-items-center">
+                                          <span class="flex-shrink-0">
+                                            <img *ngIf="!item?.picture" src="assets/images/users/avatar-1.jpg" alt=""
+                                              class="avatar-xxs rounded-circle" />
+                                            <img *ngIf="item?.picture"
+                                              [src]="item?.picture?.baseUrl + '/' + item?.picture?.path" alt=""
+                                              class="avatar-xxs rounded-circle" />
+                                          </span>
+                                          <span class="flex-grow-1 ms-2">
+                                            {{item?.firstName}} {{item?.lastName}}
+                                          </span>
+                                        </div>
+                                      </ng-template>
+                                    </ng-select>
+                                  </td>
+                                </tr>
+                                <tr>
+                                  <th scope="row">{{'MODULES.INVENTORY.EXPECTED_MEANTIME' | translate }}</th>
+                                  <td>
+                                    <div class="input-group">
+                                      <input type="number" class="form-control" id="expected-meantime-input"
+                                        aria-label="Expected Meantime" formControlName="expectedMeantime"
+                                        placeholder="{{'PLACEHOLDER.ENTER_EXPECTED_MEANTIME' | translate }}"
+                                        aria-describedby="product-expectedMeantime-addon">
+                                      <span class="input-group-text" id="product-expectedMeantime-addon">{{'MODULES.INDEX.DAYS' | translate }}</span>
+                                    </div>
+                                  </td>
+                                </tr>
+                                <tr>
+                                  <th scope="row">{{'MODULES.INVENTORY.MAINTENANCE_DURATION' | translate }}</th>
+                                  <td>
+                                    <div class="input-group">
+                                      <input type="number" class="form-control" aria-label="Maintenance Duration"
+                                        formControlName="maintenanceDuration" id="maintenance-duration-input"
+                                        placeholder="{{'PLACEHOLDER.ENTER_MAINTENANCE_DURATION' | translate }}"
+                                        aria-describedby="product-maintenanceDuration-addon">
+                                      <span class="input-group-text" id="product-maintenanceDuration-addon">{{'MODULES.INVENTORY.HOURS' | translate }}</span>
+                                    </div>
+                                  </td>
+                                </tr>
+                                <tr>
+                                  <th scope="row">{{'MODULES.INVENTORY.PREVENTATIVE_MAINTENANCE_DURATION' | translate }}</th>
+                                  <td>
+                                    <div class="input-group">
+                                      <input type="number" class="form-control" id="prev-maintenance-duration-input"
+                                        formControlName="prevMaintenanceDuration"
+                                        aria-label="Preventative Maintenance Duration"
+                                        placeholder="{{'PLACEHOLDER.ENTER_PREVENTATIVE_MAINTENANCE_DURATION' | translate }}"
+                                        aria-describedby="product-prevMaintenanceDuration-addon">
+                                      <span class="input-group-text"
+                                        id="product-prevMaintenanceDuration-addon">{{'MODULES.INDEX.DAYS' | translate }}</span>
+                                    </div>
+                                  </td>
+                                </tr>
+                              </tbody>
+                            </table>
+                          </form>
+                        </div>
+                      </div>
+                    </ng-template>
+                  </li>
+                  <li [ngbNavItem]="priceList?.length ? 4 : 3" class="nav-item">
+                    <a ngbNavLink class="nav-link" data-bs-toggle="tab" role="tab">{{'MODULES.INVENTORY.MULTI_CURRENCY' | translate }}
+                    </a>
+                    <ng-template ngbNavContent>
+                      <div class="tab-pane fade show active" id="nav-speci" role="tabpanel"
+                        aria-labelledby="nav-speci-tab">
+                        <div *ngIf="prices?.value?.length" class="table-responsive overflow-hidden">
+                          <form [formGroup]="pricesForm">
+                            <ng-container formArrayName="prices">
+                              <ng-container *ngFor="let price of pricesForm.get('prices')['controls']; let i=index; let last = last"
+                                [formGroupName]="i">
+                                <div class="row">
+                                  <div class="col-lg-5 mb-3">
+                                    <div class="input-group">
+                                      <input formControlName="price" type="text" class="form-control"
+                                        id="firstnamefloatingInput" placeholder="{{'PLACEHOLDER.ENTER_PRICE' | translate }}">
+                                      <div class="input-group-append">
+                                        <span class="input-group-text">
+                                          {{price.get('currency').value?.name}}</span>
+                                      </div>
+                                    </div>
+                                  </div>
+                                </div>
+                              </ng-container>
+                              <div class="d-flex justify-content-end">
+                                <button [disabled]="isPricesButtonDisabled || pricesForm.invalid" (click)="savePrices()" class="btn btn-sm btn-success">{{'COMMON.SAVE' | translate }}</button>
+                              </div>
+                            </ng-container>
+                          </form>
+                        </div>
+                        <div *ngIf="!prices?.value?.length" class="py-4 mt-4 text-center" id="noresult">
+                          <lord-icon src="https://cdn.lordicon.com/vlycxjwx.json" trigger="loop"
+                            [colors]="'primary:' + primaryColor + ',secondary:' + secondaryColor" style="width:72px;height:72px"></lord-icon>
+                          <h5 class="mt-4">{{ 'COMMON.NO_RESULT' | translate }}</h5>
+                        </div>
+                      </div>
+                    </ng-template>
+                  </li>
+                </ul>
+                <div class="tab-content border border-top-0 p-4">
+                  <div [ngbNavOutlet]="customNav"></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<ng-template #addBarcodeModal role="document" let-modal>
+  <div class="modal-header bg-light p-3">
+    <h5 class="modal-title" id="exampleModalLabel">{{'COMMON.EDIT' | translate }} Article</h5>
+    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"
+      (click)="modal.dismiss('Cross click')"></button>
+  </div>
+  <div class="modal-body">
+    <form [formGroup]="initBarcodeForm">
+      <div class="mb-3">
+        <label class="form-check-label" for="lastname-field">{{ 'MODULES.ECOMMERCE.MAIN.PRODUCTS' | translate }}</label>
+        <ng-select [multiple]="false" formControlName="product" [typeahead]="productSearchInput$" [virtualScroll]="true"
+          (scrollToEnd)="loadMoreProducts()" [items]="products$ | async">
+          <ng-template ng-label-tmp let-item="item" let-clear="clear">
+            <span class="ng-value-label">
+              {{ item?.name }}
+            </span>
+            <span class="ng-value-icon right" (click)="clear(item)" aria-hidden="true">×</span>
+          </ng-template>
+          <ng-template ng-option-tmp let-item$="item$" let-item="item">
+            <div class="d-flex align-items-center">
+              <div class="flex-shrink-0 me-3">
+                <div class="avatar-sm bg-light p-1 rounded" *ngIf="item?.media?.pictures?.length">
+                  <img [src]="item?.media?.pictures[0]?.baseUrl + '/' + item?.media?.pictures[0]?.path"
+                    class="img-fluid h-100 d-block">
+                </div>
+                <div class="avatar-sm bg-light rounded p-1" *ngIf="!item?.media?.pictures?.length">
+                  <div class="avatar-title bg-soft-success text-success rounded fs-13">
+                    {{ item?.name?.charAt(0) || 'N'}}</div>
+                </div>
+              </div>
+              <span class="flex-grow-1 ms-2">
+                {{ item?.name }}
+              </span>
+            </div>
+          </ng-template>
+        </ng-select>
+      </div>
+      <div class="d-flex mb-1 justify-content-center">
+        <span *ngFor="let label of selectedAttributeNames" class="badge badge-soft-success me-1 fs-14">{{ label
+          }}</span>
+      </div>
+      <label class="form-check-label mb-3" for="lastname-field">{{'MODULES.INVENTORY.ATTRIBUTES' | translate }}</label>
+      <div class="mxh-13 overflow-auto" infiniteScroll [scrollWindow]="false" [infiniteScrollDistance]="2"
+        [infiniteScrollThrottle]="50" (scrolled)="loadMoreAttributes()">
+        <div *ngFor="let attribute of attributes; let i = index">
+          <ngb-accordion (panelChange)='getAttributeValues(attribute, $event)' #acc="ngbAccordion" [closeOthers]="true">
+            <ngb-panel [id]="attribute.id">
+              <ng-template ngbPanelTitle class="accordion-header border-0 bg-transparent">
+                {{ attribute?.label }}
+              </ng-template>
+              <ng-template ngbPanelContent>
+                <ng-container *ngIf="attribute?.isMultipleChoice">
+                  <div *ngFor="let value of attributeValues" class="form-check">
+                    <input [checked]="isAttributeExist(value)" (change)="checkAttributes(value, $event, i)"
+                      [value]="value?.id" class="form-check-input" type="checkbox" id="value{{ value?.id }}">
+                    <label class="form-check-label" for="value{{ value?.id }}">
+                      {{ value?.label }}
+                    </label>
+                  </div>
+                </ng-container>
+                <ng-container *ngIf="!attribute?.isMultipleChoice">
+                  <div *ngFor="let value of attributeValues" class="form-check">
+                    <input (change)="checkRadioAttributes($event)" [value]="value?.id"
+                      [checked]="isAttributeRadioExist(value)" class="form-check-input" type="radio"
+                      id="value{{ value?.id }}" name="attributeRadio">
+                    <label class="form-check-label" for="value{{ value?.id }}">
+                      {{ value?.label }}
+                    </label>
+                  </div>
+                </ng-container>
+                <div *ngIf="attributeValues?.length && !(isLastAttributeValues$ | async)"
+                  class="d-flex justify-content-center">
+                  <button (click)="loadMoreAttributeValues()" class="btn-sm btn-soft-info">{{ 'COMMON.LOAD_MORE' | translate }}</button>
+                </div>
+              </ng-template>
+            </ngb-panel>
+          </ngb-accordion>
+        </div>
+      </div>
+    </form>
+  </div>
+  <div class="modal-footer">
+    <button type="button" class="btn btn-light" data-bs-dismiss="modal"
+      (click)="modal.close('Close click')">{{'COMMON.CLOSE' | translate }}</button>
+    <button type="button" (click)="resetForm()" class="btn btn-info">{{'COMMON.RESET' | translate }}</button>
+    <button type="button" (click)="addBarcode()"
+      [disabled]="initBarcodeForm.invalid || isBarcodeButtonDisabled || noBarCode === false" class="btn btn-success"><i
+        class="ri-save-line align-bottom me-1"></i>
+      Save</button>
+  </div>
+</ng-template>
+<ng-template #barcodeModal role="document" let-modal>
+  <div class="modal-header bg-light p-3">
+    <h5 class="modal-title" id="exampleModalLabel">{{'COMMON.EDIT' | translate }} Article</h5>
+    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"
+      (click)="modal.dismiss('Cross click')"></button>
+  </div>
+  <form [formGroup]="barcodeForm">
+    <div class="modal-body">
+      <div class="mb-3">
+        <label for="dealTitle" class="form-label">{{'COMMON.NAME' | translate }}</label>
+        <input formControlName="name"
+          [ngClass]="{ 'is-invalid': barcodeForm.get('name')?.touched && barcodeForm.get('name').hasError('required') }"
+          type="text" class="form-control" id="dealTitle" placeholder="{{'PLACEHOLDER.ENTER_NAME' | translate }}">
+        <div class="text-danger"
+          *ngIf="barcodeForm.get('name')?.touched && barcodeForm.get('name').hasError('required')">{{'COMMON.REQUIRED' | translate }}
+        </div>
+      </div>
+      <div class="mb-3">
+        <label for="dealTitle" class="form-label">{{ 'MODULES.ECOMMERCE.MAIN.PRICE' | translate }}</label>
+        <input formControlName="price"
+          [ngClass]="{ 'is-invalid': barcodeForm.get('price')?.touched && barcodeForm.get('price').hasError('required') }"
+          type="text" class="form-control" id="dealTitle" placeholder="{{'PLACEHOLDER.ENTER_PRICE' | translate }}">
+        <div class="text-danger"
+          *ngIf="barcodeForm.get('price')?.touched && barcodeForm.get('price').hasError('required')">{{'COMMON.REQUIRED' | translate }}
+        </div>
+      </div>
+      <div class="row g-3">
+        <ng-container formGroupName="discount">
+          <div class="mb-3 col-lg-6">
+            <label for="dealTitle" class="form-label">{{ 'MODULES.ECOMMERCE.MAIN.DISCOUNT_TYPE' | translate }}</label>
+            <select class="form-select form-control-line" [formControlName]="'discountType'" [required]="true">
+              <option [value]="'No discount'">{{'MODULES.INVENTORY.NO_DISCOUNT' | translate }}</option>
+              <option *ngFor="let type of discountTypes" [value]="type">{{ type.split('_').join(' ') |
+                titlecase }}
+              </option>
+            </select>
+            <div class="text-danger"
+              *ngIf="barcodeForm.get('condition')?.touched && barcodeForm.get('condition').hasError('required')">{{'COMMON.REQUIRED' | translate }}
+            </div>
+          </div>
+          <div *ngIf="barcodeForm.get('discount').value.discountType !== 'No discount'" class="mb-3 col-lg-6">
+            <label for="dealTitle" class="form-label">{{ 'MODULES.ECOMMERCE.MAIN.DISCOUNT_AMOUNT' | translate }}</label>
+            <input formControlName="amount"
+              [ngClass]="{ 'is-invalid': barcodeForm.get(['discount', 'discountType'])?.touched && barcodeForm.get(['discount', 'discountType']).hasError('required') }"
+              type="text" class="form-control" id="dealTitle" placeholder="{{'PLACEHOLDER.ENTER_DISCOUNT_AMOUNT' | translate }}">
+            <div class="text-danger"
+              *ngIf="barcodeForm.get(['discount', 'discountType'])?.touched && barcodeForm.get(['discount', 'discountType']).hasError('required')">{{'COMMON.REQUIRED' | translate }}
+            </div>
+          </div>
+        </ng-container>
+        <div class="mb-3 col-lg-6">
+          <label for="dealTitle" class="form-label">{{'MODULES.INVENTORY.CONDITION' | translate }}</label>
+          <select class="form-select form-control-line" [formControlName]="'condition'">
+            <option *ngFor="let condition of conditions" [value]="condition">{{ condition.split('_').join(' ') |
+              titlecase }}
+            </option>
+          </select>
+          <div class="text-danger"
+            *ngIf="barcodeForm.get('condition')?.touched && barcodeForm.get('condition').hasError('required')">{{'COMMON.REQUIRED' | translate }}
+          </div>
+        </div>
+      </div>
+      <div class="mb-3 form-check">
+        <ng-container formGroupName="pixel">
+          <input formControlName="include" class="form-check-input border-x" type="checkbox" id="Multiple">
+          <label role="switch" class="form-check-label" for="Multiple">
+            Pixel
+          </label>
+        </ng-container>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button type="button" class="btn btn-light" data-bs-dismiss="modal"
+        (click)="modal.close('Close click')">{{'COMMON.CLOSE' | translate }}</button>
+      <button type="button" [disabled]="isButtonDisabled || barcodeForm.invalid" (click)="save()"
+        class="btn btn-success"><i class="ri-save-line align-bottom me-1"></i>{{'COMMON.SAVE' | translate }}</button>
+    </div>
+  </form>
+</ng-template>
+<ng-template #creditModal role="document" let-modal>
+  <div class="modal-header bg-light p-3">
+    <h5 class="modal-title" id="exampleModalLabel">{{'COMMON.EDIT' | translate }} Article</h5>
+    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"
+      (click)="modal.dismiss('Cross click')"></button>
+  </div>
+  <form [formGroup]="creditForm">
+    <div class="modal-body">
+      <div class="mb-3">
+        <label for="status-field" class="form-label">{{'MODULES.INVENTORY.PERIOD_CYCLE' | translate }}</label>
+        <select class="form-select form-control-line" [formControlName]="'periodCycle'" [required]="true">
+          <option value="" disabled selected>{{'COMMON.SELECT_OPTION' | translate }}</option>
+          <option *ngFor="let period of periodCycles" [value]="period">
+            {{ period.split('_').join(' ') | titlecase }}
+          </option>
+        </select>
+        <div class="text-danger"
+          *ngIf="creditForm.get('periodCycle')?.touched && creditForm.get('periodCycle').hasError('required')">{{'COMMON.REQUIRED' | translate }}
+        </div>
+      </div>
+      <div class="mb-3">
+        <label for="dealTitle" class="form-label">{{'MODULES.INVENTORY.PERIOD_VALUE' | translate }}</label>
+        <input formControlName="periodValue"
+          [ngClass]="{ 'is-invalid': creditForm.get('periodValue')?.touched && creditForm.get('periodValue').hasError('required') }"
+          type="number" class="form-control" id="dealTitle" placeholder="{{'PLACEHOLDER.ENTER_PERIOD_VALUE' | translate }}">
+        <div class="text-danger"
+          *ngIf="creditForm.get('periodValue')?.touched && creditForm.get('periodValue').hasError('required')">{{'COMMON.REQUIRED' | translate }}
+        </div>
+      </div>
+      <div class="mb-3">
+        <label for="dealTitle" class="form-label">{{'COMMON.AMOUNT' | translate }}</label>
+        <div class="input-group">
+          <input required formControlName="amount"
+            [ngClass]="{ 'is-invalid': creditForm.get('amount')?.touched && creditForm.get('amount').hasError('required') }"
+            type="text" class="form-control" id="dealTitle" placeholder="{{'PLACEHOLDER.ENTER_AMOUNT' | translate }}">
+          <span class="input-group-text">DT</span>
+        </div>
+        <div class="text-danger"
+          *ngIf="creditForm.get('amount')?.touched && creditForm.get('amount').hasError('required')">{{'COMMON.REQUIRED' | translate }}
+        </div>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button type="button" class="btn btn-light" data-bs-dismiss="modal"
+        (click)="modal.close('Close click')">{{'COMMON.CLOSE' | translate }}</button>
+      <button type="button" [disabled]="isCreditButtonDisabled || creditForm.invalid" (click)="saveCredit()"
+        class="btn btn-success"><i class="ri-save-line align-bottom me-1"></i>{{'COMMON.SAVE' | translate }}</button>
+    </div>
+  </form>
+</ng-template>
+<ng-template #deleteCreditModal let-modal>
+  <div class="modal-content">
+    <div class="modal-header">
+      <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" id="btn-close"
+        (click)="modal.dismiss('Cross click')"></button>
+    </div>
+    <div class="modal-body">
+      <div class="mt-2 text-center">
+        <lord-icon src="https://cdn.lordicon.com/gsqxdxog.json" trigger="loop"
+          colors="primary:#405189,secondary:#f06548" style="width:90px;height:90px"></lord-icon>
+        <div class="mt-4 pt-2 fs-15 mx-4 mx-sm-5">
+          <h4>{{'MODULES.INVENTORY.YOU_ARE_ABOUT_TO_REMOVE_A_PRICE_CREDIT' | translate }}</h4>
+          <p class="text-muted mx-4 mb-0">{{'COMMON.DELETE' | translate }}ing your price credit {{'MENUITEMS.CUSTOMERENGAGEMENT.CAMPAIGN.DATA_BASE_REMOVE' | translate }}
+          </p>
+        </div>
+      </div>
+      <div class="d-flex gap-2 justify-content-center mt-4 mb-2">
+        <button class="btn btn-link link-success fw-medium text-decoration-none" data-bs-dismiss="modal"
+          (click)="modal.close('Close click')" id="deleteRecord-close"><i class="ri-close-line me-1 align-middle"></i>{{'COMMON.CLOSE' | translate }}</button>
+        <button type="button" class="btn w-sm btn-danger " id="delete-product" (click)="deleteCredit(data)"
+          (click)="modal.close('Close click')">{{'MODULES.INVENTORY.YES_REMOVE_IT' | translate }}</button>
+      </div>
+    </div>
+  </div>
+</ng-template>

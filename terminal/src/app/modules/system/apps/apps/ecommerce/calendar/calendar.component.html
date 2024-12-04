@@ -1,0 +1,40 @@
+<ng-container *ngIf="!(navigating$ | async)">
+
+  <div class="container">
+    <div class="row justify-content-center">
+      <div class="row mt-4">
+        <div class="d-flex col-md-4 mb-4" *ngFor="let month of daysRange; index as monthIndex">
+          <div class="card flex-column p-2 filter-article">
+            <div class="d-flex justify-content-center bg-{{ colorClasses[monthIndex % 5] }}">
+              <div class="col-12 text-center">
+                {{ (getDate(monthIndex) | date: 'MMMM': '': 'en') | titlecase }}
+              </div>
+            </div>
+            <div class="mt-4">
+              <div class="d-flex">
+                <span class="no-cursor day-item text-center w-100 h-100 bg-{{ colorClasses[monthIndex % 5] }}" *ngFor="let weekday of month.weekDays">
+                  {{ getDate(monthIndex, weekday) | date: 'EEEEEE': '' : 'en' }}
+                </span>
+              </div>
+              <div>
+                <span class="disabled no-cursor day-item text-center w-100 h-100" *ngFor="let day of month.prefixDays">{{ day }}</span>
+                <span class="day day-item text-center rounded-md w-100 h-100 bg-{{ day.selected ? colorBgClasses[monthIndex % 5] : '' }}" *ngFor="let day of month.days; index as i"
+                  (click)="selectDay(monthIndex, day)">{{ day.value }}</span>
+                <span class="disabled no-cursor day-item text-center w-100 h-100" *ngFor="let day of month.suffixDays">{{ day }}</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</ng-container>
+<div *ngIf="navigating$ | async" class="vh-100 py-4 text-center" fxLayout="column" fxLayoutAlign="center center" fxLayoutGap="1rem">
+  <div>
+    <lord-icon trigger="loop" style="width:72px;height:72px" [colors]="'primary:' + primaryColor + ',secondary:' + secondaryColor" src="https://cdn.lordicon.com/msoeawqm.json">
+    </lord-icon>
+  </div>
+  <div class="mt-4">
+    <h5>{{ 'COMMON.LOADING' | translate }}</h5>
+  </div>
+</div>

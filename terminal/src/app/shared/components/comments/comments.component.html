@@ -1,0 +1,126 @@
+<div class="card" *ngIf="comments$ | async as comments">
+  <div class="card-header align-items-center d-flex">
+    <h4 class="card-title mb-0 flex-grow-1">{{'MODULES.INVENTORY.COMMENTS' | translate }} ({{ comments?.length || '0' }})</h4>
+    <div class="flex-shrink-0">
+      <div class="dropdown card-header-dropdown" ngbDropdown>
+        <a
+          ngbDropdownToggle
+          aria-haspopup="true"
+          aria-expanded="false"
+          data-bs-toggle="dropdown"
+          class="text-reset dropdown-btn arrow-none cursor-pointer"
+        >
+          <span class="text-muted">{{ 'SHARED.RECENT'| translate }}<i class="mdi mdi-chevron-down ms-1"></i></span>
+        </a>
+        <div class="dropdown-menu dropdown-menu-end" ngbDropdownMenu>
+          <a class="dropdown-item cursor-pointer">{{ 'SHARED.RECENT'| translate }}</a>
+          <a class="dropdown-item cursor-pointer">{{ 'SHARED.TOP_RATED'| translate }}</a>
+          <a class="dropdown-item cursor-pointer">{{ 'SHARED.PREVIOUS'| translate }}</a>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="card-body">
+    <div *ngIf="comments?.length">
+      <ngx-simplebar class="px-3 mx-n3 mb-2" style="max-height: 300px;">
+        <div *ngFor="let comment of comments; let i = index" class="d-flex mb-4">
+          <div *ngIf="comment.user.picture" class="flex-shrink-0">
+            <img [src]="comment.user.picture.baseUrl + '/' + comment.user.picture.path" alt="" class="avatar-xs rounded-circle shadow">
+          </div>
+          <div *ngIf="!comment.user.picture" class="avatar-title h-8 w-8 me-3 bg-info rounded-circle text-uppercase">
+            {{comment.user.firstName?.charAt(0) || 'N'}}
+          </div>
+          <div class="flex-grow-1 ms-3">
+            <h5 class="fs-13">
+              {{comment.user.firstName}} {{comment.user.lastName}} <small class="text-muted ms-2">{{comment.createdAt | date :'longDate'}}</small>
+            </h5>
+            <p class="text-muted">{{comment.comment}}</p>
+            <form *ngIf="replyFormsArray[comment.id]" [formGroup]="replyFormsArray[comment.id]">
+              <a (click)="showReplyInput(comment.id)" class="badge text-muted cursor-pointer  bg-light" *ngIf="!replyInputVisibleArray[comment.id]">
+                <i class="mdi mdi-reply"></i>{{ 'SHARED.REPLY'| translate }}
+              </a>
+              <div class="mb-3" *ngIf="replyInputVisibleArray[comment.id]">
+                <label for="reply-input" class="form-label">{{'MODULES.INVENTORY.REPLY' | translate }}</label>
+                <div class="input-group input-group-sm w-100">
+                  <input id="reply-input" type="text" class="form-control" placeholder="{{'PLACEHOLDER.REPLY' | translate }}" formControlName="comment">
+                  <button (click)="replyToComment(comment.id)" class="btn btn-outline-success" type="button">{{'MODULES.INVENTORY.REPLY' | translate }}</button>
+                  <button (click)="hideReplyInput(comment.id)" class="btn btn-outline-danger" type="button"><i class="mdi mdi-close"></i></button>
+                </div>
+              </div>
+            </form>
+            <div *ngIf="comment?.firstReply?.reply" class="d-flex mt-4">
+              <div *ngIf="comment.firstReply?.reply?.user?.picture" class="flex-shrink-0">
+                <img [src]="comment.user?.picture?.baseUrl + '/' + comment.user?.picture?.path" alt="" class="avatar-xs rounded-circle shadow">
+              </div>
+              <div *ngIf="!comment.firstReply?.reply?.user?.picture" class="avatar-title bg-info rounded-circle text-uppercase">
+                {{comment?.firstReply?.reply?.user?.firstName?.charAt(0) || 'N'}}
+              </div>
+              <div class="flex-grow-1 ms-3">
+                <h5 class="fs-13">
+                  {{comment?.firstReply?.reply?.user?.firstName}} {{comment?.firstReply?.reply?.user?.lastName}}
+                  <small class="text-muted ms-2">{{comment?.firstReply?.reply?.createdAt | date :'longDate'}}</small>
+                </h5>
+                <p class="text-muted">{{comment?.firstReply?.reply?.comment}}</p>
+              </div>
+            </div>
+            <ng-container *ngIf="(repliesArray[comment.id + '$'] | async)?.length">
+              <div *ngFor="let reply of (repliesArray[comment.id + '$'] | async)" class="d-flex mt-4">
+                <div *ngIf="reply?.user?.picture" class="flex-shrink-0">
+                  <img [src]="reply?.user?.picture?.baseUrl + '/' + reply?.user?.picture?.path" alt="" class="avatar-xs rounded-circle shadow">
+                </div>
+                <div *ngIf="!reply?.user?.picture" class="avatar-title bg-info rounded-circle text-uppercase">
+                  {{reply?.user?.firstName?.charAt(0) || 'N'}}
+                </div>
+                <div class="flex-grow-1 ms-3">
+                  <h5 class="fs-13">
+                    {{reply?.user?.firstName}} {{reply?.user?.lastName}}
+                    <small class="text-muted ms-2">{{reply?.createdAt | date :'longDate'}}</small>
+                  </h5>
+                  <p class="text-muted">{{reply?.comment}}</p>
+                </div>
+              </div>
+            </ng-container>
+            <a
+              (click)="loadMoreReplies(comment.id)"
+              class="badge text-muted bg-light ms-2 cursor-pointer"
+              *ngIf="comment?.firstReply?.hasMoreReplies && !(isLastRepliesArray[comment.id + '$'] | async)"
+            >{{ 'SHARED.LOAD_MORE'| translate }}
+            </a>
+          </div>
+        </div>
+      </ngx-simplebar>
+    </div>
+    <div *ngIf="!comments?.length" class="py-4 mt-4 text-center" id="noresult">
+      <lord-icon
+        trigger="loop"
+        style="width:72px;height:72px"
+        [colors]="'primary:' + primaryColor + ',secondary:' + secondaryColor"
+        src="https://cdn.lordicon.com/vlycxjwx.json"
+      >
+      </lord-icon>
+      <h5 class="mt-4">{{ 'COMMON.NO_RESULT' | translate }}</h5>
+    </div>
+    <form *ngIf="commentForm" [formGroup]="commentForm" class="mt-4">
+      <div class="row g-3">
+        <div class="col-12">
+          <label for="exampleFormControlTextarea1" class="form-label text-body">{{ 'SHARED.LEAVE_COMMENTS'| translate }}
+          </label>
+          <textarea
+            rows="3"
+            formControlName="comment"
+            id="exampleFormControlTextarea1"
+            placeholder="{{'PLACEHOLDER.ENTER_YOUR_COMMENT' | translate }}"
+            class="form-control bg-light border-light"
+          ></textarea>
+        </div>
+        <div class="col-12 text-end">
+          <button type="button" class="btn btn-ghost-secondary btn-icon waves-effect me-1 shadow-none">
+            <i class="ri-attachment-line fs-16"></i>
+          </button>
+          <button [disabled]="commentForm.invalid" (click)="createComment(commentForm)" class="btn btn-success">{{ 'SHARED.POST_COMMENT'| translate }}
+          </button>
+        </div>
+      </div>
+    </form>
+  </div>
+</div>

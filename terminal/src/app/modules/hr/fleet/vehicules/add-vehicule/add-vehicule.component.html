@@ -1,0 +1,257 @@
+<!-- Start Breadcrumbs -->
+<app-breadcrumbs title="{{ 'MENUITEMS.TITLE.CREATE_VEHICULE' | translate }}" [breadcrumbItems]="breadCrumbItems"></app-breadcrumbs>
+<!-- End Breadcrumbs -->
+
+<div class="row">
+  <div class="col-lg-8">
+    <form>
+      <div class="card">
+        <div class="card-body">
+          <div class="mb-3">
+            <label class="form-label" for="product-title-input">{{'SHARED.VEHICLE_TITLE' | translate }}</label>
+            <input type="text" class="form-control" id="product-title-input" placeholder="{{'PLACEHOLDER.ENTER_PRODUCT_TITLE' | translate }}">
+          </div>
+          <div>
+            <label>{{'MODULES.HR.MAIN.PRODUCT_DESCRIPTION' | translate }}</label>
+            <!-- <ckeditor [editor]="Editor" data="
+                        <p>Tommy Hilfiger men striped pink sweatshirt. Crafted with cotton. Material composition is 100% organic cotton. This is one of the world’s leading designer lifestyle brands and is internationally recognized for celebrating the essence of classic American cool style, featuring preppy with a twist designs.</p>
+                        <ul>
+                          <li>Full Sleeve</li>
+                          <li>Cotton</li>
+                          <li>All Sizes available</li>
+                          <li>4 Different Color</li>
+                        </ul>
+                        ">
+                      </ckeditor> -->
+          </div>
+        </div>
+      </div>
+      <!-- end card -->
+
+      <div class="card">
+        <div class="card-header">
+          <h5 class="card-title mb-0">{{'SHARED.VEHICLE_GALLERY' | translate }}</h5>
+        </div>
+        <div class="card-body">
+          <div class="mb-4">
+            <h5 class="fs-14 mb-1">{{'SHARED.VEHICLE_IMAGE' | translate }}</h5>
+            <p class="text-muted">{{'SHARED.ADD_VEHICLE_MAIN_IMAGE' | translate }}</p>
+            <input class="form-control" id="product-image-input" type="file" accept="image/png, image/gif, image/jpeg">
+          </div>
+          <div>
+            <h5 class="fs-14 mb-1">{{'SHARED.VEHICLE_GALLERY' | translate }}</h5>
+            <p class="text-muted">{{'SHARED.ADD_VEHICLE_GALLERY_IMAGES' | translate }}</p>
+            <ngx-file-drop class="cursor-pointer"
+              dropZoneLabel="Drop files here"
+              (onFileDrop)="dropped($event)" (onFileOver)="fileOver($event)" (onFileLeave)="fileLeave($event)">
+              <ng-template ngx-file-drop-content-tmp let-openFileSelector="openFileSelector">
+                {{'SHARED.CLICK_OR_DRAG_FILES_TO_UPLOAD' | translate }}
+              </ng-template>
+            </ngx-file-drop>
+            <!-- end dropzon-preview -->
+          </div>
+        </div>
+      </div>
+      <!-- end card -->
+
+      <div class="card">
+        <div class="card-header">
+          <ul ngbNav #customNav="ngbNav" [activeId]="1" class="nav nav-tabs-custom card-header-tabs border-bottom-0"
+            role="tablist">
+            <li [ngbNavItem]="1" class="nav-item">
+              <a ngbNavLink class="nav-link" data-bs-toggle="tab" role="tab">
+                {{'SHARED.GENERAL_INFO' | translate }}
+              </a>
+              <ng-template ngbNavContent>
+                <div class="tab-pane active" id="addproduct-general-info" role="tabpanel">
+                  <div class="mb-3">
+                    <label class="form-label" for="manufacturer-name-input">{{'SHARED.MANUFACTURER_NAME' | translate }}</label>
+                    <input type="text" class="form-control" id="manufacturer-name-input"
+                      placeholder="{{'PLACEHOLDER.ENTER_MANUFACTURER_NAME' | translate }}">
+                  </div>
+                  <div class="row">
+                    <div class="col-lg-6">
+                      <div class="mb-3">
+                        <label class="form-label" for="manufacturer-brand-input">{{'SHARED.MANUFACTURER_BRAND' | translate }}</label>
+                        <input type="text" class="form-control" id="manufacturer-brand-input"
+                          placeholder="{{'PLACEHOLDER.ENTER_MANUFACTURER_BRAND' | translate }}">
+                      </div>
+                    </div>
+                    <!-- end col -->
+                    <div class="col-lg-6">
+                      <div class="row">
+                        <div class="col-sm-6">
+                          <div class="mb-3">
+                            <label class="form-label" for="product-price-input">{{ 'MODULES.ECOMMERCE.MAIN.PRICE' | translate }}</label>
+                            <div class="input-group mb-3">
+                              <span class="input-group-text" id="product-price-addon">$</span>
+                              <input type="text" class="form-control" id="product-price-input" placeholder="{{'PLACEHOLDER.ENTER_PRICE' | translate }}"
+                                aria-label="Price" aria-describedby="product-price-addon">
+
+                            </div>
+                          </div>
+                        </div>
+                        <div class="col-sm-6">
+                          <div class="mb-3">
+                            <label class="form-label" for="product-discount-input">{{ 'MODULES.ECOMMERCE.MAIN.DISCOUNT' | translate }}</label>
+                            <div class="input-group mb-3">
+                              <span class="input-group-text" id="product-discount-addon">%</span>
+                              <input type="text" class="form-control" id="product-discount-input"
+                                placeholder="{{'PLACEHOLDER.ENTER_DISCOUNT' | translate }}" aria-label="discount"
+                                aria-describedby="product-discount-addon">
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    <!-- end col -->
+                  </div>
+                  <!-- end row -->
+                </div>
+              </ng-template>
+            </li>
+            <li [ngbNavItem]="2" class="nav-item">
+              <a ngbNavLink class="nav-link" data-bs-toggle="tab" role="tab">
+                {{'SHARED.META_DATA' | translate }}
+              </a>
+              <ng-template ngbNavContent>
+                <div class="tab-pane" id="addproduct-metadata" role="tabpanel">
+                  <div class="row">
+                    <div class="col-lg-6">
+                      <div class="mb-3">
+                        <label class="form-label" for="meta-title-input">{{'MODULES.INVENTORY.META_TITLE' | translate }}</label>
+                        <input type="text" class="form-control" placeholder="{{'PLACEHOLDER.ENTER_META_TITLE' | translate }}" id="meta-title-input">
+                      </div>
+                    </div>
+                    <!-- end col -->
+
+                    <div class="col-lg-6">
+                      <div class="mb-3">
+                        <label class="form-label" for="meta-keywords-input">{{'SHARED.META_KEYWORDS' | translate }}</label>
+                        <input type="text" class="form-control" placeholder="{{'PLACEHOLDER.ENTER_META_KEYWORDS' | translate }}"
+                          id="meta-keywords-input">
+                      </div>
+                    </div>
+                    <!-- end col -->
+                  </div>
+                  <!-- end row -->
+
+                  <div>
+                    <label class="form-label" for="meta-description-input">{{'MODULES.INVENTORY.META_DESCRIPTION' | translate }}</label>
+                    <textarea class="form-control" id="meta-description-input" placeholder="{{'PLACEHOLDER.ENTER_META_DESCRIPTION' | translate }}"
+                      rows="3"></textarea>
+                  </div>
+                </div>
+              </ng-template>
+            </li>
+          </ul>
+          <!-- Tab panes -->
+          <div class="tab-content pt-4">
+            <div [ngbNavOutlet]="customNav"></div>
+          </div>
+        </div>
+        <!-- end card header -->
+      </div>
+      <!-- end card -->
+      <div class="text-end mb-3">
+        <button type="submit" class="btn btn-success w-sm">{{'COMMON.SUBMIT' | translate }}</button>
+      </div>
+    </form>
+
+
+  </div>
+  <!-- end col -->
+
+  <div class="col-lg-4">
+    <div class="card">
+      <div class="card-header">
+        <h5 class="card-title mb-0">{{'MODULES.WEBSITE.PUBLISH' | translate }}</h5>
+      </div>
+      <div class="card-body">
+        <div class="mb-3">
+          <label for="choices-publish-status-input" class="form-label">{{'COMMON.STATUS' | translate }}</label>
+
+          <select class="form-select" id="choices-publish-status-input" data-choices data-choices-search-false>
+            <option value="Published" selected>{{'COMMON.STATE.PUBLISHED' | translate }}</option>
+            <option value="Scheduled">{{'COMMON.STATE.SCHEDULED' | translate }}</option>
+            <option value="Draft">{{'COMMON.STATE.DRAFT' | translate }}</option>
+          </select>
+        </div>
+
+        <div>
+          <label for="choices-publish-visibility-input" class="form-label">{{'MODULES.HR.MAIN.VISIBILTY' | translate }}</label>
+          <select class="form-select" id="choices-publish-visibility-input" data-choices data-choices-search-false>
+            <option value="Public" selected>{{'MODULES.HR.MAIN.PUBLIC' | translate }}</option>
+            <option value="Hidden">{{'MODULES.HR.MAIN.HIDDEN' | translate }}</option>
+          </select>
+        </div>
+      </div>
+      <!-- end card body -->
+    </div>
+    <!-- end card -->
+
+    <div class="card">
+      <div class="card-header">
+        <h5 class="card-title mb-0">{{'MODULES.HR.MAIN.PUBLISH_SCHEDULE' | translate }}</h5>
+      </div>
+      <!-- end card body -->
+      <div class="card-body">
+        <div>
+          <label for="datepicker-publish-input" class="form-label">{{'MODULES.HR.MAIN.PUBLISH_DATE_TIME' | translate }}</label>
+          <input class="form-control flatpickr-input" type="text" placeholder="{{'PLACEHOLDER.ENTER_PUBLISH_DATE' | translate }}" mwlFlatpickr
+            [altInput]="true" [enableTime]="true" [convertModelValue]="true" [dateFormat]="'Y-m-d H:i'">
+        </div>
+      </div>
+    </div>
+    <!-- end card -->
+
+    <div class="card">
+      <div class="card-header">
+        <h5 class="card-title mb-0">{{'MODULES.HR.MAIN.VEHICULE_CATEGORIES' | translate }}</h5>
+      </div>
+      <div class="card-body">
+        <p class="text-muted mb-2"> <a href="javascript:void(0);" class="float-end text-decoration-underline">{{'MODULES.HR.MAIN.ADD_NEW' | translate }}</a>{{'MODULES.HR.MAIN.SELECT_PRODUCT_CATEGORY' | translate }}</p>
+        <select class="form-select" name="choices-category-input" data-choices data-choices-search-false>
+          <option value="All">{{'COMMON.ALL' | translate }}</option>
+          <option value="Appliances">{{'MODULES.HR.MAIN.APPLIANCES' | translate }}</option>
+          <option value="Fashion" selected>{{'MODULES.HR.MAIN.FASHION' | translate }}</option>
+          <option value="Electronics">{{'MODULES.HR.MAIN.ELECTRONICS' | translate }}</option>
+          <option value="Grocery">{{'MODULES.HR.MAIN.GROCERY' | translate }}</option>
+          <option value="Home & Furniture">{{'MODULES.HR.MAIN.HOME_FURNITURE' | translate }}</option>
+          <option value="Kids">{{'MODULES.HR.MAIN.KIDS' | translate }}</option>
+          <option value="Mobiles">{{'MODULES.HR.MAIN.MOBILES' | translate }}</option>
+        </select>
+      </div>
+      <!-- end card body -->
+    </div>
+    <!-- end card -->
+    <div class="card">
+      <div class="card-header">
+        <h5 class="card-title mb-0">{{'MODULES.HR.MAIN.VEHICULE_TAGS' | translate }}</h5>
+      </div>
+      <div class="card-body">
+        <div class="hstack gap-3 align-items-start">
+          <div class="flex-grow-1">
+            <ng-select [items]="selectValue" [multiple]="true"></ng-select>
+          </div>
+        </div>
+      </div>
+      <!-- end card body -->
+    </div>
+    <!-- end card -->
+
+    <div class="card">
+      <div class="card-header">
+        <h5 class="card-title mb-0">{{'MODULES.HR.MAIN.VEHICULE_SHORT_DESCRIPTION' | translate }}</h5>
+      </div>
+      <div class="card-body">
+        <p class="text-muted mb-2">{{'MODULES.HR.MAIN.ADD_SHORT_DESCRIPTION_FOR_VEHICULE' | translate }}</p>
+        <textarea class="form-control" placeholder="Must enter minimum of a 100 characters" rows="3"></textarea>
+      </div>
+      <!-- end card body -->
+    </div>
+    <!-- end card -->
+
+  </div>
+</div>
+<!-- end row -->

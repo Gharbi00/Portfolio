@@ -1,0 +1,271 @@
+<app-breadcrumbs title="{{ 'MENUITEMS.TITLE.CUSTOMERS' | translate }}" [breadcrumbItems]="breadCrumbItems"></app-breadcrumbs>
+<ng-container *ngIf="!(navigating$ | async)">
+
+  <div class="row">
+    <div class="col-lg-12">
+      <div class="card" id="ticketsList">
+        <div class="card-header border-0">
+          <div class="d-flex align-items-center">
+            <h5 class="card-title mb-0 flex-grow-1">{{'MENUITEMS.CUSTOMERENGAGEMENT.LIST.CARDS' | translate }}</h5>
+            <div class="flex-shrink-0 d-flex gap-1">
+              <button (click)="openImportModal(importModal)" type="button" class="btn btn-secondary">
+                <i class="ri-file-upload-line align-bottom"></i> {{ 'COMMON.IMPORT' | translate }}
+              </button>
+              <button (click)="openEmailModal(emailModal)" type="button" class="btn btn-primary"><i class="ri-send-plane-fill align-bottom me-1"></i>{{'COMMON.SEND' | translate }}</button>
+              <button (click)="downloadDocument()" type="button" class="btn btn-secondary"><i class="ri-file-download-line align-bottom me-1"></i>{{'COMMON.EXPORT' | translate }}</button>
+            </div>
+          </div>
+        </div>
+        <div class="card-body">
+          <div class="table-card gridjs-border-none">
+            <div class="table-responsive">
+              <table class="table align-middle custom-datatable" id="datatableexample">
+                <thead>
+                  <tr class="bg-light text-uppercase text-muted">
+                    <th>{{'MENUITEMS.CUSTOMERENGAGEMENT.LIST.USER' | translate }}</th>
+                    <th>{{'MENUITEMS.CUSTOMERENGAGEMENT.LIST.IDENTIFIER' | translate }}</th>
+                    <th>{{'MENUITEMS.CUSTOMERENGAGEMENT.LIST.CARD_TYPE' | translate }}</th>
+                    <th>{{'MENUITEMS.CUSTOMERENGAGEMENT.LIST.EXPIRE_DATE' | translate }}</th>
+                    <th>{{'COMMON.ACTION' | translate }}</th>
+                  </tr>
+                </thead>
+                <tbody *ngIf="((loadingCards$ | async) === false || null || undefined) && (cards$ | async).length">
+                  <tr *ngFor="let card of cards$ | async;let i = index;" id="p_{{card?.id}}">
+                    <td>
+                      <span>
+                        <div class="d-flex cursor-pointer align-items-center">
+                          <div class="flex-shrink-0">
+                            <div class="avatar-sm bg-light p-1 rounded-circle h-x" *ngIf="card?.user?.pictures?.length">
+                              <img [src]="card?.user?.pictures[0]?.baseUrl + '/' + card?.user?.pictures[0]?.path" class="img-fluid h-100 rounded-circle">
+                            </div>
+                            <div class="avatar-sm bg-light rounded-circle p-1 h-x" *ngIf="!card?.user?.pictures?.length">
+                              <div class="avatar-title bg-soft-success text-success rounded-circle fs-13">
+                                {{card?.user?.firstName?.charAt(0) || 'N'}}</div>
+                            </div>
+                          </div>
+                          <div [routerLink]="['/ecommerce/customers/customers', card?.user?.id]" class="flex-grow-1 cursor-pointer fw-medium link-primary ms-2 name">
+                            {{card?.user?.firstName}} {{card?.user?.lastName}}
+                          </div>
+                        </div>
+                      </span>
+                    </td>
+                    <td>{{card?.identifier}}</td>
+                    <td>
+                      <span [ngClass]="{'badge-soft-primary': card?.cardType === 'PHYSICAL', 'badge-soft-success': card?.cardType === 'VIRTUAL'}" class="badge"> {{(card?.cardType === 'PHYSICAL' ?
+                        'SHARED.PHYSICAL' : 'SHARED.VIRTUAL') | translate}} </span>
+                    </td>
+                    <td>{{card?.validUntil | date: 'dd-MM-yyyy'}}</td>
+                    <td>
+                      <span>
+                        <li (click)="openCardModal(cardModal, card)" class="list-inline-item edit">
+                          <a href="javascript:void(0);" data-bs-toggle="modal" class="text-primary d-inline-block edit-item-btn">
+                            <i class="ri-eye-fill fs-16"></i>
+                          </a>
+                        </li>
+                        <li *ngIf="!isExpired(card?.validUntil)" (click)="openExpireModal(expireModal, card)" class="list-inline-item edit">
+                          <a href="javascript:void(0);" data-bs-toggle="modal" class="text-secondary d-inline-block edit-item-btn">
+                            <i class="ri-pencil-fill fs-16"></i>
+                          </a>
+                        </li>
+                      </span>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+          <div *ngIf="((loadingCards$ | async) === false || null || undefined) && (cards$ | async).length" class="px-3">
+            <div class="row justify-content-md-between align-items-md-center gy-2">
+              <div class="col col-sm-6">
+                <div class="dataTables_info mb-2" id="tickets-table_info" role="status" aria-live="polite">{{'COMMON.SHOWING' | translate }}{{pagination?.startIndex + 1}}–{{pagination?.endIndex ===
+                  pagination?.length ? pagination?.endIndex : pagination?.endIndex + 1}} {{'COMMON.OF' | translate }}
+                  {{pagination?.length}} {{'COMMON.ENTRIES' | translate }}
+                </div>
+              </div>
+              <div class="col col-sm-6">
+                <div class="text-sm-right float-end">
+                  <ngb-pagination [maxSize]="5" [collectionSize]="pagination?.length" [(page)]="page" (pageChange)="onPageChange($event)" [pageSize]="pagination?.size">
+                  </ngb-pagination>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div id="noresult" class="py-4 mt-4 text-center" *ngIf="(loadingCards$ | async) || (!(loadingCards$ | async) && !(cards$ | async).length)">
+            <div *ngIf="loadingCards$ | async">
+              <lord-icon trigger="loop" style="width:72px;height:72px" [colors]="'primary:' + primaryColor + ',secondary:' + secondaryColor" src="https://cdn.lordicon.com/msoeawqm.json">
+              </lord-icon>
+              <h5 class="mt-4">{{'COMMON.LOADING' | translate }}</h5>
+            </div>
+            <div *ngIf="!(loadingCards$ | async) && !(cards$ | async).length">
+              <lord-icon trigger="loop" style="width:72px;height:72px" [colors]="'primary:' + primaryColor + ',secondary:' + secondaryColor" src="https://cdn.lordicon.com/vlycxjwx.json">
+              </lord-icon>
+              <h5 class="mt-4">{{ 'COMMON.NO_RESULT' | translate }}</h5>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <ng-template #importModal role="document" let-modal>
+    <div class="modal-header bg-soft-info p-3">
+      <h5 class="modal-title" id="exampleModalLabel">{{ 'MODULES.CRM.CUSTOMERS.UPLOAD_EXCEL' | translate }}</h5>
+      <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" id="close-modal" (click)="modal.dismiss('Cross click')"></button>
+    </div>
+    <div class="modal-body">
+      <p>
+        {{ 'MODULES.CRM.CUSTOMERS.UPLOAD_EXCEL_PARAGRAPH' | translate }}
+      </p>
+    </div>
+    <div class="modal-footer">
+      <div class="hstack gap-2 justify-content-end">
+        <button type="button" class="btn btn-light" data-bs-dismiss="modal" (click)="modal.close('Close click')">{{ 'COMMON.CLOSE' | translate }}</button>
+        <button type="button" (click)="!loadingImport ? uploadExcel() : null" class="btn btn-primary btn-load">
+          <span *ngIf="!loadingImport">{{ 'MODULES.CRM.CUSTOMERS.IMPORT_EXCEL' | translate }}</span>
+          <span *ngIf="loadingImport" class="d-flex align-items-center">
+            <span class="spinner-border flex-shrink-0" role="status">
+              <span class="visually-hidden">{{ 'COMMON.LOADING' | translate }}</span>
+            </span>
+            <span class="flex-grow-1 ms-2">{{ 'COMMON.LOADING' | translate }}</span>
+          </span>
+        </button>
+      </div>
+    </div>
+  </ng-template>
+
+  <ng-template #emailModal role="document" let-modal>
+    <div class="modal-header p-3 bg-soft-info">
+      <h5 class="modal-title" id="exampleModalLabel">{{'COMMON.SEND' | translate }} Email</h5>
+      <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" id="close-modal" (click)="modal.dismiss('Cross click')"></button>
+    </div>
+    <form [formGroup]="emailForm">
+      <div class="modal-body">
+        <div class="mb-3">
+          <div class="form-check">
+            <input formControlName="cardType" value="PHYSICAL" class="form-check-input border-x" type="radio"
+              id="Physical">
+            <label class="form-check-label" for="Physical">{{'MENUITEMS.CUSTOMERENGAGEMENT.LIST.PHYSICAL' | translate }}
+            </label>
+          </div>
+          <div class="form-check">
+            <input formControlName="cardType" value="VIRTUAL" class="form-check-input border-x" type="radio"
+              id="Virtual">
+            <label class="form-check-label" for="Virtual">
+              {{ 'SHARED.VIRTUAL' | translate }}
+            </label>
+          </div>
+        </div>
+        <div class="mb-3">
+          <label class="form-label" for="product-tags-input">{{ 'MODULES.ECOMMERCE.MAIN.EMAILS_PRESS' | translate }}</label>
+          <ng-select [items]="[]" class="no-arrow-select" [addTag]="true" [isOpen]="false" [multiple]="true" [selectOnTab]="true" formControlName="emails">
+          </ng-select>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <div class="hstack gap-2 justify-content-end">
+          <button type="button" class="btn btn-light" data-bs-dismiss="modal" (click)="modal.close('Close click')">{{'COMMON.CLOSE' | translate }}</button>
+          <button type="button" [disabled]="isEmailButtonDisabled || emailForm.invalid" (click)="send()" class="btn btn-success" id="add-btn">{{'COMMON.SEND' | translate }}</button>
+        </div>
+      </div>
+    </form>
+  </ng-template>
+
+  <ng-template #cardModal role="document" let-modal>
+    <div class="modal-header p-3 bg-soft-info">
+      <h5 class="modal-title" id="exampleModalLabel">{{'MENUITEMS.CUSTOMERENGAGEMENT.LIST.CARD' | translate }}</h5>
+      <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" id="close-modal" (click)="modal.dismiss('Cross click')"></button>
+    </div>
+    <div class="modal-body">
+      <div class="card-body">
+        <div class="mx-auto" style="max-width: 350px">
+          <div [class.text-bg-info]="!selectedCard?.currentReputationLevel?.color" [ngStyle]="{'background-color': selectedCard?.currentReputationLevel?.color}" class="bg-gradient p-4 rounded-3 mb-3">
+            <div *ngIf="visuals$ | async as visuals" class="d-flex justify-content-end">
+              <img *ngIf="visuals?.wide?.baseUrl" (click)="upload('square')" class="border-0 product-picture" [src]="visuals?.wide?.baseUrl + '/' + visuals?.wide?.path">
+            </div>
+            <div class="card-number fs-20" style="word-break: break-word;" id="card-num-elem">
+              {{selectedCard?.identifier}}
+            </div>
+            <div class="row mt-4">
+              <div class="col-4">
+                <div>
+                  <div class="text-white-50">{{'MENUITEMS.CUSTOMERENGAGEMENT.LIST.CARD_HOLDER' | translate }}</div>
+                  <div id="card-holder-elem" class="fw-medium fs-14">{{selectedCard?.user?.firstName}}
+                    {{selectedCard?.user?.lastName}} </div>
+                </div>
+              </div>
+              <div class="col-4">
+                <div class="expiry">
+                  <div class="text-white-50">{{'MENUITEMS.CUSTOMERENGAGEMENT.LIST.EXPIRES' | translate }}</div>
+                  <div class="fw-medium fs-14">
+                    <span id="expiry-month-elem"> {{selectedCard?.validUntil | date:'MM/yy'}} </span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="card-body mb-3">
+        <div class="mx-auto" style="max-width: 350px">
+          <div class="text-bg-light bg-gradient p-4 rounded-3 mb-3">
+            <div *ngIf="visuals$ | async as visuals" class="d-flex justify-content-end">
+              <img *ngIf="visuals?.wide?.baseUrl" class="border-0 product-picture" [src]="visuals?.wide?.baseUrl + '/' + visuals?.wide?.path">
+            </div>
+            <ng-container *ngIf="loyaltyCard?.representation?.visual === 'BARCODE'">
+              <div *ngIf="validateBarcode(selectedCard?.identifier)" class="col-3">
+                <ngx-barcode [bc-height]="25" [bc-width]="2" [bc-font-size]="12" [bc-format]="loyaltyCard?.representation?.style" class="cursor-pointer" [bc-element-type]="'svg'"
+                  [bc-display-value]="true" [bc-background]="'#EEEEEE'" [bc-value]="selectedCard?.identifier" matTooltip="Copy Barcode" (click)="copyText(selectedCard?.identifier)">
+                </ngx-barcode>
+              </div>
+              <div *ngIf="!validateBarcode(selectedCard?.identifier)" (click)="copyText(selectedCard?.identifier)" class="align-items-center d-flex">
+                {{ selectedCard?.identifier }}
+                <i matTooltip="This is not a valid EAN13 barcode" class="fs-20 ms-1 ri-error-warning-line text-warning"></i>
+              </div>
+            </ng-container>
+            <div *ngIf="loyaltyCard?.representation?.visual === 'QRCODE'">
+              <qrcode [qrdata]="selectedCard?.identifier" [width]="100" [errorCorrectionLevel]="'M'"></qrcode>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <div class="hstack gap-2 justify-content-end">
+        <button type="button" class="btn btn-light" data-bs-dismiss="modal" (click)="modal.close('Close click')">{{'COMMON.CLOSE' | translate }}</button>
+      </div>
+    </div>
+  </ng-template>
+
+  <ng-template #expireModal let-modal>
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" id="btn-close" (click)="modal.dismiss('Cross click')"></button>
+      </div>
+      <div class="modal-body">
+        <div class="mt-2 text-center">
+          <lord-icon src="https://cdn.lordicon.com/gsqxdxog.json" trigger="loop" colors="primary:#405189,secondary:#f06548" style="width:90px;height:90px"></lord-icon>
+          <div class="mt-4 pt-2 fs-15 mx-4 mx-sm-5">
+            <h4>{{'MENUITEMS.CUSTOMERENGAGEMENT.LIST.EXPIRE_CARD' | translate }}</h4>
+            <p class="text-muted mx-4 mb-0">
+            <p class="text-muted mx-4 mb-0">{{'MENUITEMS.CUSTOMERENGAGEMENT.LIST.WARNING_THIS_ACTION_IS_IRREVERSIBLE_AND_FINAL_ONCE_EXPIRED_THIS_CARD_CANNOT_BE_REINSTATED' | translate }}     </p>
+          </div>
+        </div>
+        <div class="d-flex gap-2 justify-content-center mt-4 mb-2">
+          <button class="btn btn-link link-success fw-medium text-decoration-none" data-bs-dismiss="modal" (click)="modal.close('Close click')" id="deleteRecord-close"><i
+              class="ri-close-line me-1 align-middle"></i>{{'COMMON.CLOSE' | translate }}</button>
+          <button type="button" class="btn w-sm btn-danger " id="delete-product" (click)="expireCard()">{{'MENUITEMS.CUSTOMERENGAGEMENT.LIST.YES_EXPIRE_IT' | translate }}</button>
+        </div>
+      </div>
+    </div>
+  </ng-template>
+
+</ng-container>
+<div *ngIf="navigating$ | async" class="vh-100 py-4 text-center" fxLayout="column" fxLayoutAlign="center center" fxLayoutGap="1rem">
+  <div>
+    <lord-icon trigger="loop" style="width:72px;height:72px" [colors]="'primary:' + primaryColor + ',secondary:' + secondaryColor" src="https://cdn.lordicon.com/msoeawqm.json">
+    </lord-icon>
+  </div>
+  <div class="mt-4">
+    <h5>{{'COMMON.LOADING' | translate }}</h5>
+  </div>
+</div>

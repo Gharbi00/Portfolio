@@ -1,0 +1,30 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: widget-app
+  namespace: widget-app
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: widget-app
+  template:
+    metadata:
+      labels:
+        app: widget-app
+    spec:
+      containers:
+        - name: widget-container
+          image: git.diktup.cloud:5050/sifca/sifca-monorepo:sifca-widget-prod-1.0
+          #imagePullPolicy: Always
+          imagePullPolicy: IfNotPresent
+          #imagePullPolicy: Never
+          ports:
+            - containerPort: 80
+          env:
+            - name: API_SERVER
+              value: "widget.sifca.app"
+            - name: NODE_OPTIONS
+              value: "--max-old-space-size=16000"
+      imagePullSecrets:
+        - name: gitlab-registry-secret

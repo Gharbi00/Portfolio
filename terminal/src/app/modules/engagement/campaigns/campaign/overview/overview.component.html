@@ -1,0 +1,895 @@
+<div class="row">
+  <div class="col-xl-6">
+    <div class="d-flex flex-column h-100">
+      <div *ngIf="((loadingQuestOverview$ | async) === false || null || undefined) && questOverview" class="row">
+        <div class="col-xl-6 col-md-6">
+          <div class="card card-animate overflow-hidden">
+            <div class="position-absolute start-0" style="z-index: 0;">
+              <svg version="1.2" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 120" width="200" height="120">
+                <style>
+                  .s0 {
+                    opacity: .05;
+                    fill: var(--vz-success)
+                  }
+                </style>
+                <path id="Shape 8" class="s0"
+                  d="m189.5-25.8c0 0 20.1 46.2-26.7 71.4 0 0-60 15.4-62.3 65.3-2.2 49.8-50.6 59.3-57.8 61.5-7.2 2.3-60.8 0-60.8 0l-11.9-199.4z" />
+              </svg>
+            </div>
+            <div class="card-body" style="z-index:1 ;">
+              <div class="d-flex align-items-center">
+                <div class="flex-grow-1 overflow-hidden">
+                  <p class="text-uppercase fw-medium text-muted text-truncate mb-3">{{'COMMON.TOTAL' | translate }}
+                    Audience</p>
+                  <h4 class="fs-22 fw-semibold ff-secondary mb-0">
+                    <span *ngIf="+questOverview?.totalAudience?.amount <= 0"> {{questOverview?.totalAudience?.amount}}
+                    </span>
+                    <span *ngIf="+questOverview?.totalAudience?.amount > 0"
+                      [CountTo]="questOverview?.totalAudience?.amount" class="counter-value" [from]="0"
+                      [duration]="1"></span>
+                  </h4>
+                </div>
+                <div class="flex-shrink-0">
+                  <div id="total_jobs" class="apex-charts" dir="ltr">
+                    <apx-chart [series]="audienceChart.series" [chart]="audienceChart.chart"
+                      [dataLabels]="audienceChart.dataLabels" [plotOptions]="audienceChart.plotOptions"
+                      [colors]="audienceChart.colors">
+                    </apx-chart>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="col-xl-6 col-md-6">
+          <div class="card card-animate overflow-hidden">
+            <div class="position-absolute start-0" style="z-index: 0;">
+              <svg version="1.2" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 120" width="200" height="120">
+                <style>
+                  .s0 {
+                    opacity: .05;
+                    fill: var(--vz-success)
+                  }
+                </style>
+                <path id="Shape 8" class="s0"
+                  d="m189.5-25.8c0 0 20.1 46.2-26.7 71.4 0 0-60 15.4-62.3 65.3-2.2 49.8-50.6 59.3-57.8 61.5-7.2 2.3-60.8 0-60.8 0l-11.9-199.4z" />
+              </svg>
+            </div>
+            <div class="card-body" style="z-index:1 ;">
+              <div class="d-flex align-items-center">
+                <div class="flex-grow-1 overflow-hidden">
+                  <p class="text-uppercase fw-medium text-muted text-truncate mb-3">{{'COMMON.TOTAL' | translate }}
+                    {{'SHARED.REPLIES' | translate }}</p>
+                  <h4 class="fs-22 fw-semibold ff-secondary mb-0">
+                    <span *ngIf="+questOverview?.totalReplies?.amount <= 0"> {{questOverview?.totalReplies?.amount}}
+                    </span>
+                    <span *ngIf="+questOverview?.totalReplies?.amount > 0"
+                      [CountTo]="questOverview?.totalReplies?.amount" class="counter-value" [from]="0"
+                      [duration]="1"></span>
+                  </h4>
+                </div>
+                <div class="flex-shrink-0">
+                  <div id="apply_jobs" data-colors='["--vz-success"]' class="apex-charts" dir="ltr">
+                    <apx-chart [series]="repliesChart.series" [chart]="repliesChart.chart"
+                      [plotOptions]="repliesChart.plotOptions" [labels]="repliesChart.labels"
+                      [colors]="repliesChart.colors">
+                    </apx-chart>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="col-xl-6 col-md-6">
+          <div class="card card-animate overflow-hidden">
+            <div class="position-absolute start-0" style="z-index: 0;">
+              <svg version="1.2" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 120" width="200" height="120">
+                <style>
+                  .s0 {
+                    opacity: .05;
+                    fill: var(--vz-success)
+                  }
+                </style>
+                <path id="Shape 8" class="s0"
+                  d="m189.5-25.8c0 0 20.1 46.2-26.7 71.4 0 0-60 15.4-62.3 65.3-2.2 49.8-50.6 59.3-57.8 61.5-7.2 2.3-60.8 0-60.8 0l-11.9-199.4z" />
+              </svg>
+            </div>
+            <div class="card-body" style="z-index:1 ;">
+              <div class="d-flex align-items-center">
+                <div class="flex-grow-1 overflow-hidden">
+                  <p class="text-uppercase fw-medium text-muted text-truncate mb-3">{{'SHARED.TOTAL_BUDGET' | translate
+                    }}</p>
+                  <h4 class="fs-22 fw-semibold ff-secondary mb-0">
+                    <span *ngIf="+questOverview?.totalBudget?.amount <= 0"> {{questOverview?.totalBudget?.amount}}
+                    </span>
+                    <span *ngIf="+questOverview?.totalBudget?.amount > 0"
+                      [CountTo]="questOverview?.totalBudget?.amount" class="counter-value" [from]="0"
+                      [duration]="1"></span>
+                  </h4>
+                </div>
+                <div class="flex-shrink-0">
+                  <div id="new_jobs_chart" data-colors='["--vz-success"]' class="apex-charts" dir="ltr">
+                    <apx-chart [series]="budgetChart.series" [chart]="budgetChart.chart"
+                      [plotOptions]="budgetChart.plotOptions" [labels]="budgetChart.labels"
+                      [colors]="budgetChart.colors">
+                    </apx-chart>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="col-xl-6 col-md-6">
+          <div class="card card-animate overflow-hidden">
+            <div class="position-absolute start-0" style="z-index: 0;">
+              <svg version="1.2" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 120" width="200" height="120">
+                <style>
+                  .s0 {
+                    opacity: .05;
+                    fill: var(--vz-success)
+                  }
+                </style>
+                <path id="Shape 8" class="s0"
+                  d="m189.5-25.8c0 0 20.1 46.2-26.7 71.4 0 0-60 15.4-62.3 65.3-2.2 49.8-50.6 59.3-57.8 61.5-7.2 2.3-60.8 0-60.8 0l-11.9-199.4z" />
+              </svg>
+            </div>
+            <div class="card-body" style="z-index:1 ;">
+              <div class="d-flex align-items-center">
+                <div class="flex-grow-1 overflow-hidden">
+                  <p class="text-uppercase fw-medium text-muted text-truncate mb-3"> {{'SHARED.CONSUMED_BUDGET' |
+                    translate }}</p>
+                  <h4 class="fs-22 fw-semibold ff-secondary mb-0">
+                    <span *ngIf="+questOverview?.consumedBudget?.amount <= 0"> {{questOverview?.consumedBudget?.amount}}
+                    </span>
+                    <span *ngIf="+questOverview?.consumedBudget?.amount > 0"
+                      [CountTo]="questOverview?.consumedBudget?.amount" class="counter-value" [from]="0"
+                      [duration]="1"></span>
+                  </h4>
+                </div>
+                <div class="flex-shrink-0">
+                  <div id="interview_chart" class="apex-charts" dir="ltr">
+                    <apx-chart [series]="consumedChart.series" [chart]="consumedChart.chart"
+                      [plotOptions]="consumedChart.plotOptions" [labels]="consumedChart.labels"
+                      [colors]="consumedChart.colors">
+                    </apx-chart>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="col-xl-6 col-md-6">
+          <div class="card card-animate overflow-hidden">
+            <div class="position-absolute start-0" style="z-index: 0;">
+              <svg version="1.2" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 120" width="200" height="120">
+                <style>
+                  .s0 {
+                    opacity: .05;
+                    fill: var(--vz-success)
+                  }
+                </style>
+                <path id="Shape 8" class="s0"
+                  d="m189.5-25.8c0 0 20.1 46.2-26.7 71.4 0 0-60 15.4-62.3 65.3-2.2 49.8-50.6 59.3-57.8 61.5-7.2 2.3-60.8 0-60.8 0l-11.9-199.4z" />
+              </svg>
+            </div>
+            <div class="card-body" style="z-index:1 ;">
+              <div class="d-flex align-items-center">
+                <div class="flex-grow-1 overflow-hidden">
+                  <p class="text-uppercase fw-medium text-muted text-truncate mb-3">{{'COMMON.TOTAL' | translate }}
+                    Steps</p>
+                  <h4 class="fs-22 fw-semibold ff-secondary mb-0">
+                    <span *ngIf="+questOverview?.totalSteps?.amount <= 0"> {{questOverview?.totalSteps?.amount}} </span>
+                    <span *ngIf="+questOverview?.totalSteps?.amount > 0"
+                      [CountTo]="questOverview?.totalSteps?.amount" class="counter-value" [from]="0"
+                      [duration]="1"></span>
+                  </h4>
+                </div>
+                <div class="flex-shrink-0">
+                  <div id="hired_chart" class="apex-charts" dir="ltr">
+                    <apx-chart [series]="stepsChart.series" [chart]="stepsChart.chart"
+                      [plotOptions]="stepsChart.plotOptions" [labels]="stepsChart.labels" [colors]="stepsChart.colors">
+                    </apx-chart>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="col-xl-6 col-md-6">
+          <div class="card card-animate overflow-hidden">
+            <div class="position-absolute start-0" style="z-index: 0;">
+              <svg version="1.2" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 120" width="200" height="120">
+                <style>
+                  .s0 {
+                    opacity: .05;
+                    fill: var(--vz-success)
+                  }
+                </style>
+                <path id="Shape 8" class="s0"
+                  d="m189.5-25.8c0 0 20.1 46.2-26.7 71.4 0 0-60 15.4-62.3 65.3-2.2 49.8-50.6 59.3-57.8 61.5-7.2 2.3-60.8 0-60.8 0l-11.9-199.4z" />
+              </svg>
+            </div>
+            <div class="card-body" style="z-index:1 ;">
+              <div class="d-flex align-items-center">
+                <div class="flex-grow-1 overflow-hidden">
+                  <p class="text-uppercase fw-medium text-muted text-truncate mb-3">{{'SHARED.TOTAL_ACTIONS' | translate
+                    }}</p>
+                  <h4 class="fs-22 fw-semibold ff-secondary mb-0">
+                    <span *ngIf="+questOverview?.totalActions?.amount <= 0"> {{questOverview?.totalActions?.amount}}
+                    </span>
+                    <span *ngIf="+questOverview?.totalActions?.amount > 0"
+                      [CountTo]="questOverview?.totalActions?.amount" class="counter-value" [from]="0"
+                      [duration]="1"></span>
+                  </h4>
+                </div>
+                <div class="flex-shrink-0">
+                  <div id="rejected_chart" class="apex-charts" dir="ltr">
+                    <apx-chart [series]="actionsChart.series" [chart]="actionsChart.chart"
+                      [plotOptions]="actionsChart.plotOptions" [labels]="actionsChart.labels"
+                      [colors]="actionsChart.colors">
+                    </apx-chart>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div id="noresult" class="py-4 mt-4 text-center"
+        *ngIf="(loadingQuestOverview$ | async) || !(loadingQuestOverview$ | async) && !questOverview">
+        <div *ngIf="loadingQuestOverview$ | async">
+          <lord-icon trigger="loop" style="width:72px;height:72px"
+            [colors]="'primary:' + primaryColor + ',secondary:' + secondaryColor"
+            src="https://cdn.lordicon.com/msoeawqm.json">
+          </lord-icon>
+          <h5 class="mt-4">{{ 'COMMON.LOADING' | translate }}</h5>
+        </div>
+        <div *ngIf="!(loadingQuestOverview$ | async) && !questOverview">
+          <lord-icon trigger="loop" style="width:72px;height:72px"
+            [colors]="'primary:' + primaryColor + ',secondary:' + secondaryColor"
+            src="https://cdn.lordicon.com/msoeawqm.json">
+          </lord-icon>
+          <h5 class="mt-4">{{ 'COMMON.NO_RESULT' | translate }}
+          </h5>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="col-xl-6">
+    <div class="card card-height-100">
+      <div class="card-header align-items-center d-flex">
+        <h4 class="card-title mb-0 flex-grow-1">{{'SHARED.CAMPAIGN_STEPS' | translate }}</h4>
+        <div class="flex-shrink-0">
+          <a (click)="onCampaingRoute()" class="btn btn-soft-primary btn-sm">{{'SHARED.VIEW_ALL_STEPS' | translate }} <i
+              class="ri-arrow-right-line align-bottom"></i></a>
+        </div>
+      </div>
+      <div class="card-body">
+        <div class="table-responsive table-card">
+          <table class="table table-centered table-hover align-middle table-nowrap mb-0">
+            <tbody
+              *ngIf="((loadingActivitiesByQuest$ | async) === false || null || undefined) && (questActivitesByQuest$ | async).length">
+              <tr *ngFor="let data of questActivitesByQuest$ | async">
+                <td>
+                  <div class="d-flex gap-1 align-items-center">
+                    <div *ngIf="!data?.activity?.action?.activityType?.icon" class="avatar-xxs">
+                      <span
+                        class="avatar-title bg-danger rounded-circle text-uppercase">
+                        {{data?.title?.charAt(0) || 'N'}}
+                      </span>
+                    </div>
+                    <div *ngIf="data?.activity?.action?.activityType?.icon">
+                      <i
+                        [class]="data?.activity?.action?.activityType?.icon + ' fs-2 ' + data?.activity?.action?.activityType?.theme"></i>
+                    </div>
+                    <h6 class="mb-0"> {{data?.title?.length > 30 ? data?.title.substr(0,30) + '...' : data?.title}} </h6>
+                  </div>
+                </td>
+                <td>
+                  {{data?.activity?.action?.activityType?.title?.length > 40 ?
+                  data?.activity?.action?.activityType?.title?.substr(0,40) + '...' :
+                  data?.activity?.action?.activityType?.title}}
+                </td>
+                <td>
+                  <a (click)="onCampaingRoute()"
+                    class="btn btn-link btn-sm shadow-none">{{'MENUITEMS.CUSTOMERENGAGEMENT.LIST.VIEW_DETAILS' |
+                    translate }} <i class="ri-arrow-right-line align-bottom"></i></a>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <div id="noresult" class="py-4 mt-4 text-center"
+          *ngIf="(loadingActivitiesByQuest$ | async) || (!(loadingActivitiesByQuest$ | async) && !(questActivitesByQuest$ | async).length)">
+          <div *ngIf="loadingActivitiesByQuest$ | async">
+            <lord-icon trigger="loop" style="width:72px;height:72px"
+              [colors]="'primary:' + primaryColor + ',secondary:' + secondaryColor"
+              src="https://cdn.lordicon.com/msoeawqm.json">
+            </lord-icon>
+            <h5 class="mt-4">{{'COMMON.LOADING' | translate }}</h5>
+          </div>
+          <div *ngIf="!(loadingActivitiesByQuest$ | async) && !(questActivitesByQuest$ | async).length">
+            <lord-icon trigger="loop" style="width:72px;height:72px"
+              [colors]="'primary:' + primaryColor + ',secondary:' + secondaryColor"
+              src="https://cdn.lordicon.com/vlycxjwx.json">
+            </lord-icon>
+            <h5 class="mt-4">{{ 'COMMON.NO_RESULT' | translate }}</h5>
+          </div>
+        </div>
+        <div
+          *ngIf="((loadingActivitiesByQuest$ | async) === false || null || undefined) && (questActivitesByQuest$ | async).length"
+          class="mt-4 px-3">
+          <div class="row justify-content-md-between align-items-md-center gy-2">
+            <div class="col col-sm-6">
+              <div class="dataTables_info mb-2" id="tickets-table_info" role="status" aria-live="polite">
+                {{ 'COMMON.SHOWING' | translate }}
+                {{questActivitiesPagination?.startIndex + 1}}–{{questActivitiesPagination?.endIndex ===
+                questActivitiesPagination?.length ? questActivitiesPagination?.endIndex :
+                questActivitiesPagination?.endIndex + 1}} {{ 'COMMON.OF' | translate }}
+                {{questActivitiesPagination?.length}} {{ 'COMMON.ENTRIES' | translate }}
+              </div>
+            </div>
+            <div class="col col-sm-6">
+              <div class="text-sm-right float-end listjs-pagination">
+                <ngb-pagination [maxSize]="5" [collectionSize]="questActivitiesPagination?.length" [(page)]="page"
+                  (pageChange)="onPageChange($event)" [pageSize]="questActivitiesPagination?.size">
+                </ngb-pagination>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="card card-height-100">
+  <div class="card-header border-0 align-items-center d-flex">
+    <h4 class="card-title mb-0 flex-grow-1">{{ 'SHARED.CAMPAIGN_STATISTIC' | translate }}</h4>
+    <div class="hstack gap-1">
+      <button (click)="onAudienceRoute()" type="button" class="btn btn-soft-secondary btn-sm">
+        {{ 'SHARED.CHECK_AUDIENCE' | translate }}<i class="ri-arrow-right-line align-bottom"></i>
+      </button>
+    </div>
+  </div>
+
+  <ng-container *ngIf="((loadingQuestStatistics$ | async) === false || null || undefined) && questStatistics">
+    <div class="card-header p-0 border-0 bg-light-subtle">
+      <div class="row g-0 text-center">
+        <div class="col-6 col-sm-3">
+          <div class="p-3 border border-dashed border-start-0">
+            <h5 class="mb-1">
+              <span *ngIf="+questStatistics?.lastDayReplies <= 0"> {{questStatistics?.lastDayReplies}}
+              </span>
+              <span *ngIf="+questStatistics?.lastDayReplies > 0" [CountTo]="+questStatistics?.lastDayReplies"
+                class="counter-value" [from]="0" [duration]="1"></span>
+            </h5>
+            <p class="text-muted mb-0">{{ 'SHARED.LAST_24H_REPLIES' | translate }}</p>
+          </div>
+        </div>
+        <div class="col-6 col-sm-3">
+          <div class="p-3 border border-dashed border-start-0">
+            <h5 class="mb-1">
+              <span *ngIf="+questStatistics?.lastDayReplies <= 0"> {{questStatistics?.lastDayReplies}}
+              </span>
+              <span *ngIf="+questStatistics?.lastDayReplies > 0" [CountTo]="+questStatistics?.lastDayReplies"
+                class="counter-value" [from]="0" [duration]="1"></span>
+            </h5>
+            <p class="text-muted mb-0">{{ 'SHARED.LAST_24H_BUDGET' | translate }}</p>
+          </div>
+        </div>
+        <div class="col-6 col-sm-3">
+          <div class="p-3 border border-dashed border-start-0">
+            <h5 class="mb-1">
+              <span *ngIf="+questStatistics?.lastDayActions <= 0"> {{questStatistics?.lastDayActions}}
+              </span>
+              <span *ngIf="+questStatistics?.lastDayActions > 0" [CountTo]="+questStatistics?.lastDayActions"
+                class="counter-value" [from]="0" [duration]="1"></span>
+            </h5>
+            <p class="text-muted mb-0">{{ 'SHARED.LAST_24H_ACTIONS' | translate }}</p>
+          </div>
+        </div>
+        <div class="col-6 col-sm-3">
+          <div class="p-3 border border-dashed border-start-0 border-end-0">
+            <h5 class="mb-1 text-success">
+              <span *ngIf="+questStatistics?.totalReplies <= 0"> {{questStatistics?.totalReplies}}</span>
+              <span *ngIf="+questStatistics?.totalReplies > 0" [CountTo]="+questStatistics?.totalReplies"
+                class="counter-value" [from]="0" [duration]="1"></span>
+            </h5>
+            <p class="text-muted mb-0">{{ 'SHARED.TOTAL_REPLIES' | translate }}</p>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="card-body p-0 pb-2">
+      <div class="w-100">
+        <div *ngIf="questStateChart" id="line_chart_dashed"
+          data-colors='["--vz-success", "--vz-warning", "--vz-primary"]' class="apex-charts" dir="ltr">
+          <apx-chart [series]="questStateChart.series" [chart]="questStateChart.chart" [colors]="questStateChart.colors"
+            [dataLabels]="questStateChart.dataLabels" [stroke]="questStateChart.stroke"
+            [series]="questStateChart.series" [title]="questStateChart.title" [markers]="questStateChart.markers"
+            [xaxis]="questStateChart.xaxis" [tooltip]="questStateChart.tooltip" [grid]="questStateChart.grid"
+            dir="ltr"></apx-chart>
+        </div>
+      </div>
+    </div>
+  </ng-container>
+  <div id="noresult" class="py-4 mt-4 text-center"
+    *ngIf="(loadingQuestStatistics$ | async) || !(loadingQuestStatistics$ | async) && !questStatistics">
+    <div *ngIf="loadingQuestStatistics$ | async">
+      <lord-icon trigger="loop" style="width:72px;height:72px"
+        [colors]="'primary:' + primaryColor + ',secondary:' + secondaryColor"
+        src="https://cdn.lordicon.com/msoeawqm.json">
+      </lord-icon>
+      <h5 class="mt-4">{{'COMMON.LOADING' | translate }}</h5>
+    </div>
+    <div *ngIf="!(loadingQuestStatistics$ | async) && !questStatistics">
+      <lord-icon trigger="loop" style="width:72px;height:72px"
+        [colors]="'primary:' + primaryColor + ',secondary:' + secondaryColor"
+        src="https://cdn.lordicon.com/vlycxjwx.json">
+      </lord-icon>
+      <h5 class="mt-4">{{ 'COMMON.NO_RESULT' | translate }}</h5>
+    </div>
+  </div>
+</div>
+
+<div class="col-lg-12">
+  <div class="card mx-h-26">
+    <div class="card-header">
+      <div class="row g-4 align-items-center">
+        <div class="col-sm-auto">
+          <div>
+            <h4 class="card-title mb-0 flex-grow-1">{{ 'SHARED.SURVEYS_ANALYTICS' | translate }} ({{ totalResponses }}
+              {{
+              totalResponses > 1 ? 'responses' : 'response' }})</h4>
+          </div>
+        </div>
+        <div class="col-sm">
+          <div class="d-flex gap-1 align-items-center justify-content-sm-end">
+            <div *ngIf="activities?.length > 1" class="col-lg-2 flex-shrink-0">
+              <ng-select (change)="onChangeForm($event)" [selectableGroup]="true" [closeOnSelect]="false"
+                [(ngModel)]="selectedQuestActivity" [multiple]="false" [items]="activities" [virtualScroll]="true"
+                placeholder="Select form question" (scrollToEnd)="loadMoreQuestActivities()">
+                <ng-template ng-label-tmp let-item="item" let-clear="clear">
+                  <span class="ng-value-label">
+                    {{item?.activity?.action?.definition?.form?.form?.title}}
+                  </span>
+                  <span class="ng-value-icon right" (click)="clear(item)" aria-hidden="true">×</span>
+                </ng-template>
+                <ng-template ng-option-tmp let-item$="item$" let-item="item">
+                  {{item?.activity?.action?.definition?.form?.form?.title}}
+                </ng-template>
+              </ng-select>
+            </div>
+            <div>
+              <button (click)="onChangeSummary('summary')" type="button" [ngClass]="{
+                'btn-primary': selectedField === 'summary',
+                'btn-outline-primary': selectedField === 'individual' || selectedField === 'questions'
+                }" class="btn btn-sm shadow-none">
+                {{ 'SHARED.SUMMARY' | translate }}
+              </button>
+              <button (click)="onChangeSummary('questions')" type="button" [ngClass]="{
+              'btn-primary': selectedField === 'questions',
+              'btn-outline-primary': selectedField === 'summary' || selectedField === 'individual'
+              }" class="btn btn-sm shadow-none">
+              {{ 'SHARED.QUESTIONS' | translate }}
+              </button>
+              <button (click)="onChangeSummary('individual')" type="button" [ngClass]="{
+                'btn-primary': selectedField === 'individual',
+                'btn-outline-primary': selectedField === 'summary' || selectedField === 'questions'
+                }" class="btn btn-sm shadow-none">
+                {{ 'SHARED.INDIVIDUAL' | translate }}
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <ng-container *ngIf="selectedField === 'summary'">
+      <ng-container *ngIf="((laodingFormSummary$ | async) === false || null || undefined) && formSummary?.length">
+        <div *ngFor="let question of formSummary; let i = index; let last = last" class="card-body">
+          <div class="d-flex justify-content-center align-items-center mb-4 mt-2">
+            <span class="me-3 ff-secondary mb-0">{{ question?.title }} ({{ question?.responses?.length }} {{
+              question?.responses?.length === 1 ? 'response' : 'responses' }}) </span>
+          </div>
+          <div class="mb-3">
+            <apx-chart *ngIf="question?.responses?.length && question?.responses?.length >= 9" [series]="summaryBarChart.get(i)?.series"
+              [chart]="summaryBarChart.get(i)?.chart" [colors]="summaryBarChart.get(i)?.colors"
+              [dataLabels]="summaryBarChart.get(i)?.dataLabels" [plotOptions]="summaryBarChart.get(i)?.plotOptions"
+              [yaxis]="summaryBarChart.get(i)?.yaxis" [legend]="summaryBarChart.get(i)?.legend"
+              [fill]="summaryBarChart.get(i)?.fill" [stroke]="summaryBarChart.get(i)?.stroke"
+              [tooltip]="summaryBarChart.get(i)?.tooltip" [xaxis]="summaryBarChart.get(i)?.xaxis" dir="ltr"></apx-chart>
+
+            <apx-chart *ngIf="question?.responses?.length && question?.responses?.length < 9" class="apex-charts" dir="ltr"
+              [series]="summaryDonutChart.get(i)?.series" [labels]="summaryDonutChart.get(i)?.labels"
+              [chart]="summaryDonutChart.get(i)?.chart" [legend]="summaryDonutChart.get(i)?.legend"
+              [stroke]="summaryDonutChart.get(i)?.stroke" [dataLabels]="summaryDonutChart.get(i)?.dataLabels"
+              [colors]="summaryDonutChart.get(i)?.colors" dir="ltr"></apx-chart>
+          </div>
+          <div *ngIf="!last" class="mt-5 mb-3">
+            <hr class="border-top-dashed" />
+          </div>
+        </div>
+      </ng-container>
+      <div id="noresult" class="py-4 mt-4 text-center"
+        *ngIf="(laodingFormSummary$ | async) || !(laodingFormSummary$ | async) && !formSummary?.length">
+        <div *ngIf="laodingFormSummary$ | async">
+          <lord-icon trigger="loop" style="width:72px;height:72px"
+            [colors]="'primary:' + primaryColor + ',secondary:' + secondaryColor"
+            src="https://cdn.lordicon.com/msoeawqm.json">
+          </lord-icon>
+          <h5 class="mt-4">{{'COMMON.LOADING' | translate }}</h5>
+        </div>
+        <div *ngIf="!(laodingFormSummary$ | async) && !laodingFormSummary">
+          <lord-icon trigger="loop" style="width:72px;height:72px"
+            [colors]="'primary:' + primaryColor + ',secondary:' + secondaryColor"
+            src="https://cdn.lordicon.com/vlycxjwx.json">
+          </lord-icon>
+          <h5 class="mt-4">{{ 'COMMON.NO_RESULT' | translate }}</h5>
+        </div>
+      </div>
+    </ng-container>
+
+    <ng-container *ngIf="selectedField === 'questions'">
+      <div *ngIf="((loadingQuestions$ | async) === false || null || undefined && !(loadingQuestions$ | async)) && (infiniteQuestions$ | async)?.length" class="card">
+        <div class="d-flex justify-content-center">
+          <ng-select class="col-lg-4 mt-4" (change)="onChangeQuestion($event)" [selectableGroup]="true"
+            [closeOnSelect]="false" [(ngModel)]="questions[0]" [multiple]="false" [items]="questions"
+            [virtualScroll]="true" placeholder="Select question" (scrollToEnd)="loadMoreQuestions()">
+            <ng-template ng-label-tmp let-item="item" let-clear="clear">
+              <span class="ng-value-label">
+                {{item?.title}}
+              </span>
+              <span class="ng-value-icon right" (click)="clear(item)" aria-hidden="true">×</span>
+            </ng-template>
+            <ng-template ng-option-tmp let-item$="item$" let-item="item">
+              {{item?.title}}
+            </ng-template>
+          </ng-select>
+        </div>
+        <div class="card-body">
+          <h5 class="mt-3 mb-3"> {{selectedQuestion?.title}} </h5>
+          <div *ngFor="let response of questionResponses; let i = index" class="border border-2 border-dashed p-2 mt-2">
+            <div *ngIf="response?.answers?.number" class="mb-3 col-lg-4">
+              <input readonly type="text" id="email_id-field" class="form-control"
+                [value]="response?.answers?.number" />
+            </div>
+            <div *ngIf="response?.answers?.date?.from" class="row mb-3">
+              <div class="col-lg-4">
+                <label for="email_id-field" class="form-label col-xl-3">{{'COMMON.FROM' | translate }}</label>
+                <div class="input-wrapper input-group d-flex align-items-center">
+                  <input readonly [value]="response?.answers?.date?.from"
+                    class="form-control form-control-solid mb-lg-0" placeholder="From">
+                  <a class="input-group-text">
+                    <i class="ri-calendar-line fs-13"></i>
+                  </a>
+                </div>
+              </div>
+              <div class="col-lg-4">
+                <label for="email_id-field" class="form-label col-xl-3">{{'COMMON.TO' | translate }} </label>
+                <div class="input-wrapper input-group d-flex align-items-center">
+                  <input readonly [value]="response?.answers?.date?.to"
+                    class="form-control form-control-solid mb-lg-0" placeholder="From">
+                  <a class="input-group-text">
+                    <i class="ri-calendar-line fs-13"></i>
+                  </a>
+                </div>
+              </div>
+            </div>
+            <ng-container *ngIf="response?.answers?.smiley">
+              <span *ngIf="response?.answers?.smiley?.icon"
+                class="fs-1 cursor-pointer">{{response?.answers?.smiley?.icon}}</span>
+              <img *ngIf="response?.answers?.smiley?.picture" class="h-x-4 rounded object-cover"
+                [src]="response?.answers?.smiley?.picture?.baseUrl + '/' + response?.answers?.smiley?.picture?.path">
+            </ng-container>
+            <ng-container *ngIf="response?.answers?.rating">
+              <ngb-rating [rate]=response?.answers?.rating [readonly]="readonly" class="stars"
+                [max]=response?.answers?.rating></ngb-rating>
+            </ng-container>
+            <ng-container *ngIf="response?.answers?.paragraph">
+              <textarea rows="3" [value]="response?.answers?.paragraph" readonly name="description"
+                class="form-control"></textarea>
+            </ng-container>
+            <ng-container *ngIf="response?.answers?.shortAnswer">
+              <div class="col-lg-6">
+                <input readonly type="text" id="email_id-field" class="form-control"
+                  [value]="response?.answers?.shortAnswer" />
+              </div>
+            </ng-container>
+            <div *ngIf="response?.answers?.singleChoice" class="mb-3 row gap-2">
+              <div class="d-flex align-items-center gap-2">
+                <input disabled [name]="i + '_enable'" class="form-check-input fs-5" [checked]="true" type="radio">
+                <input readonly type="text" [value]="response?.answers?.singleChoice" class="form-control form-control-solid mb-lg-0">
+              </div>
+            </div>
+            <div *ngIf="response?.answers?.multipleChoices?.length" class="mb-3 row gap-2">
+              <div *ngFor="let choice of response?.answers?.multipleChoices" class="d-flex align-items-center gap-2">
+                <input disabled name="enable" class="form-check-input fs-5" [checked]="true"
+                  type="checkbox">
+                <input readonly type="text" [value]="choice" class="form-control form-control-solid mb-lg-0">
+              </div>
+            </div>
+            <div class="mt-2"> {{response?.count}} {{response?.count > 1 ? 'responses' : 'response'}} </div>
+          </div>
+          <div *ngIf="questionResponses?.length && !(isLastResponses$ | async)" class="text-center mt-2">
+            <button class="btn btn-sm btn-soft-secondary" (click)="loadMoreResponses()">Load more</button>
+          </div>
+        </div>
+      </div>
+
+      <div id="noresult" class="py-4 mt-4 text-center"
+        *ngIf="(loadingQuestions$ | async) || (!(loadingQuestions$ | async) && !(infiniteQuestions$ | async)?.length)">
+        <div *ngIf="loadingQuestions$ | async">
+          <lord-icon trigger="loop" style="width:72px;height:72px"
+            [colors]="'primary:' + primaryColor + ',secondary:' + secondaryColor"
+            src="https://cdn.lordicon.com/msoeawqm.json">
+          </lord-icon>
+          <h5 class="mt-4">{{'COMMON.LOADING' | translate }}</h5>
+        </div>
+        <div *ngIf="!(loadingQuestions$ | async) && !(infiniteQuestions$ | async)?.length">
+          <lord-icon trigger="loop" style="width:72px;height:72px"
+            [colors]="'primary:' + primaryColor + ',secondary:' + secondaryColor"
+            src="https://cdn.lordicon.com/vlycxjwx.json">
+          </lord-icon>
+          <h5 class="mt-4">{{ 'COMMON.NO_RESULT' | translate }}</h5>
+        </div>
+      </div>
+    </ng-container>
+
+    <ng-container *ngIf="selectedField === 'individual'">
+      <ng-container *ngIf="((loadingFormResponses$ | async) === false || null || undefined) && formResponses.length">
+        <div class="d-flex justify-content-between p-3">
+          <div class="listjs-pagination ms-5">
+            <ngb-pagination [maxSize]="5" [collectionSize]="formResponsesPagination?.length"
+              [(page)]="formResponsesPage" (pageChange)="onFormResponsesPageChange($event)"
+              [pageSize]="formResponsesPagination?.size">
+            </ngb-pagination>
+          </div>
+          <div class="d-flex gap-2">
+            <div>
+              <i class="ri-printer-line fs-3"></i>
+            </div>
+            <div>
+              <i class="ri-file-download-line fs-3"></i>
+            </div>
+            <div class="align-items-center d-flex gap-3 me-5 ml-3">
+              <div class="avatar-xs">
+                <span *ngIf="formResponses[0]?.user?.picture?.baseUrl"
+                  class="avatar-title bg-soft-warning rounded-circle">
+                  <img [src]="formResponses[0]?.user?.picture?.baseUrl + '/' + formResponses[0]?.user?.picture?.path"
+                    class="h-100 rounded-circle img-fluid lazyload">
+                </span>
+                <div *ngIf="!formResponses[0]?.user?.picture?.baseUrl"
+                  class="avatar-title text-uppercase bg-soft-info text-danger shadow rounded-circle">
+                  {{formResponses[0]?.user?.firstName?.charAt(0) || 'N'}}
+                </div>
+              </div>
+              {{formResponses[0]?.user?.firstName}} {{formResponses[0]?.user?.lastName}}
+            </div>
+          </div>
+        </div>
+        <ng-container *ngFor="let question of formResponses">
+          <div class="p-3">
+            <div class="border border-2 border-dashed p-2">
+              <h5 class="mt-3 mb-3"> {{question?.title}} </h5>
+              <div *ngIf="question?.response?.number" class="mb-3 col-lg-4">
+                <input readonly type="text" id="email_id-field" class="form-control"
+                  [value]="question?.response?.number" />
+              </div>
+              <div *ngIf="question?.response?.date?.from" class="row mb-3">
+                <div class="col-lg-4">
+                  <label for="email_id-field" class="form-label col-xl-3">{{'COMMON.FROM' | translate }}</label>
+                  <div class="input-wrapper input-group d-flex align-items-center">
+                    <input readonly [value]="question?.response?.date?.from"
+                      class="form-control form-control-solid mb-lg-0" placeholder="From">
+                    <a class="input-group-text">
+                      <i class="ri-calendar-line fs-13"></i>
+                    </a>
+                  </div>
+                </div>
+                <div class="col-lg-4">
+                  <label for="email_id-field" class="form-label col-xl-3">{{'COMMON.TO' | translate }} </label>
+                  <div class="input-wrapper input-group d-flex align-items-center">
+                    <input readonly [value]="question?.response?.date?.to"
+                      class="form-control form-control-solid mb-lg-0" placeholder="From">
+                    <a class="input-group-text">
+                      <i class="ri-calendar-line fs-13"></i>
+                    </a>
+                  </div>
+                </div>
+              </div>
+              <ng-container *ngIf="question?.response?.smiley">
+                <span *ngIf="question?.response?.smiley?.icon"
+                  class="fs-1 cursor-pointer">{{question?.response?.smiley?.icon}}</span>
+                <img *ngIf="question?.response?.smiley?.picture" class="h-x-4 rounded object-cover"
+                  [src]="question?.response?.smiley?.picture?.baseUrl + '/' + question?.response?.smiley?.picture?.path">
+              </ng-container>
+              <ng-container *ngIf="question?.response?.rating">
+                <ngb-rating [rate]=question?.response?.rating [readonly]="readonly" class="stars"
+                  [max]=question?.response?.rating></ngb-rating>
+              </ng-container>
+              <ng-container *ngIf="question?.response?.paragraph">
+                <textarea rows="3" [value]="question?.response?.paragraph" readonly name="description"
+                  class="form-control"></textarea>
+              </ng-container>
+              <ng-container *ngIf="question?.response?.shortAnswer">
+                <div class="col-lg-6">
+                  <input readonly type="text" id="email_id-field" class="form-control"
+                    [value]="question?.response?.shortAnswer" />
+                </div>
+              </ng-container>
+              <div *ngIf="question?.type === 'SINGLE_CHOICE'" class="mb-3 row gap-2">
+                <div *ngFor="let choice of question?.choices" class="d-flex align-items-center gap-2">
+                  <input disabled name="enable" class="form-check-input fs-5" [checked]="choice?.enable === true" type="radio">
+                  <input readonly type="text" [value]="choice?.item" class="form-control form-control-solid mb-lg-0">
+                </div>
+              </div>
+              <div *ngIf="question?.type === 'MULTIPLE_CHOICE'" class="mb-3 row gap-2">
+                <div *ngFor="let choice of question?.choices" class="d-flex align-items-center gap-2">
+                  <input disabled name="enable" class="form-check-input fs-5" [checked]="choice?.enable === true"
+                    type="checkbox">
+                  <input readonly type="text" [value]="choice?.item" class="form-control form-control-solid mb-lg-0">
+                </div>
+              </div>
+            </div>
+          </div>
+        </ng-container>
+      </ng-container>
+      <div id="noresult" class="py-4 mt-4 text-center"
+        *ngIf="(loadingFormResponses$ | async) || (!(loadingFormResponses$ | async) && !formResponses.length)">
+        <div *ngIf="loadingFormResponses$ | async">
+          <lord-icon trigger="loop" style="width:72px;height:72px"
+            [colors]="'primary:' + primaryColor + ',secondary:' + secondaryColor"
+            src="https://cdn.lordicon.com/msoeawqm.json">
+          </lord-icon>
+          <h5 class="mt-4">{{'COMMON.LOADING' | translate }}</h5>
+        </div>
+        <div *ngIf="!(loadingFormResponses$ | async) && !formResponses.length">
+          <lord-icon trigger="loop" style="width:72px;height:72px"
+            [colors]="'primary:' + primaryColor + ',secondary:' + secondaryColor"
+            src="https://cdn.lordicon.com/vlycxjwx.json">
+          </lord-icon>
+          <h5 class="mt-4">{{ 'COMMON.NO_RESULT' | translate }}</h5>
+        </div>
+      </div>
+    </ng-container>
+  </div>
+</div>
+<div class="card">
+  <div class="card-header">
+    <h4 class="card-title mb-0 flex-grow-1">{{ 'SHARED.RECENT_REPLIES' | translate }}</h4>
+  </div>
+
+  <div class="card-body">
+    <div class="table-responsive table-card">
+      <table class="table table-borderless table-centered align-middle table-nowrap mb-0">
+        <thead class="text-muted table-light">
+          <tr>
+            <th scope="col">{{'MENUITEMS.CUSTOMERENGAGEMENT.LIST.USER' | translate }}</th>
+            <th scope="col">{{ 'COMMON.GENDER' | translate }}</th>
+            <th scope="col">{{ 'COMMON.MARITAL_STATUS' | translate }}</th>
+            <th scope="col">{{'SHARED.ACTION_TIME' | translate }}</th>
+            <th scope="col">{{'SHARED.REWARD' | translate }}</th>
+            <th scope="col">{{'SHARED.SCORE' | translate }}</th>
+          </tr>
+        </thead>
+        <tbody
+          *ngIf="((loadingQuestActionsByQuest$ | async) === false || null || undefined) && (questActions$ | async).length">
+          <tr *ngFor="let item of questActions$ | async">
+            <td>
+              <div class="d-flex cursor-pointer align-items-center">
+                <div class="flex-shrink-0">
+                  <div class="avatar-sm bg-light p-1 rounded-circle" *ngIf="item?.user?.pictures?.length">
+                    <img [src]="item?.user?.pictures[0]?.baseUrl + '/' + item?.user?.pictures[0]?.path"
+                      class="img-fluid h-100 rounded-circle">
+                  </div>
+                  <div class="avatar-sm bg-light rounded-circle p-1" *ngIf="!item?.user?.pictures?.length">
+                    <div class="avatar-title bg-soft-success text-success rounded-circle fs-13">
+                      {{item?.user?.firstName?.charAt(0) || 'N'}}</div>
+                  </div>
+                </div>
+                <div [routerLink]="['/ecommerce/customers/customers', item?.user?.id]"
+                  class="flex-grow-1 cursor-pointer fw-medium link-primary ms-2 name">
+                  {{item?.user?.firstName}} {{item?.user?.lastName}}
+                </div>
+              </div>
+            </td>
+            <td>{{
+              (item?.gender === 'MALE' ? 'MODULES.SYSTEM.SHARED.MALE' :
+              item?.gender === 'FEMALE' ? 'MODULES.SYSTEM.SHARED.FEMALE' : 'MODULES.SYSTEM.SHARED.PREFER_NOT_TO_SAY') | translate
+
+              }}</td>
+
+            <td>
+              {{
+                (item?.maritalStatus === 'SINGLE' ? 'MODULES.SYSTEM.SHARED.SINGLE' :
+                item?.maritalStatus === 'MARRIED' ? 'MODULES.SYSTEM.SHARED.MARRIED' :
+                item?.maritalStatus === 'ENGAGED' ? 'MODULES.SYSTEM.SHARED.ENGAGED' :
+                item?.maritalStatus === 'WIDOWED' ? 'MODULES.SYSTEM.SHARED.WIDOWED' :
+                item?.maritalStatus === 'DIVORCED' ? 'MODULES.SYSTEM.SHARED.DIVORCED' :
+                item?.maritalStatus === 'SEPERATED' ? 'MODULES.SYSTEM.SHARED.SEPERATED' :
+                item?.maritalStatus === 'IN_RELATIONSHIP' ? 'MODULES.SYSTEM.SHARED.IN_RELATIONSHIP' :
+                item?.maritalStatus === 'PREFER_NOT_TO_SAY' ? 'MODULES.SYSTEM.SHARED.PREFER_NOT_TO_SAY' : '') | translate
+                }}
+              </td>
+            <td>
+              <span class="text-success">{{item?.createdAt | date: 'longDate'}}</span>
+            </td>
+            <td>
+              <div class="align-items-center d-flex gap-1 gap-3">
+                <ng-container *ngFor="let item of quest?.remuneration">
+                  <div class="align-items-center d-flex gap-2" *ngIf="item?.walletType === 'QUANTITATIVE'">
+                    <span *ngIf="item?.amount">{{ item?.amount | number: '1.0-0' }}</span>
+                    <img *ngIf="item?.wallet?.coin?.picture?.baseUrl"
+                      [src]="item?.wallet?.coin?.picture?.baseUrl + '/' + item?.wallet?.coin?.picture?.path" alt=""
+                      class="img-fluid rounded-circle avatar-xxs">
+                    <lord-icon *ngIf="!item?.wallet?.coin?.picture?.baseUrl"
+                      src="https://cdn.lordicon.com/lxizbtuq.json" trigger="loop" delay="2000"
+                      style="width:30px;height:30px">
+                    </lord-icon>
+                  </div>
+                  <div class="align-items-center d-flex gap-2" *ngIf="item?.walletType === 'QUALITATIVE'">
+                    <span *ngIf="item?.amount">
+                      {{item?.amount | number: '1.0-0'}}
+                    </span>
+                    <div>
+                      <img *ngIf="(loyaltySettings$ | async)?.qualitative?.picture?.baseUrl"
+                        [src]="(loyaltySettings$ | async)?.qualitative?.picture?.baseUrl + '/' + (loyaltySettings$ | async)?.qualitative?.picture?.path"
+                        alt="" class="img-fluid rounded-circle avatar-xxs mb-1">
+                      <img class="img-fluid rounded-circle avatar-xxs mb-1"
+                        *ngIf="!(loyaltySettings$ | async)?.qualitative?.picture?.baseUrl"
+                        src="https://sifca-storage.s3.eu-central-1.amazonaws.com/loyalcraft/reputation_512.gif">
+                    </div>
+                  </div>
+                </ng-container>
+              </div>
+            </td>
+            <td>
+              <h5 class="fs-14 fw-medium mb-0">5.0<span class="text-muted fs-11 ms-1">(245
+                  Rating)</span></h5>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <div
+      *ngIf="((loadingQuestActionsByQuest$ | async) === false || null || undefined) && (questActions$ | async).length"
+      class="px-3">
+      <div class="row justify-content-md-between align-items-md-center gy-2">
+        <div class="col col-sm-6">
+          <div class="dataTables_info mb-2" id="tickets-table_info" role="status" aria-live="polite">{{'COMMON.SHOWING'
+            | translate }} {{questActionsPagination?.startIndex + 1}}–{{questActionsPagination?.endIndex ===
+            questActionsPagination?.length ? questActionsPagination?.endIndex : questActionsPagination?.endIndex + 1}}
+            {{'COMMON.OF' | translate }}
+            {{questActionsPagination?.length}} {{'COMMON.ENTRIES' | translate }}
+          </div>
+        </div>
+        <div class="col col-sm-6">
+          <div class="text-sm-right float-end listjs-pagination">
+            <ngb-pagination [maxSize]="5" [collectionSize]="questActionsPagination?.length"
+              [(page)]="questActionsPage" (pageChange)="onQuestActionsPageChange($event)"
+              [pageSize]="questActionsPagination?.size">
+            </ngb-pagination>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div id="noresult" class="py-4 mt-4 text-center"
+      *ngIf="(loadingQuestActionsByQuest$ | async) || (!(loadingQuestActionsByQuest$ | async) && !(questActions$ | async).length)">
+      <div *ngIf="loadingQuestActionsByQuest$ | async">
+        <lord-icon trigger="loop" style="width:72px;height:72px"
+          [colors]="'primary:' + primaryColor + ',secondary:' + secondaryColor"
+          src="https://cdn.lordicon.com/msoeawqm.json">
+        </lord-icon>
+        <h5 class="mt-4">{{'COMMON.LOADING' | translate }}</h5>
+      </div>
+      <div *ngIf="!(loadingQuestActionsByQuest$ | async) && !(questActions$ | async).length">
+        <lord-icon trigger="loop" style="width:72px;height:72px"
+          [colors]="'primary:' + primaryColor + ',secondary:' + secondaryColor"
+          src="https://cdn.lordicon.com/vlycxjwx.json">
+        </lord-icon>
+        <h5 class="mt-4">{{ 'COMMON.NO_RESULT' | translate }}</h5>
+      </div>
+    </div>
+  </div>
+</div>

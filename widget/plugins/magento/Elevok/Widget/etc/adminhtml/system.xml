@@ -1,0 +1,112 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Config:etc/system_file.xsd">
+    <system>
+        <!-- Parent Tab -->
+        <tab id="elevok_widget" translate="label" sortOrder="100">
+            <label><![CDATA[Elevok Widget]]></label>
+        </tab>
+        
+        <!-- Section for General Settings -->
+        <section id="elevok_widget_general" translate="label" sortOrder="10" showInDefault="1" showInWebsite="1"
+                 showInStore="1">
+            <label><![CDATA[General Settings]]></label>
+            <tab>elevok_widget</tab>
+            <resource>Elevok_Widget::config_elevok_widget</resource>
+            <group id="general" translate="label" type="text" sortOrder="10" showInDefault="1" showInWebsite="1"
+                   showInStore="1">
+                <label><![CDATA[General]]></label>
+                <field id="widget_app_id" translate="label" type="text" sortOrder="10" showInDefault="1"
+                       showInWebsite="1" showInStore="1">
+                    <label><![CDATA[App ID]]></label>
+                    <validate>required-entry</validate>
+                </field>
+                <field id="widget_public_key" translate="label" type="text" sortOrder="20" showInDefault="1"
+                       showInWebsite="1" showInStore="1">
+                    <label><![CDATA[Public Key]]></label>
+                    <validate>required-entry</validate>
+                </field>
+                <field id="widget_secret_key" translate="label" type="text" sortOrder="30" showInDefault="1"
+                       showInWebsite="1" showInStore="1">
+                    <label><![CDATA[Secret Key]]></label>
+                    <validate>required-entry</validate>
+                </field>
+                <field id="first_text" translate="label" type="text" sortOrder="40" showInDefault="1"
+                       showInWebsite="1" showInStore="1">
+                    <label><![CDATA[Available Amount Text]]></label>
+                </field>
+                <field id="second_text" translate="label" type="text" sortOrder="50" showInDefault="1"
+                       showInWebsite="1" showInStore="1">
+                    <label><![CDATA[Select Amount Text]]></label>
+                </field>
+                <field id="submit_text" translate="label" type="text" sortOrder="60" showInDefault="1"
+                       showInWebsite="1" showInStore="1">
+                    <label><![CDATA[Submit Text]]></label>
+                </field>
+                <field id="discount_name" translate="label" type="text" sortOrder="70" showInDefault="1"
+                       showInWebsite="1" showInStore="1">
+                    <label><![CDATA[Discount Name]]></label>
+                </field>
+                <field id="display_discount" translate="label" type="select" sortOrder="80" showInDefault="1"
+                    showInWebsite="1" showInStore="1">
+                    <label><![CDATA[Display Discount]]></label>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                </field>
+                <field id="widget_style" translate="label" type="textarea" sortOrder="90" showInDefault="1"
+                       showInWebsite="1" showInStore="1">
+                    <label><![CDATA[Custom CSS]]></label>
+                </field>
+            </group>
+        </section>
+
+        <!-- Section for Catalog -->
+        <section id="elevok_widget_catalog" translate="label" sortOrder="20" showInDefault="1" showInWebsite="1" showInStore="1">
+            <label><![CDATA[Catalog]]></label>
+            <tab>elevok_widget</tab>
+            <resource>Elevok_Widget::config_elevok_widget</resource>
+            <group id="catalog_group" translate="label" type="text" sortOrder="10" showInDefault="1"
+                   showInWebsite="1" showInStore="1">
+                <label><![CDATA[Catalog Settings]]></label>
+				<field id="entity_selection" translate="label" type="select" sortOrder="15" showInDefault="1" showInWebsite="1" showInStore="1">
+					<label><![CDATA[Select Entity Type]]></label>
+					<source_model>Elevok\Widget\Controller\Adminhtml\Catalog\EntityType</source_model>
+				</field>
+				<field id="run_cron_catalog" translate="label" type="select" sortOrder="20" showInDefault="1" showInWebsite="1" showInStore="1">
+					<label><![CDATA[Run Cron]]></label>
+					<source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+				</field>
+				<field id="download_products_xml" translate="label" type="button" sortOrder="25" showInDefault="1" showInWebsite="1" showInStore="1">
+					<label><![CDATA[Download Products in XML]]></label>
+					<frontend_model>Elevok\Widget\Block\CatalogButton</frontend_model>
+				</field>
+            </group>
+        </section>
+
+        <!-- Section for Orders -->
+        <section id="elevok_widget_orders" translate="label" sortOrder="30" showInDefault="1" showInWebsite="1" showInStore="1">
+            <label><![CDATA[Orders]]></label>
+            <tab>elevok_widget</tab>
+            <resource>Elevok_Widget::config_elevok_widget</resource>
+            <group id="orders_group" translate="label" type="text" sortOrder="10" showInDefault="1"
+                   showInWebsite="1" showInStore="1">
+                <label><![CDATA[Orders Settings]]></label>
+				<field id="date_range" translate="label" type="select" sortOrder="15" showInDefault="1" showInWebsite="1" showInStore="1">
+					<label><![CDATA[Select Date Range]]></label>
+					<source_model>
+						Elevok\Widget\Controller\Adminhtml\Orders\DateRangeOptions
+					</source_model>
+				</field>
+				<field id="run_cron" translate="label" type="select" sortOrder="20" showInDefault="1" showInWebsite="1" showInStore="1">
+					<label><![CDATA[Run Cron]]></label>
+					<source_model>
+						Magento\Config\Model\Config\Source\Yesno
+					</source_model>
+				</field>
+				<field id="download_orders_xml" translate="label" type="button" sortOrder="25" showInDefault="1" showInWebsite="1" showInStore="1">
+					<label><![CDATA[Download Orders in XML]]></label>
+					<frontend_model>Elevok\Widget\Block\Button</frontend_model>
+				</field>
+            </group>
+        </section>
+    </system>
+</config>

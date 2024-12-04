@@ -1,0 +1,143 @@
+<ng-container *ngIf="!(navigating$ | async)">
+  <div class="position-relative mx-n4 mt-n4">
+    <div class="profile-wid-bg profile-setting-img">
+      <img src="assets/images/profile-bg.jpg" class="profile-wid-img" alt="">
+      <div class="overlay-content">
+        <div class="text-end p-3">
+          <div class="p-0 ms-auto rounded-circle profile-photo-edit">
+            <input id="profile-foreground-img-file-input" type="file" class="profile-foreground-img-file-input">
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-xxl-3">
+      <div class="card mt-n5">
+        <div class="card-body p-4">
+          <div *ngIf="plugin$ | async as plugin" class="text-center">
+            <div class="profile-user position-relative d-inline-block mx-auto mb-4">
+              <div class="avatar-lg mb-3">
+                <div class="avatar-title bg-soft-success fs-24 text-success">
+                  <i [ngClass]="plugin?.icon"></i>
+                </div>
+              </div>
+            </div>
+            <h5 class="fs-16 mb-1">{{plugin?.name}}</h5>
+            <p class="text-muted mb-0">{{plugin?.description}}</p>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="col-xxl-9">
+      <div class="card mt-xxl-n5">
+        <div class="card-body p-4">
+          <form [formGroup]="emailForm">
+            <div class="card-body">
+              <ng-container formGroupName="server">
+                <div class="row">
+                  <div class="align-items-center d-flex gap-2 mb-3">
+                    <div>
+                      <div for="firstnameInput">{{'SHARED.SECURE' | translate }}</div>
+                    </div>
+                    <div class="flex-shrink-0 d-flex fs-18 gap-1">
+                      <div class="form-check form-switch">
+                        <input [checked]="email?.server.secure"
+                          (change)="onChange($event?.target?.checked)" class="form-check-input"
+                          type="checkbox" role="switch" id="flexSwitchCheckDefault">
+                      </div>
+                    </div>
+                  </div>
+                  <div class="mb-3 col-lg-6">
+                    <label for="email_id-field" class="form-label">{{'SHARED.PORT' | translate }}</label>
+                    <input type="number" id="email_id-field" class="form-control" placeholder="Port"
+                      formControlName="port" />
+                  </div>
+                  <div class="mb-3 col-lg-6">
+                    <label for="email_id-field" class="form-label">{{'SHARED.HOST' | translate }}</label>
+                    <input type="string" id="email_id-field" class="form-control" placeholder="Host"
+                      formControlName="host" />
+                  </div>
+                  <ng-container formGroupName="auth">
+                    <div class="mb-3 col-lg-6">
+                      <label for="email_id-field" class="form-label">{{'SHARED.PASS' | translate }}</label>
+                      <input type="text" id="email_id-field" class="form-control" placeholder="Pass"
+                        formControlName="pass" />
+                    </div>
+                    <div class="mb-3 col-lg-6">
+                      <label for="email_id-field" class="form-label">{{'SHARED.USER' | translate }}</label>
+                      <input type="text" id="email_id-field" class="form-control" placeholder="User"
+                        formControlName="user" />
+                    </div>
+                  </ng-container>
+                </div>
+              </ng-container>
+            </div>
+            <div class="card-footer">
+              <div *ngIf="emailForm" class="d-flex justify-content-end">
+                <button (click)="save()" [disabled]="isEmailButtonDisabled || emailForm.invalid" type="button"
+                  class="btn btn-success">{{'COMMON.SAVE' | translate }}</button>
+              </div>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</ng-container>
+
+<ng-template #emailModal role="document" let-modal>
+  <div class="modal-header bg-soft-info p-3">
+    <h5 class="modal-title" id="exampleModalLabel">{{selectedEmail ? 'Edit Email' : 'Add Email'}}</h5>
+    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" id="close-modal"
+      (click)="modal.dismiss()"></button>
+  </div>
+  <form [formGroup]="emailForm">
+    <div class="modal-body">
+      <ng-container formGroupName="server">
+        <div class="row">
+          <div class="mb-3 col-lg-6">
+            <label for="email_id-field" class="form-label">{{'SHARED.SECURE' | translate }}</label>
+            <input type="text" id="email_id-field" class="form-control" placeholder="Secure" formControlName="secure" />
+          </div>
+          <div class="mb-3 col-lg-6">
+            <label for="email_id-field" class="form-label">{{'SHARED.PORT' | translate }}</label>
+            <input type="text" id="email_id-field" class="form-control" placeholder="Port" formControlName="port" />
+          </div>
+          <div class="mb-3 col-lg-6">
+            <label for="email_id-field" class="form-label">{{'SHARED.HOST' | translate }}</label>
+            <input type="text" id="email_id-field" class="form-control" placeholder="Host" formControlName="host" />
+          </div>
+          <ng-container formGroupName="auth">
+            <div class="mb-3 col-lg-6">
+              <label for="email_id-field" class="form-label">{{'SHARED.PASS' | translate }}</label>
+              <input type="text" id="email_id-field" class="form-control" placeholder="Pass" formControlName="pass" />
+            </div>
+            <div class="mb-3 col-lg-6">
+              <label for="email_id-field" class="form-label">{{'SHARED.USER' | translate }}</label>
+              <input type="text" id="email_id-field" class="form-control" placeholder="User" formControlName="user" />
+            </div>
+          </ng-container>
+        </div>
+      </ng-container>
+    </div>
+    <div class="modal-footer">
+      <div *ngIf="actionForm" class="d-flex justify-content-end">
+        <button (click)="saveAction()" [disabled]="isEmailButtonDisabled || emailForm.invalid" type="button"
+          class="btn btn-success">{{'COMMON.SAVE' | translate }}</button>
+      </div>
+    </div>
+  </form>
+</ng-template>
+<div *ngIf="navigating$ | async" class="vh-100 py-4 text-center" fxLayout="column" fxLayoutAlign="center center"
+  fxLayoutGap="1rem">
+  <div>
+    <lord-icon trigger="loop" style="width:72px;height:72px"
+      [colors]="'primary:' + primaryColor + ',secondary:' + secondaryColor"
+      src="https://cdn.lordicon.com/msoeawqm.json">
+    </lord-icon>
+  </div>
+  <div class="mt-4">
+    <h5>{{'COMMON.LOADING' | translate }}</h5>
+  </div>
+</div>

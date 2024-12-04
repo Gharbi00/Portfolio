@@ -1,0 +1,199 @@
+<ng-container *ngIf="!(navigating$ | async)">
+  <app-breadcrumbs title="{{ 'MENUITEMS.TITLE.CUSTOMERS' | translate }}" [breadcrumbItems]="breadCrumbItems"></app-breadcrumbs>
+  <div class="row">
+    <div class="col-lg-12">
+      <div class="card" id="ticketsList">
+        <div class="card-header border-0">
+          <div class="d-flex align-items-center justify-content-between align-items-center">
+            <div>
+              <h5 class="card-title mb-0 flex-grow-1">{{'MENUITEMS.TS.CUSTOMERS' | translate }}
+              </h5>
+              <div class="text-muted">
+                <ng-container *ngIf="pagination?.length > 0">
+                  {{pagination?.length}}
+                </ng-container>
+                {{pagination?.length | i18nPlural: {
+                '=0' : 'COMMON.NO_CONTACTS',
+                '=1' : 'MENUITEMS.TITLE.CONTACT',
+                'other': 'MENUITEMS.TS.CONTACTS'
+                } | translate}}
+              </div>
+            </div>
+            <div class="flex-shrink-0 d-flex gap-1">
+              <div class="form-check form-switch">
+                <input (change)="onChange($event)" class="form-check-input" type="checkbox" role="switch" id="flexSwitchCheckDefault">
+                <label class="form-check-label" for="flexSwitchCheckDefault">{{ 'MODULES.ECOMMERCE.MAIN.ONLINE_ONLY' | translate }}</label>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="card-body border border-dashed border-end-0 border-start-0">
+          <div class="d-sm-flex col-lg-12 align-items-center justify-content-between align-items-center">
+            <div class="search-box col-lg-6">
+              <form [formGroup]="searchForm">
+                <input type="text" name="searchTerm" formControlName="searchString" class="form-control search bg-light border-light" placeholder="{{'PLACEHOLDER.SEARCH_FOR_CONTACTS_DETAILS_OR_SOMETHING' | translate }}...">
+                <i class="ri-search-line search-icon"></i>
+              </form>
+            </div>
+            <div class="flex-shrink-0 d-flex gap-1 mt-2">
+              <button [routerLink]="['/ecommerce/customers/customers/add']" class="btn btn-success add-btn"><i class="ri-add-line align-bottom me-1"></i>{{ 'MODULES.ECOMMERCE.MAIN.ADD_NEW' | translate }}</button>
+              <button (click)="openEmailModal(emailModal)" type="button" class="btn btn-primary"><i class="ri-send-plane-fill align-bottom me-1"></i>{{'COMMON.SEND' | translate }}</button>
+              <button (click)="downloadDocument()" type="button" class="btn btn-secondary"><i class="ri-file-download-line align-bottom me-1"></i>{{'COMMON.EXPORT' | translate }}</button>
+              <button (click)="openImportModal(importModal)" type="button" class="btn btn-secondary">
+                <i class="ri-file-upload-line align-bottom"></i> {{ 'COMMON.IMPORT' | translate }}
+              </button>
+            </div>
+          </div>
+        </div>
+        <div class="card-body">
+          <div class="table-card gridjs-border-none">
+            <div class="table-responsive">
+              <table class="table align-middle custom-datatable" id="datatableexample">
+                <thead>
+                  <tr class="bg-light text-uppercase text-muted">
+                    <th>{{'COMMON.NAME' | translate }}</th>
+                    <th>{{'MENUITEMS.CUSTOMERENGAGEMENT.LIST.IDENTIFIER' | translate }}</th>
+                    <th>{{'COMMON.EMAIL' | translate }}</th>
+                    <th>{{ 'COMMON.PHONE' | translate }}</th>
+                    <th>{{'COMMON.ADDRESS' | translate }}</th>
+                    <th>{{'COMMON.TITLE' | translate }}</th>
+                    <th>{{'COMMON.ACTION' | translate }}</th>
+                  </tr>
+                </thead>
+                <tbody *ngIf="((isLoading$ | async) === false || null || undefined) && contacts?.length">
+                  <tr *ngFor="let contact of contacts;let i = index;" id="p_{{contact?.id}}">
+                    <td>
+                      <span>
+                        <div class="d-flex cursor-pointer align-items-center">
+                          <div class="flex-shrink-0">
+                            <div class="avatar-sm bg-light p-1 rounded-circle h-x" *ngIf="contact?.pictures?.length">
+                              <img [src]="contact?.pictures[0]?.baseUrl + '/' + contact?.pictures[0]?.path" class="img-fluid h-100 rounded-circle">
+                            </div>
+                            <div class="avatar-sm bg-light rounded-circle p-1 h-x" *ngIf="!contact?.pictures?.length">
+                              <div class="avatar-title bg-soft-success text-success rounded-circle fs-13">
+                                {{contact?.firstName?.charAt(0) || 'N'}}</div>
+                            </div>
+                          </div>
+                          <div [routerLink]="['/ecommerce/customers/customers', contact?.id]" class="flex-grow-1 cursor-pointer fw-medium link-primary ms-2 name">
+                            {{contact.firstName}} {{contact.lastName}}
+                          </div>
+                        </div>
+                      </span>
+                    </td>
+                    <td>{{contact?.socialLoginData?.partner?.identifier}}</td>
+                    <td>{{contact?.email?.length > 15 ? contact?.email?.substr(0, 15) + '...' : contact?.email }}</td>
+                    <td>{{contact?.phone?.number}}</td>
+                    <td>{{contact?.residentialAddress[0]?.address}}</td>
+                    <td>{{contact?.title}}</td>
+                    <td>
+                      <span>
+                        <div class="dropdown" ngbDropdown>
+                          <button class="btn btn-soft-secondary btn-sm dropdown arrow-none" type="button" data-bs-toggle="dropdown" aria-expanded="false" ngbDropdownToggle>
+                            <i class="ri-more-fill"></i>
+                          </button>
+                          <ul class="dropdown-menu dropdown-menu-end" ngbDropdownMenu>
+                            <li>
+                              <a [routerLink]="[contact?.id]" class="dropdown-item cursor-pointer"><i class="ri-pencil-fill align-bottom me-2 text-primary"></i>{{ 'COMMON.EDIT' | translate }} </a>
+                            </li>
+                          </ul>
+                        </div>
+                      </span>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+          <div *ngIf="((isLoading$ | async) === false || null || undefined) && contacts?.length" class="px-3">
+            <div class="row justify-content-md-between align-items-md-center gy-2">
+              <div class="col col-sm-6">
+                <div class="dataTables_info mb-2" id="tickets-table_info" role="status" aria-live="polite">{{'COMMON.SHOWING' | translate }}{{pagination?.startIndex + 1}}–{{pagination?.endIndex ===
+                  pagination?.length ? pagination?.endIndex : pagination?.endIndex + 1}} {{'COMMON.OF' | translate }}
+                  {{pagination?.length}} {{'COMMON.ENTRIES' | translate }}
+                </div>
+              </div>
+              <div class="col col-sm-6">
+                <div class="text-sm-right float-end">
+                  <ngb-pagination [maxSize]="5" [collectionSize]="pagination?.length" [(page)]="page" (pageChange)="onPageChange($event)" [pageSize]="pagination?.size">
+                  </ngb-pagination>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div id="noresult" class="py-4 mt-4 text-center" *ngIf="(isLoading$ | async) || (!(isLoading$ | async) && !contacts?.length)">
+            <div *ngIf="isLoading$ | async">
+              <lord-icon trigger="loop" style="width:72px;height:72px" [colors]="'primary:' + primaryColor + ',secondary:' + secondaryColor" src="https://cdn.lordicon.com/msoeawqm.json">
+              </lord-icon>
+              <h5 class="mt-4">{{'COMMON.LOADING' | translate }}</h5>
+            </div>
+            <div *ngIf="!(isLoading$ | async) && !contacts?.length">
+              <lord-icon trigger="loop" style="width:72px;height:72px" [colors]="'primary:' + primaryColor + ',secondary:' + secondaryColor" src="https://cdn.lordicon.com/vlycxjwx.json">
+              </lord-icon>
+              <h5 class="mt-4">{{ 'COMMON.NO_RESULT' | translate }}</h5>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <ng-template #emailModal role="document" let-modal>
+    <div class="modal-header p-3 bg-soft-info">
+      <h5 class="modal-title" id="exampleModalLabel">{{'COMMON.SEND' | translate }} Email</h5>
+      <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" id="close-modal" (click)="modal.dismiss('Cross click')"></button>
+    </div>
+    <form [formGroup]="emailForm">
+      <div class="modal-body">
+        <div class="row g-3">
+          <div class="col-lg-12 mb-3">
+            <label class="form-label" for="product-tags-input">{{ 'MODULES.ECOMMERCE.MAIN.EMAILS_PRESS' | translate }}</label>
+            <ng-select [items]="[]" class="no-arrow-select" [addTag]="true" [isOpen]="false" [multiple]="true" [selectOnTab]="true" formControlName="emails">
+            </ng-select>
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <div class="hstack gap-2 justify-content-end">
+          <button type="button" class="btn btn-light" data-bs-dismiss="modal" (click)="modal.close('Close click')">{{'COMMON.CLOSE' | translate }}</button>
+          <button type="button" [disabled]="isEmailButtonDisabled || emailForm.invalid" (click)="send()" class="btn btn-success" id="add-btn">{{'COMMON.SEND' | translate }}</button>
+        </div>
+      </div>
+    </form>
+  </ng-template>
+
+  <ng-template #importModal role="document" let-modal>
+    <div class="modal-header bg-soft-info p-3">
+      <h5 class="modal-title" id="exampleModalLabel">{{ 'MODULES.CRM.CUSTOMERS.UPLOAD_EXCEL' | translate }}</h5>
+      <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" id="close-modal" (click)="modal.dismiss('Cross click')"></button>
+    </div>
+    <div class="modal-body">
+      <p>
+        {{ 'MODULES.CRM.CUSTOMERS.UPLOAD_EXCEL_PARAGRAPH' | translate }}
+      </p>
+    </div>
+    <div class="modal-footer">
+      <div class="hstack gap-2 justify-content-end">
+        <button type="button" class="btn btn-light" data-bs-dismiss="modal" (click)="modal.close('Close click')">{{
+          'COMMON.CLOSE' | translate }}</button>
+        <button type="button" (click)="!loadingImport ? uploadExcel() : null" class="btn btn-primary btn-load">
+          <span *ngIf="!loadingImport">{{ 'MODULES.CRM.CUSTOMERS.IMPORT_EXCEL' | translate }}</span>
+          <span *ngIf="loadingImport" class="d-flex align-items-center">
+            <span class="spinner-border flex-shrink-0" role="status">
+              <span class="visually-hidden">{{ 'COMMON.LOADING' | translate }}</span>
+            </span>
+            <span class="flex-grow-1 ms-2">{{ 'COMMON.LOADING' | translate }}</span>
+          </span>
+        </button>
+      </div>
+    </div>
+  </ng-template>
+</ng-container>
+<div *ngIf="navigating$ | async" class="vh-100 py-4 text-center" fxLayout="column" fxLayoutAlign="center center" fxLayoutGap="1rem">
+  <div>
+    <lord-icon trigger="loop" style="width:72px;height:72px" [colors]="'primary:' + primaryColor + ',secondary:' + secondaryColor" src="https://cdn.lordicon.com/msoeawqm.json">
+    </lord-icon>
+  </div>
+  <div class="mt-4">
+    <h5>{{'COMMON.LOADING' | translate }}</h5>
+  </div>
+</div>

@@ -1,0 +1,13 @@
+<div class="card" [ngClass]="{rotated: isRotated}" (click)="onClick()" [class.dark-mode]="darkMode">
+  <div class="card-inner">
+    <div>
+      <img
+        [src]="picture?.baseUrl + '/' + picture?.path" class="assets/img-fluid rounded-circle mb-1" style="object-fit: cover;
+        height: 80px;
+        width: 80px;" />
+    </div>
+    <div class="back bg-brand" [class.dark-mode]="darkMode">
+      <fa-icon [icon]="['fas', 'question']" size="3x"></fa-icon>
+    </div>
+  </div>
+</div>

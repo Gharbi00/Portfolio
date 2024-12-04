@@ -1,0 +1,22 @@
+<div class="container" style="padding: 0 28px;" [class.dark-mode]="darkMode">
+  <div class="d-flex justify-content-end mt-4 mb-4">
+    <button (click)="showImage = !showImage" class="button small primary" style="width: auto !important; pointer-events: auto;">
+      <span style="font-size: 16px; font-weight: 600;">
+        {{(!showImage ? 'SHOW' : 'HIDE') | translate}}
+      </span>
+    </button>
+  </div>
+</div>
+<div *ngIf="showImage" class="d-flex justify-content-center">
+  <figure class="widget-box-picture popup-picture-trigger">
+    <img class="img-w" [src]="imgData" alt="cover-04" />
+  </figure>
+</div>
+
+<div [ngStyle]="{'display': showImage ? 'none' : 'block'}" id="puzzle"></div>
+
+<svg style="display: none">
+  <symbol id="svg-small-arrow" viewBox="0 0 6 8" preserveAspectRatio="xMinYMin meet">
+    <path d="M6,4L1.5,8L0,6.665L3,4L0,1.333L1.5,0l3,2.666l0,0L6,4z" />
+  </symbol>
+</svg>

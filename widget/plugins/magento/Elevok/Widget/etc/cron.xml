@@ -1,0 +1,8 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Cron:etc/cron.xsd">
+    <group id="default">
+        <job name="elevok_widget_cron_catalog" instance="Elevok\Widget\Controller\Adminhtml\Catalog\CronCatalog" method="execute">
+            <schedule>* * * * *</schedule> 
+        </job>
+    </group>
+</config>

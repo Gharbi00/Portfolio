@@ -1,0 +1,51 @@
+<link href="https://fonts.googleapis.com/css2?family=Rajdhani:wght@400;500;600;700&display=swap" rel="stylesheet">
+<div dir="ltr">
+
+  <ng-container *ngIf="!embed && widgetSettings?.active">
+    <ng-container *ngIf="(isIPaddressExist && widgetSettings?.test?.active) || !widgetSettings?.test?.active">
+      <div #widget>
+        <fw-circular-menu
+          fmdMovableWidget
+          [widgetPosition]="position"
+          [alignment]="alignment"
+          [direction]="direction"
+          style="right: 0px;"
+          (isOpenWidget)="handleOpen($event)"
+          (isDragedWidget)="handleDrag($event)"
+          [highlightedActivity]="highlightedActivity"
+          (directionAnimation)="getDirection($event)"
+          (mouseEnterTarget)="mouseEnterTarget($event)"
+          (mouseLeaveTarget)="mouseLeaveTarget($event)"
+          [class]="getWidgetAnimationClass()"
+          [ngStyle]="{'visibility': isHiddenMenu ? 'hidden' : 'visible', 'transform' : closeButtonVisible ? 'scale(0.5)' : 'scale(1)', 'left': isMobile ? '-14px' : '0px' }"
+        >
+        </fw-circular-menu>
+      </div>
+    </ng-container>
+
+    <div class="close-zone" *ngIf="closeButtonVisible">
+      <div class="icon-close">
+        <fw-close-menu (hoverClose)="handleHover($event)"></fw-close-menu>
+      </div>
+    </div>
+
+    <fw-activity-hightlight *ngIf="highlighting && highlightedActivity" [cordsStyle]="hightlightCoords"
+      (mouseover)="requestStopHighlighting = false" [@lightSpeed] [questStatus]="questStatus"
+      [questStatusText]="questStatusText" [quest]="highlightedActivity" [questDuration]="questDuration"
+      [questColor]="questColor" (click)="$event.stopPropagation()" (mouseleave)="mouseLeaveTarget($event)">
+    </fw-activity-hightlight>
+
+    <div class="" #onboarding>
+      <app-onboarding *ngIf="!(isOnboarded$ | async) && !embed"></app-onboarding>
+    </div>
+    <app-guest-mode
+      *ngIf="!(isHidden$ | async) && ((modalType === 'guest' && !authenticated) || (walletPushedNotification$ | async))"></app-guest-mode>
+    <app-player-mode
+      *ngIf="!(isHidden$ | async) && modalType === 'player' && authenticated && !(walletPushedNotification$ | async)"></app-player-mode>
+  </ng-container>
+
+  <div *ngIf="embed">
+    <app-embed-mode *ngIf="authenticated"></app-embed-mode>
+    <app-guest-mode *ngIf="!authenticated || (walletPushedNotification$ | async)"></app-guest-mode>
+  </div>
+</div>

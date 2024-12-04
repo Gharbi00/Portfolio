@@ -1,0 +1,386 @@
+<!-- Start Breadcrumbs -->
+<app-breadcrumbs title="{{ 'MENUITEMS.TITLE.SEARCH_RESULTS' | translate }}" [breadcrumbItems]="breadCrumbItems"></app-breadcrumbs>
+<!-- End Breadcrumbs -->
+
+<div class="row">
+  <div class="col-lg-12">
+      <div class="card">
+          <div class="card-header border-0">
+              <div class="row justify-content-center mb-4">
+                  <div class="col-lg-6">
+                      <div class="row g-2">
+                          <div class="col">
+                              <div class="position-relative mb-3">
+                                  <input type="text" class="form-control form-control-lg bg-light border-light" placeholder="{{'PLACEHOLDER.SEARCH_HERE' | translate }}.." value="Admin Dashboard">
+                                  <a class="btn btn-link link-success btn-lg position-absolute end-0 top-0 shadow-none" data-bs-toggle="offcanvas" data-bs-target="#offcanvasExample" aria-controls="offcanvasExample"><i class="ri-mic-fill"></i></a>
+                              </div>
+                          </div>
+                          <div class="col-auto">
+                              <button type="submit" class="btn btn-primary btn-lg waves-effect waves-light"><i class="mdi mdi-magnify me-1"></i> {{ 'COMMON.SEARCH' | translate }}</button>
+                          </div>
+                      </div>
+                  </div><!--end col-->
+                  <div class="col-lg-12">
+                      <h5 class="fs-16 fw-semibold text-center mb-0">{{ 'PAGES.SHOWING_RESULTS_FOR' | translate }} "<span class="text-primary fw-medium fst-italic">{{ 'PAGES.ADMIN_DASHBOARD' | translate }}</span> "</h5>
+                  </div>
+              </div><!--end row-->
+
+              <div class="offcanvas offcanvas-top" tabindex="-1" id="offcanvasExample" aria-labelledby="offcanvasExampleLabel">
+                  <div class="offcanvas-body">
+                      <button type="button" class="btn-close text-reset float-end" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+                      <div class="d-flex flex-column h-100 justify-content-center align-items-center">
+                          <div class="search-voice">
+                              <i class="ri-mic-fill align-middle"></i>
+                              <span class="voice-wave"></span>
+                              <span class="voice-wave"></span>
+                              <span class="voice-wave"></span>
+                          </div>
+                          <h4>{{ 'PAGES.TALK_TO_ME' | translate }}</h4>
+                      </div>
+                  </div>
+              </div>
+          </div>
+          <div>
+            <ul ngbNav #customNav="ngbNav" [activeId]="1"  class="nav nav-tabs nav-tabs-custom nav-success" role="tablist">
+              <li [ngbNavItem]="1" class="nav-item">
+                  <a ngbNavLink class="nav-link" data-bs-toggle="tab" role="tab">
+                    <i class="ri-search-2-line text-muted align-bottom me-1"></i>{{'MODULES.INDEX.ALL_RESULTS' | translate }}
+                  </a>
+                  <ng-template ngbNavContent>
+                    <div class="pb-3">
+                      <h5 class="mb-1"><a href="javascript:void(0);">{{ 'PAGES.SIFCA_DESCRIPTION' | translate }}</a></h5>
+                      <p class="text-success mb-2">https://sifca.com/sifca/index.html</p>
+                      <p class="text-muted mb-2">{{ 'PAGES.SIFCA_ADMIN_DESCRIPTION' | translate }}</p>
+                      <ul class="list-inline d-flex align-items-center g-3 text-muted fs-14 mb-0">
+                          <li class="list-inline-item me-3"><i class="ri-thumb-up-line align-middle me-1"></i>10</li>
+                          <li class="list-inline-item me-3"><i class="ri-question-answer-line align-middle me-1"></i>8</li>
+                          <li class="list-inline-item">
+                              <div class="d-flex align-items-center">
+                                  <div class="flex-shrink-0">
+                                      <i class="ri-user-line"></i>
+                                  </div>
+                                  <div class="flex-grow-1 fs-13 ms-1">
+                                      <span class="fw-medium">{{ 'PAGES.THEMESBRAND' | translate }}</span>
+                                  </div>
+                              </div>
+                          </li>
+                      </ul>
+                  </div>
+
+                  <div class="border border-dashed"></div>
+
+                  <div class="py-3">
+                      <h5 class="fs-13 mb-3 text-muted fst-italic">{{ 'PAGES.SHOWING_RESULTS_IMAGES' | translate }}</h5>
+                      <div class="row">
+                          <div class="col-xl-4 col-lg-10">
+                              <div class="row g-2">
+                                  <div class="col-md-3 col-sm-6" *ngFor="let data of images; let i=index">
+                                      <div>
+                                          <a class="image-popup d-block">
+                                              <img src="{{data.src}}" alt="" class="img-fluid d-block rounded" (click)="open(i)" />
+                                          </a>
+                                      </div>
+                                  </div><!--end col-->
+                              </div><!--end row-->
+                          </div><!--end col-->
+                      </div><!--end row-->
+                  </div>
+
+                  <div class="border border-dashed"></div>
+
+                  <div class="py-3">
+                      <h5 class="mb-1"><a href="javascript:void(0);">{{ 'PAGES.SKOTE_DESCRIPTION' | translate }}</a></h5>
+                      <p class="text-success mb-2">https://themesbrand.com/skote/</p>
+                      <p class="text-muted mb-2">{{ 'PAGES.SKOTE_DETAILS' | translate }}</p>
+                      <ul class="list-inline d-flex align-items-center g-3 text-muted fs-14 mb-0">
+                          <li class="list-inline-item me-3"><i class="ri-thumb-up-line align-middle me-1"></i>485</li>
+                          <li class="list-inline-item me-3"><i class="ri-question-answer-line align-middle me-1"></i>167</li>
+                          <li class="list-inline-item">
+                              <div class="d-flex align-items-center">
+                                  <div class="flex-shrink-0">
+                                      <i class="ri-user-line"></i>
+                                  </div>
+                                  <div class="flex-grow-1 fs-13 ms-1">
+                                      <span class="fw-medium">{{ 'PAGES.THEMESBRAND' | translate }}</span>
+                                  </div>
+                              </div>
+                          </li>
+                      </ul>
+                  </div>
+
+                  <div class="border border-dashed"></div>
+
+                  <div class="py-3">
+                      <h5 class="mb-1"><a href="javascript:void(0);">{{ 'PAGES.MINIA_DESCRIPTION' | translate }}</a></h5>
+                      <p class="text-success mb-2">https://themesbrand.com/minia/react/</p>
+                      <p class="text-muted mb-2">{{ 'PAGES.MINIA_DETAILS' | translate }} It has <span class="fw-semibold">5+ different layouts and 3 modes</span> ( Dark, Light & RTL ) which are managed by SCSS only. You can simply change to any layouts or mode by changing a couple of lines code.</p>
+                      <ul class="list-inline d-flex align-items-center g-3 text-muted fs-14 mb-0">
+                          <li class="list-inline-item me-3"><i class="ri-thumb-up-line align-middle me-1"></i>69</li>
+                          <li class="list-inline-item me-3"><i class="ri-question-answer-line align-middle me-1"></i>43</li>
+                          <li class="list-inline-item">
+                              <div class="d-flex align-items-center">
+                                  <div class="flex-shrink-0">
+                                      <i class="ri-user-line"></i>
+                                  </div>
+                                  <div class="flex-grow-1 fs-13 ms-1">
+                                      <span class="fw-medium">{{ 'PAGES.THEMESBRAND' | translate }}</span>
+                                  </div>
+                              </div>
+                          </li>
+                      </ul>
+                  </div>
+
+                  <div class="border border-dashed"></div>
+
+                  <div class="py-3">
+                      <h5 class="mb-1"><a href="javascript:void(0);">Doson - Angular Admin & Dashboard Template by Themesbrand</a></h5>
+                      <p class="text-success mb-2">https://themesbrand.com/dason/angular/</p>
+                      <p class="text-muted mb-2">Dason is a simple and beautiful admin template built with Bootstrap ^5.1.3. It has 5+ different layouts and 3 modes ( Dark, Light & RTL ) which are managed by SCSS only. You can simply change to any layouts or mode by changing a couple of lines code.</p>
+                      <ul class="list-inline d-flex align-items-center g-3 text-muted fs-14 mb-0">
+                          <li class="list-inline-item me-3"><i class="ri-thumb-up-line align-middle me-1"></i>102</li>
+                          <li class="list-inline-item me-3"><i class="ri-question-answer-line align-middle me-1"></i>36</li>
+                          <li class="list-inline-item">
+                              <div class="d-flex align-items-center">
+                                  <div class="flex-shrink-0">
+                                      <i class="ri-user-line"></i>
+                                  </div>
+                                  <div class="flex-grow-1 fs-13 ms-1">
+                                      <span class="fw-medium">{{ 'PAGES.THEMESBRAND' | translate }}</span>
+                                  </div>
+                              </div>
+                          </li>
+                      </ul>
+                  </div>
+
+                  <div>
+                      <ul class="pagination pagination-separated justify-content-center mb-0">
+                          <li class="page-item disabled">
+                              <a href="javascript:void(0);" class="page-link"><i class="mdi mdi-chevron-left"></i></a>
+                          </li>
+                          <li class="page-item active">
+                              <a href="javascript:void(0);" class="page-link">1</a>
+                          </li>
+                          <li class="page-item">
+                              <a href="javascript:void(0);" class="page-link">2</a>
+                          </li>
+                          <li class="page-item">
+                              <a href="javascript:void(0);" class="page-link">3</a>
+                          </li>
+                          <li class="page-item">
+                              <a href="javascript:void(0);" class="page-link">4</a>
+                          </li>
+                          <li class="page-item">
+                              <a href="javascript:void(0);" class="page-link">5</a>
+                          </li>
+                          <li class="page-item">
+                              <a href="javascript:void(0);" class="page-link"><i class="mdi mdi-chevron-right"></i></a>
+                          </li>
+                      </ul>
+                    </div>
+                  </ng-template>
+              </li>
+              <li [ngbNavItem]="2" class="nav-item">
+                  <a ngbNavLink class="nav-link" data-bs-toggle="tab" role="tab">
+                    <i class="ri-image-fill text-muted align-bottom me-1"></i>{{ 'PAGES.IMAGES' | translate }}
+                  </a>
+                  <ng-template ngbNavContent>
+                    <div class="row">
+                      <div class="col-lg-12">
+                          <div class="swiper images-menu mb-3">
+                              <div class="swiper-wrapper">
+                                  <div class="swiper-slide" *ngFor="let data of swiper">
+                                      <div class="d-flex align-items-center border border-dashed rounded p-2">
+                                          <div class="flex-shrink-0">
+                                              <img src="{{data.img}}" alt="" width="65" class="rounded" />
+                                          </div>
+                                          <div class="flex-grow-1 ms-2">
+                                              <a href="javascript:void(0);" class="stretched-link fw-medium">{{data.title}}</a>
+                                          </div>
+                                      </div>
+                                  </div>
+                              </div>
+                            </div>
+                      </div>
+                  </div>
+                  <div class="gallery-light">
+                      <div class="row">
+                          <div class="col-xl-3 col-lg-4 col-sm-6" *ngFor="let data of gallery; let i=index">
+                              <div class="gallery-box card">
+                                  <div class="gallery-container">
+                                      <a class="image-popup" title="">
+                                          <img class="gallery-img img-fluid mx-auto" src="{{data.img}}" alt="" />
+                                          <div class="gallery-overlay" (click)="open(i)">
+                                              <h5 class="overlay-caption">{{data.title}}</h5>
+                                          </div>
+                                      </a>
+                                  </div>
+                                  <div class="box-content">
+                                      <div class="d-flex align-items-center mt-2">
+                                          <div class="flex-grow-1 text-muted">by <a href="javascript:void(0);" class="text-body text-truncate">{{data.auther}}</a></div>
+                                          <div class="flex-shrink-0">
+                                              <div class="d-flex gap-3">
+                                                  <button type="button" class="btn btn-sm fs-12 btn-link text-body text-decoration-none px-0">
+                                                      <i class="ri-thumb-up-fill text-muted align-bottom me-1"></i> {{data.likes}}
+                                                  </button>
+                                                  <button type="button" class="btn btn-sm fs-12 btn-link text-body text-decoration-none px-0">
+                                                      <i class="ri-question-answer-fill text-muted align-bottom me-1"></i> {{data.comments}}
+                                                  </button>
+                                              </div>
+                                          </div>
+                                      </div>
+                                  </div>
+                              </div>
+                          </div><!--end col-->
+                      </div><!--end row-->
+                      <div class="mt-4">
+                          <ul class="pagination pagination-separated justify-content-center mb-0">
+                              <li class="page-item disabled">
+                                  <a href="javascript:void(0);" class="page-link"><i class="mdi mdi-chevron-left"></i></a>
+                              </li>
+                              <li class="page-item active">
+                                  <a href="javascript:void(0);" class="page-link">1</a>
+                              </li>
+                              <li class="page-item">
+                                  <a href="javascript:void(0);" class="page-link">2</a>
+                              </li>
+                              <li class="page-item">
+                                  <a href="javascript:void(0);" class="page-link">3</a>
+                              </li>
+                              <li class="page-item">
+                                  <a href="javascript:void(0);" class="page-link">4</a>
+                              </li>
+                              <li class="page-item">
+                                  <a href="javascript:void(0);" class="page-link">5</a>
+                              </li>
+                              <li class="page-item">
+                                  <a href="javascript:void(0);" class="page-link"><i class="mdi mdi-chevron-right"></i></a>
+                              </li>
+                          </ul>
+                      </div>
+                  </div>
+                  </ng-template>
+              </li>
+              <li [ngbNavItem]="3" class="nav-item">
+                <a ngbNavLink class="nav-link" data-bs-toggle="tab" role="tab">
+                  <i class="ri-list-unordered text-muted align-bottom me-1"></i>{{ 'PAGES.NEWS' | translate }}
+                </a>
+                <ng-template ngbNavContent>
+                  <div class="row">
+                    <div class="col-lg-6" *ngFor="let data of news">
+                        <div class="card border">
+                            <div class="card-body">
+                                <div class="d-sm-flex">
+                                    <div class="flex-shrink-0">
+                                        <img src="{{data.img}}" alt="" width="115" class="rounded-1" />
+                                    </div>
+                                    <div class="flex-grow-1 ms-sm-4 mt-3 mt-sm-0">
+                                        <ul class="list-inline mb-2">
+                                            <li class="list-inline-item"><span class="badge badge-soft-{{data.badgeClass}} fs-11">{{data.badgeText}}</span></li>
+                                        </ul>
+                                        <h5><a href="javascript:void(0);">{{data.title}}</a></h5>
+                                        <ul class="list-inline mb-0">
+                                            <li class="list-inline-item"><i class="ri-user-3-fill text-success align-middle me-1"></i> {{data.auther}}</li>
+                                            <li class="list-inline-item"><i class="ri-calendar-2-fill text-success align-middle me-1"></i> {{data.date}}</li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                        </div><!--end card-->
+                    </div><!--end col-->
+                  </div><!--end row-->
+
+                  <div class="mt-4">
+                    <ul class="pagination pagination-separated justify-content-center mb-0">
+                        <li class="page-item disabled">
+                            <a href="javascript:void(0);" class="page-link"><i class="mdi mdi-chevron-left"></i></a>
+                        </li>
+                        <li class="page-item active">
+                            <a href="javascript:void(0);" class="page-link">1</a>
+                        </li>
+                        <li class="page-item">
+                            <a href="javascript:void(0);" class="page-link">2</a>
+                        </li>
+                        <li class="page-item">
+                            <a href="javascript:void(0);" class="page-link">3</a>
+                        </li>
+                        <li class="page-item">
+                            <a href="javascript:void(0);" class="page-link">4</a>
+                        </li>
+                        <li class="page-item">
+                            <a href="javascript:void(0);" class="page-link">5</a>
+                        </li>
+                        <li class="page-item">
+                            <a href="javascript:void(0);" class="page-link"><i class="mdi mdi-chevron-right"></i></a>
+                        </li>
+                    </ul>
+                  </div>
+                </ng-template>
+              </li>
+              <li [ngbNavItem]="4" class="nav-item">
+                <a ngbNavLink class="nav-link" data-bs-toggle="tab" role="tab">
+                  <i class="ri-video-line text-muted align-bottom me-1"></i>{{ 'PAGES.VIDEOS' | translate }}
+                </a>
+                <ng-template ngbNavContent>
+                  <div class="row">
+                    <div class="col-lg-12 video-list">
+                        <div class="list-element" *ngFor="let data of video">
+                            <h5 class="mb-1"><a href="javascript:void(0);">{{data.title}}</a></h5>
+                            <p class="text-success">{{data.siteLink}}</p>
+                            <div class="d-flex flex-column flex-sm-row">
+                                <div class="flex-shrink-0">
+                                    <iframe src="https://www.youtube.com/embed/GfSZtaoc5bw" title="YouTube video" allowfullscreen class="rounded"></iframe>
+                                </div>
+                                <div class="flex-grow-1 ms-sm-3 mt-2 mt-sm-0">
+                                    <p class="text-muted mb-0">{{data.description}}</p>
+                                    <div class="border border-dashed mb-1 mt-3"></div>
+                                    <ul class="list-inline d-flex align-items-center g-3 text-muted fs-14 mb-0">
+                                        <li class="list-inline-item me-3"><i class="ri-thumb-up-line align-middle me-1"></i>{{data.likes}}</li>
+                                        <li class="list-inline-item me-3"><i class="ri-question-answer-line align-middle me-1"></i>{{data.comments}}</li>
+                                        <li class="list-inline-item">
+                                            <div class="d-flex align-items-center">
+                                                <div class="flex-shrink-0">
+                                                    <i class="ri-user-line"></i>
+                                                </div>
+                                                <div class="flex-grow-1 fs-13 ms-1">
+                                                    <span class="fw-medium">{{data.auther}}</span>
+                                                </div>
+                                            </div>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div><!--end list-element-->
+
+                    </div><!--end col-->
+                    <div class="text-center">
+                        <button id="loadmore" class="btn btn-link text-success mt-2"><i class="mdi mdi-loading mdi-spin fs-20 align-middle me-2"></i>{{ 'COMMON.LOAD_MORE' | translate }} </button>
+                    </div>
+                  </div><!--end row-->
+                </ng-template>
+              </li>
+              <li class="nav-item ms-auto">
+                <div class="dropdown" ngbDropdown>
+                    <a class="nav-link fw-medium text-reset mb-n1" role="button" id="dropdownMenuLink1" data-bs-toggle="dropdown" aria-expanded="false" ngbDropdownToggle>
+                        <i class="ri-settings-4-line align-middle me-1"></i>{{'MODULES.INDEX.SETTINGS' | translate }}
+                    </a>
+                    <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="dropdownMenuLink1" ngbDropdownMenu>
+                        <li><a class="dropdown-item" href="javascript:void(0);">{{ 'PAGES.SEARCH_SETTINGS' | translate }}</a></li>
+                        <li><a class="dropdown-item" href="javascript:void(0);">{{ 'PAGES.ADVANCED_SEARCH' | translate }}</a></li>
+                        <li><a class="dropdown-item" href="javascript:void(0);">{{ 'PAGES.SEARCH_HISTORY' | translate }}</a></li>
+                        <li><a class="dropdown-item" href="javascript:void(0);">{{ 'PAGES.SEARCH_HELP' | translate }}</a></li>
+                        <div class="dropdown-divider"></div>
+                        <li><a class="dropdown-item" href="javascript:void(0);">{{ 'PAGES.DARK_MODE' | translate }}</a></li>
+                    </ul>
+                </div>
+              </li>
+            </ul>
+          </div>
+          <div class="card-body p-4">
+              <div class="tab-content text-muted">
+                <div [ngbNavOutlet]="customNav"></div>
+              </div><!--end tab-content-->
+
+          </div><!--end card-body-->
+      </div><!--end card -->
+  </div><!--end card -->
+</div><!--end row-->

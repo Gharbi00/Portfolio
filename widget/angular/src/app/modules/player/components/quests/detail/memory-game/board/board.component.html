@@ -1,0 +1,35 @@
+<div class="border-bottom mb-3 m-4 mt-3" [class.dark-mode]="darkMode">
+  <div class="d-flex justify-content-between mb-2">
+    <div class="m-0" style="display: flex;flex-wrap: wrap;flex-direction: column;margin: 0 20px;">
+      <p class="user-status-title medium bold">
+        {{'REMAINING_CARD_PAIRS' | translate}} {{remainingCardPairs}}
+      </p>
+      <p class="user-status-title medium bold"> {{'MOVES_DONE' | translate}} {{doneMoves}}</p>
+    </div>
+    <button *ngIf="timerOn" disabled
+      class="button small white-solid"
+      style="min-width: 75px;">
+      <span *ngIf="timeLeft > 0" style="font-size: 16px; font-weight: 600;">{{displayedTime}}</span>
+    </button>
+    <button *ngIf="timeLeft === 0" (click)="play()"
+      class="button small primary"
+      style="min-width: 75px;" style="pointer-events: auto">
+      <span style="font-size: 16px; font-weight: 600;">{{'PLAY' | translate}}</span>
+    </button>
+  </div>
+</div>
+
+<div class="board wx" style="margin-bottom: 10%;">
+  <memory-card *ngFor="let card of cards; let i = index" [id]="i" [timerOn]="timerOn" [picture]="card"></memory-card>
+</div>
+
+<svg style="display: none">
+  <symbol id="svg-cross" viewBox="0 0 12 12" preserveAspectRatio="xMinYMin meet">
+    <path d="M12,9.6L9.6,12L6,8.399L2.4,12L0,9.6L3.6,6L0,2.4L2.4,0L6,3.6L9.6,0L12,2.4L8.399,6L12,9.6z" />
+  </symbol>
+</svg>
+<svg style="display: none">
+  <symbol id="svg-small-arrow" viewBox="0 0 6 8" preserveAspectRatio="xMinYMin meet">
+    <path d="M6,4L1.5,8L0,6.665L3,4L0,1.333L1.5,0l3,2.666l0,0L6,4z" />
+  </symbol>
+</svg>

@@ -1,0 +1,582 @@
+<app-breadcrumbs title="{{ 'MODULES.COLLABORATION.TASKS.BOARD_CARD_LIST' | translate }}" [breadcrumbItems]="breadCrumbItems"></app-breadcrumbs>
+<ng-container *ngIf="!(navigating$ | async)">
+
+  <div class="row">
+    <div class="col-xxl-3 col-sm-6">
+      <div class="card card-animate">
+        <div class="card-body">
+          <div class="d-flex justify-content-between">
+            <div>
+              <p class="fw-medium text-muted mb-0">{{ 'MODULES.COLLABORATION.TASKS.TOTAL_TASKS' | translate }}</p>
+              <h2 class="mt-4 ff-secondary fw-semibold"><span [CountTo]="234" class="counter-value" [from]="0" [duration]="1"></span>k</h2>
+              <p class="mb-0 text-muted"><span class="badge bg-light text-success mb-0">
+                  <i class="ri-arrow-up-line align-middle"></i> 17.32 % {{ 'MODULES.COLLABORATION.TASKS.VS_PREVIOUS_MONTH' | translate }}
+                </span></p>
+            </div>
+            <div>
+              <div class="avatar-sm flex-shrink-0">
+                <span class="avatar-title bg-soft-info text-danger rounded-circle fs-4">
+                  <i class="ri-ticket-2-line"></i>
+                </span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="col-xxl-3 col-sm-6">
+      <div class="card card-animate">
+        <div class="card-body">
+          <div class="d-flex justify-content-between">
+            <div>
+              <p class="fw-medium text-muted mb-0">{{ 'MODULES.COLLABORATION.TASKS.PENDING_TASKS' | translate }}</p>
+              <h2 class="mt-4 ff-secondary fw-semibold"><span [CountTo]="64.5" class="counter-value" [from]="0" [duration]="1"></span>k</h2>
+              <p class="mb-0 text-muted"><span class="badge bg-light text-danger mb-0">
+                  <i class="ri-arrow-down-line align-middle"></i> 0.87 % {{ 'MODULES.COLLABORATION.TASKS.VS_PREVIOUS_MONTH' | translate }}
+                </span></p>
+            </div>
+            <div>
+              <div class="avatar-sm flex-shrink-0">
+                <span class="avatar-title bg-warning rounded-circle fs-4">
+                  <i class="mdi mdi-timer-sand"></i>
+                </span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="col-xxl-3 col-sm-6">
+      <div class="card card-animate">
+        <div class="card-body">
+          <div class="d-flex justify-content-between">
+            <div>
+              <p class="fw-medium text-muted mb-0">{{ 'MODULES.COLLABORATION.TASKS.COMPLETED_TASKS' | translate }}</p>
+              <h2 class="mt-4 ff-secondary fw-semibold"><span [CountTo]="116.21" class="counter-value" [from]="0" [duration]="1"></span>K</h2>
+              <p class="mb-0 text-muted"><span class="badge bg-light text-danger mb-0">
+                  <i class="ri-arrow-down-line align-middle"></i> 2.52 % {{ 'MODULES.COLLABORATION.TASKS.VS_PREVIOUS_MONTH' | translate }}
+                </span></p>
+            </div>
+            <div>
+              <div class="avatar-sm flex-shrink-0">
+                <span class="avatar-title bg-success rounded-circle fs-4">
+                  <i class="ri-checkbox-circle-line"></i>
+                </span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="col-xxl-3 col-sm-6">
+      <div class="card card-animate">
+        <div class="card-body">
+          <div class="d-flex justify-content-between">
+            <div>
+              <p class="fw-medium text-muted mb-0">{{ 'MODULES.COLLABORATION.TASKS.DELETED_TASKS' | translate }}</p>
+              <h2 class="mt-4 ff-secondary fw-semibold"><span [CountTo]="14.84" class="counter-value" [from]="0" [duration]="1"></span>%</h2>
+              <p class="mb-0 text-muted"><span class="badge bg-light text-success mb-0">
+                  <i class="ri-arrow-up-line align-middle"></i> 0.63 % {{ 'MODULES.COLLABORATION.TASKS.VS_PREVIOUS_MONTH' | translate }}
+                </span></p>
+            </div>
+            <div>
+              <div class="avatar-sm flex-shrink-0">
+                <span class="avatar-title bg-danger rounded-circle fs-4">
+                  <i class="ri-delete-bin-line"></i>
+                </span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+  <div class="row">
+    <div class="col-lg-12">
+      <div class="card" id="tasksList">
+        <div class="card-header border-0">
+          <div class="d-flex align-items-center">
+            <h5 class="card-title mb-0 flex-grow-1">{{ 'MODULES.COLLABORATION.TASKS.ALL_CARDS' | translate }}</h5>
+            <div class="flex-shrink-0">
+              <button routerLink="/collaboration/tasks/board/{{boardId}}" class="btn btn-info add-btn me-1" data-bs-toggle="modal" data-bs-target="#showModal"><i
+                  class="ri-artboard-line align-bottom me-1"></i>
+                {{ 'MODULES.COLLABORATION.TASKS.BOARD_VIEW' | translate }}</button>
+              <button class="btn btn-success add-btn me-1" data-bs-toggle="modal" data-bs-target="#showModal" (click)="openBoardModal(boardModal, null)"><i class="ri-add-line align-bottom me-1"></i>
+                {{ 'MODULES.COLLABORATION.TASKS.CREATE_BOARD_CARD' | translate }}</button>
+            </div>
+          </div>
+        </div>
+        <div class="card-body border border-dashed border-end-0 border-start-0">
+          <div class="row g-3">
+            <div class="col-xxl-5 col-sm-12">
+              <div class="search-box">
+                <form [formGroup]="searchForm">
+                  <input type="text" formControlName="searchString" name="searchTerm" class="form-control" placeholder="{{'MODULES.COLLABORATION.TASKS.SEARCH_CARDS' | translate}}">
+                  <i class="ri-search-line search-icon"></i>
+                </form>
+              </div>
+            </div>
+            <div class="col-xxl-2 col-sm-4 ms-auto">
+              <button type="button" (click)="openFilterModal(filterModal)" class="btn btn-primary w-100">
+                <i class="ri-equalizer-fill me-1 align-bottom"></i>
+                {{ 'COMMON.FILTER' | translate }}
+              </button>
+            </div>
+            <div class="col-md-auto">
+              <div class="d-flex hastck gap-2 flex-wrap">
+                <button routerLink="/collaboration/tasks/archived/{{boardId}}" data-bs-toggle="modal" data-bs-target="#adddeals" class="btn btn-warning">{{ 'MODULES.COLLABORATION.TASKS.ARCHIVE' |
+                  translate }}</button>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="card-body">
+          <div class="table-responsive table-card mb-2">
+            <table class="table align-middle table-nowrap">
+              <thead>
+                <tr class="bg-light text-uppercase text-muted">
+                  <th>{{ 'MODULES.COLLABORATION.TASKS.RANK' | translate }}</th>
+                  <th>{{ 'MODULES.COLLABORATION.TASKS.LIST' | translate }}</th>
+                  <th>{{ 'MODULES.COLLABORATION.TASKS.TASK' | translate }}</th>
+                  <th>{{ 'MODULES.COLLABORATION.TASKS.ASSIGNED_TO' | translate }}</th>
+                  <th>{{ 'MODULES.COLLABORATION.TASKS.DUE_DATE' | translate }}</th>
+                  <th>{{ 'MODULES.COLLABORATION.TASKS.PRIORITY' | translate }}</th>
+                </tr>
+              </thead>
+              <tbody *ngIf="((loadingBoardCards$ | async) === false || null || undefined) && (boardCards$ | async).length">
+                <tr *ngFor="let data of boardCards$ | async" id="t_{{data.id}}">
+                  <td><a (click)="openBoardModal(boardModal, data)" class="fw-medium cursor-pointer link-primary"><ngb-highlight [result]="'#' + data.rank"></ngb-highlight></a>
+                  </td>
+                  <td class="project_name"><a class="fw-medium link-primary"><ngb-highlight [result]="data?.boardList.name"></ngb-highlight></a>
+                  </td>
+                  <td>
+                    <div class="d-flex">
+                      <div class="flex-grow-1 tasks_name">{{data?.title}}</div>
+                      <div class="flex-shrink-0 ms-4">
+                        <ul class="list-inline tasks-list-menu mb-0">
+                          <li class="list-inline-item"><a routerLink="/collaboration/tasks/card/{{data.id}}"><i class="ri-eye-fill align-bottom me-2 text-primary"></i></a>
+                          </li>
+                          <li class="list-inline-item"><a class="edit-item-btn" href="javascript:void(0);" data-bs-toggle="modal" id="create-btn" data-bs-target="#showModal"
+                              (click)="openBoardModal(boardModal, data)"><i class="ri-pencil-fill align-bottom me-2 text-primary"></i></a>
+                          </li>
+                          <li class="list-inline-item">
+                            <a class="remove-item-btn" data-bs-toggle="modal" href="javascript:void(0);" (click)="openArchiveModal(archiveModel, data)">
+                              <i class="ri-delete-bin-fill align-bottom me-2 text-danger"></i>
+                            </a>
+                          </li>
+                        </ul>
+                      </div>
+                    </div>
+                  </td>
+                  <td class="assignedto">
+                    <div class="avatar-group">
+                      <ng-container *ngFor="let user of data?.assignedTo?.slice(0,3)">
+                        <a *ngIf="user?.picture" class="avatar-group-item" href="javascript: void(0);">
+                          <img [src]="user.picture.baseUrl + '/' + user.picture.path" alt="" class="rounded-circle avatar-xxs" />
+                        </a>
+                        <a *ngIf="!user.picture" class="avatar-group-item" href="javascript:void(0);" class="avatar-title h-28 w-28 bg-info rounded-circle text-uppercase"
+                          matTooltip="{{user?.firstName}}" placement="top">
+                          {{user.firstName?.charAt(0) || 'N'}}
+                        </a>
+                      </ng-container>
+                      <div *ngIf="data?.assignedTo?.length > 4" class="avatar-group-item shadow">
+                        <a (click)="openBoardModal(selectedUsersModal, data)" href="javascript:void(0);" class="d-block">
+                          <div class="avatar-xxs">
+                            <span class="avatar-title bg-info rounded-circle text-uppercase">
+                              ...
+                            </span>
+                          </div>
+                        </a>
+                      </div>
+                    </div>
+                  </td>
+                  <td><ngb-highlight [result]="data.dueDate | date :'longDate'"></ngb-highlight></td>
+                  <td class="priority"><span class="badge bg-warning text-uppercase"
+                      [ngClass]=" { 'bg-danger': data.priority === 'HIGH', 'bg-success': data.priority === 'Low', 'bg-warning': data.priority === 'Medium'}">{{data.priority}}</span>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+        <div *ngIf="((loadingBoardCards$ | async) === false || null || undefined) && (boardCards$ | async).length" class="px-3">
+          <div class="row justify-content-md-between align-items-md-center gy-2">
+            <div class="col col-sm-6">
+              <div class="dataTables_info mb-2" id="tickets-table_info" role="status" aria-live="polite">
+                {{ 'MODULES.COLLABORATION.TASKS.SHOWING_ENTRIES' | translate }}
+              </div>
+            </div>
+            <div class="col col-sm-6">
+              <div class="text-sm-right float-end listjs-pagination">
+                <ngb-pagination [maxSize]="5" [collectionSize]="pagination?.length" [(page)]="page" (pageChange)="onPageChange($event)" [pageSize]="pagination?.size">
+                </ngb-pagination>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div id="noresult" class="py-4 mt-4 text-center" *ngIf="(loadingBoardCards$ | async) || (!(loadingBoardCards$ | async) && !(boardCards$ | async)?.length)">
+          <div *ngIf="loadingBoardCards$ | async">
+            <lord-icon trigger="loop" style="width:72px;height:72px" [colors]="'primary:' + primaryColor + ',secondary:' + secondaryColor" src="https://cdn.lordicon.com/msoeawqm.json">
+            </lord-icon>
+            <h5 class="mt-4">{{ 'COMMON.LOADING' | translate }}</h5>
+          </div>
+          <div *ngIf="!(loadingBoardCards$ | async) && !(boardCards$ | async).length">
+            <lord-icon trigger="loop" style="width:72px;height:72px" [colors]="'primary:' + primaryColor + ',secondary:' + secondaryColor" src="https://cdn.lordicon.com/msoeawqm.json">
+            </lord-icon>
+            <h5 class="mt-4">
+              {{ 'COMMON.NO_RESULT' | translate }}</h5>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <ng-template #deleteModel let-modal>
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" id="btn-close" (click)="modal.dismiss('Cross click')"></button>
+        </div>
+        <div class="modal-body">
+          <div class="mt-2 text-center">
+            <lord-icon src="https://cdn.lordicon.com/gsqxdxog.json" trigger="loop" colors="primary:#405189,secondary:#f06548" style="width:90px;height:90px"></lord-icon>
+            <div class="mt-4 pt-2 fs-15 mx-4 mx-sm-5">
+              <h4>{{ 'MODULES.COLLABORATION.TASKS.DELETE_TASK_CONFIRMATION' | translate }}</h4>
+              <p class="text-muted mx-4 mb-0">{{ 'MODULES.COLLABORATION.TASKS.DELETE_TASK_INFO' | translate }}</p>
+            </div>
+          </div>
+          <div class="d-flex gap-2 justify-content-center mt-4 mb-2">
+            <button class="btn btn-link btn-ghost-success fw-medium text-decoration-none" data-bs-dismiss="modal" (click)="modal.close('Close click')" id="deleteRecord-close"><i
+                class="ri-close-line me-1 align-middle"></i>
+              {{ 'COMMON.CANCEL' | translate }}</button>
+            <button type="button" class="btn w-sm btn-danger " id="delete-product" (click)="deleteData(deleteId)" (click)="modal.close('Close click')">{{ 'COMMON.DELETE' | translate }}</button>
+          </div>
+        </div>
+      </div>
+    </ng-template>
+
+    <ng-template #boardModal role="document" let-modal>
+      <div class="modal-header bg-soft-info p-3">
+        <h5 class="modal-title" id="exampleModalLabel">{{selectedCard ? ('MODULES.COLLABORATION.TASKS.EDIT' | translate) : ('MODULES.COLLABORATION.TASKS.ADD' | translate) }}</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" id="close-modal" (click)="modal.dismiss('Cross click')"></button>
+      </div>
+      <form [formGroup]="boardForm">
+        <div class="modal-body">
+          <div class="row g-3">
+            <div class="col-lg-12">
+              <div class="mb-3">
+                <label for="email_id-field" class="form-label">{{'MODULES.COLLABORATION.TASKS.TITLE' | translate }}</label>
+                <input type="text" id="email_id-field" class="form-control" placeholder="{{'COMMON.PRESS_ENTER_TO_ADD' | translate}}" required formControlName="title"
+                  [ngClass]="{ 'is-invalid': boardForm.get('title')?.touched && boardForm.get('title').hasError('required') }" />
+                <div class="invalid-feedback" *ngIf="boardForm.get('title')?.touched && boardForm.get('title').hasError('required')">
+                  {{'COMMON.PRESS_ENTER_TO_ADD' | translate }}
+                </div>
+              </div>
+              <div class="mb-3">
+                <label for="email_id-field" class="form-label">{{'MODULES.COLLABORATION.TASKS.DESCRIPTION' | translate }}</label>
+                <input type="text" id="email_id-field" class="form-control" placeholder="{{'COMMON.DESCRIPTION' | translate}}" formControlName="description"
+                  [ngClass]="{ 'is-invalid': boardForm.get('description')?.touched && boardForm.get('description').hasError('required') }" />
+                <div class="invalid-feedback" *ngIf="boardForm.get('description')?.touched && boardForm.get('description').hasError('required')">
+                  {{'COMMON.PRESS_ENTER_TO_ADD' | translate }}
+                </div>
+              </div>
+              <div class="mb-3">
+                <label for="choices-priority-input" class="form-label">{{'MODULES.COLLABORATION.TASKS.PRIORITY' | translate }}</label>
+                <select [ngClass]="{ 'is-invalid': boardForm.get('priority')?.touched && boardForm.get('priority').hasError('required') }" class="form-select form-control-line"
+                  [formControlName]="'priority'">
+                  <option selected disabled value="">{{'COMMON.SELECT_AN_OPTION' | translate }}</option>
+                  <option *ngFor="let pr of priorities" [value]="pr">{{'COMMON.PRIORITY' + pr |
+                    translate}}
+                  </option>
+                </select>
+                <div class="text-danger" *ngIf="boardForm.get('priority')?.touched && boardForm.get('priority').hasError('required')">
+                  {{'COMMON.PRESS_ENTER_TO_ADD' | translate }}
+                </div>
+              </div>
+              <div class="mb-3">
+                <label class="form-label" for="product-tags-input">{{'COMMON.PRESS_ENTER_TO_ADD' | translate }}</label>
+                <ng-select class="no-arrow-select" [addTag]="true" [isOpen]="false" [multiple]="true" [selectOnTab]="true" formControlName="tags">
+                </ng-select>
+              </div>
+              <div class="mb-3">
+                <label for="choices-privacy-status-input" class="form-label">{{'MODULES.COLLABORATION.TASKS.DUE_DATE' | translate }}</label>
+                <input formControlName="dueDate" [inline]="false" class="form-control bg-light border-light" type="text" mwlFlatpickr [altInput]="true" [convertModelValue]="true"
+                  placeholder="{{'COMMON.SELECT_DATE_RANGE' | translate}}" id="isDate">
+              </div>
+              <div *ngIf="!selectedCard" class="mb-3">
+                <label for="choices-privacy-status-input" class="form-label">{{'MODULES.COLLABORATION.TASKS.BOARD_LIST' | translate }}</label>
+                <ng-select #select formControlName="boardList" placeholder="{{'MODULES.COLLABORATION.TASKS.SELECT_BOARD_LIST' | translate}}" [items]="boardList$ | async" [searchable]="false"
+                  bindLabel="name" bindValue="id">
+                </ng-select>
+              </div>
+              <div class="mb-3">
+                <label class="form-check-label" for="lastname-field">{{'MODULES.COLLABORATION.TASKS.OWNER' | translate }}</label>
+                <ng-select [selectableGroup]="true" [closeOnSelect]="false" formControlName="assignedTo" [multiple]="true" [items]="team$ | async" [virtualScroll]="true"
+                  placeholder="{{'MODULES.COLLABORATION.TASKS.SELECT_OWNER' | translate}} " (scrollToEnd)="loadMoreOwners()" bindLabel="firstName" bindValue="id">
+                  <ng-template *ngIf="teamPagination$ | async as teamPagination" ng-header-tmp>
+                    <small class="form-text text-muted">{{'COMMON.LOADED' | translate }} {{team?.length}} {{'COMMON.OF' | translate }} {{teamPagination?.length}}</small>
+                  </ng-template>
+                  <ng-template ng-label-tmp let-item="item" let-clear="clear">
+                    <span class="ng-value-label">
+                      <img *ngIf="item?.picture" class="avatar-xxs rounded-circle" [src]="item?.picture?.baseUrl + '/' + item?.picture?.path" width="20px" height="20px">
+                      <img *ngIf="!item?.picture" class="avatar-xxs rounded-circle" src="assets/images/users/avatar-1.jpg" width="20px" height="20px">
+                      {{item?.firstName}}
+                    </span>
+                    <span class="ng-value-icon right" (click)="clear(item)" aria-hidden="true">×</span>
+                  </ng-template>
+                  <ng-template ng-option-tmp let-item$="item$" let-item="item">
+                    <div class="d-flex align-items-center">
+                      <input id="item-{{index}}" class="me-2" type="checkbox" [ngModelOptions]="{standalone: true}" [ngModel]="item$.selected" />
+                      <label class="form-check-label d-flex align-items-center" for="anna-adame">
+                        <span class="flex-shrink-0">
+                          <img *ngIf="!item?.picture" src="assets/images/users/avatar-1.jpg" alt="" class="avatar-xxs rounded-circle" />
+                          <img *ngIf="item?.picture" [src]="item?.picture?.baseUrl + '/' + item?.picture?.path" alt="" class="avatar-xxs rounded-circle" />
+                        </span>
+                        <span class="flex-grow-1 ms-2">
+                          {{item?.firstName}}
+                        </span>
+                      </label>
+                    </div>
+                  </ng-template>
+                </ng-select>
+              </div>
+              <div class="mb-3">
+                <label class="form-check-label" for="lastname-field">{{'MODULES.COLLABORATION.TASKS.PROJECT' | translate }}</label>
+                <ng-select [items]="projects$ | async" [multiple]="false" (scrollToEnd)="loadMoreProjects()" bindLabel="name" bindValue="id" [formControlName]="'project'">
+                  <ng-template ng-label-tmp let-item="item" let-clear="clear">
+                    {{item.name?.split('_').join(' ') | titlecase}}
+                    <span class="ng-value-icon right" (click)="clear(item)" aria-hidden="true">×</span>
+                  </ng-template>
+                  <ng-template ng-option-tmp let-item="item">
+                    <div class="d-flex align-items-center">
+                      <div class="avatar-xs flex-shrink-0 me-3">
+                        <div class="col-md-auto">
+                          <a *ngIf="item?.picture?.baseUrl" href="javascript: void(0);" class="avatar-group-item shadow" matTooltip="{{item?.name}}" placement="top">
+                            <div class="avatar-xs">
+                              <img [src]="item?.picture.baseUrl + '/' + item?.picture.path" alt="" class="rounded-circle h-100 h-8 w-8 img-fluid">
+                            </div>
+                          </a>
+                          <a *ngIf="!item?.picture?.baseUrl" href="javascript: void(0);" class="avatar-group-item shadow" matTooltip={{item?.name}} placement="top">
+                            <div class="avatar-xs">
+                              <div class="avatar-title rounded-circle bg-info shadow">
+                                {{item?.name?.charAt(0) || 'N'}}
+                              </div>
+                            </div>
+                          </a>
+                        </div>
+                      </div>
+                      {{item.name?.split('_').join(' ') | titlecase}}
+                    </div>
+                  </ng-template>
+                </ng-select>
+              </div>
+              <div class="mb-3">
+                <label for="choices-privacy-status-input" class="form-label">{{'MODULES.COLLABORATION.TASKS.COMPANY' | translate }}</label>
+                <ng-select [virtualScroll]="true" placeholder="{{'COMMON.SELECT_COMPANY' | translate}}" (scrollToEnd)="loadMoreCompanies()" formControlName="customer" [items]="companies$ | async"
+                  [searchable]="false" bindLabel="name" bindValue="id">
+                </ng-select>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <div class="hstack gap-2 justify-content-end">
+            <button type="button" class="btn btn-light" data-bs-dismiss="modal" (click)="modal.close('Close click')">{{'COMMON.CANCEL' | translate }}</button>
+            <button type="button" [disabled]="boardForm.invalid || isButtonDisabled" (click)="save()" class="btn btn-success" id="add-btn">{{selectedCard ? ('MODULES.COLLABORATION.TASKS.EDIT' |
+              translate) : ('MODULES.COLLABORATION.TASKS.ADD' | translate) }}</button>
+          </div>
+        </div>
+      </form>
+    </ng-template>
+
+    <ng-template #filterModal role="document" let-modal>
+      <div class="modal-header bg-soft-info p-3">
+        <h5 class="modal-title" id="exampleModalLabel">{{ 'COMMON.FILTER' | translate }}</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" id="close-modal" (click)="modal.dismiss('Cross click')"></button>
+      </div>
+      <form [formGroup]="filterForm">
+        <div class="modal-body">
+          <div class="row g-3">
+            <div class="col-lg-12">
+              <div class="mb-3">
+                <label for="choices-privacy-status-input" class="form-label">{{ 'MODULES.COLLABORATION.TASKS.BOARD_LIST' | translate }}</label>
+                <ng-select #select formControlName="boardList" placeholder="{{'MODULES.COLLABORATION.TASKS.SELECT_BOARD_LIST' | translate}}" [items]="boardList$ | async" [searchable]="false"
+                  bindLabel="name" bindValue="id">
+                </ng-select>
+              </div>
+              <div class="mb-3">
+                <label for="choices-priority-input" class="form-label">{{ 'MODULES.COLLABORATION.TASKS.PRIORITY' | translate }}</label>
+                <ng-select bindValue="priorities" placeholder="{{'COMMON.SELECT_PRIORITY' | translate}}" [addTag]="true" [multiple]="true" bindlabel="label" [clearable]="true" data-choices="true"
+                  [searchable]="true" [hideSelected]="true" formControlName="priority" [items]="priorities" data-choices-removeItem="true">
+                </ng-select>
+                <ng-template ng-option-tmp let-item="item" let-index="index">
+                  {{ item }}
+                </ng-template>
+              </div>
+              <div class="mb-3">
+                <label class="form-check-label" for="lastname-field">{{ 'MODULES.COLLABORATION.TASKS.OWNER' | translate }}</label>
+                <ng-select [selectableGroup]="true" [closeOnSelect]="false" formControlName="assignedTo" [multiple]="true" [items]="team$ | async" [virtualScroll]="true" bindLabel="user.firstName"
+                  bindValue="user.id" placeholder="{{'MODULES.COLLABORATION.TASKS.SELECT_OWNER' | translate}}" (scrollToEnd)="loadMoreOwners()">
+                  <ng-template *ngIf="teamPagination$ | async as teamPagination" ng-header-tmp>
+                    <small class="form-text text-muted">{{ 'COMMON.LOADED' | translate }} {{ team?.length }} {{ 'COMMON.OF' | translate }} {{ teamPagination?.length }}</small>
+                  </ng-template>
+
+                  <ng-template ng-label-tmp let-item="item" let-clear="clear">
+                    <span class="ng-value-label">
+                      <img *ngIf="item?.user?.picture" class="avatar-xxs rounded-circle" [src]="item?.user?.picture?.baseUrl + '/' + item?.user?.picture?.path" width="20px" height="20px">
+                      <img *ngIf="!item?.user?.picture" class="avatar-xxs rounded-circle" src="assets/images/users/avatar-1.jpg" width="20px" height="20px">
+                      {{ item?.user?.firstName }}
+                    </span>
+                    <span class="ng-value-icon right" (click)="clear(item)" aria-hidden="true">×</span>
+                  </ng-template>
+                  <ng-template ng-option-tmp let-item$="item$" let-item="item">
+                    <div class="d-flex align-items-center">
+                      <input id="item-{{ index }}" type="checkbox" [ngModelOptions]="{ standalone: true }" [ngModel]="item$.selected" />
+                      <label class="form-check-label d-flex ms-2 align-items-center" for="anna-adame">
+                        <span class="flex-shrink-0">
+                          <img *ngIf="!item?.user?.picture" src="assets/images/users/avatar-1.jpg" alt="" class="avatar-xxs rounded-circle" />
+                          <img *ngIf="item?.user?.picture" [src]="item?.user.picture?.baseUrl + '/' + item?.user.picture?.path" alt="" class="avatar-xxs rounded-circle" />
+                        </span>
+                        <span class="flex-grow-1 ms-2">
+                          {{ item?.user?.firstName }}
+                        </span>
+                      </label>
+                    </div>
+                  </ng-template>
+                </ng-select>
+              </div>
+              <div class="mb-3">
+                <label class="form-check-label" for="lastname-field">{{ 'MODULES.COLLABORATION.TASKS.PROJECTS' | translate }}</label>
+                <ng-select [items]="projects$ | async" [multiple]="true" bindLabel="name" bindValue="id" (scrollToEnd)="loadMoreProjects()" [formControlName]="'project'">
+                  <ng-template ng-label-tmp let-item="item" let-clear="clear">
+                    {{ item.name?.split('_').join(' ') | titlecase }}
+                    <span class="ng-value-icon right" (click)="clear(item)" aria-hidden="true">×</span>
+                  </ng-template>
+                  <ng-template ng-option-tmp let-item="item">
+                    <div class="d-flex align-items-center">
+                      <div class="avatar-xs flex-shrink-0 me-3">
+                        <div class="col-md-auto">
+                          <a *ngIf="item?.picture?.baseUrl" href="javascript: void(0);" class="avatar-group-item shadow" matTooltip="{{ item?.name }}" placement="top">
+                            <div class="avatar-xs">
+                              <img [src]="item?.picture.baseUrl + '/' + item?.picture.path" alt="" class="rounded-circle h-8 w-8 img-fluid">
+                            </div>
+                          </a>
+                          <a *ngIf="!item?.picture?.baseUrl" href="javascript: void(0);" class="avatar-group-item shadow" matTooltip="{{ item?.name }}" placement="top">
+                            <div class="avatar-xs">
+                              <div class="avatar-title rounded-circle bg-info shadow">
+                                {{ item?.name?.charAt(0) || 'N'}}
+                              </div>
+                            </div>
+                          </a>
+                        </div>
+                      </div>
+                      {{ item.name?.split('_').join(' ') | titlecase }}
+                    </div>
+                  </ng-template>
+                </ng-select>
+              </div>
+              <div class="mb-3">
+                <label for="choices-privacy-status-input" class="form-label">{{ 'COMMON.SELECT_COMPANY' | translate }}</label>
+                <ng-select [virtualScroll]="true" placeholder="{{'COMMON.SELECT_COMPANY' | translate}}" (scrollToEnd)="loadMoreCompanies()" formControlName="customer" [items]="companies$ | async"
+                  [searchable]="false" bindLabel="name" bindValue="id">
+                </ng-select>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <div class="hstack gap-2 justify-content-end">
+            <button type="button" class="btn btn-light" data-bs-dismiss="modal" (click)="modal.close('Close click')">{{ 'COMMON.CANCEL' | translate }}</button>
+            <button type="button" [disabled]="isFilterButtonDisabled" (click)="filter()" class="btn btn-success" id="add-btn">{{ 'COMMON.FILTER' | translate }}</button>
+          </div>
+        </div>
+      </form>
+    </ng-template>
+
+    <ng-template #archiveModel let-modal>
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" id="deleteRecord-close" (click)="modal.dismiss('Cross click')"></button>
+        </div>
+        <div class="modal-body">
+          <div class="mt-2 text-center">
+            <lord-icon src="https://cdn.lordicon.com/gsqxdxog.json" trigger="loop" colors="primary:#f7b84b,secondary:#f06548" style="width:100px;height:100px"></lord-icon>
+            <div class="mt-4 pt-2 fs-15 mx-4 mx-sm-5">
+              <h4>{{ 'MODULES.COLLABORATION.TASKS.ARE_YOU_SURE' | translate }}</h4>
+              <p class="text-muted mx-4 mb-0">{{ 'MODULES.COLLABORATION.TASKS.ARE_YOU_SURE_ARCHIVE_CARD' | translate }}</p>
+            </div>
+          </div>
+          <div class="d-flex gap-2 justify-content-center mt-4 mb-2">
+            <button type="button" class="btn w-sm btn-danger " id="delete-product" (click)="archiveCard()">{{ 'MODULES.COLLABORATION.TASKS.YES_ARCHIVE' | translate }}</button>
+            <button type="button" class="btn w-sm btn-light" data-bs-dismiss="modal" (click)="modal.close('Close click')">{{ 'COMMON.CLOSE' | translate }}</button>
+          </div>
+        </div>
+      </div>
+    </ng-template>
+
+    <ng-template #selectedUsersModal role="document" let-modal>
+      <div class="modal-header p-3 bg-soft-success">
+        <h5 class="modal-title" id="inviteMembersModalLabel">{{ 'MODULES.COLLABORATION.TASKS.MEMBERS' | translate }}</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" (click)="modal.dismiss('Cross click')"></button>
+      </div>
+      <div class="modal-body p-4">
+        <div class="mb-4 d-flex align-items-center">
+          <div class="me-2">
+            <h5 class="mb-0 fs-13">{{ 'COMMON.MEMBERS' | translate }} :</h5>
+          </div>
+          <div class="avatar-group justify-content-center">
+            <ng-container *ngFor="let member of selectedUsers">
+              <a *ngIf="member?.picture?.baseUrl" href="javascript:void(0);" class="avatar-group-item" data-bs-toggle="tooltip" data-bs-trigger="hover" data-bs-placement="top"
+                [title]="member?.firstName">
+                <div class="avatar-xs">
+                  <img [src]="member?.picture?.baseUrl + '/' + member?.picture?.path" alt="" class="rounded-circle h-100 img-fluid">
+                </div>
+              </a>
+              <a *ngIf="!member?.picture" href="javascript: void(0);" class="avatar-group-item shadow" [matTooltip]="member?.firstName" placement="top">
+                <div class="avatar-xs">
+                  <div class="avatar-title rounded-circle bg-info text-uppercase shadow">
+                    {{ member?.firstName?.charAt(0) || 'N'}}
+                  </div>
+                </div>
+              </a>
+            </ng-container>
+          </div>
+        </div>
+        <ngx-simplebar class="mx-n4 px-4" style="max-height: 225px;">
+          <div class="vstack gap-3">
+            <div *ngFor="let member of selectedUsers" class="d-flex align-items-center">
+              <div class="avatar-xs flex-shrink-0 me-3">
+                <div *ngIf="!member?.picture" class="col-md-auto">
+                  <div class="avatar-xs mb-md-0 mb-4">
+                    <div class="avatar-title rounded-circle bg-info text-uppercase shadow">
+                      {{ member?.firstName?.charAt(0) || 'N'}}
+                    </div>
+                  </div>
+                </div>
+                <img *ngIf="member?.picture" [src]="member?.picture?.baseUrl + '/' + member?.picture?.path" class="img-fluid h-100 rounded-circle">
+              </div>
+              <div class="flex-grow-1">
+                <h5 class="fs-13 mb-0"><a href="javascript:void(0);" class="text-body d-block">{{ member?.firstName }}
+                    {{ member?.lastName }}</a>
+                </h5>
+              </div>
+            </div>
+          </div>
+        </ngx-simplebar>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-light w-xs" data-bs-dismiss="modal" (click)="modal.close('Close click')">{{ 'COMMON.CANCEL' | translate }}</button>
+      </div>
+    </ng-template>
+
+  </div>
+</ng-container>
+<div *ngIf="navigating$ | async" class="vh-100 py-4 text-center" fxLayout="column" fxLayoutAlign="center center" fxLayoutGap="1rem">
+  <div>
+    <lord-icon trigger="loop" style="width:72px;height:72px" [colors]="'primary:' + primaryColor + ',secondary:' + secondaryColor" src="https://cdn.lordicon.com/msoeawqm.json">
+    </lord-icon>
+  </div>
+  <div class="mt-4">
+    <h5>{{ 'COMMON.LOADING' | translate }}</h5>
+  </div>
+</div>

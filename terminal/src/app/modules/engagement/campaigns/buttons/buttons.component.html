@@ -1,0 +1,265 @@
+<ng-container *ngIf="!(navigating$ | async)">
+  <div class="card">
+    <div class="card-header border-0">
+      <div class="d-flex align-items-center">
+        <h5 class="card-title mb-0 flex-grow-1">{{'MENUITEMS.CUSTOMERENGAGEMENT.CAMPAIGN.ACTIVITY_TYPE' | translate }} </h5>
+        <div class="flex-shrink-0 hstack gap-2">
+          <button type="button" (click)="openActivityTypeModal(activityTypeModal, null)"
+            class="btn btn-info">{{'MODULES.SYSTEM.ADD_ACTIVITY_TYPE' | translate }}</button>
+        </div>
+      </div>
+    </div>
+    <div class="card-body">
+      <div class="table-card gridjs-border-none">
+        <div class="table-responsive">
+          <table class="table align-middle custom-datatable" id="datatableexample">
+            <thead>
+              <tr class="bg-light text-muted">
+                <th>{{'COMMON.TITLE' | translate }}</th>
+                <th>{{'COMMON.ID' | translate }}</th>
+                <th>{{'COMMON.ACTIONS' | translate }}</th>
+              </tr>
+            </thead>
+            <tbody
+              *ngIf="((loadingActivityTypes$ | async) === false || null || undefined) && (activityTypes$ | async)?.length">
+              <tr *ngFor="let activity of activityTypes$ | async;let i = index;" id="p_{{activity?.id}}">
+                <td> {{activity?.title}} </td>
+                <td>
+                  <div class="col-lg-10">
+                    <div class="input-group">
+                      <input readonly type="text" class="form-control apikey-value" [value]="activity?.id">
+                      <span class="input-group-text"><i matTooltip="Copy" (click)="copyText(activity?.id)"
+                          class="ri-file-copy-line"></i></span>
+                    </div>
+                  </div>
+                </td>
+                <td>
+                  <ul class="list-inline hstack gap-2 mb-0">
+                    <li class="list-inline-item edit">
+                      <div class="form-check form-switch">
+                        <input [(ngModel)]="checkedValues[i]"
+                          (change)="openActivityModal($event, activityModal, activity, i)" role="switch" type="checkbox"
+                          class="form-check-input" id="flexSwitchCheckDefault">
+                      </div>
+                    </li>
+                    <li (click)="openActivityTypeModal(activityTypeModal, activity)" class="list-inline-item edit"
+                      placement="top">
+                      <a href="javascript:void(0);" data-bs-toggle="modal"
+                        class="text-primary d-inline-block edit-item-btn">
+                        <i class="ri-pencil-fill fs-16"></i>
+                      </a>
+                    </li>
+                    <li (click)="openActivityModal(null, activityModal, activity, i)" class="list-inline-item edit"
+                      placement="top">
+                      <a href="javascript:void(0);" data-bs-toggle="modal"
+                        class="text-primary d-inline-block edit-item-btn">
+                        <i class="ri-eye-fill fs-16"></i>
+                      </a>
+                    </li>
+                  </ul>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+      <div id="noresult" class="py-4 mt-4 text-center"
+        *ngIf="(loadingActivityTypes$ | async) || (!(loadingActivityTypes$ | async) && !(activityTypes$ | async).length)">
+        <div *ngIf="loadingActivityTypes$ | async">
+          <lord-icon trigger="loop" style="width:72px;height:72px"
+            [colors]="'primary:' + primaryColor + ',secondary:' + secondaryColor"
+            src="https://cdn.lordicon.com/msoeawqm.json">
+          </lord-icon>
+          <h5 class="mt-4">{{'COMMON.LOADING' | translate }}</h5>
+        </div>
+        <div *ngIf="!(loadingActivityTypes$ | async) && !(activityTypes$ | async).length">
+          <lord-icon trigger="loop" style="width:72px;height:72px"
+            [colors]="'primary:' + primaryColor + ',secondary:' + secondaryColor"
+            src="https://cdn.lordicon.com/vlycxjwx.json">
+          </lord-icon>
+          <h5 class="mt-4">{{ 'COMMON.NO_RESULT' | translate }}</h5>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <ng-template #activityTypeModal role="document" let-modal>
+    <div class="modal-header bg-soft-info p-3">
+      <h5 class="modal-title" id="exampleModalLabel">{{selectedActivityType ? 'Edit Widget Action' : 'Add Widget
+        Action'}}</h5>
+      <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" id="close-modal"
+        (click)="modal.dismiss('Cross click')"></button>
+    </div>
+    <div class="modal-body">
+      <form [formGroup]="activityTypeForm">
+        <div class="mb-3">
+          <label for="email_id-field" class="form-label">{{'COMMON.TITLE' | translate }}</label>
+          <input formControlName="title" type="text" id="email_id-field" class="form-control"
+            placeholder="{{'PLACEHOLDER.ENTER_WIDGET_ACTION_TITLE' | translate }}" required />
+        </div>
+        <div class="mb-3">
+          <label for="email_id-field" class="form-label">{{'COMMON.CODE' | translate }}</label>
+          <input formControlName="code" type="text" id="email_id-field" class="form-control"
+            placeholder="{{'PLACEHOLDER.ENTER_WIDGET_ACTION_CODE' | translate }}" required />
+        </div>
+        <div class="mb-3">
+          <label for="email_id-field" class="form-label">{{ 'COMMON.DESCRIPTION' | translate }}</label>
+          <textarea formControlName="description" name="description" id="comments" rows="3"
+            class="form-control bg-light border-light"
+            placeholder="{{ 'COMMON.ENTER_DESCRIPTION' | translate }}"></textarea>
+        </div>
+        <div formGroupName="predefined" class="mb-3">
+          <label class="form-label">{{'COMMON.ACTION' | translate }} </label>
+          <ng-select [searchable]="false" [virtualScroll]="true" (scrollToEnd)="loadMorePredefined()"
+            placeholder="{{'PLACEHOLDER.SELECT_PREDEFINED_ACTION' | translate }}" formControlName="action"
+            [items]="predefined$ | async" class="mb-2 col-lg-12" required>
+            <ng-template ng-label-tmp let-item="item" let-clear="clear">
+              <div class="ng-value-label">
+                {{ item?.title }}
+              </div>
+            </ng-template>
+            <ng-template ng-option-tmp let-item$="item$" let-item="item">
+              {{item?.title}}
+            </ng-template>
+          </ng-select>
+        </div>
+      </form>
+    </div>
+    <div class="modal-footer">
+      <div class="hstack gap-2 justify-content-end">
+        <button type="button" class="btn btn-light" data-bs-dismiss="modal"
+          (click)="modal.close('Close click')">{{'COMMON.CLOSE' | translate }}</button>
+        <button type="button" [disabled]="isActivityTypeButtonDisabled || activityTypeForm.invalid"
+          (click)="saveActivityType()" class="btn btn-success" id="add-btn">{{'COMMON.SAVE' | translate }}</button>
+      </div>
+    </div>
+  </ng-template>
+</ng-container>
+<div *ngIf="navigating$ | async" class="vh-100 py-4 text-center" fxLayout="column" fxLayoutAlign="center center" fxLayoutGap="1rem">
+  <div>
+    <lord-icon trigger="loop" style="width:72px;height:72px" [colors]="'primary:' + primaryColor + ',secondary:' + secondaryColor" src="https://cdn.lordicon.com/msoeawqm.json">
+    </lord-icon>
+  </div>
+  <div class="mt-4">
+    <h5>{{ 'COMMON.LOADING' | translate }}</h5>
+  </div>
+</div>
+
+<ng-template #activityModal role="document" let-modal>
+  <div class="modal-header bg-soft-info p-3">
+    <h5 class="modal-title" id="exampleModalLabel">{{'MENUITEMS.CUSTOMERENGAGEMENT.LIST.WIDGET_INTEGRATION' | translate }}</h5>
+    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" id="close-modal"
+      (click)="modal.dismiss()"></button>
+  </div>
+  <form [formGroup]="actionForm">
+    <div class="modal-body">
+      <ng-container formGroupName="recurrence">
+        <div class="d-flex justify-content-between mb-3">
+          <div>
+            <div for="firstnameInput">{{'MODULES.SYSTEM.RECURRENT' | translate }}</div>
+          </div>
+          <div class="flex-shrink-0 d-flex fs-18 gap-1">
+            <div class="form-check form-switch">
+              <input formControlName="enable" class="form-check-input" type="checkbox" role="switch"
+                id="flexSwitchCheckDefault">
+            </div>
+          </div>
+        </div>
+        <div *ngIf="actionForm?.get(['recurrence', 'enable']).value === true" class="mb-3">
+          <label for="firstnameInput" class="form-label">{{'MODULES.SYSTEM.CYCLE' | translate }}</label>
+          <div class="input-group">
+            <input [readonly]="eventChecked === false" formControlName="cycle" type="number" class="form-control" id="firstnameInput"
+              placeholder="{{'PLACEHOLDER.ENTER_CYCLE' | translate }}">
+            <div class="input-group-append">
+              <span class="input-group-text">{{'MODULES.INVENTORY.HOURS' | translate }}</span>
+            </div>
+          </div>
+        </div>
+      </ng-container>
+      <ng-container formArrayName="remuneration">
+        <div *ngFor="let section of remuneration['controls']; let i=index; let last = last; let first = first"
+          [formGroupName]="i" class="mb-3">
+          <label for="choices-privacy-status-input" class="form-label">{{i === 0 ? 'Qualitative' :
+            'Quantitative'}}</label>
+          <div class="row col-lg-12">
+            <div *ngIf="i === 1" class="mb-3 col-lg-6">
+              <ng-select [readonly]="eventChecked === false" required [virtualScroll]="true" (scrollToEnd)="loadMoreWallets()"
+                placeholder="{{'PLACEHOLDER.ENTER_YOUR_WALLET' | translate }}" [items]="wallet$ | async" [multiple]="false"
+                [formControlName]="'wallet'">
+                <ng-template ng-label-tmp let-item="item" let-clear="clear">
+                  <span class="ng-value-label">
+                    {{item?.coin?.name?.split('_').join(' ') | titlecase}}
+                  </span>
+                  <span class="ng-value-icon right" (click)="clear(item)" aria-hidden="true">×</span>
+                </ng-template>
+                <ng-template ng-option-tmp let-item="item">
+                  <div class="col-3 d-flex">
+                    <div class="flex-shrink-0">
+                      <div *ngIf="!item?.coin?.picture?.baseUrl" class="avatar-xxs">
+                        <div class="avatar-title text-danger bg-soft-info rounded-circle shadow">
+                          {{item?.coin?.name?.charAt(0) || 'N'}}
+                        </div>
+                      </div>
+                      <div *ngIf="item?.coin?.picture?.baseUrl">
+                        <img [src]="item?.coin?.picture?.baseUrl + '/' + item?.coin?.picture?.path" alt=""
+                          class="avatar-xxs shadow rounded-circle" />
+                      </div>
+                    </div>
+                    <div class="flex-grow-1 ms-3">
+                      <h6 class="mb-1">{{item?.coin?.name}} <span class="text-muted"> ({{item?.coin?.code}}) </span>
+                      </h6>
+                      <div *ngIf="item?.coin?.unitValue?.amount">
+                        <h6 [ngClass]="{
+                                            'text-danger': +item?.amount < 0,
+                                            'text-success': +item?.amount > 0,
+                                            'text-info': +item?.amount === 0
+                                        }" class="text-danger mb-0">{{item?.amount | number: '1.0-0'}} <span
+                            class="text-muted"> ({{item?.fee | number: '1.2-2'}}%)
+                          </span> </h6>
+                      </div>
+                    </div>
+                  </div>
+                </ng-template>
+              </ng-select>
+            </div>
+            <div [ngClass]="{'col-lg-6': i === 1, 'col-lg-12': i === 0 }" class="mb-3">
+              <div class="input-group">
+                <input [readonly]="eventChecked === false" required formControlName="amount" type="number" class="form-control" id="firstnameInput"
+                  placeholder="{{'PLACEHOLDER.AMOUNT' | translate }}">
+                <div class="input-group-append">
+                  <span *ngIf="i === 0" class="input-group-text">
+                    <img *ngIf="(loyaltySettings$ | async)?.qualitative?.picture?.baseUrl"
+                      [src]="(loyaltySettings$ | async)?.qualitative?.picture?.baseUrl + '/' + (loyaltySettings$ | async)?.qualitative?.picture?.path"
+                      alt="" class="img-fluid rounded-circle avatar-xxs mb-1">
+                    <img class="img-fluid rounded-circle avatar-xxs mb-1"
+                      *ngIf="!(loyaltySettings$ | async)?.qualitative?.picture?.baseUrl"
+                      src="https://sifca-storage.s3.eu-central-1.amazonaws.com/loyalcraft/reputation_512.gif">
+                  </span>
+                  <div *ngIf="i === 1 && section.value.coin" class="input-group-text">
+                    <div class="flex-shrink-0">
+                      <div *ngIf="!section.value.coin?.picture?.baseUrl" class="avatar-xxs">
+                        <div class="avatar-title text-danger bg-soft-info rounded-circle shadow">
+                          {{section.value.coin?.name?.charAt(0) || 'N'}}
+                        </div>
+                      </div>
+                      <div *ngIf="section.value.coin?.picture?.baseUrl">
+                        <img [src]="section.value.coin?.picture?.baseUrl + '/' + section.value.coin?.picture?.path"
+                          alt="" class="avatar-xxs shadow rounded-circle" />
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </ng-container>
+    </div>
+    <div class="modal-footer">
+      <div *ngIf="actionForm && eventChecked === true" class="d-flex justify-content-end">
+        <button (click)="saveAction()" [disabled]="isActionButtonDisabled || actionForm.invalid" type="button"
+          class="btn btn-success">{{'COMMON.SAVE' | translate }}</button>
+      </div>
+    </div>
+  </form>
+</ng-template>

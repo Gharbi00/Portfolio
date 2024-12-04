@@ -1,0 +1,30 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: terminal-app
+  namespace: terminal-app
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: terminal-app
+  template:
+    metadata:
+      labels:
+        app: terminal-app
+    spec:
+      containers:
+        - name: terminal-container
+          image: git.diktup.cloud:5050/sifca/sifca-monorepo:sifca-terminal-prod-1.0.1
+          #imagePullPolicy: Always
+          imagePullPolicy: IfNotPresent
+          #imagePullPolicy: Never
+          ports:
+            - containerPort: 4000
+          env:
+            - name: API_SERVER
+              value: 'terminal.sifca.app'
+            - name: NODE_OPTIONS
+              value: '--max-old-space-size=16000'
+      imagePullSecrets:
+        - name: gitlab-registry-secret

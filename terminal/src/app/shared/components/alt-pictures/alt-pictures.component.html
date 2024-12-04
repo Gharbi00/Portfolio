@@ -1,0 +1,29 @@
+<div class="modal-header p-3 bg-soft-success">
+  <h5 class="modal-title" id="inviteMembersModalLabel">Alt image</h5>
+  <button type="button" (click)="dismissModal()" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+</div>
+<form [formGroup]="altForm">
+  <div class="modal-body p-4">
+    <input type="hidden" id="id-field" />
+    <div class="row g-3">
+      <ng-container formGroupName="picture">
+        <div>
+          <label for="email_id-field" class="form-label">Alt</label>
+          <input type="text" id="email_id-field" class="form-control" placeholder="{{'PLACEHOLDER.ENTER_PICTURE_ALT' | translate }}" required
+            [ngClass]="{ 'is-invalid': altForm.get(['picture', 'alt'])?.touched && altForm.get(['picture', 'alt']).hasError('required') }"
+            formControlName="alt" />
+          <div class="invalid-feedback"
+            *ngIf="altForm.get(['picture', 'alt'])?.touched && altForm.get(['picture', 'alt']).hasError('required')">{{'COMMON.REQUIRED' | translate }}
+          </div>
+        </div>
+      </ng-container>
+    </div>
+  </div>
+  <div class="modal-footer">
+    <div class="hstack gap-2 justify-content-end">
+      <button type="button" class="btn btn-light" data-bs-dismiss="modal" (click)="dismissModal()">{{'COMMON.CLOSE' | translate }}</button>
+      <button type="button" [disabled]="altForm.invalid || isButtonDisabled" (click)="save()" class="btn btn-success"
+        id="add-btn">{{'COMMON.SAVE' | translate }}</button>
+    </div>
+  </div>
+</form>

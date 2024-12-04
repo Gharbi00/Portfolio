@@ -1,0 +1,33 @@
+{
+  "extends": "./tsconfig.json",
+  "compilerOptions": {
+    "allowJs": true,
+    "sourceMap": true,
+    "module": "es2020",
+    "target": "es2015",
+    "declaration": false,
+    "importHelpers": true,
+    "esModuleInterop": true,
+    "noUnusedLocals": false,
+    "lib": ["es2018", "dom"],
+    "resolveJsonModule": true,
+    "moduleResolution": "node",
+    "downlevelIteration": true,
+    "noUnusedParameters": false,
+    "emitDecoratorMetadata": true,
+    "outDir": "../../dist/out-tsc",
+    "experimentalDecorators": true,
+    "typeRoots": ["node_modules/@types"],
+    "types": ["jasmine", "hammerjs", "googlemaps"]
+  },
+  "angularCompilerOptions": {
+    "strict": true,
+    "strictTemplates": false,
+    "fullTemplateTypeCheck": false,
+    "strictInjectionParameters": true,
+    "enableI18nLegacyMessageIdFormat": false
+  },
+  "files": ["./src/main.ts", "./src/polyfills.ts"],
+  "include": ["./src/**/*.d.ts"],
+  "exclude": ["./src/test.ts", "./src/**/*.spec.ts", "theme/**/*.*"]
+}

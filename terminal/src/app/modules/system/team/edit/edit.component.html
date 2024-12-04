@@ -1,0 +1,781 @@
+<ng-container *ngIf="!(navigating$ | async)">
+  <div class="position-relative mx-n4 mt-n4">
+    <div class="profile-wid-bg profile-setting-img">
+      <img src="assets/images/profile-bg.jpg" class="profile-wid-img" alt="">
+      <div class="overlay-content">
+        <div class="text-end p-3">
+          <div class="p-0 ms-auto rounded-circle profile-photo-edit">
+            <input id="profile-foreground-img-file-input" type="file" class="profile-foreground-img-file-input">
+            <label for="profile-foreground-img-file-input" class="profile-photo-edit btn btn-light">
+              <i class="ri-image-edit-line align-bottom me-1"></i> {{ 'MODULES.SYSTEM.CHANGE_COVER' | translate }}
+            </label>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-xxl-3">
+      <div class="card mt-n5">
+        <div class="card-body p-4">
+          <div class="text-center">
+            <div (click)="upload()" class="profile-user position-relative d-inline-block mx-auto  mb-4">
+              <ng-container *ngIf="user?.picture?.baseUrl">
+                <img alt="Avatar" class="rounded-circle avatar-xl img-thumbnail user-profile-image shadow"
+                  [src]="user.picture.baseUrl + '/' + user.picture.path" />
+              </ng-container>
+              <ng-container *ngIf="!user?.picture?.baseUrl">
+                <div class="avatar-lg img-thumbnail rounded-circle flex-shrink-0 shadow">
+                  <div class="avatar-title fs border bg-light text-primary rounded-circle text-uppercase">
+                    {{ user.firstName?.charAt(0) || 'N'}}</div>
+                </div>
+              </ng-container>
+              <div class="avatar-xs p-0 rounded-circle profile-photo-edit">
+                <label for="profile-img-file-input" class="profile-photo-edit avatar-xs">
+                  <span class="avatar-title rounded-circle bg-light text-body shadow">
+                    <i class="ri-camera-fill"></i>
+                  </span>
+                </label>
+              </div>
+            </div>
+            <h5 class="fs-16 mb-1">{{user.firstName}} {{user.lastName}}</h5>
+            <p class="text-muted mb-0">{{user.permission?.name}}</p>
+          </div>
+        </div>
+      </div>
+      <div class="card">
+        <div class="card-body">
+          <div class="d-flex align-items-center mb-5">
+            <div class="flex-grow-1">
+              <h5 class="card-title mb-0"> {{ 'MODULES.SYSTEM.COMPLETE_YOUR_PROFILE' | translate }}</h5>
+            </div>
+            <div class="flex-shrink-0">
+              <a href="javascript:void(0);" class="badge bg-light text-primary fs-12"><i
+                  class="ri-edit-box-line align-bottom me-1"></i>{{ 'COMMON.EDIT' | translate }}</a>
+            </div>
+          </div>
+          <div class="progress animated-progess custom-progress progress-label">
+            <div class="progress-bar bg-danger" role="progressbar" style="width: 30%" aria-valuenow="30"
+              aria-valuemin="0" aria-valuemax="100">
+              <div class="label">30%</div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="card">
+        <div class="card-body">
+          <div class="d-flex justify-content-between align-items-center mb-4">
+            <div class="flex-grow-1">
+              <h5 class="card-title mb-0"> {{ 'MODULES.SYSTEM.PORTFOLIO' | translate }}</h5>
+            </div>
+            <div>
+              <button [disabled]="isButtonDisabled || userForm.invalid" (click)="saveSocial()" class="btn btn-sm btn-primary">{{'COMMON.SAVE' | translate }}</button>
+            </div>
+          </div>
+          <form *ngIf="socialForm" [formGroup]="socialForm">
+            <div class="mb-3 d-flex">
+              <ng-container formGroupName="facebook">
+                <div class="avatar-xs d-block flex-shrink-0 me-3">
+                  <span style="background-color: #4267B2 !important"
+                    class="avatar-title rounded-circle fs-16 bg-dark text-light shadow">
+                    <i style="color: #ffff !important;" class="ri-facebook-circle-fill"></i>
+                  </span>
+                </div>
+                <input class="form-control" [placeholder]="'Facebook'" formControlName="value">
+              </ng-container>
+            </div>
+            <div class="mb-3 d-flex">
+              <ng-container formGroupName="instagram">
+                <div class="avatar-xs d-block flex-shrink-0 me-3">
+                  <span style="background-color: #C13584 !important"
+                    class="avatar-title rounded-circle fs-16 bg-dark text-light shadow">
+                    <i style="color: #ffff !important;" class="ri-instagram-fill"></i>
+                  </span>
+                </div>
+                <input class="form-control" [placeholder]="'Instagram'" formControlName="value">
+              </ng-container>
+            </div>
+            <div class="mb-3 d-flex">
+              <ng-container formGroupName="twitter">
+                <div class="avatar-xs d-block flex-shrink-0 me-3">
+                  <span style="background-color: #00acee !important"
+                    class="avatar-title rounded-circle fs-16 bg-dark text-light shadow">
+                    <i style="color: #ffff !important;" class="ri-twitter-fill"></i>
+                  </span>
+                </div>
+                <input class="form-control" [placeholder]="'Twitter'" formControlName="value">
+              </ng-container>
+            </div>
+            <div class="mb-3 d-flex">
+              <ng-container formGroupName="youtube">
+                <div class="avatar-xs d-block flex-shrink-0 me-3">
+                  <span style="background-color: #c4302b !important"
+                    class="avatar-title rounded-circle fs-16 bg-dark text-light shadow">
+                    <i style="color: #ffff !important;" class="ri-youtube-fill"></i>
+                  </span>
+                </div>
+                <input class="form-control" [placeholder]="'Youtube'" formControlName="value">
+              </ng-container>
+            </div>
+            <div class="mb-3 d-flex">
+              <ng-container formGroupName="linkedin">
+                <div class="avatar-xs d-block flex-shrink-0 me-3">
+                  <span style="background-color: #0e76a8 !important"
+                    class="avatar-title rounded-circle fs-16 bg-dark text-light shadow">
+                    <i style="color: #ffff !important;" class="ri-linkedin-fill"></i>
+                  </span>
+                </div>
+                <input class="form-control" [placeholder]="'Linkedin'" formControlName="value">
+              </ng-container>
+            </div>
+            <div class="mb-3 d-flex">
+              <ng-container formGroupName="pinterest">
+                <div class="avatar-xs d-block flex-shrink-0 me-3">
+                  <span style="background-color: #c8232c !important"
+                    class="avatar-title rounded-circle fs-16 bg-dark text-light shadow">
+                    <i style="color: #ffff !important;" class="ri-pinterest-fill"></i>
+                  </span>
+                </div>
+                <input class="form-control" [placeholder]="'pinterest'" formControlName="value">
+              </ng-container>
+            </div>
+          </form>
+
+          <div class="box-map mt-2">
+            <agm-map class="mt-2 mb-2" [zoom]="6" style="height: 150px;" [latitude]="33.886917" [longitude]="9.537499"
+              (mapClick)="pickAddress($event)">
+              <agm-marker *ngIf="position" [latitude]="position.lat" [longitude]="position.lng"></agm-marker>
+            </agm-map>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="col-xxl-9">
+      <div class="card mt-xxl-n5">
+        <div class="card-header">
+          <ul ngbNav #customNav="ngbNav" [activeId]="1"
+            class="nav nav-tabs-custom rounded card-header-tabs border-bottom-0" role="tablist">
+            <li [ngbNavItem]="1" class="nav-item">
+              <a ngbNavLink class="nav-link" data-bs-toggle="tab" role="tab">
+                <i class="fas fa-home"></i>
+                {{ 'MODULES.SYSTEM.PERSONAL_DETAILS' | translate }}
+              </a>
+              <ng-template ngbNavContent>
+                <form *ngIf="userForm" [formGroup]="userForm">
+                  <div class="row">
+                    <div class="col-lg-6">
+                      <div class="mb-3">
+                        <label for="firstnameInput" class="form-label"> {{ 'COMMON.FIRST_NAME' | translate }}</label>
+                        <input required formControlName="firstName" type="text" class="form-control" id="firstnameInput"
+                          placeholder="{{'PLACEHOLDER.ENTER_FIRSTNAME' | translate }}">
+                      </div>
+                    </div>
+                    <div class="col-lg-6">
+                      <div class="mb-3">
+                        <label for="lastnameInput" class="form-label"> {{ 'COMMON.LAST_NAME' | translate }}</label>
+                        <input formControlName="lastName" type="text" class="form-control" id="lastnameInput"
+                          placeholder="{{'PLACEHOLDER.ENTER_LASTNAME' | translate }}">
+                      </div>
+                    </div>
+                    <div class="col-lg-6">
+                      <div class="mb-3">
+                        <label for="email" class="col-sm-4 col-form-label"> {{ 'COMMON.PHONE_NUMBER' | translate
+                          }}</label>
+                        <input type="email" class="form-control" placeholder="{{'PLACEHOLDER.ENTER_YOUR_PHONE_NO' | translate }}"
+                          [formControlName]="'phoneNumber'">
+                        <div class="text-danger"
+                          *ngIf="userForm.get('phoneNumber').touched && userForm.get('phoneNumber').hasError('required')">
+                          {{ 'COMMON.REQUIRED' | translate }}
+                        </div>
+                      </div>
+                    </div>
+
+                    <div class="col-lg-6">
+                      <div class="mb-3">
+                        <label for="email" class="col-sm-4 col-form-label">{{ 'COMMON.EMAIL_ADDRESS' | translate
+                          }}</label>
+                        <input type="email" class="form-control" placeholder="Email"
+                          [formControlName]="'email'">
+                        <div class="text-danger"
+                          *ngIf="userForm.get('email').touched && userForm.get('email').hasError('required')">
+                          {{ 'COMMON.REQUIRED' | translate }}
+                        </div>
+                      </div>
+                    </div>
+                    <div class="row">
+                      <div class="col-lg-6 mb-3">
+                        <label for="name" class="col-form-label"> {{ 'MODULES.SYSTEM.USERNAME' | translate }}</label>
+                        <input type="text" class="form-control" placeholder="{{'PLACEHOLDER.ENTER_USERNAME' | translate }}"
+                          formControlName="username" id="name">
+                        <div class="text-danger"
+                          *ngIf="userForm.get('username')?.touched && userForm.get('username').hasError('required')">
+                          {{ 'COMMON.REQUIRED' | translate }}
+                        </div>
+                      </div>
+                      <div class="col-lg-6 mb-3">
+                        <label for="email" class="col-sm-4 col-form-label"> {{ 'MODULES.SYSTEM.ROLES' | translate
+                          }}</label>
+                        <ng-select placeholder="{{'PLACEHOLDER.CHOOSE_PERMISSION' | translate }}" [items]="permissions$ | async" [multiple]="false"
+                          bindLabel="name" bindValue="id" [formControlName]="'permission'">
+                          <ng-template ng-label-tmp let-item="item" let-clear="clear">
+                            <span class="ng-value-label">
+                              {{item.name}}
+                            </span>
+                          </ng-template>
+                          <ng-template ng-option-tmp let-item="item">
+                            {{item.name}}
+                          </ng-template>
+                        </ng-select>
+                        <div class="text-danger"
+                          *ngIf="userForm.get('roles')?.touched && userForm.get('roles').hasError('required')">
+                          {{ 'COMMON.REQUIRED' | translate }}
+                        </div>
+                      </div>
+                    </div>
+                    <div class="col-lg-6">
+                      <div class="mb-3">
+                        <label for="Marital" class="col-form-label"> {{ 'MODULES.SYSTEM.MARITAL_STATUS' | translate
+                          }}</label>
+                        <select class="form-select form-control-line" [formControlName]="'maritalStatus'"
+                          [required]="true">
+                          <option *ngFor="let maritalStatus of maritalStatuses" [value]="maritalStatus">
+                            {{maritalStatus.split('_').join(' ') | titlecase}}
+                          </option>
+                        </select>
+                        <div class="text-danger"
+                          *ngIf="userForm.get('maritalStatus')?.touched && userForm.get('maritalStatus').hasError('required')">
+                          {{ 'COMMON.REQUIRED' | translate }}
+                        </div>
+                      </div>
+                    </div>
+                    <div class="col-lg-6">
+                      <div class="mb-3">
+                        <label for="websiteInput1" class="col-form-label">{{ 'MODULES.SYSTEM.GENDER' | translate
+                          }}</label>
+                        <select class="form-select form-control-line" [formControlName]="'gender'" [required]="true">
+                          <option *ngFor="let gender of genders" [value]="gender">{{gender.split('_').join(' ') |
+                            titlecase}}
+                          </option>
+                        </select>
+                      </div>
+                    </div>
+                    <ng-container formGroupName="residentialAddress">
+                      <div class="col-lg-4">
+                        <div class="mb-3">
+                          <label for="cityInput" class="form-label"> {{ 'COMMON.CITY' | translate }}</label>
+                          <input formControlName="city" type="text" class="form-control" id="cityInput"
+                            placeholder="{{ 'COMMON.CITY' | translate }}" />
+                        </div>
+                      </div>
+                      <div class="col-lg-4">
+                        <div class="mb-3">
+                          <label for="countryInput" class="form-label">{{ 'COMMON.COUNTRY' | translate }}</label>
+                          <select class="form-select form-control-line" [formControlName]="'country'">
+                            <option *ngFor="let country of countries" [value]="country.id">
+                              <div fxLayout="row" fxLayoutAlign="space-between">
+                                <span>{{ country.name.split('_').join(' ') | titlecase }}</span>
+                                <span *ngIf="country?.iconFlag">{{country.iconFlag}}</span>
+                              </div>
+                            </option>
+                          </select>
+                          <div class="text-danger"
+                            *ngIf="userForm.get(['residentialAddress','country'])?.touched && userForm.get('residentialAddress','country').hasError('required')">
+                            {{ 'COMMON.REQUIRED' | translate }}
+                          </div>
+                        </div>
+                      </div>
+                      <div class="col-lg-4">
+                        <div class="mb-3">
+                          <label for="zipcodeInput" class="form-label">{{ 'COMMON.ZIP_CODE' | translate }}</label>
+                          <input formControlName="postCode" type="text" class="form-control" id="zipcodeInput"
+                            placeholder="{{ 'COMMON.ENTER_ZIPCODE' | translate }}">
+                        </div>
+                      </div>
+                    </ng-container>
+                    <div class="col-lg-12">
+                      <div class="hstack gap-2 justify-content-end">
+                        <button type="button" [disabled]="isUserButtonDisabled || userForm.invalid" (click)="save()"
+                          class="btn btn-primary">{{ 'COMMON.UPDATE' | translate }}</button>
+                      </div>
+                    </div>
+                  </div>
+                </form>
+              </ng-template>
+            </li>
+            <li [ngbNavItem]="2" class="nav-item">
+              <a ngbNavLink class="nav-link" data-bs-toggle="tab" role="tab">
+                <i class="far fa-user"></i>{{ 'MODULES.SYSTEM.CHANGE_PASSWORD' | translate }}
+              </a>
+              <ng-template ngbNavContent>
+                <form [formGroup]="passwordForm">
+                  <ng-container [formGroupName]="'pwd'">
+                    <div class="row g-2">
+                      <!-- <div class="col-lg-4">
+                      <div>
+                        <label for="oldpasswordInput" class="form-label">{{'MODULES.HR.MAIN.OLD_PASSWORD' | translate }}*</label>
+                        <input formControlName="currentPassword" type="password" class="form-control"
+                          id="oldpasswordInput" placeholder="{{'PLACEHOLDER.ENTER_CURRENT_PASSWORD' | translate }}">
+                      </div>
+                    </div> -->
+                      <div class="col-lg-4">
+                        <div>
+                          <label for="newpasswordInput" class="form-label">{{ 'MODULES.SYSTEM.NEW_PASSWORD' | translate
+                            }}*</label>
+                          <input formControlName="password" type="password" class="form-control" id="newpasswordInput"
+                            placeholder="{{'PLACEHOLDER.ENTER_NEW_PASSWORD' | translate }}">
+                        </div>
+                      </div>
+                      <div class="col-lg-4">
+                        <div>
+                          <label for="confirmpasswordInput" class="form-label">{{ 'MODULES.SYSTEM.CONFIRM_PASSWORD' |
+                            translate }}*</label>
+                          <input formControlName="confirmPassword" type="password" class="form-control"
+                            id="confirmpasswordInput" placeholder="{{'PLACEHOLDER.CONFIRM_PASSWORD' | translate }}">
+                        </div>
+                      </div>
+                      <div class="col-lg-12">
+                        <div class="mb-3">
+                          <a (click)="forgotPasswordModal(resetContent)"
+                            class="cursor-pointer link-primary text-decoration-underline">{{'MODULES.SYSTEM.FORGOT_PASSWORD' | translate }}</a>
+                        </div>
+                      </div>
+                      <div class="col-lg-12">
+                        <div class="text-end">
+                          <button type="button" (click)="updatePassword()"
+                            [disabled]="passwordForm.invalid || isPwdButtonDisabled" class="btn btn-success">{{
+                            'MODULES.SYSTEM.CHANGE_PASSWORD' | translate }}
+                          </button>
+                        </div>
+                      </div>
+                    </div>
+                  </ng-container>
+                </form>
+                <div class="mt-4 mb-3 border-bottom pb-2">
+                  <div class="float-end">
+                    <a href="javascript:void(0);" class="link-primary">{{'MODULES.SYSTEM.ALL_LOGOUT' | translate }}</a>
+                  </div>
+                  <h5 class="card-title">{{ 'MODULES.SYSTEM.LOGIN_HISTORY' | translate }}</h5>
+                </div>
+                <div class="d-flex align-items-center mb-3">
+                  <div class="flex-shrink-0 avatar-sm">
+                    <div class="avatar-title bg-light text-primary rounded-3 fs-18 shadow">
+                      <i class="ri-smartphone-line"></i>
+                    </div>
+                  </div>
+                  <div class="flex-grow-1 ms-3">
+                    <h6>iPhone 12 Pro</h6>
+                    <p class="text-muted mb-0">Los Angeles, United States - March 16 at 2:47PM</p>
+                  </div>
+                  <div>
+                    <a href="javascript:void(0);">{{'MODULES.HR.MAIN.LOGOUT' | translate }}</a>
+                  </div>
+                </div>
+                <div class="d-flex align-items-center mb-3">
+                  <div class="flex-shrink-0 avatar-sm">
+                    <div class="avatar-title bg-light text-primary rounded-3 fs-18 shadow">
+                      <i class="ri-tablet-line"></i>
+                    </div>
+                  </div>
+                  <div class="flex-grow-1 ms-3">
+                    <h6>Apple iPad Pro</h6>
+                    <p class="text-muted mb-0">Washington, United States - November 06 at 10:43AM</p>
+                  </div>
+                  <div>
+                    <a href="javascript:void(0);">{{'MODULES.HR.MAIN.LOGOUT' | translate }}</a>
+                  </div>
+                </div>
+                <div class="d-flex align-items-center mb-3">
+                  <div class="flex-shrink-0 avatar-sm">
+                    <div class="avatar-title bg-light text-primary rounded-3 fs-18 shadow">
+                      <i class="ri-smartphone-line"></i>
+                    </div>
+                  </div>
+                  <div class="flex-grow-1 ms-3">
+                    <h6>Galaxy S21 Ultra 5G</h6>
+                    <p class="text-muted mb-0">Conneticut, United States - June 12 at 3:24PM</p>
+                  </div>
+                  <div>
+                    <a href="javascript:void(0);">{{'MODULES.HR.MAIN.LOGOUT' | translate }}</a>
+                  </div>
+                </div>
+                <div class="d-flex align-items-center">
+                  <div class="flex-shrink-0 avatar-sm">
+                    <div class="avatar-title bg-light text-primary rounded-3 fs-18 shadow">
+                      <i class="ri-macbook-line"></i>
+                    </div>
+                  </div>
+                  <div class="flex-grow-1 ms-3">
+                    <h6>Dell Inspiron 14</h6>
+                    <p class="text-muted mb-0">Phoenix, United States - July 26 at 8:10AM</p>
+                  </div>
+                  <div>
+                    <a href="javascript:void(0);">{{'MODULES.HR.MAIN.LOGOUT' | translate }}</a>
+                  </div>
+                </div>
+              </ng-template>
+            </li>
+            <li [ngbNavItem]="3" class="nav-item">
+              <a ngbNavLink class="nav-link" data-bs-toggle="tab" role="tab">
+                <i class="far fa-envelope"></i>{{ 'MODULES.ECOMMERCE.MAIN.EXPERIENCE' | translate }}
+              </a>
+              <ng-template ngbNavContent>
+                <form [formGroup]="userForm">
+                  <div formArrayName="work" class="row mb-3">
+                    <div *ngFor="let key of work.controls; let i = index; let first = first; let last = last;"
+                      class="mt-2">
+                      <div [formGroupName]="i" class="row">
+                        <div class="row">
+                          <div class="col-lg-6">
+                            <div class="mb-3">
+                              <label for="companyName" class="form-label fw-medium"> {{ 'MODULES.SYSTEM.COMPANY_NAME' |
+                                translate }}</label>
+                              <input formControlName="company" type="text" class="form-control" id="companyName"
+                                placeholder="{{'PLACEHOLDER.COMPANY_NAME' | translate }}" value="Themesbrand">
+                            </div>
+                          </div>
+                          <div class="col-lg-6">
+                            <div class="mb-3">
+                              <label for="companyName" class="form-label fw-medium">{{ 'MODULES.SYSTEM.POSITION' |
+                                translate }}</label>
+                              <input formControlName="position" type="text" class="form-control" id="companyName"
+                                placeholder="{{'PLACEHOLDER.JOB_POSITION' | translate }}" value="Themesbrand">
+                            </div>
+                          </div>
+                          <div class="mb-3">
+                            <label for="state" class="form-label fw-medium"> {{ 'COMMON.CITY' | translate }}</label>
+                            <ng-select bindValue="id" bindName="name" placeholder="{{'PLACEHOLDER.SELECT_CITY' | translate }}" [items]="states"
+                              [multiple]="false" [formControlName]="'city'">
+                              <ng-template ng-label-tmp let-item="item" let-clear="clear">
+                                {{ item?.name.split('_').join(' ') | titlecase }}
+                                <span class="ng-value-icon right" (click)="clear(item)" aria-hidden="true">×</span>
+                              </ng-template>
+                              <ng-template ng-option-tmp let-item="item">
+                                {{ item?.name.split('_').join(' ') | titlecase }}
+                              </ng-template>
+                            </ng-select>
+                          </div>
+                          <div class="mb-3">
+                            <div class="flex-shrink-0 d-flex gap-1">
+                              <div class="form-check form-switch">
+                                <input [formControlName]="'current'" class="form-check-input" type="checkbox"
+                                  role="switch" id="flexSwitchCheckDefault">
+                                <label class="form-check-label" for="flexSwitchCheckDefault">{{ 'COMMON.CURRENT' | translate }}</label>
+                              </div>
+                            </div>
+                          </div>
+                          <div class="mb-3">
+                            <div class="mb-3">
+                              <label for="experienceYear" class="form-label fw-medium">{{ 'MODULES.SYSTEM.EXPERIENCE' |
+                                translate }} Years</label>
+                              <div class="row">
+                                <div class="col-lg-5">
+                                  <input formControlName="from" [inline]="false"
+                                    class="form-control bg-light border-light" type="text" mwlFlatpickr
+                                    [altInput]="true" [convertModelValue]="true" placeholder="{{'PLACEHOLDER.START' | translate }}" id="isDate">
+                                </div>
+                                <ng-container *ngIf="key?.get('current')?.value === false">
+                                  <div class="col-auto align-self-center"> {{ 'COMMON.TO' | translate }}
+                                  </div>
+                                  <div class="col-lg-5">
+                                    <input formControlName="to" [inline]="false"
+                                      class="form-control bg-light border-light" type="text" mwlFlatpickr
+                                      [altInput]="true" [convertModelValue]="true" placeholder="{{'PLACEHOLDER.END' | translate }}" id="isDate">
+                                  </div>
+                                </ng-container>
+                              </div>
+                            </div>
+                          </div>
+                          <div class="col-lg-12">
+                            <div class="mb-3">
+                              <label for="jobDescription" class="form-label fw-medium">{{
+                                'MODULES.SYSTEM.JOB_DESCRIPTION' | translate }}</label>
+                              <textarea formControlName="description" class="form-control" id="jobDescription" rows="3"
+                                placeholder="{{'COMMON.ENTER_DESCRIPTION' | translate }}"></textarea>
+                            </div>
+                          </div>
+                          <div class="hstack gap-2 justify-content-end">
+                            <a class="btn btn-primary" (click)="addWorkField()"> {{ 'COMMON.ADD_NEW' | translate }}</a>
+                            <a *ngIf="!first" class="btn btn-danger" (click)="removeWorkField(i)"> {{ 'COMMON.DELETE' |
+                              translate }}</a>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div formArrayName="education" class="row">
+                    <div *ngFor="let key of education.controls; let i = index; let first = first; let last = last;"
+                      class="mt-2">
+                      <div [formGroupName]="i" class="row">
+                        <div class="row">
+                          <div class="mb-3">
+                            <label for="jobTitle" class="form-label fw-medium">{{ 'MODULES.ECOMMERCE.MAIN.SCHOOL' | translate }}</label>
+                            <input type="text" formControlName="name" class="form-control" id="jobTitle"
+                              placeholder="{{'PLACEHOLDER.SCHOOL' | translate }}">
+                          </div>
+                          <div class="mb-3">
+                            <div class="mb-3">
+                              <label for="companyName" class="form-label fw-medium">{{ 'MODULES.SYSTEM.ACADEMIC_LEVEL' |
+                                translate }}</label>
+                              <ng-select placeholder="{{'PLACEHOLDER.SELECT_ACADEMIC_LEVEL' | translate }}" [items]="levels" [multiple]="false"
+                                [formControlName]="'level'">
+                                <ng-template ng-label-tmp let-item="item" let-clear="clear">
+                                  {{
+                                  (item === 'PRIMARY' ? 'SHARED.PRIMARY' :
+                                  item === 'HIGH_SCHOOL' ? 'SHARED.HIGH_SCHOOL' :
+                                  item === 'UNIVERSITY' ? 'SHARED.UNIVERSITY' :
+                                  '') | translate
+                                  }}
+                                  <span class="ng-value-icon right" (click)="clear(item)" aria-hidden="true">×</span>
+                                </ng-template>
+                                <ng-template ng-option-tmp let-item="item">
+                                  {{
+                                    (item === 'PRIMARY' ? 'SHARED.PRIMARY' :
+                                    item === 'HIGH_SCHOOL' ? 'SHARED.HIGH_SCHOOL' :
+                                    item === 'UNIVERSITY' ? 'SHARED.UNIVERSITY' :
+                                    '') | translate
+                                  }}
+                                </ng-template>
+                              </ng-select>
+                            </div>
+                          </div>
+                          <div class="mb-3">
+                            <div class="flex-shrink-0 d-flex gap-1">
+                              <div class="form-check form-switch">
+                                <input [formControlName]="'graduated'" class="form-check-input" type="checkbox"
+                                  role="switch" id="flexSwitchCheckDefault">
+                                <label class="form-check-label" for="flexSwitchCheckDefault">{{
+                                  'MODULES.SYSTEM.GRADUATED' | translate }}</label>
+                              </div>
+                            </div>
+                          </div>
+                          <div class="mb-3">
+                            <div class="mb-3">
+                              <label for="experienceYear" class="form-label fw-medium">{{ 'MODULES.SYSTEM.EXPERIENCE' |
+                                translate }} Years</label>
+                              <div class="row">
+                                <div class="col-lg-5">
+                                  <input formControlName="from" [inline]="false"
+                                    class="form-control bg-light border-light" type="text" mwlFlatpickr
+                                    [altInput]="true" [convertModelValue]="true" placeholder="{{'PLACEHOLDER.START' | translate }}" id="isDate">
+                                </div>
+                                <ng-container *ngIf="key?.get('graduated')?.value === true">
+                                  <div class="col-auto align-self-center"> {{ 'COMMON.TO' | translate }}
+                                  </div>
+                                  <div class="col-lg-5">
+                                    <input formControlName="to" [inline]="false"
+                                      class="form-control bg-light border-light" type="text" mwlFlatpickr
+                                      [altInput]="true" [convertModelValue]="true" placeholder="{{'PLACEHOLDER.END' | translate }}" id="isDate">
+                                  </div>
+                                </ng-container>
+                              </div>
+                            </div>
+                          </div>
+                          <div class="mb-3">
+                            <label for="jobDescription" class="form-label fw-medium">{{ 'COMMON.DESCRIPTION' | translate
+                              }}</label>
+                            <textarea formControlName="description" class="form-control" id="jobDescription" rows="3"
+                              placeholder="{{'COMMON.ENTER_DESCRIPTION' | translate }}"></textarea>
+                          </div>
+                          <div class="hstack gap-2 justify-content-end mb-3">
+                            <a class="btn btn-primary" (click)="addEducationField()"> {{ 'COMMON.ADD_NEW' | translate
+                              }}</a>
+                            <a *ngIf="!first" class="btn btn-danger" (click)="removeEducationField(i)"> {{
+                              'COMMON.DELETE' | translate }}</a>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div id="newForm" style="display: none;">
+
+                  </div>
+                  <div class="col-lg-12">
+                    <div class="hstack justify-content-end gap-2">
+                      <button [disabled]="userForm?.invalid || isUserButtonDisabled" (click)="saveExperience()"
+                        type="button" class="btn-success btn">{{ 'COMMON.UPDATE' | translate }}</button>
+                    </div>
+                  </div>
+
+                </form>
+              </ng-template>
+            </li>
+            <li [ngbNavItem]="4" class="nav-item">
+              <a ngbNavLink class="nav-link" data-bs-toggle="tab" role="tab">
+                <i class="far fa-envelope"></i>{{ 'MODULES.SYSTEM.PRIVACY' | translate }}
+              </a>
+              <ng-template ngbNavContent>
+                <div class="mb-4 pb-2">
+                  <h5 class="card-title text-decoration-underline mb-3">{{'MODULES.HR.MAIN.SECURITY' | translate }}:</h5>
+                  <div class="d-flex flex-column flex-sm-row mb-4 mb-sm-0">
+                    <div class="flex-grow-1">
+                      <h6 class="fs-14 mb-1">{{ 'MODULES.SYSTEM.TWO_FACTOR_AUTHENTICATION' | translate }}</h6>
+                      <p class="text-muted"> {{ 'MODULES.SYSTEM.TWO_FACTOR_AUTHENTICATION_DESCRIPTION' | translate }}
+                      </p>
+                    </div>
+                    <div class="flex-shrink-0 ms-sm-3">
+                      <a href="javascript:void(0);" class="btn btn-sm btn-primary"> {{
+                        'MODULES.SYSTEM.ENABLE_TWO_FACTOR_AUTHENTICATION' | translate }}</a>
+                    </div>
+                  </div>
+                  <div class="d-flex flex-column flex-sm-row mb-4 mb-sm-0 mt-2">
+                    <div class="flex-grow-1">
+                      <h6 class="fs-14 mb-1">{{ 'MODULES.SYSTEM.SECONDARY_VERIFICATION' | translate }}</h6>
+                      <p class="text-muted"> {{ 'MODULES.SYSTEM.SECONDARY_VERIFICATION_DESCRIPTION' | translate }}</p>
+                    </div>
+                    <div class="flex-shrink-0 ms-sm-3">
+                      <a href="javascript:void(0);" class="btn btn-sm btn-primary">{{
+                        'MODULES.SYSTEM.SET_UP_SECONDARY_METHOD' | translate }}</a>
+                    </div>
+                  </div>
+                  <div class="d-flex flex-column flex-sm-row mb-4 mb-sm-0 mt-2">
+                    <div class="flex-grow-1">
+                      <h6 class="fs-14 mb-1"> {{ 'MODULES.SYSTEM.GENERATE_BACKUP_CODES' | translate }}</h6>
+                      <p class="text-muted mb-sm-0"> {{ 'MODULES.SYSTEM.GENERATE_BACKUP_CODES_DESCRIPTION' | translate
+                        }}</p>
+                    </div>
+                    <div class="flex-shrink-0 ms-sm-3">
+                      <a href="javascript:void(0);" class="btn btn-sm btn-primary">{{
+                        'MODULES.SYSTEM.GENERATE_BACKUP_CODES' | translate }}</a>
+                    </div>
+                  </div>
+                </div>
+                <div class="mb-3">
+                  <h5 class="card-title text-decoration-underline mb-3"> {{ 'MODULES.SYSTEM.APPLICATION_NOTIFICATIONS' |
+                    translate }}:</h5>
+                  <ul class="list-unstyled mb-0">
+                    <li class="d-flex">
+                      <div class="flex-grow-1">
+                        <label for="directMessage" class="form-check-label fs-14"> {{ 'MODULES.SYSTEM.DIRECT_MESSAGES' |
+                          translate }}</label>
+                        <p class="text-muted"> {{ 'MODULES.SYSTEM.MESSAGES_FROM_PEOPLE_YOU_FOLLOW' | translate }}</p>
+                      </div>
+                      <div class="flex-shrink-0">
+                        <div class="form-check form-switch">
+                          <input class="form-check-input" type="checkbox" role="switch" id="directMessage" checked />
+                        </div>
+                      </div>
+                    </li>
+                    <li class="d-flex mt-2">
+                      <div class="flex-grow-1">
+                        <label class="form-check-label fs-14" for="desktopNotification">
+                          {{ 'MODULES.SYSTEM.SHOW_DESKTOP_NOTIFICATIONS' | translate }}
+                        </label>
+                        <p class="text-muted"> {{ 'MODULES.SYSTEM.CHOOSE_DEFAULT_SETTING' | translate }} {{
+                          'MODULES.SYSTEM.BLOCK_A_SITE' | translate }}</p>
+                      </div>
+                      <div class="flex-shrink-0">
+                        <div class="form-check form-switch">
+                          <input class="form-check-input" type="checkbox" role="switch" id="desktopNotification"
+                            checked />
+                        </div>
+                      </div>
+                    </li>
+                    <li class="d-flex mt-2">
+                      <div class="flex-grow-1">
+                        <label class="form-check-label fs-14" for="emailNotification">
+                          {{ 'MODULES.SYSTEM.SHOW_EMAIL_NOTIFICATIONS' | translate }}
+                        </label>
+                        <p class="text-muted"> {{ 'MODULES.SYSTEM.EMAIL_NOTIFICATIONS_SETTINGS' | translate }} </p>
+                      </div>
+                      <div class="flex-shrink-0">
+                        <div class="form-check form-switch">
+                          <input class="form-check-input" type="checkbox" role="switch" id="emailNotification" />
+                        </div>
+                      </div>
+                    </li>
+                    <li class="d-flex mt-2">
+                      <div class="flex-grow-1">
+                        <label class="form-check-label fs-14" for="chatNotification">
+                          {{ 'MODULES.SYSTEM.SHOW_CHAT_NOTIFICATIONS' | translate }}
+                        </label>
+                        <p class="text-muted"> {{ 'MODULES.SYSTEM.PREVENT_DUPLICATE_MOBILE_NOTIFICATIONS' | translate }}
+                        </p>
+                      </div>
+                      <div class="flex-shrink-0">
+                        <div class="form-check form-switch">
+                          <input class="form-check-input" type="checkbox" role="switch" id="chatNotification" />
+                        </div>
+                      </div>
+                    </li>
+                    <li class="d-flex mt-2">
+                      <div class="flex-grow-1">
+                        <label class="form-check-label fs-14" for="purchaesNotification">
+                          {{ 'MODULES.SYSTEM.SHOW_PURCHASE_NOTIFICATIONS' | translate }}
+                        </label>
+                        <p class="text-muted">{{ 'MODULES.SYSTEM.GET_REAL_TIME_PURCHASE_ALERTS' | translate }}
+                        </p>
+                      </div>
+                      <div class="flex-shrink-0">
+                        <div class="form-check form-switch">
+                          <input class="form-check-input" type="checkbox" role="switch" id="purchaesNotification" />
+                        </div>
+                      </div>
+                    </li>
+                  </ul>
+                </div>
+                <div>
+                  <h5 class="card-title text-decoration-underline mb-3">{{ 'MODULES.SYSTEM.DELETE_THIS_ACCOUNT' |
+                    translate }}:</h5>
+                  <p class="text-muted"> {{ 'MODULES.SYSTEM.DELETE_ACCOUNT_INSTRUCTIONS' | translate }}</p>
+                  <div>
+                    <input type="password" class="form-control" id="passwordInput"
+                      placeholder="{{ 'COMMON.ENTER_PASSWORD' | translate }}" value="make@321654987"
+                      style="max-width: 265px;">
+                  </div>
+                  <div class="hstack gap-2 mt-3">
+                    <a href="javascript:void(0);" class="btn btn-soft-danger">{{ 'COMMON.CLOSE' | translate }} & Delete
+                      This Account</a>
+                    <a href="javascript:void(0);" class="btn btn-light">{{ 'COMMON.CANCEL' | translate }}</a>
+                  </div>
+                </div>
+              </ng-template>
+            </li>
+          </ul>
+        </div>
+        <div class="card-body p-4">
+          <div class="tab-content">
+            <div [ngbNavOutlet]="customNav"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <ng-template #resetContent role="document" let-modal>
+    <div class="modal-body">
+      <form [formGroup]="resetForm">
+        <div class="row">
+          <div class="col-lg-12">
+            <div class="mb-3 row">
+              <label for="name" class="col-sm-4 col-form-label">{{ 'COMMON.EMAIL' | translate }}</label>
+              <div class="col-sm-8">
+                <input type="text" class="form-control" formControlName="email" id="name">
+                <div class="text-danger"
+                  *ngIf="userForm.get('firstName')?.touched && userForm.get('firstName').hasError('required')">
+                  {{ 'COMMON.REQUIRED' | translate }}
+                </div>
+              </div>
+            </div>
+            <div class="hstack gap-2 justify-content-end">
+              <button type="button" class="btn btn-light" data-bs-dismiss="modal"
+                (click)="modal.close('close click')">{{ 'COMMON.CLOSE' | translate }}</button>
+              <button type="button" [disabled]="isResetButtonDisabled || resetForm.invalid" class="btn btn-success"
+                (click)="sendResetLink()">{{ 'MODULES.ECOMMERCE.MAIN.SEND_RESET_LINK' | translate }}</button>
+            </div>
+          </div>
+        </div>
+      </form>
+    </div>
+  </ng-template>
+</ng-container>
+<div *ngIf="navigating$ | async" class="vh-100 py-4 text-center" fxLayout="column" fxLayoutAlign="center center"
+  fxLayoutGap="1rem">
+  <div>
+    <lord-icon trigger="loop" style="width:72px;height:72px" [colors]="'primary:' + primaryColor + ',secondary:' + secondaryColor"
+      src="https://cdn.lordicon.com/msoeawqm.json">
+    </lord-icon>
+  </div>
+  <div class="mt-4">
+    <h5>{{ 'COMMON.LOADING' | translate }}</h5>
+  </div>
+</div>

@@ -1,0 +1,308 @@
+<!-- Start Breadcrumbs -->
+<app-breadcrumbs title="{{ 'MENUITEMS.TITLE.PAGE' | translate }}" [breadcrumbItems]="breadCrumbItems"></app-breadcrumbs>
+<ng-container *ngIf="!(navigating$ | async)">
+  <div
+    *ngIf="(website$ | async)?.multilanguage?.active === true && (website$ | async)?.multilanguage?.languages?.length && !fullPath.includes('new-page')"
+    class="card" id="ticketsList">
+    <div class="card-header border-0">
+      <form [formGroup]="pageForm">
+        <div formGroupName="translation" class="row">
+          <h5 class="card-title col-lg-4 flex-grow-1">{{'COMMON.LANGUAGE' | translate }}</h5>
+          <ng-select bindLabel="name" formControlName="language" (change)="onChangeLanguage($event)" class="col-lg-8"
+            [closeOnSelect]="true" [multiple]="false" [items]="languages" placeholder="{{'PLACEHOLDER.SELECT_LANGUAGE' | translate }}"
+            [searchable]="false" [clearable]="false">
+            <ng-template ng-label-tmp let-item="item" let-clear="clear">
+              <div class="d-flex gap-1">
+                <span *ngIf="item?.name !== 'Default'">{{item?.iconFlag}}</span>
+                <span>{{item?.name}}</span>
+              </div>
+            </ng-template>
+            <ng-template ng-option-tmp let-item$="item$" let-item="item">
+              <div class="d-flex gap-1">
+                <span *ngIf="item?.name !== 'Default'">{{item?.iconFlag}}</span>
+                <span>{{item?.name}}</span>
+              </div>
+            </ng-template>
+          </ng-select>
+        </div>
+      </form>
+    </div>
+  </div>
+  <ng-container *ngIf="translation?.value?.language?.name === 'Default'">
+    <div class="row">
+      <div class="col-lg-12">
+        <div class="card" id="invoiceList">
+          <div class="card-header border-0">
+            <h4 class="mb-0 flex-grow-1">{{'MODULES.WEBSITE.PAGE' | translate }}</h4>
+          </div>
+          <div class="card-body">
+            <form [formGroup]="pageForm">
+              <div class="row">
+                <div class="mb-3 col-lg-6">
+                  <label for="firstnameInput" class="form-label">{{'MODULES.WEBSITE.PAGE_TYPE' | translate }}</label>
+                  <select
+                    [ngClass]="{ 'is-invalid': pageForm.get('pageType')?.touched && pageForm.get('pageType').hasError('required') }"
+                    class="form-select form-control-line" [formControlName]="'pageType'">
+                    <option *ngFor="let type of pageTypes" [value]="type">{{ type.split('_').join(' ') |
+                      titlecase }}</option>
+                  </select>
+                  <div class="text-danger"
+                    *ngIf="pageForm.get('pageType')?.touched && pageForm.get('pageType').hasError('required')">{{'COMMON.REQUIRED' | translate }}
+                  </div>
+                </div>
+                <div class="col-lg-6 mb-3">
+                  <label for="lastnameInput" class="form-label">{{'MODULES.WEBSITE.PAGE_REFERENCE' | translate }}</label>
+                  <input
+                    [ngClass]="{ 'is-invalid': pageForm.get('pageReference')?.touched && pageForm.get('pageReference').hasError('required') }"
+                    formControlName="pageReference" type="text" class="form-control" id="lastnameInput"
+                    placeholder="{{'PLACEHOLDER.ENTER_PAGE_REFERENCE' | translate }}">
+                  <div class="text-danger"
+                    *ngIf="pageForm.get('pageReference')?.touched && pageForm.get('pageReference').hasError('required')">{{'COMMON.REQUIRED' | translate }}
+                  </div>
+                </div>
+              </div>
+              <div class="row">
+                <div class="mb-3 col-lg-6">
+                  <label for="firstnameInput" class="form-label">{{'MODULES.WEBSITE.PAGE_TITLE' | translate }}</label>
+                  <input
+                    [ngClass]="{ 'is-invalid': pageForm.get('pageTitle')?.touched && pageForm.get('pageTitle').hasError('required') }"
+                    formControlName="pageTitle" type="text" class="form-control" id="pageTitle"
+                    placeholder="{{'PLACEHOLDER.ENTER_PAGE_TITLE' | translate }}">
+                  <div class="text-danger"
+                    *ngIf="pageForm.get('pageTitle')?.touched && pageForm.get('pageTitle').hasError('required')">{{'COMMON.REQUIRED' | translate }}
+                  </div>
+                </div>
+              </div>
+              <div class="mb-7 mb-sm-6">
+                <label for="firstnameInput" class="form-label">{{'MODULES.WEBSITE.PAGE_DESCRIPTION' | translate }}</label>
+                <quill-editor class="custom-quill-editor" formControlName="pageDescription"></quill-editor>
+              </div>
+              <div class="row">
+                <div class="mb-3 col-lg-6">
+                  <label for="firstnameInput" class="form-label">URL</label>
+                  <input formControlName="url" type="text" class="form-control" id="firstnameInput"
+                    placeholder="{{'PLACEHOLDER.ENTER_PAGE_URL' | translate }}">
+                </div>
+                <div class="mb-3 col-lg-6">
+                  <label class="form-label" for="product-tags-input">{{'MODULES.WEBSITE.PAGE_TAGS' | translate }}</label>
+                  <ng-select placeholder="{{'PLACEHOLDER.ENTER_PAGE_TAGS' | translate }}" [items]="[]" class="no-arrow-select" [addTag]="true" [isOpen]="false"
+                    [multiple]="true" [selectOnTab]="true" formControlName="tags">
+                  </ng-select>
+                </div>
+              </div>
+              <div class="row">
+                <ng-container formGroupName="seo">
+                  <div class="mb-3 col-lg-6">
+                    <label for="firstnameInput" class="form-label">{{'MODULES.INVENTORY.META_TITLE' | translate }}</label>
+                    <input formControlName="metaTitle" type="text" class="form-control" id="firstnameInput"
+                      placeholder="{{'PLACEHOLDER.ENTER_PAGE_URL' | translate }}">
+                  </div>
+                  <div class="mb-3 col-lg-6">
+                    <label for="website-field" class="form-label">{{'MODULES.INVENTORY.META_DESCRIPTION' | translate }}</label>
+                      <textarea class="form-control" id="description-field" rows="3"
+                        placeholder="{{'PLACEHOLDER.ENTER_META_DESCRIPTION' | translate }}" formControlName="metaDesription"></textarea>
+                  </div>
+                  <div>
+                    <div formArrayName="metaKeywords" class="row">
+                      <div
+                        *ngFor="let key of metaKeywords?.controls; let i = index; let first = first; let last = last;"
+                        class="mt-2">
+                        <div [formGroupName]="i" class="row">
+                          <div class="mb-3 col-lg-6">
+                            <label class="control-label">{{'MODULES.INVENTORY.META_KEYWORD_NAME' | translate }}</label>
+                            <input type="text" formControlName="name" class="form-control"
+                              placeholder="{{'PLACEHOLDER.ENTER_META_KEYWORD_TITLE' | translate }}">
+                          </div>
+                          <div class="mb-3 col-lg-6">
+                            <label class="control-label">{{'MODULES.INVENTORY.CONTENT' | translate }}</label>
+                            <div class="d-flex align-items-center">
+                              <input type="text" formControlName="content" class="form-control"
+                                placeholder="{{'PLACEHOLDER.ENTER_META_KEYWORD_CONTENT' | translate }}">
+                              <i *ngIf="!first" (click)="removeKeywordField(i)"
+                                class="ri-delete-bin-2-line ft ms-2"></i>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    <button (click)="addKeywordField()" type="button" class="btn btn-soft-info btn-sm shadow-none"><i
+                        class="ri-add-fill me-1 align-bottom"></i>Add a keyword</button>
+                  </div>
+                </ng-container>
+              </div>
+
+              <div *ngIf="page" class="mt-4">
+                <h4 class="mb-4 flex-grow-1">{{'MODULES.WEBSITE.SECTIONS' | translate }}</h4>
+                <ng-container formArrayName="sectionData">
+                  <div class="sm:col-span-4"
+                    *ngFor="let section of pageForm.get('sectionData')['controls']; let i=index; let last = last"
+                    [formGroupName]="i">
+                    <div class="mb-3 col-lg-12">
+                      <label for="firstnameInput" class="form-label">{{'COMMON.TITLE' | translate }}</label>
+                      <input formControlName="sectionTitle" type="text" class="form-control" id="firstnameInput"
+                        placeholder="{{'PLACEHOLDER.ENTER_SECTION_TITLE' | translate }}">
+                    </div>
+                    <div class="mb-3 col-lg-12">
+                      <label for="firstnameInput" class="form-label">{{'MODULES.INVENTORY.REFERENCE' | translate }}</label>
+                      <input formControlName="sectionReference" type="text" class="form-control" id="firstnameInput"
+                        placeholder="{{'PLACEHOLDER.ENTER_SECTION_REFERENCE' | translate }}">
+                    </div>
+                    <div class="mb-7 mb-sm-6 col-lg-12">
+                      <label for="firstnameInput" class="form-label">{{'MODULES.INVENTORY.CONTENT' | translate }}</label>
+                      <quill-editor class="custom-quill-editor" formControlName="sectionContent"></quill-editor>
+                    </div>
+                    <div class="mt-2 df-flex">
+                      <div class="img-wrap image-area"
+                        *ngFor="let picture of section.get('sectionPictures')['controls']; let j = index; trackBy: trackByFn">
+                        <button (click)="openAltModal(i, j)" type="button"
+                          class="btn btn-outline-info btn-sm wrap-img m-2">
+                          <i class="ri-coupon-2-line"></i>
+                        </button>
+                        <img class="cover h-30 product-picture w-30"
+                          [src]="picture?.value?.baseUrl + '/' + picture?.value?.path" alt="Blog picture">
+                        <button (click)="removePicture(i, j)" type="button"
+                          class="delete-button btn btn-outline-danger btn-icon waves-effect mb-1 waves-light btn-sm">
+                          <i class="ri-delete-bin-5-line"></i>
+                        </button>
+                      </div>
+                      <div (click)="upload(i)"
+                        class="w-30 h-30 mb-3 col-4 border rounded overflow-hidden cursor-pointer d-flex align-items-center justify-content-center">
+                        <span class="fs-5 fw-bold">{{'COMMON.UPLOAD' | translate }}</span>
+                      </div>
+                    </div>
+                    <div class="col-lg-12">
+                      <div class="hstack justify-content-end gap-2 mt-4 mb-4">
+                        <button *ngIf="pageForm.get('sectionData').value?.length > 1" type="button" (click)="deleteSection(i)" class="btn btn-danger"><i
+                            class="ri-delete-bin-fill align-bottom"></i>{{ 'COMMON.DELETE' | translate }}</button>
+                        <button *ngIf="last" (click)="newSection()" type="button" class="btn btn-primary add-btn"
+                          id="create-btn"><i class="ri-add-line align-bottom me-1"></i>{{'MODULES.WEBSITE.SECTION' | translate }}</button>
+                      </div>
+                    </div>
+                  </div>
+                </ng-container>
+              </div>
+              <div class="col-lg-12">
+                <div class="hstack justify-content-end gap-2 mt-3">
+                  <button (click)="back()" type="button" class="btn btn-ghost-danger">{{'COMMON.BACK' | translate }}</button>
+                  <button (click)="save()" [disabled]="isButtonDisabled || pageForm.invalid" type="button"
+                    class="btn btn-success">{{'COMMON.SAVE' | translate }}</button>
+                </div>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+  </ng-container>
+
+  <ng-container *ngIf="translation?.value?.language?.name !== 'Default'">
+    <div class="row">
+      <form [formGroup]="pageForm">
+        <div formGroupName="translation" class="col-lg-12">
+          <div class="card" id="invoiceList">
+            <div class="card-header border-0">
+              <h4 class="mb-0 flex-grow-1">{{'MODULES.WEBSITE.PAGE' | translate }}</h4>
+            </div>
+            <div class="card-body">
+              <div class="mt-4">
+                <h4 class="mb-4 flex-grow-1">{{'MODULES.INVENTORY.CONTENT' | translate }}</h4>
+                <ng-container formGroupName="content">
+                  <div class="row">
+                    <div class="mb-3 col-lg-6">
+                      <label for="firstnameInput" class="form-label">{{'MODULES.WEBSITE.PAGE_TITLE' | translate }}</label>
+                      <input
+                        required
+                        [ngClass]="{ 'is-invalid': translation.get(['content', 'pageTitle'])?.touched && translation.get(['content', 'pageTitle']).hasError('required') }"
+                        formControlName="pageTitle" type="text" class="form-control" id="pageTitle"
+                        placeholder="{{'PLACEHOLDER.ENTER_PAGE_TITLE' | translate }}">
+                      <div class="text-danger"
+                        *ngIf="translation.get(['content', 'pageTitle'])?.touched && translation.get(['content', 'pageTitle']).hasError('required')">{{'COMMON.REQUIRED' | translate }}
+                      </div>
+                    </div>
+                    <div class="mb-3 col-lg-6">
+                      <label for="firstnameInput" class="form-label">{{'MODULES.WEBSITE.PAGE_DESCRIPTION' | translate }}</label>
+                      <textarea required class="form-control" id="description-field" rows="3"
+                        placeholder="{{'PLACEHOLDER.ENTER_PAGE_DESCRIPTION' | translate }}" formControlName="pageDescription"></textarea>
+                    </div>
+                  </div>
+                  <ng-container formArrayName="sectionData">
+                    <div class="sm:col-span-4 row"
+                      *ngFor="let section of translation.get(['content', 'sectionData']).controls; let j=index; let last = last"
+                      [formGroupName]="j">
+                      <div class="mb-3 col-lg-12">
+                        <label for="firstnameInput" class="form-label">{{'COMMON.TITLE' | translate }}</label>
+                        <input formControlName="sectionTitle" type="text" class="form-control" id="firstnameInput"
+                          placeholder="{{'PLACEHOLDER.ENTER_SECTION_TITLE' | translate }}">
+                      </div>
+                      <div class="mb-3 col-lg-12">
+                        <label for="firstnameInput" class="form-label">{{'MODULES.INVENTORY.REFERENCE' | translate }}</label>
+                        <input formControlName="sectionReference" type="text" class="form-control" id="firstnameInput"
+                          placeholder="{{'PLACEHOLDER.ENTER_SECTION_REFERENCE' | translate }}">
+                      </div>
+                      <div class="mb-3 col-lg-12">
+                        <label for="firstnameInput" class="form-label">{{'MODULES.INVENTORY.CONTENT' | translate }}</label>
+                        <textarea class="form-control" id="description-field" rows="4"
+                          placeholder="{{'PLACEHOLDER.ENTER_SECTION_CONTENT' | translate }}" formControlName="sectionContent"></textarea>
+                      </div>
+                      <div class="mt-2 df-flex">
+                        <div class="img-wrap image-area"
+                          *ngFor="let picture of section.get('sectionPictures')['controls']; let k = index; trackBy: trackByFn">
+                          <button (click)="openAltModal(j, k)" type="button"
+                            class="btn btn-outline-info btn-sm wrap-img m-2">
+                            <i class="ri-coupon-2-line"></i>
+                          </button>
+                          <img class="cover h-30 product-picture w-30"
+                            [src]="picture?.value?.baseUrl + '/' + picture?.value?.path">
+                          <button (click)="removePicture(j, k)" type="button"
+                            class="delete-button btn btn-outline-danger btn-icon waves-effect mb-1 waves-light btn-sm">
+                            <i class="ri-delete-bin-5-line"></i>
+                          </button>
+                        </div>
+                        <div (click)="upload(j)"
+                          class="w-30 h-30 mb-3 col-4 border rounded overflow-hidden cursor-pointer d-flex align-items-center justify-content-center">
+                          <span class="fs-5 fw-bold">{{'COMMON.UPLOAD' | translate }}</span>
+                        </div>
+                      </div>
+                      <div class="col-lg-12">
+                        <div class="hstack justify-content-end gap-2 mt-4 mb-4">
+                          <button *ngIf="translation.get(['content', 'sectionData']).value?.length > 1" type="button" (click)="deleteSection(j)" class="btn btn-danger"><i
+                              class="ri-delete-bin-fill align-bottom"></i>
+                              {{'COMMON.DELETE' | translate }}</button>
+                          <button *ngIf="last" (click)="newSection()" type="button" class="btn btn-primary add-btn"
+                            id="create-btn"><i class="ri-add-line align-bottom me-1"></i>{{'MODULES.WEBSITE.SECTION' | translate }}</button>
+                        </div>
+                      </div>
+                    </div>
+                  </ng-container>
+                </ng-container>
+              </div>
+              <div class="col-lg-12">
+                <div class="hstack justify-content-end gap-2 mt-3">
+                  <button (click)="back()" type="button" class="btn btn-soft-danger">
+                    {{'COMMON.BACK' | translate }}</button>
+                  <button *ngIf="pageForm.get('translation').value?.length === 0" (click)="newTranslation()"
+                    type="button" class="btn btn-primary add-btn" id="create-btn"><i
+                      class="ri-add-line align-bottom me-1"></i>{{'MODULES.WEBSITE.LANGUAGE' | translate }}</button>
+                  <button [disabled]="isButtonDisabled || pageForm.invalid" (click)="save()" type="button"
+                    class="btn btn-success">{{'COMMON.SAVE' | translate }}</button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </form>
+    </div>
+  </ng-container>
+</ng-container>
+
+<div *ngIf="navigating$ | async" class="vh-100 py-4 text-center" fxLayout="column" fxLayoutAlign="center center"
+  fxLayoutGap="1rem">
+  <div>
+    <lord-icon trigger="loop" style="width:72px;height:72px" [colors]="'primary:' + primaryColor + ',secondary:' + secondaryColor"
+      src="https://cdn.lordicon.com/msoeawqm.json">
+    </lord-icon>
+  </div>
+  <div class="mt-4">
+    <h5>{{'COMMON.LOADING' | translate }}</h5>
+  </div>
+</div>

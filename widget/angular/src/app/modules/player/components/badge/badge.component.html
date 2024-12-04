@@ -1,0 +1,1006 @@
+<div *ngIf="true===true" [class.dark-mode]="darkMode" [class.rtl]="rtl">
+  <div class="player-mode content-grid col-md-12 header-margin" style="padding: 00 0 !important">
+      <div class="section-banner"
+        [ngStyle]="{ background: 'url(' + headerImagePath + ') no-repeat center center / cover' }">
+        <img class="section-banner-icon" [src]="badgesIcon?.baseUrl + '/' + badgesIcon?.path"
+          alt="newsfeed-icon" />
+        <p class="section-banner-title">{{'BADGES' | translate}}</p>
+        <p
+class="section-banner-text text-truncate">{{'CHECK_UNLOCKED_LOCKED_BADGES' | translate}}</p>
+      </div>
+    </div>
+    <div class="col-md-12 special-margin special-margin-bottom">
+      <div class="grid grid-3-3-3-3 top-space centered">
+        <div class="badge-item-stat">
+          <p class="text-sticker">
+            <svg class="text-sticker-icon icon-plus-small">
+              <use xlink:href="#svg-plus-small"></use>
+            </svg>
+            20 <lord-icon src="https://cdn.lordicon.com/lxizbtuq.json" trigger="loop" delay="2000"
+              class="coin-transaction"></lord-icon>
+          </p>
+          <img class="badge-item-stat-image-preview" [src]="baseUrl + '/assets/img/badge/bronze-s.png'"
+            alt="badge-bronze-s" />>
+          <img class="badge-item-stat-image" [src]="baseUrl + '/assets/img/badge/bronze-b.png'"
+            alt="badge-bronze-b" />
+          <p class="badge-item-stat-title">{{'BRONZE_USER' | translate}}</p>
+          <p class="badge-item-stat-text">{{'HAS_POSTED_MORE_THAN' | translate}} 1 post on their profile</p>
+          <div class="progress-stat">
+            <div id="badge-bronze" class="progress-stat-bar"
+              style="width: 204px; height: 4px; position: relative">
+              <canvas width="204" height="4" style="position: absolute; top: 0px; left: 0px"></canvas><canvas
+                width="204" height="4" style="position: absolute; top: 0px; left: 0px"></canvas>
+            </div>
+            <div class="bar-progress-wrap">
+              <p class="bar-progress-info negative center">{{'UNLOCKED' | translate}}!</p>
+            </div>
+          </div>
+        </div>
+        <div class="badge-item-stat">
+          <p class="text-sticker">
+            <svg class="text-sticker-icon icon-plus-small">
+              <use xlink:href="#svg-plus-small"></use>
+            </svg>
+            40
+            <img src="https://sifca-storage.s3.eu-central-1.amazonaws.com/loyalcraft/reputation_512.gif"
+              class="assets/img-fluid rounded-circle avatar-xxs mb-1 ng-tns-c175-2"
+              style="margin-top: 5% !important" />
+          </p>
+          <img class="badge-item-stat-image-preview" [src]="baseUrl + '/assets/img/badge/silver-s.png'"
+            alt="badge-silver-s" />>
+          <img class="badge-item-stat-image" [src]="baseUrl + '/assets/img/badge/silver-b.png'"
+            alt="badge-silver-b" />
+          <p class="badge-item-stat-title">{{'SILVER_USER' | translate}}</p>
+          <p class="badge-item-stat-text">{{'HAS_POSTED_MORE_THAN' | translate}} 100 {{'POSTS_ON_THEIR_PROFILE' | translate}}</p>
+          <div class="progress-stat">
+            <div id="badge-silver" class="progress-stat-bar"
+              style="width: 204px; height: 4px; position: relative">
+              <canvas width="204" height="4" style="position: absolute; top: 0px; left: 0px"></canvas><canvas
+                width="204" height="4" style="position: absolute; top: 0px; left: 0px"></canvas>
+            </div>
+            <div class="bar-progress-wrap">
+              <p class="bar-progress-info negative center">{{'UNLOCKED' | translate}}!</p>
+            </div>
+          </div>
+        </div>
+        <div class="badge-item-stat">
+          <p class="text-sticker">
+            <svg class="text-sticker-icon icon-plus-small">
+              <use xlink:href="#svg-plus-small"></use>
+            </svg>
+            60 <lord-icon src="https://cdn.lordicon.com/lxizbtuq.json" trigger="loop" delay="2000"
+              class="coin-transaction"></lord-icon>
+          </p>
+          <img class="badge-item-stat-image-preview" [src]="baseUrl + '/assets/img/badge/gold-s.png'"
+            alt="badge-gold-s" />>
+          <img class="badge-item-stat-image" [src]="baseUrl + '/assets/img/badge/gold-b.png'"
+            alt="badge-gold-b" />
+          <p class="badge-item-stat-title">{{'GOLD_USER' | translate}}</p>
+          <p class="badge-item-stat-text">{{'HAS_POSTED_MORE_THAN' | translate}} 500 {{'POSTS_ON_THEIR_PROFILE' | translate}}</p>
+          <div class="progress-stat">
+            <div id="badge-gold" class="progress-stat-bar" style="width: 204px; height: 4px; position: relative">
+              <canvas width="204" height="4" style="position: absolute; top: 0px; left: 0px"></canvas><canvas
+                width="204" height="4" style="position: absolute; top: 0px; left: 0px"></canvas>
+            </div>
+            <div class="bar-progress-wrap">
+              <p class="bar-progress-info negative center">
+                <span class="bar-progress-text no-space">461<span class="bar-progress-unit">/</span>500</span>
+              </p>
+            </div>
+          </div>
+        </div>
+        <div class="badge-item-stat">
+          <p class="text-sticker">
+            <svg class="text-sticker-icon icon-plus-small">
+              <use xlink:href="#svg-plus-small"></use>
+            </svg>
+            100
+            <img src="https://sifca-storage.s3.eu-central-1.amazonaws.com/loyalcraft/reputation_512.gif"
+              class="assets/img-fluid rounded-circle avatar-xxs mb-1 ng-tns-c175-2"
+              style="margin-top: 5% !important" />
+          </p>
+          <img class="badge-item-stat-image-preview" [src]="baseUrl + '/assets/img/badge/platinum-s.png'"
+            alt="badge-platinum-s" />>
+          <img class="badge-item-stat-image" [src]="baseUrl + '/assets/img/badge/platinum-b.png'"
+            alt="badge-platinum-b" />
+          <p class="badge-item-stat-title">{{'PLATINUM_USER' | translate}}</p>
+          <p class="badge-item-stat-text">{{'HAS_POSTED_MORE_THAN' | translate}} 1000 {{'POSTS_ON_THEIR_PROFILE' | translate}}</p>
+          <div class="progress-stat">
+            <div id="badge-platinum" class="progress-stat-bar"
+              style="width: 204px; height: 4px; position: relative">
+              <canvas width="204" height="4" style="position: absolute; top: 0px; left: 0px"></canvas><canvas
+                width="204" height="4" style="position: absolute; top: 0px; left: 0px"></canvas>
+            </div>
+            <div class="bar-progress-wrap">
+              <p class="bar-progress-info negative center">
+                <span class="bar-progress-text no-space">461<span class="bar-progress-unit">/</span>1000</span>
+              </p>
+            </div>
+          </div>
+        </div>
+        <div class="badge-item-stat">
+          <p class="text-sticker">
+            <svg class="text-sticker-icon icon-plus-small">
+              <use xlink:href="#svg-plus-small"></use>
+            </svg>
+            40
+            <img src="https://sifca-storage.s3.eu-central-1.amazonaws.com/loyalcraft/reputation_512.gif"
+              class="assets/img-fluid rounded-circle avatar-xxs mb-1 ng-tns-c175-2"
+              style="margin-top: 5% !important" />
+          </p>
+          <img class="badge-item-stat-image-preview" [src]="baseUrl + '/assets/img/badge/traveller-s.png'"
+            alt="badge-traveller-s" />>
+          <img class="badge-item-stat-image" [src]="baseUrl + '/assets/img/badge/traveller-b.png'"
+            alt="badge-traveller-b" />
+          <p class="badge-item-stat-title">{{'FORUM_TRAVELLER' | translate}}</p>
+          <p class="badge-item-stat-text">{{'CREATED_AT_LEAST_1_TOPIC_ON_5_DIFFERENT_GROUPS_FORUMS' | translate}}</p>
+          <div class="progress-stat">
+            <div id="badge-traveller" class="progress-stat-bar"
+              style="width: 204px; height: 4px; position: relative">
+              <canvas width="204" height="4" style="position: absolute; top: 0px; left: 0px"></canvas><canvas
+                width="204" height="4" style="position: absolute; top: 0px; left: 0px"></canvas>
+            </div>
+            <div class="bar-progress-wrap">
+              <p class="bar-progress-info negative center">
+                <span class="light">{{'NEXT_TIER' | translate}}</span><span class="bar-progress-text">1<span
+                    class="bar-progress-unit">{{'TO' | translate}}pics</span></span>
+              </p>
+            </div>
+          </div>
+        </div>
+        <div class="badge-item-stat">
+          <p class="text-sticker">
+            <svg class="text-sticker-icon icon-plus-small">
+              <use xlink:href="#svg-plus-small"></use>
+            </svg>
+            40
+            <img src="https://sifca-storage.s3.eu-central-1.amazonaws.com/loyalcraft/reputation_512.gif"
+              class="assets/img-fluid rounded-circle avatar-xxs mb-1 ng-tns-c175-2"
+              style="margin-top: 5% !important" />
+          </p>
+          <img class="badge-item-stat-image-preview" [src]="baseUrl + '/assets/img/badge/caffeinated-s.png'"
+            alt="badge-caffeinated-s" />>
+          <img class="badge-item-stat-image" [src]="baseUrl + '/assets/img/badge/caffeinated-b.png'"
+            alt="badge-caffeinated-b" />
+          <p class="badge-item-stat-title">{{'CAFFEINATED' | translate}}</p>
+          <p class="badge-item-stat-text">{{'COMMENTED_ON_A_FRIENDS_POST_INSIDE_30_SECONDS_OF_POSTED' | translate}}</p>
+          <div class="progress-stat">
+            <div id="badge-caffeinated" class="progress-stat-bar"
+              style="width: 204px; height: 4px; position: relative">
+              <canvas width="204" height="4" style="position: absolute; top: 0px; left: 0px"></canvas><canvas
+                width="204" height="4" style="position: absolute; top: 0px; left: 0px"></canvas>
+            </div>
+            <div class="bar-progress-wrap">
+              <p class="bar-progress-info negative center">{{'LOCKED' | translate}}</p>
+            </div>
+          </div>
+        </div>
+        <div class="badge-item-stat">
+          <p class="text-sticker">
+            <svg class="text-sticker-icon icon-plus-small">
+              <use xlink:href="#svg-plus-small"></use>
+            </svg>
+            80 <lord-icon src="https://cdn.lordicon.com/lxizbtuq.json" trigger="loop" delay="2000"
+              class="coin-transaction"></lord-icon>
+          </p>
+          <img class="badge-item-stat-image-preview" [src]="baseUrl + '/assets/img/badge/upowered-s.png'"
+            alt="badge-upowered-s" />>
+          <img class="badge-item-stat-image" [src]="baseUrl + '/assets/img/badge/upowered-b.png'"
+            alt="badge-upowered-b" />
+          <p class="badge-item-stat-title">{{'ULTRA_POWERED' | translate}}</p>
+          <p class="badge-item-stat-text">{{'RECEIVED_50_PLUS_REACTS_INSIDE_30_MINUTES_OF_POSTING' | translate}}</p>
+          <div class="progress-stat">
+            <div id="badge-upowered" class="progress-stat-bar"
+              style="width: 204px; height: 4px; position: relative">
+              <canvas width="204" height="4" style="position: absolute; top: 0px; left: 0px"></canvas><canvas
+                width="204" height="4" style="position: absolute; top: 0px; left: 0px"></canvas>
+            </div>
+            <div class="bar-progress-wrap">
+              <p class="bar-progress-info negative center">
+                <span class="bar-progress-text no-space">42<span class="bar-progress-unit">/</span>50</span>
+              </p>
+            </div>
+          </div>
+        </div>
+        <div class="badge-item-stat">
+          <p class="text-sticker">
+            <svg class="text-sticker-icon icon-plus-small">
+              <use xlink:href="#svg-plus-small"></use>
+            </svg>
+            40
+            <img src="https://sifca-storage.s3.eu-central-1.amazonaws.com/loyalcraft/reputation_512.gif"
+              class="assets/img-fluid rounded-circle avatar-xxs mb-1 ng-tns-c175-2"
+              style="margin-top: 5% !important" />
+          </p>
+          <img class="badge-item-stat-image-preview" [src]="baseUrl + '/assets/img/badge/scientist-s.png'"
+            alt="badge-scientist-s" />>
+          <img class="badge-item-stat-image" [src]="baseUrl + '/assets/img/badge/scientist-b.png'"
+            alt="badge-scientist-b" />
+          <p class="badge-item-stat-title">{{'CRAZY_SCIENTIST' | translate}}</p>
+          <p class="badge-item-stat-text">{{'HELPED_US_BETA_TEST_NEW_AWESOME_FEATURES' | translate}}</p>
+          <div class="progress-stat">
+            <div id="badge-scientist" class="progress-stat-bar"
+              style="width: 204px; height: 4px; position: relative">
+              <canvas width="204" height="4" style="position: absolute; top: 0px; left: 0px"></canvas><canvas
+                width="204" height="4" style="position: absolute; top: 0px; left: 0px"></canvas>
+            </div>
+            <div class="bar-progress-wrap">
+              <p class="bar-progress-info negative center">{{'UNLOCKED' | translate}}!</p>
+            </div>
+          </div>
+        </div>
+        <div class="badge-item-stat">
+          <p class="text-sticker">
+            <svg class="text-sticker-icon icon-plus-small">
+              <use xlink:href="#svg-plus-small"></use>
+            </svg>
+            20 <lord-icon src="https://cdn.lordicon.com/lxizbtuq.json" trigger="loop" delay="2000"
+              class="coin-transaction"></lord-icon>
+          </p>
+          <img class="badge-item-stat-image-preview" [src]="baseUrl + '/assets/img/badge/ncreature-s.png'"
+            alt="badge-ncreature-s" />>
+          <img class="badge-item-stat-image" [src]="baseUrl + '/assets/img/badge/ncreature-b.png'"
+            alt="badge-ncreature-b" />
+          <p class="badge-item-stat-title">{{'NIGHT_CREATURE' | translate}}</p>
+          <p class="badge-item-stat-text">{{'CREATED_100_PLUS_POSTS_BETWEEN_1AM_AND_5AM' | translate}}</p>
+          <div class="progress-stat">
+            <div id="badge-ncreature" class="progress-stat-bar"
+              style="width: 204px; height: 4px; position: relative">
+              <canvas width="204" height="4" style="position: absolute; top: 0px; left: 0px"></canvas><canvas
+                width="204" height="4" style="position: absolute; top: 0px; left: 0px"></canvas>
+            </div>
+            <div class="bar-progress-wrap">
+              <p class="bar-progress-info negative center">{{'UNLOCKED' | translate}}!</p>
+            </div>
+          </div>
+        </div>
+        <div class="badge-item-stat">
+          <p class="text-sticker">
+            <svg class="text-sticker-icon icon-plus-small">
+              <use xlink:href="#svg-plus-small"></use>
+            </svg>
+            40
+            <img src="https://sifca-storage.s3.eu-central-1.amazonaws.com/loyalcraft/reputation_512.gif"
+              class="assets/img-fluid rounded-circle avatar-xxs mb-1 ng-tns-c175-2"
+              style="margin-top: 5% !important" />
+          </p>
+          <img class="badge-item-stat-image-preview" [src]="baseUrl + '/assets/img/badge/warrior-s.png'"
+            alt="badge-warrior-s" />>
+          <img class="badge-item-stat-image" [src]="baseUrl + '/assets/img/badge/warrior-b.png'"
+            alt="badge-warrior-b" />
+          <p class="badge-item-stat-title">{{'THE_WARRIOR' | translate}}</p>
+          <p class="badge-item-stat-text">{{'HELPED_THE_TEAM_ENFORCE_THE_COMMUNITY_RULES' | translate}}</p>
+          <div class="progress-stat">
+            <div id="badge-warrior" class="progress-stat-bar"
+              style="width: 204px; height: 4px; position: relative">
+              <canvas width="204" height="4" style="position: absolute; top: 0px; left: 0px"></canvas><canvas
+                width="204" height="4" style="position: absolute; top: 0px; left: 0px"></canvas>
+            </div>
+            <div class="bar-progress-wrap">
+              <p class="bar-progress-info negative center">{{'UNLOCKED' | translate}}!</p>
+            </div>
+          </div>
+        </div>
+        <div class="badge-item-stat">
+          <p class="text-sticker">
+            <svg class="text-sticker-icon icon-plus-small">
+              <use xlink:href="#svg-plus-small"></use>
+            </svg>
+            60 <lord-icon src="https://cdn.lordicon.com/lxizbtuq.json" trigger="loop" delay="2000"
+              class="coin-transaction"></lord-icon>
+          </p>
+          <img class="badge-item-stat-image-preview" [src]="baseUrl + '/assets/img/badge/liked-s.png'"
+            alt="badge-liked-s" />>
+          <img class="badge-item-stat-image" [src]="baseUrl + '/assets/img/badge/liked-b.png'"
+            alt="badge-liked-b" />
+          <p class="badge-item-stat-title">{{'LIKED_USER' | translate}}</p>
+          <p class="badge-item-stat-text">{{'RECEIVED_500_PLUS_LIKE_OR_LOVE_REACTIONS_IN_THEIR_PROFILE_POSTS' | translate}}</p>
+          <div class="progress-stat">
+            <div id="badge-liked" class="progress-stat-bar" style="width: 204px; height: 4px; position: relative">
+              <canvas width="204" height="4" style="position: absolute; top: 0px; left: 0px"></canvas><canvas
+                width="204" height="4" style="position: absolute; top: 0px; left: 0px"></canvas>
+            </div>
+            <div class="bar-progress-wrap">
+              <p class="bar-progress-info negative center">
+                <span class="bar-progress-text no-space">462<span class="bar-progress-unit">/</span>500</span>
+              </p>
+            </div>
+          </div>
+        </div>
+        <div class="badge-item-stat">
+          <p class="text-sticker">
+            <svg class="text-sticker-icon icon-plus-small">
+              <use xlink:href="#svg-plus-small"></use>
+            </svg>
+            80
+            <img src="https://sifca-storage.s3.eu-central-1.amazonaws.com/loyalcraft/reputation_512.gif"
+              class="assets/img-fluid rounded-circle avatar-xxs mb-1 ng-tns-c175-2"
+              style="margin-top: 5% !important" />
+          </p>
+          <img class="badge-item-stat-image-preview" [src]="baseUrl + '/assets/img/badge/sloved-s.png'"
+            alt="badge-sloved-s" />>
+          <img class="badge-item-stat-image" [src]="baseUrl + '/assets/img/badge/sloved-b.png'"
+            alt="badge-sloved-b" />
+          <p class="badge-item-stat-title">{{'SUPER_LOVED_USER' | translate}}</p>
+          <p class="badge-item-stat-text">{{'RECEIVED_1000_PLUS_LIKE_OR_LOVE_REACTIONS_IN_THEIR_PROFILE_POSTS' | translate}}</p>
+          <div class="progress-stat">
+            <div id="badge-sloved" class="progress-stat-bar"
+              style="width: 204px; height: 4px; position: relative">
+              <canvas width="204" height="4" style="position: absolute; top: 0px; left: 0px"></canvas><canvas
+                width="204" height="4" style="position: absolute; top: 0px; left: 0px"></canvas>
+            </div>
+            <div class="bar-progress-wrap">
+              <p class="bar-progress-info negative center">
+                <span class="bar-progress-text no-space">462<span class="bar-progress-unit">/</span>1000</span>
+              </p>
+            </div>
+          </div>
+        </div>
+        <div class="badge-item-stat">
+          <p class="text-sticker">
+            <svg class="text-sticker-icon icon-plus-small">
+              <use xlink:href="#svg-plus-small"></use>
+            </svg>
+            40 <lord-icon src="https://cdn.lordicon.com/lxizbtuq.json" trigger="loop" delay="2000"
+              class="coin-transaction"></lord-icon>
+          </p>
+          <img class="badge-item-stat-image-preview" [src]="baseUrl + '/assets/img/badge/qconq-s.png'"
+            alt="badge-qconq-s" />>
+          <img class="badge-item-stat-image" [src]="baseUrl + '/assets/img/badge/qconq-b.png'"
+            alt="badge-qconq-b" />
+          <p class="badge-item-stat-title">{{'QUEST_CONQUEROR' | translate}}</p>
+          <p class="badge-item-stat-text">{{'SUCCESSFULLY_COMPLETED_AT_LEAST_10_QUESTS_AT_100_PERCENT' | translate}}</p>
+          <div class="progress-stat">
+            <div id="badge-qconq" class="progress-stat-bar" style="width: 204px; height: 4px; position: relative">
+              <canvas width="204" height="4" style="position: absolute; top: 0px; left: 0px"></canvas><canvas
+                width="204" height="4" style="position: absolute; top: 0px; left: 0px"></canvas>
+            </div>
+            <div class="bar-progress-wrap">
+              <p class="bar-progress-info negative center">
+                <span class="bar-progress-text no-space">4<span class="bar-progress-unit">/</span>10</span>
+              </p>
+            </div>
+          </div>
+        </div>
+        <div class="badge-item-stat">
+          <p class="text-sticker">
+            <svg class="text-sticker-icon icon-plus-small">
+              <use xlink:href="#svg-plus-small"></use>
+            </svg>
+            40
+            <img src="https://sifca-storage.s3.eu-central-1.amazonaws.com/loyalcraft/reputation_512.gif"
+              class="assets/img-fluid rounded-circle avatar-xxs mb-1 ng-tns-c175-2"
+              style="margin-top: 5% !important" />
+          </p>
+          <img class="badge-item-stat-image-preview" [src]="baseUrl + '/assets/img/badge/villain-s.png'"
+            alt="badge-villain-s" />>
+          <img class="badge-item-stat-image" [src]="baseUrl + '/assets/img/badge/villain-b.png'"
+            alt="badge-villain-b" />
+          <p class="badge-item-stat-title">{{'SUPER_VILLAIN' | translate}}</p>
+          <p class="badge-item-stat-text">{{'RECEIVED_100_PLUS_DISLIKE_REACTIONS_IN_THEIR_PROFILE_POSTS' | translate}}</p>
+          <div class="progress-stat">
+            <div id="badge-villain" class="progress-stat-bar"
+              style="width: 204px; height: 4px; position: relative">
+              <canvas width="204" height="4" style="position: absolute; top: 0px; left: 0px"></canvas><canvas
+                width="204" height="4" style="position: absolute; top: 0px; left: 0px"></canvas>
+            </div>
+            <div class="bar-progress-wrap">
+              <p class="bar-progress-info negative center">
+                <span class="bar-progress-text no-space">89<span class="bar-progress-unit">/</span>100</span>
+              </p>
+            </div>
+          </div>
+        </div>
+        <div class="badge-item-stat">
+          <p class="text-sticker">
+            <svg class="text-sticker-icon icon-plus-small">
+              <use xlink:href="#svg-plus-small"></use>
+            </svg>
+            20 <lord-icon src="https://cdn.lordicon.com/lxizbtuq.json" trigger="loop" delay="2000"
+              class="coin-transaction"></lord-icon>
+          </p>
+          <img class="badge-item-stat-image-preview" [src]="baseUrl + '/assets/img/badge/age-s.png'"
+            alt="badge-age-s" />>
+          <img class="badge-item-stat-image" [src]="baseUrl + '/assets/img/badge/age-b.png'" alt="badge-age-b" />
+          <p class="badge-item-stat-title">{{'PROFILE_AGE' | translate}}</p>
+          <p class="badge-item-stat-text">{{'CONGRATS_YOUVE_BEEN_PART_OF_THE_COMMUNITY_FOR_2_YEARS' | translate}}</p>
+          <div class="progress-stat">
+            <div id="badge-age" class="progress-stat-bar" style="width: 204px; height: 4px; position: relative">
+              <canvas width="204" height="4" style="position: absolute; top: 0px; left: 0px"></canvas><canvas
+                width="204" height="4" style="position: absolute; top: 0px; left: 0px"></canvas>
+            </div>
+            <div class="bar-progress-wrap">
+              <p class="bar-progress-info negative center">
+                <span class="light">{{'NEXT_TIER' | translate}}</span><span class="bar-progress-text">125<span
+                    class="bar-progress-unit">days</span></span>
+              </p>
+            </div>
+          </div>
+        </div>
+        <div class="badge-item-stat">
+          <p class="text-sticker">
+            <svg class="text-sticker-icon icon-plus-small">
+              <use xlink:href="#svg-plus-small"></use>
+            </svg>
+            60
+            <img src="https://sifca-storage.s3.eu-central-1.amazonaws.com/loyalcraft/reputation_512.gif"
+              class="assets/img-fluid rounded-circle avatar-xxs mb-1 ng-tns-c175-2"
+              style="margin-top: 5% !important" />
+          </p>
+          <img class="badge-item-stat-image-preview" [src]="baseUrl + '/assets/img/badge/tstruck-s.png'"
+            alt="badge-tstruck-s" />>
+          <img class="badge-item-stat-image" [src]="baseUrl + '/assets/img/badge/tstruck-b.png'"
+            alt="badge-tstruck-b" />
+          <p class="badge-item-stat-title">{{'THUNDERSTRUCK' | translate}}</p>
+          <p class="badge-item-stat-text">{{'THE_USER_REACTED_FIRST_ON_50_PLUS_FRIENDS_POSTS' | translate}}</p>
+          <div class="progress-stat">
+            <div id="badge-tstruck" class="progress-stat-bar"
+              style="width: 204px; height: 4px; position: relative">
+              <canvas width="204" height="4" style="position: absolute; top: 0px; left: 0px"></canvas><canvas
+                width="204" height="4" style="position: absolute; top: 0px; left: 0px"></canvas>
+            </div>
+            <div class="bar-progress-wrap">
+              <p class="bar-progress-info negative center">
+                <span class="bar-progress-text no-space">41<span class="bar-progress-unit">/</span>50</span>
+              </p>
+            </div>
+          </div>
+        </div>
+        <div class="badge-item-stat">
+          <p class="text-sticker">
+            <svg class="text-sticker-icon icon-plus-small">
+              <use xlink:href="#svg-plus-small"></use>
+            </svg>
+            20 <lord-icon src="https://cdn.lordicon.com/lxizbtuq.json" trigger="loop" delay="2000"
+              class="coin-transaction"></lord-icon>
+          </p>
+          <img class="badge-item-stat-image-preview" [src]="baseUrl + '/assets/img/badge/uexp-s.png'"
+            alt="badge-uexp-s" />>
+          <img class="badge-item-stat-image" [src]="baseUrl + '/assets/img/badge/uexp-b.png'"
+            alt="badge-uexp-b" />
+          <p class="badge-item-stat-title">{{'UNIVERSE_EXPLORER' | translate}}</p>
+          <p class="badge-item-stat-text">{{'JOINED_AND_POSTED_ON_20_DIFFERENT_GROUPS' | translate}}</p>
+          <div class="progress-stat">
+            <div id="badge-uexp" class="progress-stat-bar" style="width: 204px; height: 4px; position: relative">
+              <canvas width="204" height="4" style="position: absolute; top: 0px; left: 0px"></canvas><canvas
+                width="204" height="4" style="position: absolute; top: 0px; left: 0px"></canvas>
+            </div>
+            <div class="bar-progress-wrap">
+              <p class="bar-progress-info negative center">
+                <span class="bar-progress-text no-space">17<span class="bar-progress-unit">/</span>20</span>
+              </p>
+            </div>
+          </div>
+        </div>
+        <div class="badge-item-stat">
+          <p class="text-sticker">
+            <svg class="text-sticker-icon icon-plus-small">
+              <use xlink:href="#svg-plus-small"></use>
+            </svg>
+            40
+            <img src="https://sifca-storage.s3.eu-central-1.amazonaws.com/loyalcraft/reputation_512.gif"
+              class="assets/img-fluid rounded-circle avatar-xxs mb-1 ng-tns-c175-2"
+              style="margin-top: 5% !important" />
+          </p>
+          <img class="badge-item-stat-image-preview" [src]="baseUrl + '/assets/img/badge/globet-s.png'"
+            alt="badge-globet-s" />>
+          <img class="badge-item-stat-image" [src]="baseUrl + '/assets/img/badge/globet-b.png'"
+            alt="badge-globet-b" />
+          <p class="badge-item-stat-title">{{'GLOBE_TROTTER' | translate}}</p>
+          <p class="badge-item-stat-text">{{'HAS_AT_LEAST_10_FRIENDS_FROM_DIFFERENT_COUNTRIES' | translate}}</p>
+          <div class="progress-stat">
+            <div id="badge-globet" class="progress-stat-bar"
+              style="width: 204px; height: 4px; position: relative">
+              <canvas width="204" height="4" style="position: absolute; top: 0px; left: 0px"></canvas><canvas
+                width="204" height="4" style="position: absolute; top: 0px; left: 0px"></canvas>
+            </div>
+            <div class="bar-progress-wrap">
+              <p class="bar-progress-info negative center">
+                <span class="bar-progress-text no-space">8<span class="bar-progress-unit">/</span>10</span>
+              </p>
+            </div>
+          </div>
+        </div>
+
+
+        <div class="badge-item-stat">
+          <p class="text-sticker">
+            <svg class="text-sticker-icon icon-plus-small">
+              <use xlink:href="#svg-plus-small"></use>
+            </svg>
+            40 <lord-icon src="https://cdn.lordicon.com/lxizbtuq.json" trigger="loop" delay="2000"
+              class="coin-transaction"></lord-icon>
+          </p>
+          <img class="badge-item-stat-image-preview" [src]="baseUrl + '/assets/img/badge/verifieds-s.png'"
+            alt="badge-verifieds-s" />>
+          <img class="badge-item-stat-image" [src]="baseUrl + '/assets/img/badge/verifieds-b.png'"
+            alt="badge-verifieds-b" />
+          <p class="badge-item-stat-title">{{'VERIFIED_STREAMER' | translate}}</p>
+          <p class="badge-item-stat-text">{{'VERIFIED_STREAMER_DESCRIPTION' | translate}}</p>
+          <div class="progress-stat">
+            <div id="badge-verifieds" class="progress-stat-bar"
+              style="width: 204px; height: 4px; position: relative">
+              <canvas width="204" height="4" style="position: absolute; top: 0px; left: 0px"></canvas><canvas
+                width="204" height="4" style="position: absolute; top: 0px; left: 0px"></canvas>
+            </div>
+            <div class="bar-progress-wrap">
+              <p class="bar-progress-info negative center">{{'UNLOCKED' | translate}}!</p>
+            </div>
+          </div>
+        </div>
+        <div class="badge-item-stat">
+          <p class="text-sticker">
+            <svg class="text-sticker-icon icon-plus-small">
+              <use xlink:href="#svg-plus-small"></use>
+            </svg>
+            80
+            <img src="https://sifca-storage.s3.eu-central-1.amazonaws.com/loyalcraft/reputation_512.gif"
+              class="assets/img-fluid rounded-circle avatar-xxs mb-1 ng-tns-c175-2"
+              style="margin-top: 5% !important" />
+          </p>
+          <img class="badge-item-stat-image-preview" [src]="baseUrl + '/assets/img/badge/gempost-s.png'"
+            alt="badge-gempost-s" />>
+          <img class="badge-item-stat-image" [src]="baseUrl + '/assets/img/badge/gempost-b.png'"
+            alt="badge-gempost-b" />
+          <p class="badge-item-stat-title">{{'RARE_GEM_POST' | translate}}</p>
+          <p class="badge-item-stat-text">{{'RARE_GEM_POST_DESCRIPTION' | translate}}</p>
+          <div class="progress-stat">
+            <div id="badge-gempost" class="progress-stat-bar"
+              style="width: 204px; height: 4px; position: relative">
+              <canvas width="204" height="4" style="position: absolute; top: 0px; left: 0px"></canvas><canvas
+                width="204" height="4" style="position: absolute; top: 0px; left: 0px"></canvas>
+            </div>
+            <div class="bar-progress-wrap">
+              <p class="bar-progress-info negative center">{{'LOCKED' | translate}}</p>
+            </div>
+          </div>
+        </div>
+        <div class="badge-item-stat">
+          <p class="text-sticker">
+            <svg class="text-sticker-icon icon-plus-small">
+              <use xlink:href="#svg-plus-small"></use>
+            </svg>
+            40 <lord-icon src="https://cdn.lordicon.com/lxizbtuq.json" trigger="loop" delay="2000"
+              class="coin-transaction"></lord-icon>
+          </p>
+          <img class="badge-item-stat-image-preview" [src]="baseUrl + '/assets/img/badge/peoplesp-s.png'"
+            alt="badge-peoplesp-s" />>
+          <img class="badge-item-stat-image" [src]="baseUrl + '/assets/img/badge/peoplesp-b.png'"
+            alt="badge-peoplesp-b" />
+          <p class="badge-item-stat-title">{{'PEOPLES_PERSON' | translate}}</p>
+          <p class="badge-item-stat-text">{{'PEOPLES_PERSON_DESCRIPTION' | translate}}</p>
+          <div class="progress-stat">
+            <div id="badge-peoplesp" class="progress-stat-bar"
+              style="width: 204px; height: 4px; position: relative">
+              <canvas width="204" height="4" style="position: absolute; top: 0px; left: 0px"></canvas><canvas
+                width="204" height="4" style="position: absolute; top: 0px; left: 0px"></canvas>
+            </div>
+            <div class="bar-progress-wrap">
+              <p class="bar-progress-info negative center">
+                <span class="bar-progress-text no-space">181<span class="bar-progress-unit">/</span>200</span>
+              </p>
+            </div>
+          </div>
+        </div>
+        <div class="badge-item-stat">
+          <p class="text-sticker">
+            <svg class="text-sticker-icon icon-plus-small">
+              <use xlink:href="#svg-plus-small"></use>
+            </svg>
+            40
+            <img src="https://sifca-storage.s3.eu-central-1.amazonaws.com/loyalcraft/reputation_512.gif"
+              class="assets/img-fluid rounded-circle avatar-xxs mb-1 ng-tns-c175-2"
+              style="margin-top: 5% !important" />
+          </p>
+          <img class="badge-item-stat-image-preview" [src]="baseUrl + '/assets/img/badge/rulerm-s.png'"
+            alt="badge-rulerm-s" />>
+          <img class="badge-item-stat-image" [src]="baseUrl + '/assets/img/badge/rulerm-b.png'"
+            alt="badge-rulerm-b" />
+          <p class="badge-item-stat-title">{{'RULER_OF_MASSES' | translate}}</p>
+          <p class="badge-item-stat-text">{{'RULER_OF_MASSES_DESCRIPTION' | translate}}</p>
+          <div class="progress-stat">
+            <div id="badge-rulerm" class="progress-stat-bar"
+              style="width: 204px; height: 4px; position: relative">
+              <canvas width="204" height="4" style="position: absolute; top: 0px; left: 0px"></canvas><canvas
+                width="204" height="4" style="position: absolute; top: 0px; left: 0px"></canvas>
+            </div>
+            <div class="bar-progress-wrap">
+              <p class="bar-progress-info negative center">
+                <span class="bar-progress-text no-space">1<span class="bar-progress-unit">/</span>5</span>
+              </p>
+            </div>
+          </div>
+        </div>
+        <div class="badge-item-stat">
+          <p class="text-sticker">
+            <svg class="text-sticker-icon icon-plus-small">
+              <use xlink:href="#svg-plus-small"></use>
+            </svg>
+            20 <lord-icon src="https://cdn.lordicon.com/lxizbtuq.json" trigger="loop" delay="2000"
+              class="coin-transaction"></lord-icon>
+          </p>
+          <img class="badge-item-stat-image-preview" [src]="baseUrl + '/assets/img/badge/marketeer-s.png'"
+            alt="badge-marketeer-s" />>
+          <img class="badge-item-stat-image" [src]="baseUrl + '/assets/img/badge/marketeer-b.png'"
+            alt="badge-marketeer-b" />
+          <p class="badge-item-stat-title">{{'THE_MARKETEER' | translate}}</p>
+          <p class="badge-item-stat-text">{{'THE_MARKETEER_DESCRIPTION' | translate}}</p>
+          <div class="progress-stat">
+            <div id="badge-marketeer" class="progress-stat-bar"
+              style="width: 204px; height: 4px; position: relative">
+              <canvas width="204" height="4" style="position: absolute; top: 0px; left: 0px"></canvas><canvas
+                width="204" height="4" style="position: absolute; top: 0px; left: 0px"></canvas>
+            </div>
+            <!-- /PROGRESS STAT BAR -->
+
+            <!-- BAR PROGRESS WRAP -->
+            <div class="bar-progress-wrap">
+              <p class="bar-progress-info negative center">
+                <span class="light">{{'NEXT_TIER' | translate}}</span><span class="bar-progress-text">3<span
+                    class="bar-progress-unit">items</span></span>
+              </p>
+            </div>
+          </div>
+        </div>
+        <div class="badge-item-stat">
+          <p class="text-sticker">
+            <svg class="text-sticker-icon icon-plus-small">
+              <use xlink:href="#svg-plus-small"></use>
+            </svg>
+            80
+            <img src="https://sifca-storage.s3.eu-central-1.amazonaws.com/loyalcraft/reputation_512.gif"
+              class="assets/img-fluid rounded-circle avatar-xxs mb-1 ng-tns-c175-2"
+              style="margin-top: 5% !important" />
+          </p>
+          <img class="badge-item-stat-image-preview" [src]="baseUrl + '/assets/img/badge/tycoon-s.png'"
+            alt="badge-tycoon-s" />>
+          <img class="badge-item-stat-image" [src]="baseUrl + '/assets/img/badge/tycoon-b.png'"
+            alt="badge-tycoon-b" />
+          <p class="badge-item-stat-title">{{'BUSINESS_TYCOON' | translate}}</p>
+          <p class="badge-item-stat-text">{{'BUSINESS_TYCOON_DESCRIPTION' | translate}}</p>
+          <div class="progress-stat">
+            <div id="badge-tycoon" class="progress-stat-bar"
+              style="width: 204px; height: 4px; position: relative">
+              <canvas width="204" height="4" style="position: absolute; top: 0px; left: 0px"></canvas><canvas
+                width="204" height="4" style="position: absolute; top: 0px; left: 0px"></canvas>
+            </div>
+            <div class="bar-progress-wrap">
+              <p class="bar-progress-info negative center">
+                <span class="bar-progress-text no-space">32<span class="bar-progress-unit">/</span>100</span>
+              </p>
+            </div>
+          </div>
+        </div>
+        <div class="badge-item-stat">
+          <p class="text-sticker">
+            <svg class="text-sticker-icon icon-plus-small">
+              <use xlink:href="#svg-plus-small"></use>
+            </svg>
+            40 <lord-icon src="https://cdn.lordicon.com/lxizbtuq.json" trigger="loop" delay="2000"
+              class="coin-transaction"></lord-icon>
+          </p>
+          <img class="badge-item-stat-image-preview" [src]="baseUrl + '/assets/img/badge/mightiers-s.png'"
+            alt="badge-mightiers-s" />>
+          <img class="badge-item-stat-image" [src]="baseUrl + '/assets/img/badge/mightiers-b.png'"
+            alt="badge-mightiers-b" />
+          <p class="badge-item-stat-title">{{'MIGHTIER_THAN_SWORD' | translate}}</p>
+          <p class="badge-item-stat-text">{{'MIGHTIER_THAN_SWORD_DESCRIPTION' | translate}}</p>
+          <div class="progress-stat">
+            <div id="badge-mightiers" class="progress-stat-bar"
+              style="width: 204px; height: 4px; position: relative">
+              <canvas width="204" height="4" style="position: absolute; top: 0px; left: 0px"></canvas><canvas
+                width="204" height="4" style="position: absolute; top: 0px; left: 0px"></canvas>
+            </div>
+            <div class="bar-progress-wrap">
+              <p class="bar-progress-info negative center">
+                <span class="bar-progress-text no-space">26<span class="bar-progress-unit">/</span>50</span>
+              </p>
+            </div>
+          </div>
+        </div>
+        <div class="badge-item-stat">
+          <p class="text-sticker">
+            <svg class="text-sticker-icon icon-plus-small">
+              <use xlink:href="#svg-plus-small"></use>
+            </svg>
+            40
+            <img src="https://sifca-storage.s3.eu-central-1.amazonaws.com/loyalcraft/reputation_512.gif"
+              class="assets/img-fluid rounded-circle avatar-xxs mb-1 ng-tns-c175-2"
+              style="margin-top: 5% !important" />
+          </p>
+          <img class="badge-item-stat-image-preview" [src]="baseUrl + '/assets/img/badge/phantom-s.png'"
+            alt="badge-phantom-s" />>
+          <img class="badge-item-stat-image" [src]="baseUrl + '/assets/img/badge/phantom-b.png'"
+            alt="badge-phantom-b" />
+          <p class="badge-item-stat-title">{{'THE_PHANTOM' | translate}}</p>
+          <p class="badge-item-stat-text">{{'THE_PHANTOM_DESCRIPTION' | translate}}</p>
+          <div class="progress-stat">
+            <div id="badge-phantom" class="progress-stat-bar"
+              style="width: 204px; height: 4px; position: relative">
+              <canvas width="204" height="4" style="position: absolute; top: 0px; left: 0px"></canvas><canvas
+                width="204" height="4" style="position: absolute; top: 0px; left: 0px"></canvas>
+            </div>
+            <div class="bar-progress-wrap">
+              <p class="bar-progress-info negative center">{{'UNLOCKED' | translate}}!</p>
+            </div>
+          </div>
+        </div>
+        <div class="badge-item-stat">
+          <p class="text-sticker">
+            <svg class="text-sticker-icon icon-plus-small">
+              <use xlink:href="#svg-plus-small"></use>
+            </svg>
+            40 <lord-icon src="https://cdn.lordicon.com/lxizbtuq.json" trigger="loop" delay="2000"
+              class="coin-transaction"></lord-icon>
+          </p>
+          <img class="badge-item-stat-image-preview" [src]="baseUrl + '/assets/img/badge/forumsf-s.png'"
+            alt="badge-forumsf-s" />>
+          <img class="badge-item-stat-image" [src]="baseUrl + '/assets/img/badge/forumsf-b.png'"
+            alt="badge-forumsf-b" />
+          <p class="badge-item-stat-title">{{'FORUMS_FAN' | translate}}</p>
+          <p class="badge-item-stat-text">{{'FORUMS_FAN_DESCRIPTION' | translate}}</p>
+          <div class="progress-stat">
+            <div id="badge-forumsf" class="progress-stat-bar"
+              style="width: 204px; height: 4px; position: relative">
+              <canvas width="204" height="4" style="position: absolute; top: 0px; left: 0px"></canvas><canvas
+                width="204" height="4" style="position: absolute; top: 0px; left: 0px"></canvas>
+            </div>
+            <div class="bar-progress-wrap">
+              <p class="bar-progress-info negative center">
+                <span class="bar-progress-text no-space">13<span class="bar-progress-unit">/</span>20</span>
+              </p>
+            </div>
+          </div>
+        </div>
+        <div class="badge-item-stat">
+          <p class="text-sticker">
+            <svg class="text-sticker-icon icon-plus-small">
+              <use xlink:href="#svg-plus-small"></use>
+            </svg>
+            40
+            <img src="https://sifca-storage.s3.eu-central-1.amazonaws.com/loyalcraft/reputation_512.gif"
+              class="assets/img-fluid rounded-circle avatar-xxs mb-1 ng-tns-c175-2"
+              style="margin-top: 5% !important" />
+          </p>
+          <img class="badge-item-stat-image-preview" [src]="baseUrl + '/assets/img/badge/fcultivator-s.png'"
+            alt="badge-fcultivator-s" />>
+          <img class="badge-item-stat-image" [src]="baseUrl + '/assets/img/badge/fcultivator-b.png'"
+            alt="badge-fcultivator-b" />
+          <p class="badge-item-stat-title">{{'FRIENDSHIP_CULTIVATOR' | translate}}</p>
+          <p class="badge-item-stat-text">{{'FRIENDSHIP_CULTIVATOR_DESCRIPTION' | translate}}</p>
+          <div class="progress-stat">
+            <div id="badge-fcultivator" class="progress-stat-bar"
+              style="width: 204px; height: 4px; position: relative">
+              <canvas width="204" height="4" style="position: absolute; top: 0px; left: 0px"></canvas><canvas
+                width="204" height="4" style="position: absolute; top: 0px; left: 0px"></canvas>
+            </div>
+            <div class="bar-progress-wrap">
+              <p class="bar-progress-info negative center">
+                <span class="bar-progress-text no-space">33<span class="bar-progress-unit">/</span>100</span>
+              </p>
+            </div>
+          </div>
+        </div>
+        <div class="badge-item-stat">
+          <p class="text-sticker">
+            <svg class="text-sticker-icon icon-plus-small">
+              <use xlink:href="#svg-plus-small"></use>
+            </svg>
+            20 <lord-icon src="https://cdn.lordicon.com/lxizbtuq.json" trigger="loop" delay="2000"
+              class="coin-transaction"></lord-icon>
+          </p>
+          <img class="badge-item-stat-image-preview" [src]="baseUrl + '/assets/img/badge/splanner-s.png'"
+            alt="badge-splanner-s" />>
+          <img class="badge-item-stat-image" [src]="baseUrl + '/assets/img/badge/splanner-b.png'"
+            alt="badge-splanner-b" />
+          <p class="badge-item-stat-title">{{'SUPER_PLANNER' | translate}}</p>
+          <p class="badge-item-stat-text">{{'SUPER_PLANNER_DESCRIPTION' | translate}}</p>
+          <div class="progress-stat">
+            <div id="badge-splanner" class="progress-stat-bar"
+              style="width: 204px; height: 4px; position: relative">
+              <canvas width="204" height="4" style="position: absolute; top: 0px; left: 0px"></canvas><canvas
+                width="204" height="4" style="position: absolute; top: 0px; left: 0px"></canvas>
+            </div>
+            <div class="bar-progress-wrap">
+              <p class="bar-progress-info negative center">
+                <span class="bar-progress-text no-space">9<span class="bar-progress-unit">/</span>25</span>
+              </p>
+            </div>
+          </div>
+        </div>
+        <div class="badge-item-stat">
+          <p class="text-sticker">
+            <svg class="text-sticker-icon icon-plus-small">
+              <use xlink:href="#svg-plus-small"></use>
+            </svg>
+            40
+            <img src="https://sifca-storage.s3.eu-central-1.amazonaws.com/loyalcraft/reputation_512.gif"
+              class="assets/img-fluid rounded-circle avatar-xxs mb-1 ng-tns-c175-2"
+              style="margin-top: 5% !important" />
+          </p>
+          <img class="badge-item-stat-image-preview" [src]="baseUrl + '/assets/img/badge/collector-s.png'"
+            alt="badge-collector-s" />>
+          <img class="badge-item-stat-image" [src]="baseUrl + '/assets/img/badge/collector-b.png'"
+            alt="badge-collector-b" />
+          <p class="badge-item-stat-title">{{'THE_COLLECTOR' | translate}}</p>
+          <p class="badge-item-stat-text">{{'THE_COLLECTOR_DESCRIPTION' | translate}}</p>
+          <div class="progress-stat">
+            <div id="badge-collector" class="progress-stat-bar"
+              style="width: 204px; height: 4px; position: relative">
+              <canvas width="204" height="4" style="position: absolute; top: 0px; left: 0px"></canvas><canvas
+                width="204" height="4" style="position: absolute; top: 0px; left: 0px"></canvas>
+            </div>
+            <div class="bar-progress-wrap">
+              <p class="bar-progress-info negative center">
+                <span class="bar-progress-text no-space">2<span class="bar-progress-unit">/</span>5</span>
+              </p>
+            </div>
+          </div>
+        </div>
+        <div class="badge-item-stat">
+          <p class="text-sticker">
+            <svg class="text-sticker-icon icon-plus-small">
+              <use xlink:href="#svg-plus-small"></use>
+            </svg>
+            40 <lord-icon src="https://cdn.lordicon.com/lxizbtuq.json" trigger="loop" delay="2000"
+              class="coin-transaction"></lord-icon>
+          </p>
+          <img class="badge-item-stat-image-preview" [src]="baseUrl + '/assets/img/badge/prophoto-s.png'"
+            alt="badge-prophoto-s" />>
+          <img class="badge-item-stat-image" [src]="baseUrl + '/assets/img/badge/prophoto-b.png'"
+            alt="badge-prophoto-b" />
+          <p class="badge-item-stat-title">{{'PRO_PHOTOGRAPHER' | translate}}</p>
+          <p class="badge-item-stat-text">{{'PRO_PHOTOGRAPHER_DESCRIPTION' | translate}}</p>
+          <div class="progress-stat">
+            <div id="badge-prophoto" class="progress-stat-bar"
+              style="width: 204px; height: 4px; position: relative">
+              <canvas width="204" height="4" style="position: absolute; top: 0px; left: 0px"></canvas><canvas
+                width="204" height="4" style="position: absolute; top: 0px; left: 0px"></canvas>
+            </div>
+            <div class="bar-progress-wrap">
+              <p class="bar-progress-info negative center">
+                <span class="bar-progress-text no-space">24<span class="bar-progress-unit">/</span>500</span>
+              </p>
+            </div>
+          </div>
+        </div>
+        <div class="badge-item-stat">
+          <p class="text-sticker">
+            <svg class="text-sticker-icon icon-plus-small">
+              <use xlink:href="#svg-plus-small"></use>
+            </svg>
+            40
+            <img src="https://sifca-storage.s3.eu-central-1.amazonaws.com/loyalcraft/reputation_512.gif"
+              class="assets/img-fluid rounded-circle avatar-xxs mb-1 ng-tns-c175-2"
+              style="margin-top: 5% !important" />
+          </p>
+          <img class="badge-item-stat-image-preview" [src]="baseUrl + '/assets/img/badge/rmachine-s.png'"
+            alt="badge-rmachine-s" />>
+          <img class="badge-item-stat-image" [src]="baseUrl + '/assets/img/badge/rmachine-b.png'"
+            alt="badge-rmachine-b" />
+          <p class="badge-item-stat-title">{{'REFERRAL_MACHINE' | translate}}</p>
+          <p class="badge-item-stat-text">{{'REFERRAL_MACHINE_DESCRIPTION' | translate}}</p>
+          <div class="progress-stat">
+            <div id="badge-rmachine" class="progress-stat-bar"
+              style="width: 204px; height: 4px; position: relative">
+              <canvas width="204" height="4" style="position: absolute; top: 0px; left: 0px"></canvas><canvas
+                width="204" height="4" style="position: absolute; top: 0px; left: 0px"></canvas>
+            </div>
+            <div class="bar-progress-wrap">
+              <p class="bar-progress-info negative center">
+                <span class="bar-progress-text no-space">41<span class="bar-progress-unit">/</span>50</span>
+              </p>
+            </div>
+          </div>
+        </div>
+        <div class="badge-item-stat">
+          <p class="text-sticker">
+            <svg class="text-sticker-icon icon-plus-small">
+              <use xlink:href="#svg-plus-small"></use>
+            </svg>
+            20 <lord-icon src="https://cdn.lordicon.com/lxizbtuq.json" trigger="loop" delay="2000"
+              class="coin-transaction"></lord-icon>
+          </p>
+          <img class="badge-item-stat-image-preview" [src]="baseUrl + '/assets/img/badge/bronzec-s.png'"
+            alt="badge-bronzec-s" />>
+          <img class="badge-item-stat-image" [src]="baseUrl + '/assets/img/badge/bronzec-b.png'"
+            alt="badge-bronzec-b" />
+          <p class="badge-item-stat-title">{{'BRONZE_CUP' | translate}}</p>
+          <p class="badge-item-stat-text">{{'BRONZE_CUP_DESCRIPTION' | translate}}</p>
+          <div class="progress-stat">
+            <div id="badge-bronzec" class="progress-stat-bar"
+              style="width: 204px; height: 4px; position: relative">
+              <canvas width="204" height="4" style="position: absolute; top: 0px; left: 0px"></canvas><canvas
+                width="204" height="4" style="position: absolute; top: 0px; left: 0px"></canvas>
+            </div>
+            <div class="bar-progress-wrap">
+              <p class="bar-progress-info negative center">{{'UNLOCKED' | translate}}!</p>
+            </div>
+          </div>
+        </div>
+        <div class="badge-item-stat">
+          <p class="text-sticker">
+            <svg class="text-sticker-icon icon-plus-small">
+              <use xlink:href="#svg-plus-small"></use>
+            </svg>
+            40
+            <img src="https://sifca-storage.s3.eu-central-1.amazonaws.com/loyalcraft/reputation_512.gif"
+              class="assets/img-fluid rounded-circle avatar-xxs mb-1 ng-tns-c175-2"
+              style="margin-top: 5% !important" />
+          </p>
+          <img class="badge-item-stat-image-preview" [src]="baseUrl + '/assets/img/badge/silverc-s.png'"
+            alt="badge-silverc-s" />>
+          <img class="badge-item-stat-image" [src]="baseUrl + '/assets/img/badge/silverc-b.png'"
+            alt="badge-silverc-b" />
+          <p class="badge-item-stat-title">{{'SILVER_CUP' | translate}}</p>
+          <p class="badge-item-stat-text">{{'SILVER_CUP_DESCRIPTION' | translate}}</p>
+          <div class="progress-stat">
+            <div id="badge-silverc" class="progress-stat-bar"
+              style="width: 204px; height: 4px; position: relative">
+              <canvas width="204" height="4" style="position: absolute; top: 0px; left: 0px"></canvas><canvas
+                width="204" height="4" style="position: absolute; top: 0px; left: 0px"></canvas>
+            </div>
+            <div class="bar-progress-wrap">
+              <p class="bar-progress-info negative center">{{'UNLOCKED' | translate}}!</p>
+            </div>
+          </div>
+        </div>
+        <div class="badge-item-stat">
+          <p class="text-sticker">
+            <svg class="text-sticker-icon icon-plus-small">
+              <use xlink:href="#svg-plus-small"></use>
+            </svg>
+            60 <lord-icon src="https://cdn.lordicon.com/lxizbtuq.json" trigger="loop" delay="2000"
+              class="coin-transaction"></lord-icon>
+          </p>
+          <img class="badge-item-stat-image-preview" [src]="baseUrl + '/assets/img/badge/goldc-s.png'"
+            alt="badge-goldc-s" />>
+          <img class="badge-item-stat-image" [src]="baseUrl + '/assets/img/badge/goldc-b.png'"
+            alt="badge-goldc-b" />
+          <p class="badge-item-stat-title">{{'GOLD_CUP' | translate}}</p>
+          <p class="badge-item-stat-text">{{'GOLD_CUP_DESCRIPTION' | translate}}</p>
+          <div class="progress-stat">
+            <div id="badge-goldc" class="progress-stat-bar" style="width: 204px; height: 4px; position: relative">
+              <canvas width="204" height="4" style="position: absolute; top: 0px; left: 0px"></canvas><canvas
+                width="204" height="4" style="position: absolute; top: 0px; left: 0px"></canvas>
+            </div>
+            <div class="bar-progress-wrap">
+              <p class="bar-progress-info negative center">{{'UNLOCKED' | translate}}!</p>
+            </div>
+          </div>
+        </div>
+        <div class="badge-item-stat">
+          <p class="text-sticker">
+            <svg class="text-sticker-icon icon-plus-small">
+              <use xlink:href="#svg-plus-small"></use>
+            </svg>
+            100
+            <img src="https://sifca-storage.s3.eu-central-1.amazonaws.com/loyalcraft/reputation_512.gif"
+              class="assets/img-fluid rounded-circle avatar-xxs mb-1 ng-tns-c175-2"
+              style="margin-top: 5% !important" />
+          </p>
+          <img class="badge-item-stat-image-preview" [src]="baseUrl + '/assets/img/badge/platinumc-s.png'"
+            alt="badge-platinumc-s" />>
+          <img class="badge-item-stat-image" [src]="baseUrl + '/assets/img/badge/platinumc-b.png'"
+            alt="badge-platinumc-b" />
+          <p class="badge-item-stat-title">{{'PLATINUM_CUP' | translate}}</p>
+          <p class="badge-item-stat-text">{{'PLATINUM_CUP_DESCRIPTION' | translate}}</p>
+          <div class="progress-stat">
+            <div id="badge-platinumc" class="progress-stat-bar"
+              style="width: 204px; height: 4px; position: relative">
+              <canvas width="204" height="4" style="position: absolute; top: 0px; left: 0px"></canvas><canvas
+                width="204" height="4" style="position: absolute; top: 0px; left: 0px"></canvas>
+            </div>
+            <div class="bar-progress-wrap">
+              <p class="bar-progress-info negative center">{{'LOCKED' | translate}}</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+<svg style="display: none">
+  <symbol id="svg-plus-small" viewBox="0 0 8 8" preserveAspectRatio="xMinYMin meet">
+    <path d="M8,5H5v3H3V5H0V3h3V0h2v3h3V5z" />
+  </symbol>
+</svg>

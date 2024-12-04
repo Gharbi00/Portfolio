@@ -1,0 +1,122 @@
+<!-- Start Breadcrumbs -->
+<app-breadcrumbs title="{{ 'MENUITEMS.TITLE.PROMOTION' | translate }}" [breadcrumbItems]="breadCrumbItems"></app-breadcrumbs>
+<ng-container *ngIf="!(navigating$ | async)">
+
+  <div class="row">
+    <div class="col-lg-12">
+      <div class="card" id="invoiceList">
+        <div class="card-header border-0">
+          <h4 class="mb-0 flex-grow-1">{{ 'MODULES.ECOMMERCE.MAIN.PROMOTION' | translate }}</h4>
+        </div>
+        <div class="card-body">
+          <form [formGroup]="promotionForm">
+            <div class="row">
+              <div formArrayName="promotion" class="row">
+                <div *ngFor="let promotion of promotionForm.get('promotion')['controls']; let i = index; let first = first; let last = last;" class="mt-2">
+                  <div [formGroupName]="i" class="row">
+                    <div class="col-lg-12 mb-3">
+                      <label for="email_id-field" class="form-label">{{ 'COMMON.ARTICLE' | translate }}*</label>
+                      <ng-select aria-placeholder="{{'PLACEHOLDER.CHOOSE_AN_ARTICLE' | translate }}" required [multiple]="false" formControlName="barcode" [typeahead]="barcodeSearchInput$"
+                        [virtualScroll]="true" (scrollToEnd)="loadMoreBarcodes()" [items]="barcodes$ | async">
+                        <ng-template ng-label-tmp let-item="item" let-clear="clear">
+                          <span class="ng-value-label">
+                            {{item?.name}}
+                          </span>
+                          <span class="ng-value-icon right" (click)="clear(item)" aria-hidden="true">×</span>
+                        </ng-template>
+                        <ng-template ng-option-tmp let-item$="item$" let-item="item">
+                          <div class="d-flex align-items-center">
+                            <div class="flex-shrink-0 me-3">
+                              <div class="avatar-sm bg-light p-1 rounded" *ngIf="item?.media?.pictures?.length">
+                                <img [src]="item?.media?.pictures[0]?.baseUrl + '/' + item?.media?.pictures[0]?.path" class="img-fluid h-100 d-block">
+                              </div>
+                              <div class="avatar-sm bg-light rounded p-1" *ngIf="!item?.media?.pictures?.length">
+                                <div class="avatar-title bg-soft-success text-success rounded fs-13">
+                                  {{item?.name?.charAt(0) || 'N'}}</div>
+                              </div>
+                            </div>
+                            <span class="flex-grow-1 ms-2">
+                              {{item?.name}}
+                            </span>
+                          </div>
+                        </ng-template>
+                      </ng-select>
+                      <!-- <div class="invalid-feedback"
+                      *ngIf="promotion.get('barcode').touched && promotion.get('barcode').hasError('required')">{{'COMMON.REQUIRED' | translate }}
+                    </div> -->
+                    </div>
+                    <div class="row">
+                      <ng-container formGroupName="discount">
+                        <div class="mb-3 col-lg-6">
+                          <label class="control-label">{{ 'COMMON.AMOUNT' | translate }}*</label>
+                          <input required type="text" formControlName="amount" class="form-control" placeholder="{{'PLACEHOLDER.ENTER_DISCOUNT_AMOUNT' | translate }}" />
+                        </div>
+                        <div class="mb-3 col-lg-6">
+                          <label class="control-label">{{ 'MODULES.ECOMMERCE.MAIN.DISCOUNT_TYPE' | translate }}*</label>
+                          <select required class="form-control" formControlName="discountType" name="choices-single-default" id="idStatus">
+                            <option disabled value="" selected>{{ 'MODULES.ECOMMERCE.MAIN.SELECT_DISCOUNT_TYPE' | translate }}</option>
+                            <option *ngFor="let type of discountTypes" [value]="type">
+                              {{  'SHARED.' + type | translate }}
+                            </option>
+                          </select>
+                        </div>
+                      </ng-container>
+                    </div>
+                  </div>
+                  <div class="d-flex justify-content-end mt-3">
+                    <button type="button" *ngIf="!first" (click)="removePromotionField(i)" class="btn btn-danger"><i class="ri-delete-bin-fill align-bottom"></i>{{ 'MODULES.ECOMMERCE.MAIN.REMOVE_PROMOTION' | translate }}</button>
+                  </div>
+                </div>
+              </div>
+              <div class="mb-4">
+                <button (click)="addPromotionField()" type="button" class="btn btn-soft-info btn-sm shadow-none"><i class="ri-add-fill me-1 align-bottom"></i>{{ 'MODULES.ECOMMERCE.MAIN.ADD_PROMOTION' | translate }}</button>
+              </div>
+              <div class="col-lg-12 row">
+                <div class="col-lg-6 mb-3">
+                  <label for="email_id-field" class="form-label">{{ 'MODULES.ECOMMERCE.MAIN.CHOOSE_START_DATE' | translate }}*</label>
+                  <div class="input-group">
+                    <input required class="form-control flatpickr-input" type="text" placeholder="{{'PLACEHOLDER.CHOOSE_START_DATE' | translate }}" mwlFlatpickr [altInput]="true" [enableTime]="false" [convertModelValue]="true"
+                      [dateFormat]="'Y-m-d H:i'" formControlName="startDate">
+                    <div class="input-group-append">
+                      <span class="input-group-text"><i class="ri-calendar-event-fill"></i></span>
+                    </div>
+                  </div>
+                </div>
+                <div class="col-lg-6 mb-3">
+                  <label for="email_id-field" class="form-label">{{ 'MODULES.ECOMMERCE.MAIN.CHOOSE_END_DATE' | translate }}*</label>
+                  <div class="input-group">
+                    <input required class="form-control flatpickr-input" type="text" placeholder="{{'PLACEHOLDER.CHOOSE_END_DATE' | translate }}" mwlFlatpickr [altInput]="true" [enableTime]="false" [convertModelValue]="true"
+                      [dateFormat]="'Y-m-d H:i'" formControlName="endDate">
+                    <div class="input-group-append">
+                      <span class="input-group-text"><i class="ri-calendar-event-fill"></i></span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="col-lg-12 mb-3">
+                <input [checked]="promotionForm?.value.status === 'ONGOING'" (change)="onChange($event)" class="form-check-input me-3" type="checkbox">
+                <label class="form-check-label" for="anna-adame">{{ 'MODULES.ECOMMERCE.MAIN.ACTIVATE' | translate }}
+                </label>
+              </div>
+            </div>
+            <div class="col-lg-12">
+              <div class="hstack justify-content-end gap-2 mt-3">
+                <button (click)="cancel()" type="button" class="btn btn-ghost-danger">{{ 'COMMON.BACK' | translate }}</button>
+                <button (click)="save()" [disabled]="isButtonDisabled || promotionForm.invalid" type="button" class="btn btn-success">{{'COMMON.SAVE' | translate }}</button>
+              </div>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</ng-container>
+<div *ngIf="navigating$ | async" class="vh-100 py-4 text-center" fxLayout="column" fxLayoutAlign="center center" fxLayoutGap="1rem">
+  <div>
+    <lord-icon trigger="loop" style="width:72px;height:72px" [colors]="'primary:' + primaryColor + ',secondary:' + secondaryColor" src="https://cdn.lordicon.com/msoeawqm.json">
+    </lord-icon>
+  </div>
+  <div class="mt-4">
+    <h5>{{ 'COMMON.LOADING' | translate }}</h5>
+  </div>
+</div>

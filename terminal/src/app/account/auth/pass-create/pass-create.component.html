@@ -1,0 +1,121 @@
+<div class="auth-page-wrapper pt-5">
+  <!-- auth page bg -->
+  <div class="auth-one-bg-position auth-one-bg" id="auth-particles">
+    <div class="bg-overlay"></div>
+
+    <div class="shape">
+      <svg xmlns="http://www.w3.org/2000/svg" version="1.1" xmlns:xlink="http://www.w3.org/1999/xlink"
+        viewBox="0 0 1440 120">
+        <path d="M 0,36 C 144,53.6 432,123.2 720,124 C 1008,124.8 1296,56.8 1440,40L1440 140L0 140z"></path>
+      </svg>
+    </div>
+  </div>
+
+  <!-- auth page content -->
+  <div class="auth-page-content">
+    <div class="container">
+      <div class="row">
+        <div class="col-lg-12">
+          <div class="text-center mt-sm-5 mb-4 text-white-50">
+            <div>
+              <a routerLink="/" class="d-inline-block auth-logo">
+                <img [src]="elevokLogo" alt="" height="50">
+              </a>
+            </div>
+            <p class="mt-3 fs-15 fw-medium">{{ 'PAGES.SALES_EXT' | translate }}</p>
+          </div>
+        </div>
+      </div>
+      <!-- end row -->
+
+      <div class="row justify-content-center">
+        <div class="col-md-8 col-lg-6 col-xl-5">
+          <div class="card mt-4">
+
+            <div class="card-body p-4">
+              <div class="text-center mt-2">
+                <h5 class="text-primary">{{path === 'fp' ? ('ACCOUNT.CREATE_NEW_PASSWORD'| translate) : 'Create your password' }}</h5>
+                <p class="text-muted">{{ path === 'fp' ? ('ACCOUNT.DIFFERENT_PASSWORD'| translate) : 'Welcome to Sifca to access your platform' }}</p>
+              </div>
+
+              <div class="p-2">
+                <form [formGroup]="resetPasswordForm">
+                  <div class="mb-3">
+                    <label class="form-label" for="password-input">{{ 'ACCOUNT.PASSWORD'| translate }}</label>
+                    <div class="position-relative auth-pass-inputgroup">
+                      <input [type]="passwordField ? 'text' : 'password'" class="form-control pe-5 password-input"
+                        placeholder="{{'PLACEHOLDER.ENTER_PASSWORD' | translate }}" id="password-input" aria-describedby="passwordInput" required
+                        formControlName="password">
+                      <button
+                        class="btn btn-link position-absolute end-0 top-0 text-decoration-none text-muted password-addon"
+                        type="button" id="password-addon"><i class="ri-eye-fill align-middle" [ngClass]="{'mdi-eye-off-outline': !passwordField, 'mdi-eye-outline': passwordField
+                      }"></i></button>
+                      <div *ngIf="submitted && formControls['password'].errors" class="invalid-feedback">
+                        <span *ngIf="formControls['password'].errors['required']">{{ 'ACCOUNT.PASSWORD_REQUIRED'| translate }}</span>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div class="mb-3">
+                    <label class="form-label" for="confirm-password-input">{{'MODULES.HR.MAIN.CONFIRM_PASSWORD' | translate }}</label>
+                    <div class="position-relative auth-pass-inputgroup mb-3">
+                      <input [type]="confirmField ? 'text' : 'password'" class="form-control pe-5 password-input"
+                        placeholder="{{'PLACEHOLDER.CONFIRM_PASSWORD' | translate }}" id="confirm-password-input" required
+                        formControlName="passwordConfirm">
+                      <button
+                        class="btn btn-link position-absolute end-0 top-0 text-decoration-none text-muted password-addon"
+                        type="button" id="confirm-password-input"><i class="ri-eye-fill align-middle" [ngClass]="{'mdi-eye-off-outline': !passwordField, 'mdi-eye-outline': passwordField
+                                            }"></i></button>
+                      <div *ngIf="submitted && resetPasswordForm.errors?.fieldsMismatch" class="text-danger">
+                        <span>{{ 'ACCOUNT.PASSWORDS_DO_NOT_MATCH'| translate }}</span>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div class="form-check">
+                    <input class="form-check-input" type="checkbox" value="" id="auth-remember-check">
+                    <label class="form-check-label" for="auth-remember-check">{{ 'ACCOUNT.REMEMBER_ME'| translate }}</label>
+                  </div>
+
+                  <div class="mt-4">
+                    <button class="btn btn-success w-100" [disabled]="isButtonDisabled" type="button"
+                      (click)="resetPassword()">Reset Password</button>
+                  </div>
+
+                </form>
+              </div>
+            </div>
+            <!-- end card body -->
+          </div>
+
+          <div class="mt-4 text-center">
+            <p class="mb-0">{{ 'ACCOUNT.REMEMBER_PASSWORD'| translate }} <a routerLink="/auth/login"
+                class="fw-semibold text-primary text-decoration-underline">{{ 'ACCOUNT.CLICK_HERE'| translate }} </a> </p>
+          </div>
+
+        </div>
+      </div>
+      <!-- end row -->
+    </div>
+    <!-- end container -->
+  </div>
+  <!-- end auth page content -->
+
+  <!-- footer -->
+  <footer class="footer">
+    <div class="container">
+      <div class="row">
+        <div class="col-lg-12">
+          <div class="text-center">
+            <p class="mb-0 text-muted">&copy;
+              <script>document.write(new Date().getFullYear())</script> Elevok. <i
+                class="mdi mdi-lightning-bolt text-warning"></i> by Diktup
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </footer>
+  <!-- end Footer -->
+</div>
+<!-- end auth-page-wrapper -->

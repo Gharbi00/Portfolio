@@ -1,0 +1,391 @@
+<ng-container *ngIf="!(navigating$ | async)">
+  <app-breadcrumbs title="{{ 'MENUITEMS.TITLE.ATTRIBUTES' | translate }}" [breadcrumbItems]="breadCrumbItems"></app-breadcrumbs>
+  <div class="p-3 bg-light rounded mb-4">
+    <div class="row g-2">
+      <div class="col-lg">
+        <div class="search-box">
+          <form [formGroup]="searchForm">
+            <input type="text" id="searchTaskList" formControlName="searchString" class="form-control search"
+              placeholder="{{'PLACEHOLDER.SEARCH_ATTRIBUTE' | translate }}">
+            <i class="ri-search-line search-icon"></i>
+          </form>
+        </div>
+      </div>
+      <div class="col-lg-auto flex-wrap d-flex gap-1">
+        <button (click)="openAttributeModal(content, null)" class="btn btn-success createTask" type="button"
+          data-bs-toggle="modal" data-bs-target="#createTask">
+          <i class="ri-add-fill align-bottom"></i>{{'MODULES.INVENTORY.ADD_ATTRIBUTE' | translate }}
+        </button>
+        <button (click)="openImportModal(importModal)" type="button" class="btn btn-secondary"><i
+            class="ri-file-upload-line align-bottom me-1"></i>{{'COMMON.IMPORT' | translate }}</button>
+        <button (click)="downloadExcel()" type="button" class="btn btn-primary"><i
+            class="ri-file-upload-line align-bottom me-1"></i>{{'COMMON.EXPORT' | translate }}</button>
+        <button (click)="openEmailModal(emailModal)" type="button" class="btn btn-secondary"><i
+            class="ri-send-plane-fill align-bottom me-1"></i>{{'COMMON.SEND' | translate }}</button>
+      </div>
+    </div>
+  </div>
+  <div *ngIf="((loadingAttributes$ | async) === false || null || undefined) && (attributes$ | async).length"
+    class="row">
+    <div class="col-lg-4" *ngFor="let data of attributes$ | async">
+      <div class="card">
+        <div class="card-body">
+          <h5 class="fs-15 fw-semibold">{{data?.label}}</h5>
+          <p class="text-muted">{{'MENUITEMS.CUSTOMERENGAGEMENT.LIST.IDENTIFIER' | translate }}: {{data?.externalId}}</p>
+          <p class="text-muted">{{'COMMON.REQUIRED' | translate }}: {{data?.isRequired}} <i class="ri-check-fill align-bottom"></i></p>
+          <p class="text-muted">{{'MODULES.INVENTORY.MULTIPLE_CHOICE' | translate }}: {{data?.isMultipleChoice}}</p>
+          <div class="hstack gap-2">
+            <button class="btn btn-sm btn-soft-info remove-list" data-bs-toggle="modal"
+              data-bs-target="#removeTaskItemModal" data-remove-id="15" (click)="openAttributeModal(content, data)">
+              <i class="ri-pencil-fill align-bottom"></i>
+            </button>
+            <button class="btn btn-sm btn-soft-info remove-list" data-bs-toggle="modal"
+              data-bs-target="#removeTaskItemModal" data-remove-id="15"
+              (click)="openAttributeModal(translationModal, data)">
+              <i class="ri-global-line align-bottom"></i>
+            </button>
+            <button class="btn btn-sm btn-soft-primary edit-list" data-bs-toggle="modal" data-bs-target="#createTask"
+              data-edit-id="15" (click)="attributeSideMenu(viewContent, data)">
+              <i class="ri-eye-fill align-bottom"></i>
+            </button>
+            <button class="btn btn-sm btn-soft-danger remove-list" data-bs-toggle="modal" data-bs-target="#createTask"
+              data-edit-id="15" (click)="openDeleteModal(deleteModel, data, 'attribute')">
+              <i class="ri-delete-bin-5-fill align-bottom"></i>
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div *ngIf="((loadingAttributes$ | async) === false || null || undefined) && (attributes$ | async).length"
+    class="px-3">
+    <div class="row justify-content-md-between align-items-md-center gy-2">
+      <div class="col col-sm-6">
+        <div class="dataTables_info mb-2" id="tickets-table_info" role="status" aria-live="polite">{{'COMMON.SHOWING' | translate }} {{pagination?.startIndex + 1}}–{{pagination?.endIndex ===
+          pagination?.length ? pagination?.endIndex : pagination?.endIndex + 1}} {{'COMMON.OF' | translate }}
+          {{pagination?.length}} {{'COMMON.ENTRIES' | translate }}
+        </div>
+      </div>
+      <div class="col col-sm-6">
+        <div class="text-sm-right float-end listjs-pagination">
+          <ngb-pagination [maxSize]="5" [collectionSize]="pagination?.length" [(page)]="page"
+            (pageChange)="onPageChange($event)" [pageSize]="pagination?.size">
+          </ngb-pagination>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div id="noresult" class="py-4 mt-4 text-center"
+    *ngIf="(loadingAttributes$ | async) || (!(loadingAttributes$ | async) && !(attributes$ | async).length)">
+    <lord-icon *ngIf="loadingAttributes$ | async" trigger="loop" style="width:72px;height:72px" [colors]="'primary:' + primaryColor + ',secondary:' + secondaryColor"
+      src="https://cdn.lordicon.com/msoeawqm.json">
+    </lord-icon>
+    <h5 class="mt-4" *ngIf="loadingAttributes$ | async">{{'COMMON.LOADING' | translate }}</h5>
+    <lord-icon *ngIf="!(loadingAttributes$ | async) && !(attributes$ | async).length" trigger="loop" style="width:72px;height:72px" [colors]="'primary:' + primaryColor + ',secondary:' + secondaryColor"
+      src="https://cdn.lordicon.com/vlycxjwx.json">
+    </lord-icon>
+    <h5 class="mt-4" *ngIf="!(loadingAttributes$ | async) && !(attributes$ | async).length">{{ 'COMMON.NO_RESULT' | translate }}</h5>
+  </div>
+
+  <ng-template #emailModal role="document" let-modal>
+    <div class="modal-header p-3 bg-soft-info">
+      <h5 class="modal-title" id="exampleModalLabel">{{'COMMON.SEND' | translate }} {{'COMMON.EMAIL' | translate }}</h5>
+      <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" id="close-modal"
+        (click)="modal.dismiss('Cross click')"></button>
+    </div>
+    <form [formGroup]="emailForm">
+      <div class="modal-body">
+        <div class="row g-3">
+          <div class="col-lg-12 mb-3">
+            <label class="form-label" for="product-tags-input">{{ 'COMMON.EMAILS' | translate }} {{'MODULES.INVENTORY.PRESS_ENTER' | translate }}</label>
+            <ng-select [items]="[]" class="no-arrow-select" [addTag]="true" [isOpen]="false" [multiple]="true" [selectOnTab]="true"
+              formControlName="emails">
+            </ng-select>
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <div class="hstack gap-2 justify-content-end">
+          <button type="button" class="btn btn-light" data-bs-dismiss="modal" (click)="modal.close('Close click')">{{'COMMON.CLOSE' | translate }}</button>
+          <button type="button" [disabled]="isEmailButtonDisabled || emailForm.invalid" (click)="send()"
+            class="btn btn-success" id="add-btn">{{'COMMON.SEND' | translate }}</button>
+        </div>
+      </div>
+    </form>
+  </ng-template>
+
+  <ng-template #importModal role="document" let-modal>
+    <div class="modal-header bg-soft-info p-3">
+      <h5 class="modal-title" id="exampleModalLabel">{{'COMMON.UPLOAD_EXCEL' | translate }}</h5>
+      <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" id="close-modal"
+        (click)="modal.dismiss('Cross click')"></button>
+    </div>
+    <div class="modal-body">
+      <p>{{'MODULES.INVENTORY.PARAGRAPH_IMAGE' | translate }}
+      </p>
+    </div>
+    <div class="modal-footer">
+      <div class="hstack gap-2 justify-content-end">
+        <button type="button" class="btn btn-light" data-bs-dismiss="modal"
+          (click)="modal.close('Close click')">{{'COMMON.CLOSE' | translate }}</button>
+        <button type="button" (click)="!loadingImport ? uploadExcel() : null" class="btn btn-primary btn-load">
+          <span *ngIf="!loadingImport">{{'COMMON.IMPORT_EXCEL' | translate }}</span>
+          <span *ngIf="loadingImport" class="d-flex align-items-center">
+            <span class="spinner-border flex-shrink-0" role="status">
+              <span class="visually-hidden">{{'COMMON.LOADING' | translate }}</span> </span>
+            <span class="flex-grow-1 ms-2">{{'COMMON.LOADING' | translate }} </span> </span>
+        </button>
+        <button type="button" (click)="bulkUploadPicture()" class="btn btn-primary btn-load">
+          <span *ngIf="!loadingImportPictures">{{'MODULES.INVENTORY.IMPORT_PICTURES' | translate }}</span>
+          <span *ngIf="loadingImportPictures" class="d-flex align-items-center">
+            <span class="spinner-border flex-shrink-0" role="status">
+              <span class="visually-hidden">{{'COMMON.LOADING' | translate }}</span> </span>
+            <span class="flex-grow-1 ms-2">{{'COMMON.LOADING' | translate }} </span> </span>
+        </button>
+      </div>
+    </div>
+  </ng-template>
+  -
+  <ng-template #translationModal role="document" let-modal>
+    <div class="modal-header bg-soft-info p-3">
+      <h5 class="modal-title" id="exampleModalLabel">{{'MODULES.INVENTORY.TRANSLATION' | translate }}</h5>
+      <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" id="close-modal"
+        (click)="modal.dismiss('Cross click')"></button>
+    </div>
+    <form [formGroup]="attributeForm">
+      <div class="modal-body">
+        <div formGroupName="translation" class="row mb-3">
+          <h5 class="card-title col-lg-4 flex-grow-1">{{'COMMON.LANGUAGE' | translate }}</h5>
+          <ng-select bindLabel="name" formControlName="language" (change)="onChangeLanguage($event)" class="col-lg-8"
+            [closeOnSelect]="true" [multiple]="false" [items]="languages" placeholder="{{'PLACEHOLDER.SELECT_LANGUAGE' | translate }}"
+            [searchable]="false" [clearable]="false">
+            <ng-template ng-label-tmp let-item="item" let-clear="clear">
+              <div class="d-flex gap-1">
+                <span *ngIf="item?.name !== 'Default'">{{item?.iconFlag}}</span>
+                <span>{{item?.name}}</span>
+              </div>
+            </ng-template>
+            <ng-template ng-option-tmp let-item$="item$" let-item="item">
+              <div class="d-flex gap-1">
+                <span *ngIf="item?.name !== 'Default'">{{item?.iconFlag}}</span>
+                <span>{{item?.name}}</span>
+              </div>
+            </ng-template>
+          </ng-select>
+        </div>
+        <div class="row g-3">
+          <div formGroupName="translation" class="col-lg-12">
+            <div formGroupName="content" class="mb-3">
+              <label for="email_id-field" class="form-label">{{'MODULES.INVENTORY.LABEL' | translate }}</label>
+              <input required type="text" id="email_id-field" class="form-control" placeholder="{{'PLACEHOLDER.ENTER_ATTRIBUTE_LABEL' | translate }}"
+                required formControlName="label"
+                [ngClass]="{ 'is-invalid': attributeForm.get(['translation', 'content', 'label'])?.touched && attributeForm.get(['translation', 'content', 'label']).hasError('required') }" />
+              <div class="invalid-feedback"
+                *ngIf="attributeForm.get(['translation', 'content', 'label'])?.touched && attributeForm.get(['translation', 'content', 'label']).hasError('required')">{{'COMMON.REQUIRED' | translate }}
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <div class="hstack gap-2 justify-content-end">
+          <button type="button" class="btn btn-light" data-bs-dismiss="modal"
+            (click)="modal.close('Close click')">{{'COMMON.CLOSE' | translate }}</button>
+          <button type="button"
+            [disabled]="translation?.value?.language?.name === 'Default' ||  attributeForm.get(['translation', 'content', 'label']).invalid"
+            (click)="saveAttribute()" class="btn btn-success" id="add-btn">{{'COMMON.EDIT' | translate }} Translation</button>
+        </div>
+      </div>
+    </form>
+  </ng-template>
+
+  <ng-template #viewContent let-offcanvas>
+    <div *ngIf='editable'>
+      <div class="mb-4 button-container">
+        <button class="btn btn-secondary ml-1" (click)="openValueModal(valueModal, null)">
+          <span class="ml-2">{{'MODULES.INVENTORY.ADD_VALUE' | translate }}</span>
+        </button>
+        <button type="button" class="mr-4 btn-close" data-bs-dismiss="modal" aria-label="Close" id="close-modal"
+          (click)="offcanvas.dismiss('Cross click')"></button>
+      </div>
+      <ng-container *ngIf="productAttributes?.length; else noValues">
+        <div class="d-md-flex align-items-center p-3 cursor border-bottom"
+          *ngFor="let attributeValue of productAttributes">
+          <div class="cursor d-flex align-items-center">
+            <span class="fs-5"> {{attributeValue?.label}}</span>
+          </div>
+          <div class="ms-auto mt-3 mt-md-0">
+            <div class="d-flex align-items-center justify-content-center gap-1">
+              <button (click)="openValueModal(valueModal, attributeValue)" class="btn btn-sm btn-soft-info remove-list"
+                data-bs-toggle="modal" data-bs-target="#removeTaskItemModal" data-remove-id="15">
+                <i class="ri-pencil-fill align-bottom"></i>
+              </button>
+              <button class="btn btn-sm btn-soft-danger remove-list" data-bs-toggle="modal" data-bs-target="#createTask"
+                data-edit-id="15" (click)="openDeleteModal(deleteModel, attributeValue)">
+                <i class="ri-delete-bin-5-fill align-bottom"></i>
+              </button>
+            </div>
+          </div>
+        </div>
+        <div class="d-flex justify-content-center mt-5">
+          <ngb-pagination [(page)]="valuePage" [pageSize]="valuePageSize" [collectionSize]="valuesPaginationSize"
+            (pageChange)="onValuePageChange($event)">
+          </ngb-pagination>
+        </div>
+      </ng-container>
+    </div>
+  </ng-template>
+  <ng-template #content role="document" let-modal>
+    <div class="modal-header bg-soft-info p-3">
+      <h5 class="modal-title" id="exampleModalLabel">{{(selectedAttribute ? 'SHARED.EDIT_ATTRIBUTE' : 'SHARED.ADD_ATTRIBUTE' ) | translate }}</h5>
+
+      <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" id="close-modal"
+        (click)="modal.dismiss('Cross click')"></button>
+    </div>
+    <form [formGroup]="attributeForm">
+      <div class="modal-body">
+        <input type="hidden" id="id-field" />
+        <div class="row g-3">
+          <div class="col-lg-12">
+            <div class="mb-3">
+              <label for="email_id-field" class="form-label">{{'MODULES.INVENTORY.LABEL' | translate }}</label>
+              <input type="text" id="email_id-field" class="form-control" placeholder="{{'PLACEHOLDER.ENTER_ATTRIBUTE_LABEL' | translate }}" required
+                formControlName="label"
+                [ngClass]="{ 'is-invalid': attributeForm.get('label')?.touched && attributeForm.get('label').hasError('required') }" />
+              <div class="invalid-feedback"
+                *ngIf="attributeForm.get('label')?.touched && attributeForm.get('label').hasError('required')">{{'COMMON.REQUIRED' | translate }}
+              </div>
+            </div>
+            <div class="mb-3">
+              <ng-container formGroupName="pixel">
+                <label for="email_id-field" class="form-label">Pixel</label>
+                <input type="text" id="email_id-field" class="form-control" placeholder="{{'PLACEHOLDER.ENTER_WEBSITE' | translate }}"
+                  formControlName="pixelAttribute"
+                  [ngClass]="{ 'is-invalid': attributeForm.get(['pixel','pixelAttribute'])?.touched && attributeForm.get(['pixel','pixelAttribute']).hasError('required') }" />
+                <div class="invalid-feedback"
+                  *ngIf="attributeForm.get(['pixel','pixelAttribute'])?.touched && attributeForm.get(['pixel','pixelAttribute']).hasError('required')">{{'COMMON.REQUIRED' | translate }}
+                </div>
+              </ng-container>
+            </div>
+            <div class="mb-3" *ngIf="!selectedAttribute">
+              <label for="email_id-field" class="form-label">{{'MODULES.INVENTORY.EXTERNAL_ID' | translate }}</label>
+              <input type="text" id="email_id-field" class="form-control" placeholder="{{'PLACEHOLDER.ENTER_EXTERNAL_ID' | translate }}" required
+                formControlName="externalId"
+                [ngClass]="{ 'is-invalid': attributeForm.get('externalId')?.touched && attributeForm.get('externalId').hasError('required') }" />
+              <div class="invalid-feedback"
+                *ngIf="attributeForm.get('externalId')?.touched && attributeForm.get('externalId').hasError('required')">{{'COMMON.REQUIRED' | translate }}
+              </div>
+            </div>
+            <div class="mb-3">
+              <div class="form-check">
+                <input required [checked]="selectedAttribute?.isRequired" (change)="requiredChange($event)"
+                  class="form-check-input border-x" type="checkbox" id="Required">
+                <label class="form-check-label" for="Required">{{'COMMON.REQUIRED' | translate }}
+                </label>
+              </div>
+              <div class="form-check">
+                <input required [checked]="selectedAttribute?.isMultipleChoice" (change)="multipleChoiceChange($event)"
+                  class="form-check-input border-x" type="checkbox" id="Multiple">
+                <label class="form-check-label" for="Multiple">{{'MODULES.INVENTORY.MULTIPLE_CHOICE' | translate }}
+                </label>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <div class="hstack gap-2 justify-content-end">
+          <button type="button" class="btn btn-light" data-bs-dismiss="modal"
+            (click)="modal.close('Close click')">{{'COMMON.CLOSE' | translate }}</button>
+          <button type="button" [disabled]="attributeForm.invalid || isButtonDisabled" (click)="saveAttribute()"
+            class="btn btn-success" id="add-btn">{{(selectedAttribute ? 'SHARED.EDIT_ATTRIBUTE' : 'SHARED.ADD_ATTRIBUTE' ) | translate }} </button>
+        </div>
+      </div>
+    </form>
+  </ng-template>
+  <ng-template #valueModal role="document" let-modal>
+    <div class="modal-header bg-soft-info p-3">
+      <h5 class="modal-title" id="exampleModalLabel"> {{(selectedAttributeValue ? 'SHARED.EDIT_ATTRIBUTE' : 'SHARED.ADD_ATTRIBUTE' ) | translate }}</h5>
+      <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" id="close-modal"
+        (click)="modal.dismiss('Cross click')"></button>
+    </div>
+    <form *ngIf="attributeValueForm" [formGroup]="attributeValueForm">
+      <div class="modal-body">
+        <input type="hidden" id="id-field" />
+        <div class="row g-3">
+          <div class="col-lg-12">
+            <div class="mb-3">
+              <label for="email_id-field" class="form-label">{{'MODULES.INVENTORY.LABEL' | translate }}</label>
+              <input type="text" id="email_id-field" class="form-control" placeholder="{{'PLACEHOLDER.ENTER_ATTRIBUTE_LABEL' | translate }}" required
+                formControlName="label"
+                [ngClass]="{ 'is-invalid': attributeValueForm.get('label')?.touched && attributeValueForm.get('label').hasError('required') }" />
+              <div class="invalid-feedback"
+                *ngIf="attributeValueForm.get('label')?.touched && attributeValueForm.get('label').hasError('required')">{{'COMMON.REQUIRED' | translate }}
+              </div>
+            </div>
+            <div class="mb-3" *ngIf="!selectedAttributeValue">
+              <label for="email_id-field" class="form-label">{{'MODULES.INVENTORY.EXTERNAL_ID' | translate }}</label>
+              <input type="text" id="email_id-field" class="form-control" placeholder="{{'PLACEHOLDER.ENTER_EXTERNAL_ID' | translate }}" required
+                formControlName="externalId"
+                [ngClass]="{ 'is-invalid': attributeValueForm.get('externalId')?.touched && attributeValueForm.get('externalId').hasError('required') }" />
+              <div class="invalid-feedback"
+                *ngIf="attributeValueForm.get('externalId')?.touched && attributeValueForm.get('externalId').hasError('required')">{{'COMMON.REQUIRED' | translate }}
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <div class="hstack gap-2 justify-content-end">
+          <button type="button" class="btn btn-light" data-bs-dismiss="modal"
+            (click)="modal.close('Close click')">{{'COMMON.CLOSE' | translate }}</button>
+          <button type="button" (click)="saveValue()" [disabled]="attributeValueForm.invalid ||isValueButtonDisabled"
+            class="btn btn-success" id="add-btn">
+            {{(selectedAttributeValue ? 'SHARED.EDIT_ATTRIBUTE' : 'SHARED.ADD_ATTRIBUTE' ) | translate }}</button>
+        </div>
+      </div>
+    </form>
+  </ng-template>
+  <ng-template #deleteModel let-modal>
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" id="btn-close"
+          (click)="modal.dismiss('Cross click')"></button>
+      </div>
+      <div class="modal-body">
+        <div class="mt-2 text-center">
+          <lord-icon src="https://cdn.lordicon.com/gsqxdxog.json" trigger="loop"
+            colors="primary:#405189,secondary:#f06548" style="width:90px;height:90px"></lord-icon>
+          <div class="mt-4 pt-2 fs-15 mx-4 mx-sm-5">
+            <h4>{{'MENUITEMS.CUSTOMERENGAGEMENT.CAMPAIGN.YOU_ARE_ABOUT_TO_DELETE_A_ATTRIBUTE' | translate }} ?</h4>
+            <p class="text-muted mx-4 mb-0">{{'MENUITEMS.CUSTOMERENGAGEMENT.CAMPAIGN.DELETING_YOUR_ATTRIBUTE_DATA_BASE_REMOVE' | translate }}
+            </p>
+          </div>
+        </div>
+        <div class="d-flex gap-2 justify-content-center mt-4 mb-2">
+          <button class="btn btn-link link-success fw-medium text-decoration-none" data-bs-dismiss="modal"
+            (click)="modal.close('Close click')" id="deleteRecord-close"><i class="ri-close-line me-1 align-middle"></i>{{'COMMON.CLOSE' | translate }}</button>
+          <button type="button" class="btn w-sm btn-danger " id="delete-product" (click)="deleteAttr()">{{'COMMON.YES_DELETE_IT' | translate }}</button>
+        </div>
+      </div>
+    </div>
+  </ng-template>
+  <ng-template #noValues>
+    <div class="py-4 mt-4 text-center" id="noresult">
+      <lord-icon src="https://cdn.lordicon.com/vlycxjwx.json" trigger="loop" [colors]="'primary:' + primaryColor + ',secondary:' + secondaryColor"
+        style="width:72px;height:72px"></lord-icon>
+      <h5 class="mt-4">{{ 'COMMON.NO_RESULT' | translate }}</h5>
+    </div>
+  </ng-template>
+</ng-container>
+<div *ngIf="navigating$ | async" class="vh-100 py-4 text-center" fxLayout="column" fxLayoutAlign="center center"
+  fxLayoutGap="1rem">
+  <div>
+    <lord-icon trigger="loop" style="width:72px;height:72px" [colors]="'primary:' + primaryColor + ',secondary:' + secondaryColor"
+      src="https://cdn.lordicon.com/msoeawqm.json">
+    </lord-icon>
+  </div>
+  <div class="mt-4">
+    <h5>{{'COMMON.LOADING' | translate }}</h5>
+  </div>
+</div>

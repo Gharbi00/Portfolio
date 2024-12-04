@@ -1,0 +1,1881 @@
+<ng-container *ngIf="!(navigating$ | async)">
+  <div class="position-relative mx-n4 mt-n4">
+    <div class="profile-wid-bg profile-setting-img">
+      <img src="assets/images/profile-bg.jpg" class="profile-wid-img" alt="">
+      <div class="overlay-content">
+        <div class="text-end p-3">
+          <div class="p-0 ms-auto rounded-circle profile-photo-edit">
+            <input id="profile-foreground-img-file-input" type="file" class="profile-foreground-img-file-input">
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-xxl-3">
+      <div class="card mt-n5">
+        <div class="card-body p-4">
+          <div *ngIf="plugin$ | async as plugin" class="text-center">
+            <div class="profile-user position-relative d-inline-block mx-auto mb-4">
+              <div class="avatar-lg mb-3">
+                <div class="avatar-title bg-soft-success fs-24 text-success">
+                  <i [ngClass]="plugin?.icon"></i>
+                </div>
+              </div>
+            </div>
+            <h5 class="fs-16 mb-1">{{plugin?.name}}</h5>
+            <p class="text-muted mb-0">{{plugin?.description}}</p>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="col-xxl-9">
+      <div class="card mt-xxl-n5">
+        <div class="card-header">
+          <ul (navChange)="onTabChange('advertiser')" ngbNav #customNav="ngbNav" [activeId]="1"
+            class="nav nav-tabs-custom rounded card-header-tabs border-bottom-0" role="tablist">
+            <li [ngbNavItem]="1" class="nav-item">
+              <a ngbNavLink class="nav-link" data-bs-toggle="tab" role="tab">
+                <i class="far fa-envelope"></i>{{'MODULES.SYSTEM.CATEGORY' | translate }}
+              </a>
+              <ng-template ngbNavContent>
+                <div class="card" id="orderList">
+                  <div class="card-header border-0">
+                    <div class="d-flex align-items-center">
+                      <h5 class="card-title mb-0 flex-grow-1">{{'MENUITEMS.CUSTOMERENGAGEMENT.LIST.CATEGORY' | translate
+                        }}</h5>
+                      <div class="flex-shrink-0 hstack gap-2">
+                        <button type="button" (click)="openCampaignModal(campaignModal, null)" class="btn btn-info">
+                          {{'SHARED.ADD_CATEGORY' | translate }}
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="card-body pt-0">
+                    <div>
+                      <ul ngbNav #nav="ngbNav" [activeId]="1" class="nav nav-tabs nav-tabs-custom nav-success mb-3">
+                        <li [ngbNavItem]="1">
+                          <ng-template ngbNavContent>
+                            <div class="table-responsive table-card mb-0">
+                              <table class="table align-middle custom-datatable">
+                                <thead>
+                                  <tr class="bg-light text-muted text-uppercase">
+                                    <th>{{'COMMON.NAME' | translate }}</th>
+                                    <th>{{'MODULES.SYSTEM.MAX_ACTIVITY' | translate }}</th>
+                                    <th>{{'MODULES.SYSTEM.FEES' | translate }}</th>
+                                    <th>{{'MODULES.SYSTEM.TRANSITION' | translate }}</th>
+                                    <th>{{'COMMON.STATUS' | translate }}</th>
+                                    <th>{{'COMMON.ACTIONS' | translate }}</th>
+                                    <th>{{'MODULES.SYSTEM.ENABLE' | translate}}</th>
+                                  </tr>
+                                </thead>
+                                <tbody
+                                  *ngIf="((loadingCompaigns$ | async) === false || null || undefined) && (quests$ | async)?.length">
+                                  <tr *ngFor="let quest of quests$ | async" id="o_{{quest?.id}}">
+                                    <td>
+                                      <span>
+                                        <div class="d-flex cursor-pointer align-items-center">
+                                          <div class="flex-shrink-0">
+                                            <div class="avatar-sm bg-light p-1 rounded-circle h-x"
+                                              *ngIf="quest?.advertiser?.pos?.picture?.baseUrl">
+                                              <img
+                                                [src]="quest?.advertiser?.pos?.picture?.baseUrl + '/' + quest?.advertiser?.pos?.picture?.path"
+                                                class="img-fluid h-100 rounded-circle">
+                                            </div>
+                                            <div class="avatar-sm bg-light p-1 rounded-circle h-x"
+                                              *ngIf="!quest?.advertiser?.pos?.picture?.baseUrl && quest?.target?.pos?.picture?.baseUrl">
+                                              <img
+                                                [src]="quest?.target?.pos?.picture?.baseUrl + '/' + quest?.target?.pos?.picture?.path"
+                                                class="img-fluid h-100 rounded-circle">
+                                            </div>
+                                            <div class="avatar-sm bg-light rounded-circle p-1 h-x"
+                                              *ngIf="!quest?.advertiser?.pos?.picture?.baseUrl && !quest?.target?.pos?.picture?.baseUrl">
+                                              <div
+                                                class="avatar-title bg-soft-success text-success rounded-circle fs-13">
+                                                {{quest?.title?.charAt(0) || 'N'}}</div>
+                                            </div>
+                                          </div>
+                                          <div class="flex-grow-1 fw-medium ms-2 name">
+                                            {{quest?.title}}
+                                          </div>
+                                        </div>
+                                      </span>
+                                    </td>
+                                    <td>
+                                      {{quest?.maxActivities}}
+                                    </td>
+                                    <td>{{quest?.wallet?.fee}}%</td>
+                                    <td>
+                                      <i [ngClass]="{
+                                            'ri-close-circle-line text-danger': !quest?.transition,
+                                            'ri-checkbox-line text-success': quest?.transition
+                                          }" class="bi fs-5"></i>
+                                    </td>
+                                    <td>
+                                      <span [ngClass]="{
+                                            'bg-success': quest?.enable,
+                                            'bg-danger': !quest?.enable
+                                          }" class="badge">{{(quest?.enable ? 'COMMON.ACTIVE' : 'COMMON.DISABLE' ) |
+                                        translate}}</span>
+
+                                    </td>
+                                    <td>
+                                      <ul class="list-inline hstack gap-2 mb-0">
+                                        <li class="list-inline-item edit" matTooltip="Edit" placement="top">
+                                          <a (click)="openCampaignModal(campaignModal, quest)"
+                                            href="javascript:void(0);" data-bs-toggle="modal"
+                                            class="text-primary d-inline-block edit-item-btn">
+                                            <i class="ri-pencil-fill fs-16"></i>
+                                          </a>
+                                        </li>
+                                        <li class="list-inline-item edit" matTooltip="Delete" placement="top">
+                                          <a (click)="openDeleteModal(deleteModal, quest, 'campaign')"
+                                            href="javascript:void(0);" data-bs-toggle="modal"
+                                            class="text-danger d-inline-block">
+                                            <i class="ri-delete-bin-5-fill fs-16"></i>
+                                          </a>
+                                        </li>
+                                      </ul>
+                                    </td>
+                                    <td>
+                                      <div class="form-check form-switch">
+                                        <input [checked]="quest?.enable"
+                                          (change)="onChangeStatus($event.target.checked, quest)"
+                                          class="form-check-input" type="checkbox" role="switch"
+                                          id="desktopNotification" />
+                                      </div>
+                                    </td>
+                                  </tr>
+                                </tbody>
+                              </table>
+                            </div>
+                            <div
+                              *ngIf="((loadingCompaigns$ | async) === false || null || undefined) && (quests$ | async)?.length"
+                              class="px-3">
+                              <div class="row justify-content-md-between align-items-md-center gy-2">
+                                <div class="col col-sm-6">
+                                  <div class="dataTables_info mb-2" id="tickets-table_info" role="status"
+                                    aria-live="polite">
+                                    {{'COMMON.SHOWING' | translate }} {{pagination?.startIndex +
+                                    1}}–{{pagination?.endIndex ===
+                                    pagination?.length ? pagination?.endIndex : pagination?.endIndex + 1}} {{'COMMON.OF'
+                                    | translate }}
+                                    {{pagination?.length}} {{'COMMON.ENTRIES' | translate }}
+                                  </div>
+                                </div>
+                                <div class="col col-sm-6">
+                                  <div class="text-sm-right float-end listjs-pagination">
+                                    <ngb-pagination [maxSize]="5" [collectionSize]="pagination?.length" [(page)]="page"
+                                      (pageChange)="onPageChange($event)" [pageSize]="pagination?.size">
+                                    </ngb-pagination>
+                                  </div>
+                                </div>
+                              </div>
+                            </div>
+                            <div id="noresult" class="py-4 mt-4 text-center"
+                              *ngIf="(loadingCompaigns$ | async) || (!(loadingCompaigns$ | async) && !(quests$ | async)?.length)">
+                              <div *ngIf="loadingCompaigns$ | async">
+                                <lord-icon trigger="loop" style="width:72px;height:72px"
+                                  [colors]="'primary:' + primaryColor + ',secondary:' + secondaryColor"
+                                  src="https://cdn.lordicon.com/msoeawqm.json">
+                                </lord-icon>
+                                <h5 class="mt-4">{{'COMMON.LOADING' | translate }}</h5>
+                              </div>
+                              <div *ngIf="!(loadingCompaigns$ | async) && !(quests$ | async)?.length">
+                                <lord-icon trigger="loop" style="width:72px;height:72px"
+                                  [colors]="'primary:' + primaryColor + ',secondary:' + secondaryColor"
+                                  src="https://cdn.lordicon.com/vlycxjwx.json">
+                                </lord-icon>
+                                <h5 class="mt-4">{{ 'COMMON.NO_RESULT' | translate }}</h5>
+                              </div>
+                            </div>
+                          </ng-template>
+                        </li>
+                      </ul>
+                      <div class="tab-content text-muted">
+                        <div [ngbNavOutlet]="nav"></div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </ng-template>
+            </li>
+            <li [ngbNavItem]="2" class="nav-item">
+              <a ngbNavLink class="nav-link" data-bs-toggle="tab" role="tab">
+                <i class="far fa-envelope"></i>{{'COMMON.DONATION' | translate }}
+              </a>
+              <ng-template ngbNavContent>
+                <ul (navChange)="onTabChange('donation')" ngbNav #nav="ngbNav" [activeId]="1"
+                  class="nav nav-tabs-custom rounded card-header-tabs border-bottom-0" role="tablist">
+                  <li [ngbNavItem]="1" class="nav-item">
+                    <a ngbNavLink class="nav-link" data-bs-toggle="tab" role="tab">
+                      <i class="far fa-envelope"></i>{{'COMMON.CAUSE' | translate }}
+                    </a>
+                    <ng-template ngbNavContent>
+                      <div class="card">
+                        <div class="card-header mb-4">
+                          <div class="d-flex align-items-center">
+                            <h5 class="card-title mb-0 flex-grow-1">{{'COMMON.CAUSES' | translate }}</h5>
+                            <div class="flex-shrink-0 hstack gap-2">
+                              <button type="button" (click)="openCauseModal(causeModal, null)"
+                                class="btn btn-info">{{'COMMON.CREATE_CAUSE' | translate }}</button>
+                            </div>
+                          </div>
+                        </div>
+                        <div class="card-body pt-0">
+                          <div class="table-responsive table-card mb-0">
+                            <table class="table align-middle custom-datatable">
+                              <thead>
+                                <tr class="bg-light text-muted text-uppercase">
+                                  <th>{{'COMMON.TITLE' | translate }}</th>
+                                  <th>Code</th>
+                                  <th>{{'SHARED.COIN' | translate }}</th>
+                                  <th>Ratio</th>
+                                  <th>{{'COMMON.ACTIONS' | translate }}</th>
+                                </tr>
+                              </thead>
+                              <tbody
+                                *ngIf="((loadingCauses$ | async) === false || null || undefined) && (causes$ | async)?.length">
+                                <tr *ngFor="let cause of causes$ | async" id="o_{{cause?.id}}">
+                                  <td>
+                                    {{cause?.title?.length > 15 ?
+                                    cause?.title?.substr(0,15) + '...' : cause?.title}}
+                                  </td>
+                                  <td>
+                                    {{cause?.code}}
+                                  </td>
+                                  <td>{{cause?.coin?.name}}</td>
+                                  <td>{{cause?.qualitativeRatio}}</td>
+                                  <td>
+                                    <ul class="list-inline hstack gap-2 mb-0">
+                                      <li class="list-inline-item edit" matTooltip="Edit" placement="top">
+                                        <a (click)="openCauseModal(causeModal, cause)" href="javascript:void(0);"
+                                          data-bs-toggle="modal" class="text-primary d-inline-block edit-item-btn">
+                                          <i class="ri-pencil-fill fs-16"></i>
+                                        </a>
+                                      </li>
+                                      <li class="list-inline-item edit" matTooltip="Delete" placement="top">
+                                        <a (click)="openDeleteModal(deleteModal, cause, 'cause')"
+                                          href="javascript:void(0);" data-bs-toggle="modal"
+                                          class="text-danger d-inline-block">
+                                          <i class="ri-delete-bin-5-fill fs-16"></i>
+                                        </a>
+                                      </li>
+                                    </ul>
+                                  </td>
+                                </tr>
+                              </tbody>
+                            </table>
+                          </div>
+                        </div>
+                        <div
+                          *ngIf="((loadingCauses$ | async) === false || null || undefined) && (causes$ | async)?.length"
+                          class="px-3">
+                          <div class="row justify-content-md-between align-items-md-center gy-2">
+                            <div class="col col-sm-6">
+                              <div class="dataTables_info mb-2" id="tickets-table_info" role="status"
+                                aria-live="polite">
+                                {{'COMMON.SHOWING' | translate }} {{causePagination?.startIndex +
+                                1}}–{{causePagination?.endIndex ===
+                                causePagination?.length ? causePagination?.endIndex : causePagination?.endIndex + 1}}
+                                {{'COMMON.OF' | translate }}
+                                {{causePagination?.length}} {{'COMMON.ENTRIES' | translate }}
+                              </div>
+                            </div>
+                            <div class="col col-sm-6 mb-2">
+                              <div class="text-sm-right float-end listjs-pagination">
+                                <ngb-pagination [maxSize]="5" [collectionSize]="causePagination?.length"
+                                  [(page)]="causePage" (pageChange)="onCausePageChange($event)"
+                                  [pageSize]="causePagination?.size">
+                                </ngb-pagination>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                        <div id="noresult" class="py-4 mt-4 text-center"
+                          *ngIf="(loadingCauses$ | async) || (!(loadingCauses$ | async) && !(causes$ | async)?.length)">
+                          <div *ngIf="loadingCauses$ | async">
+                            <lord-icon trigger="loop" style="width:72px;height:72px"
+                              [colors]="'primary:' + primaryColor + ',secondary:' + secondaryColor"
+                              src="https://cdn.lordicon.com/msoeawqm.json">
+                            </lord-icon>
+                            <h5 class="mt-4">{{'COMMON.LOADING' | translate }}</h5>
+                          </div>
+                          <div *ngIf="!(loadingCauses$ | async) && !(causes$ | async)?.length">
+                            <lord-icon trigger="loop" style="width:72px;height:72px"
+                              [colors]="'primary:' + primaryColor + ',secondary:' + secondaryColor"
+                              src="https://cdn.lordicon.com/vlycxjwx.json">
+                            </lord-icon>
+                            <h5 class="mt-4">{{ 'COMMON.NO_RESULT' | translate }}</h5>
+                          </div>
+                        </div>
+                      </div>
+                    </ng-template>
+                  </li>
+                  <li [ngbNavItem]="2" class="nav-item">
+                    <a ngbNavLink class="nav-link" data-bs-toggle="tab" role="tab">
+                      <i class="far fa-envelope"></i>{{'COMMON.DONATION' | translate }}
+                    </a>
+                    <ng-template ngbNavContent>
+                      <div class="card">
+                        <div class="card-header mb-4">
+                          <div class="d-flex align-items-center">
+                            <h5 class="card-title mb-0 flex-grow-1">{{'COMMON.DONATIONS' | translate }}</h5>
+                            <div class="flex-shrink-0 hstack gap-2">
+                              <button type="button" (click)="openDonationModal(donationModal, null)"
+                                class="btn btn-info">{{'COMMON.CREATE_DONATION' | translate }}</button>
+                            </div>
+                          </div>
+                        </div>
+                        <div class="card-body pt-0">
+                          <div class="table-responsive table-card mb-0">
+                            <table class="table align-middle custom-datatable">
+                              <thead>
+                                <tr class="bg-light text-muted text-uppercase">
+                                  <th>{{'COMMON.TITLE' | translate }}</th>
+                                  <th>{{'COMMON.CODE' | translate }}</th>
+                                  <th>{{'COMMON.CAUSE' | translate }}</th>
+                                  <th>{{'COMMON.THEME' | translate }}</th>
+                                  <th>{{'COMMON.ACTIONS' | translate }}</th>
+                                </tr>
+                              </thead>
+                              <tbody
+                                *ngIf="((loadingDonations$ | async) === false || null || undefined) && (donations$ | async)?.length">
+                                <tr *ngFor="let item of donations$ | async" id="o_{{item?.id}}">
+                                  <td>
+                                    {{item?.title?.length > 15 ?
+                                    item?.title?.substr(0,15) + '...' : item?.title}}
+                                  </td>
+                                  <td>
+                                    {{item?.code}}
+                                  </td>
+                                  <td>
+                                    {{item?.donation?.cause?.title?.length > 15 ?
+                                    item?.donation?.cause?.title?.substr(0,15) + '...' : item?.donation?.cause?.title}}
+                                  </td>
+                                  <td>{{item?.theme}}</td>
+                                  <td>
+                                    <ul class="list-inline hstack gap-2 mb-0">
+                                      <li class="list-inline-item edit" matTooltip="Edit" placement="top">
+                                        <a (click)="openDonationModal(donationModal, item)" href="javascript:void(0);"
+                                          data-bs-toggle="modal" class="text-primary d-inline-block edit-item-btn">
+                                          <i class="ri-pencil-fill fs-16"></i>
+                                        </a>
+                                      </li>
+                                      <li class="list-inline-item edit" matTooltip="Delete" placement="top">
+                                        <a (click)="openDeleteModal(deleteModal, item, 'donation')"
+                                          href="javascript:void(0);" data-bs-toggle="modal"
+                                          class="text-danger d-inline-block">
+                                          <i class="ri-delete-bin-5-fill fs-16"></i>
+                                        </a>
+                                      </li>
+                                    </ul>
+                                  </td>
+                                </tr>
+                              </tbody>
+                            </table>
+                          </div>
+                        </div>
+                        <div
+                          *ngIf="((loadingDonations$ | async) === false || null || undefined) && (donations$ | async)?.length"
+                          class="px-3">
+                          <div class="row justify-content-md-between align-items-md-center gy-2">
+                            <div class="col col-sm-6">
+                              <div class="dataTables_info mb-2" id="tickets-table_info" role="status"
+                                aria-live="polite">
+                                {{'COMMON.SHOWING' | translate }} {{donationPagination?.startIndex +
+                                1}}–{{donationPagination?.endIndex ===
+                                donationPagination?.length ? donationPagination?.endIndex : donationPagination?.endIndex
+                                + 1}}
+                                {{'COMMON.OF' | translate }}
+                                {{donationPagination?.length}} {{'COMMON.ENTRIES' | translate }}
+                              </div>
+                            </div>
+                            <div class="col col-sm-6 mb-2">
+                              <div class="text-sm-right float-end listjs-pagination">
+                                <ngb-pagination [maxSize]="5" [collectionSize]="donationPagination?.length"
+                                  [(page)]="causePage" (pageChange)="onDonationPageChange($event)"
+                                  [pageSize]="donationPagination?.size">
+                                </ngb-pagination>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                        <div id="noresult" class="py-4 mt-4 text-center"
+                          *ngIf="(loadingDonations$ | async) || (!(loadingDonations$ | async) && !(donations$ | async)?.length)">
+                          <div *ngIf="loadingDonations$ | async">
+                            <lord-icon trigger="loop" style="width:72px;height:72px"
+                              [colors]="'primary:' + primaryColor + ',secondary:' + secondaryColor"
+                              src="https://cdn.lordicon.com/msoeawqm.json">
+                            </lord-icon>
+                            <h5 class="mt-4">{{'COMMON.LOADING' | translate }}</h5>
+                          </div>
+                          <div *ngIf="!(loadingDonations$ | async) && !(donations$ | async)?.length">
+                            <lord-icon trigger="loop" style="width:72px;height:72px"
+                              [colors]="'primary:' + primaryColor + ',secondary:' + secondaryColor"
+                              src="https://cdn.lordicon.com/vlycxjwx.json">
+                            </lord-icon>
+                            <h5 class="mt-4">{{ 'COMMON.NO_RESULT' | translate }}</h5>
+                          </div>
+                        </div>
+                      </div>
+                    </ng-template>
+                  </li>
+                  <li [ngbNavItem]="3" class="nav-item">
+                    <a ngbNavLink class="nav-link" data-bs-toggle="tab" role="tab">
+                      <i class="far fa-envelope"></i>{{ 'COMMON.ORGANISATIONS' | translate }}
+                    </a>
+                    <ng-template ngbNavContent>
+                      <div class="card">
+                        <div class="card-header mb-4">
+                          <div class="d-flex align-items-center justify-content-between">
+                            <div class="align-items-center d-flex gap-4">
+                              <label class="col-xxl-4 form-label">{{ 'COMMON.ORGANISATIONS_ID' | translate }}:</label>
+                              <div class="input-group">
+                                <input readonly type="text" class="form-control apikey-value" [value]="posId">
+                                <span class="input-group-text cursor-pointer"><i matTooltip="Copy"
+                                    (click)="copyText(posId)" class="ri-file-copy-line"></i></span>
+                              </div>
+                            </div>
+                            <div class="flex-shrink-0 hstack gap-2">
+                              <button type="button" (click)="openPartnershipModal(partnerModal)" class="btn btn-info">
+                                <i class="ri-add-line align-bottom me-1"></i> {{ 'COMMON.INVITE' | translate }}
+                              </button>
+                              <button type="button" (click)="openCreatePartnershipModal(createPartnerModal)"
+                                class="btn btn-secondary"><i class="ri-add-line align-bottom me-1"></i>{{
+                                'COMMON.CREATE' | translate }}</button>
+                            </div>
+                          </div>
+                        </div>
+                        <div class="card-body pt-0">
+                          <div class="table-responsive table-card mb-0">
+                            <table class="table align-middle custom-datatable">
+                              <thead>
+                                <tr class="bg-light text-muted text-uppercase">
+                                  <th>Name</th>
+                                  <th>{{'COMMON.EMAIL' | translate }}</th>
+                                  <th>{{'COMMON.TITLE' | translate }}</th>
+                                  <th>{{'COMMON.PHONE' | translate }}</th>
+                                  <th>{{'COMMON.ACTIONS' | translate }}</th>
+                                </tr>
+                              </thead>
+                              <tbody
+                                *ngIf="((loadingAdvertiser$ | async) === false || null || undefined) && (partnershipDonation$ | async)?.length">
+                                <tr *ngFor="let item of partnershipDonation$ | async" id="o_{{item?.id}}">
+                                  <td>
+                                    <div class="d-flex cursor-pointer align-items-center">
+                                      <div class="flex-shrink-0">
+                                        <div class="avatar-sm bg-light p-1 rounded-circle"
+                                          *ngIf="item?.partner?.pos?.picture?.baseUrl">
+                                          <img
+                                            [src]="item?.partner?.pos?.picture?.baseUrl + '/' + item?.partner?.pos?.picture?.path"
+                                            class="img-fluid h-100 rounded-circle">
+                                        </div>
+                                        <div class="avatar-sm bg-light rounded-circle p-1"
+                                          *ngIf="!item?.partner?.pos?.picture?.baseUrl">
+                                          <div class="avatar-title bg-soft-success text-success rounded-circle fs-13">
+                                            {{item?.partner?.pos?.name?.charAt(0) || 'N'}}</div>
+                                        </div>
+                                      </div>
+                                      <div class="flex-grow-1 cursor-pointer fw-medium link-primary ms-2 name">
+                                        {{item?.partner?.pos?.name?.length > 15 ?
+                                        item?.partner?.pos?.name?.substr(0,15) + '...' : item?.partner?.pos?.name}}
+                                      </div>
+                                    </div>
+                                  </td>
+                                  <td>
+                                    {{item?.partner?.pos?.email}}
+                                  </td>
+                                  <td>{{item?.partner?.pos?.title}}</td>
+                                  <td>{{item?.partner?.pos?.phone?.[0]}}</td>
+                                  <td>
+                                    <ul class="list-inline hstack gap-2 mb-0">
+                                      <li class="list-inline-item edit" matTooltip="Delete" placement="top">
+                                        <a (click)="openPartnerDeleteModal(deletePartnerModal, item)"
+                                          href="javascript:void(0);" data-bs-toggle="modal"
+                                          class="text-danger d-inline-block">
+                                          <i class="ri-delete-bin-5-fill fs-16"></i>
+                                        </a>
+                                      </li>
+                                    </ul>
+                                  </td>
+                                </tr>
+                              </tbody>
+                            </table>
+                          </div>
+                        </div>
+                        <div
+                          *ngIf="((loadingAdvertiser$ | async) === false || null || undefined) && (partnershipDonation$ | async)?.length"
+                          class="px-3">
+                          <div class="row justify-content-md-between align-items-md-center gy-2">
+                            <div class="col col-sm-6">
+                              <div class="dataTables_info mb-2" id="tickets-table_info" role="status"
+                                aria-live="polite">
+                                {{'COMMON.SHOWING' | translate }} {{partnershipDonationPagination?.startIndex +
+                                1}}–{{partnershipDonationPagination?.endIndex ===
+                                partnershipDonationPagination?.length ? partnershipDonationPagination?.endIndex :
+                                partnershipDonationPagination?.endIndex + 1}}
+                                {{'COMMON.OF' | translate }}
+                                {{partnershipDonationPagination?.length}} {{'COMMON.ENTRIES' | translate }}
+                              </div>
+                            </div>
+                            <div class="col col-sm-6 mb-2">
+                              <div class="text-sm-right float-end listjs-pagination">
+                                <ngb-pagination [maxSize]="5" [collectionSize]="partnershipDonationPagination?.length"
+                                  [(page)]="partnershipDonationPage"
+                                  (pageChange)="onPartnershipDonationPageChange($event)"
+                                  [pageSize]="partnershipDonationPagination?.size">
+                                </ngb-pagination>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                        <div id="noresult" class="py-4 mt-4 text-center"
+                          *ngIf="(loadingAdvertiser$ | async) || (!(loadingAdvertiser$ | async) && !(partnershipDonation$ | async)?.length)">
+                          <div *ngIf="loadingAdvertiser$ | async">
+                            <lord-icon trigger="loop" style="width:72px;height:72px"
+                              [colors]="'primary:' + primaryColor + ',secondary:' + secondaryColor"
+                              src="https://cdn.lordicon.com/msoeawqm.json">
+                            </lord-icon>
+                            <h5 class="mt-4">{{'COMMON.LOADING' | translate }}</h5>
+                          </div>
+                          <div *ngIf="!(loadingAdvertiser$ | async) && !(partnershipDonation$ | async)?.length">
+                            <lord-icon trigger="loop" style="width:72px;height:72px"
+                              [colors]="'primary:' + primaryColor + ',secondary:' + secondaryColor"
+                              src="https://cdn.lordicon.com/vlycxjwx.json">
+                            </lord-icon>
+                            <h5 class="mt-4">{{ 'COMMON.NO_RESULT' | translate }}</h5>
+                          </div>
+                        </div>
+                      </div>
+                    </ng-template>
+                  </li>
+                </ul>
+                <div class="card-body p-4">
+                  <div class="tab-content">
+                    <div [ngbNavOutlet]="nav"></div>
+                  </div>
+                </div>
+              </ng-template>
+            </li>
+            <li [ngbNavItem]="3" class="nav-item">
+              <a ngbNavLink class="nav-link" data-bs-toggle="tab" role="tab">
+                <i class="far fa-envelope"></i>{{'SHARED.ADVERTISER' | translate }}
+              </a>
+              <ng-template ngbNavContent>
+                <div class="card">
+                  <div class="card-header mb-4">
+                    <div class="d-flex align-items-center justify-content-between">
+                      <div class="align-items-center d-flex gap-4">
+                        <label class="col-xxl-3 form-label">{{'SHARED.IDENTIFIER' | translate }}:</label>
+                        <div class="input-group">
+                          <input readonly type="text" class="form-control apikey-value" [value]="posId">
+                          <span class="input-group-text cursor-pointer"><i matTooltip="Copy" (click)="copyText(posId)"
+                              class="ri-file-copy-line"></i></span>
+                        </div>
+                      </div>
+                      <div class="flex-shrink-0 hstack gap-2">
+                        <button type="button" (click)="openPartnershipModal(partnerModal)" class="btn btn-info">
+                          <i class="ri-add-line align-bottom me-1"></i> {{ 'COMMON.INVITE' | translate }}</button>
+                        <button type="button" (click)="openCreatePartnershipModal(createPartnerModal)"
+                          class="btn btn-secondary"><i class="ri-add-line align-bottom me-1"></i>{{ 'COMMON.CREATE' |
+                          translate }}</button>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="card-body pt-0">
+                    <div class="table-responsive table-card mb-0">
+                      <table class="table align-middle custom-datatable">
+                        <thead>
+                          <tr class="bg-light text-muted text-uppercase">
+                            <th>{{'COMMON.TITLE' | translate }}</th>
+                            <th>{{'COMMON.EMAIL' | translate }}</th>
+                            <th>{{'MODULES.WEBSITE.SUBTITLE' | translate }}</th>
+                            <th>{{'COMMON.PHONE' | translate }}</th>
+                            <th>{{'COMMON.ACTIONS' | translate }}</th>
+                          </tr>
+                        </thead>
+                        <tbody
+                          *ngIf="((loadingAdvertiser$ | async) === false || null || undefined) && (advertisers$ | async)?.length">
+                          <tr *ngFor="let item of advertisers$ | async" id="o_{{item?.id}}">
+                            <td>
+                              <div class="d-flex cursor-pointer align-items-center">
+                                <div class="flex-shrink-0">
+                                  <div class="avatar-sm bg-light p-1 rounded-circle"
+                                    *ngIf="item?.partner?.pos?.picture?.baseUrl">
+                                    <img
+                                      [src]="item?.partner?.pos?.picture?.baseUrl + '/' + item?.partner?.pos?.picture?.path"
+                                      class="img-fluid h-100 rounded-circle">
+                                  </div>
+                                  <div class="avatar-sm bg-light rounded-circle p-1"
+                                    *ngIf="!item?.partner?.pos?.picture?.baseUrl">
+                                    <div class="avatar-title bg-soft-success text-success rounded-circle fs-13">
+                                      {{item?.partner?.pos?.title?.charAt(0) || 'N'}}</div>
+                                  </div>
+                                </div>
+                                <div class="flex-grow-1 cursor-pointer fw-medium link-primary ms-2 name">
+                                  {{item?.partner?.pos?.title?.length > 15 ?
+                                  item?.partner?.pos?.title?.substr(0,15) + '...' : item?.partner?.pos?.title}}
+                                </div>
+                              </div>
+                            </td>
+                            <td>
+                              {{item?.partner?.pos?.email}}
+                            </td>
+                            <td>
+                              {{item?.partner?.pos?.subtitle?.length > 60 ?
+                              item?.partner?.pos?.subtitle?.substr(0,60) + '...' : item?.partner?.pos?.subtitle}}
+                            </td>
+                            <td>{{item?.partner?.pos?.phone?.[0]}}</td>
+                            <td>
+                              <ul class="list-inline hstack gap-2 mb-0">
+                                <li class="list-inline-item edit" matTooltip="Delete" placement="top">
+                                  <a (click)="openPartnerDeleteModal(deletePartnerModal, item)"
+                                    href="javascript:void(0);" data-bs-toggle="modal"
+                                    class="text-danger d-inline-block">
+                                    <i class="ri-delete-bin-5-fill fs-16"></i>
+                                  </a>
+                                </li>
+                              </ul>
+                            </td>
+                          </tr>
+                        </tbody>
+                      </table>
+                    </div>
+                  </div>
+                  <div
+                    *ngIf="((loadingAdvertiser$ | async) === false || null || undefined) && (advertisers$ | async)?.length"
+                    class="px-3">
+                    <div class="row justify-content-md-between align-items-md-center gy-2">
+                      <div class="col col-sm-6">
+                        <div class="dataTables_info mb-2" id="tickets-table_info" role="status" aria-live="polite">
+                          {{'COMMON.SHOWING' | translate }} {{advertiserPagination?.startIndex +
+                          1}}–{{advertiserPagination?.endIndex ===
+                          advertiserPagination?.length ? advertiserPagination?.endIndex :
+                          advertiserPagination?.endIndex + 1}}
+                          {{'COMMON.OF' | translate }}
+                          {{advertiserPagination?.length}} {{'COMMON.ENTRIES' | translate }}
+                        </div>
+                      </div>
+                      <div class="col col-sm-6 mb-2">
+                        <div class="text-sm-right float-end listjs-pagination">
+                          <ngb-pagination [maxSize]="5" [collectionSize]="advertiserPagination?.length"
+                            [(page)]="advertiserPage" (pageChange)="onPartnershipAdvertiserPageChange($event)"
+                            [pageSize]="advertiserPagination?.size">
+                          </ngb-pagination>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div id="noresult" class="py-4 mt-4 text-center"
+                    *ngIf="(loadingAdvertiser$ | async) || (!(loadingAdvertiser$ | async) && !(advertisers$ | async)?.length)">
+                    <div *ngIf="loadingAdvertiser$ | async">
+                      <lord-icon trigger="loop" style="width:72px;height:72px"
+                        [colors]="'primary:' + primaryColor + ',secondary:' + secondaryColor"
+                        src="https://cdn.lordicon.com/msoeawqm.json">
+                      </lord-icon>
+                      <h5 class="mt-4">{{'COMMON.LOADING' | translate }}</h5>
+                    </div>
+                    <div *ngIf="!(loadingAdvertiser$ | async) && !(advertisers$ | async)?.length">
+                      <lord-icon trigger="loop" style="width:72px;height:72px"
+                        [colors]="'primary:' + primaryColor + ',secondary:' + secondaryColor"
+                        src="https://cdn.lordicon.com/vlycxjwx.json">
+                      </lord-icon>
+                      <h5 class="mt-4">{{ 'COMMON.NO_RESULT' | translate }}</h5>
+                    </div>
+                  </div>
+                </div>
+              </ng-template>
+            </li>
+          </ul>
+        </div>
+        <div class="card-body p-4">
+          <div class="tab-content">
+            <div [ngbNavOutlet]="customNav"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <ng-template #createPartnerModal role="document" let-modal>
+    <div class="modal-header bg-soft-info p-3">
+      <h5 class="modal-title" id="exampleModalLabel">{{ 'COMMON.CREATE_PARTNER' | translate }}</h5>
+      <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" id="close-modal"
+        (click)="modal.dismiss('Cross click')"></button>
+    </div>
+    <div class="modal-body">
+      <form [formGroup]="createPartnerForm">
+        <aw-wizard [navBarLayout]="'large-empty-symbols'" class="nav nav-pills custom-nav nav-wizard nav-justified">
+          <aw-wizard-step>
+            <ng-template awWizardStepSymbol>
+              <li class="nav-item" role="presentation">
+                <button class="nav-link done" id="steparrow-gen-info-tab" data-bs-toggle="pill"
+                  data-bs-target="#steparrow-gen-info" type="button" role="tab" aria-controls="steparrow-gen-info"
+                  aria-selected="true">{{ 'SHARED.PARTNER' | translate }}</button>
+              </li>
+            </ng-template>
+            <div formGroupName="partner">
+              <ng-container formGroupName="pos">
+                <div class="mb-3">
+                  <label class="form-label" for="steparrow-gen-info-email-input">{{'COMMON.EMAIL' | translate }}</label>
+                  <input type="text" formControlName="email" class="form-control" id="steparrow-gen-info-email-input"
+                    placeholder="Enter Email">
+                </div>
+                <div class="mb-3">
+                  <label class="form-label" for="steparrow-gen-info-username-input">{{'COMMON.TITLE' | translate
+                    }}</label>
+                  <input type="text" formControlName="title" class="form-control" id="steparrow-gen-info-username-input"
+                    placeholder="{{'COMMON.ENTER' | translate }} {{'COMMON.TITLE' | translate }}">
+                </div>
+                <div class="mb-3">
+                  <label class="form-label" for="steparrow-gen-info-username-input">{{'COMMON.NAME' | translate
+                    }}</label>
+                  <input type="text" formControlName="name" class="form-control" id="steparrow-gen-info-username-input"
+                    placeholder="{{'COMMON.ENTER' | translate }} {{'COMMON.TITLE' | translate }}">
+                </div>
+                <div class="form-check col-lg-4 mb-4">
+                  <input [(ngModel)]="managePartner" [ngModelOptions]="{standalone: true}" class="form-check-input"
+                    type="checkbox" id="Required">
+                  <label class="form-check-label" for="Required">{{'COMMON.MANAGE_PARTNER' | translate }} </label>
+                </div>
+              </ng-container>
+            </div>
+            <div class="d-flex align-items-start gap-3 mt-4">
+              <button
+                [disabled]="createPartnerForm.get(['partner', 'pos', 'email']).invalid || createPartnerForm.get(['partner', 'pos', 'name']).invalid "
+                type="button" class="btn btn-success btn-label right ms-auto nexttab
+  nexttab" data-nexttab="steparrow-description-info-tab" awNextStep><i
+                  class="ri-arrow-right-line label-icon align-middle fs-16 ms-2"></i>{{'MODULES.ECOMMERCE.MAIN.NEXT_STEP'
+                | translate }}</button>
+            </div>
+          </aw-wizard-step>
+
+          <aw-wizard-step>
+            <ng-template awWizardStepSymbol>
+              <li class="nav-item" role="presentation">
+                <button class="nav-link active" id="steparrow-description-info-tab" data-bs-toggle="pill"
+                  data-bs-target="#steparrow-description-info" type="button" role="tab"
+                  aria-controls="steparrow-description-info" aria-selected="false">{{'SHARED.USER' | translate
+                  }}</button>
+              </li>
+            </ng-template>
+            <div formGroupName="partner">
+              <ng-container formGroupName="user">
+                <div class="mb-3">
+                  <label class="form-label" for="steparrow-gen-info-email-input">{{'COMMON.FIRST_NAME' | translate
+                    }}</label>
+                  <input type="text" formControlName="firstName" class="form-control"
+                    id="steparrow-gen-info-email-input" placeholder="Enter First Name">
+                </div>
+                <div class="mb-3">
+                  <label class="form-label" for="steparrow-gen-info-email-input">{{'COMMON.LAST_NAME' | translate
+                    }}</label>
+                  <input type="text" formControlName="lastName" class="form-control" id="steparrow-gen-info-email-input"
+                    placeholder="Enter Last Name">
+                </div>
+                <div class="mb-3">
+                  <label class="form-label" for="steparrow-gen-info-email-input">{{'COMMON.EMAIL' | translate }}</label>
+                  <input type="text" formControlName="email" class="form-control" id="steparrow-gen-info-email-input"
+                    placeholder="Enter Email">
+                </div>
+              </ng-container>
+            </div>
+            <div class="d-flex align-items-start gap-1 mt-4">
+              <button type="button" class="btn btn-light btn-label previestab" data-previous="steparrow-gen-info-tab"
+                awPreviousStep><i class="ri-arrow-left-line label-icon align-middle fs-16 me-2"></i> {{'COMMON.BACK' |
+                translate }} </button>
+              <button type="button" class="btn btn-soft-danger" data-bs-dismiss="modal"
+                (click)="modal.close('Close click')">{{'COMMON.CLOSE' | translate }}</button>
+              <button [disabled]="isCreatePartnerButtonDisabled || createPartnerForm.invalid"
+                (click)="createPartnership()" type="button" class="btn btn-success btn-label right ms-auto nexttab
+  nexttab" data-nexttab="pills-experience-tab" awNextStep><i
+                  class="ri-arrow-right-line label-icon align-middle fs-16 ms-2"></i>{{'COMMON.SUBMIT' | translate
+                }}</button>
+            </div>
+          </aw-wizard-step>
+
+          <aw-wizard-step>
+            <ng-template awWizardStepSymbol>
+              <li class="nav-item" role="presentation">
+                <button class="nav-link" id="pills-experience-tab" data-bs-toggle="pill"
+                  data-bs-target="#pills-experience" type="button" role="tab" aria-controls="pills-experience"
+                  aria-selected="false">{{'COMMON.FINISH' | translate }}</button>
+              </li>
+            </ng-template>
+            <div *ngIf="!loadingCreateParner" class="text-center">
+              <div class="avatar-md mt-2 mb-4 mx-auto">
+                <div
+                  [ngClass]="saveSuccess ? 'avatar-title bg-light text-success display-4 rounded-circle' : 'avatar-title bg-light text-danger display-4 rounded-circle'">
+                  <i [ngClass]="saveSuccess ? 'ri-checkbox-circle-fill' : 'ri-close-line'"></i>
+                </div>
+              </div>
+              <h5>{{saveSuccess ? 'Well Done !' : 'Oops...'}}</h5>
+              <p class="text-muted">
+                {{ (saveSuccess ? 'COMMON.PARTNER_INVITED' : userExist ? 'COMMON.USER_EXIST' : 'COMMON.STH_WENT_WRONG') | translate }}
+              </p>
+            </div>
+
+            <div id="noresult" class="py-4 text-center" *ngIf="loadingCreateParner">
+              <lord-icon trigger="loop" style="width:72px;height:72px"
+                [colors]="'primary:' + primaryColor + ',secondary:' + secondaryColor"
+                src="https://cdn.lordicon.com/msoeawqm.json">
+              </lord-icon>
+              <h5 class="mt-4">{{'COMMON.LOADING' | translate }}</h5>
+            </div>
+          </aw-wizard-step>
+        </aw-wizard>
+      </form>
+    </div>
+  </ng-template>
+
+  <ng-template #partnerModal role="document" let-modal>
+    <div class="modal-header bg-soft-info p-3">
+      <h5 class="modal-title" id="exampleModalLabel">{{'COMMON.INVITE_PARTNER' | translate }}</h5>
+      <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" id="close-modal"
+        (click)="modal.dismiss('Cross click')"></button>
+    </div>
+    <form [formGroup]="partnerForm">
+      <div class="modal-body">
+        <div formGroupName="partner" class="mb-3">
+          <label for="email_id-field" class="form-label">{{'SHARED.PARTNER' | translate }}</label>
+          <input type="text" id="email_id-field" class="form-control" placeholder="Enter pos Id"
+            formControlName="pos" />
+        </div>
+      </div>
+      <div class="modal-footer">
+        <div class="hstack gap-2 justify-content-end">
+          <button type="button" class="btn btn-light" data-bs-dismiss="modal"
+            (click)="modal.close('Close click')">{{'COMMON.CLOSE' | translate }}</button>
+          <button [disabled]="isPartnerButtonDisabled || partnerForm.invalid" type="button" (click)="invitePartner()"
+            class="btn btn-success" id="add-btn">{{'COMMON.INVITE_PARTNER' | translate }}</button>
+        </div>
+      </div>
+    </form>
+  </ng-template>
+
+  <ng-template #donationModal role="document" let-modal>
+    <div class="modal-header bg-soft-info p-3">
+      <h5 class="modal-title" id="exampleModalLabel">{{(selectedDonation ? 'COMMON.EDIT_DONATION' : 'COMMON.ADD_DONATION') | translate}}</h5>
+      <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" id="close-modal"
+        (click)="modal.dismiss('Cross click')"></button>
+    </div>
+    <form [formGroup]="donationForm">
+      <div class="modal-body">
+        <div *ngIf="selectedDonationType === 'picture'" class="mb-4">
+          <div class="text-center">
+            <div class="position-relative d-inline-block">
+              <div class="position-absolute  bottom-0 end-0">
+                <label (click)="upload('donation')" for="customer-image-input" class="mb-0" data-bs-toggle="tooltip"
+                  data-bs-placement="right" title="Select Image">
+                  <div class="avatar-xs cursor-pointer">
+                    <div class="avatar-title bg-light border rounded-circle text-muted">
+                      <i class="ri-image-fill"></i>
+                    </div>
+                  </div>
+                </label>
+              </div>
+              <div class="cursor-pointer avatar-lg">
+                <div class="rounded-circle">
+                  <div class="avatar-lg bg-soft-primary img-thumbnail rounded-circle flex-shrink-0 shadow"
+                    *ngIf="donationForm.get(['media', 'pictures'])?.value[0].baseUrl === '' || !donationForm.get(['media', 'pictures'])?.value[0].baseUrl">
+                    <div class="align-items-center d-flex h-100 rounded-circle text-uppercase">
+                      {{'MODULES.SYSTEM.UPLOAD_PICTURE' | translate }}</div>
+                  </div>
+                  <img
+                    *ngIf="donationForm.get(['media', 'pictures'])?.value[0].baseUrl !== '' && donationForm.get(['media', 'pictures'])?.value[0].baseUrl"
+                    [src]="donationForm.get(['media', 'pictures'])?.value[0]?.baseUrl + '/' + donationForm.get(['media', 'pictures'])?.value[0]?.path"
+                    id="companylogo-img" class="avatar-lg rounded-circle object-cover" />
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="row">
+          <div>
+            <div class="form-check">
+              <input [ngModelOptions]="{standalone: true}" [checked]="selectedDonationType === 'picture'"
+                [(ngModel)]="selectedDonationType" value="picture" id="shippingMethod02" type="radio"
+                class="form-check-input">
+              <label class="form-check-label" for="shippingMethod02">
+                <span class="fs-14 mb-1 text-wrap d-block">
+                  {{COMMON.PICTURE}}</span>
+              </label>
+            </div>
+            <div class="form-check">
+              <input [ngModelOptions]="{standalone: true}" [checked]="selectedDonationType === 'icon'"
+                [(ngModel)]="selectedDonationType" value="icon" id="shippingMethod02" type="radio"
+                class="form-check-input">
+              <label class="form-check-label" for="shippingMethod02">
+                <span class="fs-14 mb-1 text-wrap d-block">{{'COMMON.ICON' | translate }}</span>
+              </label>
+            </div>
+          </div>
+          <div *ngIf="selectedDonationType === 'icon'" class="mb-3 col-lg-6">
+            <label for="email_id-field" class="form-label">{{'COMMON.ICON' | translate }}</label>
+            <input type="text" id="email_id-field" class="form-control" placeholder="Icon" formControlName="icon" />
+          </div>
+          <div class="mb-3 col-lg-6">
+            <label for="email_id-field" class="form-label">{{'COMMON.TITLE' | translate }}*</label>
+            <input type="text" id="email_id-field" class="form-control"
+              placeholder="{{'PLACEHOLDER.ENTER_TITLE' | translate }}" required formControlName="title"
+              [ngClass]="{ 'is-invalid': donationForm.get('title')?.touched && donationForm.get('title').hasError('required') }" />
+            <div class="invalid-feedback"
+              *ngIf="donationForm.get('title')?.touched && donationForm.get('title').hasError('required')">
+              {{'COMMON.REQUIRED'
+              | translate }}
+            </div>
+          </div>
+          <div class="mb-3 col-lg-6">
+            <label for="email_id-field" class="form-label">{{'COMMON.CODE' | translate }}*</label>
+            <input required type="text" id="email_id-field" class="form-control"
+              placeholder="{{'PLACEHOLDER.ENTER_TITLE' | translate }}" formControlName="code"
+              [ngClass]="{ 'is-invalid': donationForm.get('code')?.touched && donationForm.get('code').hasError('required') }" />
+            <div class="invalid-feedback"
+              *ngIf="donationForm.get('code')?.touched && donationForm.get('code').hasError('required')">
+              {{'COMMON.REQUIRED'
+              | translate }}
+            </div>
+          </div>
+          <div class="mb-3 col-lg-6">
+            <label for="email_id-field" class="form-label">{{'COMMON.THEME' | translate }}</label>
+            <input type="text" id="email_id-field" class="form-control" placeholder="Theme" formControlName="theme" />
+          </div>
+          <div class="mb-3 col-lg-6">
+            <label for="email_id-field" class="form-label">{{'COMMON.DESCRIPTION' | translate }}</label>
+            <textarea formControlName="description" name="description" id="comments" rows="3"
+              class="form-control bg-light border-light"
+              placeholder="{{'COMMON.ENTER_DESCRIPTION' | translate }}"></textarea>
+          </div>
+          <div formGroupName="donation" class="mb-3 col-lg-6">
+            <label for="email_id-field" class="form-label">{{'COMMON.CAUSE' | translate }}*</label>
+            <ng-select [typeahead]="causesSearchInput$" required [virtualScroll]="true" (scrollToEnd)="loadMoreCauses()"
+              placeholder="Enter your cause" [items]="infiniteCauses" [multiple]="false" [formControlName]="'cause'"
+              [ngClass]="{ 'is-invalid': donationForm.get(['donation', 'cause'])?.touched && donationForm.get(['donation', 'cause']).hasError('required') }">
+              <ng-template ng-label-tmp let-item="item" let-clear="clear">
+                <span class="ng-value-label">
+                  {{item?.title}}
+                </span>
+                <span class="ng-value-icon right" (click)="clear(item)" aria-hidden="true">×</span>
+              </ng-template>
+              <ng-template ng-option-tmp let-item="item">
+                <div class="align-items-center d-flex gap-1">
+                  <div class="align-items-center avatar-xxs d-flex flex-shrink-0">
+                    <div
+                      *ngIf="!item?.icon && (!item?.media?.pictures?.length || (item?.media?.pictures?.length && (!item?.media?.pictures[0]?.baseUrl || item?.media?.pictures[0]?.baseUrl === '')))"
+                      class="avatar-xxs">
+                      <div class="avatar-title text-danger bg-soft-info rounded-circle shadow">
+                        {{item?.name?.charAt(0) || 'N'}}
+                      </div>
+                    </div>
+                    <div *ngIf="!item?.icon">
+                      <img
+                        *ngIf="item?.media?.pictures?.length && item?.media?.pictures[0]?.baseUrl && item?.media?.pictures[0]?.baseUrl !== ''"
+                        [src]="item?.media?.pictures[0]?.baseUrl + '/' + item?.media?.pictures[0]?.path" alt=""
+                        class="avatar-xxs shadow rounded-circle" />
+                    </div>
+                    <i *ngIf="item?.icon" [class]="item?.icon + ' fs-24'"></i>
+                  </div>
+                  <span> {{item?.title}} </span>
+                </div>
+              </ng-template>
+            </ng-select>
+            <div class="invalid-feedback"
+              *ngIf="donationForm.get(['donation', 'cause'])?.touched && donationForm.get(['donation', 'cause']).hasError('required')">
+              {{'COMMON.REQUIRED'
+              | translate }}
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <div class="hstack gap-2 justify-content-end">
+          <button type="button" class="btn btn-light" data-bs-dismiss="modal"
+            (click)="modal.close('Close click')">{{'COMMON.CLOSE' | translate }}</button>
+          <button [disabled]="isDonationButtonDisabled || donationForm.invalid" type="button" (click)="saveDonation()"
+            class="btn btn-success" id="add-btn">{{(selectedDonation ? 'COMMON.EDIT_DONATION' : 'COMMON.ADD_DONATION') | translate}}</button>
+        </div>
+      </div>
+    </form>
+  </ng-template>
+
+  <ng-template #causeModal role="document" let-modal>
+    <div class="modal-header bg-soft-info p-3">
+      <h5 class="modal-title" id="exampleModalLabel">{{selectedCause ? 'SHARED.EDIT_CAUSE' : 'SHARED.ADD_CAUSE'}}</h5>
+      <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" id="close-modal"
+        (click)="modal.dismiss('Cross click')"></button>
+    </div>
+    <form [formGroup]="causeForm">
+      <div class="modal-body">
+        <div *ngIf="selectedCauseType === 'picture'" class="mb-4">
+          <div class="text-center">
+            <div class="position-relative d-inline-block">
+              <div class="position-absolute  bottom-0 end-0">
+                <label (click)="upload('cause')" for="customer-image-input" class="mb-0" data-bs-toggle="tooltip"
+                  data-bs-placement="right" title="Select Image">
+                  <div class="avatar-xs cursor-pointer">
+                    <div class="avatar-title bg-light border rounded-circle text-muted">
+                      <i class="ri-image-fill"></i>
+                    </div>
+                  </div>
+                </label>
+              </div>
+              <div class="cursor-pointer avatar-lg">
+                <div class="rounded-circle">
+                  <div class="avatar-lg bg-soft-primary img-thumbnail rounded-circle flex-shrink-0 shadow"
+                    *ngIf="causeForm.get(['media', 'pictures'])?.value[0].baseUrl === '' || !causeForm.get(['media', 'pictures'])?.value[0].baseUrl">
+                    <div class="align-items-center d-flex h-100 rounded-circle text-uppercase">
+                      {{'MODULES.SYSTEM.UPLOAD_PICTURE' | translate }}</div>
+                  </div>
+                  <img
+                    *ngIf="causeForm.get(['media', 'pictures'])?.value[0].baseUrl !== '' && causeForm.get(['media', 'pictures'])?.value[0].baseUrl"
+                    [src]="causeForm.get(['media', 'pictures'])?.value[0]?.baseUrl + '/' + causeForm.get(['media', 'pictures'])?.value[0]?.path"
+                    id="companylogo-img" class="avatar-lg rounded-circle object-cover" />
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="ms-3">
+            <div class="form-check">
+              <input [ngModelOptions]="{standalone: true}" [checked]="selectedCauseType === 'picture'"
+                [(ngModel)]="selectedCauseType" value="picture" id="shippingMethod02" type="radio"
+                class="form-check-input">
+              <label class="form-check-label" for="shippingMethod02">
+                <span class="fs-14 mb-1 text-wrap d-block">
+                  {{'COMMON.PICTURE' | translate }}</span>
+              </label>
+            </div>
+            <div class="form-check">
+              <input [ngModelOptions]="{standalone: true}" [checked]="selectedCauseType === 'icon'"
+                [(ngModel)]="selectedCauseType" value="icon" id="shippingMethod02" type="radio"
+                class="form-check-input">
+              <label class="form-check-label" for="shippingMethod02">
+                <span class="fs-14 mb-1 text-wrap d-block">{{'COMMON.ICON' | translate }}</span>
+              </label>
+            </div>
+          </div>
+          <div *ngIf="selectedCauseType === 'icon'" class="mb-3 col-lg-6">
+            <label for="email_id-field" class="form-label">{{'COMMON.ICON' | translate }}</label>
+            <input type="text" id="email_id-field" class="form-control" placeholder="Icon" formControlName="icon" />
+          </div>
+          <div class="mb-3 col-lg-6">
+            <label for="email_id-field" class="form-label">{{'COMMON.TITLE' | translate }}*</label>
+            <input type="text" id="email_id-field" class="form-control"
+              placeholder="{{'PLACEHOLDER.ENTER_TITLE' | translate }}" required formControlName="title"
+              [ngClass]="{ 'is-invalid': causeForm.get('title')?.touched && causeForm.get('title').hasError('required') }" />
+            <div class="invalid-feedback"
+              *ngIf="causeForm.get('title')?.touched && causeForm.get('title').hasError('required')">{{'COMMON.REQUIRED'
+              | translate }}
+            </div>
+          </div>
+          <div class="mb-3 col-lg-6">
+            <label for="email_id-field" class="form-label">{{'COMMON.CODE' | translate }}*</label>
+            <input required type="text" id="email_id-field" class="form-control"
+              placeholder="{{'PLACEHOLDER.ENTER_TITLE' | translate }}" formControlName="code"
+              [ngClass]="{ 'is-invalid': causeForm.get('code')?.touched && causeForm.get('code').hasError('required') }" />
+            <div class="invalid-feedback"
+              *ngIf="causeForm.get('code')?.touched && causeForm.get('code').hasError('required')">{{'COMMON.REQUIRED'
+              | translate }}
+            </div>
+          </div>
+          <div class="mb-3 col-lg-6">
+            <label for="email_id-field" class="form-label">{{'COMMON.DESCRIPTION' | translate }}</label>
+            <textarea formControlName="description" name="description" id="comments" rows="3"
+              class="form-control bg-light border-light"
+              placeholder="{{'COMMON.ENTER_DESCRIPTION' | translate }}"></textarea>
+          </div>
+          <div class="mb-3 col-lg-6">
+            <label for="email_id-field" class="form-label">{{'SHARED.QUALITATIVE_RATIO' | translate }}</label>
+            <input type="number" id="email_id-field" class="form-control" placeholder="Enter Qualitative Ratio"
+              formControlName="qualitativeRatio" />
+          </div>
+          <div class="mb-3 col-lg-6">
+            <label for="email_id-field" class="form-label">{{'SHARED.COIN' | translate }}*</label>
+            <ng-select [typeahead]="walletSearchInput$" required bindValue="coin.id" bindLabel="coin.name"
+              [virtualScroll]="true" (scrollToEnd)="loadMoreWallets()" placeholder="Enter your coin"
+              [items]="wallet$ | async" [multiple]="false" [formControlName]="'coin'"
+              [ngClass]="{ 'is-invalid': causeForm.get('coin')?.touched && causeForm.get('coin').hasError('required') }">
+              <ng-template ng-label-tmp let-item="item" let-clear="clear">
+                <div class="ng-value-label">
+                  <div class="flex-grow-1 ms-3">
+                    <span class="mb-1">{{item?.coin?.name}} ({{item?.fee}}%)</span>
+                  </div>
+                </div>
+                <span class="ng-value-icon right" (click)="clear(item)" aria-hidden="true">×</span>
+              </ng-template>
+              <ng-template ng-option-tmp let-item="item">
+                <div class="col-3 d-flex">
+                  <div class="flex-shrink-0">
+                    <div *ngIf="!item?.coin?.picture?.baseUrl" class="avatar-xxs">
+                      <div class="avatar-title text-danger bg-soft-info rounded-circle shadow">
+                        {{item?.coin?.name?.charAt(0) || 'N'}}
+                      </div>
+                    </div>
+                    <div *ngIf="item?.coin?.picture?.baseUrl">
+                      <img [src]="item?.coin?.picture?.baseUrl + '/' + item?.coin?.picture?.path" alt=""
+                        class="avatar-xxs shadow rounded-circle" />
+                    </div>
+                  </div>
+                  <div class="flex-grow-1 ms-3">
+                    <h6 class="mb-1">{{item?.coin?.name}} <span class="text-muted"> ({{item?.coin?.code}}) </span></h6>
+                    <div *ngIf="item?.coin?.unitValue?.amount">
+                      <h6 [ngClass]="{
+                                          'text-danger': +item?.amount < 0,
+                                          'text-success': +item?.amount > 0,
+                                          'text-info': +item?.amount === 0
+                                      }" class="text-danger mb-0">{{item?.amount | number: '1.3-3'}} <span
+                          class="text-muted"> ({{item?.fee}}%) </span> </h6>
+                    </div>
+                  </div>
+                </div>
+              </ng-template>
+            </ng-select>
+            <div class="invalid-feedback"
+              *ngIf="causeForm.get('coin')?.touched && causeForm.get('coin').hasError('required')">{{'COMMON.REQUIRED'
+              | translate }}
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <div class="hstack gap-2 justify-content-end">
+          <button type="button" class="btn btn-light" data-bs-dismiss="modal"
+            (click)="modal.close('Close click')">{{'COMMON.CLOSE' | translate }}</button>
+          <button [disabled]="isCauseButtonDisabled || causeForm.invalid" type="button" (click)="saveCause()"
+            class="btn btn-success" id="add-btn">{{(selectedCause ? 'SHARED.EDIT_CAUSE' : 'SHARED.ADD_CAUSE' ) |
+            translate }}</button>
+
+        </div>
+      </div>
+    </form>
+  </ng-template>
+
+  <ng-template #campaignModal role="document" let-modal>
+    <div class="modal-header bg-soft-info p-3">
+      <h5 class="modal-title" id="exampleModalLabel">{{(selectedCampaign ? 'SHARED.EDIT_CATEGORY' :
+        'SHARED.ADD_CATEGORY' ) | translate }}</h5>
+
+      <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" id="close-modal"
+        (click)="modal.dismiss('Cross click')"></button>
+    </div>
+    <form *ngIf="campaignForm" [formGroup]="campaignForm">
+      <div class="modal-body">
+        <div class="step-arrow-nav mt-n3 mx-n3 mb-3">
+          <ul (navChange)="onCampaignTabChange($event)" ngbNav #customNav="ngbNav" [activeId]="selectedNav"
+            class="nav nav-pills custom-nav nav-justified" role="tablist">
+            <li [ngbNavItem]="1" class="nav-item">
+              <a ngbNavLink class="nav-link fs-15 p-3" data-bs-toggle="tab" role="tab">
+                <i
+                  class="ri-file-info-line fs-16 p-2 bg-soft-primary text-primary rounded-circle align-middle mx-2"></i>
+                  {{'COMMON.INFORMATION' | translate }}
+              </a>
+              <ng-template ngbNavContent>
+                <div class="row">
+                  <div class="col-lg-12 mb-4">
+                    <div class="text-center">
+                      <div class="position-relative d-inline-block">
+                        <div class="position-absolute  bottom-0 end-0">
+                          <label (click)="upload('campaign')" for="customer-image-input" class="mb-0"
+                            data-bs-toggle="tooltip" data-bs-placement="right" title="Select Image">
+                            <div class="avatar-xs cursor-pointer">
+                              <div class="avatar-title bg-light border rounded-circle text-muted">
+                                <i class="ri-image-fill"></i>
+                              </div>
+                            </div>
+                          </label>
+                        </div>
+                        <div class="cursor-pointer avatar-lg">
+                          <div class="rounded-circle">
+                            <div class="avatar-lg bg-soft-primary img-thumbnail rounded-circle flex-shrink-0 shadow"
+                              *ngIf="!pictures?.value[0].baseUrl || pictures?.value[0]?.baseUrl === ''">
+                              <div class="align-items-center d-flex h-100 rounded-circle text-uppercase">
+                                {{'MODULES.SYSTEM.UPLOAD_PICTURE' | translate }}</div>
+                            </div>
+                            <img *ngIf="pictures?.value[0].baseUrl && pictures?.value[0].baseUrl !== ''"
+                              [src]="pictures?.value[0]?.baseUrl + '/' + pictures?.value[0]?.path" id="companylogo-img"
+                              class="avatar-lg rounded-circle object-cover" />
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="mb-3 col-lg-6">
+                    <label for="email_id-field" class="form-label">{{'COMMON.TITLE' | translate }}</label>
+                    <input type="text" id="email_id-field" class="form-control"
+                      placeholder="{{'PLACEHOLDER.ENTER_TITLE' | translate }}" required formControlName="title"
+                      [ngClass]="{ 'is-invalid': campaignForm.get('title')?.touched && campaignForm.get('title').hasError('required') }" />
+                    <div class="invalid-feedback"
+                      *ngIf="campaignForm.get('title')?.touched && campaignForm.get('title').hasError('required')">
+                      {{'COMMON.REQUIRED' | translate }}
+                    </div>
+                  </div>
+                  <div *ngIf="(advertisers$ | async)?.length" formGroupName="advertiser" class="mb-3 col-lg-6">
+                    <label for="email_id-field" class="form-label">{{'SHARED.PLATFORM' | translate }}</label>
+                    <ng-select (change)="onChangeAdvertiser($event)" [hideSelected]="true" bindValue="partner.pos.id"
+                      bindLabel="partner.pos.name" [closeOnSelect]="true" [multiple]="false" [searchable]="true"
+                      formControlName="pos" [items]="advertisers$ | async" [virtualScroll]="true"
+                      placeholder="Select Advertiser" (scrollToEnd)="loadMoreAdvertisers()">
+                      <ng-template ng-label-tmp let-item="item" let-clear="clear">
+                        <span class="ng-value-label">
+                          {{item?.partner?.pos?.title}}
+                        </span>
+                        <span class="ng-value-icon right" (click)="clear(item)" aria-hidden="true">×</span>
+                      </ng-template>
+                      <ng-template ng-option-tmp let-item$="item$" let-item="item">
+                        <div class="d-flex cursor-pointer align-items-center">
+                          <div class="flex-shrink-0">
+                            <div class="avatar-xs bg-light p-1 rounded-circle"
+                              *ngIf="item?.partner?.pos?.picture?.baseUrl">
+                              <img
+                                [src]="item?.partner?.pos?.picture?.baseUrl + '/' + item?.partner?.pos?.picture?.path"
+                                class="img-fluid h-100 rounded-circle">
+                            </div>
+                            <div class="avatar-xs bg-light rounded-circle p-1"
+                              *ngIf="!item?.partner?.pos?.picture?.baseUrl">
+                              <div class="avatar-title bg-soft-success text-success rounded-circle fs-13">
+                                {{item?.partner?.pos?.title?.charAt(0) || 'N'}}</div>
+                            </div>
+                          </div>
+                          <div class="flex-grow-1 cursor-pointer fw-medium link-primary ms-2">
+                            {{item?.partner?.pos?.title?.length > 15 ?
+                            item?.partner?.pos?.title?.substr(0,15) + '...' : item?.partner?.pos?.title}}
+                          </div>
+                        </div>
+                      </ng-template>
+                    </ng-select>
+                  </div>
+                  <div class="mb-3">
+                    <label for="email_id-field" class="form-label">{{'COMMON.DESCRIPTION' | translate }}</label>
+                    <textarea formControlName="description" name="description" id="comments" rows="3"
+                      class="form-control bg-light border-light"
+                      placeholder="{{'COMMON.ENTER_DESCRIPTION' | translate }}"></textarea>
+                  </div>
+                </div>
+                <div class="d-flex align-items-start mt-4">
+                  <button (click)="selectedNav = 2" type="button"
+                    class="btn btn-primary btn-label right ms-auto nexttab" data-nexttab="pills-payment-tab"><i
+                      class="ri-arrow-right-line label-icon align-middle fs-16 ms-2"></i>{{'MODULES.ECOMMERCE.MAIN.NEXT_STEP'
+                    | translate }}</button>
+                </div>
+              </ng-template>
+            </li>
+            <li [ngbNavItem]="2" class="nav-item">
+              <a ngbNavLink class="nav-link fs-15 p-3" data-bs-toggle="tab" role="tab">
+                <i class="ri-group-2-line fs-16 p-2 bg-soft-primary text-primary rounded-circle align-middle mx-2"></i>
+                {{'SHARED.ACTIVITIES' | translate }}
+              </a>
+              <ng-template ngbNavContent>
+                <div class="row">
+                  <div class="mb-3 col-lg-6">
+                    <label for="email_id-field" class="form-label">{{'SHARED.ACTIVITY_TYPE' | translate }} </label>
+                    <ng-select [hideSelected]="true" [closeOnSelect]="false" [multiple]="true" [searchable]="false"
+                      formControlName="activityTypes" [items]="filteredActivityTypes" [virtualScroll]="true"
+                      placeholder="{{'PLACEHOLDER.SELECT_ACTIVITY_TYPE' | translate }}"
+                      (scrollToEnd)="loadMoreActivities()">
+                      <ng-template ng-label-tmp let-item="item" let-clear="clear">
+                        <span class="ng-value-label">
+                          {{item?.title}}
+                        </span>
+                        <span class="ng-value-icon right" (click)="clear(item)" aria-hidden="true">×</span>
+                      </ng-template>
+                      <ng-template ng-option-tmp let-item$="item$" let-item="item">
+                        <div class="d-flex gap-2 align-items-center">
+                          <div *ngIf="!item?.icon" class="avatar-xxs">
+                            <span class="avatar-title bg-danger rounded-circle text-uppercase">
+                              {{item?.title?.charAt(0) || 'N'}}
+                            </span>
+                          </div>
+                          <div *ngIf="item?.icon">
+                            <i [class]="item?.icon + ' fs-2 ' + item?.theme"></i>
+                          </div>
+                          {{item?.title}}
+                        </div>
+                      </ng-template>
+                    </ng-select>
+                  </div>
+                  <ng-container *ngIf="hasQuestionType">
+                    <div class="mb-3 col-lg-6">
+                      <label for="email_id-field" class="form-label">{{'COMMON.QUESTION_TYPES' | translate }}</label>
+                      <ng-select [hideSelected]="true" [required]="hasQuestionType" [multiple]="true"
+                        [searchable]="false" formControlName="questionTypes" [items]="questionTypes"
+                        [virtualScroll]="true" placeholder="{{'PLACEHOLDER.SELECT_QUESTION_TYPES' | translate }}"
+                        [ngClass]="{'is-invalid': campaignForm.get('questionTypes')?.touched && campaignForm.get('questionTypes').hasError('required')}">
+                        <ng-template ng-label-tmp let-item="item" let-clear="clear">
+                          <span class="ng-value-label">
+                            {{
+                            (item === 'SHORT_ANSWER' ? 'SHARED.SHORT_ANSWER' :
+                            item === 'MULTIPLE_CHOICE' ? 'SHARED.MULTIPLE_CHOICE' :
+                            item === 'SINGLE_CHOICE' ? 'SHARED.SINGLE_CHOICE' :
+                            item === 'PARAGRAPH' ? 'SHARED.PARAGRAPH' :
+                            item === 'PICTURE' ? 'SHARED.PICTURE' :
+                            item === 'DATETIME' ? 'SHARED.DATETIME' :
+                            item === 'NUMBER' ? 'SHARED.NUMBER' :
+                            item === 'TOGGLE' ? 'SHARED.TOGGLE' :
+                            item === 'RATING' ? 'SHARED.RATING' :
+                            item === 'SMILEY' ? 'SHARED.SMILEY' :
+                            '') | translate
+                            }}
+                          </span>
+                          <span class="ng-value-icon right" (click)="clear(item)" aria-hidden="true">×</span>
+                        </ng-template>
+                        <ng-template ng-option-tmp let-item$="item$" let-item="item">
+                          <div class="d-flex gap-2 align-items-center">
+                            <i [class]="'fs-2 ' + getClassForItem(item)"></i>
+                            {{
+                            (item === 'SHORT_ANSWER' ? 'SHARED.SHORT_ANSWER' :
+                            item === 'MULTIPLE_CHOICE' ? 'SHARED.MULTIPLE_CHOICE' :
+                            item === 'SINGLE_CHOICE' ? 'SHARED.SINGLE_CHOICE' :
+                            item === 'PARAGRAPH' ? 'SHARED.PARAGRAPH' :
+                            item === 'PICTURE' ? 'SHARED.PICTURE' :
+                            item === 'DATETIME' ? 'SHARED.DATETIME' :
+                            item === 'NUMBER' ? 'SHARED.NUMBER' :
+                            item === 'TOGGLE' ? 'SHARED.TOGGLE' :
+                            item === 'RATING' ? 'SHARED.RATING' :
+                            item === 'SMILEY' ? 'SHARED.SMILEY' :
+                            '') | translate
+                            }}
+                          </div>
+                        </ng-template>
+                      </ng-select>
+                      <div class="invalid-feedback"
+                        *ngIf="campaignForm.get('questionTypes')?.touched && campaignForm.get('questionTypes').hasError('required')">
+                        {{'COMMON.REQUIRED' | translate }}
+                      </div>
+                    </div>
+                  </ng-container>
+                  <ng-container *ngIf="hasSocialMedia">
+                    <div class="mb-3 col-lg-6">
+                      <label for="email_id-field" class="form-label">{{'COMMON.SOCIAL_MEDIA' | translate }}</label>
+                      <ng-select placeholder="{{'PLACEHOLDER.SELECT_SOCIAL_MEDIA' | translate }}" [multiple]="true"
+                        formControlName="social" [items]="filteredSocials" class="mb-2 col-lg-12" required>
+                        <ng-template ng-label-tmp let-item="item" let-clear="clear">
+                          <div class="ng-value-label">
+                            {{ item?.name }}
+                            <span class="ng-value-icon right" (click)="clear(item)" aria-hidden="true">×</span>
+                          </div>
+                        </ng-template>
+                        <ng-template ng-option-tmp let-item$="item$" let-item="item">
+                          {{item?.name}}
+                        </ng-template>
+                      </ng-select>
+                      <div class="invalid-feedback"
+                        *ngIf="campaignForm.get('social')?.touched && campaignForm.get('social').hasError('required')">
+                        {{'COMMON.REQUIRED' | translate }}
+                      </div>
+                    </div>
+                  </ng-container>
+                  <div *ngIf="hasQuestionType" class="mb-3 col-lg-6">
+                    <label for="email_id-field" class="form-label">{{'MODULES.SYSTEM.MAX_QUESTIONS' | translate
+                      }}</label>
+                    <input [required]="hasQuestionType" type="number" id="email_id-field" class="form-control"
+                      placeholder="{{'PLACEHOLDER.ENTER_MAX_QUESTIONS' | translate }}" required
+                      formControlName="maxQuestions"
+                      [ngClass]="{ 'is-invalid': campaignForm.get('maxQuestions')?.touched && campaignForm.get('maxQuestions').hasError('required') }" />
+                    <div class="invalid-feedback"
+                      *ngIf="campaignForm.get('maxQuestions')?.touched && campaignForm.get('maxQuestions').hasError('required')">
+                      {{'COMMON.REQUIRED' | translate }}
+                    </div>
+                  </div>
+                  <div class="mb-3 col-lg-6">
+                    <label for="email_id-field" class="form-label">{{'MODULES.SYSTEM.MAX_ACTIVITY' | translate
+                      }}</label>
+                    <input id="email_id-field" class="form-control"
+                      placeholder="{{'PLACEHOLDER.ENTER_MAX_ACTIVITY' | translate }}" formControlName="maxActivities"
+                      type="number" />
+                  </div>
+                  <div class="form-check mb-2 ms-2">
+                    <input [formControlName]="'transition'" class="form-check-input" type="checkbox" id="Required">
+                    <label class="form-check-label" for="Required">{{'MODULES.SYSTEM.WITH_TRANSITION' | translate }}
+                    </label>
+                  </div>
+                </div>
+                <div class="d-flex align-items-start gap-3 mt-4">
+                  <button (click)="selectedNav = 1" type="button" class="btn btn-light btn-label previestab"
+                    data-previous="pills-bill-info-tab"><i
+                      class="ri-arrow-left-line label-icon align-middle fs-16 me-2"></i>{{'MODULES.ECOMMERCE.MAIN.BACK'
+                    | translate }}</button>
+                  <button (click)="selectedNav = 3" type="button"
+                    class="btn btn-primary btn-label right ms-auto nexttab" data-nexttab="pills-payment-tab"><i
+                      class="ri-arrow-right-line label-icon align-middle fs-16 ms-2"></i>{{'MODULES.ECOMMERCE.MAIN.NEXT_STEP'
+                    | translate }}</button>
+                </div>
+              </ng-template>
+            </li>
+            <li [ngbNavItem]="3" class="nav-item">
+              <a ngbNavLink class="nav-link fs-15 p-3" data-bs-toggle="tab" role="tab">
+                <i
+                  class="ri-message-2-line fs-16 p-2 bg-soft-primary text-primary rounded-circle align-middle mx-2"></i>
+                {{'MENUITEMS.CUSTOMERENGAGEMENT.LIST.REMUNERATION' | translate}}
+              </a>
+              <ng-template ngbNavContent>
+                <div class="row">
+                  <div class="mb-3 col-lg-6">
+                    <label for="email_id-field" class="form-label">{{'MENUITEMS.CUSTOMERENGAGEMENT.LIST.WALLET' |
+                      translate
+                      }}</label>
+                    <ng-select required [typeahead]="walletSearchInput$" [virtualScroll]="true"
+                      (scrollToEnd)="loadMoreWallets()" placeholder="{{'PLACEHOLDER.ENTER_YOUR_WALLET' | translate }}"
+                      [items]="wallet$ | async" [multiple]="false" [formControlName]="'wallet'">
+                      <ng-template ng-label-tmp let-item="item" let-clear="clear">
+                        <div class="ng-value-label">
+                          <div class="flex-grow-1 ms-3">
+                            <span class="mb-1">{{item?.coin?.name}} ({{item?.fee}}%)</span>
+                          </div>
+                        </div>
+                        <span class="ng-value-icon right" (click)="clear(item)" aria-hidden="true">×</span>
+                      </ng-template>
+                      <ng-template ng-option-tmp let-item="item">
+                        <div class="col-3 d-flex">
+                          <div class="flex-shrink-0">
+                            <div *ngIf="!item?.coin?.picture?.baseUrl" class="avatar-xxs">
+                              <div class="avatar-title text-danger bg-soft-info rounded-circle shadow">
+                                {{item?.coin?.name?.charAt(0) || 'N'}}
+                              </div>
+                            </div>
+                            <div *ngIf="item?.coin?.picture?.baseUrl">
+                              <img [src]="item?.coin?.picture?.baseUrl + '/' + item?.coin?.picture?.path" alt=""
+                                class="avatar-xxs shadow rounded-circle" />
+                            </div>
+                          </div>
+                          <div class="flex-grow-1 ms-3">
+                            <h6 class="mb-1">{{item?.coin?.name}} <span class="text-muted"> ({{item?.coin?.code}})
+                              </span>
+                            </h6>
+                            <div *ngIf="item?.coin?.unitValue?.amount">
+                              <h6 [ngClass]="{
+                                                    'text-danger': +item?.amount < 0,
+                                                    'text-success': +item?.amount > 0,
+                                                    'text-info': +item?.amount === 0
+                                                }" class="text-danger mb-0">{{item?.amount | number: '1.3-3'}} <span
+                                  class="text-muted">
+                                  ({{item?.fee}}%) </span> </h6>
+                            </div>
+                          </div>
+                        </div>
+                      </ng-template>
+                    </ng-select>
+                  </div>
+                  <ng-container *ngIf="(loyaltySettings$ | async)?.quantitative?.active">
+                    <h5 class="mb-3 mt-3">{{'MODULES.SYSTEM.QUANTITATIVE' | translate }}</h5>
+                    <div formGroupName="quantitative" class="row">
+                      <div class="col-lg-6">
+                        <label for="email_id-field" class="form-label">{{'MODULES.SYSTEM.MIN' | translate }}</label>
+                        <div class="input-group">
+                          <div
+                            *ngIf="campaignForm.get('wallet').value?.coin?.unitValue?.amount && calculateAmount(+campaignForm.get(['quantitative', 'min']).value) > 0"
+                            class="input-group-append">
+                            <span class="input-group-text h-100">
+                              <span>
+                                {{(calculateAmount(+campaignForm.get(['quantitative', 'min']).value) || 0) |
+                                customCurrency : campaignForm.get('wallet').value?.coin?.unitValue?.currency?.name }}
+                                {{campaignForm.get('wallet').value?.coin?.unitValue?.currency?.name}}
+                              </span>
+                            </span>
+                          </div>
+                          <input id="email_id-field" class="form-control"
+                            placeholder="{{'PLACEHOLDER.ENTER_QUANTITATIVE_MIN' | translate }}" formControlName="min"
+                            type="text" />
+                          <div class="input-group-append">
+                            <span class="input-group-text">
+                              <lord-icon
+                                *ngIf="!campaignForm.get('wallet').value && !loyaltySettings?.referral?.remuneration?.referrer?.quantitative?.wallet?.coin?.picture?.baseUrl"
+                                src="https://cdn.lordicon.com/lxizbtuq.json" trigger="loop" delay="2000"
+                                style="width:25px;height:25px">
+                              </lord-icon>
+                              <img
+                                *ngIf="!campaignForm.get('wallet').value && loyaltySettings?.referral?.remuneration?.referrer?.quantitative?.wallet?.coin?.picture?.baseUrl"
+                                [src]="loyaltySettings?.referral?.remuneration?.referrer?.quantitative?.wallet?.coin?.picture?.baseUrl + '/' + loyaltySettings?.referral?.remuneration?.referrer?.quantitative?.wallet?.coin?.picture?.path"
+                                alt="" class="avatar-xxs shadow rounded-circle" />
+                              <img *ngIf="campaignForm.get('wallet').value?.coin?.picture?.baseUrl"
+                                [src]="campaignForm.get('wallet').value?.coin?.picture?.baseUrl + '/' + campaignForm.get('wallet').value?.coin?.picture?.path"
+                                alt="" class="avatar-xxs shadow rounded-circle" />
+                            </span>
+                          </div>
+                        </div>
+                      </div>
+                      <div class="col-lg-6">
+                        <label for="email_id-field" class="form-label">{{'MODULES.SYSTEM.MAX' | translate }}</label>
+                        <div class="input-group">
+                          <div
+                            *ngIf="campaignForm.get('wallet').value?.coin?.unitValue?.amount && calculateAmount(+campaignForm.get(['quantitative', 'max']).value) > 0"
+                            class="input-group-append">
+                            <span class="input-group-text h-100">
+                              <span>
+                                {{(calculateAmount(+campaignForm.get(['quantitative', 'max']).value) ||
+                                0) | customCurrency : campaignForm.get('wallet').value?.coin?.unitValue?.currency?.name
+                                }}
+                                {{campaignForm.get('wallet').value?.coin?.unitValue?.currency?.name}}
+                              </span>
+                            </span>
+                          </div>
+                          <input id="email_id-field" class="form-control"
+                            placeholder="{{'PLACEHOLDER.ENTER_QUANTITATIVE_MAX' | translate }}" formControlName="max"
+                            type="text" />
+                          <div class="input-group-append">
+                            <span class="input-group-text">
+                              <lord-icon
+                                *ngIf="!campaignForm.get('wallet').value && !loyaltySettings?.referral?.remuneration?.referrer?.quantitative?.wallet?.coin?.picture?.baseUrl"
+                                src="https://cdn.lordicon.com/lxizbtuq.json" trigger="loop" delay="2000"
+                                style="width:25px;height:25px">
+                              </lord-icon>
+                              <img
+                                *ngIf="!campaignForm.get('wallet').value && loyaltySettings?.referral?.remuneration?.referrer?.quantitative?.wallet?.coin?.picture?.baseUrl"
+                                [src]="loyaltySettings?.referral?.remuneration?.referrer?.quantitative?.wallet?.coin?.picture?.baseUrl + '/' + loyaltySettings?.referral?.remuneration?.referrer?.quantitative?.wallet?.coin?.picture?.path"
+                                alt="" class="avatar-xxs shadow rounded-circle" />
+                              <img *ngIf="campaignForm.get('wallet').value?.coin?.picture?.baseUrl"
+                                [src]="campaignForm.get('wallet').value?.coin?.picture?.baseUrl + '/' + campaignForm.get('wallet').value?.coin?.picture?.path"
+                                alt="" class="avatar-xxs shadow rounded-circle" />
+                            </span>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="text-danger" *ngIf="!isValidQuantitative">{{'MODULES.SYSTEM.MIN_MUST_BE_LESS_THAN_MAX' |
+                      translate
+                      }}
+                    </div>
+                  </ng-container>
+                  <ng-container *ngIf="(loyaltySettings$ | async)?.qualitative?.active">
+                    <h5 class="mb-3 mt-3 ">{{'MODULES.SYSTEM.QUALITATIVE' | translate }}</h5>
+                    <div formGroupName="qualitative" class="row">
+                      <div class="col-lg-6">
+                        <label for="email_id-field" class="form-label">{{'MODULES.SYSTEM.MIN' | translate }}</label>
+                        <div class="input-group">
+                          <input id="email_id-field" class="form-control"
+                            placeholder="{{'PLACEHOLDER.ENTER_QUALITATIVE_MIN' | translate }}" formControlName="min"
+                            type="text" />
+                          <div class="input-group-append">
+                            <span class="input-group-text">
+                              <img *ngIf="(loyaltySettings$ | async)?.qualitative?.picture?.baseUrl"
+                                [src]="(loyaltySettings$ | async)?.qualitative?.picture?.baseUrl + '/' + (loyaltySettings$ | async)?.qualitative?.picture?.path"
+                                alt="" class="img-fluid rounded-circle avatar-xxs mb-1">
+                              <img class="img-fluid rounded-circle avatar-xxs mb-1"
+                                *ngIf="!(loyaltySettings$ | async)?.qualitative?.picture?.baseUrl"
+                                src="https://sifca-storage.s3.eu-central-1.amazonaws.com/loyalcraft/reputation_512.gif">
+                            </span>
+                          </div>
+                        </div>
+                      </div>
+                      <div class="col-lg-6">
+                        <label for="email_id-field" class="form-label">{{'MODULES.SYSTEM.MAX' | translate }}</label>
+                        <div class="input-group">
+                          <input id="email_id-field" class="form-control"
+                            placeholder="{{'PLACEHOLDER.ENTER_QUALITATIVE_MAX' | translate }}" formControlName="max"
+                            type="text" />
+                          <div class="input-group-append">
+                            <span class="input-group-text">
+                              <img *ngIf="(loyaltySettings$ | async)?.qualitative?.picture?.baseUrl"
+                                [src]="(loyaltySettings$ | async)?.qualitative?.picture?.baseUrl + '/' + (loyaltySettings$ | async)?.qualitative?.picture?.path"
+                                alt="" class="img-fluid rounded-circle avatar-xxs mb-1">
+                              <img class="img-fluid rounded-circle avatar-xxs mb-1"
+                                *ngIf="!(loyaltySettings$ | async)?.qualitative?.picture?.baseUrl"
+                                src="https://sifca-storage.s3.eu-central-1.amazonaws.com/loyalcraft/reputation_512.gif">
+                            </span>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="text-danger" *ngIf="!isValidQualitative">{{'MODULES.SYSTEM.MIN_MUST_BE_LESS_THAN_MAX' |
+                      translate
+                      }}
+                    </div>
+                  </ng-container>
+                </div>
+                <div class="d-flex align-items-start gap-3 mt-4">
+                  <button (click)="selectedNav = 2" type="button" class="btn btn-light btn-label previestab"
+                    data-previous="pills-bill-info-tab"><i
+                      class="ri-arrow-left-line label-icon align-middle fs-16 me-2"></i>{{'MODULES.ECOMMERCE.MAIN.BACK'
+                    | translate }}</button>
+                  <button (click)="selectedNav = 4" type="button"
+                    class="btn btn-primary btn-label right ms-auto nexttab" data-nexttab="pills-payment-tab"><i
+                      class="ri-arrow-right-line label-icon align-middle fs-16 ms-2"></i>{{'MODULES.ECOMMERCE.MAIN.NEXT_STEP'
+                    | translate }}</button>
+                </div>
+              </ng-template>
+            </li>
+            <li [ngbNavItem]="4" class="nav-item">
+              <a ngbNavLink class="nav-link fs-15 p-3" data-bs-toggle="tab" role="tab">
+                <i
+                  class="ri-notification-line fs-16 p-2 bg-soft-primary text-primary rounded-circle align-middle mx-2"></i>
+                  {{'COMMON.AUDIENCE' | translate }}
+              </a>
+              <ng-template ngbNavContent>
+                <div class="row">
+                  <ng-container formArrayName="audience">
+                    <div
+                      *ngFor="let audienceControl of audienceArray.controls; let i = index; let first = first; let isLast = last"
+                      [formGroupName]="i">
+                      <div (click)="onSelectAudience(i)" [ngClass]="{'mt-3': !first}"
+                        class="border border-dashed border-start-0 border-2 p-3">
+                        <div class="mb-3 col-lg-6">
+                          <label class="control-label">{{'MENUITEMS.CUSTOMERENGAGEMENT.LIST.CRITERIA' | translate
+                            }}</label>
+                          <div class="row">
+                            <ng-select (change)="onChangeCriteria($event, audienceControl)"
+                              [typeahead]="criteriasSearchInput$" [addTag]="true" [selectableGroup]="true"
+                              [searchable]="true" [hideSelected]="true" class="mb-2 col-lg-9" [closeOnSelect]="true"
+                              formControlName="criteria" [multiple]="false" [items]="criterias"
+                              placeholder="{{'PLACEHOLDER.SELECT_CRITERIA' | translate }}">
+                              <ng-template ng-label-tmp let-item="item" let-clear="clear">
+                                {{ item?.title }}
+                              </ng-template>
+                              <ng-template ng-option-tmp let-item$="item$" let-item="item">
+                                {{ item?.title }}
+                              </ng-template>
+                            </ng-select>
+                            <div *ngIf="audienceControl.get('criteria').value" class="col-lg-3">
+                              <button (click)="enableAll(i)" class="btn btn-sm btn-soft-success">{{'COMMON.ENABLE_ALL' | translate }}</button>
+                            </div>
+                          </div>
+                        </div>
+                        <ng-container formArrayName="fields">
+                          <ng-container
+                            *ngFor="let control of audienceControl.get('fields').controls; let j = index; let last= last"
+                            [formGroupName]="j">
+                            <div *ngIf="audienceControl.value?.criteria?.fields?.length" class="row">
+                              <div class="col-lg-6 mb-2">
+                                <label
+                                  class="align-items-center d-flex form-label gap-1">{{'MENUITEMS.CUSTOMERENGAGEMENT.LIST.FIELD'
+                                  | translate }}
+                                </label>
+                                <ng-select (change)="resetField(i, j)" bindValue="field" bindLabel="field"
+                                  [items]="fields?.[i] || []" [selectableGroup]="true" [closeOnSelect]="true"
+                                  formControlName="field" [multiple]="false"
+                                  placeholder="{{'PLACEHOLDER.SELECT_FIELD' | translate }}">
+                                  <ng-template ng-label-tmp let-item="item" let-clear="clear">
+                                    {{
+                                    (item?.field === 'AGE' ? 'SHARED.AGE' :
+                                    item?.field === 'STATE' ? 'SHARED.STATE' :
+                                    item?.field === 'GENDER' ? 'SHARED.GENDER' :
+                                    item?.field === 'COUNTRY' ? 'SHARED.COUNTRY' :
+                                    item?.field === 'HOBBIES' ? 'SHARED.HOBBIES' :
+                                    item?.field === 'LANGUAGE' ? 'SHARED.LANGUAGE' :
+                                    item?.field === 'LOCATION' ? 'SHARED.LOCATION' :
+                                    item?.field === 'EDUCATION' ? 'SHARED.EDUCATION' :
+                                    item?.field === 'INTERESTS' ? 'SHARED.INTERESTS' :
+                                    item?.field === 'JOIN_DATE' ? 'SHARED.JOIN_DATE' :
+                                    item?.field === 'OCCUPATION' ? 'SHARED.OCCUPATION' :
+                                    item?.field === 'QUEST_ACTION' ? 'SHARED.QUEST_ACTION' :
+                                    item?.field === 'MARITAL_STATUS' ? 'SHARED.MARITAL_STATUS' :
+                                    item?.field === 'REPUTATION_LEVEL' ? 'SHARED.REPUTATION_LEVEL' :
+                                    item?.field === 'QUANTITATIVE_CURRENT' ? 'SHARED.QUANTITATIVE_CURRENT' :
+                                    item?.field === 'QUANTITATIVE_OVERALL' ? 'SHARED.QUANTITATIVE_OVERALL' :
+                                    item?.field === 'FREQUENT_SHOPPERS' ? 'SHARED.FREQUENT_SHOPPERS' :
+                                    item?.field === 'BIG_SPENDERS' ? 'SHARED.BIG_SPENDERS' :
+                                    item?.field === 'SEASONAL_SHOPPING' ? 'SHARED.SEASONAL_SHOPPING' :
+                                    item?.field === 'PRODUCT_CATEGORY' ? 'SHARED.PRODUCT_CATEGORY' :
+                                    item?.field === 'DISCOUNT_SEEKER' ? 'SHARED.DISCOUNT_SEEKER' :
+                                    item?.field === 'ABANDONED_CARTS' ? 'SHARED.ABANDONED_CARTS' :
+                                    item?.field === 'LAPSED_CUSTOMERS' ? 'SHARED.LAPSED_CUSTOMERS' :
+                                    item?.field === 'ACTIVITY_FREQUENCY' ? 'SHARED.ACTIVITY_FREQUENCY' :
+                                    item?.field === 'JOIN_DURATION' ? 'SHARED.JOIN_DURATION' :
+                                    '') | translate
+                                    }}
+
+                                  </ng-template>
+                                  <ng-template ng-option-tmp let-item$="item$" let-item="item">
+                                    {{
+                                    (item?.field === 'AGE' ? 'SHARED.AGE' :
+                                    item?.field === 'STATE' ? 'SHARED.STATE' :
+                                    item?.field === 'GENDER' ? 'SHARED.GENDER' :
+                                    item?.field === 'COUNTRY' ? 'SHARED.COUNTRY' :
+                                    item?.field === 'HOBBIES' ? 'SHARED.HOBBIES' :
+                                    item?.field === 'LANGUAGE' ? 'SHARED.LANGUAGE' :
+                                    item?.field === 'LOCATION' ? 'SHARED.LOCATION' :
+                                    item?.field === 'EDUCATION' ? 'SHARED.EDUCATION' :
+                                    item?.field === 'INTERESTS' ? 'SHARED.INTERESTS' :
+                                    item?.field === 'JOIN_DATE' ? 'SHARED.JOIN_DATE' :
+                                    item?.field === 'OCCUPATION' ? 'SHARED.OCCUPATION' :
+                                    item?.field === 'QUEST_ACTION' ? 'SHARED.QUEST_ACTION' :
+                                    item?.field === 'MARITAL_STATUS' ? 'SHARED.MARITAL_STATUS' :
+                                    item?.field === 'REPUTATION_LEVEL' ? 'SHARED.REPUTATION_LEVEL' :
+                                    item?.field === 'QUANTITATIVE_CURRENT' ? 'SHARED.QUANTITATIVE_CURRENT' :
+                                    item?.field === 'QUANTITATIVE_OVERALL' ? 'SHARED.QUANTITATIVE_OVERALL' :
+                                    item?.field === 'FREQUENT_SHOPPERS' ? 'SHARED.FREQUENT_SHOPPERS' :
+                                    item?.field === 'BIG_SPENDERS' ? 'SHARED.BIG_SPENDERS' :
+                                    item?.field === 'SEASONAL_SHOPPING' ? 'SHARED.SEASONAL_SHOPPING' :
+                                    item?.field === 'PRODUCT_CATEGORY' ? 'SHARED.PRODUCT_CATEGORY' :
+                                    item?.field === 'DISCOUNT_SEEKER' ? 'SHARED.DISCOUNT_SEEKER' :
+                                    item?.field === 'ABANDONED_CARTS' ? 'SHARED.ABANDONED_CARTS' :
+                                    item?.field === 'LAPSED_CUSTOMERS' ? 'SHARED.LAPSED_CUSTOMERS' :
+                                    item?.field === 'ACTIVITY_FREQUENCY' ? 'SHARED.ACTIVITY_FREQUENCY' :
+                                    item?.field === 'JOIN_DURATION' ? 'SHARED.JOIN_DURATION' :
+                                    '') | translate
+                                    }}
+                                  </ng-template>
+                                </ng-select>
+                              </div>
+                              <div *ngIf="control.get('field')?.value" class="col-lg-6">
+                                <label class="control-label mb-2">{{'SHARED.OPERATOR' | translate }}</label>
+                                <ng-select class="mb-2" [items]="onFindOperators(i, j)" [clearable]="true"
+                                  [hideSelected]="true" [selectableGroup]="true" [closeOnSelect]="true"
+                                  formControlName="operators" [multiple]="true"
+                                  placeholder="{{'PLACEHOLDER.SELECT_OPERATOR' | translate }}">
+                                  <ng-template ng-label-tmp let-item="item" let-clear="clear">
+                                    <span class="ng-value-label">
+                                      {{
+                                      (item === 'EQUAL' ? 'SHARED.EQUAL' :
+                                      item === 'NOT_EQUAL' ? 'SHARED.NOT_EQUAL' :
+                                      item === 'LESSER' ? 'SHARED.LESSER' :
+                                      item === 'GREATER' ? 'SHARED.GREATER' :
+                                      item === 'BETWEEN' ? 'SHARED.BETWEEN' :
+                                      item === 'DIFFERENT' ? 'SHARED.DIFFERENT' :
+                                      item === 'NOT_BETWEEN' ? 'SHARED.NOT_BETWEEN' :
+                                      item === 'INCLUDED_IN' ? 'SHARED.INCLUDED_IN' :
+                                      item === 'AT_LEAST_ONE' ? 'SHARED.AT_LEAST_ONE' :
+                                      item === 'NOT_SPECIFIED' ? 'SHARED.NOT_SPECIFIED' :
+                                      item === 'NOT_INCLUDED_IN' ? 'SHARED.NOT_INCLUDED_IN' :
+                                      '') | translate
+                                      }}
+                                    </span>
+                                    <span class="ng-value-icon right" (click)="clear(item)" aria-hidden="true">×</span>
+                                  </ng-template>
+                                  <ng-template ng-option-tmp let-item$="item$" let-item="item">
+                                    {{
+                                    (item === 'EQUAL' ? 'SHARED.EQUAL' :
+                                    item === 'NOT_EQUAL' ? 'SHARED.NOT_EQUAL' :
+                                    item === 'LESSER' ? 'SHARED.LESSER' :
+                                    item === 'GREATER' ? 'SHARED.GREATER' :
+                                    item === 'BETWEEN' ? 'SHARED.BETWEEN' :
+                                    item === 'DIFFERENT' ? 'SHARED.DIFFERENT' :
+                                    item === 'NOT_BETWEEN' ? 'SHARED.NOT_BETWEEN' :
+                                    item === 'INCLUDED_IN' ? 'SHARED.INCLUDED_IN' :
+                                    item === 'AT_LEAST_ONE' ? 'SHARED.AT_LEAST_ONE' :
+                                    item === 'NOT_SPECIFIED' ? 'SHARED.NOT_SPECIFIED' :
+                                    item === 'NOT_INCLUDED_IN' ? 'SHARED.NOT_INCLUDED_IN' :
+                                    '') | translate
+                                    }}
+                                  </ng-template>
+                                </ng-select>
+                              </div>
+                            </div>
+                            <div class="d-flex justify-content-end gap-2 mt-2">
+                              <button *ngIf="audienceControl.get('fields').value?.length > 1"
+                                (click)="removeField(i, j)" class="btn btn-sm btn-soft-danger">{{'SHARED.REMOVE_FIELD' | translate
+                              }}</button>
+                              <button *ngIf="audienceControl.value?.criteria?.fields?.length && last"
+                                (click)="addField(i)" class="btn btn-sm btn-soft-info">{{'SHARED.ADD_FIELD' | translate
+                                }}</button>
+                            </div>
+                          </ng-container>
+                        </ng-container>
+                      </div>
+                      <div class="d-flex justify-content-end gap-2 mt-2">
+                        <button *ngIf="audienceArray.value?.length > 1" (click)="removeAudienceField(i)"
+                          class="btn btn-sm btn-soft-danger">{{'SHARED.REMOVE_AUDIENCE' | translate }}</button>
+                        <button *ngIf="isLast" (click)="addAudienceField()"
+                          class="btn btn-sm btn-soft-info">{{'SHARED.ADD_AUDIENCE' | translate }}</button>
+                      </div>
+                    </div>
+                  </ng-container>
+                </div>
+                <div class="d-flex align-items-start gap-3 mt-4">
+                  <button (click)="selectedNav = 3" type="button" class="btn btn-light btn-label previestab"
+                    data-previous="pills-bill-info-tab"><i
+                      class="ri-arrow-left-line label-icon align-middle fs-16 me-2"></i>{{'MODULES.ECOMMERCE.MAIN.BACK'
+                    | translate }}</button>
+                  <button
+                    [disabled]="isButtonDisabled || campaignForm.invalid || !isValidQuantitative || !isValidQualitative"
+                    (click)="save()" type="button" class="btn btn-primary btn-label right ms-auto nexttab"><i
+                      class="ri-bank-card-line label-icon align-middle fs-16 ms-2"></i>{{'COMMON.SAVE' | translate
+                    }}</button>
+                </div>
+              </ng-template>
+            </li>
+          </ul>
+        </div>
+        <div class="tab-content">
+          <div class="p-3">
+            <div [ngbNavOutlet]="customNav"></div>
+          </div>
+        </div>
+      </div>
+    </form>
+  </ng-template>
+
+</ng-container>
+
+<ng-template #deleteModal let-modal>
+  <div class="modal-content">
+    <div class="modal-header">
+      <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" id="deleteRecord-close"
+        (click)="modal.dismiss('Cross click')"></button>
+    </div>
+    <div class="modal-body">
+      <div class="mt-2 text-center">
+        <lord-icon src="https://cdn.lordicon.com/gsqxdxog.json" trigger="loop"
+          colors="primary:#405189,secondary:#f06548" style="width:90px;height:90px"></lord-icon>
+        <div class="mt-4 pt-2 fs-15 mx-4 mx-sm-5">
+          <h4>{{
+            (selectedCampaign ? 'MENUITEMS.CUSTOMERENGAGEMENT.CAMPAIGN.YOU_ARE_ABOUT_TO_DELETE_A_CAMPAIGN':
+            selectedCause ? 'SURE_TO_REMOVE_CAUSE' :
+            selectedDonation ? 'SURE_TO_REMOVE_ACTIVITY' :
+            '') | translate
+            }} ?</h4>
+          <p class="text-muted mx-4 mb-0">
+            {{
+            (selectedCampaign ? 'MENUITEMS.CUSTOMERENGAGEMENT.CAMPAIGN.DELETING_YOUR_CAMPAIGN_DATA_BASE_REMOVE' :
+            selectedCause ? 'DELETING_CAUSE' :
+            selectedDonation ? 'DELETING_ACTIVITY' :
+            '')
+            }}
+          </p>
+        </div>
+      </div>
+      <div class="d-flex gap-2 justify-content-center mt-4 mb-2">
+        <button class="btn btn-link link-success fw-medium text-decoration-none" data-bs-dismiss="modal"
+          (click)="modal.close('Close click')"><i class="ri-close-line me-1 align-middle"></i>
+          {{ 'COMMON.CLOSE' | translate }}</button>
+        <button type="button" class="btn w-sm btn-danger " id="delete-product" (click)="
+        selectedCampaign ? deleteQuestType() :
+        selectedCause ? deleteCause() :
+        selectedDonation ? deleteDonation() :
+        null
+        " (click)="modal.close('Close click')">{{'COMMON.YES_DELETE_IT' | translate }}</button>
+      </div>
+    </div>
+  </div>
+</ng-template>
+
+<ng-template #deletePartnerModal let-modal>
+  <div class="modal-content">
+    <div class="modal-header">
+      <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" id="deleteRecord-close"
+        (click)="modal.dismiss('Cross click')"></button>
+    </div>
+    <div class="modal-body">
+      <div class="mt-2 text-center">
+        <lord-icon src="https://cdn.lordicon.com/gsqxdxog.json" trigger="loop"
+          colors="primary:#405189,secondary:#f06548" style="width:90px;height:90px"></lord-icon>
+        <div class="mt-4 pt-2 fs-15 mx-4 mx-sm-5">
+          <h4>{{'SHARED.CONFIRM_REMOVE_PARTNER' | translate}}</h4>
+          <p class="text-muted mx-4 mb-0">
+            {{'SHARED.DELETE_PARTNER_WARNING' | translate}}
+          </p>
+        </div>
+      </div>
+      <div class="d-flex gap-2 justify-content-center mt-4 mb-2">
+        <button class="btn btn-link link-success fw-medium text-decoration-none" data-bs-dismiss="modal"
+          (click)="modal.close('Close click')"><i class="ri-close-line me-1 align-middle"></i>
+          {{ 'COMMON.CLOSE' | translate }}</button>
+        <button type="button" class="btn w-sm btn-danger " id="delete-product" (click)="deletePartnershipNetwork()"
+          (click)="modal.close('Close click')">{{'COMMON.YES_DELETE_IT' | translate }}</button>
+      </div>
+    </div>
+  </div>
+</ng-template>
+
+<div *ngIf="navigating$ | async" class="vh-100 py-4 text-center" fxLayout="column" fxLayoutAlign="center center"
+  fxLayoutGap="1rem">
+  <div>
+    <lord-icon trigger="loop" style="width:72px;height:72px"
+      [colors]="'primary:' + primaryColor + ',secondary:' + secondaryColor"
+      src="https://cdn.lordicon.com/msoeawqm.json">
+    </lord-icon>
+  </div>
+  <div class="mt-4">
+    <h5>{{'COMMON.LOADING' | translate }}</h5>
+  </div>
+</div>

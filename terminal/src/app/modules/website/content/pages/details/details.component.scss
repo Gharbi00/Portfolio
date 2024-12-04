@@ -1,0 +1,48 @@
+.custom-quill-editor .ql-editor {
+  min-height: 8rem;
+}
+.line-clamp-4 {
+  display: -webkit-box;
+  -webkit-line-clamp: 4;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.h-94 {
+  height: 16rem;
+}
+.ft {
+  font-size: 1rem;
+}
+.mx-h {
+  max-height: 18px;
+}
+.h-30 {
+  height: 7.5rem;
+}
+.ft-s {
+  font-size: 24px;;
+}
+.w-30 {
+  width: 7.5rem;
+}
+.img-wrap {
+  position: relative;
+}
+.delete-icon {
+  position: absolute;
+  top: 0;
+  right: 0;
+  z-index: 1;
+  background-color: white;
+  border-radius: 50%;
+  width: 24px;
+  height: 24px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.df-flex {
+  display: flex;
+  flex-wrap: wrap;
+}

@@ -1,0 +1,19 @@
+<div id="layout-wrapper" (window:resize)="onResize($event)">
+    <!-- Top Bar -->
+    <sifca-monorepo-topbar (mobileMenuButtonClicked)="onToggleMobileMenu()"></sifca-monorepo-topbar>
+    <!-- Side Bar -->
+    <sifca-monorepo-two-column-sidebar></sifca-monorepo-two-column-sidebar>
+    <div class="main-content">
+        <div class="page-content">
+            <div class="container-fluid">
+                <!-- Main Content -->
+                <router-outlet></router-outlet>
+            </div>
+        </div>
+        <!-- Footer -->
+        <sifca-monorepo-footer></sifca-monorepo-footer>
+    </div>
+  </div>
+  <!-- Right Side Bar -->
+  <sifca-monorepo-rightsidebar (settingsButtonClicked)="onSettingsButtonClicked()"></sifca-monorepo-rightsidebar>
+  

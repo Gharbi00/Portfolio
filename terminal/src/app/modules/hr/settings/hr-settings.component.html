@@ -1,0 +1,535 @@
+<div class="position-relative mx-n4 mt-n4">
+  <div class="profile-wid-bg profile-setting-img">
+      <img src="assets/images/profile-bg.jpg" class="profile-wid-img" alt="">
+      <div class="overlay-content">
+          <div class="text-end p-3">
+              <div class="p-0 ms-auto rounded-circle profile-photo-edit">
+                  <input id="profile-foreground-img-file-input" type="file" class="profile-foreground-img-file-input" >
+                  <label for="profile-foreground-img-file-input" class="profile-photo-edit btn btn-light">
+                          <i class="ri-image-edit-line align-bottom me-1"></i>{{'MODULES.HR.MAIN.CHANGE_COVER' | translate }}
+                  </label>
+              </div>
+          </div>
+      </div>
+  </div>
+</div>
+
+<div class="row">
+  <div class="col-xxl-3">
+      <div class="card mt-n5">
+          <div class="card-body p-4">
+              <div class="text-center">
+                  <div class="profile-user position-relative d-inline-block mx-auto  mb-4">
+                      <img src="assets/images/users/avatar-1.jpg" class="rounded-circle avatar-xl img-thumbnail user-profile-image shadow" alt="user-profile-image">
+                      <div class="avatar-xs p-0 rounded-circle profile-photo-edit">
+                          <input id="profile-img-file-input" type="file" class="profile-img-file-input">
+                          <label for="profile-img-file-input" class="profile-photo-edit avatar-xs">
+                              <span class="avatar-title rounded-circle bg-light text-body shadow">
+                                  <i class="ri-camera-fill"></i>
+                              </span>
+                          </label>
+                      </div>
+                  </div>
+                  <h5 class="fs-16 mb-1">Anna Adame</h5>
+                  <p class="text-muted mb-0">Lead Designer / Developer</p>
+              </div>
+          </div>
+      </div><!--end card-->
+      <div class="card">
+          <div class="card-body">
+              <div class="d-flex align-items-center mb-5">
+                  <div class="flex-grow-1">
+                      <h5 class="card-title mb-0">{{'MODULES.HR.MAIN.COMPLETE_YOUR_PROFILE' | translate }}</h5>
+                  </div>
+                  <div class="flex-shrink-0">
+                      <a href="javascript:void(0);" class="badge bg-light text-primary fs-12"><i class="ri-edit-box-line align-bottom me-1"></i>{{'COMMON.EDIT' | translate }}</a>
+                  </div>
+              </div>
+              <div class="progress animated-progess custom-progress progress-label">
+                  <div class="progress-bar bg-danger" role="progressbar" style="width: 30%" aria-valuenow="30" aria-valuemin="0" aria-valuemax="100"><div class="label">30%</div></div>
+              </div>
+          </div>
+        </div>
+      <div class="card">
+          <div class="card-body">
+              <div class="d-flex align-items-center mb-4">
+                  <div class="flex-grow-1">
+                      <h5 class="card-title mb-0">{{'MODULES.HR.MAIN.PORTFOLIO' | translate }}</h5>
+                  </div>
+                  <div class="flex-shrink-0">
+                      <a href="javascript:void(0);" class="badge bg-light text-primary fs-12"><i class="ri-add-fill align-bottom me-1"></i> Add</a>
+                  </div>
+              </div>
+              <div class="mb-3 d-flex">
+                  <div class="avatar-xs d-block flex-shrink-0 me-3">
+                      <span class="avatar-title rounded-circle fs-16 bg-dark text-light shadow">
+                          <i class="ri-github-fill"></i>
+                      </span>
+                  </div>
+                  <input type="email" class="form-control" id="gitUsername" placeholder="{{'PLACEHOLDER.USERNAME' | translate }}" value="@daveadame">
+              </div>
+              <div class="mb-3 d-flex">
+                  <div class="avatar-xs d-block flex-shrink-0 me-3">
+                      <span class="avatar-title rounded-circle fs-16 bg-primary shadow">
+                          <i class="ri-global-fill"></i>
+                      </span>
+                  </div>
+                  <input type="text" class="form-control" id="websiteInput" placeholder="www.example.com" value="www.sifca.com">
+              </div>
+              <div class="mb-3 d-flex">
+                  <div class="avatar-xs d-block flex-shrink-0 me-3">
+                      <span class="avatar-title rounded-circle fs-16 bg-success shadow">
+                          <i class="ri-dribbble-fill"></i>
+                      </span>
+                  </div>
+                  <input type="text" class="form-control" id="dribbleName" placeholder="{{'PLACEHOLDER.USERNAME' | translate }}" value="@dave_adame">
+              </div>
+              <div class="d-flex">
+                  <div class="avatar-xs d-block flex-shrink-0 me-3">
+                      <span class="avatar-title rounded-circle fs-16 bg-danger shadow">
+                          <i class="ri-pinterest-fill"></i>
+                      </span>
+                  </div>
+                  <input type="text" class="form-control" id="pinterestName" placeholder="{{'PLACEHOLDER.USERNAME' | translate }}" value="Advance Dave">
+              </div>
+          </div>
+      </div><!--end card-->
+  </div><!--end col-->
+  <div class="col-xxl-9">
+      <div class="card mt-xxl-n5">
+          <div class="card-header">
+            <ul ngbNav #customNav="ngbNav" [activeId]="1"  class="nav nav-tabs-custom rounded card-header-tabs border-bottom-0" role="tablist">
+              <li [ngbNavItem]="1" class="nav-item">
+                  <a ngbNavLink class="nav-link" data-bs-toggle="tab" role="tab">
+                    <i class="fas fa-home"></i>{{'MODULES.HR.MAIN.PERSONAL_DETAILS' | translate }}
+                  </a>
+                  <ng-template ngbNavContent>
+                    <form action="javascript:void(0);">
+                      <div class="row">
+                          <div class="col-lg-6">
+                              <div class="mb-3">
+                                  <label for="firstnameInput" class="form-label">{{'COMMON.FIRST_NAME' | translate }}</label>
+                                  <input type="text" class="form-control" id="firstnameInput" placeholder="{{'PLACEHOLDER.ENTER_FIRSTNAME' | translate }}" value="Dave">
+                              </div>
+                          </div><!--end col-->
+                          <div class="col-lg-6">
+                              <div class="mb-3">
+                                  <label for="lastnameInput" class="form-label">{{'COMMON.LAST_NAME' | translate }}</label>
+                                  <input type="text" class="form-control" id="lastnameInput" placeholder="{{'PLACEHOLDER.ENTER_LASTNAME' | translate }}" value="Adame">
+                              </div>
+                          </div><!--end col-->
+                          <div class="col-lg-6">
+                              <div class="mb-3">
+                                  <label for="phonenumberInput" class="form-label">{{'COMMON.PHONE_NUMBER' | translate }}</label>
+                                  <input type="text" class="form-control" id="phonenumberInput" placeholder="{{'PLACEHOLDER.ENTER_YOUR_PHONE_NO' | translate }}" value="+(1) 987 6543">
+                              </div>
+                          </div><!--end col-->
+                          <div class="col-lg-6">
+                              <div class="mb-3">
+                                  <label for="emailInput" class="form-label">{{'MODULES.HR.MAIN.EMAIL_ADDRESS' | translate }}</label>
+                                  <input type="email" class="form-control" id="emailInput" placeholder="{{'PLACEHOLDER.ENTER_EMAIL' | translate }}" value="daveadame@sifca.com">
+                              </div>
+                          </div><!--end col-->
+                          <div class="col-lg-12">
+                              <div class="mb-3">
+                                  <label for="JoiningdatInput" class="form-label">{{ 'MODULES.HR.MAIN.JOINING_DATE' | translate }}</label>
+                                  <input class="form-control flatpickr-input" type="text" placeholder="{{'PLACEHOLDER.SELECT_DATE' | translate }}" mwlFlatpickr [altInput]="true" [convertModelValue]="true">
+                              </div>
+                          </div><!--end col-->
+                          <div class="col-lg-12">
+                              <div class="mb-3">
+                                  <label for="skillsInput" class="form-label">{{'MODULES.HR.MAIN.SKILLS' | translate }}</label>
+                                  <ng-select [items]="selectValue" [multiple]="true"></ng-select>
+                              </div>
+                          </div><!--end col-->
+                          <div class="col-lg-6">
+                              <div class="mb-3">
+                                  <label for="designationInput" class="form-label">{{'MODULES.HR.MAIN.DESIGNATION' | translate }}</label>
+                                  <input type="text" class="form-control" id="designationInput" placeholder="{{'PLACEHOLDER.DESIGNATION' | translate }}" value="Lead Designer / Developer">
+                              </div>
+                          </div><!--end col-->
+                          <div class="col-lg-6">
+                              <div class="mb-3">
+                                  <label for="websiteInput1" class="form-label">{{'COMMON.WEBSITE' | translate }}</label>
+                                  <input type="text" class="form-control" id="websiteInput1" placeholder="www.example.com" value="www.sifca.com" />
+                              </div>
+                          </div><!--end col-->
+                          <div class="col-lg-4">
+                              <div class="mb-3">
+                                  <label for="cityInput" class="form-label">{{'COMMON.CITY' | translate }}</label>
+                                  <input type="text" class="form-control" id="cityInput" placeholder="{{'PLACEHOLDER.ENTER_CITY' | translate }}" value="California" />
+                              </div>
+                          </div><!--end col-->
+                          <div class="col-lg-4">
+                              <div class="mb-3">
+                                  <label for="countryInput" class="form-label">{{'COMMON.COUNTRY' | translate }}</label>
+                                  <input type="text" class="form-control" id="countryInput" placeholder="{{'PLACEHOLDER.COUNTRY' | translate }}" value="United States" />
+                              </div>
+                          </div><!--end col-->
+                          <div class="col-lg-4">
+                              <div class="mb-3">
+                                  <label for="zipcodeInput" class="form-label">{{'COMMON.ZIP_CODE' | translate }}</label>
+                                  <input type="text" class="form-control" minlength="5" maxlength="6" id="zipcodeInput" placeholder="{{'PLACEHOLDER.ENTER_ZIP_CODE' | translate }}" value="90011">
+                              </div>
+                          </div><!--end col-->
+                          <div class="col-lg-12">
+                              <div class="mb-3 pb-2">
+                                  <label for="exampleFormControlTextarea" class="form-label">{{'COMMON.DESCRIPTION' | translate }}</label>
+                                  <textarea class="form-control" id="exampleFormControlTextarea" placeholder="{{'PLACEHOLDER.ENTER_YOUR_DESCRIPTION' | translate }}" rows="3">Hi I'm Anna Adame,It will be as simple as Occidental; in fact, it will be Occidental. To an English person, it will seem like simplified English, as a skeptical Cambridge friend of mine told me what Occidental is European languages are members of the same family.</textarea>
+                              </div>
+                          </div><!--end col-->
+                          <div class="col-lg-12">
+                              <div class="hstack gap-2 justify-content-end">
+                                  <button type="submit" class="btn btn-primary">{{'COMMON.UPDATES' | translate }}</button>
+                                  <button type="button" class="btn btn-soft-success">{{ 'COMMON.CANCEL' | translate }}</button>
+                              </div>
+                          </div><!--end col-->
+                      </div><!--end row-->
+                    </form>
+                  </ng-template>
+              </li>
+              <li [ngbNavItem]="2" class="nav-item">
+                  <a ngbNavLink class="nav-link" data-bs-toggle="tab" role="tab">
+                    <i class="far fa-user"></i>{{'MODULES.HR.MAIN.CHANGE_PASSWORD' | translate }}
+                  </a>
+                  <ng-template ngbNavContent>
+                    <form action="javascript:void(0);">
+                      <div class="row g-2">
+                          <div class="col-lg-4">
+                              <div>
+                                  <label for="oldpasswordInput" class="form-label">{{'MODULES.HR.MAIN.OLD_PASSWORD' | translate }}*</label>
+                                  <input type="password" class="form-control" id="oldpasswordInput" placeholder="{{'PLACEHOLDER.ENTER_CURRENT_PASSWORD' | translate }}">
+                              </div>
+                          </div><!--end col-->
+                          <div class="col-lg-4">
+                              <div>
+                                  <label for="newpasswordInput" class="form-label">{{'MODULES.HR.MAIN.NEW_PASSWORD' | translate }}*</label>
+                                  <input type="password" class="form-control" id="newpasswordInput" placeholder="{{'PLACEHOLDER.ENTER_NEW_PASSWORD' | translate }}">
+                              </div>
+                          </div><!--end col-->
+                          <div class="col-lg-4">
+                              <div>
+                                  <label for="confirmpasswordInput" class="form-label">{{'MODULES.HR.MAIN.CONFIRM_PASSWORD' | translate }}*</label>
+                                  <input type="password" class="form-control" id="confirmpasswordInput" placeholder="{{'PLACEHOLDER.CONFIRM_PASSWORD' | translate }}">
+                              </div>
+                          </div><!--end col-->
+                          <div class="col-lg-12">
+                              <div class="mb-3">
+                                  <a href="javascript:void(0);" class="link-primary text-decoration-underline">{{'MODULES.HR.MAIN.FORGOT_PASSWORD' | translate }}</a>
+                              </div>
+                          </div><!--end col-->
+                          <div class="col-lg-12">
+                              <div class="text-end">
+                                  <button type="submit" class="btn btn-success">{{'MODULES.HR.MAIN.CHANGE_PASSWORD' | translate }}</button>
+                              </div>
+                          </div><!--end col-->
+                      </div><!--end row-->
+                  </form>
+                  <div class="mt-4 mb-3 border-bottom pb-2">
+                      <div class="float-end">
+                         <a href="javascript:void(0);" class="link-primary">{{'COMMON.ALL' | translate }} 
+ {{'MODULES.HR.MAIN.LOGOUT' | translate }}</a>
+                      </div>
+                      <h5 class="card-title">{{'MODULES.HR.MAIN.LOGIN_HISTORY' | translate }}</h5>
+                  </div>
+                  <div class="d-flex align-items-center mb-3">
+                      <div class="flex-shrink-0 avatar-sm">
+                          <div class="avatar-title bg-light text-primary rounded-3 fs-18 shadow">
+                              <i class="ri-smartphone-line"></i>
+                          </div>
+                      </div>
+                      <div class="flex-grow-1 ms-3">
+                          <h6>iPhone 12 Pro</h6>
+                          <p class="text-muted mb-0">Los Angeles, United States - March 16 at 2:47PM</p>
+                      </div>
+                      <div>
+                          <a href="javascript:void(0);">{{'MODULES.HR.MAIN.LOGOUT' | translate }}</a>
+                      </div>
+                  </div>
+                  <div class="d-flex align-items-center mb-3">
+                      <div class="flex-shrink-0 avatar-sm">
+                          <div class="avatar-title bg-light text-primary rounded-3 fs-18 shadow">
+                              <i class="ri-tablet-line"></i>
+                          </div>
+                      </div>
+                      <div class="flex-grow-1 ms-3">
+                          <h6>Apple iPad Pro</h6>
+                          <p class="text-muted mb-0">Washington, United States - November 06 at 10:43AM</p>
+                      </div>
+                      <div>
+                          <a href="javascript:void(0);">{{'MODULES.HR.MAIN.LOGOUT' | translate }}</a>
+                      </div>
+                  </div>
+                  <div class="d-flex align-items-center mb-3">
+                      <div class="flex-shrink-0 avatar-sm">
+                          <div class="avatar-title bg-light text-primary rounded-3 fs-18 shadow">
+                              <i class="ri-smartphone-line"></i>
+                          </div>
+                      </div>
+                      <div class="flex-grow-1 ms-3">
+                          <h6>Galaxy S21 Ultra 5G</h6>
+                          <p class="text-muted mb-0">Conneticut, United States - June 12 at 3:24PM</p>
+                      </div>
+                      <div>
+                          <a href="javascript:void(0);">{{'MODULES.HR.MAIN.LOGOUT' | translate }}</a>
+                      </div>
+                  </div>
+                  <div class="d-flex align-items-center">
+                      <div class="flex-shrink-0 avatar-sm">
+                          <div class="avatar-title bg-light text-primary rounded-3 fs-18 shadow">
+                              <i class="ri-macbook-line"></i>
+                          </div>
+                      </div>
+                      <div class="flex-grow-1 ms-3">
+                          <h6>Dell Inspiron 14</h6>
+                          <p class="text-muted mb-0">Phoenix, United States - July 26 at 8:10AM</p>
+                      </div>
+                      <div>
+                          <a href="javascript:void(0);">{{'MODULES.HR.MAIN.LOGOUT' | translate }}</a>
+                      </div>
+                    </div>
+                  </ng-template>
+              </li>
+              <li [ngbNavItem]="3" class="nav-item">
+                <a ngbNavLink class="nav-link" data-bs-toggle="tab" role="tab">
+                  <i class="far fa-envelope"></i>
+                  Experience
+                </a>
+                <ng-template ngbNavContent>
+                  <form>
+                    <div id="newlink">
+                        <div id="1">
+                            <div class="row">
+                                <div class="col-lg-12">
+                                    <div class="mb-3">
+                                        <label for="jobTitle" class="form-label">{{'MODULES.HR.MAIN.JOB_TITLE' | translate }}</label>
+                                        <input type="text" class="form-control" id="jobTitle" placeholder="{{'PLACEHOLDER.JOB_TITLE' | translate }}" value="Lead Designer / Developer">
+                                    </div>
+                                </div>
+                                <!--end col-->
+                                <div class="col-lg-6">
+                                    <div class="mb-3">
+                                        <label for="companyName" class="form-label">{{'MODULES.HR.MAIN.COMPANY_NAME' | translate }}</label>
+                                        <input type="text" class="form-control" id="companyName" placeholder="{{'PLACEHOLDER.COMPANY_NAME' | translate }}" value="Themesbrand">
+                                    </div>
+                                </div>
+                                <!--end col-->
+                                <div class="col-lg-6">
+                                    <div class="mb-3">
+                                        <label for="experienceYear" class="form-label">{{'MODULES.HR.MAIN.EXPERIENCE_YEARS' | translate }}</label>
+                                        <div class="row">
+                                            <div class="col-lg-5">
+                                                <select class="form-control" data-choices data-choices-search-false
+                                                    name="experienceYear" id="experienceYear">
+                                                    <option value="">{{'MODULES.HR.MAIN.SELECT_YEARS' | translate }}</option>
+                                                    <option value="Choice 1">2001</option>
+                                                    <option value="Choice 2">2002</option>
+                                                    <option value="Choice 3">2003</option>
+                                                    <option value="Choice 4">2004</option>
+                                                    <option value="Choice 5">2005</option>
+                                                    <option value="Choice 6">2006</option>
+                                                    <option value="Choice 7">2007</option>
+                                                    <option value="Choice 8">2008</option>
+                                                    <option value="Choice 9">2009</option>
+                                                    <option value="Choice 10">2010</option>
+                                                    <option value="Choice 11">2011</option>
+                                                    <option value="Choice 12">2012</option>
+                                                    <option value="Choice 13">2013</option>
+                                                    <option value="Choice 14">2014</option>
+                                                    <option value="Choice 15">2015</option>
+                                                    <option value="Choice 16">2016</option>
+                                                    <option value="Choice 17" selected>2017</option>
+                                                    <option value="Choice 18">2018</option>
+                                                    <option value="Choice 19">2019</option>
+                                                    <option value="Choice 20">2020</option>
+                                                    <option value="Choice 21">2021</option>
+                                                    <option value="Choice 22">2022</option>
+                                                </select>
+                                            </div>
+                                            <!--end col-->
+                                            <div class="col-auto align-self-center">{{'COMMON.TO' | translate }}
+                                            </div>
+                                            <!--end col-->
+                                            <div class="col-lg-5">
+                                                <select class="form-control" data-choices data-choices-search-false
+                                                    name="choices-single-default2">
+                                                    <option value="">{{'MODULES.HR.MAIN.SELECT_YEARS' | translate }}</option>
+                                                    <option value="Choice 1">2001</option>
+                                                    <option value="Choice 2">2002</option>
+                                                    <option value="Choice 3">2003</option>
+                                                    <option value="Choice 4">2004</option>
+                                                    <option value="Choice 5">2005</option>
+                                                    <option value="Choice 6">2006</option>
+                                                    <option value="Choice 7">2007</option>
+                                                    <option value="Choice 8">2008</option>
+                                                    <option value="Choice 9">2009</option>
+                                                    <option value="Choice 10">2010</option>
+                                                    <option value="Choice 11">2011</option>
+                                                    <option value="Choice 12">2012</option>
+                                                    <option value="Choice 13">2013</option>
+                                                    <option value="Choice 14">2014</option>
+                                                    <option value="Choice 15">2015</option>
+                                                    <option value="Choice 16">2016</option>
+                                                    <option value="Choice 17">2017</option>
+                                                    <option value="Choice 18">2018</option>
+                                                    <option value="Choice 19">2019</option>
+                                                    <option value="Choice 20" selected>2020</option>
+                                                    <option value="Choice 21">2021</option>
+                                                    <option value="Choice 22">2022</option>
+                                                </select>
+                                            </div>
+                                            <!--end col-->
+                                        </div>
+                                        <!--end row-->
+                                    </div>
+                                </div>
+                                <!--end col-->
+                                <div class="col-lg-12">
+                                    <div class="mb-3">
+                                        <label for="jobDescription" class="form-label">{{'MODULES.HR.MAIN.JOB_DESCRIPTION' | translate }}</label>
+                                        <textarea class="form-control" id="jobDescription" rows="3"  placeholder="{{'COMMON.ENTER_DESCRIPTION' | translate }}">{{'MODULES.HR.MAIN.YOU_ALWAYS_WANT_TO_MAKE_SURE' | translate }} </textarea>
+                                    </div>
+                                </div>
+                                <!--end col-->
+                                <div class="hstack gap-2 justify-content-end">
+                                    <a class="btn btn-success" href="javascript:deleteEl(1)">{{'COMMON.DELETE' | translate }}</a>
+                                </div>
+                            </div>
+                            <!--end row-->
+                        </div>
+                    </div>
+                    <div id="newForm" style="display: none;">
+
+                    </div>
+                    <div class="col-lg-12">
+                        <div class="hstack gap-2">
+                            <button type="submit" class="btn btn-success">{{'CCOMMON.UPDATE' | translate }}</button>
+                            <a href="javascript:new_link()" class="btn btn-primary">{{'MODULES.HR.MAIN.ADD_NEW' | translate }}</a>
+                        </div>
+                    </div>
+                    <!--end col-->
+                  </form>
+                </ng-template>
+              </li>
+              <li [ngbNavItem]="4" class="nav-item">
+                <a ngbNavLink class="nav-link" data-bs-toggle="tab" role="tab">
+                  <i class="far fa-envelope"></i>{{'MODULES.HR.MAIN.PRIVACY_POLICY' | translate }}
+                </a>
+                <ng-template ngbNavContent>
+                  <div class="mb-4 pb-2">
+                    <h5 class="card-title text-decoration-underline mb-3">{{'MODULES.HR.MAIN.SECURITY' | translate }}:</h5>
+                    <div class="d-flex flex-column flex-sm-row mb-4 mb-sm-0">
+                        <div class="flex-grow-1">
+                            <h6 class="fs-14 mb-1">{{'MODULES.HR.MAIN.TWO_FACTOR_AUTH' | translate }}</h6>
+                            <p class="text-muted">{{'MODULES.HR.MAIN.TWOFACTOR_AUTHENTICATION' | translate }}</p>
+                        </div>
+                        <div class="flex-shrink-0 ms-sm-3">
+                            <a href="javascript:void(0);" class="btn btn-sm btn-primary">{{'MODULES.HR.MAIN.ENABLE_TWO_FACTOR' | translate }}</a>
+                        </div>
+                    </div>
+                    <div class="d-flex flex-column flex-sm-row mb-4 mb-sm-0 mt-2">
+                        <div class="flex-grow-1">
+                            <h6 class="fs-14 mb-1">{{'MODULES.HR.MAIN.SECONDARY_VERIFICATION' | translate }}</h6>
+                            <p class="text-muted">{{'MODULES.HR.MAIN.THE_FIRST_FACTOR' | translate }}</p>
+                        </div>
+                        <div class="flex-shrink-0 ms-sm-3">
+                            <a href="javascript:void(0);" class="btn btn-sm btn-primary">{{'MODULES.HR.MAIN.SET_UP_SECONDARY_METHOD' | translate }}</a>
+                        </div>
+                    </div>
+                    <div class="d-flex flex-column flex-sm-row mb-4 mb-sm-0 mt-2">
+                        <div class="flex-grow-1">
+                            <h6 class="fs-14 mb-1">{{'MODULES.HR.MAIN.BACKUP_CODES' | translate }}</h6>
+                            <p class="text-muted mb-sm-0">{{'MODULES.HR.MAIN.A_BACKUP_CODE' | translate }}</p>
+                        </div>
+                        <div class="flex-shrink-0 ms-sm-3">
+                            <a href="javascript:void(0);" class="btn btn-sm btn-primary">{{'MODULES.HR.MAIN.GENERATE_BACKUP_CODES' | translate }}</a>
+                        </div>
+                    </div>
+                </div>
+                <div class="mb-3">
+                    <h5 class="card-title text-decoration-underline mb-3">{{'MODULES.HR.MAIN.APPLICATION_NOTIFICATIONS' | translate }}:</h5>
+                    <ul class="list-unstyled mb-0">
+                        <li class="d-flex">
+                            <div class="flex-grow-1">
+                                <label for="directMessage" class="form-check-label fs-14">{{ 'MODULES.ECOMMERCE.MAIN.DIRECT_MESSAGES' | translate }}</label>
+                                <p class="text-muted">{{'MODULES.HR.MAIN.MESSAGES_FROM_PEOPLE_YOU_FOLLOW' | translate }}</p>
+                            </div>
+                            <div class="flex-shrink-0">
+                                <div class="form-check form-switch">
+                                    <input class="form-check-input" type="checkbox" role="switch" id="directMessage" checked />
+                                </div>
+                            </div>
+                        </li>
+                        <li class="d-flex mt-2">
+                            <div class="flex-grow-1">
+                                <label class="form-check-label fs-14" for="desktopNotification">{{'MODULES.HR.MAIN.SHOW_DESKTOP_NOTIFICATIONS' | translate }}
+                                </label>
+                                <p class="text-muted">{{'MODULES.HR.MAIN.CHOOSE_THE_OPTION_YOU_WANT' | translate }}</p>
+                            </div>
+                            <div class="flex-shrink-0">
+                                <div class="form-check form-switch">
+                                    <input class="form-check-input" type="checkbox" role="switch" id="desktopNotification" checked />
+                                </div>
+                            </div>
+                        </li>
+                        <li class="d-flex mt-2">
+                            <div class="flex-grow-1">
+                                <label class="form-check-label fs-14" for="emailNotification">{{'MODULES.HR.MAIN.SHOW_EMAIL_NOTIFICATIONS' | translate }}
+                                </label>
+                                <p class="text-muted">{{'MODULES.HR.MAIN.UNDER_SETTINGS' | translate }} </p>
+                            </div>
+                            <div class="flex-shrink-0">
+                                <div class="form-check form-switch">
+                                    <input class="form-check-input" type="checkbox" role="switch" id="emailNotification" />
+                                </div>
+                            </div>
+                        </li>
+                        <li class="d-flex mt-2">
+                            <div class="flex-grow-1">
+                                <label class="form-check-label fs-14" for="chatNotification">{{'MODULES.HR.MAIN.SHOW_CHAT_NOTIFICATIONS' | translate }}
+                                </label>
+                                <p class="text-muted">{{'MODULES.HR.MAIN.TO_PREVENT_DUPLICATE_MOBILE_NOTIFICATIONS' | translate }}</p>
+                            </div>
+                            <div class="flex-shrink-0">
+                                <div class="form-check form-switch">
+                                    <input class="form-check-input" type="checkbox" role="switch" id="chatNotification" />
+                                </div>
+                            </div>
+                        </li>
+                        <li class="d-flex mt-2">
+                            <div class="flex-grow-1">
+                                <label class="form-check-label fs-14" for="purchaesNotification">{{'MODULES.HR.MAIN.SHOW_PURCHASE_NOTIFICATIONS' | translate }}
+                                </label>
+                                <p class="text-muted">{{'MODULES.HR.MAIN.GET_REALTIME_PURCHASE' | translate }}</p>
+                            </div>
+                            <div class="flex-shrink-0">
+                                <div class="form-check form-switch">
+                                    <input class="form-check-input" type="checkbox" role="switch" id="purchaesNotification" />
+                                </div>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+                <div>
+                    <h5 class="card-title text-decoration-underline mb-3">{{'MODULES.HR.MAIN.DELETE_THIS_ACCOUNT' | translate }}:</h5>
+                    <p class="text-muted">{{'MODULES.HR.MAIN.GO_TO_THE_DATA_PRIVACY_ACCOUNT' | translate }}</p>
+                    <div>
+                        <input type="password" class="form-control" id="passwordInput" placeholder="{{'PLACEHOLDER.ENTER_YOUR_PASSWORD' | translate }}" value="make@321654987" style="max-width: 265px;">
+                    </div>
+                    <div class="hstack gap-2 mt-3">
+                        <a href="javascript:void(0);" class="btn btn-soft-danger">{{'COMMON.CLOSE' | translate }} & Delete This Account</a>
+                        <a href="javascript:void(0);" class="btn btn-light">{{ 'COMMON.CANCEL' | translate }}</a>
+                    </div>
+                  </div>
+                </ng-template>
+              </li>
+            </ul>
+          </div>
+          <div class="card-body p-4">
+              <div class="tab-content">
+                <div [ngbNavOutlet]="customNav"></div>
+              </div>
+          </div>
+      </div>
+  </div><!--end col-->
+</div><!--end row-->

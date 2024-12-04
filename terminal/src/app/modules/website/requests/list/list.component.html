@@ -1,0 +1,190 @@
+<app-breadcrumbs title="{{ 'MENUITEMS.TITLE.REQUESTS_LIST' | translate }}" [breadcrumbItems]="breadCrumbItems"></app-breadcrumbs>
+<ng-container *ngIf="!(navigating$ | async)">
+
+  <div class="row">
+    <div class="col-lg-12">
+      <div class="card" id="tasksList">
+        <div class="card-header border-0">
+          <div class="row g-4 align-items-center">
+            <div class="col-sm">
+              <div>
+                <h5 class="card-title mb-0">{{'MODULES.WEBSITE.REQUESTS' | translate }}</h5>
+              </div>
+            </div>
+            <div class="col-sm-auto">
+              <button (click)="openEmailModal(emailModal)" type="button" class="btn btn-primary me-1"><i class="ri-send-plane-fill align-bottom me-1"></i>{{'COMMON.SEND' | translate }}</button>
+              <button (click)="downloadDocument()" type="button" class="btn btn-secondary me-1"><i class="ri-file-download-line align-bottom"></i>{{'COMMON.EXPORT' | translate }}</button>
+            </div>
+          </div>
+        </div>
+
+        <div class="card-body border-bottom-dashed border-bottom">
+          <div class="row d-flex justify-content-between g-3">
+            <div class="col-lg-8 col-md-6">
+              <div class="search-box">
+                <form [formGroup]="searchForm">
+                  <input type="text" formControlName="searchString" name="searchTerm" class="form-control" placeholder="{{'PLACEHOLDER.SEARCH_FOR_POSITIONS' | translate }}">
+                  <i class="ri-search-line search-icon"></i>
+                </form>
+              </div>
+            </div>
+            <div class="col-lg-2 col-md-3">
+              <select (change)="onTypeChange($event)" class="form-control" name="choices-single-default" id="idStatus">
+                <option selected value="All">{{'COMMON.ALL' | translate }}</option>
+                <option *ngFor="let type of types" [value]="type">
+                  {{ (type === 'CONTACT' ? 'SHARED.CONTACT' : type === 'DEMO' ? 'SHARED.DEMO' : 'SHARED.PARTNER') | translate }}
+                </option>
+              </select>
+            </div>
+          </div>
+        </div>
+        <div class="card-body">
+          <div class="table-responsive table-card mb-2">
+            <table class="table align-middle table-nowrap">
+              <thead>
+                <tr class="bg-light text-uppercase text-muted">
+                  <th>{{'COMMON.FIRST_NAME' | translate }}</th>
+                  <th>{{'COMMON.LAST_NAME' | translate }} </th>
+                  <th>{{ 'COMMON.EMAIL' | translate }}</th>
+                  <th>{{'MODULES.WEBSITE.SUBJECT' | translate }}</th>
+                  <th>{{'MODULES.INVENTORY.CONTENT' | translate }}</th>
+                  <th>{{'COMMON.STATUS' | translate }}</th>
+                  <th>{{'COMMON.ACTIONS' | translate }}</th>
+                </tr>
+              </thead>
+              <tbody *ngIf="((loadingRequests$ | async) === false || null || undefined) && (requests$ | async).length">
+                <tr *ngFor="let request of requests$ |  async" id="t_{{request._id}}">
+                  <td class="project_name">
+                    <ngb-highlight [result]="request?.requestor?.firstName">
+                    </ngb-highlight>
+                  </td>
+                  <td>
+                    <ngb-highlight [result]="request?.requestor?.lastName"></ngb-highlight>
+                  </td>
+                  <td>
+                    <ngb-highlight [result]="request?.requestor?.email"></ngb-highlight>
+                  </td>
+                  <td>
+                    <ngb-highlight [result]="request?.request?.subject?.length > 50 ? (request?.request?.subject | slice:0:50) + '...' : request?.request?.subject"></ngb-highlight>
+                  </td>
+                  <td>
+                    <ngb-highlight [result]="request?.request?.content?.length > 30 ? (request?.request?.content | slice:0:30) + '...' : request?.request?.content"></ngb-highlight>
+                  </td>
+                  <td class="priority"><span class="badge text-uppercase"
+                      [ngClass]=" { 'bg-danger': request.status === 'CLOSED', 'bg-success': request.status === 'TREATED', 'bg-primary': request.status === 'REQUESTED'}">{{'COMMON.REQUEST.'+ request?.status | translate}}</span>
+                  </td>
+                  <td class="hstack gap-2">
+                    <ul class="d-flex justify-content-center list-inline hstack gap-2 mb-0">
+                      <li (click)="openRequestModal(requestModal, request)" class="list-inline-item edit" matTooltip="Edit" placement="top">
+                        <a href="javascript:void(0);" data-bs-toggle="modal" class="text-primary d-inline-block edit-item-btn">
+                          <i class="ri-pencil-fill fs-16"></i>
+                        </a>
+                      </li>
+                      <li [routerLink]="[request.id]" class="list-inline-item edit" matTooltip="Delete" placement="top">
+                        <a href="javascript:void(0);" data-bs-toggle="modal" class="text-primary d-inline-block">
+                          <i class="ri-eye-fill fs-16"></i>
+                        </a>
+                      </li>
+                    </ul>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+        <div *ngIf="((loadingRequests$ | async) === false || null || undefined) && (requests$ | async).length" class="px-3">
+          <div class="row justify-content-md-between align-items-md-center gy-2">
+            <div class="col col-sm-6">
+              <div class="dataTables_info mb-2" id="tickets-table_info" role="status" aria-live="polite">{{'COMMON.SHOWING' | translate }} {{pagination?.startIndex + 1}}–{{pagination?.endIndex ===
+                pagination?.length ? pagination?.endIndex : pagination?.endIndex + 1}} {{'COMMON.OF' | translate }}
+                {{pagination?.length}} {{'COMMON.ENTRIES' | translate }}
+              </div>
+            </div>
+            <div class="col col-sm-6">
+              <div class="text-sm-right float-end listjs-pagination">
+                <ngb-pagination [maxSize]="5" [collectionSize]="pagination?.length" [(page)]="page" (pageChange)="onPageChange($event)" [pageSize]="pagination?.size">
+                </ngb-pagination>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div id="noresult" class="py-4 mt-4 text-center" *ngIf="(loadingRequests$ | async) || (!(loadingRequests$ | async) && !(requests$ | async).length)">
+          <div *ngIf="loadingRequests$ | async">
+            <lord-icon trigger="loop" style="width:72px;height:72px" [colors]="'primary:' + primaryColor + ',secondary:' + secondaryColor" src="https://cdn.lordicon.com/msoeawqm.json">
+            </lord-icon>
+            <h5 class="mt-4">{{'COMMON.LOADING' | translate }}</h5>
+          </div>
+          <div *ngIf="!(loadingRequests$ | async) && !(requests$ | async).length">
+            <lord-icon trigger="loop" style="width:72px;height:72px" [colors]="'primary:' + primaryColor + ',secondary:' + secondaryColor" src="https://cdn.lordicon.com/vlycxjwx.json">
+            </lord-icon>
+            <h5 class="mt-4" >{{ 'COMMON.NO_RESULT' | translate }}</h5>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <ng-template #emailModal role="document" let-modal>
+    <div class="modal-header p-3 bg-soft-info">
+      <h5 class="modal-title" id="exampleModalLabel">{{'COMMON.SEND' | translate }} Email</h5>
+      <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" id="close-modal" (click)="modal.dismiss('Cross click')"></button>
+    </div>
+    <form [formGroup]="emailForm">
+      <div class="modal-body">
+        <div class="row g-3">
+          <div class="col-lg-12 mb-3">
+            <label class="form-label" for="product-tags-input">{{ 'MODULES.ECOMMERCE.MAIN.EMAILS_PRESS' | translate }}</label>
+            <ng-select [items]="[]" class="no-arrow-select" [addTag]="true" [isOpen]="false" [multiple]="true" [selectOnTab]="true" formControlName="emails">
+            </ng-select>
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <div class="hstack gap-2 justify-content-end">
+          <button type="button" class="btn btn-light" data-bs-dismiss="modal" (click)="modal.close('Close click')">{{'COMMON.CLOSE' | translate }}</button>
+          <button type="button" [disabled]="isEmailButtonDisabled || emailForm.invalid" (click)="send()" class="btn btn-success" id="add-btn">{{'COMMON.SEND' | translate }}</button>
+        </div>
+      </div>
+    </form>
+  </ng-template>
+
+  <ng-template #requestModal role="document" let-modal>
+    <div class="modal-header bg-soft-info p-3">
+      <h5 class="modal-title" id="exampleModalLabel">{{'COMMON.EDIT' | translate }} request</h5>
+      <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" id="close-modal" (click)="modal.dismiss('Cross click')"></button>
+    </div>
+    <form [formGroup]="requestForm">
+      <div class="modal-body">
+        <div class="row g-3">
+          <div class="col-lg-12">
+            <div>
+              <label for="email_id-field" class="form-label">{{'COMMON.STATUS' | translate }}</label>
+              <select required formControlName="status" class="form-control" name="choices-single-default" id="idStatus">
+                <option *ngFor="let state of status" [value]="state">
+                  {{ state === 'REQUESTED' ? 'SHARED.REQUESTED' : state === 'TREATED' ? 'SHARED.TREATED' : 'SHARED.CLOSED' }}
+                </option>
+              </select>
+              <div class="invalid-feedback" *ngIf="requestForm.get('status')?.touched && requestForm.get('status').hasError('required')">{{'COMMON.REQUIRED' | translate }}
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <div class="hstack gap-2 justify-content-end">
+          <button type="button" class="btn btn-light" data-bs-dismiss="modal" (click)="modal.close('Close click')">{{'COMMON.CLOSE' | translate }}</button>
+          <button type="button" [disabled]="requestForm.invalid || isButtonDisabled" (click)="save()" class="btn btn-success" id="add-btn">{{'COMMON.SAVE' | translate }}</button>
+        </div>
+      </div>
+    </form>
+  </ng-template>
+</ng-container>
+<div *ngIf="navigating$ | async" class="vh-100 py-4 text-center" fxLayout="column" fxLayoutAlign="center center" fxLayoutGap="1rem">
+  <div>
+    <lord-icon trigger="loop" style="width:72px;height:72px" [colors]="'primary:' + primaryColor + ',secondary:' + secondaryColor" src="https://cdn.lordicon.com/msoeawqm.json">
+    </lord-icon>
+  </div>
+  <div class="mt-4">
+    <h5>{{'COMMON.LOADING' | translate }}</h5>
+  </div>
+</div>

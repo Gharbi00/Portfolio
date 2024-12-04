@@ -1,0 +1,723 @@
+<div *ngIf="!loading" [class.dark-mode]="darkMode" [class.rtl]="rtl">
+  <div class="profile col-md-12 special-margin" style="padding-left: 0 !important">
+    <div class="profile-header">
+      <figure class="profile-header-cover liquid" [ngStyle]="{
+              'background-image': 'url(' + landingBackgroundIcon?.baseUrl + '/' + landingBackgroundIcon?.path + ')',
+              'background-position': 'center',
+              'background-size': 'cover',
+              'background-repeat': 'no-repeat'
+            }">
+        <img [src]="landingBackgroundIcon?.baseUrl + '/' + landingBackgroundIcon?.path" alt="cover-01"
+          style="display: none" />
+      </figure>
+      <div class="profile-header-info">
+        <div class="user-short-description big">
+          <a class="user-short-description-avatar user-avatar big" style="direction: ltr;">
+            <div class="profile-cnt">
+              <div class="background-profile">
+                <div style="left: 7%; position: absolute; top: 7%">
+                  <div class="profile-image" *ngIf="!(currentUser$ | async)?.picture?.baseUrl; else showImage">
+                    <span style="display: flex;
+                    align-items: center;
+                    justify-content: center;
+                    height: 100%;
+                    width: 100%;
+                    font-size: 24px;
+                    color: #ffffff;
+                    opacity: 0.8;
+                    font-size: 19.2px;
+                    font-weight: 900;
+                    " [ngStyle]="{
+                      'background-color': (widgetSettings$ | async)?.theme || '#7750f8'
+                    }" class="profile-text"> {{(currentUser$ | async)?.firstName?.charAt(0) || 'N'}} </span>
+                  </div>
+                  <ng-template #showImage>
+                    <div class="profile-image" [ngStyle]="{
+                      'background-image': 'url(' + (currentUser$ | async)?.picture?.baseUrl + '/' + (currentUser$ | async)?.picture?.path + ')',
+                      'background-position': 'center',
+                      'background-size': 'cover'
+                    }"></div>
+                  </ng-template>
+                  <div class="progress-bar">
+                    <svg class="progress noselect" x="0px" y="0px" viewBox="0 0 776 628">
+                      <path class="track" d="M723 314L543 625.77 183 625.77 3 314 183 2.23 543 2.23 723 314z">
+                      </path>
+                      <path class="fill" #fill d="M723 314L543 625.77 183 625.77 3 314 183 2.23 543 2.23 723 314z">
+                      </path>
+                    </svg>
+                  </div>
+                </div>
+                <ng-container *ngIf="(loyaltySettings$ | async)?.qualitative?.active">
+                  <div
+                    [style.background-color]="(currentLevel$ | async) ? (currentLevel$ | async)?.color : (loyaltySettings$ | async)?.prelevel?.color"
+                    class="profile-avatar-badge">
+                    <p class="special-badge-text">{{(currentLevel$ | async) ? (currentLevel$ | async)?.rank + 1 : 1}}
+                    </p>
+                  </div>
+                  <div class="profile-avatar-badge level-background"></div>
+                </ng-container>
+              </div>
+            </div>
+          </a>
+
+          <p class="user-short-description-title"><a>{{(currentUser$ | async)?.firstName}} {{(currentUser$ |
+              async)?.lastName}}</a></p>
+        </div>
+        <div *ngIf="(currentUser$ | async)?.socialMedia?.length" class="profile-header-social-links-wrap">
+          <div class="tns-outer">
+            <div class="tns-liveregion tns-visually-hidden" aria-live="polite" aria-atomic="true"></div>
+            <div id="profile-header-social-links-slider-mw" class="tns-ovh">
+              <div class="tns-inner" id="profile-header-social-links-slider-iw">
+                <owl-carousel-o (changed)="draggingChange($event)" [options]="socialMediaCarousel"
+                  id="profile-header-social-links-slider"
+                  class="profile-header-social-links tns-slider tns-carousel tns-subpixel tns-calc tns-horizontal">
+                  <ng-container *ngFor="let data of (currentUser$ | async)?.socialMedia">
+                    <ng-template carouselSlide class="profile-header-social-link tns-item tns-slide-active"
+                      id="profile-header-social-links-slider-item0">
+                      <a *ngIf="data?.name?.code === 'FB'" [attr.href]="!isDragging ? data?.value : null"
+                        target="_blank" class="social-link facebook">
+                        <svg class="icon-facebook">
+                          <use xlink:href="#svg-facebook"></use>
+                        </svg>
+                      </a>
+                      <a *ngIf="data?.name?.code === 'TT'" [attr.href]="!isDragging ? data?.value : null"
+                        class="social-link twitter" href="#">
+                        <svg class="icon-twitter">
+                          <use xlink:href="#svg-twitter"></use>
+                        </svg>
+                      </a>
+                      <a *ngIf="data?.name?.code === 'IG'" [attr.href]="!isDragging ? data?.value : null"
+                        class="social-link instagram" href="#">
+                        <svg class="icon-instagram">
+                          <use xlink:href="#svg-instagram"></use>
+                        </svg>
+                      </a>
+                      <a class="social-link youtube" *ngIf="data?.name?.code === 'YT'"
+                        [attr.href]="!isDragging ? data?.value : null">
+                        <svg class="icon-youtube">
+                          <use xlink:href="#svg-youtube"></use>
+                        </svg>
+                      </a>
+                      <a class="social-link" style="background-color: #0077B7;" *ngIf="data?.name?.code === 'LI'"
+                        [attr.href]="!isDragging ? data?.value : null">
+                        <svg style="background-color: #0077B7;" xmlns="http://www.w3.org/2000/svg"
+                          xmlns:xlink="http://www.w3.org/1999/xlink" height="15" width="15" version="1.1" id="Layer_1"
+                          viewBox="0 0 382 382" xml:space="preserve">
+                          <path style="fill: white;"
+                            d="M347.445,0H34.555C15.471,0,0,15.471,0,34.555v312.889C0,366.529,15.471,382,34.555,382h312.889  C366.529,382,382,366.529,382,347.444V34.555C382,15.471,366.529,0,347.445,0z M118.207,329.844c0,5.554-4.502,10.056-10.056,10.056  H65.345c-5.554,0-10.056-4.502-10.056-10.056V150.403c0-5.554,4.502-10.056,10.056-10.056h42.806  c5.554,0,10.056,4.502,10.056,10.056V329.844z M86.748,123.432c-22.459,0-40.666-18.207-40.666-40.666S64.289,42.1,86.748,42.1  s40.666,18.207,40.666,40.666S109.208,123.432,86.748,123.432z M341.91,330.654c0,5.106-4.14,9.246-9.246,9.246H286.73  c-5.106,0-9.246-4.14-9.246-9.246v-84.168c0-12.556,3.683-55.021-32.813-55.021c-28.309,0-34.051,29.066-35.204,42.11v97.079  c0,5.106-4.139,9.246-9.246,9.246h-44.426c-5.106,0-9.246-4.14-9.246-9.246V149.593c0-5.106,4.14-9.246,9.246-9.246h44.426  c5.106,0,9.246,4.14,9.246,9.246v15.655c10.497-15.753,26.097-27.912,59.312-27.912c73.552,0,73.131,68.716,73.131,106.472  L341.91,330.654L341.91,330.654z" />
+                        </svg>
+                      </a>
+                      <a class="social-link" style="background-color: #cd2121;" *ngIf="data?.name?.code === 'PR'"
+                        [attr.href]="!isDragging ? data?.value : null">
+                        <svg style="height: 20px !important; background-color: #cd2121;"
+                          xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1"
+                          id="Capa_1" viewBox="0 0 455.731 455.731" xml:space="preserve">
+                          <g>
+                            <rect x="0" y="0" style="fill:#C9353D;" width="455.731" height="455.731" />
+                            <path style="fill:#FFFFFF;"
+                              d="M160.601,382C86.223,350.919,37.807,262.343,68.598,172.382   C99.057,83.391,197.589,36.788,286.309,69.734c88.972,33.04,132.978,131.213,98.486,219.22   c-35.709,91.112-131.442,123.348-203.22,100.617c5.366-13.253,11.472-26.33,15.945-39.943c4.492-13.672,7.356-27.878,10.725-41.037   c2.9,2.44,5.814,5.027,8.866,7.439c15.861,12.535,33.805,13.752,52.605,9.232c19.977-4.803,35.764-16.13,47.455-32.78   c19.773-28.16,26.751-60.019,21.972-93.546c-4.942-34.668-25.469-59.756-57.65-72.389c-48.487-19.034-94.453-12.626-134.269,22.259   c-30.622,26.83-40.916,72.314-26.187,107.724c5.105,12.274,13.173,21.907,25.379,27.695c6.186,2.933,8.812,1.737,10.602-4.724   c0.133-0.481,0.295-0.955,0.471-1.422c3.428-9.04,2.628-16.472-3.473-25.199c-11.118-15.906-9.135-34.319-3.771-51.961   c10.172-33.455,40.062-55.777,75.116-56.101c9.39-0.087,19.056,0.718,28.15,2.937c27.049,6.599,44.514,27.518,46.264,55.253   c1.404,22.242-2.072,43.849-11.742,64.159c-4.788,10.055-11.107,18.996-20.512,25.325c-8.835,5.945-18.496,8.341-28.979,5.602   c-14.443-3.774-22.642-16.95-18.989-31.407c3.786-14.985,8.685-29.69,12.399-44.69c1.57-6.344,2.395-13.234,1.751-19.696   c-1.757-17.601-18.387-25.809-33.933-17.216c-10.889,6.019-16.132,16.079-18.564,27.719c-2.505,11.992-1.292,23.811,2.61,35.439   c0.784,2.337,0.9,5.224,0.347,7.634c-7.063,30.799-14.617,61.49-21.306,92.369c-1.952,9.011-1.59,18.527-2.239,27.815   C160.495,377.839,160.601,379.635,160.601,382z" />
+                          </g>
+                        </svg>
+                      </a>
+                      <a class="social-link bg-dark" *ngIf="data?.name?.code === 'TK'"
+                        [attr.href]="!isDragging ? data?.value : null">
+                        <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="20"
+                          height="20" viewBox="0 0 24 24" version="1.1">
+                          <title>tiktok_fill</title>
+                          <g id="页面-1" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+                            <g id="Brand" transform="translate(-720.000000, -48.000000)">
+                              <g id="tiktok_fill" transform="translate(720.000000, 48.000000)">
+                                <path
+                                  d="M24,0 L24,24 L0,24 L0,0 L24,0 Z M12.5934901,23.257841 L12.5819402,23.2595131 L12.5108777,23.2950439 L12.4918791,23.2987469 L12.4918791,23.2987469 L12.4767152,23.2950439 L12.4056548,23.2595131 C12.3958229,23.2563662 12.3870493,23.2590235 12.3821421,23.2649074 L12.3780323,23.275831 L12.360941,23.7031097 L12.3658947,23.7234994 L12.3769048,23.7357139 L12.4804777,23.8096931 L12.4953491,23.8136134 L12.4953491,23.8136134 L12.5071152,23.8096931 L12.6106902,23.7357139 L12.6232938,23.7196733 L12.6232938,23.7196733 L12.6266527,23.7031097 L12.609561,23.275831 C12.6075724,23.2657013 12.6010112,23.2592993 12.5934901,23.257841 L12.5934901,23.257841 Z M12.8583906,23.1452862 L12.8445485,23.1473072 L12.6598443,23.2396597 L12.6498822,23.2499052 L12.6498822,23.2499052 L12.6471943,23.2611114 L12.6650943,23.6906389 L12.6699349,23.7034178 L12.6699349,23.7034178 L12.678386,23.7104931 L12.8793402,23.8032389 C12.8914285,23.8068999 12.9022333,23.8029875 12.9078286,23.7952264 L12.9118235,23.7811639 L12.8776777,23.1665331 C12.8752882,23.1545897 12.8674102,23.1470016 12.8583906,23.1452862 L12.8583906,23.1452862 Z M12.1430473,23.1473072 C12.1332178,23.1423925 12.1221763,23.1452606 12.1156365,23.1525954 L12.1099173,23.1665331 L12.0757714,23.7811639 C12.0751323,23.7926639 12.0828099,23.8018602 12.0926481,23.8045676 L12.108256,23.8032389 L12.3092106,23.7104931 L12.3186497,23.7024347 L12.3186497,23.7024347 L12.3225043,23.6906389 L12.340401,23.2611114 L12.337245,23.2485176 L12.337245,23.2485176 L12.3277531,23.2396597 L12.1430473,23.1473072 Z"
+                                  id="MingCute" fill-rule="nonzero">
+                                </path>
+                                <path
+                                  d="M14,2 C15.1046,2 16,2.89543 16,4 C16,5.44733 17.03,6.6618 18.3984,6.93991 C19.4808,7.15992 20.1799,8.21575 19.9599,9.29819 C19.7399,10.3806 18.6841,11.0798 17.6016,10.8598 C17.0406,10.7457 16.5037,10.5646 16,10.3252 L16,16 C16,19.3137 13.3137,22 10,22 C6.68629,22 4,19.3137 4,16 C4,13.2015 5.91407,10.8551 8.50148,10.1891 C9.57119,9.91382 10.6616,10.5578 10.9369,11.6275 C11.2122,12.6972 10.5682,13.7876 9.49852,14.0629 C8.63547,14.285 8,15.0708 8,16 C8,17.1046 8.89543,18 10,18 C11.1046,18 12,17.1046 12,16 L12,4 C12,2.89543 12.8954,2 14,2 Z"
+                                  id="路径" fill="#FFFFFF">
+                                </path>
+                              </g>
+                            </g>
+                          </g>
+                        </svg>
+                      </a>
+                    </ng-template>
+                  </ng-container>
+                </owl-carousel-o>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="col-md-12 display-flex">
+    <div *ngIf="(loyaltySettings$ | async)?.profileComplete?.enable"
+      class="profile widget-box col-md-6 special-margin special-col-padding">
+      <div class="special-widget-box">
+        <div class="progress-arc-summary">
+          <div class="progress-arc-wrap">
+            <div class="progress-arc">
+              <div class="chartjs-size-monitor">
+                <div class="chartjs-size-monitor-expand">
+                  <div></div>
+                </div>
+                <div class="chartjs-size-monitor-shrink">
+                  <div></div>
+                </div>
+              </div>
+              <div *ngIf="completeProfile?.progress" class="progress-stat">
+                <div appProgressBar [height]="4" [lineColor]="'#e7e8ee'" [start]="0" [end]="100"
+                  [stop]="+(completeProfile?.progress)" [gradientColors]="[progressBarColor, progressBarColor]"
+                  [shape]="'circle'" class="progress-stat-bar" style="stroke-width: 4px"></div>
+              </div>
+            </div>
+            <div *ngIf="completeProfile?.progress" class="progress-arc-info">
+              <p class="progress-arc-title">{{completeProfile?.progress | number: '1.0-0'}}%</p>
+            </div>
+          </div>
+          <div class="progress-arc-summary-info">
+            <p class="progress-arc-summary-title">{{'PROFILE_COMPLETION' | translate}}
+            </p>
+            <p class="progress-arc-summary-subtitle">{{(currentUser$ | async)?.firstName}} {{(currentUser$ |
+              async)?.lastName}}</p>
+            <p class="progress-arc-summary-text">
+              {{'COMPLETE_YOUR_PROFILE' | translate}}
+            </p>
+          </div>
+        </div>
+        <owl-carousel-o *ngIf="completeProfile?.levels?.length" (changed)="draggingChange($event)"
+          [options]="profileCarousel" id="profile-header-social-links-slider"
+          class="profile-header-social-links tns-slider tns-carousel tns-subpixel tns-calc tns-horizontal">
+          <ng-container *ngFor="let level of completeProfile?.levels; let i = index">
+            <ng-template carouselSlide class="profile-header-social-link tns-item tns-slide-active"
+              id="profile-header-social-links-slider-item0">
+              <div class="achievement-status mt-5">
+                <p class="achievement-status-progress progress-item">
+                  {{level?.elements.length}}/{{(loyaltySettings$ |
+                  async)?.profileComplete?.levels?.[i]?.elements?.length}}
+                </p>
+                <div class="achievement-status-info">
+                  <p class="achievement-status-title tooltip-x">
+                    {{level?.name}}
+                    <span class="xm-tooltip">
+                      <p *ngIf="level?.missingElements?.length" class="xm-tooltip-text">
+                        <ng-container *ngFor="let item of level?.missingElements">
+                          <div>
+                            {{
+                            ( item === 'ABOUT' ? 'ABOUT' :
+                            item === 'EMAIL' ? 'EMAIL' :
+                            item === 'VERIFY_EMAIL' ? 'VERIFY_EMAIL' :
+                            item === 'PHONE' ? 'PHONE' :
+                            item === 'VERIFY_PHONE' ? 'VERIFY_PHONE' :
+                            item === 'BIRTHDATE' ? 'BIRTHDATE' :
+                            item === 'MARITAL_STATUS' ? 'MARITAL_STATUS' :
+                            item === 'GENDER' ? 'GENDER' :
+                            item === 'HOBBIES' ? 'HOBBIES' :
+                            item === 'INTERESTS' ? 'INTERESTS' :
+                            item === 'SOCIAL_MEDIA' ? 'SOCIAL_MEDIA' :
+                            item === 'PROFILE_PICTURE' ? 'PROFILE_PICTURE' :
+                            item === 'RESIDENTIAL_ADDRESS' ? 'RESIDENTIAL_ADDRESS' :
+                            item === 'GEOLOCATION' ? 'GEOLOCATION' :
+                            item === 'JOBS' ? 'JOBS' :
+                            item === 'EDUCATION' ? 'EDUCATION' :
+                            'UNKNOWN') | translate
+                            }}
+                          </div>
+                        </ng-container>
+                        <span class="tooltip-line-break"></span>
+                      </p>
+                    </span>
+                  </p>
+                  <p class="achievement-status-text">
+                    {{ (level?.elements.length === (loyaltySettings$ |
+                    async)?.profileComplete?.levels?.[i]?.elements?.length)
+                    ? 'COMPLETED' : 'UNCOMPLETED' | translate }}
+                  </p>
+                  <p [class.dark-mode]="darkMode"
+                    class="align-items-center d-flex dark-mode justify-content-center text-sticker mb-2">
+                    <svg class="text-sticker-icon icon-plus-small">
+                      <use xlink:href="#svg-plus-small"></use>
+                    </svg>
+                    {{level?.remuneration?.quantitative?.amount}}
+                    <img *ngIf="level?.remuneration?.quantitative?.wallet?.coin?.picture?.baseUrl"
+                      [src]="level?.remuneration?.quantitative?.wallet?.coin?.picture?.baseUrl + '/' + level?.remuneration?.quantitative?.wallet?.coin?.picture?.path"
+                      class="assets/img-fluid rounded-circle avatar-xxs mb-1 ml-1"
+                      style="margin-top: 5% !important; width: 25px !important" />
+                    <lord-icon class="ml-1" *ngIf="!level?.remuneration?.quantitative?.wallet?.coin?.picture?.baseUrl"
+                      src="https://cdn.lordicon.com/lxizbtuq.json" src="https://cdn.lordicon.com/lxizbtuq.json"
+                      trigger="loop" delay="2000" style="width:25px;height:25px">
+                    </lord-icon>
+                  </p>
+                  <p [class.dark-mode]="darkMode"
+                    class="align-items-center d-flex dark-mode justify-content-center text-sticker">
+                    <svg class="text-sticker-icon icon-plus-small">
+                      <use xlink:href="#svg-plus-small"></use>
+                    </svg>
+                    {{level?.remuneration?.qualitative?.amount}}
+                    <img *ngIf="!level?.remuneration?.qualitative?.picture?.baseUrl"
+                      src="https://sifca-storage.s3.eu-central-1.amazonaws.com/loyalcraft/reputation_512.gif"
+                      class="assets/img-fluid rounded-circle mb-1 ml-1"
+                      style="margin-top: 5% !important; width: 25px !important" />
+                    <img *ngIf="level?.remuneration?.qualitative?.picture?.baseUrl"
+                      [src]="level?.remuneration?.qualitative?.picture?.baseUrl + '/' + level?.remuneration?.qualitative?.picture?.path"
+                      class="assets/img-fluid rounded-circle mb-1 ml-1"
+                      style="margin-top: 5% !important; width: 25px !important" />
+                  </p>
+                </div>
+                <img class="achievement-status-image"
+                  [src]="level?.elements.length === (loyaltySettings$ | async)?.profileComplete?.levels?.[i]?.elements?.length ? starIcon?.baseUrl + '/' + starIcon?.path : badgeIcon?.baseUrl + '/' + badgeIcon?.path"
+                  style="width: 30px; height: 30px;" alt="bdage-completedq-s" />
+              </div>
+            </ng-template>
+          </ng-container>
+        </owl-carousel-o>
+        <p class="profile-header-info-action button secondary" (click)="toggleModal('editProfile')"
+          style="width: -webkit-fill-available; margin-top: 20%;">
+          {{'COMPLETE_PROFILE' | translate}}
+        </p>
+      </div>
+    </div>
+    <div [ngClass]="{
+      'col-md-6': (loyaltySettings$ | async)?.profileComplete?.enable,
+      'col-md-12': !(loyaltySettings$ | async)?.profileComplete?.enable,
+      'p-0': !(loyaltySettings$ | async)?.profileComplete?.enable
+    }" class="special-col-margin-2 col-responsive-margin special-col-padding col-md-6"
+      style="padding-right: 0px; display: grid">
+      <div class="widget-box">
+        <div>
+          <div class="widget-box-settings">
+            <div class="post-settings-wrap" style="position: relative">
+              <div class="post-settings widget-box-post-settings-dropdown-trigger" (click)="toggleModal('editProfile')">
+                <svg class="post-settings-icon icon-more-dots">
+                  <use xlink:href="#svg-more-dots"></use>
+                </svg>
+              </div>
+              <div class="simple-dropdown widget-box-post-settings-dropdown dots-dropdown"
+                [ngClass]="{ 'dots-dropdown-active': settings[2] === true }">
+                <p (click)="toggleModal('editProfile')" class="simple-dropdown-link">{{'WIDGET_SETTINGS' | translate}}
+                </p>
+              </div>
+            </div>
+          </div>
+          <p class="widget-box-title">{{'ABOUT_ME' | translate}}</p>
+          <div class="widget-box-content">
+            <p class="paragraph">
+              {{(currentUser$ | async)?.about}}
+            </p>
+            <div class="information-line-list">
+              <div class="information-line">
+                <p class="information-line-title">{{'FIRST_NAME' | translate}}</p>
+                <p class="information-line-text" style="font-weight: bold !important;">{{(currentUser$ |
+                  async)?.firstName || ''}}</p>
+              </div>
+              <div class="information-line">
+                <p class="information-line-title">{{'LAST_NAME' | translate}}</p>
+                <p class="information-line-text" style="font-weight: bold !important;">{{(currentUser$ |
+                  async)?.lastName || ''}}</p>
+              </div>
+              <div class="information-line">
+                <p class="information-line-title">{{'JOINED' | translate}}</p>
+                <p class="information-line-text" style="font-weight: bold !important;">{{(currentUser$ |
+                  async)?.createdAt | date: 'longDate'}}</p>
+              </div>
+              <div *ngIf="(currentUser$ | async)?.residentialAddress?.[0]?.address" class="information-line">
+                <p class="information-line-title">{{'CITY' | translate}}</p>
+                <p class="information-line-text" style="font-weight: bold !important;">{{(currentUser$ |
+                  async)?.residentialAddress?.[0]?.address}}</p>
+              </div>
+              <div *ngIf="(currentUser$ | async)?.residentialAddress?.[0]?.country?.name" class="information-line">
+                <p class="information-line-title">{{'COUNTRY' | translate}}</p>
+                <p class="information-line-text" style="font-weight: bold !important;">{{(currentUser$ |
+                  async)?.residentialAddress?.[0]?.country?.name}}</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="widget-box special-margin">
+        <div>
+          <div class="widget-box-settings">
+            <div class="post-settings-wrap" style="position: relative">
+              <div class="post-settings widget-box-post-settings-dropdown-trigger" (click)="toggleModal('editProfile')">
+                <svg class="post-settings-icon icon-more-dots">
+                  <use xlink:href="#svg-more-dots"></use>
+                </svg>
+              </div>
+              <div class="simple-dropdown widget-box-post-settings-dropdown dots-dropdown"
+                [ngClass]="{ 'dots-dropdown-active': settings[3] === true }">
+                <p (click)="toggleModal('editProfile')" class="simple-dropdown-link">{{'WIDGET_SETTINGS' | translate}}
+                </p>
+              </div>
+            </div>
+          </div>
+          <ng-container
+            *ngIf="(currentUser$ | async)?.email || (currentUser$ | async)?.work?.length || (currentUser$ | async)?.maritalStatus || (currentUser$ | async)?.dateOfBirth">
+            <p class="widget-box-title">{{'PERSONAL_INFO' | translate}}</p>
+            <div class="widget-box-content">
+              <div class="information-line-list">
+                <div *ngIf="(currentUser$ | async)?.email" class="information-line align-items-center">
+                  <p class="information-line-title">{{'EMAIL' | translate}}</p>
+                  <p style="font-weight: bold !important;" class="information-line-text">
+                    {{(currentUser$ | async)?.email}}
+                    <!-- <span (click)="validateEmail()" style="cursor: pointer;"
+                      *ngIf="!(currentUser$ | async)?.isMailValid" class="icon-check text-sticker">
+                      <svg fill="red" width="14" height="14" class="popup-close-button-icon">
+                        <use xlink:href="#svg-cross"></use>
+                      </svg>
+                    </span>
+                    <span *ngIf="(currentUser$ | async)?.isMailValid" class="icon-check text-sticker">
+                      <svg width="14" height="14" class="text-sticker-icon">
+                        <use xlink:href="#svg-check"></use>
+                      </svg>
+                    </span> -->
+                  </p>
+                </div>
+                <div *ngIf="(currentUser$ | async)?.work?.length" class="information-line">
+                  <p class="information-line-title">{{'OCCUPATION' | translate}}</p>
+                  <p class="information-line-text" style="font-weight: bold !important;">{{(currentUser$ |
+                    async)?.work?.[0]?.position}}</p>
+                </div>
+                <div *ngIf="(currentUser$ | async)?.maritalStatus" class="information-line">
+                  <p class="information-line-title">{{'STATUS' | translate}}</p>
+                  <p class="information-line-text" style="font-weight: bold !important;">{{
+                    ((currentUser$ | async)?.maritalStatus === 'SINGLE' ? 'MARITAL_STATUS_SINGLE' :
+                    (currentUser$ | async)?.maritalStatus === 'MARRIED' ? 'MARITAL_STATUS_MARRIED' :
+                    (currentUser$ | async)?.maritalStatus === 'ENGAGED' ? 'MARITAL_STATUS_ENGAGED' :
+                    (currentUser$ | async)?.maritalStatus === 'WIDOWED' ? 'MARITAL_STATUS_WIDOWED' :
+                    (currentUser$ | async)?.maritalStatus === 'DIVORCED' ? 'MARITAL_STATUS_DIVORCED' :
+                    (currentUser$ | async)?.maritalStatus === 'SEPARATED' ? 'MARITAL_STATUS_SEPARATED' :
+                    (currentUser$ | async)?.maritalStatus === 'IN_RELATIONSHIP' ? 'MARITAL_STATUS_IN_A_RELATIONSHIP' :
+                    'MARITAL_STATUS_PREFER_NOT_TO_SAY') | translate
+                    }}</p>
+                </div>
+                <div *ngIf="(currentUser$ | async)?.dateOfBirth" class="information-line">
+                  <p class="information-line-title">{{'BIRTHDAY' | translate}}</p>
+                  <p class="information-line-text" style="font-weight: bold !important;">{{(currentUser$ |
+                    async)?.dateOfBirth | date: 'dd MMM yyyy'}}</p>
+                </div>
+              </div>
+            </div>
+          </ng-container>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div *ngIf="(widgetSettings$ | async)?.content?.badges"
+    class="profile col-md-12 widget-box special-padding special-margin">
+    <div class="special-widget-box">
+      <div class="widget-box-settings">
+        <div class="post-settings-wrap" style="position: relative">
+          <div class="post-settings widget-box-post-settings-dropdown-trigger" (click)="toggleModal('editProfile')">
+            <svg class="post-settings-icon icon-more-dots">
+              <use xlink:href="#svg-more-dots"></use>
+            </svg>
+          </div>
+          <div class="simple-dropdown widget-box-post-settings-dropdown dots-dropdown"
+            [ngClass]="{ 'dots-dropdown-active': settings[4] === true }">
+            <p (click)="toggleModal('editProfile')" class="simple-dropdown-link">{{'WIDGET_SETTINGS' | translate}}</p>
+          </div>
+        </div>
+      </div>
+      <!-- /WIDGET BOX SETTINGS -->
+      <p class="widget-box-title">{{'BADGES' | translate}} <span class="highlighted">13</span></p>
+      <div class="widget-box-content">
+        <div class="draggable-items">
+          <div class="draggable-item">
+            <div class="badge-item">
+              <img [src]="baseUrl + '/assets/img/badge/gold-s.png'" alt="badge-gold-s" />
+            </div>
+          </div>
+          <div class="draggable-item">
+            <div class="badge-item">
+              <img [src]="baseUrl + '/assets/img/badge/age-s.png'" alt="badge-age-s" />
+            </div>
+          </div>
+          <div class="draggable-item">
+            <div class="badge-item">
+              <img [src]="baseUrl + '/assets/img/badge/caffeinated-s.png'" alt="badge-caffeinated-s" />
+            </div>
+          </div>
+          <div class="draggable-item">
+            <div class="badge-item">
+              <img [src]="baseUrl + '/assets/img/badge/warrior-s.png'" />
+            </div>
+          </div>
+          <div class="draggable-item">
+            <div class="badge-item">
+              <img [src]="baseUrl + '/assets/img/badge/traveller-s.png'" alt="badge-traveller-s" />
+            </div>
+          </div>
+          <div class="draggable-item">
+            <div class="badge-item">
+              <img [src]="baseUrl + '/assets/img/badge/scientist-s.png'" alt="badge-scientist-s" />
+            </div>
+          </div>
+          <div class="draggable-item">
+            <div class="badge-item">
+              <img [src]="baseUrl + '/assets/img/badge/ncreature-s.png'" alt="badge-ncreature-s" />
+            </div>
+          </div>
+          <div class="draggable-item">
+            <div class="badge-item">
+              <img [src]="baseUrl + '/assets/img/badge/mightiers-s.png'" alt="badge-mightiers-s" />
+            </div>
+          </div>
+          <div class="draggable-item">
+            <div class="badge-item">
+              <img [src]="baseUrl + '/assets/img/badge/phantom-s.png'" alt="badge-phantom-s" />
+            </div>
+          </div>
+          <div class="draggable-item">
+            <div class="badge-item">
+              <img [src]="baseUrl + '/assets/img/badge/collector-s.png'" alt="badge-collector-s" />
+            </div>
+          </div>
+          <div class="draggable-item">
+            <div class="badge-item">
+              <img [src]="baseUrl + '/assets/img/badge/bronzec-s.png'" alt="badge-bronzec-s" />
+            </div>
+          </div>
+          <div class="draggable-item">
+            <div class="badge-item">
+              <img [src]="baseUrl + '/assets/img/badge/silverc-s.png'" alt="badge-silverc-s" />
+            </div>
+          </div>
+          <div class="draggable-item">
+            <div class="badge-item">
+              <img [src]="baseUrl + '/assets/img/badge/goldc-s.png'" alt="badge-goldc-s" />
+            </div>
+          </div>
+          <div class="draggable-item empty"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div *ngIf="(currentUser$ | async)?.interests?.length"
+    class="profile widget-box col-md-12 special-padding special-margin">
+    <div class="special-widget-box">
+      <div class="widget-box-settings">
+        <div class="post-settings-wrap" style="position: relative">
+          <div class="post-settings widget-box-post-settings-dropdown-trigger" (click)="toggleModal('editProfile')">
+            <svg class="post-settings-icon icon-more-dots">
+              <use xlink:href="#svg-more-dots"></use>
+            </svg>
+          </div>
+          <div class="simple-dropdown widget-box-post-settings-dropdown dots-dropdown"
+            [ngClass]="{ 'dots-dropdown-active': settings[5] === true }">
+            <p (click)="toggleModal('editProfile')" class="simple-dropdown-link">{{'WIDGET_SETTINGS' | translate}}</p>
+          </div>
+        </div>
+      </div>
+      <p class="widget-box-title">{{'INTERESTS' | translate}}</p>
+      <div class="widget-box-content">
+        <div class="tag-list">
+          <a *ngFor="let tag of (currentUser$ | async)?.interests" class="tag-item secondary text-white">
+            <span style="font-size: 14.4px;">{{tag}}</span>
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div *ngIf="(currentUser$ | async)?.hobbies?.length"
+    class="profile widget-box col-md-12 special-padding special-margin">
+    <div class="special-widget-box">
+      <div class="widget-box-settings">
+        <div class="post-settings-wrap" style="position: relative">
+          <div class="post-settings widget-box-post-settings-dropdown-trigger" (click)="toggleModal('editProfile')">
+            <svg class="post-settings-icon icon-more-dots">
+              <use xlink:href="#svg-more-dots"></use>
+            </svg>
+          </div>
+          <div class="simple-dropdown widget-box-post-settings-dropdown dots-dropdown"
+            [ngClass]="{ 'dots-dropdown-active': settings[5] === true }">
+            <p (click)="toggleModal('editProfile')" class="simple-dropdown-link">{{'WIDGET_SETTINGS' | translate}}</p>
+          </div>
+        </div>
+      </div>
+      <p class="widget-box-title">{{'HOBBIES' | translate}}</p>
+      <div class="widget-box-content">
+        <div class="tag-list">
+          <a *ngFor="let tag of (currentUser$ | async)?.hobbies" class="tag-item secondary text-white">
+            <span style="font-size: 14.4px;">{{tag}}</span>
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div *ngIf="educations?.length" class="profile widget-box col-md-12 special-margin">
+    <div class="special-widget-box">
+      <div class="widget-box-settings">
+        <div class="post-settings-wrap" style="position: relative">
+          <div class="post-settings widget-box-post-settings-dropdown-trigger" (click)="toggleModal('editProfile')">
+            <svg class="post-settings-icon icon-more-dots">
+              <use xlink:href="#svg-more-dots"></use>
+            </svg>
+          </div>
+          <div class="simple-dropdown widget-box-post-settings-dropdown dots-dropdown"
+            [ngClass]="{ 'dots-dropdown-active': settings[6] === true }">
+            <p (click)="toggleModal('editProfile')" class="simple-dropdown-link">{{'WIDGET_SETTINGS' | translate}}</p>
+          </div>
+        </div>
+      </div>
+      <p class="widget-box-title">{{'EDUCATION' | translate}}</p>
+      <div class="widget-box-content">
+        <div class="timeline-information-list">
+          <div *ngFor="let data of educations" class="timeline-information">
+            <p class="timeline-information-title">{{data?.name}}</p>
+            <p class="timeline-information-date">{{data?.from}} - {{data?.graduated ? ('NOW' | translate) : data?.to}}
+            </p>
+            <p class="timeline-information-text">
+              {{data?.description}}
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div *ngIf="works?.length" class="profile widget-box col-md-12 special-margin">
+    <div class="special-widget-box">
+      <div class="widget-box-settings">
+        <div class="post-settings-wrap" style="position: relative">
+          <div class="post-settings widget-box-post-settings-dropdown-trigger" (click)="toggleModal('editProfile')">
+            <svg class="post-settings-icon icon-more-dots">
+              <use xlink:href="#svg-more-dots"></use>
+            </svg>
+          </div>
+          <div class="simple-dropdown widget-box-post-settings-dropdown dots-dropdown"
+            [ngClass]="{ 'dots-dropdown-active': settings[6] === true }">
+            <p (click)="toggleModal('editProfile')" class="simple-dropdown-link">{{'WIDGET_SETTINGS' | translate}}</p>
+          </div>
+        </div>
+      </div>
+      <p class="widget-box-title">{{'EXPERIENCE' | translate}}ss</p>
+      <div class="widget-box-content">
+        <div class="timeline-information-list">
+          <div *ngFor="let data of works" class="timeline-information">
+            <p class="timeline-information-title">{{data?.position}}</p>
+            <p class="timeline-information-date">{{data?.from}} - {{data?.current ? ('NOW' | translate) : data?.to}}
+              {{ data?.company ? '(' + data?.company + ')' : ' ' }} </p>
+            <p class="timeline-information-text">
+              {{data?.description}}
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="profile widget-box col-md-12 special-margin special-margin-bottom">
+    <div class="special-widget-box">
+      <div class="widget-box-settings">
+        <div class="post-settings-wrap" style="position: relative">
+          <div class="post-settings widget-box-post-settings-dropdown-trigger" (click)="toggleModal('editProfile')">
+            <svg class="post-settings-icon icon-more-dots">
+              <use xlink:href="#svg-more-dots"></use>
+            </svg>
+          </div>
+          <div class="simple-dropdown widget-box-post-settings-dropdown dots-dropdown"
+            [ngClass]="{ 'dots-dropdown-active': settings[4] === true }">
+            <p (click)="toggleModal('editProfile')" class="simple-dropdown-link">{{'WIDGET_SETTINGS' | translate}}</p>
+          </div>
+        </div>
+      </div>
+      <p class="popup-event-subtitle">{{'YOUR_LOCATION' | translate}}</p>
+      <agm-map [zoom]="4" [scrollwheel]="false" [latitude]="position?.lat ? position?.lat : 33.886917"
+        [longitude]="position?.lng ? position?.lng : 9.537499">
+        <agm-marker *ngIf="position" [latitude]="position?.lat" [longitude]="position?.lng">
+        </agm-marker>
+      </agm-map>
+    </div>
+  </div>
+
+  <div *ngIf="(loyaltySettings$ | async)?.aggregator?.target?.pos?.id"
+    class="d-flex justify-content-end special-margin-bottom">
+    <button (click)="logout()" class="button">{{'LOGOUT' | translate}}</button>
+  </div>
+</div>
+
+<div *ngIf="loading" id="noresult" class="py-4 mt-4 text-center">
+  <div class="page-loader-indicator loader-bars">
+    <div class="loader-bar"></div>
+    <div class="loader-bar"></div>
+    <div class="loader-bar"></div>
+    <div class="loader-bar"></div>
+    <div class="loader-bar"></div>
+    <div class="loader-bar"></div>
+    <div class="loader-bar"></div>
+    <div class="loader-bar"></div>
+  </div>
+</div>
+
+<svg style="display: none;">
+  <symbol id="svg-cross" viewBox="0 0 12 12" preserveAspectRatio="xMinYMin meet">
+    <path d="M12,9.6L9.6,12L6,8.399L2.4,12L0,9.6L3.6,6L0,2.4L2.4,0L6,3.6L9.6,0L12,2.4L8.399,6L12,9.6z" />
+  </symbol>
+</svg>
+
+<svg style="display: none">
+  <symbol id="svg-facebook" viewBox="0 0 18 18" preserveAspectRatio="xMinYMin meet">
+    <path
+      d="M16.313,18h-4.504v-6.192h3.087V8.671h-3.087V7.135V6.831V6.814l0,0c0.01-0.328,0.277-0.591,0.607-0.591h0.067h1.113h1.62V3.086h-2.733l0,0l-0.009,0.018h-0.092c-2.051,0-3.712,1.661-3.712,3.711v0.911v0.945H6.191v3.137h2.479V18H1.687C0.755,18,0,17.242,0,16.313V1.686C0,0.754,0.755,0,1.687,0h14.626C17.244,0,18,0.754,18,1.686v14.627C18,17.242,17.244,18,16.313,18z" />
+  </symbol>
+</svg>
+<svg style="display: none">
+  <symbol id="svg-twitter" viewBox="0 0 18 18" preserveAspectRatio="xMinYMin meet">
+    <path
+      d="M18,3.617c-0.675,0.322-1.351,0.43-2.139,0.537c0.788-0.43,1.351-1.076,1.576-1.937c-0.675,0.43-1.463,0.646-2.362,0.861C14.399,2.431,13.388,2,12.375,2c-1.912,0-3.601,1.617-3.601,3.554c0,0.323,0,0.538,0.113,0.754C5.851,6.2,3.038,4.8,1.238,2.646C0.9,3.185,0.788,3.724,0.788,4.478c0,1.184,0.675,2.261,1.688,2.907c-0.563,0-1.125-0.216-1.688-0.431l0,0c0,1.723,1.237,3.122,2.925,3.446c-0.338,0.107-0.675,0.107-1.013,0.107c-0.225,0-0.45,0-0.675-0.107c0.45,1.399,1.8,2.476,3.487,2.476C4.274,13.846,2.7,14.384,0.9,14.384c-0.338,0-0.563,0-0.9,0C1.688,15.354,3.601,16,5.625,16c6.75,0,10.462-5.385,10.462-10.015c0-0.108,0-0.323,0-0.431C16.875,5.016,17.549,4.371,18,3.617z" />
+  </symbol>
+</svg>
+<svg style="display: none">
+  <symbol id="svg-twitch" viewBox="0 0 100 100" preserveAspectRatio="xMinYMin meet">
+    <path
+      d="M6.179,0L0,17.964V87.81h24.714V100h15.789L52.86,87.81h18.993L100,60.527V0H6.179z M90.39,57.645L74.828,72.504H49.885L37.299,84.703V72.504H15.561V9.094H90.39V57.645z M49.885,27.051h-9.382v27.27h9.382V27.051z M74.828,27.051h-9.382v27.27h9.382V27.051z" />
+  </symbol>
+</svg>
+<svg style="display: none">
+  <symbol id="svg-youtube" viewBox="0 0 100 100" preserveAspectRatio="xMinYMin meet">
+    <path
+      d="M97.911,24.557c-1.149-4.549-4.538-8.13-8.842-9.347C81.271,13,49.999,13,49.999,13s-31.271,0-39.07,2.21c-4.302,1.216-7.69,4.798-8.84,9.347C0,32.8,0,50.001,0,50.001s0,17.2,2.089,25.443c1.15,4.549,4.538,8.132,8.84,9.348C18.729,87,49.999,87,49.999,87s31.271,0,39.07-2.208c4.304-1.216,7.692-4.799,8.842-9.348C100,67.201,100,50.001,100,50.001S100,32.8,97.911,24.557z M39.999,65.858V34.144L65.98,50.001L39.999,65.858z" />
+  </symbol>
+</svg>
+<svg style="display: none">
+  <symbol id="svg-instagram" viewBox="0 0 100 100" preserveAspectRatio="xMinYMin meet">
+    <path
+      d="M72.402,0H27.595C12.379,0,0,12.381,0,27.597v44.809C0,87.619,12.379,100,27.595,100h44.807C87.621,100,100,87.619,100,72.406V27.597C100,12.381,87.621,0,72.402,0z M88.691,71.078c0,9.711-7.902,17.613-17.615,17.613H28.923c-9.712,0-17.613-7.902-17.613-17.613V28.926c0-9.715,7.901-17.618,17.613-17.618h42.153c9.713,0,17.615,7.903,17.615,17.618V71.078z M50.001,26.779c-12.804,0-23.22,10.426-23.22,23.22c0,12.804,10.416,23.22,23.22,23.22c12.801,0,23.217-10.416,23.217-23.22C73.219,37.205,62.803,26.779,50.001,26.779z M50.001,63.689c-7.548,0-13.688-6.139-13.688-13.691c0-7.545,6.14-13.684,13.688-13.684c7.545,0,13.686,6.139,13.686,13.684C63.688,57.551,57.547,63.689,50.001,63.689z M75.658,17.864c-1.711,0-4.383,0.724-5.711,2.056c-1.332,1.328-2.098,3.178-2.098,5.065c0,1.882,0.766,3.727,2.098,5.063c1.326,1.325,3.172,2.098,5.051,2.098c1.885,0,3.723-0.772,5.055-2.098c1.332-1.336,2.094-3.184,2.094-5.063c0-1.888-0.762-3.737-2.094-5.065C78.729,18.587,77.373,17.864,75.658,17.864z" />
+  </symbol>
+</svg>
+
+<svg style="display: none">
+  <symbol id="svg-discord" viewBox="0 0 100 100" preserveAspectRatio="xMinYMin meet">
+    <path
+      d="M87.671,23.75C75.993,15.223,64.855,15,63.707,15c-0.061,0-0.093,0-0.093,0l-1.2,1.332c14.556,4.332,21.32,10.582,21.32,10.582c-8.906-4.749-17.639-7.083-25.771-8c-2.7-0.291-5.353-0.422-7.926-0.422c-3.287,0-6.437,0.216-9.371,0.591c-0.512,0-0.941,0.084-1.456,0.165c-2.994,0.252-10.273,1.334-19.434,5.249c-3.167,1.417-5.052,2.417-5.052,2.417s7.107-6.583,22.518-10.915L36.387,15c0,0-0.032,0-0.098,0c-1.144,0-12.283,0.223-23.96,8.75C12.329,23.75,0,45.498,0,72.333c0,0,7.19,12.081,26.114,12.667c0,0,3.166-3.752,5.734-6.919c-10.873-3.168-14.981-9.831-14.981-9.831s0.854,0.582,2.397,1.414l0.343,0.25l0.769,0.419c2.14,1.163,4.282,2.084,6.251,2.833c3.511,1.334,7.706,2.663,12.584,3.585c3.51,0.633,7.349,1.047,11.451,1.047c3.408,0,6.999-0.284,10.728-0.964c4.021-0.67,8.129-1.836,12.415-3.585c2.991-1.083,6.333-2.665,9.845-4.916c0,0-4.287,6.831-15.5,9.915C70.717,81.414,73.805,85,73.805,85C92.722,84.414,100,72.333,100,72.333C100,45.498,87.671,23.75,87.671,23.75z M34.869,66.745c-5.046,0-9.136-4.056-9.136-9.059c0-5.002,4.09-9.059,9.136-9.059c5.045,0,9.137,4.057,9.137,9.059C44.006,62.689,39.914,66.745,34.869,66.745z M67.758,66.745c-5.045,0-9.135-4.056-9.135-9.059c0-5.002,4.09-9.059,9.135-9.059c5.046,0,9.137,4.057,9.137,9.059C76.895,62.689,72.804,66.745,67.758,66.745z" />
+  </symbol>
+</svg>
+
+<svg style="display: none">
+  <symbol id="svg-patreon" viewBox="0 0 100 100" preserveAspectRatio="xMinYMin meet">
+    <path
+      d="M0,100h16.667V0H0V100z M62.5,0C41.79,0,25,16.788,25,37.5c0,20.71,16.789,37.503,37.5,37.503c20.711,0,37.5-16.793,37.5-37.503C100,16.788,83.211,0,62.5,0z" />
+  </symbol>
+</svg>
+<svg style="display: none">
+  <symbol id="svg-google" viewBox="0 0 100 100" preserveAspectRatio="xMinYMin meet">
+    <path
+      d="M100,47.82H89.963v9.785H79.927V47.82H69.89v-9.784h10.037v-9.784h10.036v9.784H100V47.82z M32.358,83C14.487,83,0,68.226,0,50c0-18.226,14.487-33,32.358-33c8.594,0,16.384,3.437,22.173,9.013l-0.6,0.612L45,35.734c-3.349-3.087-7.773-4.984-12.642-4.984c-10.426,0-18.877,8.619-18.877,19.25c0,10.632,8.451,19.25,18.877,19.25c8.046,0,14.898-5.143,17.614-12.375l-15.21,0.729V42.927l28.606,0.199v1.375v12.375v2.516C59.4,73.038,47.028,83,32.358,83z" />
+  </symbol>
+</svg>
+<svg style="display: none">
+  <symbol id="svg-more-dots" viewBox="0 0 22 6" preserveAspectRatio="xMinYMin meet">
+    <path
+      d="M19,6c-1.657,0-3-1.344-3-3c0-1.656,1.343-3,3-3s3,1.344,3,3C22,4.656,20.657,6,19,6z M19,2c-0.553,0-1,0.447-1,1c0,0.552,0.447,1,1,1c0.552,0,1-0.449,1-1C20,2.447,19.552,2,19,2z M11,6C9.343,6,8,4.656,8,3c0-1.656,1.343-3,3-3s3,1.344,3,3C14,4.656,12.657,6,11,6z M11,2c-0.553,0-1,0.447-1,1c0,0.552,0.447,1,1,1c0.552,0,1-0.449,1-1C12,2.447,11.552,2,11,2z M3,6C1.343,6,0,4.656,0,3c0-1.656,1.343-3,3-3c1.656,0,3,1.344,3,3C6,4.656,4.656,6,3,6z M3,2C2.447,2,2,2.447,2,3c0,0.552,0.447,1,1,1c0.552,0,1-0.449,1-1C4,2.447,3.552,2,3,2z" />
+  </symbol>
+</svg>
+
+<svg style="display: none">
+  <symbol id="svg-check" viewBox="0 0 12 9" preserveAspectRatio="xMinYMin meet">
+    <path d="M12,1.5L4.5,9L3,7.499l0,0L0,4.5L1.5,3l3,3l6-6L12,1.5z" />
+  </symbol>
+</svg>
+
+<svg style="display: none">
+  <symbol id="svg-plus-small" viewBox="0 0 8 8" preserveAspectRatio="xMinYMin meet">
+    <path d="M8,5H5v3H3V5H0V3h3V0h2v3h3V5z" />
+  </symbol>
+</svg>

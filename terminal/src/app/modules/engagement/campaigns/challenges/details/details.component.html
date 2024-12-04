@@ -1,0 +1,101 @@
+<ng-container *ngIf="((loadingChallenge$ | async) === false || null || undefined) && challenge$ | async">
+  <div class="row">
+    <div class="col-lg-12">
+      <div class="card mt-n4 mx-n4">
+        <div class="bg-soft-warning">
+          <div class="card-body pb-0 px-4">
+            <div class="row mb-3">
+              <div class="col-md">
+                <div class="row align-items-center g-3">
+                  <div class="col-md-auto">
+                    <div class="avatar-md bg-white rounded-circle">
+                      <div class="avatar-md" *ngIf="!(challenge$ | async)?.media?.pictures?.length || (challenge$ | async)?.media?.pictures[0]?.baseUrl === ''">
+                        <span class="avatar-title rounded-circle bg-primary">{{(challenge$ | async)?.title.charAt(0) ||
+                          'N'}}</span>
+                      </div>
+                      <img *ngIf="(challenge$ | async)?.media?.pictures?.length && (challenge$ | async)?.media?.pictures[0]?.baseUrl !== ''" [src]="(challenge$ | async)?.media?.pictures[0].baseUrl + '/' + (challenge$ | async)?.media?.pictures[0].path" alt=""
+                        class="rounded-circle avatar-md">
+                    </div>
+                  </div>
+                  <div class="col-md">
+                    <div>
+                      <h4 class="fw-bold">{{(challenge$ | async)?.title}}</h4>
+                      <div class="hstack gap-3 flex-wrap">
+                        <div>{{'MODULES.SYSTEM.CREATE_DATE' | translate }} : <span class="fw-medium">{{(challenge$ | async)?.createdAt | date: 'longDate'}}</span></div>
+                        <div class="vr"></div>
+                        <div [ngClass]="{
+                          'bg-warning': (challenge$ | async)?.status === 'DRAFT',
+                          'bg-primary': (challenge$ | async)?.status === 'ONGOING',
+                          'bg-success': (challenge$ | async)?.status === 'FINISHED'
+                        }" class="badge rounded-pill fs-12">{{
+                          ((challenge$ | async)?.status === 'DRAFT' ? 'COMMON.STATE.DRAFT' :
+                          (challenge$ | async)?.status === 'ONGOING' ? 'COMMON.STATE.ONGOING' :
+                          (challenge$ | async)?.status === 'FINISHED' ? 'COMMON.STATE.FINISHED' :
+                          '') | translate
+                          }}</div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="col-md-auto">
+                <div class="hstack gap-1 flex-wrap">
+                  <button type="button" class="btn py-0 fs-16 favourite-btn active">
+                    <i class="ri-star-fill"></i>
+                  </button>
+                  <button type="button" class="btn py-0 fs-16 text-body">
+                    <i class="ri-share-line"></i>
+                  </button>
+                  <button type="button" class="btn py-0 fs-16 text-body">
+                    <i class="ri-flag-line"></i>
+                  </button>
+                </div>
+              </div>
+            </div>
+            <ul ngbNav [activeId]="activeTab" class="nav nav-tabs-custom border-bottom-0" role="tablist">
+              <li [ngbNavItem]="1" class="nav-item">
+                <a routerLinkActive="router-link-active" [routerLink]="['/engagement/campaigns/challenges/', challengeId, 'leaderboard']" ngbNavLink class="nav-link" data-bs-toggle="tab" role="tab">{{'MENUITEMS.TS.LEADEBOARD' | translate }}
+                </a>
+              </li>
+              <li [ngbNavItem]="2" class="nav-item">
+                <a routerLinkActive="router-link-active" [routerLink]="['/engagement/campaigns/challenges/', challengeId, 'activities']" ngbNavLink class="nav-link" data-bs-toggle="tab" role="tab">{{'MENUITEMS.TS.ACTIVITIES' | translate }}
+                </a>
+              </li>
+              <li [ngbNavItem]="3" class="nav-item">
+                <a routerLinkActive="router-link-active" [routerLink]="['/engagement/campaigns/challenges/', challengeId, 'audience']" ngbNavLink class="nav-link" data-bs-toggle="tab" role="tab">{{'MENUITEMS.TS.AUDIENCE' | translate }}
+                </a>
+              </li>
+              <li [ngbNavItem]="4" class="nav-item">
+                <a routerLinkActive="router-link-active" [routerLink]="['/engagement/campaigns/challenges/', challengeId, 'winners']" ngbNavLink class="nav-link" data-bs-toggle="tab" role="tab">{{'MENUITEMS.TS.WINNERS' | translate }}
+                </a>
+              </li>
+              <li [ngbNavItem]="5" class="nav-item">
+                <a routerLinkActive="router-link-active" [routerLink]="['/engagement/campaigns/challenges/', challengeId, 'settings']" ngbNavLink class="nav-link" data-bs-toggle="tab" role="tab">{{'MENUITEMS.TS.SETTINGS' | translate }}
+                </a>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-lg-12">
+      <div class="tab-content text-muted">
+        <router-outlet></router-outlet>
+      </div>
+    </div>
+  </div>
+</ng-container>
+<div id="noresult" class="py-4 mt-4 text-center" *ngIf="(loadingChallenge$ | async) || (!(loadingChallenge$ | async)) && !(challenge$ | async)">
+  <div *ngIf="loadingChallenge$ | async">
+    <lord-icon trigger="loop" style="width:72px;height:72px" [colors]="'primary:' + primaryColor + ',secondary:' + secondaryColor" src="https://cdn.lordicon.com/msoeawqm.json">
+    </lord-icon>
+    <h5 class="mt-4">{{ 'COMMON.LOADING' | translate }}</h5>
+  </div>
+  <div *ngIf="!(loadingChallenge$ | async) && !(challenge$ | async)">
+    <lord-icon trigger="loop" style="width:72px;height:72px" [colors]="'primary:' + primaryColor + ',secondary:' + secondaryColor" src="https://cdn.lordicon.com/msoeawqm.json">
+    </lord-icon>
+    <h5 class="mt-4">{{ 'COMMON.NO_RESULT' | translate }}</h5>
+  </div>
+</div>

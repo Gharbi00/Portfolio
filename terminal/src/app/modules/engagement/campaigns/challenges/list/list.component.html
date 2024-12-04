@@ -1,0 +1,435 @@
+<app-breadcrumbs title="{{'MENUITEMS.TITLE.CHALLENGE_LIST' | translate }}"
+  [breadcrumbItems]="breadCrumbItems"></app-breadcrumbs>
+<ng-container *ngIf="!(navigating$ | async)">
+  <div class="row">
+    <div class="col-lg-12">
+      <div class="card" id="ticketsList">
+        <div class="card-header border-0">
+          <div class="d-flex flex-wrap align-items-center">
+            <h5 class="card-title mb-2 flex-grow-1">{{'MENUITEMS.TITLE.CHALLENGE' |
+              translate }}</h5>
+            <div class="flex-shrink-0 d-flex gap-1">
+              <button (click)="openChallengeModal(challengeModal)" class="btn btn-success add-btn"><i
+                  class="ri-add-line align-bottom me-1"></i> {{ 'COMMON.ADD_NEW' |
+                translate }}</button>
+            </div>
+          </div>
+        </div>
+        <div class="card-body border border-dashed border-end-0 border-start-0">
+          <div class="row g-3">
+            <div class="col-xxl-10 col-sm-12">
+              <div class="search-box">
+                <form [formGroup]="searchForm">
+                  <input formControlName="searchString" type="text" name="searchTerm"
+                    class="form-control search bg-light border-light"
+                    placeholder="{{ 'MODULES.COLLABORATION.PROJECTS.SEARCH_PLACEHOLDER' | translate }}">
+                  <i class="ri-search-line search-icon"></i>
+                </form>
+              </div>
+            </div>
+            <div class="col-xxl-2 col-sm-4">
+              <button (click)="openFilterModal(filterModal)" type="button" class="btn btn-primary w-100"> <i
+                  class="ri-equalizer-fill me-1 align-bottom"></i>
+                {{ 'MODULES.COLLABORATION.PROJECTS.FILTERS' | translate }}
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="dash-nft">
+    <div class="row">
+      <div class="col-xl-6">
+        <div class="card overflow-hidden">
+          <div class="card-body bg-marketplace d-flex">
+            <div class="flex-grow-1">
+              <h4 class="fs-18 lh-base mb-0">{{
+                'MENUITEMS.CUSTOMERENGAGEMENT.LIST.DISCOVER_ENGAGE_YOUR_CUSTOMERS_CREATE_YOUR_OWN_CAMPAIGNS' | translate
+                }} <br> {{ 'MENUITEMS.CUSTOMERENGAGEMENT.LIST.YOUR_OWN' | translate }} <span
+                  class="text-success">{{'MENUITEMS.TITLE.CAMPAIGNS' | translate }}.</span> </h4>
+              <p class="mb-0 mt-2 pt-1 text-muted">{{
+                'MENUITEMS.CUSTOMERENGAGEMENT.LIST.THE_WORLDS_FIRST_AND_LARGEST_DIGITAL_MARKETPLACE' | translate }}</p>
+              <div class="d-flex gap-3 mt-4">
+                <a href="https://sifca.app" class="btn btn-primary">{{ 'MENUITEMS.CUSTOMERENGAGEMENT.LIST.DISCOVER_NOW'
+                  | translate }} </a>
+                <a (click)="openChallengeModal(challengeModal)" class="btn btn-success">{{
+                  'MENUITEMS.CUSTOMERENGAGEMENT.LIST.CREATE_YOUR_OWN' | translate }}</a>
+              </div>
+            </div>
+            <img src="assets/images/bg-d.png" alt="" class="img-fluid" />
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div *ngIf="((loadingChallenges$ | async) === false || null || undefined) && (challenges$ | async)?.length">
+    <div class="row">
+      <div class="col-xxl-3 col-sm-6 project-card" *ngFor="let item of challenges$ | async;let i = index;"
+        id="pl1_{{item?.id}}">
+        <div class="card">
+          <div class="card-body">
+            <div class="p-3 mt-n3 mx-n3 bg-soft-info rounded-top">
+              <div class="d-flex justify-content-between">
+                <div class="flex-grow-1">
+                  <h5 class="mb-0 fs-14"><a [routerLink]="['/engagement/campaigns/challenges/', item.id]"
+                      class="cursor-pointer text-dark">{{item?.title}}</a></h5>
+                </div>
+                <div class="dropdown" ngbDropdown>
+                  <button
+                    class="btn btn-link text-muted p-1 mt-n2 py-0 text-decoration-none fs-15 shadow-none arrow-none"
+                    data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="true" ngbDropdownToggle>
+                    <i class="ri-more-fill fs-17"></i>
+                  </button>
+                  <div class="dropdown-menu cursor-pointer dropdown-menu-end" ngbDropdownMenu>
+                    <a (click)="openChallengeModal(challengeModal, item)" class="dropdown-item">
+                      <i class="ri-pencil-fill align-bottom me-2 text-muted"></i>{{'COMMON.EDIT' | translate }}
+                    </a>
+                    <a (click)="openDeleteModal(deleteModal, item)" class="dropdown-item">
+                      <i class="ri-delete-bin-line me-2 align-bottom"></i>{{'COMMON.DELETE' | translate }}
+                    </a>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div [routerLink]="['/engagement/campaigns/challenges/', item.id]" class="py-3 cursor-pointer">
+              <div class="row gy-3">
+                <div class="col-6">
+                  <div>
+                    <p class="text-muted mb-1">{{'COMMON.STATUS' | translate }}</p>
+                    <span [ngClass]="
+                      {
+                        'badge-soft-success': item.status === 'FINISHED',
+                        'badge-soft-primary': item.status === 'ONGOING',
+                        'badge-soft-warning': item.status === 'DRAFT'
+                      }" class="badge fs-12">
+                      {{
+                        ( item.status === 'DRAFT' ? 'COMMON.STATE.DRAFT':
+                         item.status === 'ONGOING' ? 'COMMON.STATE.ONGOING' :
+                         item.status === 'FINISHED' ? 'COMMON.STATE.COMPLETED' : '') | translate
+                        }}
+                    </span>
+                  </div>
+                </div>
+                <div *ngIf="item?.endDate" class="col-6">
+                  <div>
+                    <p class="text-muted mb-1">{{'COMMON.END_DATE' | translate }}</p>
+                    <h5 class="fs-13">{{item?.endDate | date:'longDate'}}</h5>
+                  </div>
+                </div>
+              </div>
+
+              <div class="d-flex align-items-center mt-3">
+                <p class="text-muted mb-0 me-2">{{'MENUITEMS.CUSTOMERENGAGEMENT.LIST.CREATOR' | translate }}</p>
+                <div class="avatar-group">
+                  <div class="avatar-group-item">
+                    <div *ngIf="item?.creator?.picture?.baseUrl && item?.creator?.picture?.baseUrl !==''"
+                      [matTooltip]="item?.creator?.firstName" href="javascript: void(0);"
+                      class="avatar-group-item shadow">
+                      <img [src]="item?.creator?.picture?.baseUrl + '/' + item?.creator?.picture?.path" alt=""
+                        class="rounded-circle avatar-xs img-fluid">
+                    </div>
+                    <div *ngIf="!item?.creator?.picture?.baseUrl || item?.creator?.picture?.baseUrl ===''"
+                      [matTooltip]="item?.creator?.firstName" href="javascript: void(0);"
+                      class="avatar-xs avatar-group-item shadow">
+                      <div class="avatar-title rounded-circle bg-info shadow">
+                        {{ item?.creator?.firstName?.charAt(0) || 'N'}}
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div *ngIf="((loadingChallenges$ | async) === false || null || undefined) && (challenges$ | async)?.length"
+    class="px-3 mb-3">
+    <div class="row justify-content-md-between align-items-md-center gy-2">
+      <div class="col col-sm-6">
+        <div class="dataTables_info mb-2" id="tickets-table_info" role="status" aria-live="polite">
+          {{ 'COMMON.SHOWING' | translate }}
+          {{pagination?.startIndex + 1}}–{{pagination?.endIndex ===
+          pagination?.length ? pagination?.endIndex : pagination?.endIndex + 1}} {{ 'COMMON.OF' | translate }}
+          {{pagination?.length}} {{ 'COMMON.ENTRIES' | translate }}
+        </div>
+      </div>
+      <div class="col col-sm-6">
+        <div class="text-sm-right float-end listjs-pagination">
+          <ngb-pagination [maxSize]="5" [collectionSize]="pagination?.length" [(page)]="page"
+            (pageChange)="onPageChange($event)" [pageSize]="pagination?.size">
+          </ngb-pagination>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div id="noresult" class="py-4 mt-4 text-center"
+    *ngIf="(loadingChallenges$ | async) || (!(loadingChallenges$ | async) && !(challenges$ | async)?.length)">
+    <div *ngIf="loadingChallenges$ | async">
+      <lord-icon trigger="loop" style="width:72px;height:72px"
+        [colors]="'primary:' + primaryColor + ',secondary:' + secondaryColor"
+        src="https://cdn.lordicon.com/msoeawqm.json">
+      </lord-icon>
+      <h5 class="mt-4">{{ 'COMMON.LOADING' | translate }}</h5>
+    </div>
+    <div *ngIf="!(loadingChallenges$ | async) && !(challenges$ | async)?.length">
+      <lord-icon trigger="loop" style="width:72px;height:72px"
+        [colors]="'primary:' + primaryColor + ',secondary:' + secondaryColor"
+        src="https://cdn.lordicon.com/msoeawqm.json">
+      </lord-icon>
+      <h5 class="mt-4">{{ 'COMMON.NO_RESULT' | translate }}
+      </h5>
+    </div>
+  </div>
+
+  <ng-template #challengeModal role="document" let-modal>
+    <div class="modal-header bg-soft-info p-3">
+      <h5 class="modal-title" id="exampleModalLabel">{{'MENUITEMS.CUSTOMERENGAGEMENT.LIST.CAMPAIGN' | translate }}
+      </h5>
+      <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" id="close-modal"
+        (click)="modal.dismiss('Cross click')"></button>
+    </div>
+    <form [formGroup]="challengeForm">
+      <div class="modal-body">
+        <div class="row g-3">
+          <div class="col-lg-12">
+            <div class="mb-4 d-flex justify-content-center">
+              <div class="position-relative d-inline-block">
+                <div class="position-absolute bottom-0 end-0">
+                  <label (click)="upload()" for="lead-image-input" class="mb-0" data-bs-toggle="tooltip"
+                    data-bs-placement="right" title="{{'COMMON.SELECT_IMAGE' | translate}}">
+                    <div class="avatar-xs cursor-pointer">
+                      <div class="avatar-title bg-light border rounded-circle text-muted">
+                        <i class="ri-image-fill"></i>
+                      </div>
+                    </div>
+                  </label>
+                </div>
+                <div class="avatar-lg p-1">
+                  <div class="avatar-title">
+                    <div class="avatar-title text-uppercase bg-light text-danger shadow">
+                      <div *ngIf="!pictures?.value[0]?.baseUrl" class="symbol symbol-100px">
+                        <span class="text-danger">
+                          {{challenge?.title ? challenge?.title.charAt(0) : 'N'}}
+                        </span>
+                      </div>
+                      <img *ngIf="pictures?.value[0]?.baseUrl"
+                        [src]="pictures?.value[0]?.baseUrl + '/' + pictures?.value[0]?.path"
+                        class="w-100 img-cover image-input-wrapper" />
+                    </div>
+                  </div>
+                </div>
+                <div *ngIf="pictures?.value[0]?.baseUrl" class="position-absolute top-0 end-0">
+                  <label (click)="removePicture()" for="lead-image-input" class="mb-0" data-bs-toggle="tooltip"
+                    data-bs-placement="right" title="{{'COMMON.SELECT_IMAGE' | translate}}">
+                    <div class="avatar-xs cursor-pointer">
+                      <div class="avatar-title bg-light border rounded-circle text-muted">
+                        <i class="ri-close-line"></i>
+                      </div>
+                    </div>
+                  </label>
+                </div>
+              </div>
+            </div>
+            <div class="col-lg-12">
+              <div class="mb-3">
+                <label for="email_id-field" class="form-label">
+                  {{'MENUITEMS.CUSTOMERENGAGEMENT.LIST.CAMPAIGN_NAME' | translate }}</label>
+                <input type="text" id="email_id-field" class="form-control" required
+                  placeholder="{{'COMMON.ENTER' | translate }} {{'MENUITEMS.CUSTOMERENGAGEMENT.LIST.CAMPAIGN_NAME' | translate }}"
+                  formControlName="title"
+                  [ngClass]="{ 'is-invalid': challengeForm.get('title')?.touched && challengeForm.get('title').hasError('required') }" />
+                <div class="invalid-feedback"
+                  *ngIf="challengeForm.get('title')?.touched && challengeForm.get('title').hasError('required')">
+                  {{'MENUITEMS.CUSTOMERENGAGEMENT.LIST.REQUIRED' | translate }}
+                </div>
+              </div>
+              <div class="mb-3">
+                <label for="email_id-field" class="form-label">{{'COMMON.DESCRIPTION' | translate }} </label>
+                <textarea placeholder="{{'PLACEHOLDER.ENTER_DESCRIPTION' | translate }}" formControlName="description"
+                  class="form-control" rows="3"></textarea>
+              </div>
+              <div class="mb-3">
+                <div formGroupName="leaderboard" class="form-check col-lg-4 mb-2">
+                  <input [formControlName]="'blur'" class="form-check-input" type="checkbox" id="Required">
+                  <label class="form-check-label" for="Required">{{'COMMON.BLUR' | translate }}
+                  </label>
+                </div>
+              </div>
+              <div class="mb-3">
+                <div class="form-check">
+                  <input [ngModelOptions]="{standalone: true}" [checked]="selectedType === 'activities'"
+                    [(ngModel)]="selectedType" value="activities" id="shippingMethod02" type="radio"
+                    class="form-check-input">
+                  <label class="form-check-label" for="shippingMethod02">
+                    <span class="fs-14 mb-1 text-wrap d-block">
+                      {{'MENUITEMS.CUSTOMERENGAGEMENT.CAMPAIGN.ACTIVITY_TYPE' | translate }}</span>
+                  </label>
+                </div>
+                <div class="form-check">
+                  <input [ngModelOptions]="{standalone: true}" [checked]="selectedType === 'donation'"
+                    [(ngModel)]="selectedType" value="donation" id="shippingMethod02" type="radio"
+                    class="form-check-input">
+                  <label class="form-check-label" for="shippingMethod02">
+                    <span class="fs-14 mb-1 text-wrap d-block">{{'COMMON.DONATION' | translate }}</span>
+                  </label>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <div class="hstack gap-2 justify-content-end">
+          <button type="button" class="btn btn-light" data-bs-dismiss="modal"
+            (click)="modal.close('Close click')">{{'COMMON.CLOSE'|translate}}</button>
+          <button type="button" (click)="save()" [disabled]="isButtonDisabled || challengeForm.invalid"
+            class="btn btn-success" id="add-btn">{{'COMMON.SAVE' | translate
+            }}</button>
+        </div>
+      </div>
+    </form>
+  </ng-template>
+
+  <ng-template #filterModal role="document" let-modal>
+    <div class="modal-header bg-soft-info p-3">
+      <h5 class="modal-title" id="exampleModalLabel">{{'COMMON.FILTER' | translate }}
+      </h5>
+      <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" id="close-modal"
+        (click)="modal.dismiss('Cross click')"></button>
+    </div>
+    <form [formGroup]="filterForm">
+      <div class="modal-body">
+        <div class="mb-3">
+          <label for="email_id-field" class="form-label">{{'COMMON.STATUS' | translate }}*</label>
+          <ng-select [selectableGroup]="true" [closeOnSelect]="true" formControlName="status" [multiple]="false"
+            [items]="status" [clearable]="true" placeholder="{{'PLACEHOLDER.SELECT_STATUS' | translate }}">
+            <ng-template ng-label-tmp let-item="item" let-clear="clear">
+              {{
+              (item === 'DRAFT' ? 'COMMON.STATE.DRAFT':
+              item === 'ONGOING' ? 'COMMON.STATE.ONGOING' :
+              item === 'FINISHED' ? 'COMMON.STATE.COMPLETED' : '') | translate
+              }}
+
+              <span class="ng-value-icon right" (click)="clear(item)" aria-hidden="true">×</span>
+            </ng-template>
+            <ng-template ng-option-tmp let-item$="item$" let-item="item">
+              {{
+              (item === 'DRAFT' ? 'COMMON.STATE.DRAFT':
+              item === 'ONGOING' ? 'COMMON.STATE.ONGOING' :
+              item === 'FINISHED' ? 'COMMON.STATE.COMPLETED' : '') | translate
+              }}
+            </ng-template>
+          </ng-select>
+        </div>
+        <ng-container formGroupName="startDate">
+          <h5 class="mb-3 mt-3">{{'COMMON.START_DATE' | translate }}</h5>
+          <div class="mb-3">
+            <label for="dueDate" class="form-label">{{'COMMON.FROM' | translate }}</label>
+            <div class="input-group">
+              <input [required]="filterForm.get(['startDate', 'to']).value !== ''" formControlName="from"
+                [inline]="false" class="form-control bg-light border-light" type="text" mwlFlatpickr [altInput]="true"
+                [convertModelValue]="true" placeholder="{{'PLACEHOLDER.START_DATE' | translate }}" id="isDate">
+              <div class="input-group-append">
+                <span (click)="resetDate('startDate', 'from')" class="input-group-text"><i
+                    class="ri-delete-bin-line"></i></span>
+              </div>
+            </div>
+          </div>
+          <div class="mb-3">
+            <label for="dueDate" class="form-label">{{'COMMON.TO' | translate }}</label>
+            <div class="input-group">
+              <input [required]="filterForm.get(['startDate', 'from']).value !== ''" formControlName="to"
+                [inline]="false" class="form-control bg-light border-light" type="text" mwlFlatpickr [altInput]="true"
+                [convertModelValue]="true" placeholder="{{'PLACEHOLDER.START_DATE' | translate }}" id="isDate">
+              <div class="input-group-append">
+                <span (click)="resetDate('startDate', 'to')" class="input-group-text"><i
+                    class="ri-delete-bin-line"></i></span>
+              </div>
+            </div>
+          </div>
+        </ng-container>
+        <ng-container formGroupName="endDate">
+          <h5 class="mb-3 mt-3">{{'COMMON.END_DATE' | translate }}</h5>
+          <div class="mb-3">
+            <label for="dueDate" class="form-label">{{'COMMON.FROM' | translate }}</label>
+            <div class="input-group">
+              <input [required]="filterForm.get(['endDate', 'to']).value !== ''" formControlName="from" [inline]="false"
+                class="form-control bg-light border-light" type="text" mwlFlatpickr [altInput]="true"
+                [convertModelValue]="true" placeholder="{{'PLACEHOLDER.START_DATE' | translate }}" id="isDate">
+              <div class="input-group-append">
+                <span (click)="resetDate('endDate', 'from')" class="input-group-text"><i
+                    class="ri-delete-bin-line"></i></span>
+              </div>
+            </div>
+          </div>
+          <div class="mb-3">
+            <label for="dueDate" class="form-label">{{'COMMON.TO' | translate }}</label>
+            <div class="input-group">
+              <input [required]="filterForm.get(['endDate', 'from']).value !== ''" formControlName="to" [inline]="false"
+                class="form-control bg-light border-light" type="text" mwlFlatpickr [altInput]="true"
+                [convertModelValue]="true" placeholder="{{'PLACEHOLDER.START_DATE' | translate }}" id="isDate">
+              <div class="input-group-append">
+                <span (click)="resetDate('endDate', 'to')" class="input-group-text"><i
+                    class="ri-delete-bin-line"></i></span>
+              </div>
+            </div>
+          </div>
+        </ng-container>
+      </div>
+      <div class="modal-footer">
+        <div class="hstack gap-2 justify-content-end">
+          <button type="button" class="btn btn-light" data-bs-dismiss="modal"
+            (click)="modal.close('Close click')">{{'COMMON.CLOSE'|translate}}</button>
+          <button type="button" (click)="filter()" [disabled]="isFilterButtonDisabled || filterForm.invalid"
+            class="btn btn-success" id="add-btn">{{'COMMON.FILTER' | translate }}</button>
+        </div>
+      </div>
+    </form>
+  </ng-template>
+
+  <ng-template #deleteModal let-modal>
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" id="btn-close"
+          (click)="modal.dismiss('Cross click')"></button>
+      </div>
+      <div class="modal-body">
+        <div class="mt-2 text-center">
+          <lord-icon src="https://cdn.lordicon.com/gsqxdxog.json" trigger="loop"
+            colors="primary:#405189,secondary:#f06548" style="width:90px;height:90px"></lord-icon>
+          <div class="mt-4 pt-2 fs-15 mx-4 mx-sm-5">
+            <h4> {{'MODULES.ENGAGEMENT.REMOVE_CHALLENGE_CONFIRMATION' | translate }}</h4>
+            <p class="text-muted mx-4 mb-0">
+              {{'MODULES.ENGAGEMENT.DELETE_CHALLENGE_WARNING' | translate }}
+            </p>
+          </div>
+        </div>
+        <div class="d-flex gap-2 justify-content-center mt-4 mb-2">
+          <button class="btn btn-link link-success fw-medium text-decoration-none" data-bs-dismiss="modal"
+            (click)="modal.close('Close click')" id="deleteRecord-close"><i
+              class="ri-close-line me-1 align-middle"></i>{{'COMMON.CLOSE' | translate }}</button>
+          <button type="button" class="btn w-sm btn-danger " id="delete-product" (click)="deleteChallenge()"
+            (click)="modal.close('Close click')">{{'COMMON.YES_DELETE_IT' | translate }}</button>
+        </div>
+      </div>
+    </div>
+  </ng-template>
+</ng-container>
+<div *ngIf="navigating$ | async" class="vh-100 py-4 text-center" fxLayout="column" fxLayoutAlign="center center"
+  fxLayoutGap="1rem">
+  <div>
+    <lord-icon trigger="loop" style="width:72px;height:72px"
+      [colors]="'primary:' + primaryColor + ',secondary:' + secondaryColor"
+      src="https://cdn.lordicon.com/msoeawqm.json">
+    </lord-icon>
+  </div>
+  <div class="mt-4">
+    <h5>{{ 'COMMON.LOADING' | translate }}</h5>
+  </div>
+</div>

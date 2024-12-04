@@ -1,0 +1,36 @@
+:root {
+  --tw-bg-opacity: 0.5;
+}
+.products-grid {
+  grid-template-columns: 48px auto 40px;
+  @screen sm {
+    grid-template-columns: 48px auto 112px 72px;
+  }
+  @screen md {
+    grid-template-columns: 48px auto 112px 112px 72px;
+  }
+  @screen lg {
+    grid-template-columns: 48px auto 112px 112px 72px;
+  }
+}
+.max-h-2 {
+  max-height: 8rem !important;
+}
+.tags-container {
+  padding: 0.75rem;
+}
+.mrg-t {
+  margin-top: 20px;
+}
+.mrg-r {
+  margin-right: 2rem;
+}
+.hg {
+  height: 100%;
+}
+.cl {
+  color: #f59e0c;
+}
+.bosk-snackbar {
+  background: transparent !important;
+}

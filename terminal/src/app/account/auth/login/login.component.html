@@ -1,0 +1,138 @@
+<div [ngClass]="{'dark-style': mode === 'dark'}" class="user-data-page clearfix d-lg-flex">
+  <div class="illustration-wrapper d-flex align-items-center justify-content-between flex-column">
+    <h3 *ngIf="loginView" class="font-rubik">Today, say goodbye to losing customers  <br>forever! <a class="cursor-pointer" (click)="loginView = false">request account</a></h3>
+    <h3 *ngIf="!loginView" class="font-rubik">Guide first-time visitors towards <br> becoming loyal patrons.</h3>
+    <div class="illustration-holder">
+      <img src="assets/images/ils_08.svg" alt="" class="illustration">
+      <img src="assets/images/ils_08.1.svg" alt="" class="shapes shape-one">
+      <img src="assets/images/ils_08.2.svg" alt="" class="shapes shape-two">
+    </div>
+  </div>
+
+  <div *ngIf="loginView" class="form-wrapper">
+    <div class="d-flex justify-content-between">
+      <div class="logo">
+        <a class="cursor-pointer">
+          <img height="50" src="assets/images/logo_elev.svg" alt="">
+        </a>
+      </div>
+    </div>
+    <form action="#" class="user-data-form mt-80 md-mt-40">
+      <h2 class="fw-bold">Hi buddy, welcome <br> Back!</h2>
+      <p class="header-info pt-30 pb-50">Still don't have an account? <a class="cursor-pointer" (click)="loginView = false">Request Account</a></p>
+      <form *ngIf="!isForgotPassword" [formGroup]="loginForm">
+        <div class="row">
+          <div *ngIf="!isResetPassword" class="col-12">
+            <div class="input-group-meta mb-80 sm-mb-70">
+              <label>{{'COMMON.EMAIL' | translate }}</label>
+              <input type="email" formControlName="email" placeholder="bolcovfed@ce.edu">
+              <div *ngIf="submitted && loginControls['email'].errors" class="invalid-feedback">
+                <div *ngIf="loginControls['email'].errors['required']">{{ 'MODULES.HR.MAIN.EMAIL_REQUIRED' | translate
+                  }}</div>
+                <div *ngIf="loginControls['email'].errors['email']">{{ 'ACCOUNT.VALID_EMAIL'| translate }}
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="col-12">
+            <div class="input-group-meta mb-15">
+              <label>Password</label>
+              <input [type]="isHidden ? 'password' : 'text'" formControlName="password" placeholder="Enter Password" class="pass_log_id">
+              <span (click)="isHidden = !isHidden" class="placeholder_icon"><span [ngClass]="{'eye-slash': !isHidden}" class="passVicon"><img src="assets/images/view.svg"
+                    alt=""></span></span>
+            </div>
+            <div *ngIf="submitted && loginControls['password'].errors" class="text-danger fs-12 mt-1 mb-2">
+              <span *ngIf="loginControls['password'].errors['required']">{{ 'ACCOUNT.PASSWORD_REQUIRED'| translate
+                }}</span>
+            </div>
+          </div>
+          <div class="col-12">
+            <div class="agreement-checkbox d-flex justify-content-between align-items-center">
+              <div>
+                <input type="checkbox" id="remember">
+                <label for="remember">Keep me logged in</label>
+              </div>
+              <a (click)="isForgotPassword = true" class="cursor-pointer">Forget Password?</a>
+            </div>
+          </div>
+          <div class="col-12">
+            <button [disabled]="isButtonDisabled" (click)="isResetPassword ? resetPassword() : signIn()"
+              class="theme-btn-one mt-50 mb-50">Login</button>
+          </div>
+        </div>
+      </form>
+      <form *ngIf="isForgotPassword" [formGroup]="forgotPasswordForm">
+        <div class="col-12">
+          <div class="input-group-meta mb-80 sm-mb-70">
+            <label>{{'COMMON.EMAIL' | translate }}</label>
+            <input type="email" formControlName="email" placeholder="bolcovfed@ce.edu">
+            <div *ngIf="forgotPwdSubmitted && forgotControls['email'].errors" class="invalid-feedback" align="left">
+              <div *ngIf="forgotControls['email'].errors['required']">{{ 'MODULES.HR.MAIN.EMAIL_REQUIRED' | translate }}
+              </div>
+              <div *ngIf="forgotControls['email'].errors['email']">{{ 'ACCOUNT.VALID_EMAIL'| translate }}
+              </div>
+            </div>
+            <div class="d-flex justify-content-end mt-3">
+              <a (click)="isForgotPassword = false" class="cursor-pointer">Go to sign in</a>
+            </div>
+          </div>
+        </div>
+
+        <div class="text-center mt-4">
+          <button [disabled]="isResetButtonDisabled" (click)="sendResetLink()" class="theme-btn-one mt-50 mb-50"
+            type="button">{{ 'MODULES.ECOMMERCE.MAIN.SEND_RESET_LINK' | translate }}</button>
+        </div>
+      </form>
+    </form>
+  </div>
+
+  <div *ngIf="!loginView" class="form-wrapper">
+    <div class="logo">
+      <a class="cursor-pointer">
+        <img height="50" src="assets/images/logo_elev.svg" alt="">
+      </a>
+    </div>
+    <form [formGroup]="requestForm" class="user-data-form mt-30">
+      <h2>Join with thousands of companies!</h2>
+      <p class="header-info pt-30 pb-50">Already have an account?  <a class="cursor-pointer" (click)="loginView = true">Login</a></p>
+
+      <div class="row">
+        <ng-container formGroupName="requestor">
+          <div class="col-12 row">
+            <div class="input-group-meta mb-50 col-lg-6">
+              <label>First Name</label>
+              <input formControlName="firstName" type="text" placeholder="First Name">
+            </div>
+            <div class="input-group-meta mb-50  col-lg-6">
+              <label>Last Name</label>
+              <input formControlName="lastName" type="text" placeholder="Last Name">
+            </div>
+          </div>
+          <div class="col-12">
+            <div class="input-group-meta mb-50">
+              <label>{{'COMMON.EMAIL' | translate }}</label>
+              <input formControlName="email" type="email" placeholder="bolcovfed@ce.edu">
+            </div>
+          </div>
+        </ng-container>
+        <ng-container formGroupName="request">
+          <div class="col-12">
+            <div class="input-group-meta mb-50">
+              <label>Subject</label>
+              <input formControlName="subject" type="text" placeholder="Write your subject here...">
+            </div>
+            <div class="input-group-meta mb-60">
+              <label>Content</label>
+              <textarea rows="6" class="col-12 mt-1" formControlName="content" placeholder="Write your message here..."></textarea>
+            </div>
+          </div>
+        </ng-container>
+        <div class="col-12">
+          <button [disabled]="isRequestButtonDisabled" (click)="createRequest()" class="theme-btn-one mt-30 mb-50">Send Request</button>
+        </div>
+      </div>
+    </form>
+  </div>
+</div>
+
+<app-toasts aria-live="polite" aria-atomic="true"></app-toasts>

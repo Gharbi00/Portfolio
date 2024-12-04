@@ -1,0 +1,16 @@
+.w-h {
+  width: 24px;
+  height: 24px;
+}
+.uploader-wrapper {
+  position: relative;
+  .progress-wrapper {
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    z-index: 9;
+    position: absolute;
+    background: #ffffff4c;
+  }
+}

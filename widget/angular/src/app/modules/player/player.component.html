@@ -1,0 +1,31 @@
+<div *ngIf="isLoaded" class="popup-container" [style.display]="!(isHidden$ | async) ? 'block' : 'none'">
+  <div class="popup-picture" [class.dark-mode]="darkMode" [class.rtl]="rtl"
+    [ngStyle]="{'direction': rtl ? 'rtl' : 'ltr'}">
+    <div class="popup-close-button popup-picture-trigger" (click)="closeModal()">
+      <svg class="popup-close-button-icon icon-cross">
+        <use xlink:href="#svg-cross"></use>
+      </svg>
+    </div>
+    <div
+      *ngIf="(isCompleteProfile$ | async) && (loyaltySettings$ | async)?.profileComplete?.enable && (completeProfile$ | async)?.levels?.length && +(completeProfile$ | async)?.progress < 100"
+      class="widget-box-scrollable hidden-overflow popup-color">
+      <app-complete-profile></app-complete-profile>
+    </div>
+
+    <ng-container
+      *ngIf="!(isCompleteProfile$ | async) || !(loyaltySettings$ | async)?.profileComplete?.enable || !(completeProfile$ | async)?.levels?.length ">
+      <div class="widget-box-scrollable hidden-overflow popup-color" data-simplebar="init">
+        <active-mode [activeModal]="activeModal"></active-mode>
+      </div>
+      <widget-footer [embed]="false"></widget-footer>
+    </ng-container>
+
+  </div>
+  <div class="modal-background" [style.display]="!(isHidden$ | async) ? 'block' : 'none'" (click)="closeModal()"></div>
+</div>
+
+<svg style="display: none">
+  <symbol id="svg-cross" viewBox="0 0 12 12" preserveAspectRatio="xMinYMin meet">
+    <path d="M12,9.6L9.6,12L6,8.399L2.4,12L0,9.6L3.6,6L0,2.4L2.4,0L6,3.6L9.6,0L12,2.4L8.399,6L12,9.6z" />
+  </symbol>
+</svg>

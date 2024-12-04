@@ -1,0 +1,281 @@
+<!-- Start Breadcrumbs -->
+<app-breadcrumbs title="{{'COMMON.LOCATION' | translate }}" [breadcrumbItems]="breadCrumbItems"></app-breadcrumbs>
+<!-- End Breadcrumbs -->
+<ng-container *ngIf="!(navigating$ | async)">
+
+  <div class="row">
+    <div class="col-lg-12">
+      <div class="card" id="customerList">
+        <div class="card-header border-bottom-dashed">
+
+          <div class="row g-4 align-items-center">
+            <div class="col-sm">
+              <div>
+                <h5 class="card-title mb-0">{{'COMMON.LOCATION' | translate }}</h5>
+              </div>
+            </div>
+            <div class="col-sm-auto">
+              <div class="d-flex gap-2">
+                <button type="button" class="btn btn-success add-btn" data-bs-toggle="modal" id="create-btn" data-bs-target="#showModal" (click)="openLocationModal(content, null)"><i
+                    class="ri-add-line align-bottom me-1"></i>
+                    {{'MODULES.SYSTEM.ADD_LOCATION' | translate }} </button>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="card-body border-bottom-dashed border-bottom">
+          <div class="row g-3">
+            <div class="col-xl-6">
+              <div class="search-box">
+                <form [formGroup]="searchForm">
+                  <input type="text" name="searchTerm" class="form-control" placeholder="{{'COMMON.SEARCH_FOR_CUSTOMER_SOMETHING' | translate }}" formControlName="searchString">
+                  <i class="ri-search-line search-icon"></i>
+                </form>
+              </div>
+            </div>
+            <div class="col-xl-6">
+              <div class="row g-3">
+                <div class="col-sm-4">
+                  <div class="">
+                    <form [formGroup]="filterForm">
+                      <input formControlName="date" placeholder="{{'MODULES.SYSTEM.SELECT_DATE' | translate }}" class="form-control flatpickr-input" type="text" mwlFlatpickr [altInput]="true" [convertModelValue]="true" mode="range">
+                    </form>
+                  </div>
+                </div>
+                <div class="col-sm-4">
+                  <form [formGroup]="filterForm">
+                    <select (change)="onSelectType($event)" placeholder="{{'MODULES.SYSTEM.SELECT_LOCATION_TYPE' | translate }}" class="form-select form-control-line">
+                      <option value="" disabled selected>{{'COMMON.SELECT_OPTION' | translate }}</option>
+                      <option *ngFor="let type of locationTypes" [value]="type">{{'MODULES.SYSTEM.SHARED.' + type | translate }}
+                      </option>
+                    </select>
+                  </form>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="card-body">
+          <div *ngIf="locations?.length">
+            <div class="table-responsive table-card mb-1">
+              <table class="table align-middle table-nowrap">
+                <thead class="table-light text-muted">
+                  <tr>
+                    <th>{{'COMMON.LOCATION' | translate }}</th>
+                    <th>{{ 'COMMON.EMAIL' | translate }}</th>
+                    <th>{{'COMMON.PHONE' | translate }}</th>
+                    <th>{{'MODULES.SYSTEM.CREATION_DATE' | translate }}</th>
+                    <th>{{'COMMON.LOCATION' | translate }}</th>
+                    <th>{{'COMMON.ACTION' | translate }}</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr *ngFor="let data of locations" id="c_{{data.id}}">
+                    <td><ngb-highlight [result]="data.name"></ngb-highlight></td>
+                    <td><ngb-highlight [result]="data.company?.contact?.email"></ngb-highlight></td>
+                    <td><ngb-highlight [result]="data.company?.contact?.phone?.countryCode + data.company?.contact?.phone?.number"></ngb-highlight>
+                    </td>
+                    <td><ngb-highlight [result]="data.createdAt | date :'longDate'"></ngb-highlight></td>
+                    <td><ngb-highlight [result]="data.locationType"></ngb-highlight>
+                    </td>
+                    <td>
+                      <ul class="list-inline hstack gap-2 mb-0">
+                        <li class="list-inline-item edit" placement="top">
+                          <a class="cursor-pointer" class="text-primary d-inline-block edit-item-btn" (click)="openLocationModal(content, data)">
+                            <i class="ri-pencil-fill fs-16"></i>
+                          </a>
+                        </li>
+                        <li class="list-inline-item" placement="top">
+                          <a class="text-danger d-inline-block remove-item-btn" data-bs-toggle="modal" data-bs-target="#deleteRecordModal" (click)="openDeleteLocation(deleteModel,data)">
+                            <i class="ri-delete-bin-5-fill fs-16"></i>
+                          </a>
+                        </li>
+                      </ul>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+            <div class="row justify-content-md-between align-items-md-center">
+              <div class="col col-sm-6">
+                <div class="dataTables_info mb-2" id="tickets-table_info" role="status" aria-live="polite">
+                  {{'COMMON.SHOWING' | translate }} {{pagination?.startIndex + 1}}–{{pagination?.endIndex ===
+                  pagination?.length ? pagination?.endIndex : pagination?.endIndex + 1}} {{'COMMON.OF' | translate }} {{pagination?.length}} {{'COMMON.ENTRIES' | translate }}
+                </div>
+              </div>
+              <div class="col col-sm-6">
+                <div class="text-sm-right float-end listjs-pagination">
+                  <ngb-pagination [maxSize]="5" [collectionSize]="pagination?.length" [(page)]="page" (pageChange)="onPageChange($event)" [pageSize]="pagination?.size">
+                  </ngb-pagination>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div *ngIf="!locations?.length" class="py-4 mt-4 text-center" id="noresult">
+            <lord-icon src="https://cdn.lordicon.com/vlycxjwx.json" trigger="loop" [colors]="'primary:' + primaryColor + ',secondary:' + secondaryColor" style="width:72px;height:72px"></lord-icon>
+            <h5 class="mt-4"> {{'COMMON.NO_RESULT' | translate }}</h5>
+          </div>
+
+          <ng-template #content role="document" let-modal>
+            <div class="modal-header bg-light p-3">
+              <h5 class="modal-title" id="exampleModalLabel">{{'MODULES.SYSTEM.EDIT_LOCATION' | translate }}</h5>
+              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" id="close-modal" (click)="modal.dismiss('Cross click')"></button>
+            </div>
+            <form [formGroup]="locationForm">
+              <div class="modal-body">
+                <div class="mb-3">
+                  <div formArrayName="tags" class="row">
+                    <div *ngFor="let key of tags.controls; let i = index; let first = first; let last = last;" class="col-md-12 mt-2">
+                      <div class="row">
+                        <div class="col-md-10">
+                          <label *ngIf="first" class="control-label">{{'MODULES.SYSTEM.TAGS' | translate }}</label>
+                          <input [formControlName]="i" placeholder="{{'PLACEHOLDER.ENTER_TAG' | translate }}" class="cursor-pointer border-s form-control" />
+                        </div>
+                        <div class="col-md-1">
+                          <button class="btn btn-soft-danger" (click)="removeTagField(i)" *ngIf="!first"><i class="ri-delete-bin-2-line"></i></button>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="mt-2">
+                    <button (click)="addTagField()" type="button" class="btn btn-soft-info btn-sm shadow-none"><i class="ri-add-fill me-1 align-bottom"></i>
+                      {{'COMMON.ADD_TAG' | translate }} </button>
+                  </div>
+                </div>
+
+                <div class="row col-lg-12">
+                  <div class="mb-3 col-lg-6">
+                    <label for="customername-field" class="form-label">{{'COMMON.LOCATION' | translate }}  {{'COMMON.NAME' | translate }} </label>
+                    <input type="text" id="customername-field" class="form-control" placeholder="{{'PLACEHOLDER.ENTER_NAME' | translate }}" required formControlName="name"
+                      [ngClass]="{ 'is-invalid': submitted && form['customer'].errors }" />
+                    <div class="text-danger" *ngIf="locationForm.get('name')?.touched && locationForm.get('name').hasError('required')">
+                      {{'COMMON.REQUIRED' | translate }}
+                    </div>
+                  </div>
+                  <div class="mb-3 col-lg-6">
+                    <label for="customername-field" class="form-label">{{'COMMON.EXTERNAL_ID' | translate }}</label>
+                    <input type="text" id="customername-field" class="form-control" placeholder="{{'COMMON.ENTER_EXTERNAL_ID' | translate }}" required formControlName="externalId"
+                      />
+                    <div class="text-danger" *ngIf="locationForm.get('externalId')?.touched && locationForm.get('externalId').hasError('required')">
+                      {{'COMMON.REQUIRED' | translate }}
+                    </div>
+                  </div>
+                  <div class="mb-3 col-lg-6">
+                    <label for="status-field" class="form-label">{{'COMMON.LOCATION' | translate }} Type</label>
+                    <select class="form-select form-control-line" [formControlName]="'locationType'" [required]="true">
+                      <option value="" disabled selected>{{'COMMON.SELECT_OPTION' | translate }}</option>
+                      <option *ngFor="let type of locationTypes" [value]="type">{{type.split('_').join(' ') | titlecase}}
+                      </option>
+                    </select>
+                    <div class="text-danger" *ngIf="locationForm.get('locationType')?.touched && locationForm.get('locationType').hasError('required')">
+                      {{'COMMON.REQUIRED' | translate }}
+                    </div>
+                  </div>
+                  <ng-container formGroupName="address">
+                    <ng-container formGroupName="owner">
+                      <div class="mb-3 col-lg-6">
+                        <ng-container formGroupName="phone">
+                          <label for="phone-field" class="form-label">{{'COMMON.PHONE' | translate }}</label>
+                          <input type="text" id="phone-field" class="form-control" placeholder="{{'COMMON.ENTER_PHONE' | translate }}" mask="000-000-0000" formControlName="number" />
+                        </ng-container>
+                      </div>
+                    </ng-container>
+                    <div class="mb-3 col-lg-6">
+                      <label for="cityInput" class="form-label">{{'COMMON.CITY' | translate }}</label>
+                      <input formControlName="city" type="text" class="form-control" id="cityInput" placeholder="{{'COMMON.CITY' | translate }}" />
+                    </div>
+                    <div class="row">
+                      <div class="col-sm-6">
+                        <div class="mb-3">
+                          <label for="choices-status-input" class="form-label">{{ 'COMMON.COUNTRIES' | translate }}</label>
+                          <ng-select bindValue="id" (change)="onChangeCountry($event)" [hideSelected]="true" [virtualScroll]="true"
+                            placeholder="{{'PLACEHOLDER.ENTER_COUNTRIES' | translate }}" [typeahead]="countrySearchInput$"
+                            [items]="countries" [multiple]="false" [formControlName]="'country'">
+                            <ng-template ng-label-tmp let-item="item" let-clear="clear">
+                              <span class="me-1" *ngIf="item?.iconFlag">{{item?.iconFlag}}</span>
+                              <span>{{item?.name?.split('_').join(' ') | titlecase}}</span>
+                              <span class="ng-value-icon right" (click)="clear(item)" aria-hidden="true">×</span>
+                            </ng-template>
+                            <ng-template ng-option-tmp let-item="item">
+                              <span class="me-1" *ngIf="item?.iconFlag">{{item?.iconFlag}}</span>
+                              <span>{{item?.name?.split('_').join(' ') | titlecase}}</span>
+                            </ng-template>
+                          </ng-select>
+                        </div>
+                      </div>
+
+                      <div class="col-sm-6">
+                        <div class="mb-3">
+                          <label for="choices-status-input" class="form-label">{{ 'COMMON.STATES' | translate }}</label>
+                          <ng-select bindValue="id" [items]="states" [multiple]="false" [typeahead]="stateSearchInput$" [hideSelected]="true"
+                            [formControlName]="'state'"
+                            placeholder="{{'PLACEHOLDER.ENTER_STATE' | translate }}">
+                            <ng-template ng-label-tmp let-item="item" let-clear="clear">
+                              <span>{{item?.name?.split('_').join(' ') | titlecase}}</span>
+                              <span class="ng-value-icon right" (click)="clear(item)" aria-hidden="true">×</span>
+                            </ng-template>
+                            <ng-template ng-option-tmp let-item="item">
+                              <span>{{item?.name?.split('_').join(' ') | titlecase}}</span>
+                            </ng-template>
+                          </ng-select>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="mb-3 col-lg-6">
+                      <label for="zipcodeInput" class="form-label">{{'COMMON.ZIP_CODE' | translate }}</label>
+                      <input formControlName="postCode" type="text" class="form-control" id="zipcodeInput" placeholder="{{'COMMON.ENTER_ZIPCODE' | translate }}">
+                    </div>
+                  </ng-container>
+                </div>
+
+              </div>
+              <div class="modal-footer">
+                <div class="hstack gap-2 justify-content-end">
+                  <button type="button" class="btn btn-light" data-bs-dismiss="modal" (click)="modal.close('Close click')">{{'COMMON.CLOSE' | translate }}</button>
+                  <button type="button" [disabled]="isButtonDisabled || locationForm.invalid" (click)="save()" class="btn btn-success" id="add-btn">{{(selectedLocation ? 'SHARED.EDIT_LOCATION' : 'SHARED.ADD_LOCATION') | translate}}</button>
+                </div>
+              </div>
+            </form>
+          </ng-template>
+
+          <div id="elmLoader" *ngIf="isLoading">
+            <div class="spinner-border text-primary avatar-sm" role="status">
+              <span class="visually-hidden">{{'COMMON.LOADING' | translate }}</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <ng-template #deleteModel let-modal>
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" id="deleteRecord-close" (click)="modal.dismiss('Cross click')"></button>
+      </div>
+      <div class="modal-body">
+        <div class="mt-2 text-center">
+          <lord-icon src="https://cdn.lordicon.com/gsqxdxog.json" trigger="loop" colors="primary:#f7b84b,secondary:#f06548" style="width:100px;height:100px"></lord-icon>
+          <div class="mt-4 pt-2 fs-15 mx-4 mx-sm-5">
+            <h4>{{'COMMON.ARE_YOU_SURE' | translate }}</h4>
+            <p class="text-muted mx-4 mb-0">{{'MODULES.SYSTEM.ARE_YOU_SURE_REMOVE' | translate }}</p>
+          </div>
+        </div>
+        <div class="d-flex gap-2 justify-content-center mt-4 mb-2">
+          <button type="button" class="btn w-sm btn-light" data-bs-dismiss="modal" (click)="modal.close('Close click')">{{'COMMON.CLOSE' | translate }}</button>
+          <button type="button" class="btn w-sm btn-danger " id="delete-product" (click)="deleteLocation()">{{'COMMON.YES_DELETE_IT' | translate }}</button>
+        </div>
+      </div>
+    </div><!-- /.modal-content -->
+  </ng-template>
+</ng-container>
+<div *ngIf="navigating$ | async" class="vh-100 py-4 text-center" fxLayout="column" fxLayoutAlign="center center" fxLayoutGap="1rem">
+  <div>
+    <lord-icon trigger="loop" style="width:72px;height:72px" [colors]="'primary:' + primaryColor + ',secondary:' + secondaryColor" src="https://cdn.lordicon.com/msoeawqm.json">
+    </lord-icon>
+  </div>
+  <div class="mt-4">
+    <h5>{{'COMMON.LOADING' | translate }}</h5>
+  </div>
+</div>

@@ -1,0 +1,492 @@
+<ng-container *ngIf="!(navigating$ | async)">
+  <div class="position-relative mx-n4 mt-n4">
+    <div class="profile-wid-bg profile-setting-img">
+      <img src="assets/images/profile-bg.jpg" class="profile-wid-img" alt="">
+      <div class="overlay-content">
+        <div class="text-end p-3">
+          <div class="p-0 ms-auto rounded-circle profile-photo-edit">
+            <input id="profile-foreground-img-file-input" type="file" class="profile-foreground-img-file-input">
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-xxl-3">
+      <div class="card mt-n5">
+        <div class="card-body p-4">
+          <div *ngIf="plugin$ | async as plugin" class="text-center">
+            <div class="profile-user position-relative d-inline-block mx-auto mb-4">
+              <div class="avatar-lg mb-3">
+                <div class="avatar-title bg-soft-success fs-24 text-success">
+                  <i [ngClass]="plugin?.icon"></i>
+                </div>
+              </div>
+            </div>
+            <h5 class="fs-16 mb-1">{{plugin?.name}}</h5>
+            <p class="text-muted mb-0">{{plugin?.description}}</p>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="col-xxl-9">
+      <div class="card mt-xxl-n5">
+        <div class="card-header">
+          <ul ngbNav #customNav="ngbNav" [activeId]="1"
+            class="nav nav-tabs-custom rounded card-header-tabs border-bottom-0" role="tablist">
+            <li [ngbNavItem]="1" class="nav-item">
+              <a ngbNavLink class="nav-link" data-bs-toggle="tab" role="tab">
+                <i class="far fa-envelope"></i>{{'MODULES.SYSTEM.WEB' | translate}}
+              </a>
+              <ng-template ngbNavContent>
+                <div class="col-lg-12">
+                  <form *ngIf="notificationForm" [formGroup]="notificationForm">
+                    <ng-container formGroupName="web">
+                      <div class="d-flex justify-content-between mb-3">
+                        <div>
+                          <div for="firstnameInput">{{'MODULES.SYSTEM.ENABLE' | translate }}</div>
+                        </div>
+                        <div class="flex-shrink-0 d-flex fs-18 gap-1">
+                          <div class="form-check form-switch">
+                            <input [checked]="notification?.web?.enable"
+                              (change)="onChange($event?.target?.checked, 'web', 'enable')" class="form-check-input"
+                              type="checkbox" role="switch" id="flexSwitchCheckDefault">
+                          </div>
+                        </div>
+                      </div>
+
+                      <div class="mb-3 col-lg-6">
+                        <label for="email_id-field" class="form-label"> {{'MODULES.SYSTEM.PROVIDER' | translate}}
+                        </label>
+                        <ng-select [hideSelected]="true" [multiple]="false" [searchable]="true"
+                          formControlName="provider" [items]="providers"
+                          placeholder="{{'MODULES.SYSTEM.PROVIDER' | translate}}">
+                          <ng-template ng-label-tmp let-item="item" let-clear="clear">
+                            <span class="ng-value-label">
+                              {{ item === 'API' ? 'Api' : 'Firebase'}}
+                            </span>
+                            <span class="ng-value-icon right" (click)="clear(item)" aria-hidden="true">×</span>
+                          </ng-template>
+                          <ng-template ng-option-tmp let-item$="item$" let-item="item">
+                            {{ item === 'API' ? 'Api' : 'Firebase'}}
+                          </ng-template>
+                        </ng-select>
+                      </div>
+
+                      <ng-container formGroupName="settings">
+                        <ng-container *ngIf="webProvider.value === 'API'" formGroupName="api">
+                          <div class="row">
+                            <div class="mb-3 col-lg-6">
+                              <label for="email_id-field" class="form-label">{{'HEADER.SHORTCUTS.LINK' |
+                                translate}}</label>
+                              <input type="text" id="email_id-field" class="form-control"
+                                placeholder="{{'HEADER.SHORTCUTS.LINK' | translate}}" formControlName="link" />
+                            </div>
+                            <div class="mb-3 col-lg-6">
+                              <label for="email_id-field" class="form-label"> {{'MODULES.SYSTEM.METHOD' | translate}}
+                              </label>
+                              <ng-select [hideSelected]="true" [multiple]="false" [searchable]="true"
+                                formControlName="method" [items]="methods"
+                                placeholder="{{'MODULES.SYSTEM.METHOD' | translate}}">
+                                <ng-template ng-label-tmp let-item="item" let-clear="clear">
+                                  <span class="ng-value-label">
+                                    {{ (item === 'GET' ? 'SHARED.GET' :
+                                    item === 'POST' ? 'SHARED.POST' :
+                                    item === 'PUT' ? 'SHARED.PUT' :
+                                    item === 'DELETE' ? 'SHARED.DELETE' :
+                                    item === 'PATCH' ? 'SHARED.PATCH' :
+                                    item === 'OPTIONS' ? 'SHARED.OPTIONS' :
+                                    item === 'HEAD' ? 'SHARED.HEAD' : '') | translate}}
+                                  </span>
+                                  <span class="ng-value-icon right" (click)="clear(item)" aria-hidden="true">×</span>
+                                </ng-template>
+                                <ng-template ng-option-tmp let-item$="item$" let-item="item">
+                                  {{ (item === 'GET' ? 'SHARED.GET' :
+                                  item === 'POST' ? 'SHARED.POST' :
+                                  item === 'PUT' ? 'SHARED.PUT' :
+                                  item === 'DELETE' ? 'SHARED.DELETE' :
+                                  item === 'PATCH' ? 'SHARED.PATCH' :
+                                  item === 'OPTIONS' ? 'SHARED.OPTIONS' :
+                                  item === 'HEAD' ? 'SHARED.HEAD' : '') | translate}}
+                                </ng-template>
+                              </ng-select>
+                            </div>
+                          </div>
+                          <ng-container formArrayName="headers">
+                            <h5 class="mb-3 mt-3">{{'MENUITEMS.CUSTOMERENGAGEMENT.CAMPAIGN.HEADERS' | translate}}</h5>
+                            <div
+                              *ngFor="let key of webHeaders['controls']; let i = index; let last = last; let first = first"
+                              [formGroupName]="i" class="row">
+                              <div class="mb-3 col-lg-5">
+                                <label for="email_id-field" class="form-label">{{'PLACEHOLDER.KEY' | translate}}</label>
+                                <input type="text" id="email_id-field" class="form-control"
+                                  placeholder="{{'PLACEHOLDER.KEY' | translate}}" formControlName="key" />
+                              </div>
+                              <div class="mb-3 col-lg-5">
+                                <label for="email_id-field" class="form-label">{{'PLACEHOLDER.VALUE' |
+                                  translate}}</label>
+                                <div class="d-flex gap-1">
+                                  <input type="text" id="email_id-field" class="form-control"
+                                    placeholder="{{'PLACEHOLDER.VALUE' | translate}}" formControlName="value" />
+                                  <button *ngIf="webHeaders?.value?.length > 1" (click)="removeHeaderField(i, 'web')"
+                                    type="button" class="btn btn-soft-danger btn-sm shadow-none"><i
+                                      class="ri-delete-bin-line me-1 align-bottom"></i>
+                                  </button>
+                                </div>
+                              </div>
+                            </div>
+                            <div class="d-flex mt-3 mb-3 justify-content-end">
+                              <button (click)="addHeaderField('web')" type="button"
+                                class="btn btn-soft-info btn-sm shadow-none"><i
+                                  class="ri-add-fill me-1 align-bottom"></i>
+                                {{'HEADER.SHORTCUTS.ADD_HEADER' | translate}}</button>
+                            </div>
+                          </ng-container>
+                          <ng-container formArrayName="params">
+                            <h5 class="mb-3 mt-3">{{'MENUITEMS.TS.PARAMS' | translate}}</h5>
+                            <div
+                              *ngFor="let key of webParams['controls']; let i = index; let last = last; let first = first"
+                              [formGroupName]="i" class="row">
+                              <div class="mb-3 col-lg-5">
+                                <label for="email_id-field" class="form-label">{{'PLACEHOLDER.KEY' | translate}}</label>
+                                <input type="text" id="email_id-field" class="form-control"
+                                  placeholder="{{'PLACEHOLDER.KEY' | translate}}" formControlName="key" />
+                              </div>
+                              <div class="mb-3 col-lg-5">
+                                <label for="email_id-field" class="form-label">{{'PLACEHOLDER.VALUE' |
+                                  translate}}</label>
+                                <div class="d-flex gap-1">
+                                  <input type="text" id="email_id-field" class="form-control"
+                                    placeholder="{{'PLACEHOLDER.VALUE' | translate}}" formControlName="value" />
+                                  <button *ngIf="webParams?.value?.length > 1" (click)="removeParamField(i, 'web')"
+                                    type="button" class="btn btn-soft-danger btn-sm shadow-none"><i
+                                      class="ri-delete-bin-line me-1 align-bottom"></i>
+                                  </button>
+                                </div>
+                              </div>
+                            </div>
+                            <div class="d-flex mt-3 mb-3 justify-content-end">
+                              <button (click)="addParamField('web')" type="button"
+                                class="btn btn-soft-info btn-sm shadow-none"><i
+                                  class="ri-add-fill me-1 align-bottom"></i>
+                                {{'MODULES.SYSTEM.ADD_PARAM' | translate}}</button>
+                            </div>
+                          </ng-container>
+                          <ng-container formGroupName="paramsConfig">
+                            <h5 class="mb-3 mt-3"> {{'MODULES.SYSTEM.PARAM_KEYS' | translate}}</h5>
+                            <div class="row">
+                              <div class="mb-3 col-lg-6">
+                                <label for="email_id-field" class="form-label"> {{'MODULES.SYSTEM.USER_ID_KEY' |
+                                  translate}}</label>
+                                <input type="text" id="email_id-field" class="form-control"
+                                  placeholder="{{'MODULES.SYSTEM.USER_ID_KEY' | translate}}" formControlName="userId" />
+                              </div>
+                              <div class="mb-3 col-lg-6">
+                                <label for="email_id-field" class="form-label"> {{'MODULES.SYSTEM.PICTURE_KEY' |
+                                  translate}}</label>
+                                <input type="text" id="email_id-field" class="form-control"
+                                  placeholder=" {{'MODULES.SYSTEM.PICTURE_KEY' | translate}}"
+                                  formControlName="picture" />
+                              </div>
+                              <div class="mb-3 col-lg-6">
+                                <label for="email_id-field" class="form-label"> {{'MODULES.SYSTEM.TITLE_KEY' |
+                                  translate}}</label>
+                                <input type="text" id="email_id-field" class="form-control"
+                                  placeholder="{{'MODULES.SYSTEM.TITLE_KEY' | translate}}" formControlName="title" />
+                              </div>
+                              <div class="mb-3 col-lg-6">
+                                <label for="email_id-field" class="form-label"> {{'MODULES.SYSTEM.DESCRIPTION_KEY' |
+                                  translate}}</label>
+                                <input type="text" id="email_id-field" class="form-control"
+                                  placeholder="{{'COMMON.DESCRIPTION' | translate}}" formControlName="description" />
+                              </div>
+                            </div>
+                          </ng-container>
+                        </ng-container>
+                        <ng-container formGroupName="firebase" *ngIf="webProvider.value === 'FIREBASE'">
+                          <div class="row">
+                            <div class="mb-3 col-lg-6">
+                              <label for="email_id-field" class="form-label">Client Id</label>
+                              <input type="text" id="email_id-field" class="form-control" placeholder="Client Id"
+                                formControlName="clientId" />
+                            </div>
+                            <div class="mb-3 col-lg-6">
+                              <label for="email_id-field" class="form-label">Project Id</label>
+                              <input type="text" id="email_id-field" class="form-control" placeholder="Project Id"
+                                formControlName="projectId" />
+                            </div>
+                            <div class="mb-3 col-lg-6">
+                              <label for="email_id-field" class="form-label">Private key</label>
+                              <input type="text" id="email_id-field" class="form-control" placeholder="Private key"
+                                formControlName="privateKey" />
+                            </div>
+                            <div class="mb-3 col-lg-6">
+                              <label for="email_id-field" class="form-label">Client Key</label>
+                              <input type="text" id="email_id-field" class="form-control" placeholder="Client Key"
+                                formControlName="clientEmail" />
+                            </div>
+                            <div class="mb-3 col-lg-6">
+                              <label for="email_id-field" class="form-label">Private key id</label>
+                              <input type="text" id="email_id-field" class="form-control" placeholder="Private key id"
+                                formControlName="privateKeyId" />
+                            </div>
+                            <div class="mb-3 col-lg-6">
+                              <label for="email_id-field" class="form-label"> Client X509 Certificate Url </label>
+                              <input type="text" id="email_id-field" class="form-control"
+                                placeholder="Client X509 Certificate Url" formControlName="clientX509CertUrl" />
+                            </div>
+                          </div>
+                        </ng-container>
+                      </ng-container>
+                    </ng-container>
+                  </form>
+                  <div class="col-lg-12 mt-5">
+                    <div class="d-flex justify-content-end mt-3">
+                      <button (click)="save()" [disabled]="isNotifButtonDisabled || notificationForm.invalid"
+                        type="button" class="btn btn-success">{{'COMMON.SAVE' | translate }}</button>
+                    </div>
+                  </div>
+                </div>
+              </ng-template>
+            </li>
+            <li [ngbNavItem]="2" class="nav-item">
+              <a ngbNavLink class="nav-link" data-bs-toggle="tab" role="tab">
+                <i class="far fa-envelope"></i>{{'MENUITEMS.TS.MOBILE' |translate}}
+              </a>
+              <ng-template ngbNavContent>
+                <div class="col-lg-12">
+                  <form *ngIf="notificationForm" [formGroup]="notificationForm">
+                    <ng-container formGroupName="mobile">
+                      <div class="d-flex justify-content-between mb-3">
+                        <div>
+                          <div for="firstnameInput">{{'MODULES.SYSTEM.ENABLE' | translate }}</div>
+                        </div>
+                        <div class="flex-shrink-0 d-flex fs-18 gap-1">
+                          <div class="form-check form-switch">
+                            <input [checked]="notification?.mobile?.enable"
+                              (change)="onChange($event?.target?.checked, 'mobile', 'enable')" class="form-check-input"
+                              type="checkbox" role="switch" id="flexSwitchCheckDefault">
+                          </div>
+                        </div>
+                      </div>
+
+                      <div class="mb-3 col-lg-6">
+                        <label for="email_id-field" class="form-label"> {{'MODULES.SYSTEM.PROVIDER' | translate}}
+                        </label>
+                        <ng-select [hideSelected]="true" [multiple]="false" [searchable]="true"
+                          formControlName="provider" [items]="providers"
+                          placeholder="{{'MODULES.SYSTEM.PROVIDER' | translate}}">
+                          <ng-template ng-label-tmp let-item="item" let-clear="clear">
+                            <span class="ng-value-label">
+                              {{ item === 'API' ? 'Api' : 'Firebase'}}
+                            </span>
+                            <span class="ng-value-icon right" (click)="clear(item)" aria-hidden="true">×</span>
+                          </ng-template>
+                          <ng-template ng-option-tmp let-item$="item$" let-item="item">
+                            {{ item === 'API' ? 'Api' : 'Firebase'}}
+                          </ng-template>
+                        </ng-select>
+                      </div>
+                      <ng-container formGroupName="settings">
+                        <ng-container *ngIf="mobileProvider.value === 'API'" formGroupName="api">
+                          <div class="row">
+                            <div class="mb-3 col-lg-6">
+                              <label for="email_id-field" class="form-label">{{'HEADER.SHORTCUTS.LINK' |
+                                translate}}</label>
+                              <input type="text" id="email_id-field" class="form-control"
+                                placeholder="{{'HEADER.SHORTCUTS.LINK' | translate}}" formControlName="link" />
+                            </div>
+                            <div class="mb-3 col-lg-6">
+                              <label for="email_id-field" class="form-label"> {{'MODULES.SYSTEM.METHOD' | translate}}
+                              </label>
+                              <ng-select [hideSelected]="true" [multiple]="false" [searchable]="true"
+                                formControlName="method" [items]="methods"
+                                placeholder="{{'MODULES.SYSTEM.METHOD' | translate}}">
+                                <ng-template ng-label-tmp let-item="item" let-clear="clear">
+                                  <span class="ng-value-label">
+                                    {{ (item === 'GET' ? 'SHARED.GET' :
+                                    item === 'POST' ? 'SHARED.POST' :
+                                    item === 'PUT' ? 'SHARED.PUT' :
+                                    item === 'DELETE' ? 'SHARED.DELETE' :
+                                    item === 'PATCH' ? 'SHARED.PATCH' :
+                                    item === 'OPTIONS' ? 'SHARED.OPTIONS' :
+                                    item === 'HEAD' ? 'SHARED.HEAD' : '') | translate}}
+                                  </span>
+                                  <span class="ng-value-icon right" (click)="clear(item)" aria-hidden="true">×</span>
+                                </ng-template>
+                                <ng-template ng-option-tmp let-item$="item$" let-item="item">
+                                  {{ (item === 'GET' ? 'SHARED.GET' :
+                                  item === 'POST' ? 'SHARED.POST' :
+                                  item === 'PUT' ? 'SHARED.PUT' :
+                                  item === 'DELETE' ? 'SHARED.DELETE' :
+                                  item === 'PATCH' ? 'SHARED.PATCH' :
+                                  item === 'OPTIONS' ? 'SHARED.OPTIONS' :
+                                  item === 'HEAD' ? 'SHARED.HEAD' : '') | translate}}
+                                </ng-template>
+                              </ng-select>
+                            </div>
+                          </div>
+                          <ng-container formArrayName="headers">
+                            <h5 class="mb-3 mt-3">{{'MENUITEMS.CUSTOMERENGAGEMENT.CAMPAIGN.HEADERS' | translate}}</h5>
+                            <div
+                              *ngFor="let key of mobileHeaders['controls']; let i = index; let last = last; let first = first"
+                              [formGroupName]="i" class="row">
+                              <div class="mb-3 col-lg-5">
+                                <label for="email_id-field" class="form-label">{{'PLACEHOLDER.KEY' | translate}}</label>
+                                <input type="text" id="email_id-field" class="form-control"
+                                  placeholder="{{'PLACEHOLDER.KEY' | translate}}" formControlName="key" />
+                              </div>
+                              <div class="mb-3 col-lg-5">
+                                <label for="email_id-field" class="form-label">{{'PLACEHOLDER.VALUE' |
+                                  translate}}</label>
+                                <div class="d-flex gap-1">
+                                  <input type="text" id="email_id-field" class="form-control"
+                                    placeholder="{{'PLACEHOLDER.VALUE' | translate}}" formControlName="value" />
+                                  <button *ngIf="mobileHeaders.value?.length > 1"
+                                    (click)="removeHeaderField(i, 'mobile')" type="button"
+                                    class="btn btn-soft-danger btn-sm shadow-none"><i
+                                      class="ri-delete-bin-line me-1 align-bottom"></i>
+                                  </button>
+                                </div>
+                              </div>
+                            </div>
+                            <div class="d-flex mt-3 mb-3 justify-content-end">
+                              <button (click)="addHeaderField('mobile')" type="button"
+                                class="btn btn-soft-info btn-sm shadow-none"><i
+                                  class="ri-add-fill me-1 align-bottom"></i>
+                                {{'HEADER.SHORTCUTS.ADD_HEADER' | translate}}</button>
+                            </div>
+                          </ng-container>
+                          <ng-container formArrayName="params">
+                            <h5 class="mb-3 mt-3">{{'MENUITEMS.TS.PARAMS' | translate}}</h5>
+                            <div
+                              *ngFor="let key of mobileParams['controls']; let i = index; let last = last; let first = first"
+                              [formGroupName]="i" class="row">
+                              <div class="mb-3 col-lg-5">
+                                <label for="email_id-field" class="form-label">{{'PLACEHOLDER.KEY' | translate}}</label>
+                                <input type="text" id="email_id-field" class="form-control"
+                                  placeholder="{{'PLACEHOLDER.KEY' | translate}}" formControlName="key" />
+                              </div>
+                              <div class="mb-3 gap-1 col-lg-5">
+                                <label for="email_id-field" class="form-label">{{'PLACEHOLDER.VALUE' |
+                                  translate}}</label>
+                                <div class="d-flex gap-1">
+                                  <input type="text" id="email_id-field" class="form-control"
+                                    placeholder="{{'PLACEHOLDER.VALUE' | translate}}" formControlName="value" />
+                                  <button *ngIf="mobileParams?.value?.length > 1"
+                                    (click)="removeParamField(i, 'mobile')" type="button"
+                                    class="btn btn-soft-danger btn-sm shadow-none"><i
+                                      class="ri-delete-bin-line me-1 align-bottom"></i>
+                                  </button>
+                                </div>
+                              </div>
+                            </div>
+                            <div class="d-flex mt-3 mb-3 justify-content-end">
+                              <button (click)="addParamField('mobile')" type="button"
+                                class="btn btn-soft-info btn-sm shadow-none"><i
+                                  class="ri-add-fill me-1 align-bottom"></i>
+                                {{'MODULES.SYSTEM.ADD_PARAM' | translate}}</button>
+                            </div>
+                          </ng-container>
+
+                          <ng-container formGroupName="paramsConfig">
+                            <h5 class="mb-3 mt-3">{{'MODULES.SYSTEM.PARAM_KEYS' | translate}}</h5>
+                            <div class="row">
+                              <div class="mb-3 col-lg-6">
+                                <label for="email_id-field" class="form-label">{{'MODULES.SYSTEM.USER_ID_KEY' |
+                                  translate}}</label>
+                                <input type="text" id="email_id-field" class="form-control"
+                                  placeholder="{{'MODULES.SYSTEM.USER_ID_KEY' | translate}}" formControlName="userId" />
+                              </div>
+                              <div class="mb-3 col-lg-6">
+                                <label for="email_id-field" class="form-label">{{'MODULES.SYSTEM.PICTURE_KEY' |
+                                  translate}}</label>
+                                <input type="text" id="email_id-field" class="form-control"
+                                  placeholder="{{'MODULES.SYSTEM.PICTURE_KEY' | translate}}"
+                                  formControlName="picture" />
+                              </div>
+                              <div class="mb-3 col-lg-6">
+                                <label for="email_id-field" class="form-label">{{'MODULES.SYSTEM.TITLE_KEY' |
+                                  translate}}</label>
+                                <input type="text" id="email_id-field" class="form-control"
+                                  placeholder="{{'MODULES.SYSTEM.TITLE_KEY' | translate}}" formControlName="title" />
+                              </div>
+                              <div class="mb-3 col-lg-6">
+                                <label for="email_id-field" class="form-label">{{'MODULES.SYSTEM.DESCRIPTION_KEY' |
+                                  translate}}</label>
+                                <input type="text" id="email_id-field" class="form-control"
+                                  placeholder="{{'COMMON.DESCRIPTION' | translate}}" formControlName="description" />
+                              </div>
+                            </div>
+                          </ng-container>
+                        </ng-container>
+                        <ng-container formGroupName="firebase" *ngIf="mobileProvider.value === 'FIREBASE'">
+                          <div class="row">
+                            <div class="mb-3 col-lg-6">
+                              <label for="email_id-field" class="form-label">Client Id</label>
+                              <input type="text" id="email_id-field" class="form-control" placeholder="Client Id"
+                                formControlName="clientId" />
+                            </div>
+                            <div class="mb-3 col-lg-6">
+                              <label for="email_id-field" class="form-label">Project Id</label>
+                              <input type="text" id="email_id-field" class="form-control" placeholder="Project Id"
+                                formControlName="projectId" />
+                            </div>
+                            <div class="mb-3 col-lg-6">
+                              <label for="email_id-field" class="form-label">Private key</label>
+                              <input type="text" id="email_id-field" class="form-control" placeholder="Private key"
+                                formControlName="privateKey" />
+                            </div>
+                            <div class="mb-3 col-lg-6">
+                              <label for="email_id-field" class="form-label">Client Key</label>
+                              <input type="text" id="email_id-field" class="form-control" placeholder="Client Key"
+                                formControlName="clientEmail" />
+                            </div>
+                            <div class="mb-3 col-lg-6">
+                              <label for="email_id-field" class="form-label">Private key id</label>
+                              <input type="text" id="email_id-field" class="form-control" placeholder="Private key id"
+                                formControlName="privateKeyId" />
+                            </div>
+                            <div class="mb-3 col-lg-6">
+                              <label for="email_id-field" class="form-label"> Client X509 Certificate Url </label>
+                              <input type="text" id="email_id-field" class="form-control"
+                                placeholder="Client X509 Certificate Url" formControlName="clientX509CertUrl" />
+                            </div>
+                          </div>
+                        </ng-container>
+                      </ng-container>
+                    </ng-container>
+                  </form>
+                  <div class="col-lg-12 mt-5">
+                    <div class="d-flex justify-content-end mt-3">
+                      <button (click)="save()" [disabled]="isNotifButtonDisabled || notificationForm.invalid"
+                        type="button" class="btn btn-success">{{'COMMON.SAVE' | translate }}</button>
+                    </div>
+                  </div>
+                </div>
+              </ng-template>
+            </li>
+          </ul>
+        </div>
+        <div class="card-body p-4">
+          <div class="tab-content">
+            <div [ngbNavOutlet]="customNav"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</ng-container>
+<div *ngIf="navigating$ | async" class="vh-100 py-4 text-center" fxLayout="column" fxLayoutAlign="center center"
+  fxLayoutGap="1rem">
+  <div>
+    <lord-icon trigger="loop" style="width:72px;height:72px"
+      [colors]="'primary:' + primaryColor + ',secondary:' + secondaryColor"
+      src="https://cdn.lordicon.com/msoeawqm.json">
+    </lord-icon>
+  </div>
+  <div class="mt-4">
+    <h5>{{'COMMON.LOADING' | translate }}</h5>
+  </div>
+</div>

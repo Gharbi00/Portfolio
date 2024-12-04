@@ -1,0 +1,123 @@
+.elevok-main-content {
+  @media (min-width: 1905px) {
+    flex: 0 0 auto;
+    width: 75%;
+  }
+  @media (max-width: 1905px) and (min-width: 1741px) {
+    flex: 0 0 auto;
+    width: 83.33333333%;
+  }
+  @media (max-width: 1499.98px) {
+    flex: 0 0 auto;
+    width: 100%;
+  }
+  .company-default-icon {
+    font-size: 1.5rem;
+  }
+  table.company-table {
+    th {
+      white-space: nowrap;
+    }
+  }
+  .product-id {
+    width: 126.6px;
+    min-width: 126.6px;
+    max-width: 126.6px;
+    .product-id-value {
+      overflow: hidden;
+      white-space: nowrap;
+      text-overflow: ellipsis;
+    }
+  }
+  .product-name {
+    width: 356.9px;
+    min-width: 356.9px;
+    max-width: 356.9px;
+  }
+  .product-quantity {
+    width: 80.6px;
+    min-width: 80.6px;
+    max-width: 80.6px;
+  }
+  .product-price {
+    width: 161.2px;
+    min-width: 161.2px;
+    max-width: 161.2px;
+  }
+  .product-discount {
+    width: 138.15px;
+    min-width: 138.15px;
+    max-width: 138.15px;
+  }
+  .product-taxes {
+    width: 138.15px;
+    min-width: 138.15px;
+    max-width: 138.15px;
+  }
+  .total-product-price {
+    line-height: 2rem;
+    width: 80.5px;
+    min-width: 80.5px;
+    max-width: 80.5px;
+  }
+  .product-removal {
+    width: 69px;
+    min-width: 69px;
+    max-width: 69px;
+  }
+  .product-description {
+    resize: none;
+  }
+  .delete-icon {
+    color: #f06548;
+    font-size: 1.3125rem;
+  }
+  .input-step input {
+    width: 3rem;
+  }
+  .product-select {
+    min-width: 300px;
+  }
+  .clear-input-button {
+    top: 50%;
+    right: 5px;
+    color: white;
+    border: none;
+    position: absolute;
+    background: transparent;
+    transform: translateY(-50%);
+  }
+  .taxes-select {
+    max-width: 120px;
+  }
+  .input-spinner {
+    width: 16px;
+    height: 16px;
+    font-size: 1px;
+  }
+  .remove-caret::after {
+    display: none !important;
+  }
+  .price-selection-trigger {
+    padding: 4px 10px;
+    > i {
+      font-size: 20px;
+    }
+  }
+  .discount-dropdown {
+    min-width: 65px !important;
+    border-top-left-radius: unset;
+    border-top-right-radius: unset;
+    transform: translate(54px, 37px);
+  }
+}
+.stock-status-wrapper {
+  font-size: 0.6rem;
+  min-width: 3.4375rem;
+}
+.document-title {
+  font-size: 2.5rem;
+  margin-bottom: 1rem;
+  text-transform: uppercase;
+  font-weight: 900 !important;
+}

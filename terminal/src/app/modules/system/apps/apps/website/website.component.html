@@ -1,0 +1,931 @@
+<ng-container *ngIf="!(navigating$ | async)">
+  <div class="position-relative mx-n4 mt-n4">
+    <div class="profile-wid-bg profile-setting-img">
+      <img src="assets/images/profile-bg.jpg" class="profile-wid-img" alt="">
+      <div class="overlay-content">
+        <div class="text-end p-3">
+          <div class="p-0 ms-auto rounded-circle profile-photo-edit">
+            <input id="profile-foreground-img-file-input" type="file" class="profile-foreground-img-file-input">
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-xxl-3">
+      <div class="card mt-n5">
+        <div class="card-body p-4">
+          <div *ngIf="plugin$ | async as plugin" class="text-center">
+            <div class="profile-user position-relative d-inline-block mx-auto mb-4">
+              <div class="avatar-lg mb-3">
+                <div class="avatar-title bg-soft-success fs-24 text-success">
+                  <i [ngClass]="plugin?.icon"></i>
+                </div>
+              </div>
+            </div>
+            <h5 class="fs-16 mb-1">{{plugin?.name}}</h5>
+            <p class="text-muted mb-0">{{plugin?.description}}</p>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="col-xxl-9">
+      <div class="card mt-xxl-n5">
+        <div class="card-header">
+          <ul ngbNav #customNav="ngbNav" [activeId]="1"
+            class="nav nav-tabs-custom rounded card-header-tabs border-bottom-0" role="tablist">
+            <li [ngbNavItem]="1" class="nav-item">
+              <a ngbNavLink class="nav-link" data-bs-toggle="tab" role="tab">
+                <i class="far fa-envelope"></i>
+                {{'MODULES.SYSTEM.MULTI_CURRENCY' | translate }}
+              </a>
+              <ng-template ngbNavContent>
+                <div class="col-lg-12">
+                  <div class="align-items-baseline d-flex justify-content-between mb-3">
+                    <div class="align-items-center d-flex gap-3 mb-3">
+                      <div>
+                        <div for="firstnameInput">{{ 'COMMON.ACTIVE' | translate }}</div>
+                      </div>
+                      <div class="flex-shrink-0 d-flex fs-18 gap-1">
+                        <div class="form-check form-switch">
+                          <input [checked]="website?.multicurrency?.active === true"
+                            (change)="onChangeStatus($event?.target?.checked, 'multicurrency')" class="form-check-input"
+                            type="checkbox" role="switch" id="flexSwitchCheckDefault">
+                        </div>
+                      </div>
+                    </div>
+                    <button (click)="openIntegrationModal(integrationModal, 'currency')"
+                      class="btn btn-info add-btn">{{'MODULES.SYSTEM.ADD_CURRENCY' | translate }} </button>
+                  </div>
+                  <div class="card-body">
+                    <div class="table-responsive table-card mb-2">
+                      <table class="table align-middle table-nowrap">
+                        <thead>
+                          <tr class="bg-light text-muted text-uppercase">
+                            <th scope="col">{{'COMMON.NAME' | translate }}</th>
+                            <th scope="col">{{'COMMON.CODE' | translate }}</th>
+                            <th class="text-center" scope="col">{{'COMMON.ACTIONS' | translate }}</th>
+                          </tr>
+                        </thead>
+                        <tbody *ngIf="website?.multicurrency?.currencies?.length">
+                          <tr *ngFor="let currency of website?.multicurrency?.currencies; let i = index"
+                            id="c_{{currency?.id}}">
+                            <td>{{currency?.currency?.name}}</td>
+                            <td>{{currency?.currency?.code?.length > 10 ?
+                              currency?.currency?.code?.substr(0,10) + '...' : currency?.currency?.code}}</td>
+                            <td>
+                              <div class="d-flex justify-content-center gap-2 align-items-center">
+                                <div class="flex-shrink-0 d-flex fs-18 gap-1">
+                                  <div class="form-check form-switch">
+                                    <input
+                                      [disabled]="currency?.default === false && !onCheckStatus(website?.multicurrency?.currencies, null)"
+                                      [checked]="currency?.default === true"
+                                      (change)="onChangeField($event?.target?.checked, 'multicurrency', i)"
+                                      class="form-check-input" type="checkbox" role="switch"
+                                      id="flexSwitchCheckDefault">
+                                  </div>
+                                </div>
+                                <div>
+                                  <a class="remove-item-btn" data-bs-toggle="modal"
+                                    (click)="openDeleteModal(deleteModal, currency, null)">
+                                    <i class="ri-delete-bin-fill align-bottom text-danger fs-15"></i>
+                                  </a>
+                                </div>
+                              </div>
+                            </td>
+                          </tr>
+                        </tbody>
+                      </table>
+                    </div>
+                    <div id="noresult" class="py-4 mt-4 text-center"
+                      *ngIf="!website?.multicurrency?.currencies?.length">
+                      <lord-icon trigger="loop" style="width:72px;height:72px"
+                        [colors]="'primary:' + primaryColor + ',secondary:' + secondaryColor"
+                        src="https://cdn.lordicon.com/vlycxjwx.json">
+                      </lord-icon>
+                      <h5 class="mt-4">{{
+                        'COMMON.NO_RESULT' | translate }}</h5>
+                    </div>
+
+                  </div>
+                </div>
+              </ng-template>
+            </li>
+            <li [ngbNavItem]="2" class="nav-item">
+              <a ngbNavLink class="nav-link" data-bs-toggle="tab" role="tab">
+                <i class="far fa-envelope"></i>
+                {{'MODULES.SYSTEM.MULTI_LANGUAGE' | translate }}
+              </a>
+              <ng-template ngbNavContent>
+                <div class="col-lg-12">
+                  <div class="align-items-baseline d-flex justify-content-between mb-3">
+                    <div class="align-items-center d-flex gap-3 mb-3">
+                      <div>
+                        <div for="firstnameInput">{{ 'COMMON.ACTIVE' | translate }}</div>
+                      </div>
+                      <div class="flex-shrink-0 d-flex fs-18 gap-1">
+                        <div class="form-check form-switch">
+                          <input [checked]="website?.multilanguage?.active === true"
+                            (change)="onChangeStatus($event?.target?.checked, 'multilanguage')" class="form-check-input"
+                            type="checkbox" role="switch" id="flexSwitchCheckDefault">
+                        </div>
+                      </div>
+                    </div>
+                    <button (click)="openIntegrationModal(integrationModal, 'language')"
+                      class="btn btn-info add-btn">{{'MODULES.SYSTEM.ADD_LANGUAGE' | translate }} </button>
+                  </div>
+                  <div class="card-body">
+                    <div class="table-responsive table-card mb-2">
+                      <table class="table align-middle table-nowrap">
+                        <thead>
+                          <tr class="bg-light text-muted text-uppercase">
+                            <th scope="col">{{'COMMON.NAME' | translate }}</th>
+                            <th scope="col">{{'COMMON.CODE' | translate }}</th>
+                            <th class="text-center">{{'COMMON.ACTIONS' | translate }}</th>
+                          </tr>
+                        </thead>
+                        <tbody *ngIf="website?.multilanguage?.languages?.length">
+                          <tr *ngFor="let language of website?.multilanguage?.languages; let i = index"
+                            id="c_{{language?.id}}">
+                            <td>{{language?.language?.name}}</td>
+                            <td>{{language?.language?.code?.length > 10 ?
+                              language?.language?.code?.substr(0,10) + '...' : language?.language?.code}}</td>
+                            <td>
+                              <div class="align-items-center d-flex gap-2 justify-content-center">
+                                <div class="flex-shrink-0 d-flex fs-18 gap-1">
+                                  <div class="form-check form-switch">
+                                    <input
+                                      [disabled]="language?.default === false && !onCheckStatus(null, website?.multilanguage?.languages)"
+                                      [checked]="language?.default === true"
+                                      (change)="onChangeField($event?.target?.checked, 'multilanguage', i)"
+                                      class="form-check-input" type="checkbox" role="switch"
+                                      id="flexSwitchCheckDefault">
+                                  </div>
+                                </div>
+                                <div>
+                                  <a class="remove-item-btn" data-bs-toggle="modal"
+                                    (click)="openDeleteModal(deleteModal,null, language)">
+                                    <i class="ri-delete-bin-fill align-bottom text-danger fs-15"></i>
+                                  </a>
+                                </div>
+                              </div>
+                            </td>
+                          </tr>
+                        </tbody>
+                      </table>
+                    </div>
+                    <div id="noresult" class="py-4 mt-4 text-center" *ngIf="!website?.multilanguage?.languages?.length">
+                      <lord-icon trigger="loop" style="width:72px;height:72px"
+                        [colors]="'primary:' + primaryColor + ',secondary:' + secondaryColor"
+                        src="https://cdn.lordicon.com/vlycxjwx.json">
+                      </lord-icon>
+                      <h5 class="mt-4">{{
+                        'COMMON.NO_RESULT' | translate }}</h5>
+                    </div>
+                  </div>
+                </div>
+              </ng-template>
+            </li>
+            <li [ngbNavItem]="3" class="nav-item">
+              <a ngbNavLink class="nav-link" data-bs-toggle="tab" role="tab">
+                <i class="far fa-envelope"></i>
+                Email
+              </a>
+              <ng-template ngbNavContent>
+                <ng-container
+                  *ngIf="((loadingEmails$ | async) === false || null || undefined) && (emails$ | async)?.length">
+                  <div *ngIf="website?.multilanguage?.active === true && website?.multilanguage?.languages?.length"
+                    class="card" id="ticketsList">
+                    <div class="card-header border-0">
+                      <form [formGroup]="emailForm">
+                        <div formGroupName="translation" class="row">
+                          <h5 class="card-title col-lg-4 flex-grow-1">{{'COMMON.LANGUAGE' | translate }}</h5>
+                          <ng-select (change)="onChangeEmailLanguage($event)" class="col-lg-8" [closeOnSelect]="true"
+                            [multiple]="false" [items]="allLanguages" formControlName="language"
+                            placeholder="{{'PLACEHOLDER.SELECT_LANGUAGE' | translate }}" bindLabel="name"
+                            [searchable]="false" [clearable]="false">
+                            <ng-template ng-label-tmp let-item="item" let-clear="clear">
+                              <div class="d-flex gap-1">
+                                <span *ngIf="item !== 'Default'">{{item?.iconFlag}}</span>
+                                <span>{{item === 'Default' ? item : item?.name}}</span>
+                              </div>
+                            </ng-template>
+                            <ng-template ng-option-tmp let-item$="item$" let-item="item">
+                              <div class="d-flex gap-1">
+                                <span *ngIf="item !== 'Default'">{{item?.iconFlag}}</span>
+                                <span>{{item === 'Default' ? item : item?.name}}</span>
+                              </div>
+                            </ng-template>
+                          </ng-select>
+                        </div>
+                      </form>
+                    </div>
+                  </div>
+                  <div *ngIf="(emails$ | async)?.length" class="card d-flex flex-column flex-root" id="kt_app_root">
+                    <div class="d-flex card-body flex-column flex-column-fluid">
+                      <div
+                        class="d-flex flex-column-auto justify-content-cenrer align-items-start gap-2 gap-lg-4 py-4 px-10 overflow-auto"
+                        id="kt_app_header_nav">
+                        <a class="flex-grow-1 mt-2">
+                          <i *ngIf="pageIndex > 0" (click)="previewsPage()" class="ri-arrow-left-line text-muted fs-2">
+                          </i>
+                        </a>
+                        <ul
+                          class="nav nav-stretch nav-line-tabs nav-line-tabs-2x border-transparent fs-5 d-flex fw-bold">
+                          <li (click)="selectTemplate(email)" *ngFor="let email of emails; let i = index"
+                            class="nav-item mt-2">
+                            <a [ngClass]="{'active bg-light border border-2': selectedEmail?.id === email?.id}"
+                              class="btn btn-icon flex-column btn-text-gray-500 btn-icon-gray-300 btn-active-text-gray-700 btn-active-icon-gray-500 rounded-3 h-90px w-90px fw-semibold">
+                              <i [ngClass]="{
+                                  'ri-home-5-fill': email?.name === 'WELCOME_USER',
+                                  'ri-mail-check-line': email?.name === 'VALIDATE_EMAIL',
+                                  'ri-lock-fill': email?.name === 'FORGOT_PASSWORD',
+                                  'ri-file-list-3-line': email?.name === 'CONTACT_REQUEST',
+                                  'ri-account-box-line': email?.name === 'LINK_ACCOUNT'
+                                }" [ngStyle]="{
+                                  'color': email?.name === 'WELCOME_USER' ? '#FF5733' :
+                                           email?.name === 'VALIDATE_EMAIL' ? '#FFDA33' :
+                                           email?.name === 'FORGOT_PASSWORD' ? '#CEFF33' :
+                                           email?.name === 'CONTACT_REQUEST' ? '#33FF86' :
+                                           email?.name === 'LINK_ACCOUNT' ? '#1ddb9f' : ''
+                                }" class="fs-3"></i>
+                              <span class="fs-8 text-muted fw-bold">
+                                {{
+                                email?.name === 'WELCOME_USER' ? 'Welcome User' :
+                                email?.name === 'VALIDATE_EMAIL' ? 'Validate Email' :
+                                email?.name === 'FORGOT_PASSWORD' ? 'Forgot Password' :
+                                email?.name === 'CONTACT_REQUEST' ? 'Contact Request' :
+                                email?.name === 'LINK_ACCOUNT' ? 'Link Account' :
+                                ''
+                                }}</span>
+                            </a>
+                          </li>
+                          <li (click)="openEmailModal(emailModal, null)" class="nav-item mt-2">
+                            <a [ngClass]="{'active bg-light border border-2': selectedEmail?.id === email?.id}"
+                              class="btn btn-icon max-h-105px flex-column btn-text-gray-500 btn-icon-gray-300 btn-active-text-gray-700 btn-active-icon-gray-500 rounded-3 h-60px w-90px h-90px fw-semibold">
+                              <i class="ri-add-line fs-3 text-muted"></i>
+                              <span class="fs-8 text-muted fw-bold">{{'MODULES.SYSTEM.CREATE_EMAIL_TEMPLATE' | translate
+                                }}
+                              </span>
+                            </a>
+                          </li>
+                        </ul>
+                        <a class="flex-grow-1 text-end mt-2">
+                          <i *ngIf="!(isLast$ | async)" (click)="nextPage()"
+                            class="ri-arrow-right-line text-muted fs-2">
+                          </i>
+                        </a>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="tab-content" id="myTabContent">
+                    <div class="d-flex justify-content-end align-items-center gap-2 me-4 mb-5">
+                      <div class="form-check form-switch form-switch-right form-switch-md">
+                        <label for="navbarscrollspy-showcode" class="form-label text-muted">{{'MODULES.SYSTEM.SHOW_CODE'
+                          | translate }}</label>
+                        <input [checked]="false" class="form-check-input code-switcher" type="checkbox"
+                          id="navbarscrollspy-showcode" (change)="onShowCode($event?.target?.checked)">
+                      </div>
+                      <button (click)="openDeleteEmailModal(emaildeleteModal, selectedEmail)"
+                        class="btn btn-danger">{{'COMMON.DELETE' | translate }}
+                      </button>
+                    </div>
+                    <div *ngIf="!isVisibleCode" [innerHTML]="sanitizedHtml"></div>
+
+                    <div *ngIf="isVisibleCode" class="d-flex justify-content-center">
+                      <form [formGroup]="emailForm">
+                        <div class="card w-600">
+                          <div
+                            *ngIf="!translation?.get('language').value || translation?.get('language').value?.name === 'Default'"
+                            class="card-body">
+                            <div class="live-preview">
+                              <div class="p-4 row">
+                                <textarea formControlName="content" class="form-control" id="exampleFormControlTextarea"
+                                  placeholder="{{'PLACEHOLDER.ENTER_YOUR_DESCRIPTION' | translate }}"
+                                  rows="20"></textarea>
+                              </div>
+                            </div>
+                            <div class="hstack gap-2 justify-content-end mt-3">
+                              <button [disabled]="isEmailButtonDisabled || emailForm.invalid" type="button"
+                                class="btn btn-primary" (click)="saveEmail()">{{(selectedEmail ? 'COMMON.SAVE' :
+                                'COMMON.CREATE') | translate}}</button>
+                            </div>
+                          </div>
+                          <div
+                            *ngIf="translation?.get('language').value && this.translation?.get('language').value?.name !== 'Default'"
+                            class="card-body">
+                            <div formGroupName="translation" class="live-preview">
+                              <div class="p-4 row">
+                                <textarea formControlName="content" class="form-control" id="exampleFormControlTextarea"
+                                  placeholder="{{'PLACEHOLDER.ENTER_YOUR_DESCRIPTION' | translate }}"
+                                  rows="20">
+                                </textarea>
+                              </div>
+                            </div>
+                            <div class="hstack gap-2 justify-content-end mt-3">
+                              <button [disabled]="isEmailButtonDisabled || emailForm.invalid" type="button"
+                                class="btn btn-primary" (click)="saveEmail()">{{(selectedEmail ? 'COMMON.SAVE'
+                                :'COMMON.CREATE') | translate}}</button>
+                            </div>
+                          </div>
+                        </div>
+                      </form>
+                    </div>
+                  </div>
+                </ng-container>
+                <div *ngIf="!(emails$ | async)?.length" class="d-flex justify-content-center">
+                  <ul class="nav nav-stretch nav-line-tabs nav-line-tabs-2x border-transparent fs-5 d-flex fw-bold">
+                    <li (click)="openEmailModal(emailModal, null)" class="nav-item mt-2">
+                      <a [ngClass]="{'active bg-light border border-2': selectedEmail?.id === email?.id}"
+                        class="btn btn-icon max-h-105px flex-column btn-text-gray-500 btn-icon-gray-300 btn-active-text-gray-700 btn-active-icon-gray-500 rounded-3 h-60px w-90px h-90px fw-semibold">
+                        <i class="ri-add-line fs-3 text-muted"></i>
+                        <span class="fs-8 text-muted fw-bold">
+                          {{'SHARED.CREATE_EMAIL_TEMPLATE' | translate }}
+                        </span>
+                      </a>
+                    </li>
+                  </ul>
+                </div>
+
+                <div id="noresult" class="py-4 mt-4 text-center"
+                  *ngIf="(loadingEmails$ | async) || (!(loadingEmails$ | async) && !(emails$ | async)?.length)">
+                  <div *ngIf="loadingEmails$ | async">
+                    <lord-icon trigger="loop" style="width:72px;height:72px"
+                      [colors]="'primary:' + primaryColor + ',secondary:' + secondaryColor"
+                      src="https://cdn.lordicon.com/msoeawqm.json">
+                    </lord-icon>
+                    <h5 class="mt-4">{{'COMMON.LOADING' | translate }}</h5>
+                  </div>
+                  <div *ngIf="!(loadingEmails$ | async) && !(emails$ | async)?.length">
+                    <lord-icon trigger="loop" style="width:72px;height:72px"
+                      [colors]="'primary:' + primaryColor + ',secondary:' + secondaryColor"
+                      src="https://cdn.lordicon.com/vlycxjwx.json">
+                    </lord-icon>
+                    <h5 class="mt-4">{{ 'COMMON.NO_RESULT' | translate }}</h5>
+                  </div>
+                </div>
+                <ng-template #emailModal role="document" let-modal>
+                  <div class="modal-body">
+                    <form [formGroup]="emailForm">
+                      <div class="mb-3">
+                        <label for="name" class="col-sm-4 col-form-label">{{'COMMON.NAME' | translate }}</label>
+                        <ng-select required [selectableGroup]="true" [closeOnSelect]="true"
+                          placeholder="{{'PLACEHOLDER.ENTER_NAME' | translate }}" formControlName="name"
+                          [multiple]="false" [items]="filteredEmailNames" [clearable]="false">
+                          <ng-template ng-label-tmp let-item="item" let-clear="clear">
+                            {{
+                            (item === 'WELCOME_USER' ? 'MODULES.SYSTEM.SHARED.WELCOME_USER' :
+                            item === 'VALIDATE_EMAIL' ? 'MODULES.SYSTEM.SHARED.VALIDATE_EMAIL' :
+                            item === 'FORGOT_PASSWORD' ? 'MODULES.SYSTEM.SHARED.FORGOT_PASSWORD' :
+                            item === 'CONTACT_REQUEST' ? 'MODULES.SYSTEM.SHARED.CONTACT_REQUEST' :
+                            item === 'LINK_ACCOUNT' ? 'MODULES.SYSTEM.SHARED.LINK_ACCOUNT' :
+                            '') | translate
+                            }}
+                          </ng-template>
+                          <ng-template ng-option-tmp let-item$="item$" let-item="item">
+                            {{
+                            (item === 'WELCOME_USER' ? 'MODULES.SYSTEM.SHARED.WELCOME_USER' :
+                            item === 'VALIDATE_EMAIL' ? 'MODULES.SYSTEM.SHARED.VALIDATE_EMAIL' :
+                            item === 'FORGOT_PASSWORD' ? 'MODULES.SYSTEM.SHARED.FORGOT_PASSWORD' :
+                            item === 'CONTACT_REQUEST' ? 'MODULES.SYSTEM.SHARED.CONTACT_REQUEST' :
+                            item === 'LINK_ACCOUNT' ? 'MODULES.SYSTEM.SHARED.LINK_ACCOUNT' :
+                            '') | translate
+                            }}
+                          </ng-template>
+                        </ng-select>
+                      </div>
+                      <div class="mb-3">
+                        <label for="name" class="col-sm-4 col-form-label">{{'MODULES.INVENTORY.CONTENT' | translate
+                          }}</label>
+                        <textarea class="form-control" id="checkout-mess" cols="30" rows="10" formControlName="content"
+                          placeholder="{{'PLACEHOLDER.ENTER_CONTENT' | translate }}"></textarea>
+                      </div>
+                      <div class="hstack gap-2 justify-content-end mt-8">
+                        <button type="button" class="btn btn-light" data-bs-dismiss="modal"
+                          (click)="modal.close('close click')">{{'COMMON.CLOSE' | translate }}</button>
+                        <button [disabled]="isEmailButtonDisabled || emailForm.invalid" type="button"
+                          class="btn btn-primary" (click)="saveEmail()">{{selectedEmail ? 'COMMON.EDIT' :
+                          'COMMON.CREATE' | translate}}</button>
+                      </div>
+                    </form>
+                  </div>
+                </ng-template>
+
+                <ng-template #emaildeleteModal let-modal>
+                  <div class="modal-content">
+                    <div class="modal-header">
+                      <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" id="btn-close"
+                        (click)="modal.dismiss('Cross click')"></button>
+                    </div>
+                    <div class="modal-body">
+                      <div class="mt-2 text-center">
+                        <lord-icon src="https://cdn.lordicon.com/gsqxdxog.json" trigger="loop"
+                          colors="primary:#f7b84b,secondary:#f06548" style="width:100px;height:100px"></lord-icon>
+                        <div class="mt-4 pt-2 fs-15 mx-4 mx-sm-5">
+                          <h4>{{'COMMON.ARE_YOU_SURE' | translate }}</h4>
+                          <p class="text-muted mx-4 mb-0">{{'MODULES.SYSTEM.REMOVE_EMAIL_TEMPLATE' | translate }}</p>
+                        </div>
+                      </div>
+                      <div class="d-flex gap-2 justify-content-center mt-4 mb-2">
+                        <button type="button" class="btn w-sm btn-light" data-bs-dismiss="modal"
+                          (click)="modal.close('Close click')">{{'COMMON.CLOSE' | translate }}</button>
+                        <button type="button" class="btn w-sm btn-danger" id="delete-product"
+                          (click)="deleteCorporateEmailTemplate()">{{'COMMON.YES_DELETE_IT' | translate }}</button>
+                      </div>
+                    </div>
+                  </div>
+                </ng-template>
+              </ng-template>
+            </li>
+            <li [ngbNavItem]="4" class="nav-item">
+              <a ngbNavLink class="nav-link" data-bs-toggle="tab" role="tab">
+                <i class="far fa-envelope"></i>
+                SEO
+              </a>
+              <ng-template ngbNavContent>
+                <div class="row">
+                  <div class="col-lg-12">
+                    <div class="card">
+                      <div class="card-body">
+                        <div class="live-preview">
+                          <form [formGroup]="seoForm">
+                            <div class="row g-3">
+                              <div class="col-lg-6 mb-3">
+                                <div class="form-label">
+                                  <label for="firstnamefloatingInput">{{'COMMON.TITLE' | translate }} Tag</label>
+                                  <input formControlName="titleTag" type="text" class="form-control"
+                                    id="firstnamefloatingInput"
+                                    placeholder="{{'PLACEHOLDER.ENTER_TITLE_TAG' | translate }}">
+                                </div>
+                              </div>
+                              <div class="mb-3 col-lg-6">
+                                <label for="firstnameInput" class="form-label">{{'MODULES.INVENTORY.META_DESCRIPTION' |
+                                  translate }}</label>
+                                <textarea class="form-control" id="description-field" rows="3"
+                                  placeholder="{{'PLACEHOLDER.ENTER_META_DESCRIPTION' | translate }}"
+                                  formControlName="metaDescriptionTag"></textarea>
+                              </div>
+                            </div>
+
+                            <div class="mt-4">
+                              <h4 class="mb-4 flex-grow-1">{{'MENUITEMS.CUSTOMERENGAGEMENT.CAMPAIGN.HEADERS' | translate
+                                }} tags</h4>
+                              <ng-container formArrayName="headerTags">
+                                <div class="row"
+                                  *ngFor="let tag of seoForm.get('headerTags')['controls']; let j=index; let last = last, let first = first;"
+                                  [formGroupName]="j">
+                                  <div class="mb-3 col-lg-6">
+                                    <label for="firstnameInput" class="form-label">{{'COMMON.NAME' | translate
+                                      }}</label>
+                                    <input formControlName="name" type="text" class="form-control" id="firstnameInput"
+                                      placeholder="{{'PLACEHOLDER.ENTER_TAG_NAME' | translate }}">
+                                  </div>
+                                  <div class="mb-3 col-lg-6">
+                                    <label for="firstnameInput" class="form-label">{{'MODULES.INVENTORY.CONTENT' |
+                                      translate }}</label>
+                                    <textarea class="form-control" id="description-field" rows="3"
+                                      placeholder="{{'PLACEHOLDER.ENTER_TAG_CONTENT' | translate }}"
+                                      formControlName="content"></textarea>
+                                  </div>
+                                  <div class="col-lg-12">
+                                    <div class="hstack justify-content-end gap-2 mt-4 mb-4">
+                                      <button type="button" (click)="deleteTag(j)" class="btn btn-danger"><i
+                                          class="ri-delete-bin-fill align-bottom"></i>{{'COMMON.DELETE' | translate
+                                        }}</button>
+                                      <button *ngIf="last" (click)="newTag()" type="button"
+                                        class="btn btn-primary add-btn" id="create-btn"><i
+                                          class="ri-add-line align-bottom me-1"></i>{{'MENUITEMS.CUSTOMERENGAGEMENT.CAMPAIGN.HEADERS'
+                                        | translate }}
+                                        {{'COMMON.TAG' | translate }}</button>
+                                    </div>
+                                  </div>
+                                </div>
+                              </ng-container>
+                            </div>
+                            <div class="col-lg-12">
+                              <div class="justify-content-end d-flex">
+                                <button (click)="saveSeo()" [disabled]="isSeoButtonDisabled || seoForm.invalid"
+                                  type="button" class="btn btn-success">{{'COMMON.SAVE' | translate }}</button>
+                              </div>
+                            </div>
+                          </form>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </ng-template>
+            </li>
+            <li [ngbNavItem]="5" class="nav-item">
+              <a ngbNavLink class="nav-link" data-bs-toggle="tab" role="tab">
+                <i class="far fa-envelope"></i>
+                Files
+              </a>
+              <ng-template ngbNavContent>
+                <ng-container *ngIf="(templates$ | async)?.length">
+                  <div *ngIf="(templates$ | async)?.length" class="card d-flex flex-column flex-root" id="kt_app_root">
+                    <div class="d-flex card-body flex-column flex-column-fluid">
+                      <div
+                        class="d-flex flex-column-auto justify-content-center align-items-start gap-2 gap-lg-4 py-4 px-10 overflow-auto"
+                        id="kt_app_header_nav">
+                        <ul
+                          class="nav nav-stretch nav-line-tabs nav-line-tabs-2x border-transparent fs-5 d-flex fw-bold">
+                          <li [ngClass]="{'active bg-light border border-2': selectedFileTemplate?.id === template?.id}"
+                            (click)="selectFileTemplate(template)"
+                            *ngFor="let template of templates$ | async; let i = index" class="nav-item mt-2">
+                            <a
+                              class="btn btn-icon flex-column btn-text-gray-500 btn-icon-gray-300 btn-active-text-gray-700 btn-active-icon-gray-500 rounded-3 h-90px w-90px fw-semibold">
+                              <i [ngClass]="{
+                                'ri-apple-fill': template?.name === 'WELL_KNOWN_APPLE',
+                                'ri-android-fill': template?.name === 'WELL_KNOWN_ANDROID',
+                                'ri-home-5-fill': template?.name === 'ROBOTS',
+                                'ri-mail-check-line': template?.name === 'BROWSER_CONFIG',
+                                'ri-lock-fill': template?.name === 'FORGOT_PASSWORD',
+                                'ri-shield-check-fill': template?.name === 'WEB_MANIFEST',
+                                'ri-file-list-3-line': template?.name === 'SITE_MAP',
+                                'ri-file-3-fill': template?.name === 'ADS'
+                              }" [ngStyle]="{
+                                'color': template?.name === 'ROBOTS' ? '#FF5733' :
+                                         template?.name === 'WELL_KNOWN_ANDROID' ? '#0047fa' :
+                                         template?.name === 'WELL_KNOWN_APPLE' ? '#7300ff' :
+                                         template?.name === 'BROWSER_CONFIG' ? '#FFDA33' :
+                                         template?.name === 'FORGOT_PASSWORD' ? '#CEFF33' :
+                                         template?.name === 'WEB_MANIFEST' ? '#83FF33' :
+                                         template?.name === 'SITE_MAP' ? '#33FF86' :
+                                         template?.name === 'ADS' ? '#33FFD1' : ''
+                              }" class="fs-3"></i>
+                              <span class="fs-8 text-muted fw-bold">
+                                {{
+                                (template?.name === 'ROBOTS' ? 'SHARED.ROBOTS' :
+                                template?.name === 'WELL_KNOWN_APPLE' ? 'SHARED.WELL_KNOWN_APPLE' :
+                                template?.name === 'WELL_KNOWN_ANDROID' ? 'SHARED.WELL_KNOWN_ANDROID' :
+                                template?.name === 'BROWSER_CONFIG' ? 'SHARED.BROWSER_CONFIG' :
+                                template?.name === 'FORGOT_PASSWORD' ? 'SHARED.FORGOT_PASSWORD' :
+                                template?.name === 'WEB_MANIFEST' ? 'SHARED.WEB_MANIFEST' :
+                                template?.name === 'CONTACT_REQUEST' ? 'SHARED.CONTACT_REQUEST' :
+                                template?.name === 'LINK_ACCOUNT' ? 'MODULES.SYSTEM.SHARED.LINK_ACCOUNT' :
+                                template?.name === 'SITE_MAP' ? 'SHARED.SITE_MAP' :
+                                template?.name === 'ADS' ? 'SHARED.ADS' :
+                                '') | translate
+                                }}</span>
+                            </a>
+                          </li>
+                          <li *ngIf="(templates$ | async)?.length < 5" (click)="openFileTemplateModal(templateModal)"
+                            class="nav-item mt-2">
+                            <a [ngClass]="{'active bg-light border border-2': selectedFileTemplate?.id === template?.id}"
+                              class="btn btn-icon max-h-105px flex-column btn-text-gray-500 btn-icon-gray-300 btn-active-text-gray-700 btn-active-icon-gray-500 rounded-3 h-60px w-90px h-90px fw-semibold">
+                              <i class="ri-add-line fs-3 text-muted"></i>
+                              <span class="fs-8 text-muted fw-bold">{{'MODULES.SYSTEM.CREATE_FILE_TEMPLATE' | translate
+                                }}
+                              </span>
+                            </a>
+                          </li>
+                        </ul>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="tab-content" id="myTabContent">
+                    <div class="d-flex justify-content-end align-items-center gap-2 me-4">
+                      <button (click)="openDeleteModal(deleteTemplateModal, selectedFileTemplate)"
+                        class="btn btn-danger">{{'COMMON.DELETE' | translate }}
+                      </button>
+                      <button *ngIf="templateForm.get('name').value === 'SITE_MAP'" (click)="generateEcomSitemapXml()"
+                        class="btn btn-sm btn-primary">
+                        <i class="ri-refresh-line fs-17"></i>
+                      </button>
+                    </div>
+
+                    <div class="d-flex justify-content-center">
+                      <form [formGroup]="templateForm">
+                        <div class="card w-600">
+                          <div class="card-body">
+                            <div class="live-preview">
+                              <div class="p-4 row">
+                                <textarea formControlName="content" class="form-control" id="exampleFormControlTextarea"
+                                  placeholder="{{'PLACEHOLDER.ENTER_YOUR_DESCRIPTION' | translate }}"
+                                  rows="20"></textarea>
+                              </div>
+                            </div>
+                            <div class="hstack gap-2 justify-content-end mt-3">
+                              <button [disabled]="isTemplateButtonDisabled || templateForm.invalid" type="button"
+                                class="btn btn-primary" (click)="saveTemplate()">{{(selectedFileTemplate ? 'COMMON.SAVE'
+                                :'COMMON.CREATE') | translate}}</button>
+                            </div>
+                          </div>
+                        </div>
+                      </form>
+                    </div>
+                  </div>
+                </ng-container>
+
+                <div *ngIf="!(templates$ | async)?.length" class="d-flex justify-content-center">
+                  <ul class="nav nav-stretch nav-line-tabs nav-line-tabs-2x border-transparent fs-5 d-flex fw-bold">
+                    <li (click)="openFileTemplateModal(templateModal)" class="nav-item mt-2">
+                      <a [ngClass]="{'active bg-light border border-2': selectedFileTemplate?.id === template?.id}"
+                        class="btn btn-icon max-h-105px flex-column btn-text-gray-500 btn-icon-gray-300 btn-active-text-gray-700 btn-active-icon-gray-500 rounded-3 h-60px w-90px h-90px fw-semibold">
+                        <i class="ri-add-line fs-3 text-muted"></i>
+                        <span class="fs-8 text-muted fw-bold">{{'MODULES.SYSTEM.CREATE_FILE_TEMPLATE' | translate }}
+                        </span>
+                      </a>
+                    </li>
+                  </ul>
+                </div>
+
+                <ng-template #templateModal role="document" let-modal>
+                  <div class="modal-body">
+                    <form [formGroup]="templateForm">
+                      <div class="mb-3">
+                        <label for="name" class="col-sm-4 col-form-label">{{'COMMON.NAME' | translate }}</label>
+                        <ng-select required [selectableGroup]="true" [closeOnSelect]="true"
+                          placeholder="{{'PLACEHOLDER.ENTER_NAME' | translate }}" formControlName="name"
+                          [multiple]="false" [items]="filteredTemplates" [clearable]="false">
+                          <ng-template ng-label-tmp let-item="item" let-clear="clear">
+                            {{
+                            (item === 'ROBOTS' ? 'SHARED.ROBOTS' :
+                            item === 'WELL_KNOWN_APPLE' ? 'SHARED.WELL_KNOWN_APPLE' :
+                            item === 'WELL_KNOWN_ANDROID' ? 'SHARED.WELL_KNOWN_ANDROID' :
+                            item === 'BROWSER_CONFIG' ? 'SHARED.BROWSER_CONFIG' :
+                            item === 'FORGOT_PASSWORD' ? 'SHARED.FORGOT_PASSWORD' :
+                            item === 'WEB_MANIFEST' ? 'SHARED.WEB_MANIFEST' :
+                            item === 'CONTACT_REQUEST' ? 'SHARED.CONTACT_REQUEST' :
+                            item === 'LINK_ACCOUNT' ? 'MODULES.SYSTEM.SHARED.LINK_ACCOUNT' :
+                            item === 'SITE_MAP' ? 'SHARED.SITE_MAP' :
+                            item === 'ADS' ? 'SHARED.ADS' :
+                            '') | translate
+                            }}
+                          </ng-template>
+                          <ng-template ng-option-tmp let-item$="item$" let-item="item">
+                            {{
+                            (item === 'ROBOTS' ? 'SHARED.ROBOTS' :
+                            item === 'WELL_KNOWN_APPLE' ? 'SHARED.WELL_KNOWN_APPLE' :
+                            item === 'WELL_KNOWN_ANDROID' ? 'SHARED.WELL_KNOWN_ANDROID' :
+                            item === 'BROWSER_CONFIG' ? 'SHARED.BROWSER_CONFIG' :
+                            item === 'FORGOT_PASSWORD' ? 'SHARED.FORGOT_PASSWORD' :
+                            item === 'WEB_MANIFEST' ? 'SHARED.WEB_MANIFEST' :
+                            item === 'CONTACT_REQUEST' ? 'SHARED.CONTACT_REQUEST' :
+                            item === 'LINK_ACCOUNT' ? 'MODULES.SYSTEM.SHARED.LINK_ACCOUNT' :
+                            item === 'SITE_MAP' ? 'SHARED.SITE_MAP' :
+                            item === 'ADS' ? 'SHARED.ADS' :
+                            '') | translate
+                            }}
+                          </ng-template>
+                        </ng-select>
+                      </div>
+                      <div class="mb-3">
+                        <label for="name" class="col-sm-4 col-form-label">{{'MODULES.INVENTORY.CONTENT' | translate
+                          }}</label>
+                        <textarea class="form-control" id="checkout-mess" cols="30" rows="10" formControlName="content"
+                          placeholder="{{'PLACEHOLDER.ENTER_CONTENT' | translate }}"></textarea>
+                      </div>
+                      <div class="hstack gap-2 justify-content-end mt-8">
+                        <button type="button" class="btn btn-light" data-bs-dismiss="modal"
+                          (click)="modal.close('close click')">{{'COMMON.CLOSE' | translate }}</button>
+                        <button [disabled]="isTemplateButtonDisabled || templateForm.invalid" type="button"
+                          class="btn btn-primary" (click)="saveTemplate()">{{(selectedFileTemplate ? 'COMMON.SAVE' :
+                          'COMMON.CREATE') | translate }}</button>
+                      </div>
+                    </form>
+                  </div>
+                </ng-template>
+
+                <ng-template #deleteTemplateModal let-modal>
+                  <div class="modal-content">
+                    <div class="modal-header">
+                      <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" id="btn-close"
+                        (click)="modal.dismiss('Cross click')"></button>
+                    </div>
+                    <div class="modal-body">
+                      <div class="mt-2 text-center">
+                        <lord-icon src="https://cdn.lordicon.com/gsqxdxog.json" trigger="loop"
+                          colors="primary:#f7b84b,secondary:#f06548" style="width:100px;height:100px"></lord-icon>
+                        <div class="mt-4 pt-2 fs-15 mx-4 mx-sm-5">
+                          <h4>{{'COMMON.ARE_YOU_SURE' | translate }}</h4>
+                          <p class="text-muted mx-4 mb-0">{{'MODULES.SYSTEM.REMOVE_FILE_TEMPLATE' | translate }}</p>
+                        </div>
+                      </div>
+                      <div class="d-flex gap-2 justify-content-center mt-4 mb-2">
+                        <button type="button" class="btn w-sm btn-light" data-bs-dismiss="modal"
+                          (click)="modal.close('Close click')">{{'COMMON.CLOSE' | translate }}</button>
+                        <button type="button" class="btn w-sm btn-danger" id="delete-product"
+                          (click)="deleteFileCorporateTemplate()">{{'COMMON.YES_DELETE_IT' | translate }}</button>
+                      </div>
+                    </div>
+                  </div>
+                </ng-template>
+              </ng-template>
+            </li>
+            <li [ngbNavItem]="6" class="nav-item">
+              <a ngbNavLink class="nav-link" data-bs-toggle="tab" role="tab">
+                <i class="far fa-envelope"></i>
+                SMS
+              </a>
+              <ng-template ngbNavContent>
+                <ng-container
+                  *ngIf="((loadingSmsIntegration$ | async) === false || null || undefined) && (smsIntegration$ | async)">
+                  <!-- <div class="card" id="ticketsList">
+                    <div class="card-header border-0">
+                      <h5 class="card-title col-lg-4 flex-grow-1">{{'COMMON.LANGUAGE' | translate }}</h5>
+                      <ng-select [(ngModel)]="currentLanguage" (change)="onChangeLanguage($event)" class="col-lg-8"
+                        [closeOnSelect]="true" [multiple]="false" [items]="allLanguages" placeholder="{{'PLACEHOLDER.SELECT_LANGUAGE' | translate }}"
+                        [searchable]="false" [clearable]="false">
+                        <ng-template ng-label-tmp let-item="item" let-clear="clear">
+                          <div class="d-flex gap-1">
+                            <span *ngIf="item?.name !== 'Default'">{{item?.iconFlag}}</span>
+                            <span>{{item === 'Default' ? item : item?.name}}</span>
+                          </div>
+                        </ng-template>
+                        <ng-template ng-option-tmp let-item$="item$" let-item="item">
+                          <div class="d-flex gap-1">
+                            <span *ngIf="item?.name !== 'Default'">{{item?.iconFlag}}</span>
+                            <span>{{item === 'Default' ? item : item?.name}}</span>
+                          </div>
+                        </ng-template>
+                      </ng-select>
+                    </div>
+                  </div> -->
+
+                  <div *ngIf="(smsIntegration$ | async)" class="card d-flex flex-column flex-root" id="kt_app_root">
+                    <div class="d-flex card-body flex-column flex-column-fluid">
+                      <form *ngIf="integrationForm" [formGroup]="integrationForm">
+                        <ng-container *ngIf="currentLanguage?.name === 'Default'" formArrayName="actions">
+                          <ng-container *ngFor="let action of actions['controls']; let i=index; let last = last"
+                            [formGroupName]="i">
+                            <div class="row">
+                              <div class="col-lg-5 mb-3">
+                                <input readonly formControlName="definition" type="text" class="form-control"
+                                  id="firstnamefloatingInput"
+                                  placeholder="{{'PLACEHOLDER.ENTER_CONTENT' | translate }}">
+                              </div>
+                              <div class="col-lg-7 d-flex gap-2 align-items-center">
+                                <div class="col-lg-10 mb-3">
+                                  <div class="form-label">
+                                    <input formControlName="content" type="text" class="form-control"
+                                      id="firstnamefloatingInput"
+                                      placeholder="{{'PLACEHOLDER.ENTER_CONTENT' | translate }}">
+                                  </div>
+                                </div>
+                                <div class="col-lg-2 mb-3 flex-shrink-0 d-flex fs-18 gap-1">
+                                  <div class="form-check form-switch">
+                                    <input formControlName="enabled" class="form-check-input" type="checkbox"
+                                      role="switch" id="flexSwitchCheckDefault">
+                                  </div>
+                                </div>
+                              </div>
+                            </div>
+                          </ng-container>
+                        </ng-container>
+
+                        <ng-container *ngIf="currentLanguage?.name !== 'Default'" formArrayName="actions">
+                          <ng-container *ngFor="let action of actions['controls']; let i=index; let last = last"
+                            [formGroupName]="i">
+                            <div class="row">
+                              <div class="col-lg-5 mb-3">
+                                <input readonly formControlName="definition" type="text" class="form-control"
+                                  id="firstnamefloatingInput"
+                                  placeholder="{{'PLACEHOLDER.ENTER_DEFINITION' | translate }}">
+                              </div>
+                              <div formGroupName="translation" class="col-lg-5 mb-3l">
+                                <input formControlName="content" type="text" class="form-control"
+                                  id="firstnamefloatingInput"
+                                  placeholder="{{'PLACEHOLDER.ENTER_CONTENT' | translate }}">
+                              </div>
+                            </div>
+                          </ng-container>
+                        </ng-container>
+                        <div class="d-flex justify-content-end">
+                          <button [disabled]="integrationForm.invalid || isSmsButtonDisabled"
+                            (click)="saveIntegration()" class="btn btn-success">{{'COMMON.SAVE' | translate }}</button>
+                        </div>
+                      </form>
+                    </div>
+                  </div>
+                </ng-container>
+
+                <div id="noresult" class="py-4 mt-4 text-center"
+                  *ngIf="(loadingSmsIntegration$ | async) || (!(loadingSmsIntegration$ | async) && !(smsIntegration$ | async))">
+                  <div *ngIf="loadingSmsIntegration$ | async">
+                    <lord-icon trigger="loop" style="width:72px;height:72px"
+                      [colors]="'primary:' + primaryColor + ',secondary:' + secondaryColor"
+                      src="https://cdn.lordicon.com/msoeawqm.json">
+                    </lord-icon>
+                    <h5 class="mt-4">{{'COMMON.LOADING' | translate }}</h5>
+                  </div>
+                  <div *ngIf="!(loadingSmsIntegration$ | async) && !(smsIntegration$ | async)">
+                    <lord-icon trigger="loop" style="width:72px;height:72px"
+                      [colors]="'primary:' + primaryColor + ',secondary:' + secondaryColor"
+                      src="https://cdn.lordicon.com/vlycxjwx.json">
+                    </lord-icon>
+                    <h5 class="mt-4">{{ 'COMMON.NO_RESULT' | translate }}</h5>
+                  </div>
+                </div>
+              </ng-template>
+            </li>
+          </ul>
+        </div>
+        <div class="card-body p-4">
+          <div class="tab-content">
+            <div [ngbNavOutlet]="customNav"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <ng-template #integrationModal role="document" let-modal>
+    <div class="modal-header bg-soft-info p-3">
+      <h5 class="modal-title" id="exampleModalLabel">{{selectedField === 'currency' ? 'Add currency' : 'Add language'}}
+      </h5>
+      <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" id="close-modal"
+        (click)="modal.dismiss('Cross click')"></button>
+    </div>
+    <div class="modal-body">
+      <form [formGroup]="websiteForm">
+        <ng-container [formGroupName]="selectedField === 'currency' ? 'multicurrency' : 'multilanguage'">
+          <div [formArrayName]="selectedField === 'currency' ? 'currencies' : 'languages'"
+            class="row align-items-center">
+            <ng-container [formGroupName]="i"
+              *ngFor="let key of (selectedField === 'currency' ? websiteForm.get(['multicurrency', 'currencies'])['controls'] : websiteForm.get(['multilanguage', 'languages'])['controls']); let i = index">
+              <div class="mb-3">
+                <label for="choices-status-input" class="form-label">{{selectedField === 'currency' ? 'Currency' :
+                  'Language'}}</label>
+                <div class="d-flex">
+                  <ng-select [searchable]="false" class="col-10" [virtualScroll]="true"
+                    (scrollToEnd)="selectedField === 'currency' ? loadMoreCurrencies() : loadMoreLanguages()"
+                    [placeholder]="selectedField === 'currency' ? 'Enter your currency' : 'Enter your language'"
+                    [items]="selectedField === 'currency' ? (currencies$ | async) : (languages$ | async)"
+                    [multiple]="false" required
+                    [formControlName]="selectedField === 'currency' ? 'currency' : 'language'">
+                    <ng-template ng-label-tmp let-item="item" let-clear="clear">
+                      {{item?.name?.split('_').join(' ') | titlecase}}
+                      <span class="ng-value-icon right" (click)="clear(item)" aria-hidden="true">×</span>
+                    </ng-template>
+                    <ng-template ng-option-tmp let-item="item">
+                      {{item?.name?.split('_').join(' ') | titlecase}}
+                    </ng-template>
+                  </ng-select>
+                  <button (click)="selectedField === 'currency' ? removeCurrencyField(i) : removeLanguageField(i)"
+                    class="btn btn-danger btn-sm ms-3">
+                    <i class="fs-16 ft ri-delete-bin-2-line"></i>
+                  </button>
+                </div>
+              </div>
+            </ng-container>
+          </div>
+          <a (click)="selectedField === 'currency' ? addCurrencyField() : addLanguageField()"
+            class="btn btn-soft-info btn-sm mt-2 mt-sm-0 shadow-none"><i class="ri-add-line align-middle me-1"></i>
+            {{selectedField === 'currency' ? 'Add a currency' : 'Add a language'}}</a>
+        </ng-container>
+      </form>
+    </div>
+    <div class="modal-footer">
+      <div class="hstack gap-2 justify-content-end">
+        <button type="button" class="btn btn-light" data-bs-dismiss="modal"
+          (click)="modal.close('Close click')">{{'COMMON.CLOSE' | translate }}</button>
+        <button type="button" [disabled]="websiteForm.invalid || isButtonDisabled" (click)="save()"
+          class="btn btn-success" id="add-btn">{{selectedField === 'currency' ? 'Add currency' : 'Add
+          language'}}</button>
+      </div>
+    </div>
+  </ng-template>
+
+  <ng-template #deleteModal let-modal>
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" id="deleteRecord-close"
+          (click)="modal.dismiss('Cross click')"></button>
+      </div>
+      <div class="modal-body">
+        <div class="mt-2 text-center">
+          <lord-icon src="https://cdn.lordicon.com/gsqxdxog.json" trigger="loop"
+            colors="primary:#405189,secondary:#f06548" style="width:90px;height:90px"></lord-icon>
+          <div class="mt-4 pt-2 fs-15 mx-4 mx-sm-5">
+            <h4>{{ 'COMMON.ARE_YOU_SURE_DELETE' | translate }}</h4>
+            <p class="text-muted mx-4 mb-0">{{ 'COMMON.DELETE_WARNING' | translate }}</p>
+          </div>
+        </div>
+        <div class="d-flex gap-2 justify-content-center mt-4 mb-2">
+          <button class="btn btn-link link-success fw-medium text-decoration-none" data-bs-dismiss="modal"
+            (click)="modal.close('Close click')">
+            <i class="ri-close-line me-1 align-middle"></i>{{ 'COMMON.CLOSE' | translate }}
+          </button>
+          <button type="button" class="btn w-sm btn-danger" id="delete-product" (click)="deleteItem()">
+            {{ 'COMMON.YES_DELETE_IT' | translate }}
+          </button>
+        </div>
+      </div>
+    </div>
+  </ng-template>
+
+</ng-container>
+<div *ngIf="navigating$ | async" class="vh-100 py-4 text-center" fxLayout="column" fxLayoutAlign="center center"
+  fxLayoutGap="1rem">
+  <div>
+    <lord-icon trigger="loop" style="width:72px;height:72px"
+      [colors]="'primary:' + primaryColor + ',secondary:' + secondaryColor"
+      src="https://cdn.lordicon.com/msoeawqm.json">
+    </lord-icon>
+  </div>
+  <div class="mt-4">
+    <h5>{{'COMMON.LOADING' | translate }}</h5>
+  </div>
+</div>

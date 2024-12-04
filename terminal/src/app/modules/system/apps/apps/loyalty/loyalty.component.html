@@ -1,0 +1,2860 @@
+<ng-container *ngIf="!(navigating$ | async)">
+
+  <div class="position-relative mx-n4 mt-n4">
+    <div class="profile-wid-bg profile-setting-img">
+      <img src="assets/images/profile-bg.jpg" class="profile-wid-img" alt="">
+      <div class="overlay-content">
+        <div class="text-end p-3">
+          <div class="p-0 ms-auto rounded-circle profile-photo-edit">
+            <input id="profile-foreground-img-file-input" type="file" class="profile-foreground-img-file-input">
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-xxl-3">
+      <div class="card mt-n5">
+        <div class="card-body p-4">
+          <div *ngIf="plugin$ | async as plugin" class="text-center">
+            <div class="profile-user position-relative d-inline-block mx-auto mb-4">
+              <div class="avatar-lg mb-3">
+                <div class="avatar-title bg-soft-success fs-24 text-success">
+                  <i [ngClass]="plugin?.icon"></i>
+                </div>
+              </div>
+            </div>
+            <h5 class="fs-16 mb-1">{{plugin?.name}}</h5>
+            <p class="text-muted mb-0">{{plugin?.description}}</p>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="col-xxl-9">
+      <div class="card mt-xxl-n5">
+        <div class="card-header">
+          <ul (navChange)="onTabChange($event)" ngbNav #customNav="ngbNav" [activeId]="1"
+            class="nav nav-tabs-custom rounded card-header-tabs border-bottom-0" role="tablist">
+            <li [ngbNavItem]="1" class="nav-item">
+              <a ngbNavLink class="nav-link" data-bs-toggle="tab" role="tab">
+                <i class="far fa-envelope"></i>{{'MODULES.SYSTEM.LEVELS' | translate }}
+              </a>
+              <ng-template ngbNavContent>
+                <form [formGroup]="loyaltyForm">
+                  <div for="firstnameInput">{{'MODULES.SYSTEM.REPUTATION_PREFERENCES' | translate }}</div>
+                  <div class="text-muted mb-3">{{'MODULES.SYSTEM.SETUP_REPUTATION_LEVELS' | translate }}</div>
+                  <div class="alert alert-borderless alert-info" role="alert">
+                    <div class="d-flex align-items-center">
+                      <i class="fs-16 me-2 ri-information-fill"></i>
+                      <div>{{'MODULES.SYSTEM.LEVEL_CHANGE_NOTIFICATION' | translate }}
+                      </div>
+                    </div>
+                  </div>
+                  <div class="row row-cols-xxl-4 row-cols-lg-3 row-cols-1 mb-3">
+                    <div (click)="getPrelevel()" class="col">
+                      <div [ngStyle]="{'border-color': loyaltyForm.get(['prelevel', 'color']).value || '#d8d0d0'}"
+                        [class.br]="!selectedRepLevel" class="card card-body h-9">
+                        <div class="d-flex align-items-center justify-content-between">
+                          <h5 class="card-title mb-3">{{loyaltySettings?.prelevel?.name || 'PreLevel'}}</h5>
+                          <i *ngIf="!selectedRepLevel"
+                            [ngStyle]="{'color': loyaltyForm.get(['prelevel', 'color']).value || '#d8d0d0'}"
+                            class="ri-checkbox-circle-fill fs-22">
+                          </i>
+                        </div>
+                      </div>
+                    </div>
+                    <div *ngFor="let rep of reputations; let last = last; let i = index" class="col">
+                      <div [ngClass]="{'br': selectedRepLevel === rep?.reputationLevel}"
+                        [ngStyle]="{'border-color': reputationsForm.get('color').value}"
+                        (click)="selectedRepLevel = rep?.reputationLevel" (click)="onRepChange(i)"
+                        class="card card-body h-9 cursor-pointer">
+                        <div class="d-flex justify-content-between">
+                          <h5 class="card-title mb-3">{{rep?.reputationLevel}}</h5>
+                          <div class="d-flex justify-content-end gap-1 align-items-center">
+                            <button (click)="openDeleteModal(deleteModel, rep)" *ngIf="last"
+                              class="btn-icon btn-soft-danger btn btn-sm">
+                              <i class="ri-delete-bin-line fs-16"></i>
+                            </button>
+                            <i *ngIf="selectedRepLevel === rep?.reputationLevel"
+                              [ngStyle]="{'color': reputationsForm.get('color').value}"
+                              class="ri-checkbox-circle-fill fs-22">
+                            </i>
+                          </div>
+                        </div>
+                        <div class="mt-4">
+                          <span class="fs-20">{{rep?.levelInterval?.max - rep?.levelInterval?.min }}</span>
+                          <span class="text-muted fs-20">
+                            <img *ngIf="(loyaltySettings$ | async)?.qualitative?.picture?.baseUrl"
+                              [src]="(loyaltySettings$ | async)?.qualitative?.picture?.baseUrl + '/' + (loyaltySettings$ | async)?.qualitative?.picture?.path"
+                              alt="" class="img-fluid rounded-circle avatar-xxs mb-1">
+                            <img class="img-fluid rounded-circle avatar-xxs mb-1"
+                              *ngIf="!(loyaltySettings$ | async)?.qualitative?.picture?.baseUrl"
+                              src="https://sifca-storage.s3.eu-central-1.amazonaws.com/loyalcraft/reputation_512.gif">
+                          </span>
+                        </div>
+                      </div>
+                    </div>
+                    <div (click)="addLevel()" class="col">
+                      <div [ngClass]="{'br': selectedRepLevel === 'plus'}" [ngStyle]="{'border-color': '#000'}"
+                        class="card card-body h-9 justify-content-center text-center">
+                        <i class="ri-add-line fs-1"></i>
+                      </div>
+                    </div>
+                  </div>
+                  <form *ngIf="!selectedPrelevel" [formGroup]="reputationsForm">
+                    <div class="row">
+                      <div class="mb-3 col-lg-6">
+                        <label for="customername-field" class="form-label">{{'MODULES.HR.MAIN.COLOR' | translate
+                          }}</label>
+                        <div class="input-group">
+                          <input type="text" id="customername-field" class="form-control" formControlName="color"
+                            placeholder="{{'PLACEHOLDER.PICK_YOUR_COLOR' | translate }}" />
+                          <div class="input-group-append">
+                            <button class="input-group-text btn btn-soft-info" [(colorPicker)]="color"
+                              (colorPickerOpen)="onEventLog('reputation', $event)"
+                              (colorPickerClose)="onEventLog('reputation', $event)"
+                              (cpInputChange)="onEventLog('reputation', $event)"
+                              (cpSliderDragStart)="onEventLog('reputation', $event)"
+                              (cpSliderDragEnd)="onEventLog('reputation', $event)">
+                              <i class="ri-pen-nib-fill"></i>
+                            </button>
+                          </div>
+                        </div>
+                      </div>
+                      <div class="mb-3 col-lg-6">
+                        <label for="customername-field" class="form-label">{{'SHARED.LEVEL_NAME' | translate}}</label>
+                        <input required type="text" id="customername-field" class="form-control"
+                          placeholder="{{'PLACEHOLDER.ENTER_REPUTATION_LEVEL' | translate }}"
+                          formControlName="reputationLevel" />
+                      </div>
+
+                      <div class="form-check form-switch mb-3 mt-2 ms-2">
+                        <input (change)="selectedRepLevel === 'plus' ? null : onChangeGoal($event.target.checked, 'frequency')" role="switch"
+                          [formControlName]="'frequencyGoalEnabled'" class="form-check-input fs-16" type="checkbox"
+                          id="Required">
+                        <label class="form-check-label" for="Required">{{'SHARED.ACTIVITY_FREQUENCY_LOSS' | translate }}
+                        </label>
+                      </div>
+
+                      <div *ngIf="reputationsForm.get('frequencyGoalEnabled').value === true"
+                        class="border border-4 border-dashed m-2 p-2 row">
+                        <div class="mb-3 col-lg-6">
+                          <label for="customername-field" class="form-label">{{'MODULES.SYSTEM.LOSS_AMOUNT' |
+                            translate}}</label>
+                          <div class="input-group">
+                            <input type="number" id="customername-field" class="form-control"
+                              formControlName="lossAmount" placeholder="{{'PLACEHOLDER.LOSS_AMOUNT' | translate }}" />
+                            <div class="input-group-append">
+                              <span class="input-group-text">
+                                <img *ngIf="(loyaltySettings$ | async)?.qualitative?.picture?.baseUrl"
+                                  [src]="(loyaltySettings$ | async)?.qualitative?.picture?.baseUrl + '/' + (loyaltySettings$ | async)?.qualitative?.picture?.path"
+                                  alt="" class="img-fluid rounded-circle avatar-xxs mb-1">
+                                <img class="img-fluid rounded-circle avatar-xxs mb-1"
+                                  *ngIf="!(loyaltySettings$ | async)?.qualitative?.picture?.baseUrl"
+                                  src="https://sifca-storage.s3.eu-central-1.amazonaws.com/loyalcraft/reputation_512.gif">
+                              </span>
+                            </div>
+                          </div>
+                        </div>
+                        <div class="mb-3 col-lg-6">
+                          <label for="customername-field" class="form-label">{{'MODULES.SYSTEM.INACTIVITY_CYCLE' |
+                            translate }}</label>
+                          <div class="input-group">
+                            <input type="number" id="customername-field" class="form-control"
+                              formControlName="inactivityCycle"
+                              placeholder="{{'PLACEHOLDER.ENTER_INACTIVITY_CYCLE' | translate }}" />
+                            <div class="input-group-append">
+                              <div class="input-group-append">
+                                <span class="input-group-text">{{'MODULES.INDEX.HOURS' | translate }}
+                                </span>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+
+                      <div class="form-check form-switch mb-3 mt-2 ms-2">
+                        <input (change)="selectedRepLevel === 'plus' ? null : onChangeGoal($event.target.checked, 'turnover')" role="switch"
+                          [formControlName]="'turnoverGoalEnabled'" class="form-check-input fs-16" type="checkbox"
+                          id="Required">
+                        <label class="form-check-label" for="Required">{{'SHARED.TURNOVER_LOSS' | translate }}
+                        </label>
+                      </div>
+                      <div *ngIf="reputationsForm.get('turnoverGoalEnabled').value === true"
+                        class="border border-4 border-dashed m-2 p-2 row">
+                        <div class="mb-3 col-lg-6">
+                          <label for="customername-field" class="form-label">{{'MODULES.SYSTEM.LOSS_POINTS' |
+                            translate}}</label>
+                          <div class="input-group">
+                            <input type="number" id="customername-field" class="form-control"
+                              formControlName="lossPoints"
+                              placeholder="{{'MODULES.SYSTEM.LOSS_POINTS' | translate }}" />
+                            <div class="input-group-append">
+                              <span class="input-group-text">
+                                <img *ngIf="(loyaltySettings$ | async)?.qualitative?.picture?.baseUrl"
+                                  [src]="(loyaltySettings$ | async)?.qualitative?.picture?.baseUrl + '/' + (loyaltySettings$ | async)?.qualitative?.picture?.path"
+                                  alt="" class="img-fluid rounded-circle avatar-xxs mb-1">
+                                <img class="img-fluid rounded-circle avatar-xxs mb-1"
+                                  *ngIf="!(loyaltySettings$ | async)?.qualitative?.picture?.baseUrl"
+                                  src="https://sifca-storage.s3.eu-central-1.amazonaws.com/loyalcraft/reputation_512.gif">
+                              </span>
+                            </div>
+                          </div>
+                        </div>
+                        <div class="mb-3 col-lg-6">
+                          <label for="customername-field" class="form-label">{{'MODULES.SYSTEM.TURNOVER_POINTS' |
+                            translate}}</label>
+                          <div class="input-group">
+                            <input type="number" id="customername-field" class="form-control"
+                              formControlName="turnoverPoints"
+                              placeholder="{{'MODULES.SYSTEM.TURNOVER_POINTS' | translate }}" />
+                            <div class="input-group-append">
+                              <span class="input-group-text">
+                                <img *ngIf="(loyaltySettings$ | async)?.qualitative?.picture?.baseUrl"
+                                  [src]="(loyaltySettings$ | async)?.qualitative?.picture?.baseUrl + '/' + (loyaltySettings$ | async)?.qualitative?.picture?.path"
+                                  alt="" class="img-fluid rounded-circle avatar-xxs mb-1">
+                                <img class="img-fluid rounded-circle avatar-xxs mb-1"
+                                  *ngIf="!(loyaltySettings$ | async)?.qualitative?.picture?.baseUrl"
+                                  src="https://sifca-storage.s3.eu-central-1.amazonaws.com/loyalcraft/reputation_512.gif">
+                              </span>
+                            </div>
+                          </div>
+                        </div>
+                        <div class="mb-3 col-lg-6">
+                          <label for="customername-field" class="form-label">{{'MODULES.INVENTORY.PERIOD' | translate
+                            }}</label>
+                          <div class="input-group">
+                            <input type="number" id="customername-field" class="form-control" formControlName="period"
+                              placeholder="{{'MODULES.INVENTORY.PERIOD' | translate }}" />
+                            <div class="input-group-append">
+                              <div class="input-group-append">
+                                <span class="input-group-text">{{'MODULES.INDEX.DAYS' | translate }}
+                                </span>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+
+                      <ng-container formGroupName="perks">
+                        <div class="mb-3 col-lg-6">
+                          <label for="customername-field" class="form-label">{{ 'MODULES.ECOMMERCE.MAIN.DISCOUNT' |
+                            translate }}</label>
+                          <div class="input-group">
+                            <input type="text" id="customername-field" class="form-control" formControlName="discount"
+                              placeholder="{{'PLACEHOLDER.ENTER_DISCOUNT' | translate }}" />
+                            <div class="input-group-append">
+                              <div class="input-group-append">
+                                <span class="input-group-text">%
+                                </span>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                        <div class="mb-7 mb-sm-6 col-lg-12">
+                          <label for="customername-field" class="form-label">{{'COMMON.DESCRIPTION' | translate
+                            }}</label>
+                          <quill-editor class="custom-quill-editor" formControlName="description"></quill-editor>
+                        </div>
+                      </ng-container>
+                      <div class="mb-3 col-lg-6">
+                        <label for="customername-field" class="form-label">{{'MODULES.SYSTEM.LEVEL_INTERVAL' | translate
+                          }}</label>
+                        <div class="input-group">
+                          <input required type="number" id="customername-field" class="form-control"
+                            [formControlName]="selectedRepLevel === 'plus' ? 'points' : 'levelInterval'"
+                            placeholder="{{'PLACEHOLDER.LEVEL_INTERVAL' | translate }}" />
+                          <div class="input-group-append">
+                            <span class="input-group-text">
+                              <img *ngIf="(loyaltySettings$ | async)?.qualitative?.picture?.baseUrl"
+                                [src]="(loyaltySettings$ | async)?.qualitative?.picture?.baseUrl + '/' + (loyaltySettings$ | async)?.qualitative?.picture?.path"
+                                alt="" class="img-fluid rounded-circle avatar-xxs mb-1">
+                              <img class="img-fluid rounded-circle avatar-xxs mb-1"
+                                *ngIf="!(loyaltySettings$ | async)?.qualitative?.picture?.baseUrl"
+                                src="https://sifca-storage.s3.eu-central-1.amazonaws.com/loyalcraft/reputation_512.gif">
+                            </span>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="mt-2 df-flex">
+                      <div class="img-wrap w-30 h-30 me-3 mb-2">
+                        <div *ngIf="isLoading" class="fs-12" id="elmLoader">
+                          <div class="spinner-border text-primary" role="status">
+                            <span class="visually-hidden">{{'COMMON.LOADING' | translate }}</span>
+                          </div>
+                        </div>
+                        <ng-container *ngIf="reputationsForm.get('picture')?.value?.baseUrl">
+                          <span class="delete-icon w-6 h-6 flex items-center justify-center cursor-pointer"
+                            (click)="removePicture('qualitative')">
+                            <i class="ri-delete-bin-fill ft text-danger"></i>
+                          </span>
+                          <img (click)="upload('level')" class="w-30 h-30 rounded object-cover"
+                            [src]="reputationsForm.get('picture')?.value?.baseUrl + '/' + reputationsForm.get('picture')?.value?.path"
+                            alt="Blog picture">
+                        </ng-container>
+                        <div *ngIf="!reputationsForm.get('picture')?.value?.baseUrl" (click)="upload('level')"
+                          class="w-30 h-30 mb-3 col-4 border rounded overflow-hidden cursor-pointer d-flex align-items-center justify-content-center">
+                          <span class="fs-5 fw-bold">{{'COMMON.UPLOAD' | translate }}</span>
+                        </div>
+                      </div>
+                    </div>
+                  </form>
+                  <ng-container *ngIf="selectedPrelevel">
+                    <ng-container *ngTemplateOutlet="prelevelTemplate; context:{formGroup: loyaltyForm}">
+                    </ng-container>
+                  </ng-container>
+                  <div class="col-lg-12">
+                    <div class="hstack justify-content-end gap-2 mt-3">
+                      <button *ngIf="!selectedRepLevel"
+                        [disabled]="isPreLevelButtonDisabled || loyaltyForm.get('prelevel').invalid"
+                        (click)="savePrelevel()" class="btn btn-success">{{'COMMON.SAVE' | translate }}</button>
+                      <button [disabled]="reputationsForm.invalid || levelButtonDisabled" *ngIf="selectedRepLevel"
+                        (click)="saveLevel()" class="btn btn-success">{{'COMMON.SAVE' | translate }}
+                      </button>
+                    </div>
+                  </div>
+                </form>
+              </ng-template>
+            </li>
+            <li [ngbNavItem]="2" class="nav-item">
+              <a ngbNavLink class="nav-link" data-bs-toggle="tab" role="tab">
+                <i class="far fa-envelope"></i>{{'MODULES.SYSTEM.WALLETS' | translate }}
+              </a>
+              <ng-template ngbNavContent>
+                <form [formGroup]="loyaltyForm">
+                  <div for="firstnameInput">{{'MODULES.SYSTEM.WALLETS_PREFERENCES' | translate }}</div>
+                  <div class="text-muted mb-3">{{'MODULES.SYSTEM.MANAGE_WALLET_PREFERENCES' | translate }}</div>
+                  <div class="col-lg-12 d-flex justify-content-between mb-3">
+                    <div>
+                      <div for="firstnameInput">{{'MODULES.SYSTEM.ENABLE_QUANTITATIVE_WALLET' | translate }}</div>
+                      <div class="text-muted">{{'MODULES.SYSTEM.ENABLE_QUANTITATIVE_WALLET_MONEY' | translate }}
+                      </div>
+                    </div>
+                    <div class="flex-shrink-0 d-flex fs-18 gap-1">
+                      <div class="form-check form-switch">
+                        <input (change)="update($event?.target?.checked, 'quantitative')"
+                          [checked]="loyaltySettings?.quantitative?.active === true" class="form-check-input"
+                          type="checkbox" role="switch" id="flexSwitchCheckDefault">
+                      </div>
+                    </div>
+                  </div>
+
+                  <div class="custom-control custom-radio mb-3">
+                    <div class="form-check col-lg-6">
+                      <input [ngModelOptions]="{standalone: true}" [checked]="isAggregatorSelected"
+                        class="form-check-input" type="radio" id="aggregator" [(ngModel)]="isAggregatorSelected"
+                        name="loyaltyOption" [value]="true">
+                      <label class="form-check-label" for="aggregator">
+                        {{'SHARED.AGGREGATOR' | translate }}
+                      </label>
+                    </div>
+                    <div class="form-check col-lg-6">
+                      <input [ngModelOptions]="{standalone: true}" [(ngModel)]="isAggregatorSelected"
+                        [checked]="!isAggregatorSelected" class="form-check-input" type="radio" id="coin"
+                        name="loyaltyOption" [value]="false">
+                      <label class="form-check-label" for="coin">
+                        {{'SHARED.COIN' | translate}}
+                      </label>
+                    </div>
+                  </div>
+
+                  <div *ngIf="loyaltyForm.get(['quantitative', 'coin']).value && !isAggregatorSelected"
+                    class="col-3 d-flex mb-3">
+                    <div class="d-flex align-items-center border border-dashed p-2 rounded">
+                      <div class="flex-shrink-0">
+                        <div *ngIf="!loyaltyForm.get(['quantitative', 'coin']).value.picture?.baseUrl"
+                          class="avatar-xxs">
+                          <div class="avatar-title text-danger bg-soft-info rounded-circle shadow">
+                            {{loyaltyForm.get(['quantitative', 'coin']).value?.name?.charAt(0) || 'N'}}
+                          </div>
+                        </div>
+                        <div *ngIf="loyaltyForm.get(['quantitative', 'coin']).value?.picture?.baseUrl">
+                          <img
+                            [src]="loyaltyForm.get(['quantitative', 'coin']).value?.picture?.baseUrl + '/' + loyaltyForm.get(['quantitative', 'coin']).value?.picture?.path"
+                            alt="" class="avatar-xxs shadow rounded-circle" />
+                        </div>
+                      </div>
+                      <div class="flex-grow-1 ms-3">
+                        <h6 class="mb-1">{{loyaltyForm.get(['quantitative', 'coin']).value?.name}}</h6>
+                        <div *ngIf="loyaltyForm.get(['quantitative', 'coin']).value?.unitValue?.amount">
+                          <h6 [ngClass]="{
+                              'text-danger': +loyaltyForm.get(['quantitative', 'coin']).value?.unitValue?.amount < 0,
+                              'text-muted': +loyaltyForm.get(['quantitative', 'coin']).value?.unitValue?.amount >= 0
+                          }" class="text-danger mb-0">
+                            {{+loyaltyForm.get(['quantitative', 'coin' ]).value?.unitValue?.amount | customCurrency:
+                            loyaltyForm.get(['quantitative', 'coin' ]).value?.unitValue?.currency?.name}}
+                            {{loyaltyForm.get(['quantitative', 'coin' ]).value?.unitValue?.currency?.name}} </h6>
+                        </div>
+                      </div>
+                      <div class="hstack gap-3 fs-16 ms-3">
+                        <a (click)="openCoinModal(coinModal, loyaltySettings?.quantitative?.coin)" class="text-muted"><i
+                            class="ri-pencil-line"></i></a>
+                      </div>
+                    </div>
+                  </div>
+                  <div *ngIf="isAggregatorSelected" formGroupName="aggregator" class="row">
+                    <div formGroupName="target" class="mb-3 col-lg-6">
+                      <label for="email_id-field" class="form-label"> {{'SHARED.AGGREGATOR'| translate }}</label>
+                      <ng-select [clearable]="false" (change)="onChangeTarget($event)" bindValue="id" bindLabel="title"
+                        [closeOnSelect]="true" [multiple]="false" formControlName="pos" [items]="targets$ | async"
+                        [virtualScroll]="true" placeholder="Select Aggregators" (scrollToEnd)="loadMoreTargets()">
+                        <ng-template ng-label-tmp let-item="item" let-clear="clear">
+                          <span class="ng-value-label">
+                            {{item?.title}}
+                          </span>
+                        </ng-template>
+                        <ng-template ng-option-tmp let-item$="item$" let-item="item">
+                          <div class="d-flex cursor-pointer align-items-center">
+                            <div class="flex-shrink-0">
+                              <div class="avatar-xs bg-light p-1 rounded-circle" *ngIf="item?.picture?.baseUrl">
+                                <img [src]="item?.picture?.baseUrl + '/' + item?.picture?.path"
+                                  class="img-fluid h-100 rounded-circle object-cover">
+                              </div>
+                              <div class="avatar-xs bg-light rounded-circle p-1" *ngIf="!item?.picture?.baseUrl">
+                                <div class="avatar-title bg-soft-success text-success rounded-circle fs-13">
+                                  {{item?.title?.charAt(0) || 'N'}}</div>
+                              </div>
+                            </div>
+                            <div class="flex-grow-1 cursor-pointer fw-medium link-primary ms-2">
+                              {{item?.title?.length > 15 ?
+                              item?.title?.substr(0,15) + '...' : item?.title}}
+                            </div>
+                          </div>
+                        </ng-template>
+                      </ng-select>
+                    </div>
+                    <div *ngIf="aggregatorCoin" class="mb-3 col-lg-6">
+                      <label for="choices-status-input" class="form-label">{{'SHARED.COIN' | translate }}*</label>
+                      <ng-select required [clearable]="false" [multiple]="false" [(ngModel)]="aggregatorCoin[0]"
+                        [ngModelOptions]="{standalone: true}"
+                        placeholder="{{'PLACEHOLDER.ENTER_YOUR_COIN' | translate }}" [items]="aggregatorCoin">
+                        <ng-template ng-label-tmp let-item="item" let-clear="clear">
+                          <div class="ng-value-label">
+                            <div class="col-3 d-flex align-items-center">
+                              <div class="flex-shrink-0">
+                                <div *ngIf="!item?.picture?.baseUrl" class="avatar-xxs">
+                                  <div class="avatar-title text-danger bg-soft-info rounded-circle shadow">
+                                    {{item?.name?.charAt(0) || 'N'}}
+                                  </div>
+                                </div>
+                                <div *ngIf="item?.picture?.baseUrl">
+                                  <img [src]="item?.picture?.baseUrl + '/' + item?.picture?.path" alt=""
+                                    class="avatar-xxs shadow rounded-circle" />
+                                </div>
+                              </div>
+                              <div class="flex-grow-1 ms-3">
+                                <h6 class="mb-0">{{item?.name}} <span class="text-muted">
+                                    ({{item?.code}}) </span></h6>
+                              </div>
+                            </div>
+                          </div>
+                        </ng-template>
+                        <ng-template ng-option-tmp let-item="item">
+                          <div class="col-3 d-flex align-items-center">
+                            <div class="flex-shrink-0">
+                              <div *ngIf="!item?.picture?.baseUrl" class="avatar-xxs">
+                                <div class="avatar-title text-danger bg-soft-info rounded-circle shadow">
+                                  {{item?.name?.charAt(0) || 'N'}}
+                                </div>
+                              </div>
+                              <div *ngIf="item?.picture?.baseUrl">
+                                <img [src]="item?.picture?.baseUrl + '/' + item?.picture?.path" alt=""
+                                  class="avatar-xxs shadow rounded-circle" />
+                              </div>
+                            </div>
+                            <div class="flex-grow-1 ms-3">
+                              <h6 class="mb-0">{{item?.name}} <span class="text-muted">
+                                  ({{item?.code}}) </span></h6>
+                            </div>
+                          </div>
+                        </ng-template>
+                      </ng-select>
+                    </div>
+                    <div class="mb-3 col-lg-6">
+                      <label for="customername-field" class="form-label">Redirect Url</label>
+                      <input type="text" id="customername-field" class="form-control" placeholder="Redirect Url"
+                        formControlName="redirectUrl" />
+                    </div>
+                  </div>
+
+                  <div *ngIf="!loyaltyForm.get(['quantitative', 'coin']).value" class="mb-3">
+                    <button (click)="openCoinModal(coinModal)"
+                      class="btn btn-sm btn-soft-primary">{{'MODULES.SYSTEM.CREATE_COIN' | translate }}</button>
+                  </div>
+
+                  <div class="col-lg-12 d-flex justify-content-between mb-3">
+                    <div>
+                      <div for="firstnameInput">{{'MODULES.SYSTEM.ENABLE_QUALITATIVE_WALLET' | translate }}</div>
+                      <div class="text-muted">{{'MODULES.SYSTEM.ENABLING_QUALITATIVE_WALLET' | translate }}</div>
+                    </div>
+                    <div class="flex-shrink-0 d-flex fs-18 gap-1">
+                      <div class="form-check form-switch">
+                        <input (change)="update($event?.target?.checked, 'qualitative')"
+                          [checked]="loyaltySettings?.qualitative?.active === true" class="form-check-input"
+                          type="checkbox" role="switch" id="flexSwitchCheckDefault">
+                      </div>
+                    </div>
+                  </div>
+
+                  <div class="mt-2 df-flex">
+                    <div class="img-wrap w-30 h-30 me-3 mb-2">
+                      <div *ngIf="loadingQualitativePic" class="fs-12" id="elmLoader">
+                        <div class="spinner-border text-primary" role="status">
+                          <span class="visually-hidden">{{'COMMON.LOADING' | translate }}</span>
+                        </div>
+                      </div>
+                      <ng-container *ngIf="loyaltyForm.get('qualitative').get('picture')?.value?.baseUrl">
+                        <span class="delete-icon w-6 h-6 flex items-center justify-center cursor-pointer"
+                          (click)="removePicture('qualitative')">
+                          <i class="ri-delete-bin-fill ft text-danger"></i>
+                        </span>
+                        <img (click)="upload('qualitative')" class="w-30 h-30 rounded object-cover"
+                          [src]="loyaltyForm.get('qualitative').get('picture')?.value?.baseUrl + '/' + loyaltyForm.get('qualitative').get('picture')?.value?.path"
+                          alt="Blog picture">
+                      </ng-container>
+                      <div *ngIf="!loyaltyForm.get('qualitative').get('picture')?.value?.baseUrl"
+                        (click)="upload('qualitative')"
+                        class="w-30 h-30 mb-3 col-4 border rounded overflow-hidden cursor-pointer d-flex align-items-center justify-content-center">
+                        <span class="fs-5 fw-bold">{{'COMMON.UPLOAD' | translate }}</span>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div class="col-lg-12">
+                    <div class="hstack justify-content-end gap-2 mt-3">
+                      <button (click)="saveWallet()" type="button"
+                        [disabled]="isWalletButtonDisabled || loyaltyForm.invalid || !isAggregatorSelected"
+                        class="btn btn-success">{{'COMMON.SAVE' | translate }}</button>
+                    </div>
+                  </div>
+                </form>
+              </ng-template>
+            </li>
+            <li [ngbNavItem]="3" class="nav-item">
+              <a ngbNavLink class="nav-link" data-bs-toggle="tab" role="tab">
+                <i class="far fa-envelope"></i>{{'MODULES.SYSTEM.CONVERTER' | translate }}
+              </a>
+              <ng-template ngbNavContent>
+                <div for="firstnameInput">{{'MODULES.SYSTEM.CONVERTER_PREFERENCES' | translate }}</div>
+                <div class="text-muted mb-3">{{'MODULES.SYSTEM.MANAGE_POINTS_CONVERSION' | translate }}
+                </div>
+                <div class="alert alert-borderless alert-info" role="alert">
+                  <div class="d-flex align-items-center">
+                    <i class="fs-16 me-2 ri-information-fill"></i>
+                    <div>{{'MODULES.SYSTEM.LEVEL_CHANGE_NOTIFICATION' | translate }}
+                    </div>
+                  </div>
+                </div>
+                <div class="row row-cols-xxl-4 row-cols-lg-3 row-cols-1">
+                  <div (click)="getFistLevel(remuneration?.reputationLevel?.color, 'prelevel', 0)" class="col">
+                    <div [ngStyle]="{'border-color': loyaltyForm.get(['prelevel', 'color']).value || '#d8d0d0'}"
+                      [class.br]="selectedReputationLevel === 'prelevel'" class="card card-body h-9">
+                      <div class="d-flex align-items-center justify-content-between">
+                        <h5 class="card-title mb-3">{{loyaltySettings?.prelevel?.name || 'PreLevels'}}</h5>
+                        <i *ngIf="selectedReputationLevel === 'prelevel'"
+                          [ngStyle]="{'color': loyaltyForm.get(['prelevel', 'color']).value || '#d8d0d0'}"
+                          class="ri-checkbox-circle-fill fs-22">
+                        </i>
+                      </div>
+                    </div>
+                  </div>
+                  <div *ngFor="let rep of reputations; let i = index" class="col">
+                    <div (click)="getLevel(remuneration?.reputationLevel?.color, null, i)"
+                      [ngClass]="{'br': selectedRepLevel === rep?.reputationLevel && selectedReputationLevel !== 'prelevel'}"
+                      [ngStyle]="{'border-color': rep?.color}" (click)="selectedRepLevel = rep?.reputationLevel"
+                      class="card card-body h-9 cursor-pointer">
+                      <div class="d-flex justify-content-between">
+                        <h5 class="card-title mb-3">{{rep?.reputationLevel}}</h5>
+                        <i *ngIf="selectedRepLevel === rep?.reputationLevel && selectedReputationLevel !== 'prelevel'"
+                          [ngStyle]="{'color': rep?.color}" class="ri-checkbox-circle-fill fs-22">
+                        </i>
+                      </div>
+                      <div class="mt-4">
+                        <span class="fs-20">{{rep?.levelInterval?.max - rep?.levelInterval?.min }}
+                        </span>
+                        <span class="text-muted fs-20">
+                          <img *ngIf="(loyaltySettings$ | async)?.qualitative?.picture?.baseUrl"
+                            [src]="(loyaltySettings$ | async)?.qualitative?.picture?.baseUrl + '/' + (loyaltySettings$ | async)?.qualitative?.picture?.path"
+                            alt="" class="img-fluid rounded-circle avatar-xxs mb-1">
+                          <img class="img-fluid rounded-circle avatar-xxs mb-1"
+                            *ngIf="!(loyaltySettings$ | async)?.qualitative?.picture?.baseUrl"
+                            src="https://sifca-storage.s3.eu-central-1.amazonaws.com/loyalcraft/reputation_512.gif">
+                        </span>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <ul ngbNav (navChange)="onConverterChange($event)" #customConverterNav="ngbNav" [activeId]="1"
+                  class="nav nav-tabs-custom rounded card-header-tabs border-bottom-0" role="tablist">
+                  <li [ngbNavItem]="1" class="nav-item">
+                    <a ngbNavLink class="nav-link" data-bs-toggle="tab" role="tab">
+                      <i class="far fa-envelope"></i>{{'MODULES.SYSTEM.STORE' | translate }}
+                    </a>
+                    <ng-template ngbNavContent>
+                      <div class="col-lg-12 d-flex justify-content-between mb-3">
+                        <div>
+                          <div for="firstnameInput">{{'MODULES.SYSTEM.ENABLE_STORE_CONVERSION' | translate }}</div>
+                          <div class="text-muted">{{'MODULES.SYSTEM.ALLOW_POINTS_ON_PURCHASE' | translate }}
+                          </div>
+                        </div>
+                        <div class="flex-shrink-0 d-flex fs-18 gap-1">
+                          <div class="form-check form-switch">
+                            <input *ngIf="!selectedPrelevel"
+                              [checked]="loyaltySettings?.onsiteConverter?.physical?.active"
+                              (change)="onChangeConversion($event.target.checked, 'physical')" class="form-check-input"
+                              type="checkbox" role="switch" id="flexSwitchCheckDefault">
+                            <input *ngIf="selectedPrelevel"
+                              [checked]="loyaltySettings?.prelevel?.onsiteConverter?.physical?.active"
+                              (change)="onChangeConversion($event.target.checked, 'physical', true)"
+                              class="form-check-input" type="checkbox" role="switch" id="flexSwitchCheckDefault">
+                          </div>
+                        </div>
+                      </div>
+                      <form [formGroup]="loyaltyForm">
+                        <ng-container formGroupName="onsiteConverter" *ngIf="selectedPrelevel === false">
+                          <ng-container formGroupName="physical">
+                            <ng-container formArrayName="remunerations">
+                              <div *ngFor="let control of remunerationsPhysicalArray.controls; let i = index"
+                                [formGroupName]="i">
+                                <div *ngIf="reputations?.length - 1 !== selectedRepIndex" formGroupName="qualitative"
+                                  class="mb-3 col-lg-6">
+                                  <label for="customername-field"
+                                    class="form-label">{{'MODULES.SYSTEM.QUALITATIVE_AMOUNT' | translate }}</label>
+                                  <div class="input-group">
+                                    <input required type="number" id="customername-field" class="form-control"
+                                      placeholder="{{'PLACEHOLDER.ENTER_QUALITATIVE_AMOUNT' | translate }}"
+                                      formControlName="amount" />
+                                    <div class="input-group-append">
+                                      <span class="input-group-text">%
+                                      </span>
+                                    </div>
+                                  </div>
+                                </div>
+                                <div formGroupName="quantitative" class="row">
+                                  <div class="mb-3 col-lg-6">
+                                    <label for="choices-status-input"
+                                      class="form-label">{{'MENUITEMS.CUSTOMERENGAGEMENT.LIST.WALLET' | translate
+                                      }}*</label>
+                                    <ng-select required [virtualScroll]="true" (scrollToEnd)="loadMoreWallets()"
+                                      placeholder="{{'PLACEHOLDER.ENTER_YOUR_COIN' | translate }}"
+                                      [items]="wallet$ | async" [multiple]="false" [formControlName]="'wallet'">
+                                      <ng-template ng-label-tmp let-item="item" let-clear="clear">
+                                        <div class="ng-value-label">
+                                          <div class="col-3 d-flex align-items-center">
+                                            <div class="flex-shrink-0">
+                                              <div *ngIf="!item?.coin?.picture?.baseUrl" class="avatar-xxs">
+                                                <div
+                                                  class="avatar-title text-danger bg-soft-info rounded-circle shadow">
+                                                  {{item?.coin?.name?.charAt(0) || 'N'}}
+                                                </div>
+                                              </div>
+                                              <div *ngIf="item?.coin?.picture?.baseUrl">
+                                                <img
+                                                  [src]="item?.coin?.picture?.baseUrl + '/' + item?.coin?.picture?.path"
+                                                  alt="" class="avatar-xxs shadow rounded-circle" />
+                                              </div>
+                                            </div>
+                                            <div class="flex-grow-1 ms-3">
+                                              <span class="mb-1">{{item?.coin?.name}} ({{item?.fee}}%)</span>
+                                            </div>
+                                          </div>
+                                        </div>
+                                        <span class="ng-value-icon right" (click)="clear(item)"
+                                          aria-hidden="true">×</span>
+                                      </ng-template>
+                                      <ng-template ng-option-tmp let-item="item">
+                                        <div class="col-3 d-flex">
+                                          <div class="flex-shrink-0">
+                                            <div *ngIf="!item?.coin?.picture?.baseUrl" class="avatar-xxs">
+                                              <div class="avatar-title text-danger bg-soft-info rounded-circle shadow">
+                                                {{item?.coin?.name?.charAt(0) || 'N'}}
+                                              </div>
+                                            </div>
+                                            <div *ngIf="item?.coin?.picture?.baseUrl">
+                                              <img
+                                                [src]="item?.coin?.picture?.baseUrl + '/' + item?.coin?.picture?.path"
+                                                alt="" class="avatar-xxs shadow rounded-circle" />
+                                            </div>
+                                          </div>
+                                          <div class="flex-grow-1 ms-3">
+                                            <h6 class="mb-1">{{item?.coin?.name}} <span class="text-muted">
+                                                ({{item?.coin?.code}}) </span></h6>
+                                            <div *ngIf="item?.coin?.unitValue?.amount">
+                                              <h6 [ngClass]="{
+                                                                  'text-danger': +item?.amount < 0,
+                                                                  'text-success': +item?.amount > 0,
+                                                                  'text-info': +item?.amount === 0
+                                                              }" class="text-danger mb-0"> {{item?.amount | number:
+                                                '1.0-0'}} <span class="text-muted"> ({{item?.fee}}%) </span> </h6>
+                                            </div>
+                                          </div>
+                                        </div>
+                                      </ng-template>
+                                    </ng-select>
+                                  </div>
+                                  <div class="mb-3 col-lg-6">
+                                    <label for="customername-field"
+                                      class="form-label">{{'MODULES.SYSTEM.QUANTITATIVE_AMOUNT' | translate }}</label>
+                                    <div class="input-group">
+                                      <input required type="number" id="customername-field" class="form-control"
+                                        placeholder="{{'PLACEHOLDER.ENTER_QUALITATIVE_AMOUNT' | translate }}"
+                                        formControlName="amount" />
+                                      <div class="input-group-append">
+                                        <span class="input-group-text">%</span>
+                                      </div>
+                                    </div>
+                                  </div>
+                                </div>
+                              </div>
+                            </ng-container>
+                          </ng-container>
+                        </ng-container>
+                        <ng-container formGroupName="prelevel" *ngIf="selectedPrelevel === true">
+                          <ng-container formGroupName="onsiteConverter">
+                            <ng-container formGroupName="physical">
+                              <div formGroupName="qualitative" class="mb-3 col-lg-6">
+                                <label for="customername-field" class="form-label">{{'MODULES.SYSTEM.QUALITATIVE_AMOUNT'
+                                  | translate }}</label>
+                                <div class="input-group">
+                                  <input required type="number" id="customername-field" class="form-control"
+                                    placeholder="{{'PLACEHOLDER.ENTER_QUALITATIVE_AMOUNT' | translate }}"
+                                    formControlName="amount" />
+                                  <div class="input-group-append">
+                                    <span class="input-group-text">%
+                                    </span>
+                                  </div>
+                                </div>
+                              </div>
+                              <div formGroupName="quantitative" class="row">
+                                <div class="mb-3 col-lg-6">
+                                  <label for="choices-status-input"
+                                    class="form-label">{{'MENUITEMS.CUSTOMERENGAGEMENT.LIST.WALLET' | translate
+                                    }}*</label>
+                                  <ng-select required [virtualScroll]="true" (scrollToEnd)="loadMoreWallets()"
+                                    placeholder="{{'PLACEHOLDER.ENTER_YOUR_COIN' | translate }}"
+                                    [items]="wallet$ | async" [multiple]="false" [formControlName]="'wallet'">
+                                    <ng-template ng-label-tmp let-item="item" let-clear="clear">
+                                      <div class="ng-value-label">
+                                        <div class="col-3 d-flex align-items-center">
+                                          <div class="flex-shrink-0">
+                                            <div *ngIf="!item?.coin?.picture?.baseUrl" class="avatar-xxs">
+                                              <div class="avatar-title text-danger bg-soft-info rounded-circle shadow">
+                                                {{item?.coin?.name?.charAt(0) || 'N'}}
+                                              </div>
+                                            </div>
+                                            <div *ngIf="item?.coin?.picture?.baseUrl">
+                                              <img
+                                                [src]="item?.coin?.picture?.baseUrl + '/' + item?.coin?.picture?.path"
+                                                alt="" class="avatar-xxs shadow rounded-circle" />
+                                            </div>
+                                          </div>
+                                          <div class="flex-grow-1 ms-3">
+                                            <span class="mb-1">{{item?.coin?.name}} ({{item?.fee}}%)</span>
+                                          </div>
+                                        </div>
+                                      </div>
+                                      <span class="ng-value-icon right" (click)="clear(item)"
+                                        aria-hidden="true">×</span>
+                                    </ng-template>
+                                    <ng-template ng-option-tmp let-item="item">
+                                      <div class="col-3 d-flex">
+                                        <div class="flex-shrink-0">
+                                          <div *ngIf="!item?.coin?.picture?.baseUrl" class="avatar-xxs">
+                                            <div class="avatar-title text-danger bg-soft-info rounded-circle shadow">
+                                              {{item?.coin?.name?.charAt(0) || 'N'}}
+                                            </div>
+                                          </div>
+                                          <div *ngIf="item?.coin?.picture?.baseUrl">
+                                            <img [src]="item?.coin?.picture?.baseUrl + '/' + item?.coin?.picture?.path"
+                                              alt="" class="avatar-xxs shadow rounded-circle" />
+                                          </div>
+                                        </div>
+                                        <div class="flex-grow-1 ms-3">
+                                          <h6 class="mb-1">{{item?.coin?.name}} <span class="text-muted">
+                                              ({{item?.coin?.code}}) </span></h6>
+                                          <div *ngIf="item?.coin?.unitValue?.amount">
+                                            <h6 [ngClass]="{
+                                                                'text-danger': +item?.amount < 0,
+                                                                'text-success': +item?.amount > 0,
+                                                                'text-info': +item?.amount === 0
+                                                            }" class="text-danger mb-0">{{item?.amount | number:
+                                              '1.0-0'}} <span class="text-muted">
+                                                ({{item?.fee}}%) </span> </h6>
+                                          </div>
+                                        </div>
+                                      </div>
+                                    </ng-template>
+                                  </ng-select>
+                                </div>
+                                <div class="mb-3 col-lg-6">
+                                  <label for="customername-field"
+                                    class="form-label">{{'MODULES.SYSTEM.QUANTITATIVE_AMOUNT' | translate }}</label>
+                                  <div class="input-group">
+                                    <input required type="number" id="customername-field" class="form-control"
+                                      placeholder="{{'PLACEHOLDER.ENTER_QUALITATIVE_AMOUNT' | translate }}"
+                                      formControlName="amount" />
+                                    <div class="input-group-append">
+                                      <span class="input-group-text">%</span>
+                                    </div>
+                                  </div>
+                                </div>
+                              </div>
+                            </ng-container>
+                          </ng-container>
+                        </ng-container>
+                        <div class="col-lg-12">
+                          <div class="hstack justify-content-end gap-2 mt-3">
+                            <button *ngIf="!selectedPrelevel"
+                              [disabled]="isConverterPhysicalButtonDisabled || loyaltyForm.get(['onsiteConverter', 'physical']).invalid"
+                              (click)="saveConverter('physical')" type="button" class="btn btn-success">{{'COMMON.SAVE'
+                              | translate }}</button>
+                            <button *ngIf="selectedPrelevel === true"
+                              [disabled]="isPrelevelPhysicalButtonDisabled || loyaltyForm.get(['prelevel', 'onsiteConverter', 'physical']).invalid"
+                              (click)="saveConverter('physical')" type="button" class="btn btn-success">{{'COMMON.SAVE'
+                              | translate }}</button>
+                          </div>
+                        </div>
+                      </form>
+                    </ng-template>
+                  </li>
+                  <li [ngbNavItem]="2" class="nav-item">
+                    <a ngbNavLink class="nav-link" data-bs-toggle="tab" role="tab">
+                      <i class="far fa-envelope"></i>{{'MODULES.SYSTEM.MOBILE' | translate }}
+                    </a>
+                    <ng-template ngbNavContent>
+                      <div class="col-lg-12 d-flex justify-content-between mb-3">
+                        <div>
+                          <div for="firstnameInput">{{'MODULES.SYSTEM.ENABLE_MOBILE_CONVERSION' | translate }}</div>
+                          <div class="text-muted">{{'MODULES.SYSTEM.ALLOW_POINTS_ON_PURCHASE' | translate }}
+                          </div>
+                        </div>
+                        <div class="form-check fs-18 form-switch">
+                          <input *ngIf="!selectedPrelevel" [checked]="loyaltySettings?.onsiteConverter?.mobile?.active"
+                            (change)="onChangeConversion($event.target.checked, 'mobile')" class="form-check-input"
+                            type="checkbox" role="switch" id="flexSwitchCheckDefault">
+                          <input *ngIf="selectedPrelevel"
+                            [checked]="loyaltySettings?.prelevel?.onsiteConverter?.mobile?.active"
+                            (change)="onChangeConversion($event.target.checked, 'mobile', true)"
+                            class="form-check-input" type="checkbox" role="switch" id="flexSwitchCheckDefault">
+                        </div>
+                      </div>
+                      <form [formGroup]="loyaltyForm">
+                        <ng-container formGroupName="onsiteConverter" *ngIf="selectedPrelevel === false">
+                          <ng-container formGroupName="mobile">
+                            <ng-container formArrayName="remunerations">
+                              <div *ngFor="let control of remunerationsMobileArray.controls; let i = index"
+                                [formGroupName]="i">
+                                <div *ngIf="reputations?.length - 1 !== selectedRepIndex" formGroupName="qualitative"
+                                  class="mb-3 col-lg-6">
+                                  <label for="customername-field"
+                                    class="form-label">{{'MODULES.SYSTEM.QUALITATIVE_AMOUNT' | translate }}</label>
+                                  <div class="input-group">
+                                    <input required type="number" id="customername-field" class="form-control"
+                                      placeholder="{{'PLACEHOLDER.ENTER_QUALITATIVE_AMOUNT' | translate }}"
+                                      formControlName="amount" />
+                                    <div class="input-group-append">
+                                      <span class="input-group-text">%
+                                      </span>
+                                    </div>
+                                  </div>
+                                </div>
+                                <div formGroupName="quantitative" class="row">
+                                  <div class="mb-3 col-lg-6">
+                                    <label for="choices-status-input"
+                                      class="form-label">{{'MENUITEMS.CUSTOMERENGAGEMENT.LIST.WALLET' | translate
+                                      }}*</label>
+                                    <ng-select required [virtualScroll]="true" (scrollToEnd)="loadMoreWallets()"
+                                      placeholder="{{'PLACEHOLDER.ENTER_YOUR_COIN' | translate }}"
+                                      [items]="wallet$ | async" [multiple]="false" [formControlName]="'wallet'">
+                                      <ng-template ng-label-tmp let-item="item" let-clear="clear">
+                                        <div class="ng-value-label">
+                                          <div class="col-3 d-flex align-items-center">
+                                            <div class="flex-shrink-0">
+                                              <div *ngIf="!item?.coin?.picture?.baseUrl" class="avatar-xxs">
+                                                <div
+                                                  class="avatar-title text-danger bg-soft-info rounded-circle shadow">
+                                                  {{item?.coin?.name?.charAt(0) || 'N'}}
+                                                </div>
+                                              </div>
+                                              <div *ngIf="item?.coin?.picture?.baseUrl">
+                                                <img
+                                                  [src]="item?.coin?.picture?.baseUrl + '/' + item?.coin?.picture?.path"
+                                                  alt="" class="avatar-xxs shadow rounded-circle" />
+                                              </div>
+                                            </div>
+                                            <div class="flex-grow-1 ms-3">
+                                              <h6 class="mb-1">{{item?.coin?.name}} <span class="text-muted">
+                                                  ({{item?.fee}}%) </span></h6>
+                                            </div>
+                                          </div>
+                                        </div>
+                                        <span class="ng-value-icon right" (click)="clear(item)"
+                                          aria-hidden="true">×</span>
+                                      </ng-template>
+                                      <ng-template ng-option-tmp let-item="item">
+                                        <div class="col-3 d-flex">
+                                          <div class="flex-shrink-0">
+                                            <div *ngIf="!item?.coin?.picture?.baseUrl" class="avatar-xxs">
+                                              <div class="avatar-title text-danger bg-soft-info rounded-circle shadow">
+                                                {{item?.coin?.name?.charAt(0) || 'N'}}
+                                              </div>
+                                            </div>
+                                            <div *ngIf="item?.coin?.picture?.baseUrl">
+                                              <img
+                                                [src]="item?.coin?.picture?.baseUrl + '/' + item?.coin?.picture?.path"
+                                                alt="" class="avatar-xxs shadow rounded-circle" />
+                                            </div>
+                                          </div>
+                                          <div class="flex-grow-1 ms-3">
+                                            <span class="mb-1">{{item?.coin?.name}} ({{item?.fee}}%)</span>
+                                          </div>
+                                        </div>
+                                      </ng-template>
+                                    </ng-select>
+                                  </div>
+                                  <div class="mb-3 col-lg-6">
+                                    <label for="customername-field"
+                                      class="form-label">{{'MODULES.SYSTEM.QUANTITATIVE_AMOUNT' | translate }}</label>
+                                    <div class="input-group">
+                                      <input required type="number" id="customername-field" class="form-control"
+                                        placeholder="{{'PLACEHOLDER.ENTER_QUALITATIVE_AMOUNT' | translate }}"
+                                        formControlName="amount" />
+                                      <div class="input-group-append">
+                                        <span class="input-group-text">%</span>
+                                      </div>
+                                    </div>
+                                  </div>
+                                </div>
+                              </div>
+                            </ng-container>
+                          </ng-container>
+                        </ng-container>
+                        <ng-container formGroupName="prelevel" *ngIf="selectedPrelevel === true">
+                          <ng-container formGroupName="onsiteConverter">
+                            <ng-container formGroupName="mobile">
+                              <div formGroupName="qualitative" class="mb-3 col-lg-6">
+                                <label for="customername-field" class="form-label">{{'MODULES.SYSTEM.QUALITATIVE_AMOUNT'
+                                  | translate }}</label>
+                                <div class="input-group">
+                                  <input required type="number" id="customername-field" class="form-control"
+                                    placeholder="{{'PLACEHOLDER.ENTER_QUALITATIVE_AMOUNT' | translate }}"
+                                    formControlName="amount" />
+                                  <div class="input-group-append">
+                                    <span class="input-group-text">%
+                                    </span>
+                                  </div>
+                                </div>
+                              </div>
+                              <div formGroupName="quantitative" class="row">
+                                <div class="mb-3 col-lg-6">
+                                  <label for="choices-status-input"
+                                    class="form-label">{{'MENUITEMS.CUSTOMERENGAGEMENT.LIST.WALLET' | translate
+                                    }}*</label>
+                                  <ng-select required [virtualScroll]="true" (scrollToEnd)="loadMoreWallets()"
+                                    placeholder="{{'PLACEHOLDER.ENTER_YOUR_COIN' | translate }}"
+                                    [items]="wallet$ | async" [multiple]="false" [formControlName]="'wallet'">
+                                    <ng-template ng-label-tmp let-item="item" let-clear="clear">
+                                      <div class="ng-value-label">
+                                        <div class="col-3 d-flex align-items-center">
+                                          <div class="flex-shrink-0">
+                                            <div *ngIf="!item?.coin?.picture?.baseUrl" class="avatar-xxs">
+                                              <div class="avatar-title text-danger bg-soft-info rounded-circle shadow">
+                                                {{item?.coin?.name?.charAt(0) || 'N'}}
+                                              </div>
+                                            </div>
+                                            <div *ngIf="item?.coin?.picture?.baseUrl">
+                                              <img
+                                                [src]="item?.coin?.picture?.baseUrl + '/' + item?.coin?.picture?.path"
+                                                alt="" class="avatar-xxs shadow rounded-circle" />
+                                            </div>
+                                          </div>
+                                          <div class="flex-grow-1 ms-3">
+                                            <span class="mb-1">{{item?.coin?.name}} ({{item?.fee}}%)</span>
+                                          </div>
+                                        </div>
+                                      </div>
+                                      <span class="ng-value-icon right" (click)="clear(item)"
+                                        aria-hidden="true">×</span>
+                                    </ng-template>
+                                    <ng-template ng-option-tmp let-item="item">
+                                      <div class="col-3 d-flex">
+                                        <div class="flex-shrink-0">
+                                          <div *ngIf="!item?.coin?.picture?.baseUrl" class="avatar-xxs">
+                                            <div class="avatar-title text-danger bg-soft-info rounded-circle shadow">
+                                              {{item?.coin?.name?.charAt(0) || 'N'}}
+                                            </div>
+                                          </div>
+                                          <div *ngIf="item?.coin?.picture?.baseUrl">
+                                            <img [src]="item?.coin?.picture?.baseUrl + '/' + item?.coin?.picture?.path"
+                                              alt="" class="avatar-xxs shadow rounded-circle" />
+                                          </div>
+                                        </div>
+                                        <div class="flex-grow-1 ms-3">
+                                          <h6 class="mb-1">{{item?.coin?.name}} <span class="text-muted">
+                                              ({{item?.coin?.code}}) </span></h6>
+                                          <div *ngIf="item?.coin?.unitValue?.amount">
+                                            <h6 [ngClass]="{
+                                                                'text-danger': +item?.amount < 0,
+                                                                'text-success': +item?.amount > 0,
+                                                                'text-info': +item?.amount === 0
+                                                            }" class="text-danger mb-0">{{item?.amount | number:
+                                              '1.0-0'}} <span class="text-muted">
+                                                ({{item?.fee}}%) </span> </h6>
+                                          </div>
+                                        </div>
+                                      </div>
+                                    </ng-template>
+                                  </ng-select>
+                                </div>
+                                <div class="mb-3 col-lg-6">
+                                  <label for="customername-field"
+                                    class="form-label">{{'MODULES.SYSTEM.QUANTITATIVE_AMOUNT' | translate }}</label>
+                                  <div class="input-group">
+                                    <input required type="number" id="customername-field" class="form-control"
+                                      placeholder="{{'PLACEHOLDER.ENTER_QUALITATIVE_AMOUNT' | translate }}"
+                                      formControlName="amount" />
+                                    <div class="input-group-append">
+                                      <span class="input-group-text">%</span>
+                                    </div>
+                                  </div>
+                                </div>
+                              </div>
+                            </ng-container>
+                          </ng-container>
+                        </ng-container>
+                        <div class="col-lg-12">
+                          <div class="hstack justify-content-end gap-2 mt-3">
+                            <button *ngIf="selectedPrelevel === false"
+                              [disabled]="isConverterMobileButtonDisabled || loyaltyForm.get(['onsiteConverter', 'mobile']).invalid"
+                              (click)="saveConverter('mobile')" type="button" class="btn btn-success">{{'COMMON.SAVE' |
+                              translate }}</button>
+                            <button *ngIf="selectedPrelevel === true"
+                              [disabled]="isPrelevelMobileButtonDisabled || loyaltyForm.get(['prelevel', 'onsiteConverter', 'mobile']).invalid"
+                              (click)="saveConverter('mobile')" type="button" class="btn btn-success">{{'COMMON.SAVE' |
+                              translate }}</button>
+                          </div>
+                        </div>
+                      </form>
+                    </ng-template>
+                  </li>
+                  <li [ngbNavItem]="3" class="nav-item">
+                    <a ngbNavLink class="nav-link" data-bs-toggle="tab" role="tab">
+                      <i class="far fa-envelope"></i>{{'MODULES.SYSTEM.WEB' | translate }}
+                    </a>
+                    <ng-template ngbNavContent>
+                      <div class="col-lg-12 d-flex justify-content-between mb-3">
+                        <div>
+                          <div for="firstnameInput">{{'MODULES.SYSTEM.ENABLE_WEB_CONVERSION' | translate }}</div>
+                          <div class="text-muted">{{'MODULES.SYSTEM.ALLOW_POINTS_ON_PURCHASE' | translate }}
+                          </div>
+                        </div>
+                        <div class="form-check fs-18 form-switch">
+                          <input *ngIf="!selectedPrelevel" [checked]="loyaltySettings?.onsiteConverter?.web?.active"
+                            (change)="onChangeConversion($event.target.checked, 'web')" class="form-check-input"
+                            type="checkbox" role="switch" id="flexSwitchCheckDefault">
+                          <input *ngIf="selectedPrelevel"
+                            [checked]="loyaltySettings?.prelevel?.onsiteConverter?.web?.active"
+                            (change)="onChangeConversion($event.target.checked, 'web', true)" class="form-check-input"
+                            type="checkbox" role="switch" id="flexSwitchCheckDefault">
+                        </div>
+                      </div>
+                      <form [formGroup]="loyaltyForm">
+                        <ng-container formGroupName="onsiteConverter" *ngIf="selectedPrelevel === false">
+                          <ng-container formGroupName="web">
+                            <ng-container formArrayName="remunerations">
+                              <div *ngFor="let control of remunerationsWebArray.controls; let i = index"
+                                [formGroupName]="i">
+                                <div *ngIf="reputations?.length - 1 !== selectedRepIndex" formGroupName="qualitative"
+                                  class="mb-3 col-lg-6">
+                                  <label for="customername-field"
+                                    class="form-label">{{'MODULES.SYSTEM.QUALITATIVE_AMOUNT' | translate }}</label>
+                                  <div class="input-group">
+                                    <input required type="number" id="customername-field" class="form-control"
+                                      placeholder="{{'PLACEHOLDER.ENTER_QUALITATIVE_AMOUNT' | translate }}"
+                                      formControlName="amount" />
+                                    <div class="input-group-append">
+                                      <span class="input-group-text">%
+                                      </span>
+                                    </div>
+                                  </div>
+                                </div>
+                                <div formGroupName="quantitative" class="row">
+                                  <div class="mb-3 col-lg-6">
+                                    <label for="choices-status-input"
+                                      class="form-label">{{'MENUITEMS.CUSTOMERENGAGEMENT.LIST.WALLET' | translate
+                                      }}*</label>
+                                    <ng-select required [virtualScroll]="true" (scrollToEnd)="loadMoreWallets()"
+                                      placeholder="{{'PLACEHOLDER.ENTER_YOUR_COIN' | translate }}"
+                                      [items]="wallet$ | async" [multiple]="false" [formControlName]="'wallet'">
+                                      <ng-template ng-label-tmp let-item="item" let-clear="clear">
+                                        <div class="ng-value-label">
+                                          <div class="col-3 d-flex align-items-center">
+                                            <div class="flex-shrink-0">
+                                              <div *ngIf="!item?.coin?.picture?.baseUrl" class="avatar-xxs">
+                                                <div
+                                                  class="avatar-title text-danger bg-soft-info rounded-circle shadow">
+                                                  {{item?.coin?.name?.charAt(0) || 'N'}}
+                                                </div>
+                                              </div>
+                                              <div *ngIf="item?.coin?.picture?.baseUrl">
+                                                <img
+                                                  [src]="item?.coin?.picture?.baseUrl + '/' + item?.coin?.picture?.path"
+                                                  alt="" class="avatar-xxs shadow rounded-circle" />
+                                              </div>
+                                            </div>
+                                            <div class="flex-grow-1 ms-3">
+                                              <span class="mb-1">{{item?.coin?.name}} ({{item?.fee}}%)</span>
+                                            </div>
+                                          </div>
+                                        </div>
+                                        <span class="ng-value-icon right" (click)="clear(item)"
+                                          aria-hidden="true">×</span>
+                                      </ng-template>
+                                      <ng-template ng-option-tmp let-item="item">
+                                        <div class="col-3 d-flex">
+                                          <div class="flex-shrink-0">
+                                            <div *ngIf="!item?.coin?.picture?.baseUrl" class="avatar-xxs">
+                                              <div class="avatar-title text-danger bg-soft-info rounded-circle shadow">
+                                                {{item?.coin?.name?.charAt(0) || 'N'}}
+                                              </div>
+                                            </div>
+                                            <div *ngIf="item?.coin?.picture?.baseUrl">
+                                              <img
+                                                [src]="item?.coin?.picture?.baseUrl + '/' + item?.coin?.picture?.path"
+                                                alt="" class="avatar-xxs shadow rounded-circle" />
+                                            </div>
+                                          </div>
+                                          <div class="flex-grow-1 ms-3">
+                                            <h6 class="mb-1">{{item?.coin?.name}} <span class="text-muted">
+                                                ({{item?.coin?.code}}) </span></h6>
+                                            <div *ngIf="item?.coin?.unitValue?.amount">
+                                              <h6 [ngClass]="{
+                                                                  'text-danger': +item?.amount < 0,
+                                                                  'text-success': +item?.amount > 0,
+                                                                  'text-info': +item?.amount === 0
+                                                              }" class="text-danger mb-0">{{item?.amount | number:
+                                                '1.0-0'}} <span class="text-muted"> ({{item?.fee}}%) </span> </h6>
+                                            </div>
+                                          </div>
+                                        </div>
+                                      </ng-template>
+                                    </ng-select>
+                                  </div>
+                                  <div class="mb-3 col-lg-6">
+                                    <label for="customername-field"
+                                      class="form-label">{{'MODULES.SYSTEM.QUANTITATIVE_AMOUNT' | translate }}</label>
+                                    <div class="input-group">
+                                      <input required type="number" id="customername-field" class="form-control"
+                                        placeholder="{{'PLACEHOLDER.ENTER_QUALITATIVE_AMOUNT' | translate }}"
+                                        formControlName="amount" />
+                                      <div class="input-group-append">
+                                        <span class="input-group-text">%</span>
+                                      </div>
+                                    </div>
+                                  </div>
+                                </div>
+                              </div>
+                            </ng-container>
+                          </ng-container>
+                        </ng-container>
+                        <ng-container formGroupName="prelevel" *ngIf="selectedPrelevel === true">
+                          <ng-container formGroupName="onsiteConverter">
+                            <ng-container formGroupName="web">
+                              <div formGroupName="qualitative" class="mb-3 col-lg-6">
+                                <label for="customername-field" class="form-label">{{'MODULES.SYSTEM.QUALITATIVE_AMOUNT'
+                                  | translate }}sss</label>
+                                <div class="input-group">
+                                  <input required type="number" id="customername-field" class="form-control"
+                                    placeholder="{{'PLACEHOLDER.ENTER_QUALITATIVE_AMOUNT' | translate }}"
+                                    formControlName="amount" />
+                                  <div class="input-group-append">
+                                    <span class="input-group-text">%
+                                    </span>
+                                  </div>
+                                </div>
+                              </div>
+                              <div formGroupName="quantitative" class="row">
+                                <div class="mb-3 col-lg-6">
+                                  <label for="choices-status-input"
+                                    class="form-label">{{'MENUITEMS.CUSTOMERENGAGEMENT.LIST.WALLET' | translate
+                                    }}*</label>
+                                  <ng-select required [virtualScroll]="true" (scrollToEnd)="loadMoreWallets()"
+                                    placeholder="{{'PLACEHOLDER.ENTER_YOUR_COIN' | translate }}"
+                                    [items]="wallet$ | async" [multiple]="false" [formControlName]="'wallet'">
+                                    <ng-template ng-label-tmp let-item="item" let-clear="clear">
+                                      <div class="ng-value-label">
+                                        <div class="col-3 d-flex align-items-center">
+                                          <div class="flex-shrink-0">
+                                            <div *ngIf="!item?.coin?.picture?.baseUrl" class="avatar-xxs">
+                                              <div class="avatar-title text-danger bg-soft-info rounded-circle shadow">
+                                                {{item?.coin?.name?.charAt(0) || 'N'}}
+                                              </div>
+                                            </div>
+                                            <div *ngIf="item?.coin?.picture?.baseUrl">
+                                              <img
+                                                [src]="item?.coin?.picture?.baseUrl + '/' + item?.coin?.picture?.path"
+                                                alt="" class="avatar-xxs shadow rounded-circle" />
+                                            </div>
+                                          </div>
+                                          <div class="flex-grow-1 ms-3">
+                                            <span class="mb-1">{{item?.coin?.name}} ({{item?.fee}}%)</span>
+                                          </div>
+                                        </div>
+                                      </div>
+                                      <span class="ng-value-icon right" (click)="clear(item)"
+                                        aria-hidden="true">×</span>
+                                    </ng-template>
+                                    <ng-template ng-option-tmp let-item="item">
+                                      <div class="col-3 d-flex">
+                                        <div class="flex-shrink-0">
+                                          <div *ngIf="!item?.coin?.picture?.baseUrl" class="avatar-xxs">
+                                            <div class="avatar-title text-danger bg-soft-info rounded-circle shadow">
+                                              {{item?.coin?.name?.charAt(0) || 'N'}}
+                                            </div>
+                                          </div>
+                                          <div *ngIf="item?.coin?.picture?.baseUrl">
+                                            <img [src]="item?.coin?.picture?.baseUrl + '/' + item?.coin?.picture?.path"
+                                              alt="" class="avatar-xxs shadow rounded-circle" />
+                                          </div>
+                                        </div>
+                                        <div class="flex-grow-1 ms-3">
+                                          <h6 class="mb-1">{{item?.coin?.name}} <span class="text-muted">
+                                              ({{item?.coin?.code}}) </span></h6>
+                                          <div *ngIf="item?.coin?.unitValue?.amount">
+                                            <h6 [ngClass]="{
+                                                                'text-danger': +item?.amount < 0,
+                                                                'text-success': +item?.amount > 0,
+                                                                'text-info': +item?.amount === 0
+                                                            }" class="text-danger mb-0">{{item?.amount | number:
+                                              '1.0-0'}} <span class="text-muted">
+                                                ({{item?.fee}}%) </span> </h6>
+                                          </div>
+                                        </div>
+                                      </div>
+                                    </ng-template>
+                                  </ng-select>
+                                </div>
+                                <div class="mb-3 col-lg-6">
+                                  <label for="customername-field"
+                                    class="form-label">{{'MODULES.SYSTEM.QUANTITATIVE_AMOUNT' | translate }}</label>
+                                  <div class="input-group">
+                                    <input required type="number" id="customername-field" class="form-control"
+                                      placeholder="{{'PLACEHOLDER.ENTER_QUALITATIVE_AMOUNT' | translate }}"
+                                      formControlName="amount" />
+                                    <div class="input-group-append">
+                                      <span class="input-group-text">%</span>
+                                    </div>
+                                  </div>
+                                </div>
+                              </div>
+                            </ng-container>
+                          </ng-container>
+                        </ng-container>
+                        <div class="col-lg-12">
+                          <div class="hstack justify-content-end gap-2 mt-3">
+                            <button *ngIf="selectedPrelevel === false"
+                              [disabled]="isConverterWebButtonDisabled || loyaltyForm.get(['onsiteConverter', 'web']).invalid"
+                              (click)="saveConverter('web')" type="button" class="btn btn-success">{{'COMMON.SAVE' |
+                              translate }}</button>
+                            <button *ngIf="selectedPrelevel === true"
+                              [disabled]="isPrelevelWebButtonDisabled || loyaltyForm.get(['prelevel', 'onsiteConverter', 'web']).invalid"
+                              (click)="saveConverter('web')" type="button" class="btn btn-success">{{'COMMON.SAVE' |
+                              translate }}</button>
+                          </div>
+                        </div>
+                      </form>
+                    </ng-template>
+                  </li>
+                </ul>
+                <div class="card-body p-4">
+                  <div class="tab-content">
+                    <div [ngbNavOutlet]="customConverterNav"></div>
+                  </div>
+                </div>
+              </ng-template>
+            </li>
+            <li [ngbNavItem]="4" class="nav-item">
+              <a ngbNavLink class="nav-link" data-bs-toggle="tab" role="tab">
+                <i class="far fa-envelope"></i>{{'MODULES.SYSTEM.CARDS' | translate }}
+              </a>
+              <ng-template ngbNavContent>
+                <form [formGroup]="loyaltyForm">
+                  <div for="firstnameInput">{{'MODULES.SYSTEM.LOYALTY_CARDS_PREFERENCES' | translate }}</div>
+                  <div class="text-muted mb-3">{{'MODULES.SYSTEM.MANAGE_CARD_PREFERENCES' | translate }}</div>
+                  <div class="col-lg-12 d-flex justify-content-between mb-3">
+                    <div>
+                      <div for="firstnameInput">{{'MODULES.SYSTEM.PHYSICAL_CARD' | translate }}</div>
+                      <div class="text-muted">{{'MODULES.SYSTEM.ALLOW_PHYSICAL_CARD' | translate }}
+                      </div>
+                    </div>
+                    <div class="flex-shrink-0 d-flex fs-18 gap-1">
+                      <div class="form-check form-switch">
+                        <input (change)="update($event?.target?.checked, 'physical', 'loyaltyCard')"
+                          [checked]="loyaltySettings?.loyaltyCard?.physical === true" class="form-check-input"
+                          type="checkbox" role="switch" id="flexSwitchCheckDefault">
+                      </div>
+                    </div>
+                  </div>
+                  <div class="col-lg-12 d-flex justify-content-between mb-3">
+                    <div>
+                      <div for="firstnameInput">{{'MODULES.SYSTEM.VIRTUAL_CARD' | translate }}</div>
+                      <div class="text-muted">{{'MODULES.SYSTEM.ALLOW_VIRTUAL_CARD' | translate }}
+                      </div>
+                    </div>
+                    <div class="flex-shrink-0 d-flex fs-18 gap-1">
+                      <div class="form-check form-switch">
+                        <input (change)="update($event?.target?.checked, 'digital', 'loyaltyCard')"
+                          [checked]="loyaltySettings?.loyaltyCard?.digital === true" class="form-check-input"
+                          type="checkbox" role="switch" id="flexSwitchCheckDefault">
+                      </div>
+                    </div>
+                  </div>
+                  <ng-container *ngIf="loyaltySettings?.loyaltyCard?.physical || loyaltySettings?.loyaltyCard?.digital">
+                    <div class="mb-3">
+                      <ng-container formGroupName="loyaltyCard">
+                        <div class="mb-3 col-lg-6">
+                          <label for="customername-field" class="form-label">{{'MODULES.SYSTEM.CARD_VALIDITY' |
+                            translate
+                            }}</label>
+                          <div class="input-group">
+                            <input required type="number" id="customername-field" class="form-control"
+                              placeholder="{{'PLACEHOLDER.ENTER_SHIPPING_SERVICE' | translate }}"
+                              formControlName="validity" />
+                          </div>
+                        </div>
+                        <ng-container formGroupName="representation">
+                          <div class="row">
+                            <div class="col-lg-6 mb-3">
+                              <label for="E+emails" class="form-label">{{'MODULES.SYSTEM.VISUALS' | translate }}</label>
+                              <ng-select placeholder="{{'PLACEHOLDER.VISUAL' | translate }}" [multiple]="false"
+                                [items]="visuals" [formControlName]="'visual'">
+                                <ng-template ng-label-tmp let-item="item">
+                                  <span class="ng-value-label">
+                                    {{
+                                    item === 'BARCODE' ? 'Barcode' : 'QrCode'
+                                    }}
+                                  </span>
+                                </ng-template>
+                                <ng-template ng-option-tmp let-item="item">
+                                  {{
+                                  item === 'BARCODE' ? 'Barcode' : 'QrCode'
+                                  }}
+                                </ng-template>
+                              </ng-select>
+                            </div>
+                            <div
+                              *ngIf="loyaltyForm.get(['loyaltyCard', 'representation', 'visual'])?.value === 'BARCODE'"
+                              class="col-lg-6 mb-3">
+                              <label for="E+emails" class="form-label">{{'MODULES.SYSTEM.STYLE' | translate }}</label>
+                              <ng-select placeholder="{{'PLACEHOLDER.STYLE' | translate }}" [multiple]="false"
+                                [items]="styles" [formControlName]="'style'">
+                                <ng-template ng-label-tmp let-item="item">
+                                  <span class="ng-value-label">
+                                    {{ item }}
+                                  </span>
+                                </ng-template>
+                                <ng-template ng-option-tmp let-item="item">
+                                  {{ item }}
+                                </ng-template>
+                              </ng-select>
+                            </div>
+                          </div>
+                        </ng-container>
+                        <ng-container formGroupName="number">
+                          <div class="row">
+                            <div class="col-lg-6 mb-3">
+                              <label for="E+emails" class="form-label">{{'MODULES.SYSTEM.FORMAT' | translate }}</label>
+                              <ng-select placeholder="{{'PLACEHOLDER.VISUAL' | translate }}" [multiple]="false"
+                                [items]="formats" [formControlName]="'format'">
+                                <ng-template ng-label-tmp let-item="item">
+                                  <span class="ng-value-label">
+                                    {{
+                                    item === 'NUMBERIC' ? 'Numberic' : 'Alphanumeric'
+                                    }}
+                                  </span>
+                                </ng-template>
+                                <ng-template ng-option-tmp let-item="item">
+                                  {{
+                                  item === 'NUMBERIC' ? 'Numberic' : 'Alphanumeric'
+                                  }}
+                                </ng-template>
+                              </ng-select>
+                            </div>
+                            <div class="mb-3 col-lg-6">
+                              <label for="customername-field" class="form-label">{{'MODULES.SYSTEM.LENGTH' | translate
+                                }}</label>
+                              <div class="input-group">
+                                <input type="number" id="customername-field" class="form-control"
+                                  placeholder="{{'PLACEHOLDER.ENTER_LENGTH' | translate }}" formControlName="length" />
+                              </div>
+                            </div>
+                          </div>
+                        </ng-container>
+                      </ng-container>
+                    </div>
+                    <div class="row row-cols-xxl-4 row-cols-lg-3 row-cols-1">
+                      <div (click)="getCardLevel(i, 'prelevel')" class="col-4">
+                        <div [ngStyle]="{'border-color': loyaltyForm.get(['prelevel', 'color']).value || '#d8d0d0'}"
+                          [class.br]="!selectedRepLevel" class="card card-body h-9">
+                          <div class="d-flex align-items-center justify-content-between">
+                            <h5 class="card-title mb-3">{{loyaltySettings?.prelevel?.name || 'PreLevel'}}</h5>
+                            <i *ngIf="!selectedRepLevel"
+                              [ngStyle]="{'color': loyaltyForm.get(['prelevel', 'color']).value || '#d8d0d0'}"
+                              class="ri-checkbox-circle-fill fs-22">
+                            </i>
+                          </div>
+                        </div>
+                      </div>
+                      <div *ngFor="let rep of reputations; let i = index" class="col-lg-4">
+                        <div (click)="getCardLevel(i, null)"
+                          [ngClass]="{'br': selectedRepLevel === rep?.reputationLevel && selectedField !== 'prelevel'}"
+                          [ngStyle]="{'border-color': rep?.color}" (click)="selectedRepLevel = rep?.reputationLevel"
+                          class="card card-body h-9 cursor-pointer">
+                          <div class="d-flex justify-content-between">
+                            <h5 class="card-title mb-3">{{rep?.reputationLevel}}</h5>
+                            <i *ngIf="selectedRepLevel === rep?.reputationLevel" [ngStyle]="{'color': rep?.color}"
+                              class="ri-checkbox-circle-fill fs-22">
+                            </i>
+                          </div>
+                          <div class="mt-4">
+                            <span class="fs-20">{{rep?.levelInterval?.max - rep?.levelInterval?.min }}
+                            </span>
+                            <span class="text-muted fs-20">
+                              <img *ngIf="(loyaltySettings$ | async)?.qualitative?.picture?.baseUrl"
+                                [src]="(loyaltySettings$ | async)?.qualitative?.picture?.baseUrl + '/' + (loyaltySettings$ | async)?.qualitative?.picture?.path"
+                                alt="" class="img-fluid rounded-circle avatar-xxs mb-1">
+                              <img class="img-fluid rounded-circle avatar-xxs mb-1"
+                                *ngIf="!(loyaltySettings$ | async)?.qualitative?.picture?.baseUrl"
+                                src="https://sifca-storage.s3.eu-central-1.amazonaws.com/loyalcraft/reputation_512.gif">
+                            </span>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    <div *ngIf="selectedField === 'prelevel'"
+                      class="profile-user position-relative d-inline-block mx-auto mb-4 d-flex justify-content-center">
+                      <div class="mt-2 df-flex">
+                        <div class="img-wrap w-30 h-30 me-3 mb-2">
+                          <div *ngIf="loadingCardPrelevel" class="fs-12" id="elmLoader">
+                            <div class="spinner-border text-primary" role="status">
+                              <span class="visually-hidden">{{'COMMON.LOADING' | translate }}</span>
+                            </div>
+                          </div>
+                          <ng-container *ngIf="loyaltyForm.get(['prelevel', 'cardPicture'])?.value?.baseUrl">
+                            <span class="delete-icon w-6 h-6 flex items-center justify-center cursor-pointer"
+                              (click)="removePicture('prelevel')">
+                              <i class="ri-delete-bin-fill ft text-danger"></i>
+                            </span>
+                            <img class="w-30 h-30 rounded object-cover"
+                              [src]="loyaltyForm.get(['prelevel', 'cardPicture'])?.value?.baseUrl + '/' + loyaltyForm.get(['prelevel', 'cardPicture'])?.value?.path"
+                              alt="Blog picture">
+                          </ng-container>
+                          <div *ngIf="!loyaltyForm.get(['prelevel', 'cardPicture'])?.value?.baseUrl"
+                            (click)="uploadLevelPicture()"
+                            class="w-30 h-30 mb-3 col-4 border rounded overflow-hidden cursor-pointer d-flex align-items-center justify-content-center">
+                            <span class="fs-5 fw-bold">{{'COMMON.UPLOAD' | translate }}</span>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    <div *ngIf="selectedField !== 'prelevel'"
+                      class="profile-user position-relative d-inline-block mx-auto mb-4 d-flex justify-content-center">
+                      <div class="mt-2 df-flex">
+                        <div class="img-wrap w-30 h-30 me-3 mb-2">
+                          <div *ngIf="loadingCardPrelevel" class="fs-12" id="elmLoader">
+                            <div class="spinner-border text-primary" role="status">
+                              <span class="visually-hidden">{{'COMMON.LOADING' | translate }}</span>
+                            </div>
+                          </div>
+                          <ng-container
+                            *ngIf="loyaltyForm.get(['loyaltyCard', 'levels'])?.value[selectedCardIndex]?.picture?.baseUrl">
+                            <span class="delete-icon w-6 h-6 flex items-center justify-center cursor-pointer"
+                              (click)="removePicture('level')">
+                              <i class="ri-delete-bin-fill ft text-danger"></i>
+                            </span>
+                            <img class="w-30 h-30 rounded object-cover"
+                              [src]="loyaltyForm.get(['loyaltyCard', 'levels'])?.value[selectedCardIndex]?.picture?.baseUrl + '/' + loyaltyForm.get(['loyaltyCard', 'levels'])?.value[selectedCardIndex]?.picture?.path"
+                              alt="Blog picture">
+                          </ng-container>
+                          <div
+                            *ngIf="!loyaltyForm.get(['loyaltyCard', 'levels'])?.value?.[selectedCardIndex]?.picture?.baseUrl"
+                            (click)="uploadLevelPicture()"
+                            class="w-30 h-30 mb-3 col-4 border rounded overflow-hidden cursor-pointer d-flex align-items-center justify-content-center">
+                            <span class="fs-5 fw-bold">{{'COMMON.UPLOAD' | translate }}</span>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="col-lg-12">
+                      <div class="hstack justify-content-end gap-2 mt-3">
+                        <button (click)="save()" type="button" [disabled]="isCardButtonDisabled || loyaltyForm.invalid"
+                          class="btn btn-success">{{'COMMON.SAVE' | translate }}</button>
+                      </div>
+                    </div>
+                  </ng-container>
+                </form>
+              </ng-template>
+            </li>
+            <li [ngbNavItem]="5" class="nav-item">
+              <a ngbNavLink class="nav-link" data-bs-toggle="tab" role="tab">
+                <i class="far fa-envelope"></i>{{'MENUITEMS.CUSTOMERENGAGEMENT.LIST.COMMUNITY_TAB' | translate }}
+              </a>
+              <ng-template ngbNavContent>
+                <ul ngbNav (navChange)="onConverterChange($event)" #communityNav="ngbNav" [activeId]="1"
+                  class="nav nav-tabs-custom rounded card-header-tabs border-bottom-0" role="tablist">
+                  <li [ngbNavItem]="1" class="nav-item">
+                    <a ngbNavLink class="nav-link" data-bs-toggle="tab" role="tab">
+                      <i class="far fa-envelope"></i>{{'MENUITEMS.CUSTOMERENGAGEMENT.LIST.LEADERBOARD' | translate}}
+                    </a>
+                    <ng-template ngbNavContent>
+                      <form [formGroup]="loyaltyForm">
+                        <div for="firstnameInput">{{'MODULES.SYSTEM.LEADERBOARD_PREFERENCES' | translate }}</div>
+                        <div class="text-muted mb-3">Manages the Leaderboard with following preferences.</div>
+                        <div class="col-lg-12 d-flex justify-content-between mb-3">
+                          <div>
+                            <div for="firstnameInput">{{'MODULES.SYSTEM.ENABLE_LEADERBOARD' | translate }}</div>
+                            <div class="text-muted">{{'MODULES.SYSTEM.ALLOW_YOU_TO_VIEW' | translate }}</div>
+                          </div>
+                          <div class="flex-shrink-0 d-flex fs-18 gap-1">
+                            <div class="form-check form-switch">
+                              <input (change)="update($event?.target?.checked, 'active', 'leaderboard')"
+                                [checked]="loyaltySettings?.leaderboard?.active === true" class="form-check-input"
+                                type="checkbox" role="switch" id="flexSwitchCheckDefault">
+                            </div>
+                          </div>
+                        </div>
+                        <div class="col-lg-12 d-flex justify-content-between mb-3">
+                          <div>
+                            <div for="firstnameInput">{{'MODULES.SYSTEM.OVERALL_LEADERBOARD' | translate }}</div>
+                            <div class="text-muted">{{'MODULES.SYSTEM.VIEW_OVERALL_LEADERBOARD' | translate }}</div>
+                          </div>
+                          <div class="flex-shrink-0 d-flex fs-18 gap-1">
+                            <div class="form-check form-switch">
+                              <input [checked]="loyaltySettings?.leaderboard?.overall === true"
+                                (change)="update($event?.target?.checked, 'overall', 'leaderboard')"
+                                class="form-check-input" type="checkbox" role="switch" id="flexSwitchCheckDefault">
+                            </div>
+                          </div>
+                        </div>
+                        <div class="col-lg-12 d-flex justify-content-between mb-3">
+                          <div>
+                            <div for="firstnameInput">{{'MENUITEMS.CUSTOMERENGAGEMENT.LIST.MONTHLY' | translate }}
+                              {{'MODULES.SYSTEM.LEADERBOARD' | translate }}</div>
+                            <div class="text-muted">{{'MODULES.SYSTEM.VIEW_MONTHLY_LEADERBOARD' | translate }}</div>
+                          </div>
+                          <div class="flex-shrink-0 d-flex fs-18 gap-1">
+                            <div class="form-check form-switch">
+                              <input (change)="update($event?.target?.checked, 'monthly', 'leaderboard')"
+                                [checked]="loyaltySettings?.leaderboard?.monthly === true" class="form-check-input"
+                                type="checkbox" role="switch" id="flexSwitchCheckDefault">
+                            </div>
+                          </div>
+                        </div>
+                        <div class="col-lg-12 d-flex justify-content-between mb-3">
+                          <div>
+                            <div for="firstnameInput">{{'MENUITEMS.CUSTOMERENGAGEMENT.LIST.WEEKLY' | translate }}
+                              {{'MODULES.SYSTEM.LEADERBOARD' | translate }}</div>
+                            <div class="text-muted">{{'MODULES.SYSTEM.VIEW_WEEKLY_LEADERBOARD' | translate }}</div>
+                          </div>
+                          <div class="flex-shrink-0 d-flex fs-18 gap-1">
+                            <div class="form-check form-switch">
+                              <input (change)="update($event?.target?.checked, 'weekly', 'leaderboard')"
+                                [checked]="loyaltySettings?.leaderboard?.weekly === true" class="form-check-input"
+                                type="checkbox" role="switch" id="flexSwitchCheckDefault">
+                            </div>
+                          </div>
+                        </div>
+                        <div class="col-lg-12 d-flex justify-content-between mb-3">
+                          <div>
+                            <div for="firstnameInput">Daily {{'MODULES.SYSTEM.LEADERBOARD' | translate }}</div>
+                            <div class="text-muted">{{'MODULES.SYSTEM.VIEW_WEEKLY_LEADERBOARD' | translate }}</div>
+                          </div>
+                          <div class="flex-shrink-0 d-flex fs-18 gap-1">
+                            <div class="form-check form-switch">
+                              <input (change)="update($event?.target?.checked, 'daily', 'leaderboard')"
+                                [checked]="loyaltySettings?.leaderboard?.daily === true" class="form-check-input"
+                                type="checkbox" role="switch" id="flexSwitchCheckDefault">
+                            </div>
+                          </div>
+                        </div>
+                        <div class="col-lg-12 d-flex justify-content-between mb-3">
+                          <div>
+                            <div for="firstnameInput">{{'COMMON.BLUR' | translate }} {{'MODULES.SYSTEM.LEADERBOARD' |
+                              translate }}</div>
+                            <div class="text-muted">{{'MODULES.SYSTEM.VIEW_WEEKLY_LEADERBOARD' | translate }}</div>
+                          </div>
+                          <div class="flex-shrink-0 d-flex fs-18 gap-1">
+                            <div class="form-check form-switch">
+                              <input (change)="update($event?.target?.checked, 'blur', 'leaderboard')"
+                                [checked]="loyaltySettings?.leaderboard?.blur === true" class="form-check-input"
+                                type="checkbox" role="switch" id="flexSwitchCheckDefault">
+                            </div>
+                          </div>
+                        </div>
+                      </form>
+                    </ng-template>
+                  </li>
+                  <li [ngbNavItem]="2" class="nav-item">
+                    <a ngbNavLink class="nav-link" data-bs-toggle="tab" role="tab">
+                      <i class="far fa-envelope"></i>{{'MODULES.SYSTEM.SUBSCRIBERS'| translate }}
+                    </a>
+                    <ng-template ngbNavContent>
+                      <form *ngIf="loyaltyForm" [formGroup]="loyaltyForm">
+                        <div for="firstnameInput">{{'MODULES.SYSTEM.SUBSCRIBERS_PREFERENCES' | translate }}
+                        </div>
+                        <div class="text-muted mb-3">{{'MODULES.SYSTEM.MANAGE_SUBSCRIBERS' | translate }}</div>
+                        <div class="col-lg-12 d-flex justify-content-between mb-3">
+                          <div>
+                            <div for="firstnameInput">{{'MODULES.SYSTEM.ENABLE_VERIFICATION' | translate }}
+                            </div>
+                            <div class="text-muted">{{'MODULES.SYSTEM.FORCE_REQUEST_VERIFICATION' | translate }}
+                            </div>
+                          </div>
+                          <div class="flex-shrink-0 d-flex fs-18 gap-1">
+                            <div class="form-check form-switch">
+                              <input (change)="onChange($event?.target?.checked)"
+                                [checked]="loyaltySettings?.subscribers.verification === true" class="form-check-input"
+                                type="checkbox" role="switch" id="flexSwitchCheckDefault">
+                            </div>
+                          </div>
+                        </div>
+                      </form>
+                    </ng-template>
+                  </li>
+                </ul>
+                <div class="mt-4">
+                  <div class="tab-content">
+                    <div [ngbNavOutlet]="communityNav"></div>
+                  </div>
+                </div>
+              </ng-template>
+            </li>
+            <li [ngbNavItem]="7" class="nav-item">
+              <a ngbNavLink class="nav-link" data-bs-toggle="tab" role="tab">
+                <i class="far fa-envelope"></i>{{'SHARED.REDEEM' | translate }}
+              </a>
+              <ng-template ngbNavContent>
+                <form [formGroup]="loyaltyForm">
+                  <div *ngIf="widget?.multilanguage?.active && widget?.multilanguage?.languages?.length" class="card"
+                    id="ticketsList">
+                    <div class="card-header border-0">
+                      <ng-container formGroupName="redeem">
+                        <div formGroupName="translation" class="row">
+                          <h5 class="card-title col-lg-4 flex-grow-1">{{'COMMON.LANGUAGE' | translate }}</h5>
+                          <ng-select (change)="onChangeEmailLanguage($event)" class="col-lg-8" [closeOnSelect]="true"
+                            [multiple]="false" [items]="allLanguages" formControlName="language"
+                            placeholder="{{'PLACEHOLDER.SELECT_LANGUAGE' | translate }}" bindLabel="name"
+                            [searchable]="false" [clearable]="false">
+                            <ng-template ng-label-tmp let-item="item" let-clear="clear">
+                              <div class="d-flex gap-1">
+                                <span *ngIf="item !== 'Default'">{{item?.iconFlag}}</span>
+                                <span>{{item === 'Default' ? item : item?.name}}</span>
+                              </div>
+                            </ng-template>
+                            <ng-template ng-option-tmp let-item$="item$" let-item="item">
+                              <div class="d-flex gap-1">
+                                <span *ngIf="item !== 'Default'">{{item?.iconFlag}}</span>
+                                <span>{{item === 'Default' ? item : item?.name}}</span>
+                              </div>
+                            </ng-template>
+                          </ng-select>
+                        </div>
+                      </ng-container>
+                    </div>
+                  </div>
+                  <div class="custom-control custom-radio mb-3 d-flex justify-content-between align-items-center">
+                    <div formGroupName="redeem">
+                      <div class="form-check col-lg-6">
+                        <input formControlName="editor" value="TEXT" class="form-check-input" type="radio"
+                          id="aggregator" name="editor">
+                        <label class="form-check-label" for="aggregator">
+                          Text
+                        </label>
+                      </div>
+                      <div class="form-check col-lg-6">
+                        <input formControlName="editor" value="HTML" class="form-check-input" type="radio" id="coin"
+                          name="editor">
+                        <label class="form-check-label" for="coin">
+                          Html
+                        </label>
+                      </div>
+                    </div>
+                    <button (click)="onChangeRedeem(redeemModal)" class="btn btn-sm btn-primary">Preview</button>
+                  </div>
+                  <div formGroupName="redeem" class="mb-7 mb-sm-6">
+                    <label class="form-label">Redeem</label>
+                    <ng-container *ngIf="!isPreviewEnabled">
+                      <ng-container
+                        *ngIf="!translation?.get('language').value || translation?.get('language').value?.name === 'Default'">
+                        <quill-editor *ngIf="loyaltyForm.get(['redeem', 'editor']).value === 'TEXT'"
+                          formControlName="content" class="custom-quill-editor" required></quill-editor>
+                        <textarea *ngIf="loyaltyForm.get(['redeem', 'editor']).value === 'HTML'"
+                          formControlName="content" placeholder="Type your text" name="description" class="form-control"
+                          rows="10"></textarea>
+                      </ng-container>
+                      <ng-container
+                        *ngIf="translation?.get('language').value && translation?.get('language').value?.name !== 'Default'">
+                        <ng-container formGroupName="translation">
+                          <quill-editor *ngIf="loyaltyForm.get(['redeem', 'editor']).value === 'TEXT'"
+                            formControlName="content" class="custom-quill-editor" required></quill-editor>
+                          <textarea *ngIf="loyaltyForm.get(['redeem', 'editor']).value === 'HTML'"
+                            formControlName="content" placeholder="Type your text" name="description"
+                            class="form-control" rows="10"></textarea>
+                        </ng-container>
+                      </ng-container>
+                    </ng-container>
+                  </div>
+                  <div class="text-end">
+                    <button (click)="saveRedeem()" [disabled]="isRedeemButtonDisabled"
+                      class="btn btn-success">{{'COMMON.SAVE' | translate }}</button>
+                  </div>
+                </form>
+              </ng-template>
+            </li>
+            <li [ngbNavItem]="9" class="nav-item">
+              <a ngbNavLink class="nav-link" data-bs-toggle="tab" role="tab">
+                <i class="far fa-envelope"></i>Accelerate
+              </a>
+              <ng-template ngbNavContent>
+                <form [formGroup]="loyaltyForm">
+                  <ul ngbNav #acclerateNav="ngbNav" [activeId]="1"
+                    class="nav nav-tabs-custom rounded card-header-tabs border-bottom-0" role="tablist">
+                    <li [ngbNavItem]="1" class="nav-item">
+                      <a ngbNavLink class="nav-link" data-bs-toggle="tab" role="tab">
+                        <i class="far fa-envelope"></i>{{'MODULES.SYSTEM.MOBILE' | translate }}
+                      </a>
+                      <ng-template ngbNavContent>
+                        <div class="mt-4 d-flex justify-content-between mb-3">
+                          <div>
+                            <div for="firstnameInput">Enable Mobile Accelerate
+                            </div>
+                            <div class="text-muted">{{'MODULES.SYSTEM.ALLOW_POINTS_ON_PURCHASE' | translate }}
+                            </div>
+                          </div>
+                          <div class="flex-shrink-0 d-flex fs-18 gap-1">
+                            <div class="form-check form-switch">
+                              <input [checked]="loyaltySettings?.accelerate?.mobile?.enabled"
+                                (change)="onChangeAccelerate($event.target.checked, 'mobile')" class="form-check-input"
+                                type="checkbox" role="switch" id="flexSwitchCheckDefault">
+                            </div>
+                          </div>
+                        </div>
+                        <ng-container formGroupName="accelerate">
+                          <ng-container formGroupName="mobile">
+                            <ng-container formArrayName="slots">
+                              <div
+                                *ngFor="let control of mobileAccelerate.controls; let i = index; let isMobileLast = last"
+                                [formGroupName]="i">
+                                <div class="row">
+                                  <ng-container formGroupName="period">
+                                    <div class="col-lg-3 mb-3">
+                                      <label for="choices-status-input" class="form-label">Day</label>
+                                      <ng-select placeholder="Day" [items]="days" [multiple]="false"
+                                        [formControlName]="'day'">
+                                        <ng-template ng-label-tmp let-item="item" let-clear="clear">
+                                          <span class="ng-value-label">
+                                            {{
+                                            (item === 'MONDAY' ? 'SHARED.MONDAY':
+                                            item === 'TUESDAY' ? 'SHARED.TUESDAY':
+                                            item === 'WEDNESDAY' ? 'SHARED.WEDNESDAY':
+                                            item === 'THURSDAY' ? 'SHARED.THURSDAY':
+                                            item === 'FRIDAY' ? 'SHARED.FRIDAY':
+                                            item === 'SATURDAY' ? 'SHARED.SATURDAY':
+                                            item === 'SUNDAY' ? 'SHARED.SUNDAY': '') | translate
+                                            }}
+                                          </span>
+                                          <span class="ng-value-icon right" (click)="clear(item)"
+                                            aria-hidden="true">×</span>
+                                        </ng-template>
+                                        <ng-template ng-option-tmp let-item="item">
+                                          {{
+                                          (item === 'MONDAY' ? 'SHARED.MONDAY':
+                                          item === 'TUESDAY' ? 'SHARED.TUESDAY':
+                                          item === 'WEDNESDAY' ? 'SHARED.WEDNESDAY':
+                                          item === 'THURSDAY' ? 'SHARED.THURSDAY':
+                                          item === 'FRIDAY' ? 'SHARED.FRIDAY':
+                                          item === 'SATURDAY' ? 'SHARED.SATURDAY':
+                                          item === 'SUNDAY' ? 'SHARED.SUNDAY': '') | translate
+                                          }}
+                                        </ng-template>
+                                      </ng-select>
+                                    </div>
+                                    <div class="col-lg-3 mb-3">
+                                      <label for="email_id-field" class="align-items-center d-flex form-label me-2">{{
+                                        'COMMON.FROM' | translate }}</label>
+                                      <div class="input-group">
+                                        <input required formControlName="from" [ngxMatTimepicker]="pickerDTFrom"
+                                          class="form-control" name="pickupTimeStart" format="24" placeholder="00:00"
+                                          [ngModelOptions]="{standalone: true}" readonly />
+                                        <div (click)="pickerDTFrom.open()" class="input-group-append cursor-pointer">
+                                          <span class="input-group-text"><i class="ri-time-fill"></i></span>
+                                        </div>
+                                      </div>
+                                      <ngx-mat-timepicker [ngModelOptions]="{standalone: true}"
+                                        #pickerDTFrom></ngx-mat-timepicker>
+                                    </div>
+                                    <div class="col-lg-3 mb-3">
+                                      <label for="email_id-field"
+                                        class="align-items-center d-flex form-label me-2">{{'COMMON.TO' | translate
+                                        }}</label>
+                                      <div class="input-group">
+                                        <input required class="form-control" matInput name="pickupTimeEnd" format="24"
+                                          formControlName="to" [ngxMatTimepicker]="pickerDTTo" placeholder="00:00"
+                                          [ngModelOptions]="{standalone: true}" readonly />
+                                        <div (click)="pickerDTTo.open()" class="input-group-append cursor-pointer">
+                                          <span class="input-group-text"><i class="ri-time-fill"></i></span>
+                                        </div>
+                                      </div>
+                                      <ngx-mat-timepicker #pickerDTTo></ngx-mat-timepicker>
+                                    </div>
+                                  </ng-container>
+                                  <div class="col-lg-3 mb-3">
+                                    <label for="choices-status-input" class="form-label">Ratio</label>
+                                    <input type="number" id="customername-field" class="form-control"
+                                      formControlName="ratio" placeholder="Ratio" />
+                                  </div>
+                                </div>
+                                <div class="d-flex mt-3 mb-3 gap-2 justify-content-end">
+                                  <button *ngIf="isMobileLast" (click)="addSlotField(mobileAccelerate)" type="button"
+                                    class="btn btn-soft-info btn-sm shadow-none"><i
+                                      class="ri-add-fill me-1 align-bottom"></i>
+                                    {{'SHARED.ADD_SLOT'| translate }}</button>
+                                  <button *ngIf="mobileAccelerate.value?.length > 1"
+                                    (click)="removeSlotField(mobileAccelerate, i)" type="button"
+                                    class="btn btn-soft-danger btn-sm shadow-none"><i
+                                      class="ri-delete-bin-fill me-1 align-bottom"></i>
+                                    {{'SHARED.REMOVE_SLOT'| translate }}</button>
+                                </div>
+                              </div>
+                            </ng-container>
+                          </ng-container>
+                        </ng-container>
+                        <div class="d-flex justify-content-end gap-2">
+                          <button
+                            [disabled]="isMobileAccelerateButtonDisabled || loyaltyForm.get(['accelerate', 'mobile']).invalid"
+                            (click)="saveAccelerate('mobile', mobileAccelerate)" class="btn btn-success">{{'COMMON.SAVE'
+                            | translate }}</button>
+                        </div>
+                      </ng-template>
+                    </li>
+                    <li [ngbNavItem]="2" class="nav-item">
+                      <a ngbNavLink class="nav-link" data-bs-toggle="tab" role="tab">
+                        <i class="far fa-envelope"></i>{{'MODULES.SYSTEM.WEB' | translate }}
+                      </a>
+                      <ng-template ngbNavContent>
+                        <div class="mt-4 d-flex justify-content-between mb-3">
+                          <div>
+                            <div for="firstnameInput">Enable Web Accelerate
+                            </div>
+                            <div class="text-muted">{{'MODULES.SYSTEM.ALLOW_POINTS_ON_PURCHASE' | translate }}
+                            </div>
+                          </div>
+                          <div class="flex-shrink-0 d-flex fs-18 gap-1">
+                            <div class="form-check form-switch">
+                              <input [checked]="loyaltySettings?.accelerate?.web?.enabled"
+                                (change)="onChangeAccelerate($event.target.checked, 'web')" class="form-check-input"
+                                type="checkbox" role="switch" id="flexSwitchCheckDefault">
+                            </div>
+                          </div>
+                        </div>
+                        <ng-container formGroupName="accelerate">
+                          <ng-container formGroupName="web">
+                            <ng-container formArrayName="slots">
+                              <div *ngFor="let control of webAccelerate.controls; let i = index; let isWebLast = last"
+                                [formGroupName]="i">
+                                <div class="row">
+                                  <ng-container formGroupName="period">
+                                    <div class="col-lg-3 mb-3">
+                                      <label for="choices-status-input" class="form-label">Day</label>
+                                      <ng-select placeholder="Day" [items]="days" [multiple]="false"
+                                        [formControlName]="'day'">
+                                        <ng-template ng-label-tmp let-item="item" let-clear="clear">
+                                          <span class="ng-value-label">
+                                            {{
+                                            (item === 'MONDAY' ? 'SHARED.MONDAY':
+                                            item === 'TUESDAY' ? 'SHARED.TUESDAY':
+                                            item === 'WEDNESDAY' ? 'SHARED.WEDNESDAY':
+                                            item === 'THURSDAY' ? 'SHARED.THURSDAY':
+                                            item === 'FRIDAY' ? 'SHARED.FRIDAY':
+                                            item === 'SATURDAY' ? 'SHARED.SATURDAY':
+                                            item === 'SUNDAY' ? 'SHARED.SUNDAY': '') | translate
+                                            }}
+                                          </span>
+                                          <span class="ng-value-icon right" (click)="clear(item)"
+                                            aria-hidden="true">×</span>
+                                        </ng-template>
+                                        <ng-template ng-option-tmp let-item="item">
+                                          {{
+                                          (item === 'MONDAY' ? 'SHARED.MONDAY':
+                                          item === 'TUESDAY' ? 'SHARED.TUESDAY':
+                                          item === 'WEDNESDAY' ? 'SHARED.WEDNESDAY':
+                                          item === 'THURSDAY' ? 'SHARED.THURSDAY':
+                                          item === 'FRIDAY' ? 'SHARED.FRIDAY':
+                                          item === 'SATURDAY' ? 'SHARED.SATURDAY':
+                                          item === 'SUNDAY' ? 'SHARED.SUNDAY': '') | translate
+                                          }}
+                                        </ng-template>
+                                      </ng-select>
+                                    </div>
+                                    <div class="col-lg-3 mb-3">
+                                      <label for="email_id-field" class="align-items-center d-flex form-label me-2">{{
+                                        'COMMON.FROM' | translate }}</label>
+                                      <div class="input-group">
+                                        <input [(ngModel)]="control.value.period.from" [ngxMatTimepicker]="pickerDTFrom"
+                                          class="form-control" name="pickupTimeStart" format="24" placeholder="00:00"
+                                          [ngModelOptions]="{standalone: true}" readonly />
+                                        <div (click)="pickerDTFrom.open()" class="input-group-append cursor-pointer">
+                                          <span class="input-group-text"><i class="ri-time-fill"></i></span>
+                                        </div>
+                                      </div>
+                                      <ngx-mat-timepicker [ngModelOptions]="{standalone: true}"
+                                        #pickerDTFrom></ngx-mat-timepicker>
+                                    </div>
+                                    <div class="col-lg-3 mb-3">
+                                      <label for="email_id-field"
+                                        class="align-items-center d-flex form-label me-2">{{'COMMON.TO' | translate
+                                        }}</label>
+                                      <div class="input-group">
+                                        <input class="form-control" matInput name="pickupTimeEnd" format="24"
+                                          [(ngModel)]="control.value.period.to" [ngxMatTimepicker]="pickerDTTo"
+                                          placeholder="00:00" [ngModelOptions]="{standalone: true}" readonly />
+                                        <div (click)="pickerDTTo.open()" class="input-group-append cursor-pointer">
+                                          <span class="input-group-text"><i class="ri-time-fill"></i></span>
+                                        </div>
+                                      </div>
+                                      <ngx-mat-timepicker #pickerDTTo></ngx-mat-timepicker>
+                                    </div>
+                                  </ng-container>
+                                  <div class="col-lg-3 mb-3">
+                                    <label for="choices-status-input" class="form-label">Ratio</label>
+                                    <input type="number" id="customername-field" class="form-control"
+                                      formControlName="ratio" placeholder="Ratio" />
+                                  </div>
+                                </div>
+                                <div class="d-flex mt-3 mb-3 gap-2 justify-content-end">
+                                  <button *ngIf="isWebLast" (click)="addSlotField(webAccelerate)" type="button"
+                                    class="btn btn-soft-info btn-sm shadow-none"><i
+                                      class="ri-add-fill me-1 align-bottom"></i>
+                                    {{'SHARED.ADD_SLOT'| translate }}</button>
+                                  <button *ngIf="webAccelerate.value?.length > 1"
+                                    (click)="removeSlotField(webAccelerate, i)" type="button"
+                                    class="btn btn-soft-danger btn-sm shadow-none"><i
+                                      class="ri-delete-bin-fill me-1 align-bottom"></i>
+                                    {{'SHARED.REMOVE_SLOT'| translate }}</button>
+                                </div>
+                              </div>
+                            </ng-container>
+                          </ng-container>
+                        </ng-container>
+                        <div class="d-flex justify-content-end gap-2">
+                          <button
+                            [disabled]="isWebAccelerateButtonDisabled || loyaltyForm.get(['accelerate', 'web']).invalid"
+                            (click)="saveAccelerate('web', webAccelerate)" class="btn btn-success">{{'COMMON.SAVE' |
+                            translate }}</button>
+                        </div>
+                      </ng-template>
+                    </li>
+                    <li [ngbNavItem]="3" class="nav-item">
+                      <a ngbNavLink class="nav-link" data-bs-toggle="tab" role="tab">
+                        <i class="far fa-envelope"></i>{{'SHARED.PHYSICAL'| translate }}
+                      </a>
+                      <ng-template ngbNavContent>
+                        <div class="mt-4 d-flex justify-content-between mb-3">
+                          <div>
+                            <div for="firstnameInput">{{'SHARED.ENABLE_PHYSICAL_ACCELERATE'| translate }}
+                            </div>
+                            <div class="text-muted">{{'MODULES.SYSTEM.ALLOW_POINTS_ON_PURCHASE' | translate }}
+                            </div>
+                          </div>
+                          <div class="flex-shrink-0 d-flex fs-18 gap-1">
+                            <div class="form-check form-switch">
+                              <input [checked]="loyaltySettings?.accelerate?.physical?.enabled"
+                                (change)="onChangeAccelerate($event.target.checked, 'physical')"
+                                class="form-check-input" type="checkbox" role="switch" id="flexSwitchCheckDefault">
+                            </div>
+                          </div>
+                        </div>
+                        <ng-container formGroupName="accelerate">
+                          <ng-container formGroupName="physical">
+                            <ng-container formArrayName="slots">
+                              <div
+                                *ngFor="let control of physicalAccelerate.controls; let i = index; let isLastPhysical = last"
+                                [formGroupName]="i">
+                                <div class="row">
+                                  <ng-container formGroupName="period">
+                                    <div class="col-lg-3 mb-3">
+                                      <label for="choices-status-input" class="form-label">Day</label>
+                                      <ng-select placeholder="Day" [items]="days" [multiple]="false"
+                                        [formControlName]="'day'">
+                                        <ng-template ng-label-tmp let-item="item" let-clear="clear">
+                                          <span class="ng-value-label">
+                                            {{
+                                            (item === 'MONDAY' ? 'SHARED.MONDAY':
+                                            item === 'TUESDAY' ? 'SHARED.TUESDAY':
+                                            item === 'WEDNESDAY' ? 'SHARED.WEDNESDAY':
+                                            item === 'THURSDAY' ? 'SHARED.THURSDAY':
+                                            item === 'FRIDAY' ? 'SHARED.FRIDAY':
+                                            item === 'SATURDAY' ? 'SHARED.SATURDAY':
+                                            item === 'SUNDAY' ? 'SHARED.SUNDAY': '') | translate
+                                            }}
+                                          </span>
+                                          <span class="ng-value-icon right" (click)="clear(item)"
+                                            aria-hidden="true">×</span>
+                                        </ng-template>
+                                        <ng-template ng-option-tmp let-item="item">
+                                          {{
+                                          (item === 'MONDAY' ? 'SHARED.MONDAY':
+                                          item === 'TUESDAY' ? 'SHARED.TUESDAY':
+                                          item === 'WEDNESDAY' ? 'SHARED.WEDNESDAY':
+                                          item === 'THURSDAY' ? 'SHARED.THURSDAY':
+                                          item === 'FRIDAY' ? 'SHARED.FRIDAY':
+                                          item === 'SATURDAY' ? 'SHARED.SATURDAY':
+                                          item === 'SUNDAY' ? 'SHARED.SUNDAY': '') | translate
+                                          }}
+                                        </ng-template>
+                                      </ng-select>
+                                    </div>
+                                    <div class="col-lg-3 mb-3">
+                                      <label for="email_id-field" class="align-items-center d-flex form-label me-2">{{
+                                        'COMMON.FROM' | translate }}</label>
+                                      <div class="input-group">
+                                        <input [(ngModel)]="control.value.period.from" [ngxMatTimepicker]="pickerDTFrom"
+                                          class="form-control" name="pickupTimeStart" format="24" placeholder="00:00"
+                                          [ngModelOptions]="{standalone: true}" readonly />
+                                        <div (click)="pickerDTFrom.open()" class="input-group-append cursor-pointer">
+                                          <span class="input-group-text"><i class="ri-time-fill"></i></span>
+                                        </div>
+                                      </div>
+                                      <ngx-mat-timepicker [ngModelOptions]="{standalone: true}"
+                                        #pickerDTFrom></ngx-mat-timepicker>
+                                    </div>
+                                    <div class="col-lg-3 mb-3">
+                                      <label for="email_id-field"
+                                        class="align-items-center d-flex form-label me-2">{{'COMMON.TO' | translate
+                                        }}</label>
+                                      <div class="input-group">
+                                        <input class="form-control" matInput name="pickupTimeEnd" format="24"
+                                          [(ngModel)]="control.value.period.to" [ngxMatTimepicker]="pickerDTTo"
+                                          placeholder="00:00" [ngModelOptions]="{standalone: true}" readonly />
+                                        <div (click)="pickerDTTo.open()" class="input-group-append cursor-pointer">
+                                          <span class="input-group-text"><i class="ri-time-fill"></i></span>
+                                        </div>
+                                      </div>
+                                      <ngx-mat-timepicker #pickerDTTo></ngx-mat-timepicker>
+                                    </div>
+                                  </ng-container>
+                                  <div class="col-lg-3 mb-3">
+                                    <label for="choices-status-input" class="form-label">Ratio</label>
+                                    <input type="number" id="customername-field" class="form-control"
+                                      formControlName="ratio" placeholder="Ratio" />
+                                  </div>
+                                </div>
+                                <div class="d-flex mt-3 mb-3 gap-2 justify-content-end">
+                                  <button *ngIf="isLastPhysical" (click)="addSlotField(physicalAccelerate)"
+                                    type="button" class="btn btn-soft-info btn-sm shadow-none"><i
+                                      class="ri-add-fill me-1 align-bottom"></i>
+                                    {{'SHARED.ADD_SLOT'| translate }}</button>
+                                  <button *ngIf="physicalAccelerate.value?.length > 1"
+                                    (click)="removeSlotField(physicalAccelerate, i)" type="button"
+                                    class="btn btn-soft-danger btn-sm shadow-none"><i
+                                      class="ri-delete-bin-fill me-1 align-bottom"></i>
+                                    {{'SHARED.REMOVE_SLOT'| translate }}</button>
+                                </div>
+                              </div>
+                            </ng-container>
+                          </ng-container>
+                        </ng-container>
+                        <div class="d-flex justify-content-end gap-2">
+                          <button
+                            [disabled]="isPhysicalAccelerateButtonDisabled || loyaltyForm.get(['accelerate', 'physical']).invalid"
+                            (click)="saveAccelerate('physical', physicalAccelerate)"
+                            class="btn btn-success">{{'COMMON.SAVE' | translate }}</button>
+                        </div>
+                      </ng-template>
+                    </li>
+                  </ul>
+                  <div class="card-body">
+                    <div class="tab-content">
+                      <div [ngbNavOutlet]="acclerateNav"></div>
+                    </div>
+                  </div>
+                </form>
+              </ng-template>
+            </li>
+            <li [ngbNavItem]="10" class="nav-item">
+              <a ngbNavLink class="nav-link" data-bs-toggle="tab" role="tab">
+                <i class="far fa-envelope"></i>{{'SHARED.REFERRAL'| translate }}
+              </a>
+              <ng-template ngbNavContent>
+                <form [formGroup]="loyaltyForm">
+                  <ng-container formGroupName="referral">
+                    <div class="col-lg-12 d-flex justify-content-between mb-3">
+                      <div>
+                        <div for="firstnameInput">{{'SHARED.ENABLE_REFERRAL'| translate }}</div>
+                        <div class="text-muted">{{'MODULES.SYSTEM.ALLOW_YOU_TO_VIEW' | translate }}</div>
+                      </div>
+                      <div class="flex-shrink-0 d-flex fs-18 gap-1">
+                        <div class="form-check form-switch">
+                          <input (change)="onChangeStatus($event?.target?.checked)"
+                            [checked]="loyaltySettings?.leaderboard?.active === true" class="form-check-input"
+                            type="checkbox" role="switch" id="flexSwitchCheckDefault">
+                        </div>
+                      </div>
+                    </div>
+                    <div class="mb-3 col-lg-6">
+                      <label for="customername-field" class="form-label">Url</label>
+                      <input type="text" id="customername-field" class="form-control" formControlName="url"
+                        placeholder="Url" />
+                    </div>
+                    <ng-container formGroupName="limit">
+                      <div class="row mb-3">
+                        <div class="col-lg-6">
+                          <label for="choices-status-input" class="form-label">{{'SHARED.PERIOD_LIMIT'| translate
+                            }}</label>
+                          <ng-select required placeholder="Period" [items]="periods" [multiple]="false"
+                            [formControlName]="'period'">
+                            <ng-template ng-label-tmp let-item="item" let-clear="clear">
+                              <span class="ng-value-label">
+                                {{
+                                (item === 'HOUR' ? 'SHARED.HOUR' :
+                                item === 'DAY' ? 'SHARED.DAY' :
+                                item === 'WEEK' ? 'SHARED.WEEK' :
+                                'SHARED.MONTH'
+                                ) | translate
+                                }}
+                              </span>
+                              <span class="ng-value-icon right" (click)="clear(item)" aria-hidden="true">×</span>
+                            </ng-template>
+                            <ng-template ng-option-tmp let-item="item">
+                              {{
+                              (item === 'HOUR' ? 'MDOULES.WEBSITE.HOUR' :
+                              item === 'DAY' ? 'MDOULES.WEBSITE.DAY' :
+                              item === 'WEEK' ? 'MDOULES.WEBSITE.WEEK' :
+                              'MDOULES.WEBSITE.MONTH'
+                              ) | translate
+                              }}
+                            </ng-template>
+                          </ng-select>
+                        </div>
+                        <div class="col-lg-6">
+                          <label for="choices-status-input" class="form-label">{{'SHARED.RATE' | translate }}
+                            limit</label>
+                          <input type="number" id="customername-field" class="form-control" formControlName="rate"
+                            placeholder="Rate" />
+                        </div>
+                      </div>
+                    </ng-container>
+                    <div class="mb-7 mb-sm-6">
+                      <label for="choices-status-input" class="form-label">{{'SHARED.CONTENT' | translate
+                        }}</label>
+                      <quill-editor formControlName="content" class="custom-quill-editor"></quill-editor>
+                    </div>
+                    <ul ngbNav #customNav="ngbNav" [activeId]="1"
+                      class="nav nav-tabs-custom rounded card-header-tabs border-bottom-0" role="tablist">
+                      <li [ngbNavItem]="1" class="nav-item">
+                        <a ngbNavLink class="nav-link" data-bs-toggle="tab" role="tab">
+                          <i class="far fa-envelope"></i>{{'SHARED.REFERRER'| translate }}
+                        </a>
+                        <ng-template ngbNavContent>
+                          <ng-container formGroupName="remuneration">
+                            <ng-container formGroupName="referrer">
+                              <div formGroupName="qualitative" class="mb-3 col-lg-6">
+                                <label for="customername-field"
+                                  class="form-label">{{'MODULES.SYSTEM.QUALITATIVE_AMOUNT'|
+                                  translate }}</label>
+                                <div class="input-group">
+                                  <input required type="text" id="customername-field" class="form-control"
+                                    placeholder="{{'PLACEHOLDER.ENTER_QUALITATIVE_AMOUNT' | translate }}"
+                                    formControlName="amount" />
+                                  <div class="input-group-append">
+                                    <span class="input-group-text">
+                                      <img *ngIf="(loyaltySettings$ | async)?.qualitative?.picture?.baseUrl"
+                                        [src]="(loyaltySettings$ | async)?.qualitative?.picture?.baseUrl + '/' + (loyaltySettings$ | async)?.qualitative?.picture?.path"
+                                        alt="" class="img-fluid rounded-circle avatar-xxs mb-1">
+                                      <img class="img-fluid rounded-circle avatar-xxs mb-1"
+                                        *ngIf="!(loyaltySettings$ | async)?.qualitative?.picture?.baseUrl"
+                                        src="https://sifca-storage.s3.eu-central-1.amazonaws.com/loyalcraft/reputation_512.gif">
+                                    </span>
+                                  </div>
+                                </div>
+                              </div>
+                              <div formGroupName="quantitative" class="row">
+                                <div class="mb-3 col-lg-6">
+                                  <label for="choices-status-input"
+                                    class="form-label">{{'MENUITEMS.CUSTOMERENGAGEMENT.LIST.WALLET' | translate
+                                    }}*</label>
+                                  <ng-select bindValue="id" required [virtualScroll]="true"
+                                    (scrollToEnd)="loadMoreWallets()"
+                                    placeholder="{{'PLACEHOLDER.ENTER_YOUR_COIN' | translate }}"
+                                    [items]="wallet$ | async" [multiple]="false" [formControlName]="'wallet'">
+                                    <ng-template ng-label-tmp let-item="item" let-clear="clear">
+                                      <div class="ng-value-label">
+                                        <div class="col-3 d-flex align-items-center">
+                                          <div class="flex-shrink-0">
+                                            <div *ngIf="!item?.coin?.picture?.baseUrl" class="avatar-xxs">
+                                              <div class="avatar-title text-danger bg-soft-info rounded-circle shadow">
+                                                {{item?.coin?.name?.charAt(0) || 'N'}}
+                                              </div>
+                                            </div>
+                                            <div *ngIf="item?.coin?.picture?.baseUrl">
+                                              <img
+                                                [src]="item?.coin?.picture?.baseUrl + '/' + item?.coin?.picture?.path"
+                                                alt="" class="avatar-xxs shadow rounded-circle" />
+                                            </div>
+                                          </div>
+                                          <div class="flex-grow-1 ms-3">
+                                            <span class="mb-1">{{item?.coin?.name}} ({{item?.fee}}%)</span>
+                                          </div>
+                                        </div>
+                                      </div>
+                                      <span class="ng-value-icon right" (click)="clear(item)"
+                                        aria-hidden="true">×</span>
+                                    </ng-template>
+                                    <ng-template ng-option-tmp let-item="item">
+                                      <div class="col-3 d-flex">
+                                        <div class="flex-shrink-0">
+                                          <div *ngIf="!item?.coin?.picture?.baseUrl" class="avatar-xxs">
+                                            <div class="avatar-title text-danger bg-soft-info rounded-circle shadow">
+                                              {{item?.coin?.name?.charAt(0) || 'N'}}
+                                            </div>
+                                          </div>
+                                          <div *ngIf="item?.coin?.picture?.baseUrl">
+                                            <img [src]="item?.coin?.picture?.baseUrl + '/' + item?.coin?.picture?.path"
+                                              alt="" class="avatar-xxs shadow rounded-circle" />
+                                          </div>
+                                        </div>
+                                        <div class="flex-grow-1 ms-3">
+                                          <h6 class="mb-1">{{item?.coin?.name}} <span class="text-muted">
+                                              ({{item?.coin?.code}}) </span></h6>
+                                          <div *ngIf="item?.coin?.unitValue?.amount">
+                                            <h6 [ngClass]="{
+                                                                    'text-danger': +item?.amount < 0,
+                                                                    'text-success': +item?.amount > 0,
+                                                                    'text-info': +item?.amount === 0
+                                                                }" class="text-danger mb-0"> {{item?.amount | number:
+                                              '1.0-0'}} <span class="text-muted"> ({{item?.fee}}%) </span> </h6>
+                                          </div>
+                                        </div>
+                                      </div>
+                                    </ng-template>
+                                  </ng-select>
+                                </div>
+                                <div class="mb-3 col-lg-6">
+                                  <label for="customername-field"
+                                    class="form-label">{{'MODULES.SYSTEM.QUANTITATIVE_AMOUNT' |
+                                    translate }}</label>
+                                  <div class="input-group">
+                                    <input required type="text" id="customername-field" class="form-control"
+                                      placeholder="{{'PLACEHOLDER.ENTER_QUALITATIVE_AMOUNT' | translate }}"
+                                      formControlName="amount" />
+                                    <div class="input-group-append">
+                                      <span class="input-group-text">
+                                        <img *ngIf="(loyaltySettings$ | async)?.quantitative?.coin?.picture?.baseUrl"
+                                          [src]="(loyaltySettings$ | async)?.quantitative?.coin?.picture?.baseUrl + '/' + (loyaltySettings$ | async)?.quantitative?.coin?.picture?.path"
+                                          alt="" class="img-fluid rounded-circle avatar-xxs mb-1">
+                                        <lord-icon
+                                          *ngIf="!(loyaltySettings$ | async)?.quantitative?.coin?.picture?.baseUrl"
+                                          src="https://cdn.lordicon.com/lxizbtuq.json" trigger="loop" delay="2000"
+                                          style="width:30px;height:30px">
+                                        </lord-icon>
+                                      </span>
+                                    </div>
+                                  </div>
+                                </div>
+                              </div>
+                            </ng-container>
+                            <div class="d-flex justify-content-end gap-2">
+                              <button
+                                [disabled]="isReferralButtonDisabled && (isReferrerButtonDisabled || loyaltyForm.get(['referral', 'remuneration', 'referrer']).invalid)"
+                                (click)="saveReferral('referrer')" class="btn btn-success">{{'COMMON.SAVE' | translate
+                                }}</button>
+                            </div>
+                          </ng-container>
+                        </ng-template>
+                      </li>
+                      <li [ngbNavItem]="2" class="nav-item">
+                        <a ngbNavLink class="nav-link" data-bs-toggle="tab" role="tab">
+                          <i class="far fa-envelope"></i>{{'SHARED.REFERRER'| translate }}
+                        </a>
+                        <ng-template ngbNavContent>
+                          <ng-container formGroupName="remuneration">
+                            <ng-container formGroupName="referred">
+                              <div formGroupName="qualitative" class="mb-3 col-lg-6">
+                                <label for="customername-field" class="form-label">{{'MODULES.SYSTEM.QUALITATIVE_AMOUNT'
+                                  |
+                                  translate }}</label>
+                                <div class="input-group">
+                                  <input required type="text" id="customername-field" class="form-control"
+                                    placeholder="{{'PLACEHOLDER.ENTER_QUALITATIVE_AMOUNT' | translate }}"
+                                    formControlName="amount" />
+                                  <div class="input-group-append">
+                                    <span class="input-group-text">
+                                      <img *ngIf="(loyaltySettings$ | async)?.qualitative?.picture?.baseUrl"
+                                        [src]="(loyaltySettings$ | async)?.qualitative?.picture?.baseUrl + '/' + (loyaltySettings$ | async)?.qualitative?.picture?.path"
+                                        alt="" class="img-fluid rounded-circle avatar-xxs mb-1">
+                                      <img class="img-fluid rounded-circle avatar-xxs mb-1"
+                                        *ngIf="!(loyaltySettings$ | async)?.qualitative?.picture?.baseUrl"
+                                        src="https://sifca-storage.s3.eu-central-1.amazonaws.com/loyalcraft/reputation_512.gif">
+                                    </span>
+                                  </div>
+                                </div>
+                              </div>
+                              <div formGroupName="quantitative" class="row">
+                                <div class="mb-3 col-lg-6">
+                                  <label for="choices-status-input"
+                                    class="form-label">{{'MENUITEMS.CUSTOMERENGAGEMENT.LIST.WALLET' | translate
+                                    }}*</label>
+                                  <ng-select bindValue="id" required [virtualScroll]="true"
+                                    (scrollToEnd)="loadMoreWallets()"
+                                    placeholder="{{'PLACEHOLDER.ENTER_YOUR_COIN' | translate }}"
+                                    [items]="wallet$ | async" [multiple]="false" [formControlName]="'wallet'">
+                                    <ng-template ng-label-tmp let-item="item" let-clear="clear">
+                                      <div class="ng-value-label">
+                                        <div class="col-3 d-flex align-items-center">
+                                          <div class="flex-shrink-0">
+                                            <div *ngIf="!item?.coin?.picture?.baseUrl" class="avatar-xxs">
+                                              <div class="avatar-title text-danger bg-soft-info rounded-circle shadow">
+                                                {{item?.coin?.name?.charAt(0) || 'N'}}
+                                              </div>
+                                            </div>
+                                            <div *ngIf="item?.coin?.picture?.baseUrl">
+                                              <img
+                                                [src]="item?.coin?.picture?.baseUrl + '/' + item?.coin?.picture?.path"
+                                                alt="" class="avatar-xxs shadow rounded-circle" />
+                                            </div>
+                                          </div>
+                                          <div class="flex-grow-1 ms-3">
+                                            <span class="mb-1">{{item?.coin?.name}} ({{item?.fee}}%)</span>
+                                          </div>
+                                        </div>
+                                      </div>
+                                      <span class="ng-value-icon right" (click)="clear(item)"
+                                        aria-hidden="true">×</span>
+                                    </ng-template>
+                                    <ng-template ng-option-tmp let-item="item">
+                                      <div class="col-3 d-flex">
+                                        <div class="flex-shrink-0">
+                                          <div *ngIf="!item?.coin?.picture?.baseUrl" class="avatar-xxs">
+                                            <div class="avatar-title text-danger bg-soft-info rounded-circle shadow">
+                                              {{item?.coin?.name?.charAt(0) || 'N'}}
+                                            </div>
+                                          </div>
+                                          <div *ngIf="item?.coin?.picture?.baseUrl">
+                                            <img [src]="item?.coin?.picture?.baseUrl + '/' + item?.coin?.picture?.path"
+                                              alt="" class="avatar-xxs shadow rounded-circle" />
+                                          </div>
+                                        </div>
+                                        <div class="flex-grow-1 ms-3">
+                                          <h6 class="mb-1">{{item?.coin?.name}} <span class="text-muted">
+                                              ({{item?.coin?.code}}) </span></h6>
+                                          <div *ngIf="item?.coin?.unitValue?.amount">
+                                            <h6 [ngClass]="{
+                                                                      'text-danger': +item?.amount < 0,
+                                                                      'text-success': +item?.amount > 0,
+                                                                      'text-info': +item?.amount === 0
+                                                                  }" class="text-danger mb-0"> {{item?.amount | number:
+                                              '1.0-0'}} <span class="text-muted"> ({{item?.fee}}%) </span> </h6>
+                                          </div>
+                                        </div>
+                                      </div>
+                                    </ng-template>
+                                  </ng-select>
+                                </div>
+                                <div class="mb-3 col-lg-6">
+                                  <label for="customername-field"
+                                    class="form-label">{{'MODULES.SYSTEM.QUANTITATIVE_AMOUNT' |
+                                    translate }}</label>
+                                  <div class="input-group">
+                                    <input required type="text" id="customername-field" class="form-control"
+                                      placeholder="{{'PLACEHOLDER.ENTER_QUALITATIVE_AMOUNT' | translate }}"
+                                      formControlName="amount" />
+                                    <div class="input-group-append">
+                                      <span class="input-group-text">
+                                        <img *ngIf="(loyaltySettings$ | async)?.quantitative?.coin?.picture?.baseUrl"
+                                          [src]="(loyaltySettings$ | async)?.quantitative?.coin?.picture?.baseUrl + '/' + (loyaltySettings$ | async)?.quantitative?.coin?.picture?.path"
+                                          alt="" class="img-fluid rounded-circle avatar-xxs mb-1">
+                                        <lord-icon
+                                          *ngIf="!(loyaltySettings$ | async)?.quantitative?.coin?.picture?.baseUrl"
+                                          src="https://cdn.lordicon.com/lxizbtuq.json" trigger="loop" delay="2000"
+                                          style="width:30px;height:30px">
+                                        </lord-icon>
+                                      </span>
+                                    </div>
+                                  </div>
+                                </div>
+                              </div>
+                            </ng-container>
+                            <div class="d-flex justify-content-end gap-2">
+                              <button
+                                [disabled]="isReferralButtonDisabled && (isReferredButtonDisabled || loyaltyForm.get(['referral', 'remuneration', 'referred']).invalid)"
+                                (click)="saveReferral('referred')" class="btn btn-success">{{'COMMON.SAVE' | translate
+                                }}</button>
+                            </div>
+                          </ng-container>
+                        </ng-template>
+                      </li>
+                    </ul>
+                    <div class="mt-4">
+                      <div class="tab-content">
+                        <div [ngbNavOutlet]="customNav"></div>
+                      </div>
+                    </div>
+                  </ng-container>
+                </form>
+              </ng-template>
+            </li>
+            <li [ngbNavItem]="11" class="nav-item">
+              <a ngbNavLink class="nav-link" data-bs-toggle="tab" role="tab">
+                <i class="far fa-envelope"></i>{{'MENUITEMS.CUSTOMERENGAGEMENT.LIST.SETTINGS' | translate }}
+              </a>
+              <ng-template ngbNavContent>
+                <ul ngbNav (navChange)="onConverterChange($event)" #settingsNav="ngbNav" [activeId]="1"
+                  class="nav nav-tabs-custom rounded card-header-tabs border-bottom-0" role="tablist">
+                  <li [ngbNavItem]="1" class="nav-item">
+                    <a ngbNavLink class="nav-link" data-bs-toggle="tab" role="tab">
+                      <i class="far fa-envelope"></i>Inactivity
+                    </a>
+                    <ng-template ngbNavContent>
+                      <form [formGroup]="loyaltyForm">
+                        <div class="col-lg-6" formGroupName="inactivity">
+                          <label for="choices-status-input" class="form-label">Inactivity</label>
+                          <ng-select [items]="transactionTypes" [hideSelected]="true" [multiple]="true"
+                            [formControlName]="'actions'">
+                            <ng-template ng-label-tmp let-item="item" let-clear="clear">
+                              <span class="ng-value-label">
+                                {{
+                                (item === 'REDEEM' ? 'SHARED.REDEEM' :
+                                item === 'DONATION' ? 'SHARED.DONATION' :
+                                item === 'REFERRAL' ? 'SHARED.REFERRAL' :
+                                item === 'CONVERSION' ? 'SHARED.CONVERSION' :
+                                item === 'ORDER_ADDED' ? 'SHARED.ORDER_ADDED' :
+                                item === 'WALLET_TOPUP' ? 'SHARED.WALLET_TOPUP' :
+                                item === 'PHONE_RECHARGE' ? 'SHARED.PHONE_RECHARGE' :
+                                item === 'WALLET_WITHDRAW' ? 'SHARED.WALLET_WITHDRAW' :
+                                item === 'QUEST_FULFILLED' ? 'SHARED.QUEST_FULFILLED' :
+                                item === 'REPUTATION_LOST' ? 'SHARED.REPUTATION_LOST' :
+                                item === 'DEAL_ORDER_ADDED' ? 'SHARED.DEAL_ORDER_ADDED' :
+                                item === 'WEB_ONSITE_ACTIVITY' ? 'SHARED.WEB_ONSITE_ACTIVITY' :
+                                item === 'MOBILE_ONSITE_ACTIVITY' ? 'SHARED.MOBILE_ONSITE_ACTIVITY' :
+                                item === 'PROFILE_LEVEL_COMPLETED' ? 'SHARED.PROFILE_LEVEL_COMPLETED' :
+                                item === 'PHYSICAL_ONSITE_ACTIVITY' ? 'SHARED.PHYSICAL_ONSITE_ACTIVITY' :
+                                '') | translate
+                                }}
+                              </span>
+                              <span class="ng-value-icon right" (click)="clear(item)" aria-hidden="true">×</span>
+                            </ng-template>
+                            <ng-template ng-option-tmp let-item="item">
+                              {{
+                              (item === 'REDEEM' ? 'SHARED.REDEEM' :
+                              item === 'DONATION' ? 'SHARED.DONATION' :
+                              item === 'REFERRAL' ? 'SHARED.REFERRAL' :
+                              item === 'CONVERSION' ? 'SHARED.CONVERSION' :
+                              item === 'ORDER_ADDED' ? 'SHARED.ORDER_ADDED' :
+                              item === 'WALLET_TOPUP' ? 'SHARED.WALLET_TOPUP' :
+                              item === 'PHONE_RECHARGE' ? 'SHARED.PHONE_RECHARGE' :
+                              item === 'WALLET_WITHDRAW' ? 'SHARED.WALLET_WITHDRAW' :
+                              item === 'QUEST_FULFILLED' ? 'SHARED.QUEST_FULFILLED' :
+                              item === 'REPUTATION_LOST' ? 'SHARED.REPUTATION_LOST' :
+                              item === 'DEAL_ORDER_ADDED' ? 'SHARED.DEAL_ORDER_ADDED' :
+                              item === 'WEB_ONSITE_ACTIVITY' ? 'SHARED.WEB_ONSITE_ACTIVITY' :
+                              item === 'MOBILE_ONSITE_ACTIVITY' ? 'SHARED.MOBILE_ONSITE_ACTIVITY' :
+                              item === 'PROFILE_LEVEL_COMPLETED' ? 'SHARED.PROFILE_LEVEL_COMPLETED' :
+                              item === 'PHYSICAL_ONSITE_ACTIVITY' ? 'SHARED.PHYSICAL_ONSITE_ACTIVITY' :
+                              '') | translate
+                              }}
+                            </ng-template>
+                          </ng-select>
+                        </div>
+                      </form>
+                      <div class="d-flex justify-content-end gap-2">
+                        <button (click)="saveInactivity()"
+                          [disabled]="isInactivityButtonDisabled || loyaltyForm.get('inactivity').invalid"
+                          class="btn btn-success">{{'COMMON.SAVE' | translate }}</button>
+                      </div>
+                    </ng-template>
+                  </li>
+                  <li [ngbNavItem]="2" class="nav-item">
+                    <a ngbNavLink class="nav-link" data-bs-toggle="tab" role="tab">
+                      <i class="far fa-envelope"></i>{{'MODULES.SYSTEM.LOGIN'| translate }}
+                    </a>
+                    <ng-template ngbNavContent>
+                      <form [formGroup]="loyaltyForm">
+                        <div formGroupName="login" class="mb-3 col-lg-6">
+                          <label for="choices-status-input" class="form-label">{{'MODULES.SYSTEM.METHOD' |
+                            translate }}</label>
+                          <ng-select formControlName="method" placeholder="{{'MODULES.SYSTEM.METHOD' | translate }}"
+                            [items]="loginSources" [multiple]="true">
+                            <ng-template ng-label-tmp let-item="item" let-clear="clear">
+                              <span class="ng-value-label">
+                                {{
+                                item === 'PHONE' ? 'Phone' :
+                                item === 'EMAIL' ? 'Email' :
+                                item === 'USERNAME' ? 'Username' : ''
+                                }}
+                              </span>
+                              <span class="ng-value-icon right" (click)="clear(item)" aria-hidden="true">×</span>
+                            </ng-template>
+                            <ng-template ng-option-tmp let-item="item">
+                              {{
+                              item === 'PHONE' ? 'Phone' :
+                              item === 'EMAIL' ? 'Email' :
+                              item === 'USERNAME' ? 'Username' : ''
+                              }}
+                            </ng-template>
+                          </ng-select>
+                        </div>
+                        <div class="col-lg-12">
+                          <div class="hstack justify-content-end gap-2 mt-3">
+                            <button (click)="saveLogin()" type="button" [disabled]="isLoginButtonDisabled"
+                              class="btn btn-success">{{'COMMON.SAVE' | translate }}</button>
+                          </div>
+                        </div>
+                      </form>
+                    </ng-template>
+                  </li>
+                </ul>
+                <div class="mt-4">
+                  <div class="tab-content">
+                    <div [ngbNavOutlet]="settingsNav"></div>
+                  </div>
+                </div>
+              </ng-template>
+            </li>
+          </ul>
+        </div>
+        <div class="card-body p-4">
+          <div class="tab-content">
+            <div [ngbNavOutlet]="customNav"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</ng-container>
+
+<ng-template #deleteModel let-modal>
+  <div class="modal-content">
+    <div class="modal-header">
+      <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" id="btn-close"
+        (click)="modal.dismiss('Cross click')"></button>
+    </div>
+    <div class="modal-body">
+      <div class="mt-2 text-center">
+        <lord-icon src="https://cdn.lordicon.com/gsqxdxog.json" trigger="loop"
+          colors="primary:#405189,secondary:#f06548" style="width:90px;height:90px"></lord-icon>
+        <div class="mt-4 pt-2 fs-15 mx-4 mx-sm-5">
+          <h4>{{'MENUITEMS.CUSTOMERENGAGEMENT.CAMPAIGN.YOU_ARE_ABOUT_TO_DELETE_A_REPUTATION_LEVEL' | translate }} ?</h4>
+          <p class="text-muted mx-4 mb-0">
+            {{'MENUITEMS.CUSTOMERENGAGEMENT.CAMPAIGN.DELETING_YOUR_REPUTATION_LEVEL_DATA_BASE_REMOVE' | translate }}
+          </p>
+        </div>
+      </div>
+      <div class="d-flex gap-2 justify-content-center mt-4 mb-2">
+        <button class="btn btn-link link-success fw-medium text-decoration-none" data-bs-dismiss="modal"
+          (click)="modal.close('Close click')" id="deleteRecord-close"><i
+            class="ri-close-line me-1 align-middle"></i>{{'COMMON.CLOSE' | translate }}</button>
+        <button type="button" class="btn w-sm btn-danger " id="delete-product" (click)="removeReputationLevel()"
+          (click)="modal.close('Close click')">{{'COMMON.YES_DELETE_IT' | translate }}</button>
+      </div>
+    </div>
+  </div>
+</ng-template>
+
+<ng-template #redeemModal>
+  <div class="modal-header bg-soft-info p-3">
+    <h5 class="modal-title" id="exampleModalLabel">
+      Redeem Template
+    </h5>
+    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" id="close-modal"
+      (click)="closeRedeemModal()"></button>
+  </div>
+  <div style="height: 500px; overflow: auto;" class="modal-body">
+    <quill-view-html *ngIf="loyaltyForm.get(['redeem', 'editor']).value === 'TEXT'"
+      [content]="translation?.get('language').value?.name === 'Default' ? loyaltyForm.get(['redeem', 'content']).value : translation.get('content').value || ''"
+      theme="snow">
+    </quill-view-html>
+    <div *ngIf="loyaltyForm.get(['redeem', 'editor']).value === 'HTML'" [innerHTML]="safeRedeem"></div>
+  </div>
+  <div class="modal-footer">
+    <div class="hstack justify-content-end">
+      <button type="button" class="btn btn-light" data-bs-dismiss="modal" (click)="closeRedeemModal()">{{'COMMON.CLOSE'
+        | translate }}</button>
+    </div>
+  </div>
+</ng-template>
+
+<ng-template #prelevelTemplate let-formGroup="formGroup">
+  <form [formGroup]="loyaltyForm">
+    <ng-container formGroupName="prelevel">
+      <div class="row">
+        <div class="mb-3 col-lg-6">
+          <label for="customername-field" class="form-label">{{'MODULES.HR.MAIN.COLOR' | translate }}</label>
+          <div class="input-group">
+            <input type="text" id="customername-field" class="form-control" formControlName="color"
+              placeholder="{{'PLACEHOLDER.PICK_YOUR_COLOR' | translate }}" />
+            <div class="input-group-append">
+              <button class="input-group-text btn btn-soft-info" [(colorPicker)]="color"
+                (colorPickerOpen)="onEventLog('prelevel', $event)" (colorPickerClose)="onEventLog('prelevel', $event)"
+                (cpInputChange)="onEventLog('prelevel', $event)" (cpSliderDragStart)="onEventLog('prelevel', $event)"
+                (cpSliderDragEnd)="onEventLog('prelevel', $event)">
+                <i class="ri-pen-nib-fill"></i>
+              </button>
+            </div>
+          </div>
+        </div>
+        <div class="mb-3 col-lg-6">
+          <label for="customername-field" class="form-label">{{'COMMON.NAME' | translate }}</label>
+          <input type="text" id="customername-field" class="form-control"
+            placeholder="{{'PLACEHOLDER.ENTER_NAME' | translate }}" formControlName="name" />
+        </div>
+
+        <div class="form-check form-switch mb-2 mt-2 ms-2">
+          <input [checked]="loyaltySettings?.prelevel?.frequencyGoalEnabled" (change)="onChangeGoal($event.target.checked, 'frequency', 'prelevel')" role="switch"
+            class="form-check-input fs-16" type="checkbox"
+            id="Required">
+          <label class="form-check-label" for="Required">{{'SHARED.ACTIVITY_FREQUENCY_LOSS' | translate }}
+          </label>
+        </div>
+
+        <div *ngIf="loyaltyForm.get(['prelevel', 'frequencyGoalEnabled']).value === true"
+          class="border border-4 border-dashed m-2 p-2 row">
+          <div class="mb-3 col-lg-6">
+            <label for="customername-field" class="form-label">{{'MODULES.SYSTEM.LOSS_AMOUNT' | translate }}</label>
+            <div class="input-group">
+              <input type="number" id="customername-field" class="form-control" formControlName="lossAmount"
+                placeholder="{{'PLACEHOLDER.LOSS_AMOUNT' | translate }}" />
+              <div class="input-group-append">
+                <span class="input-group-text">
+                  <img *ngIf="(loyaltySettings$ | async)?.qualitative?.picture?.baseUrl"
+                    [src]="(loyaltySettings$ | async)?.qualitative?.picture?.baseUrl + '/' + (loyaltySettings$ | async)?.qualitative?.picture?.path"
+                    alt="" class="img-fluid rounded-circle avatar-xxs mb-1">
+                  <img class="img-fluid rounded-circle avatar-xxs mb-1"
+                    *ngIf="!(loyaltySettings$ | async)?.qualitative?.picture?.baseUrl"
+                    src="https://sifca-storage.s3.eu-central-1.amazonaws.com/loyalcraft/reputation_512.gif">
+                </span>
+              </div>
+            </div>
+          </div>
+          <div class="mb-3 col-lg-6">
+            <label for="customername-field" class="form-label">{{'MODULES.SYSTEM.INACTIVITY_CYCLE' | translate
+              }}</label>
+            <div class="input-group">
+              <input type="number" id="customername-field" class="form-control" formControlName="inactivityCycle"
+                placeholder="{{'PLACEHOLDER.ENTER_INACTIVITY_CYCLE' | translate }}" />
+              <div class="input-group-append">
+                <div class="input-group-append">
+                  <span class="input-group-text">{{'MODULES.INDEX.HOURS' | translate }}
+                  </span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="form-check form-switch mb-3 mt-2 ms-2">
+          <input
+            (change)="onChangeGoal($event.target.checked, 'turnover', 'prelevel')"
+            role="switch"
+            [checked]="loyaltySettings?.prelevel?.turnoverGoalEnabled"
+            class="form-check-input fs-16"
+            type="checkbox"
+            id="Required"
+          >
+          <label class="form-check-label" for="Required">{{'SHARED.TURNOVER_LOSS' | translate }}
+          </label>
+        </div>
+
+
+        <div *ngIf="loyaltyForm.get(['prelevel', 'turnoverGoalEnabled']).value === true"
+          class="border border-4 border-dashed m-2 p-2 row">
+          <div class="mb-3 col-lg-6">
+            <label for="customername-field" class="form-label">{{'MODULES.SYSTEM.LOSS_POINTS' |
+              translate}}</label>
+            <div class="input-group">
+              <input type="number" id="customername-field" class="form-control" formControlName="lossPoints"
+                placeholder="{{'MODULES.SYSTEM.LOSS_POINTS' | translate }}" />
+              <div class="input-group-append">
+                <span class="input-group-text">
+                  <img *ngIf="(loyaltySettings$ | async)?.qualitative?.picture?.baseUrl"
+                    [src]="(loyaltySettings$ | async)?.qualitative?.picture?.baseUrl + '/' + (loyaltySettings$ | async)?.qualitative?.picture?.path"
+                    alt="" class="img-fluid rounded-circle avatar-xxs mb-1">
+                  <img class="img-fluid rounded-circle avatar-xxs mb-1"
+                    *ngIf="!(loyaltySettings$ | async)?.qualitative?.picture?.baseUrl"
+                    src="https://sifca-storage.s3.eu-central-1.amazonaws.com/loyalcraft/reputation_512.gif">
+                </span>
+              </div>
+            </div>
+          </div>
+          <div class="mb-3 col-lg-6">
+            <label for="customername-field" class="form-label">{{'MODULES.SYSTEM.TURNOVER_POINTS' |
+              translate}}</label>
+            <div class="input-group">
+              <input type="number" id="customername-field" class="form-control" formControlName="turnoverPoints"
+                placeholder="{{'MODULES.SYSTEM.TURNOVER_POINTS' | translate }}" />
+              <div class="input-group-append">
+                <span class="input-group-text">
+                  <img *ngIf="(loyaltySettings$ | async)?.qualitative?.picture?.baseUrl"
+                    [src]="(loyaltySettings$ | async)?.qualitative?.picture?.baseUrl + '/' + (loyaltySettings$ | async)?.qualitative?.picture?.path"
+                    alt="" class="img-fluid rounded-circle avatar-xxs mb-1">
+                  <img class="img-fluid rounded-circle avatar-xxs mb-1"
+                    *ngIf="!(loyaltySettings$ | async)?.qualitative?.picture?.baseUrl"
+                    src="https://sifca-storage.s3.eu-central-1.amazonaws.com/loyalcraft/reputation_512.gif">
+                </span>
+              </div>
+            </div>
+          </div>
+          <div class="mb-3 col-lg-6">
+            <label for="customername-field" class="form-label">{{'MODULES.INVENTORY.PERIOD' | translate }}</label>
+            <div class="input-group">
+              <input type="number" id="customername-field" class="form-control" formControlName="period"
+                placeholder="{{'MODULES.INVENTORY.PERIOD' | translate }}" />
+              <div class="input-group-append">
+                <div class="input-group-append">
+                  <span class="input-group-text">{{'MODULES.INDEX.HOURS' | translate }}
+                  </span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <ng-container formGroupName="perks">
+        <div class="mb-3 col-lg-6">
+          <label for="customername-field" class="form-label">{{ 'MODULES.ECOMMERCE.MAIN.DISCOUNT' | translate
+            }}</label>
+          <div class="input-group">
+            <input required type="text" id="customername-field" class="form-control" formControlName="discount"
+              placeholder="{{'PLACEHOLDER.ENTER_DISCOUNT' | translate }}" />
+            <div class="input-group-append">
+              <div class="input-group-append">
+                <span class="input-group-text">%
+                </span>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="mb-7 mb-sm-6">
+          <label for="customername-field" class="form-label">{{'COMMON.DESCRIPTION' | translate }}</label>
+          <quill-editor class="custom-quill-editor" formControlName="description"></quill-editor>
+        </div>
+      </ng-container>
+      <div class="profile-user position-relative d-inline-block mx-auto mb-4">
+        <div (click)="upload('prelevel')" class="avatar-lg cursor-pointer mb-3">
+          <div *ngIf="loadingPrelevel" class="fs-12" id="elmLoader">
+            <div class="spinner-border text-primary" role="status">
+              <span class="visually-hidden">{{'COMMON.LOADING' | translate }}</span>
+            </div>
+          </div>
+          <img class="img-fluid h-100" *ngIf="loyaltyForm.get(['prelevel', 'picture'])?.value?.baseUrl"
+            [src]="loyaltyForm.get(['prelevel', 'picture'])?.value?.baseUrl + '/' + loyaltyForm.get(['prelevel', 'picture'])?.value?.path">
+          <div *ngIf="!loyaltyForm.get(['prelevel', 'picture'])?.value?.baseUrl" class="avatar-title bg-light fs-24">
+            <span class="fs-5 fw-bold">{{'COMMON.UPLOAD' | translate }}</span>
+          </div>
+        </div>
+      </div>
+    </ng-container>
+  </form>
+</ng-template>
+
+<ng-template #coinModal role="document" let-modal>
+  <div class="modal-header bg-soft-info p-3">
+    <h5 class="modal-title" id="exampleModalLabel">{{(selectedCoin ? 'SHARED.EDIT_COIN' : 'SHARED.ADD_COIN' ) |
+      translate }}</h5>
+
+    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" id="close-modal"
+      (click)="modal.dismiss('Cross click')"></button>
+  </div>
+  <form [formGroup]="coinForm">
+    <div class="modal-body">
+      <div class="row g-3">
+        <div *ngIf="selectedField === 'prelevel'"
+          class="profile-user position-relative d-inline-block mx-auto mb-4 d-flex justify-content-center">
+          <div (click)="uploadCoin()" class="avatar-lg cursor-pointer mb-3">
+            <div *ngIf="loadingCoinPrelevel" class="fs-12" id="elmLoader">
+              <div class="spinner-border text-primary" role="status">
+                <span class="visually-hidden">{{'COMMON.LOADING' | translate }}</span>
+              </div>
+            </div>
+            <img class="img-fluid h-100" *ngIf="coinForm.get('picture')?.value?.baseUrl"
+              [src]="coinForm.get('picture')?.value?.baseUrl + '/' + coinForm.get('picture')?.value?.path">
+            <div *ngIf="!coinForm.get('picture')?.value?.baseUrl" class="avatar-title bg-light fs-24">
+              <span class="fs-5 fw-bold">{{'COMMON.UPLOAD' | translate }}</span>
+            </div>
+          </div>
+        </div>
+        <div class="mb-3 col-lg-6">
+          <label for="email_id-field" class="form-label">{{'COMMON.NAME' | translate }}*</label>
+          <input required type="text" id="email_id-field" class="form-control"
+            placeholder="{{'PLACEHOLDER.ENTER_COIN_NAME' | translate }}" formControlName="name" />
+        </div>
+        <div class="mb-3 col-lg-6">
+          <label for="email_id-field" class="form-label">{{'COMMON.CODE' | translate }}*</label>
+          <input required type="text" id="email_id-field" class="form-control"
+            placeholder="{{'PLACEHOLDER.ENTER_COIN_CODE' | translate }}" formControlName="code" />
+        </div>
+      </div>
+      <div class="row">
+        <div formGroupName="unitValue" class="mb-3 col-lg-6">
+          <label for="email_id-field" class="form-label">{{'COMMON.AMOUNT' | translate }}*</label>
+          <input required type="text" id="email_id-field" class="form-control"
+            placeholder="{{'PLACEHOLDER.ENTER_AMOUNT' | translate }}" formControlName="amount" />
+        </div>
+        <div formGroupName="unitValue" class="mb-3 col-lg-6">
+          <label for="choices-status-input" class="form-label">{{'MENUITEMS.CUSTOMERENGAGEMENT.LIST.CURRENCY' |
+            translate }}*</label>
+          <ng-select required [typeahead]="currencySearchInput$"
+            placeholder="{{'PLACEHOLDER.ENTER_YOUR_CURRENCY' | translate }}" [items]="currencies" [multiple]="false"
+            [formControlName]="'currency'">
+            <ng-template ng-label-tmp let-item="item" let-clear="clear">
+              <span class="ng-value-label">
+                {{item.name?.split('_').join(' ') | titlecase}}
+              </span>
+              <span class="ng-value-icon right" (click)="clear(item)" aria-hidden="true">×</span>
+            </ng-template>
+            <ng-template ng-option-tmp let-item="item">
+              {{item?.name?.split('_').join(' ') | titlecase}}
+            </ng-template>
+          </ng-select>
+        </div>
+        <div class="mb-3 col-lg-6">
+          <label for="choices-status-input" class="form-label">{{'COMMON.COUNTRY' | translate }}</label>
+          <ng-select [hideSelected]="true" [virtualScroll]="true"
+            placeholder="{{'PLACEHOLDER.ENTER_COUNTRIES' | translate }}" bindLabel="name" bindValue="id"
+            [typeahead]="countrySearchInput$" [items]="countries" [multiple]="false" [formControlName]="'country'">
+            <ng-template ng-label-tmp let-item="item" let-clear="clear">
+              <span class="me-1" *ngIf="item?.iconFlag">{{item?.iconFlag}}</span>
+              <span>{{item?.name?.split('_').join(' ') | titlecase}}</span>
+              <span class="ng-value-icon right" (click)="clear(item)" aria-hidden="true">×</span>
+            </ng-template>
+            <ng-template ng-option-tmp let-item="item">
+              <span class="me-1" *ngIf="item?.iconFlag">{{item?.iconFlag}}</span>
+              <span>{{item?.name?.split('_').join(' ') | titlecase}}</span>
+            </ng-template>
+          </ng-select>
+        </div>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <div class="hstack gap-2 justify-content-end">
+        <button type="button" class="btn btn-light" data-bs-dismiss="modal"
+          (click)="modal.close('Close click')">{{'COMMON.CLOSE' | translate }}</button>
+        <button type="button" [disabled]="coinForm.invalid || isCoinButtonDisabled" (click)="saveCoin()"
+          class="btn btn-success" id="add-btn">{{'COMMON.SAVE' | translate }}</button>
+      </div>
+    </div>
+  </form>
+</ng-template>
+
+<div *ngIf="navigating$ | async" class="vh-100 py-4 text-center" fxLayout="column" fxLayoutAlign="center center"
+  fxLayoutGap="1rem">
+  <div>
+    <lord-icon trigger="loop" style="width:72px;height:72px"
+      [colors]="'primary:' + primaryColor + ',secondary:' + secondaryColor"
+      src="https://cdn.lordicon.com/msoeawqm.json">
+    </lord-icon>
+  </div>
+  <div class="mt-4">
+    <h5>{{'COMMON.LOADING' | translate }}</h5>
+  </div>
+</div>

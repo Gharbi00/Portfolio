@@ -1,0 +1,90 @@
+<div class="row">
+  <div class="col-lg-12">
+    <div class="card" id="ticketsList">
+      <div class="card-header border-0">
+        <div class="row g-4 align-items-center">
+          <div class="col-sm">
+            <div>
+              <h5 class="card-title mb-0">{{'MENUITEMS.TS.WINNERS' | translate }}</h5>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="card-body">
+        <div class="py-4 mt-4 text-center" *ngIf="!winners.value?.length">
+          <lord-icon trigger="loop" style="width:72px;height:72px"
+            [colors]="'primary:' + primaryColor + ',secondary:' + secondaryColor"
+            src="https://cdn.lordicon.com/msoeawqm.json">
+          </lord-icon>
+          <h5 class="mt-4">{{'SHARED.NO_WINNERS' | translate }}</h5>
+          <div class="d-flex justify-content-center">
+            <button (click)="addWinnerField()" class="btn btn-primary">{{'SHARED.ADD_WINNER' | translate }}</button>
+          </div>
+        </div>
+        <form [formGroup]="challengeForm">
+          <ng-container *ngIf="winners.value?.length" formArrayName="winners">
+            <div class="mb-3">
+              <label for="email_id-field" class="form-label"> {{'SHARED.REWARD' | translate }} </label>
+              <div *ngFor="let key of winners['controls']; let i = index; let last = last; let first = first"
+                [formGroupName]="i" class="mb-3 d-flex gap-1 col-lg-6">
+                <div class="avatar-group-item shadow">
+                  <div class="avatar-xs">
+                    <div class="avatar-title bg-soft-success shadow">
+                      <span class="text-danger">{{ key.get('rank').value }}</span>
+                    </div>
+                  </div>
+                </div>
+                <ng-select required bindValue="id" bindLabel="name" class="col-11" [typeahead]="barcodesSearchInput$"
+                  [hideSelected]="true" [multiple]="false" formControlName="reward" [items]="infinitBarcodes$ | async"
+                  [virtualScroll]="true" placeholder="Select Article" (scrollToEnd)="loadMoreBarcodes()">
+                  <ng-template ng-label-tmp let-item="item" let-clear="clear">
+                    {{item?.name}}
+                    <span *ngIf="challenge?.status !=='ONGOING' && challenge?.status !== 'FINISHED'"
+                      class="ng-value-icon right" (click)="clear(item)" aria-hidden="true">×</span>
+                  </ng-template>
+                  <ng-template ng-option-tmp let-item$="item$" let-item="item">
+                    <div class="d-flex gap-2 align-items-center">
+                      <div *ngIf="item?.media?.pictures?.length && item?.media?.pictures[0].baseUrl !==''"
+                        href="javascript: void(0);" class="avatar-group-item shadow">
+                        <img [src]="item?.media?.pictures[0].baseUrl + '/' + item?.media?.pictures[0].path" alt=""
+                          class="rounded-circle avatar-xs img-fluid">
+                      </div>
+                      <div *ngIf="!item?.media?.pictures?.length || item?.media?.pictures[0].baseUrl ===''"
+                        href="javascript: void(0);" class="avatar-group-item shadow">
+                        <div class="avatar-xs">
+                          <div class="avatar-title rounded-circle bg-info shadow">
+                            {{ item?.title?.charAt(0) || 'N'}}
+                          </div>
+                        </div>
+                      </div>
+                      {{item?.name}}
+                    </div>
+                  </ng-template>
+                </ng-select>
+                <button
+                  *ngIf="(challenge?.status !=='ONGOING' && challenge?.status !== 'FINISHED')"
+                  (click)="removeWinnerField(i)" type="button" class="btn btn-soft-danger btn-sm shadow-none"><i
+                    class="ri-delete-bin-line me-1 align-bottom"></i>
+                </button>
+              </div>
+              <div *ngIf="challenge?.status !=='ONGOING' && challenge?.status !== 'FINISHED'"
+                class="d-flex gap-1 mt-3 col-lg-6 mb-3 justify-content-end">
+                <button (click)="addWinnerField()" type="button" class="btn btn-soft-info btn-sm shadow-none"><i
+                    class="ri-add-fill me-1 align-bottom"></i>
+                  {{'SHARED.ADD_WINNER' | translate }}</button>
+              </div>
+            </div>
+          </ng-container>
+          <div *ngIf="challenge?.status !=='ONGOING' && challenge?.status !== 'FINISHED'" class="modal-footer mt-5">
+            <div class="hstack gap-2 justify-content-end">
+              <button type="button" class="btn btn-danger" data-bs-dismiss="modal"
+                (click)="exit()">{{'MODULES.ECOMMERCE.MAIN.BACK' | translate }}</button>
+              <button [disabled]="isButtonDisabled || challengeForm.invalid" type="button" (click)="save()"
+                class="btn btn-success" id="add-btn">{{'COMMON.SAVE' | translate }}</button>
+            </div>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,62 @@
+.br {
+  border: solid
+}
+.h-9 {
+  height: 9rem;
+}
+
+.h-30 {
+  height: 7.5rem;
+}
+.w-30 {
+  width: 7.5rem;
+}
+.img-wrap {
+  position: relative;
+}
+
+.delete-icon {
+  top: 0;
+  right: 0;
+  z-index: 1;
+  width: 24px;
+  height: 24px;
+  display: flex;
+  position: absolute;
+  border-radius: 50%;
+  align-items: center;
+  background-color: white;
+  justify-content: center;
+}
+.df-flex {
+  display: flex;
+  flex-wrap: wrap;
+}
+
+
+.h-x {
+  height: 37px;
+  width: 37px;
+}
+.avatar-title {
+  align-items: center !important;
+  background-color: #299cdb;
+  // color: #111010;
+  display: flex !important;
+  font-weight: 500 !important;
+  height: 100% !important;
+  justify-content: center !important;
+  width: 100% !important;
+}
+.h-90px {
+  height: 90px;
+}
+.w-90px {
+  width: 90px;
+}
+.max-h-105px {
+  max-height: 105px;
+}
+.w-600 {
+  width: 600px;
+}

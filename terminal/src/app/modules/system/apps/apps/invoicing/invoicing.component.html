@@ -1,0 +1,265 @@
+<ng-container *ngIf="!(navigating$ | async)">
+  <div class="position-relative mx-n4 mt-n4">
+    <div class="profile-wid-bg profile-setting-img">
+      <img src="assets/images/profile-bg.jpg" class="profile-wid-img" alt="">
+      <div class="overlay-content">
+        <div class="text-end p-3">
+          <div class="p-0 ms-auto rounded-circle profile-photo-edit">
+            <input id="profile-foreground-img-file-input" type="file" class="profile-foreground-img-file-input">
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-xxl-3">
+      <div class="card mt-n5">
+        <div class="card-body p-4">
+          <div *ngIf="plugin$ | async as plugin" class="text-center">
+            <div class="profile-user position-relative d-inline-block mx-auto mb-4">
+              <div class="avatar-lg mb-3">
+                <div class="avatar-title bg-soft-success fs-24 text-success">
+                  <i [ngClass]="plugin?.icon"></i>
+                </div>
+              </div>
+            </div>
+            <h5 class="fs-16 mb-1">{{plugin?.name}}</h5>
+            <p class="text-muted mb-0">{{plugin?.description}}</p>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="col-xxl-9">
+      <div class="card mt-xxl-n5">
+        <div class="card-header">
+          <div class="file-manager-content w-100 p-4 pb-0">
+            <div class="p-3 bg-light rounded mb-4">
+              <div class="row g-2">
+                <div class="col-lg">
+                  <div class="search-box">
+                    <input type="text" id="searchTaskList" class="form-control search" placeholder="{{'PLACEHOLDER.SEARCH_TASK_NAME' | translate }}">
+                    <i class="ri-search-line search-icon"></i>
+                  </div>
+                </div>
+                <div class="col-lg-auto">
+                  <button class="btn btn-primary createTask" type="button" data-bs-toggle="modal"
+                    data-bs-target="#createTask" (click)="openTaxModal(content, null)">
+                    <i class="ri-add-fill align-bottom"></i> {{ 'MODULES.SYSTEM.ADD_TAX' | translate }}
+                  </button>
+                </div>
+              </div>
+            </div>
+            <div class="card-body">
+              <div class="table-responsive table-card mb-3">
+                <table class="table align-middle table-nowrap mb-0">
+                  <thead>
+                    <tr class="bg-light text-muted text-uppercase">
+                      <th> {{ 'MODULES.SYSTEM.LABEL' | translate }}</th>
+                      <th>{{ 'MODULES.SYSTEM.VALUE' | translate }}</th>
+                      <th>{{'COMMON.TYPE'|translate}}</th>
+                      <th> {{ 'MODULES.SYSTEM.SIGN' | translate }}</th>
+                      <th>{{ 'MODULES.SYSTEM.USE' | translate }}</th>
+                      <th> {{ 'MODULES.SYSTEM.PRODUCT' | translate }}</th>
+                      <th class="d-flex justify-content-center">{{ 'COMMON.ACTION' | translate }}</th>
+                    </tr>
+                  </thead>
+                  <tbody *ngIf="taxes$ | async as taxes">
+                    <tr *ngFor="let tax of taxes$ | async" id="c_{{tax.id}}">
+                      <td>{{tax?.label}}</td>
+                      <td>{{tax.value?.value}}</td>
+                      <td>
+                        <span class="badge text-uppercase"
+                          [ngClass]="{ 'badge-soft-warning': tax.value?.type === 'PERCENTAGE', 'badge-soft-info': tax.value?.type === 'AMOUNT'}">
+                          {{tax.value?.type}}
+                        </span>
+                      </td>
+                      <td>
+                        <span class="badge text-uppercase"
+                          [ngClass]=" { 'bg-danger': tax.value?.sign === 'NEGATIVE', 'bg-success': tax.value?.sign === 'POSITIVE'}">{{tax.value?.sign}}</span>
+                      </td>
+                      <td>
+                        <span *ngFor="let use of tax.use" class="badge text-uppercase"
+                          [ngClass]=" { 'bg-info': use === 'PURCHASE', 'bg-success': use === 'SALE'}">{{use}}</span>
+                      </td>
+                      <td>
+                        <i *ngIf="tax.product" class="ri-check-fill align-bottom btn-soft-success"></i>
+                        <i *ngIf="!tax.product" class="ri-close-fill align-bottom btn-soft-danger"></i>
+                      </td>
+                      <td>
+                        <ul class="d-flex justify-content-center list-inline hstack gap-2 mb-0">
+                          <li (click)="openTaxModal(content,tax)" class="list-inline-item edit" matTooltip="View"
+                            placement="top">
+                            <a href="javascript:void(0);" data-bs-toggle="modal"
+                              class="text-primary d-inline-block edit-item-btn">
+                              <i class="ri-pencil-fill fs-16"></i>
+                            </a>
+                          </li>
+                          <li (click)="openDeleteTax(deleteModal, tax)" class="list-inline-item edit" matTooltip="Delete"
+                            placement="top">
+                            <a href="javascript:void(0);" data-bs-toggle="modal" class="text-danger d-inline-block">
+                              <i class="ri-delete-bin-5-fill fs-16"></i>
+                            </a>
+                          </li>
+                        </ul>
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+            <div *ngIf="!(taxes$ | async)?.length" class="py-4 mt-4 text-center" id="noresult">
+              <lord-icon src="https://cdn.lordicon.com/vlycxjwx.json" trigger="loop"
+                [colors]="'primary:' + primaryColor + ',secondary:' + secondaryColor" style="width:72px;height:72px"></lord-icon>
+              <h5 class="mt-4">{{ 'COMMON.NO_RESULT' | translate }}</h5>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <ng-template #deleteModal let-modal>
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" id="deleteRecord-close"
+          (click)="modal.dismiss('Cross click')"></button>
+      </div>
+      <div class="modal-body">
+        <div class="mt-2 text-center">
+          <lord-icon src="https://cdn.lordicon.com/gsqxdxog.json" trigger="loop"
+            colors="primary:#405189,secondary:#f06548" style="width:90px;height:90px"></lord-icon>
+          <div class="mt-4 pt-2 fs-15 mx-4 mx-sm-5">
+            <h4>{{ 'MODULES.SYSTEM.ARE_YOU_SURE' | translate }}</h4>
+            <p class="text-muted mx-4 mb-0">{{ 'COMMON.DELETE_WARNING' | translate }}</p>
+          </div>
+        </div>
+        <div class="d-flex gap-2 justify-content-center mt-4 mb-2">
+          <button class="btn btn-link link-success fw-medium text-decoration-none" data-bs-dismiss="modal"
+            (click)="modal.close('Close click')">
+            <i class="ri-close-line me-1 align-middle"></i>{{ 'COMMON.CLOSE' | translate }}
+          </button>
+          <button type="button" class="btn w-sm btn-danger" id="delete-product" (click)="deleteTax()">
+            {{ 'COMMON.YES_DELETE_IT' | translate }}
+          </button>
+        </div>
+      </div>
+    </div>
+  </ng-template>
+
+  <ng-template #content role="document" let-modal>
+    <div class="modal-header bg-light p-3">
+      <h5 class="modal-title" id="exampleModalLabel">{{(selectedTax ? 'SHARED.EDIT_TAX' : 'SHARED.ADD_TAX') | translate}}</h5>
+      <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" id="close-modal"
+        (click)="modal.dismiss('Cross click')"></button>
+    </div>
+    <form [formGroup]="taxForm">
+      <div class="modal-body">
+        <div class="mb-3">
+          <label for="customername-field" class="form-label"> {{ 'MODULES.SYSTEM.LABEL' | translate }}</label>
+          <input type="text" id="customername-field" class="form-control"
+            placeholder=" {{ 'MODULES.SYSTEM.ENTER_LABEL' | translate }}" formControlName="label" />
+          <div class="text-danger" *ngIf="taxForm.get('label')?.touched && taxForm.get('label').hasError('required')">
+            {{ 'COMMON.REQUIRED' | translate }}
+          </div>
+        </div>
+        <div class="mb-3">
+          <label for="customername-field" class="form-label">{{'MODULES.INVENTORY.EXTERNAL_ID' | translate }}</label>
+          <input type="text" id="customername-field" class="form-control" placeholder="{{'PLACEHOLDER.ENTER_EXTERNAL_ID' | translate }}"
+            formControlName="externalId" />
+          <div class="text-danger"
+            *ngIf="taxForm.get('externalId')?.touched && taxForm.get('externalId').hasError('required')">
+            {{ 'COMMON.REQUIRED' | translate }}
+          </div>
+        </div>
+        <ng-container formGroupName="value">
+          <div class="mb-3">
+            <label for="customername-field" class="form-label"> {{ 'MODULES.SYSTEM.SIGN' | translate }}</label>
+            <ng-select placeholder="{{'PLACEHOLDER.ENTER_SIGN' | translate }}" [addTag]="true" [multiple]="false" [clearable]="true" data-choices="true" [searchable]="true"
+              [hideSelected]="true" formControlName="sign" [items]="signs" data-choices-removeItem="true">
+            </ng-select>
+            <ng-template ng-option-tmp let-item="item" let-index="index">
+              {{ type.split('_').join(' ') | titlecase }}
+            </ng-template>
+            <div class="text-danger"
+              *ngIf="taxForm.get(['value', 'sign'])?.touched && taxForm.get(['value', 'sign']).hasError('required')">
+              {{ 'COMMON.REQUIRED' | translate }}
+            </div>
+          </div>
+          <div class="mb-3">
+            <label for="customername-field" class="form-label">{{'COMMON.TYPE' | translate }}</label>
+            <ng-select placeholder="{{'PLACEHOLDER.ENTER_TYPE' | translate }}"  bindValue="privacies" [addTag]="true" [multiple]="false" [clearable]="true" data-choices="true"
+              [searchable]="true" [hideSelected]="true" formControlName="type" [items]="types"
+              data-choices-removeItem="true">
+            </ng-select>
+            <ng-template ng-option-tmp let-item="item" let-index="index">
+              {{ type.split('_').join(' ') | titlecase }}
+            </ng-template>
+            <div class="text-danger"
+              *ngIf="taxForm.get(['value', 'sign'])?.touched && taxForm.get(['value', 'sign']).hasError('required')">
+              {{ 'COMMON.REQUIRED' | translate }}
+            </div>
+          </div>
+          <div class="mb-3">
+            <label for="customername-field" class="form-label">{{ 'MODULES.SYSTEM.VALUE' | translate }}</label>
+            <input type="number" id="customername-field" class="form-control" placeholder="{{'PLACEHOLDER.ENTER_VALUE' | translate }}"
+              formControlName="value" />
+            <div class="text-danger"
+              *ngIf="taxForm.get(['value', 'value'])?.touched && taxForm.get(['value', 'value']).hasError('required')">
+              {{ 'COMMON.REQUIRED' | translate }}
+            </div>
+          </div>
+        </ng-container>
+        <div class="mb-3">
+          <div class="form-group row">
+            <div class="col-sm-2 d-flex align-items-center">
+              <label for="purchaesNotification" class="col-form-label"> {{ 'MODULES.SYSTEM.PRODUCT' | translate
+                }}</label>
+            </div>
+            <div class="col-sm-10 d-flex align-items-center">
+              <div class="form-check form-switch">
+                <input formControlName="product" class="form-check-input fs-16" type="checkbox" role="switch"
+                  id="purchaesNotification" />
+              </div>
+            </div>
+          </div>
+          <div class="text-danger" *ngIf="taxForm.get('value')?.touched && taxForm.get('value').hasError('required')">
+            {{ 'COMMON.REQUIRED' | translate }}
+          </div>
+        </div>
+        <div class="mb-3">
+          <label for="choices-privacy-status-input" class="form-label">Use</label>
+          <ng-select bindValue="privacies" [addTag]="true" [multiple]="true" bindlabel="label" [clearable]="true"
+            data-choices="true" [searchable]="true" [hideSelected]="true" formControlName="use" [items]="uses"
+            data-choices-removeItem="true">
+          </ng-select>
+          <ng-template ng-option-tmp let-item="item" let-index="index">
+            {{item === 'SALE' ? 'Sale' : 'Purchase'}}
+          </ng-template>
+          <div class="text-danger" *ngIf="taxForm.get('use')?.touched && taxForm.get('use').hasError('required')">
+            {{ 'COMMON.REQUIRED' | translate }}
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <div class="hstack gap-2 justify-content-end">
+          <button type="button" class="btn btn-light" data-bs-dismiss="modal" (click)="modal.close('Close click')">{{
+            'COMMON.CLOSE' | translate }}</button>
+          <button type="button" [disabled]="isButtonDisabled || taxForm.invalid" (click)="saveTax()"
+            class="btn btn-success" id="add-btn">{{(selectedTax ? 'SHARED.EDIT_TAX' : 'SHARED.ADD_TAX') | translate}}</button>
+        </div>
+      </div>
+    </form>
+  </ng-template>
+
+</ng-container>
+<div *ngIf="navigating$ | async" class="vh-100 py-4 text-center" fxLayout="column" fxLayoutAlign="center center"
+  fxLayoutGap="1rem">
+  <div>
+    <lord-icon trigger="loop" style="width:72px;height:72px" [colors]="'primary:' + primaryColor + ',secondary:' + secondaryColor"
+      src="https://cdn.lordicon.com/msoeawqm.json">
+    </lord-icon>
+  </div>
+  <div class="mt-4">
+    <h5>{{'COMMON.LOADING' | translate }}</h5>
+  </div>
+</div>

@@ -1,0 +1,774 @@
+﻿<?xml version="1.0" encoding="UTF-8" ?>
+<rss version="2.0" xmlns:g="http://base.google.com/ns/1.0">
+<channel>
+<title>widget</title>
+<description>المتجر مدعوم من طرف بريسطاشوب</description>
+<link href="http://localhost/prestashop/" rel="alternate" type="text/html"/>
+<order>
+<order_id>XKBKNABJK</order_id>
+<order_date>2024-09-30 12:22:42</order_date>
+<customer>
+<customer_id>2</customer_id>
+<first_name>John</first_name>
+<last_name>DOE</last_name>
+<email>pub@prestashop.com</email>
+</customer>
+<products>
+<product>
+<product_id>1</product_id>
+<product_name>Hummingbird printed t-shirt - Color : White, Size : S</product_name>
+<product_quantity>1</product_quantity>
+<product_price>23.900000 TND</product_price>
+</product>
+<product>
+<product_id>2</product_id>
+<product_name>Hummingbird printed sweater - Color : White, Size : S</product_name>
+<product_quantity>1</product_quantity>
+<product_price>35.900000 TND</product_price>
+</product>
+</products>
+<totals>
+<total_paid>61.800000 TND</total_paid>
+<total_shipping>7.000000 TND</total_shipping>
+</totals>
+<shipping>
+<shipping_cost>7.000000 TND</shipping_cost>
+</shipping>
+</order>
+
+<order>
+<order_id>OHSATSERP</order_id>
+<order_date>2024-09-30 12:22:42</order_date>
+<customer>
+<customer_id>2</customer_id>
+<first_name>John</first_name>
+<last_name>DOE</last_name>
+<email>pub@prestashop.com</email>
+</customer>
+<products>
+<product>
+<product_id>4</product_id>
+<product_name>The adventure begins Framed poster - Size : 80x120cm</product_name>
+<product_quantity>2</product_quantity>
+<product_price>158.000000 TND</product_price>
+</product>
+<product>
+<product_id>8</product_id>
+<product_name>Mug Today is a good day</product_name>
+<product_quantity>1</product_quantity>
+<product_price>11.900000 TND</product_price>
+</product>
+</products>
+<totals>
+<total_paid>169.900000 TND</total_paid>
+<total_shipping>0.000000 TND</total_shipping>
+</totals>
+<shipping>
+<shipping_cost>0.000000 TND</shipping_cost>
+</shipping>
+</order>
+
+<order>
+<order_id>UOYEVOLI</order_id>
+<order_date>2024-09-30 12:22:42</order_date>
+<customer>
+<customer_id>2</customer_id>
+<first_name>John</first_name>
+<last_name>DOE</last_name>
+<email>pub@prestashop.com</email>
+</customer>
+<products>
+<product>
+<product_id>16</product_id>
+<product_name>Mountain fox notebook Style : Ruled</product_name>
+<product_quantity>1</product_quantity>
+<product_price>12.900000 TND</product_price>
+</product>
+</products>
+<totals>
+<total_paid>14.900000 TND</total_paid>
+<total_shipping>7.000000 TND</total_shipping>
+</totals>
+<shipping>
+<shipping_cost>7.000000 TND</shipping_cost>
+</shipping>
+</order>
+
+<order>
+<order_id>FFATNOMMJ</order_id>
+<order_date>2024-09-30 12:22:42</order_date>
+<customer>
+<customer_id>2</customer_id>
+<first_name>John</first_name>
+<last_name>DOE</last_name>
+<email>pub@prestashop.com</email>
+</customer>
+<products>
+<product>
+<product_id>16</product_id>
+<product_name>Mountain fox notebook Style : Plain</product_name>
+<product_quantity>1</product_quantity>
+<product_price>12.900000 TND</product_price>
+</product>
+</products>
+<totals>
+<total_paid>14.900000 TND</total_paid>
+<total_shipping>7.000000 TND</total_shipping>
+</totals>
+<shipping>
+<shipping_cost>7.000000 TND</shipping_cost>
+</shipping>
+</order>
+
+<order>
+<order_id>KHWLILZLL</order_id>
+<order_date>2024-09-30 12:22:42</order_date>
+<customer>
+<customer_id>2</customer_id>
+<first_name>John</first_name>
+<last_name>DOE</last_name>
+<email>pub@prestashop.com</email>
+</customer>
+<products>
+<product>
+<product_id>10</product_id>
+<product_name>Brown bear cushion Color : Black</product_name>
+<product_quantity>1</product_quantity>
+<product_price>18.900000 TND</product_price>
+</product>
+</products>
+<totals>
+<total_paid>20.900000 TND</total_paid>
+<total_shipping>7.000000 TND</total_shipping>
+</totals>
+<shipping>
+<shipping_cost>7.000000 TND</shipping_cost>
+</shipping>
+</order>
+
+<order>
+<order_id>PKTXCWXGQ</order_id>
+<order_date>2024-10-03 12:52:08</order_date>
+<customer>
+<customer_id>5</customer_id>
+<first_name>Iheb</first_name>
+<last_name>Gharbi</last_name>
+<email>iheb00@gmail.com</email>
+</customer>
+<products>
+<product>
+<product_id>2</product_id>
+<product_name>Hummingbird printed sweater (Size: S)</product_name>
+<product_quantity>1</product_quantity>
+<product_price>34.177000 TND</product_price>
+</product>
+</products>
+<totals>
+<total_paid>34.177000 TND</total_paid>
+<total_shipping>0.000000 TND</total_shipping>
+</totals>
+<shipping>
+<shipping_cost>0.000000 TND</shipping_cost>
+</shipping>
+</order>
+
+<order>
+<order_id>YUIPGIIBW</order_id>
+<order_date>2024-10-03 12:56:31</order_date>
+<customer>
+<customer_id>5</customer_id>
+<first_name>Iheb</first_name>
+<last_name>Gharbi</last_name>
+<email>iheb00@gmail.com</email>
+</customer>
+<products>
+<product>
+<product_id>2</product_id>
+<product_name>Hummingbird printed sweater (Size: S)</product_name>
+<product_quantity>1</product_quantity>
+<product_price>34.177000 TND</product_price>
+</product>
+</products>
+<totals>
+<total_paid>34.177000 TND</total_paid>
+<total_shipping>0.000000 TND</total_shipping>
+</totals>
+<shipping>
+<shipping_cost>0.000000 TND</shipping_cost>
+</shipping>
+</order>
+
+<order>
+<order_id>AICRBVXWM</order_id>
+<order_date>2024-10-03 15:08:39</order_date>
+<customer>
+<customer_id>5</customer_id>
+<first_name>Iheb</first_name>
+<last_name>Gharbi</last_name>
+<email>iheb00@gmail.com</email>
+</customer>
+<products>
+<product>
+<product_id>2</product_id>
+<product_name>Hummingbird printed sweater (Size: S)</product_name>
+<product_quantity>1</product_quantity>
+<product_price>34.177000 TND</product_price>
+</product>
+</products>
+<totals>
+<total_paid>31.177000 TND</total_paid>
+<total_shipping>0.000000 TND</total_shipping>
+</totals>
+<shipping>
+<shipping_cost>0.000000 TND</shipping_cost>
+</shipping>
+</order>
+
+<order>
+<order_id>JZWAUCNBU</order_id>
+<order_date>2024-10-03 15:15:36</order_date>
+<customer>
+<customer_id>5</customer_id>
+<first_name>Iheb</first_name>
+<last_name>Gharbi</last_name>
+<email>iheb00@gmail.com</email>
+</customer>
+<products>
+<product>
+<product_id>2</product_id>
+<product_name>Hummingbird printed sweater (Size: S)</product_name>
+<product_quantity>1</product_quantity>
+<product_price>34.177000 TND</product_price>
+</product>
+</products>
+<totals>
+<total_paid>31.177000 TND</total_paid>
+<total_shipping>0.000000 TND</total_shipping>
+</totals>
+<shipping>
+<shipping_cost>0.000000 TND</shipping_cost>
+</shipping>
+</order>
+
+<order>
+<order_id>NKJWEVYQY</order_id>
+<order_date>2024-10-03 15:18:48</order_date>
+<customer>
+<customer_id>5</customer_id>
+<first_name>Iheb</first_name>
+<last_name>Gharbi</last_name>
+<email>iheb00@gmail.com</email>
+</customer>
+<products>
+<product>
+<product_id>2</product_id>
+<product_name>Hummingbird printed sweater (Size: S)</product_name>
+<product_quantity>1</product_quantity>
+<product_price>34.177000 TND</product_price>
+</product>
+</products>
+<totals>
+<total_paid>32.177000 TND</total_paid>
+<total_shipping>0.000000 TND</total_shipping>
+</totals>
+<shipping>
+<shipping_cost>0.000000 TND</shipping_cost>
+</shipping>
+</order>
+
+<order>
+<order_id>KDJGTHSNI</order_id>
+<order_date>2024-10-03 15:34:56</order_date>
+<customer>
+<customer_id>5</customer_id>
+<first_name>Iheb</first_name>
+<last_name>Gharbi</last_name>
+<email>iheb00@gmail.com</email>
+</customer>
+<products>
+<product>
+<product_id>2</product_id>
+<product_name>Hummingbird printed sweater (Size: S)</product_name>
+<product_quantity>1</product_quantity>
+<product_price>34.177000 TND</product_price>
+</product>
+</products>
+<totals>
+<total_paid>34.077000 TND</total_paid>
+<total_shipping>0.000000 TND</total_shipping>
+</totals>
+<shipping>
+<shipping_cost>0.000000 TND</shipping_cost>
+</shipping>
+</order>
+
+<order>
+<order_id>ZTUWAHYZK</order_id>
+<order_date>2024-10-03 15:36:14</order_date>
+<customer>
+<customer_id>5</customer_id>
+<first_name>Iheb</first_name>
+<last_name>Gharbi</last_name>
+<email>iheb00@gmail.com</email>
+</customer>
+<products>
+<product>
+<product_id>9</product_id>
+<product_name>Mountain fox cushion (Color: White)</product_name>
+<product_quantity>1</product_quantity>
+<product_price>22.491000 TND</product_price>
+</product>
+</products>
+<totals>
+<total_paid>22.291000 TND</total_paid>
+<total_shipping>0.000000 TND</total_shipping>
+</totals>
+<shipping>
+<shipping_cost>0.000000 TND</shipping_cost>
+</shipping>
+</order>
+
+<order>
+<order_id>TLPCHYXKZ</order_id>
+<order_date>2024-10-03 15:38:52</order_date>
+<customer>
+<customer_id>5</customer_id>
+<first_name>Iheb</first_name>
+<last_name>Gharbi</last_name>
+<email>iheb00@gmail.com</email>
+</customer>
+<products>
+<product>
+<product_id>2</product_id>
+<product_name>Hummingbird printed sweater (Size: S)</product_name>
+<product_quantity>1</product_quantity>
+<product_price>34.177000 TND</product_price>
+</product>
+</products>
+<totals>
+<total_paid>33.977000 TND</total_paid>
+<total_shipping>0.000000 TND</total_shipping>
+</totals>
+<shipping>
+<shipping_cost>0.000000 TND</shipping_cost>
+</shipping>
+</order>
+
+<order>
+<order_id>CSDKPRAIR</order_id>
+<order_date>2024-10-03 15:42:26</order_date>
+<customer>
+<customer_id>5</customer_id>
+<first_name>Iheb</first_name>
+<last_name>Gharbi</last_name>
+<email>iheb00@gmail.com</email>
+</customer>
+<products>
+<product>
+<product_id>2</product_id>
+<product_name>Hummingbird printed sweater (Size: S)</product_name>
+<product_quantity>1</product_quantity>
+<product_price>34.177000 TND</product_price>
+</product>
+</products>
+<totals>
+<total_paid>33.877000 TND</total_paid>
+<total_shipping>0.000000 TND</total_shipping>
+</totals>
+<shipping>
+<shipping_cost>0.000000 TND</shipping_cost>
+</shipping>
+</order>
+
+<order>
+<order_id>UGXOJTUFG</order_id>
+<order_date>2024-10-03 15:44:54</order_date>
+<customer>
+<customer_id>5</customer_id>
+<first_name>Iheb</first_name>
+<last_name>Gharbi</last_name>
+<email>iheb00@gmail.com</email>
+</customer>
+<products>
+<product>
+<product_id>7</product_id>
+<product_name>Mug The adventure begins</product_name>
+<product_quantity>4</product_quantity>
+<product_price>56.644000 TND</product_price>
+</product>
+</products>
+<totals>
+<total_paid>56.144000 TND</total_paid>
+<total_shipping>0.000000 TND</total_shipping>
+</totals>
+<shipping>
+<shipping_cost>0.000000 TND</shipping_cost>
+</shipping>
+</order>
+
+<order>
+<order_id>THURMUWMH</order_id>
+<order_date>2024-10-03 15:47:03</order_date>
+<customer>
+<customer_id>5</customer_id>
+<first_name>Iheb</first_name>
+<last_name>Gharbi</last_name>
+<email>iheb00@gmail.com</email>
+</customer>
+<products>
+<product>
+<product_id>2</product_id>
+<product_name>Hummingbird printed sweater (Size: S)</product_name>
+<product_quantity>9</product_quantity>
+<product_price>307.591000 TND</product_price>
+</product>
+</products>
+<totals>
+<total_paid>307.291000 TND</total_paid>
+<total_shipping>0.000000 TND</total_shipping>
+</totals>
+<shipping>
+<shipping_cost>0.000000 TND</shipping_cost>
+</shipping>
+</order>
+
+<order>
+<order_id>KRDVJYTDP</order_id>
+<order_date>2024-10-03 15:49:48</order_date>
+<customer>
+<customer_id>5</customer_id>
+<first_name>Iheb</first_name>
+<last_name>Gharbi</last_name>
+<email>iheb00@gmail.com</email>
+</customer>
+<products>
+<product>
+<product_id>1</product_id>
+<product_name>Hummingbird printed t-shirt (Size: S - Color: White)</product_name>
+<product_quantity>5</product_quantity>
+<product_price>113.764000 TND</product_price>
+</product>
+</products>
+<totals>
+<total_paid>113.364000 TND</total_paid>
+<total_shipping>0.000000 TND</total_shipping>
+</totals>
+<shipping>
+<shipping_cost>0.000000 TND</shipping_cost>
+</shipping>
+</order>
+
+<order>
+<order_id>DPDHBHQYJ</order_id>
+<order_date>2024-10-03 15:51:28</order_date>
+<customer>
+<customer_id>5</customer_id>
+<first_name>Iheb</first_name>
+<last_name>Gharbi</last_name>
+<email>iheb00@gmail.com</email>
+</customer>
+<products>
+<product>
+<product_id>2</product_id>
+<product_name>Hummingbird printed sweater (Size: S)</product_name>
+<product_quantity>1</product_quantity>
+<product_price>34.177000 TND</product_price>
+</product>
+</products>
+<totals>
+<total_paid>33.977000 TND</total_paid>
+<total_shipping>0.000000 TND</total_shipping>
+</totals>
+<shipping>
+<shipping_cost>0.000000 TND</shipping_cost>
+</shipping>
+</order>
+
+<order>
+<order_id>NPCZWJHOE</order_id>
+<order_date>2024-10-03 15:52:15</order_date>
+<customer>
+<customer_id>5</customer_id>
+<first_name>Iheb</first_name>
+<last_name>Gharbi</last_name>
+<email>iheb00@gmail.com</email>
+</customer>
+<products>
+<product>
+<product_id>2</product_id>
+<product_name>Hummingbird printed sweater (Size: S)</product_name>
+<product_quantity>1</product_quantity>
+<product_price>34.177000 TND</product_price>
+</product>
+</products>
+<totals>
+<total_paid>34.177000 TND</total_paid>
+<total_shipping>0.000000 TND</total_shipping>
+</totals>
+<shipping>
+<shipping_cost>0.000000 TND</shipping_cost>
+</shipping>
+</order>
+
+<order>
+<order_id>GVUCEICEM</order_id>
+<order_date>2024-10-03 15:54:30</order_date>
+<customer>
+<customer_id>5</customer_id>
+<first_name>Iheb</first_name>
+<last_name>Gharbi</last_name>
+<email>iheb00@gmail.com</email>
+</customer>
+<products>
+<product>
+<product_id>1</product_id>
+<product_name>Hummingbird printed t-shirt (Size: S - Color: White)</product_name>
+<product_quantity>1</product_quantity>
+<product_price>22.753000 TND</product_price>
+</product>
+</products>
+<totals>
+<total_paid>22.253000 TND</total_paid>
+<total_shipping>0.000000 TND</total_shipping>
+</totals>
+<shipping>
+<shipping_cost>0.000000 TND</shipping_cost>
+</shipping>
+</order>
+
+<order>
+<order_id>VKPKMJNOC</order_id>
+<order_date>2024-10-03 15:56:03</order_date>
+<customer>
+<customer_id>5</customer_id>
+<first_name>Iheb</first_name>
+<last_name>Gharbi</last_name>
+<email>iheb00@gmail.com</email>
+</customer>
+<products>
+<product>
+<product_id>2</product_id>
+<product_name>Hummingbird printed sweater (Size: S)</product_name>
+<product_quantity>1</product_quantity>
+<product_price>34.177000 TND</product_price>
+</product>
+</products>
+<totals>
+<total_paid>34.077000 TND</total_paid>
+<total_shipping>0.000000 TND</total_shipping>
+</totals>
+<shipping>
+<shipping_cost>0.000000 TND</shipping_cost>
+</shipping>
+</order>
+
+<order>
+<order_id>ABCQBVAIK</order_id>
+<order_date>2024-10-03 15:58:11</order_date>
+<customer>
+<customer_id>5</customer_id>
+<first_name>Iheb</first_name>
+<last_name>Gharbi</last_name>
+<email>iheb00@gmail.com</email>
+</customer>
+<products>
+<product>
+<product_id>1</product_id>
+<product_name>Hummingbird printed t-shirt (Size: S - Color: White)</product_name>
+<product_quantity>1</product_quantity>
+<product_price>22.753000 TND</product_price>
+</product>
+</products>
+<totals>
+<total_paid>22.553000 TND</total_paid>
+<total_shipping>0.000000 TND</total_shipping>
+</totals>
+<shipping>
+<shipping_cost>0.000000 TND</shipping_cost>
+</shipping>
+</order>
+
+<order>
+<order_id>UHRMPTFHY</order_id>
+<order_date>2024-10-03 15:59:06</order_date>
+<customer>
+<customer_id>5</customer_id>
+<first_name>Iheb</first_name>
+<last_name>Gharbi</last_name>
+<email>iheb00@gmail.com</email>
+</customer>
+<products>
+<product>
+<product_id>2</product_id>
+<product_name>Hummingbird printed sweater (Size: S)</product_name>
+<product_quantity>1</product_quantity>
+<product_price>34.177000 TND</product_price>
+</product>
+</products>
+<totals>
+<total_paid>33.977000 TND</total_paid>
+<total_shipping>0.000000 TND</total_shipping>
+</totals>
+<shipping>
+<shipping_cost>0.000000 TND</shipping_cost>
+</shipping>
+</order>
+
+<order>
+<order_id>GWTYLUGCJ</order_id>
+<order_date>2024-10-03 17:54:17</order_date>
+<customer>
+<customer_id>5</customer_id>
+<first_name>Iheb</first_name>
+<last_name>Gharbi</last_name>
+<email>iheb00@gmail.com</email>
+</customer>
+<products>
+<product>
+<product_id>2</product_id>
+<product_name>Hummingbird printed sweater (Size: S)</product_name>
+<product_quantity>1</product_quantity>
+<product_price>34.177000 TND</product_price>
+</product>
+</products>
+<totals>
+<total_paid>34.127000 TND</total_paid>
+<total_shipping>0.000000 TND</total_shipping>
+</totals>
+<shipping>
+<shipping_cost>0.000000 TND</shipping_cost>
+</shipping>
+</order>
+
+<order>
+<order_id>TMHWKFWGI</order_id>
+<order_date>2024-10-03 17:55:24</order_date>
+<customer>
+<customer_id>5</customer_id>
+<first_name>Iheb</first_name>
+<last_name>Gharbi</last_name>
+<email>iheb00@gmail.com</email>
+</customer>
+<products>
+<product>
+<product_id>2</product_id>
+<product_name>Hummingbird printed sweater (Size: S)</product_name>
+<product_quantity>1</product_quantity>
+<product_price>34.177000 TND</product_price>
+</product>
+</products>
+<totals>
+<total_paid>34.127000 TND</total_paid>
+<total_shipping>0.000000 TND</total_shipping>
+</totals>
+<shipping>
+<shipping_cost>0.000000 TND</shipping_cost>
+</shipping>
+</order>
+
+<order>
+<order_id>UNLJAVSBJ</order_id>
+<order_date>2024-10-03 18:17:45</order_date>
+<customer>
+<customer_id>5</customer_id>
+<first_name>Iheb</first_name>
+<last_name>Gharbi</last_name>
+<email>iheb00@gmail.com</email>
+</customer>
+<products>
+<product>
+<product_id>23</product_id>
+<product_name>wiouwwwww</product_name>
+<product_quantity>1</product_quantity>
+<product_price>5950.000000 TND</product_price>
+</product>
+</products>
+<totals>
+<total_paid>5949.980000 TND</total_paid>
+<total_shipping>0.000000 TND</total_shipping>
+</totals>
+<shipping>
+<shipping_cost>0.000000 TND</shipping_cost>
+</shipping>
+</order>
+
+<order>
+<order_id>KSWUUEKYU</order_id>
+<order_date>2024-10-03 18:18:45</order_date>
+<customer>
+<customer_id>5</customer_id>
+<first_name>Iheb</first_name>
+<last_name>Gharbi</last_name>
+<email>iheb00@gmail.com</email>
+</customer>
+<products>
+<product>
+<product_id>23</product_id>
+<product_name>wiouwwwww</product_name>
+<product_quantity>20</product_quantity>
+<product_price>119000.000000 TND</product_price>
+</product>
+</products>
+<totals>
+<total_paid>118999.990000 TND</total_paid>
+<total_shipping>0.000000 TND</total_shipping>
+</totals>
+<shipping>
+<shipping_cost>0.000000 TND</shipping_cost>
+</shipping>
+</order>
+
+<order>
+<order_id>NEYCNQBPB</order_id>
+<order_date>2024-10-03 18:36:06</order_date>
+<customer>
+<customer_id>5</customer_id>
+<first_name>Iheb</first_name>
+<last_name>Gharbi</last_name>
+<email>iheb00@gmail.com</email>
+</customer>
+<products>
+<product>
+<product_id>2</product_id>
+<product_name>Hummingbird printed sweater (Size: S)</product_name>
+<product_quantity>1</product_quantity>
+<product_price>34.177000 TND</product_price>
+</product>
+</products>
+<totals>
+<total_paid>33.677000 TND</total_paid>
+<total_shipping>0.000000 TND</total_shipping>
+</totals>
+<shipping>
+<shipping_cost>0.000000 TND</shipping_cost>
+</shipping>
+</order>
+
+<order>
+<order_id>RUUANMCZS</order_id>
+<order_date>2024-10-09 14:29:05</order_date>
+<customer>
+<customer_id>5</customer_id>
+<first_name>Iheb</first_name>
+<last_name>Gharbi</last_name>
+<email>iheb00@gmail.com</email>
+</customer>
+<products>
+<product>
+<product_id>2</product_id>
+<product_name>Hummingbird printed sweater (Size: S)</product_name>
+<product_quantity>1</product_quantity>
+<product_price>34.177000 TND</product_price>
+</product>
+</products>
+<totals>
+<total_paid>33.877000 TND</total_paid>
+<total_shipping>0.000000 TND</total_shipping>
+</totals>
+<shipping>
+<shipping_cost>0.000000 TND</shipping_cost>
+</shipping>
+</order>
+
+</channel>
+</rss>

@@ -1,0 +1,51 @@
+<table class="table table-bordered table-nowrap align-middle mb-0">
+  <thead>
+    <tr>
+      <th scope="col" style="width: 30%;">Deal Title</th>
+      <th scope="col" style="width: 30%;">Sales Rep</th>
+      <th scope="col" style="width: 20%;">{{'COMMON.AMOUNT' | translate }}</th>
+      <th scope="col" style="width: 20%;">{{'MODULES.INVENTORY.DUE_DATE' | translate }}</th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <tr *ngFor="let data of ClosingDeals">
+      <td>{{data?.title}}</td>
+      <td>
+        <div *ngIf="data?.assignedTo?.length && data?.assignedTo?.length < 2" class="align-items-center d-flex gap-2">
+          <img *ngIf="data?.assignedTo[0]?.pictures?.length"
+            [src]="data?.assignedTo[0]?.pictures[0]?.baseUrl + '/' + data?.assignedTo[0]?.pictures[0]?.path" alt=""
+            class="avatar-xs rounded-circle me-2 shadow">
+          <div class="avatar-xs" *ngIf="!data?.assignedTo[0]?.pictures?.length">
+            <span class="avatar-title rounded-circle bg-danger userprofile">{{ data?.assignedTo[0]?.firstName.charAt(0)
+              ||
+              'N'}}</span>
+          </div>
+          <a href="javascript:void(0);" class="text-body fw-medium">{{data?.assignedTo[0]?.firstName}}
+            {{data?.assignedTo[0]?.lastName}} </a>
+        </div>
+        <div *ngIf="data?.assignedTo?.length > 1" class="align-items-center d-flex gap-2">
+          <div class="avatar-group justify-content-center">
+            <ng-container *ngFor="let member of data?.assignedTo">
+              <a *ngIf="member?.pictures?.length" href="javascript:void(0);" class="avatar-group-item"
+                data-bs-toggle="tooltip" data-bs-trigger="hover" data-bs-placement="top" title="Brent Gonzalez">
+                <img [src]="member?.pictures[0]?.baseUrl + '/' + member?.pictures[0]?.path"
+                  alt="" class="avatar-xs rounded-circle me-2 shadow">
+              </a>
+              <a *ngIf="!member?.pictures?.length || (member?.firstName && member?.pictures?.length)" href="javascript: void(0);" class="avatar-group-item shadow"
+                [matTooltip]="member?.firstName" placement="top">
+                <div class="avatar-xs">
+                  <div class="avatar-title rounded-circle bg-danger text-uppercase shadow">
+                    {{ member?.firstName.charAt(0) || 'N'}}
+                  </div>
+                </div>
+              </a>
+            </ng-container>
+          </div>
+        </div>
+      </td>
+      <td>{{data?.budget | currency:'DT':'symbol':'1.3-3'}}</td>
+      <td>{{data?.dueDate | date: 'longDate'}}</td>
+    </tr>
+  </tbody>
+</table>

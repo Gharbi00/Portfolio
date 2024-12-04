@@ -1,0 +1,156 @@
+<div class="row">
+  <div class="col-lg-12">
+    <div class="card" id="ticketsList">
+      <div class="card-header border-0">
+        <div class="row g-4 align-items-center">
+          <div class="col-sm">
+            <div>
+              <h5 class="card-title mb-0">Activities</h5>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="card-body">
+        <form [formGroup]="challengeForm">
+          <ng-container *ngIf="selectedType === 'activities'" formArrayName="activities">
+            <div *ngFor="let key of activities['controls']; let i = index; let last = last; let first = first"
+              [formGroupName]="i" class="mb-3">
+              <div class="d-flex gap-1">
+                <div class="mb-3 col-lg-5">
+                  <label for="email_id-field" class="form-label"> {{'MENUITEMS.CUSTOMERENGAGEMENT.CAMPAIGN.ACTIVITY_TYPE' | translate }} </label>
+                  <ng-select [readonly]="challenge?.status ==='ONGOING' || challenge?.status === 'FINISHED'" required [hideSelected]="true" [multiple]="false" [searchable]="true" formControlName="activityType"
+                    [items]="activityTypes" placeholder="{{'MENUITEMS.CUSTOMERENGAGEMENT.CAMPAIGN.ACTIVITY_TYPE' | translate }}">
+                    <ng-template ng-label-tmp let-item="item" let-clear="clear">
+                      <span class="ng-value-label">
+                        {{
+                          (item === 'CONVERSION' ? 'SHARED.CONVERSION' :
+                          item === 'QUEST_FULFILLED' ? 'SHARED.QUEST_FULFILLED' :
+                          item === 'WEB_ONSITE_ACTIVITY' ? 'SHARED.WEB_ONSITE_ACTIVITY' :
+                          item === 'MOBILE_ONSITE_ACTIVITY' ? 'SHARED.MOBILE_ONSITE_ACTIVITY' :
+                          item === 'PHYSICAL_ONSITE_ACTIVITY' ? 'SHARED.PHYSICAL_ONSITE_ACTIVITY' :
+                          '') | translate
+                          }}
+                      </span>
+                      <span *ngIf="challenge?.status !=='ONGOING' && challenge?.status !== 'FINISHED'" class="ng-value-icon right" (click)="clear(item)" aria-hidden="true">×</span>
+                    </ng-template>
+                    <ng-template ng-option-tmp let-item$="item$" let-item="item">
+                      {{
+                        (item === 'CONVERSION' ? 'SHARED.CONVERSION' :
+                        item === 'QUEST_FULFILLED' ? 'SHARED.QUEST_FULFILLED' :
+                        item === 'WEB_ONSITE_ACTIVITY' ? 'SHARED.WEB_ONSITE_ACTIVITY' :
+                        item === 'MOBILE_ONSITE_ACTIVITY' ? 'SHARED.MOBILE_ONSITE_ACTIVITY' :
+                        item === 'PHYSICAL_ONSITE_ACTIVITY' ? 'SHARED.PHYSICAL_ONSITE_ACTIVITY' :
+                        '') | translate
+                        }}
+
+                    </ng-template>
+                  </ng-select>
+                </div>
+                <div class="mb-3 col-lg-5">
+                  <label for="email_id-field" class="form-label col-xl-3"> Activities </label>
+                  <div class="d-flex gap-1">
+                    <ng-select [readonly]="challenge?.status ==='ONGOING' || challenge?.status === 'FINISHED'" required class="col-12" [hideSelected]="true" [multiple]="false"
+                      [searchable]="false" formControlName="predefined" [items]="activities$ | async" [virtualScroll]="true"
+                      placeholder="Select Activity" (scrollToEnd)="loadMoreActivities()">
+                      <ng-template ng-label-tmp let-item="item" let-clear="clear">
+                        {{item?.title}}
+                        <span *ngIf="challenge?.status !=='ONGOING' && challenge?.status !== 'FINISHED'" class="ng-value-icon right" (click)="clear(item)" aria-hidden="true">×</span>
+                      </ng-template>
+                      <ng-template ng-option-tmp let-item$="item$" let-item="item">
+                        <div class="d-flex gap-2 align-items-center">
+                          <div *ngIf="item?.media?.pictures?.length && item?.media?.pictures[0].baseUrl !==''"
+                            href="javascript: void(0);" class="avatar-group-item shadow">
+                            <div class="avatar-xs">
+                              <img [src]="item?.media?.pictures[0].baseUrl + '/' + item?.media?.pictures[0].path" alt=""
+                                class="rounded-circle h-8 w-8 img-fluid">
+                            </div>
+                          </div>
+                          <div *ngIf="!item?.media?.pictures?.length || item?.media?.pictures[0].baseUrl ===''"
+                            href="javascript: void(0);" class="avatar-group-item shadow">
+                            <div class="avatar-xs">
+                              <div class="avatar-title rounded-circle bg-info shadow">
+                                {{ item?.title?.charAt(0) || 'N'}}
+                              </div>
+                            </div>
+                          </div>
+                          {{item?.title}}
+                        </div>
+                      </ng-template>
+                    </ng-select>
+                    <button *ngIf="!first && (challenge?.status !=='ONGOING' && challenge?.status !== 'FINISHED')" (click)="removeActivityField(i)" class="btn btn-sm btn-soft-danger">
+                      <i class="ri-delete-bin-fill fs-16"></i>
+                    </button>
+                  </div>
+                </div>
+              </div>
+              <div class="d-flex justify-content-end">
+                <button *ngIf="last && challenge?.status !=='ONGOING' && challenge?.status !== 'FINISHED'" (click)="addActivityField()" type="button" class="btn btn-soft-info btn-sm shadow-none"><i
+                    class="ri-add-fill me-1 align-bottom"></i>
+                  Add activity</button>
+              </div>
+            </div>
+          </ng-container>
+          <ng-container *ngIf="selectedType === 'donation'" formGroupName="donation">
+            <div class="mb-3 col-lg-6">
+              <label for="email_id-field" class="form-label col-xl-3"> Donation </label>
+              <ng-select [readonly]="challenge?.status ==='ONGOING' || challenge?.status === 'FINISHED'" [hideSelected]="true" [multiple]="false"
+                [searchable]="false" formControlName="donation" [items]="donations$ | async" [virtualScroll]="true"
+                placeholder="Donation" (scrollToEnd)="loadMoreDonations()">
+                <ng-template ng-label-tmp let-item="item" let-clear="clear">
+                  {{item?.title}}
+                  <span *ngIf="challenge?.status !=='ONGOING' && challenge?.status !== 'FINISHED'" class="ng-value-icon right" (click)="clear(item)" aria-hidden="true">×</span>
+                </ng-template>
+                <ng-template ng-option-tmp let-item$="item$" let-item="item">
+                  <div class="d-flex gap-2 align-items-center">
+                    <div *ngIf="item?.media?.pictures?.length && item?.media?.pictures[0].baseUrl !==''"
+                      href="javascript: void(0);" class="avatar-group-item shadow">
+                      <div class="avatar-xs">
+                        <img [src]="item?.media?.pictures[0].baseUrl + '/' + item?.media?.pictures[0].path" alt=""
+                          class="rounded-circle h-8 w-8 img-fluid">
+                      </div>
+                    </div>
+                    <div *ngIf="!item?.media?.pictures?.length || item?.media?.pictures[0].baseUrl ===''"
+                      href="javascript: void(0);" class="avatar-group-item shadow">
+                      <div class="avatar-xs">
+                        <div class="avatar-title rounded-circle bg-info shadow">
+                          {{ item?.title?.charAt(0) || 'N'}}
+                        </div>
+                      </div>
+                    </div>
+                    {{item?.title}}
+                  </div>
+                </ng-template>
+              </ng-select>
+            </div>
+            <div class="mb-3 col-lg-6">
+              <label for="email_id-field" class="form-label col-xl-3">Objective</label>
+              <div class="input-group">
+                <input [readonly]="challenge?.status ==='ONGOING' || challenge?.status === 'FINISHED'" type="text" id="email_id-field" class="form-control" placeholder="Enter Objective"
+                  formControlName="objective" />
+                <div class="input-group-append">
+                  <span class="input-group-text">
+                    <img *ngIf="(loyaltySettings$ | async)?.quantitative?.coin?.picture?.baseUrl"
+                      [src]="(loyaltySettings$ | async)?.quantitative?.coin?.picture?.baseUrl + '/' + (loyaltySettings$ | async)?.quantitative?.coin?.picture?.path"
+                      alt="" class="img-fluid rounded-circle avatar-xxs mb-1">
+                    <lord-icon *ngIf="!(loyaltySettings$ | async)?.quantitative?.coin?.picture?.baseUrl"
+                      src="https://cdn.lordicon.com/lxizbtuq.json" trigger="loop" delay="2000"
+                      style="width:25px;height:25px">
+                    </lord-icon>
+                  </span>
+                </div>
+              </div>
+            </div>
+          </ng-container>
+          <div *ngIf="challenge?.status !=='ONGOING' && challenge?.status !== 'FINISHED'" class="modal-footer mt-5">
+            <div class="hstack gap-2 justify-content-end">
+              <button type="button" class="btn btn-danger" data-bs-dismiss="modal"
+                (click)="exit()">{{'MODULES.ECOMMERCE.MAIN.BACK' | translate }}</button>
+              <button [disabled]="isButtonDisabled || challengeForm.invalid" type="button" (click)="save()"
+                class="btn btn-success" id="add-btn">{{'COMMON.SAVE' | translate }}</button>
+            </div>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>

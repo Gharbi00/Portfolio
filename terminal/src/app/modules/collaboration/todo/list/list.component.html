@@ -1,0 +1,310 @@
+<ng-container *ngIf="!(navigating$ | async)">
+
+  <div class="d-lg-flex gap-1 mx-n4 mt-n4 p-1">
+    <div class="file-manager-sidebar">
+      <div class="p-4 d-flex flex-column h-100">
+        <div class="mb-3">
+          <button class="btn btn-success w-100" data-bs-target="#createProjectModal" data-bs-toggle="modal" (click)="openSectionModal(sectionModal, null)">
+            <i class="ri-add-line align-bottom"></i> {{ 'MODULES.COLLABORATION.TODO.ADD_TODO' | translate }}
+          </button>
+        </div>
+        <ngx-simplebar style="height: calc(100vh - 468px);" class="px-4 mx-n4">
+          <ul cdkDropList (cdkDropListDropped)="sectionDropped($event)" class="to-do-menu list-unstyled" id="projectlist-data">
+            <li cdkDrag *ngFor="let data of sections; let i = index">
+              <a data-bs-toggle="collapse" href="javascript:void(0);" [ngClass]="{'active': i === selectedIndex}" class="nav-link fs-13" (click)="selectedIndex = i"
+                [attr.aria-expanded]="!data.coll">{{data?.title}}</a>
+            </li>
+          </ul>
+        </ngx-simplebar>
+        <div class="mt-auto text-center">
+          <img src="assets/images/task.png" alt="Task" class="img-fluid" />
+        </div>
+      </div>
+    </div>
+    <div class="file-manager-content w-100 p-4 pb-0">
+      <div *ngIf="sections?.length" class="hstack mb-4">
+        <h5 class="fw-semibold flex-grow-1 mb-0">{{sections[selectedIndex].title}} <span class="badge bg-primary align-bottom ms-2">{{'COMMON.PRIORITY.' + sections[selectedIndex].priority | translate}}</span></h5>
+        <div class="hstack gap-2">
+          <div class="btn-group" role="group" aria-label="Basic example">
+            <button (click)="openDeleteSection(deleteSectionModel, sections[selectedIndex])" class="btn fw-semibold btn-soft-danger remove-list" data-bs-toggle="modal"
+              data-bs-target="#removeTaskItemModal" data-remove-id="15">
+              <i class="ri-delete-bin-5-fill align-bottom"></i>
+            </button>
+            <button (click)="openSectionModal(sectionModal, sections[selectedIndex])" class="btn fw-semibold ms-2 btn-soft-info edit-list" data-bs-toggle="modal" data-bs-target="#createTask"
+              data-edit-id="15">
+              <i class="ri-pencil-fill align-bottom"></i>
+            </button>
+            <button (click)="switchTasks('-')" class="btn btn-icon fw-semibold ms-2 btn-soft-danger"><i class="ri-arrow-go-back-line"></i></button>
+            <button (click)="switchTasks('+')" class="btn btn-icon fw-semibold btn-soft-success"><i class="ri-arrow-go-forward-line"></i></button>
+          </div>
+        </div>
+      </div>
+      <div class="card-body border border-dashed border-end-0 border-start-0">
+        <div class="p-3 bg-light rounded mb-4">
+          <div class="row g-2">
+            <div class="col-lg">
+              <div class="search-box">
+                <form [formGroup]="searchForm">
+                  <input formControlName="searchString" type="text" id="searchTaskList" class="form-control search" placeholder="{{ 'MODULES.COLLABORATION.TODO.SEARCH_TASK_NAME' | translate }}">
+                  <i class="ri-search-line search-icon"></i>
+                </form>
+              </div>
+            </div>
+            <div class="col-lg-auto">
+              <button (click)="openTaskModal(taskModal, null)" class="btn btn-primary createTask" type="button" data-bs-toggle="modal" data-bs-target="#createTask"
+                (click)="openTaskModal(taskModal, null)">
+                <i class="ri-add-fill align-bottom"></i> {{ 'MODULES.COLLABORATION.TODO.ADD_TASKS' | translate }}
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div *ngIf="sections[this.selectedIndex]?.tasks?.length && !isLoading" class="card card-body">
+        <div class="table-responsive table-card mb-3">
+          <table #dataTable cdkDropList (cdkDropListDropped)="taskDropped($event)" class="table align-middle table-nowrap mb-0">
+            <thead>
+              <tr class="bg-light text-muted text-uppercase">
+                <th>{{ 'MODULES.COLLABORATION.TODO.TASK_NAME' | translate }}</th>
+                <th>{{ 'COMMON.DUE_DATE' | translate }}</th>
+                <th>{{ 'COMMON.STATUS' | translate }}</th>
+                <th>{{ 'COMMON.PRIORITY_TEXT' | translate }}</th>
+                <th class="d-flex justify-content-center">{{ 'COMMON.ACTION' | translate }}</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let element of sections[this.selectedIndex]?.tasks" cdkDrag id="c_{{bank?.id}}">
+                <td>
+                  <div class="d-flex align-items-start">
+                    <div class="flex-shrink-0 me-3">
+                      <div class="task-handle px-1 rounded">: :</div>
+                    </div>
+                    <div class="flex-grow-1">
+                      <div class="d-flex">
+                        <input class="form-check-input me-1" type="checkbox" value="15" id="todo{{element.id}}" name="checkAll" (change)="checkTask($event, element)"
+                          [checked]="element.completed === true">
+                        <label [ngClass]="{'line-through': element.completed === true}" class="form-check-label" for="todo15">{{element.title}}</label>
+                      </div>
+                    </div>
+                  </div>
+                </td>
+                <td><ngb-highlight [result]="element.dueDate | date :'longDate'"></ngb-highlight></td>
+                <td>
+                  <span class="badge  text-uppercase" [ngClass]=" { 'badge-soft-success': element.completed === true, 'badge-soft-secondary': element.completed === false}">{{element.completed
+                    === false ? ('COMMON.IN_PROGRESS' | translate) : ('COMMON.COMPLETED' | translate)}}</span>
+                </td>
+                <td>
+                  <span class="badge text-uppercase"
+                    [ngClass]=" { 'bg-danger': element.priority === 'HIGH', 'bg-warning': element.priority === 'NORMAL','bg-success': element.priority === 'LOW'}">{{'COMMON.PRIORITY.' + element.priority
+                    |
+                    translate}}</span>
+                </td>
+                <td>
+                  <ul class="d-flex justify-content-center list-inline hstack gap-2 mb-0">
+                    <li (click)="openTaskModal(taskModal, element)" class="list-inline-item edit" matTooltip="{{ 'COMMON.EDIT' | translate }}" placement="top">
+                      <a href="javascript:void(0);" data-bs-toggle="modal" class="text-primary d-inline-block edit-item-btn">
+                        <i class="ri-pencil-fill fs-16"></i>
+                      </a>
+                    </li>
+                    <li (click)="openDeleteTask(deleteTaskModel, element)" class="list-inline-item edit" matTooltip="{{ 'COMMON.DELETE' | translate }}" placement="top">
+                      <a href="javascript:void(0);" data-bs-toggle="modal" class="text-danger d-inline-block">
+                        <i class="ri-delete-bin-5-fill fs-16"></i>
+                      </a>
+                    </li>
+                  </ul>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+      <div id="noresult" class="py-4 mt-4 text-center" *ngIf="isLoading || !sections[this.selectedIndex]?.tasks?.length">
+        <div *ngIf="isLoading">
+          <lord-icon trigger="loop" style="width:72px;height:72px" [colors]="'primary:' + primaryColor + ',secondary:' + secondaryColor" src="https://cdn.lordicon.com/msoeawqm.json">
+          </lord-icon>
+          <h5 class="mt-4" >{{ 'COMMON.LOADING' | translate }}</h5>
+        </div>
+        <div *ngIf="!isLoading && !sections[this.selectedIndex]?.tasks?.length">
+          <lord-icon trigger="loop" style="width:72px;height:72px" [colors]="'primary:' + primaryColor + ',secondary:' + secondaryColor" src="https://cdn.lordicon.com/msoeawqm.json">
+          </lord-icon>
+          <h5 class="mt-4" >{{ 'COMMON.NO_RESULT_FOUND'
+            | translate }}</h5>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <ng-template #taskModal role="document" let-modal>
+    <div class="modal-header bg-soft-info p-3">
+      <h5 class="modal-title" id="exampleModalLabel">{{ 'MODULES.COLLABORATION.TODO.TASK_MODAL_TITLE' | translate }}
+      </h5>
+      <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" id="close-modal" (click)="modal.dismiss('Cross click')"></button>
+    </div>
+    <form [formGroup]="taskForm">
+      <div class="modal-body">
+        <div class="row g-3">
+          <div class="col-lg-12">
+            <div class="mb-3">
+              <label for="email_id-field" class="form-label">{{ 'COMMON.TITLE' | translate }}</label>
+              <input type="text" id="email_id-field" class="form-control" placeholder="{{ 'COMMON.ENTER_TITLE' | translate }}" required formControlName="title"
+                [ngClass]="{ 'is-invalid': taskForm.get('title')?.touched && taskForm.get('title').hasError('required') }" />
+              <div class="invalid-feedback" *ngIf="taskForm.get('title')?.touched && taskForm.get('title').hasError('required')">{{
+                'COMMON.REQUIRED' | translate }}</div>
+            </div>
+            <div class="mb-3">
+              <label class="form-label">{{ 'MODULES.COLLABORATION.TODO.TASK_DESCRIPTION' | translate }}</label>
+              <textarea formControlName="description" name="description" id="comments" rows="3" class="form-control bg-light border-light"
+                placeholder="{{ 'MODULES.COLLABORATION.TODO.TASK_DESCRIPTION_PLACEHOLDER' | translate }}"></textarea>
+            </div>
+            <div class="mb-3">
+              <label for="choices-priority-input" class="form-label">{{ 'COMMON.PRIORITY_TEXT' | translate }}</label>
+              <select class="form-select form-control-line" required [formControlName]="'priority'">
+                <option selected disabled value="">{{ 'COMMON.SELECT_OPTION' | translate }}</option>
+                <option *ngFor="let pr of priorities" [value]="pr">{{ 'COMMON.PRIORITY.' + pr.toUpperCase() | translate
+                  }}
+                </option>
+              </select>
+              <div class="invalid-feedback" *ngIf="taskForm.get('priority')?.touched && taskForm.get('priority').hasError('required')">{{
+                'COMMON.REQUIRED' | translate }}</div>
+            </div>
+            <div class="mb-3">
+              <label for="choices-privacy-status-input" class="form-label">{{ 'MODULES.COLLABORATION.TODO.TASK_DUE_DATE'
+                | translate }}</label>
+              <input formControlName="dueDate" [inline]="false" class="form-control bg-light border-light" type="text" mwlFlatpickr [altInput]="true" [convertModelValue]="true"
+                placeholder="{{ 'MODULES.COLLABORATION.TODO.TASK_DUE_DATE_PLACEHOLDER' | translate }}" id="isDate">
+            </div>
+            <div class="mb-3">
+              <label class="form-label" for="product-tags-input">{{ 'MODULES.COLLABORATION.TODO.TASK_TAGS' | translate
+                }}
+                ({{ 'COMMON.PRESS_ENTER_TO_ADD' | translate }})
+              </label>
+              <ng-select [items]="[]" class="no-arrow-select" [addTag]="true" [isOpen]="false" [multiple]="true" [selectOnTab]="true" formControlName="tags">
+              </ng-select>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <div class="hstack gap-2 justify-content-end">
+          <button type="button" class="btn btn-light" data-bs-dismiss="modal" (click)="modal.close('Close click')">{{
+            'COMMON.CLOSE' | translate }}</button>
+          <button type="button" [disabled]="taskForm.invalid || isButtonDisabled" (click)="saveTask()" class="btn btn-success" id="add-btn">{{ selectedTask ? ('MODULES.COLLABORATION.TODO.EDIT_TASK' |
+            translate)
+            : ('MODULES.COLLABORATION.TODO.CREATE_TASK' | translate) }}</button>
+        </div>
+      </div>
+    </form>
+  </ng-template>
+
+  <ng-template #sectionModal role="document" let-modal>
+    <div class="modal-header bg-soft-info p-3">
+      <h5 class="modal-title" id="exampleModalLabel">{{ selectedSection ? ('MODULES.COLLABORATION.TODO.EDIT_SECTION' |
+        translate) : ('MODULES.COLLABORATION.TODO.CREATE_SECTION' | translate) }}</h5>
+      <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" id="close-modal" (click)="modal.dismiss('Cross click')"></button>
+    </div>
+    <form [formGroup]="sectionForm">
+      <div class="modal-body">
+        <div class="row g-3">
+          <div class="col-lg-12">
+            <div class="mb-3">
+              <label for="email_id-field" class="form-label">{{ 'COMMON.TITLE' | translate }}</label>
+              <input type="text" id="email_id-field" class="form-control" placeholder="{{ 'COMMON.ENTER_TITLE' | translate }}" required formControlName="title"
+                [ngClass]="{ 'is-invalid': sectionForm.get('title')?.touched && sectionForm.get('title').hasError('required') }" />
+              <div class="invalid-feedback" *ngIf="sectionForm.get('title')?.touched && sectionForm.get('title').hasError('required')">{{
+                'COMMON.REQUIRED' | translate }}</div>
+            </div>
+            <div class="mb-3">
+              <label class="form-label">{{ 'MODULES.COLLABORATION.TODO.SECTION_DESCRIPTION' | translate }}</label>
+              <textarea formControlName="description" name="description" id="comments" rows="3" class="form-control bg-light border-light"
+                placeholder="{{ 'MODULES.COLLABORATION.TODO.SECTION_DESCRIPTION_PLACEHOLDER' | translate }}"></textarea>
+            </div>
+            <div class="mb-3">
+              <label for="choices-priority-input" class="form-label">{{ 'COMMON.PRIORITY_TEXT' | translate }}</label>
+              <select [ngClass]="{ 'is-invalid': sectionForm.get('priority')?.touched && sectionForm.get('priority').hasError('required') }" required class="form-select form-control-line"
+                [formControlName]="'priority'">
+                <option selected disabled value="">{{ 'COMMON.SELECT_OPTION' | translate }}</option>
+                <option *ngFor="let pr of priorities" [value]="pr">{{ 'COMMON.PRIORITY.' + pr.toUpperCase() | translate
+                  }}</option>
+              </select>
+              <div class="invalid-feedback" *ngIf="sectionForm.get('priority')?.touched && sectionForm.get('priority').hasError('required')">{{
+                'COMMON.REQUIRED' | translate }}</div>
+            </div>
+            <div class="mb-3">
+              <label for="choices-privacy-status-input" class="form-label">{{
+                'MODULES.COLLABORATION.TODO.SECTION_DUE_DATE' | translate }}</label>
+              <input formControlName="dueDate" [inline]="false" class="form-control bg-light border-light" type="text" mwlFlatpickr [altInput]="true" [convertModelValue]="true"
+                placeholder="{{ 'MODULES.COLLABORATION.TODO.SECTION_DUE_DATE_PLACEHOLDER' | translate }}" id="isDate">
+            </div>
+            <div class="mb-3">
+              <label class="form-label" for="product-tags-input">{{ 'MODULES.COLLABORATION.TODO.SECTION_TAGS' |
+                translate }}
+                ({{ 'COMMON.PRESS_ENTER_TO_ADD' | translate }})
+              </label>
+              <ng-select [items]="[]" class="no-arrow-select" [addTag]="true" [isOpen]="false" [multiple]="true" [selectOnTab]="true" formControlName="tags">
+              </ng-select>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <div class="hstack gap-2 justify-content-end">
+          <button type="button" class="btn btn-light" data-bs-dismiss="modal" (click)="modal.close('Close click')">{{
+            'COMMON.CLOSE' | translate }}</button>
+          <button type="button" [disabled]="sectionForm.invalid || isSectionButtonDisabled" (click)="saveSection()" class="btn btn-success" id="add-btn">{{ selectedSection ?
+            ('MODULES.COLLABORATION.TODO.EDIT_SECTION' |
+            translate) : ('MODULES.COLLABORATION.TODO.CREATE_SECTION' | translate) }}</button>
+        </div>
+      </div>
+    </form>
+  </ng-template>
+
+  <ng-template #deleteTaskModel let-modal>
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" id="close-removetodomodal" (click)="modal.dismiss('Cross click')"></button>
+      </div>
+      <div class="modal-body">
+        <div class="mt-2 text-center">
+          <lord-icon src="https://cdn.lordicon.com/gsqxdxog.json" trigger="loop" colors="primary:#f7b84b,secondary:#f06548" style="width:100px;height:100px"></lord-icon>
+          <div class="mt-4 pt-2 fs-15 mx-4 mx-sm-5">
+            <h4>{{'COMMON.ARE_YOU_SURE' | translate }}</h4>
+            <p class="text-muted mx-4 mb-0">{{'MODULES.COLLABORATION.MAIN.ARE_YOU_SURE_YOU_WANT_TO_REMOVE_THIS_TASK' | translate }}</p>
+          </div>
+        </div>
+        <div class="d-flex gap-2 justify-content-center mt-4 mb-2">
+          <button type="button" class="btn w-sm btn-light" data-bs-dismiss="modal" (click)="modal.close('Close click')">{{'COMMON.CLOSE' | translate }}</button>
+          <button type="button" class="btn w-sm btn-danger" id="remove-todoitem" (click)="deleteTask()">{{'COMMON.YES_DELETE_IT' | translate }}</button>
+        </div>
+      </div>
+    </div>
+  </ng-template>
+
+  <ng-template #deleteSectionModel let-modal>
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" id="close-removetodomodal" (click)="modal.dismiss('Cross click')"></button>
+      </div>
+      <div class="modal-body">
+        <div class="mt-2 text-center">
+          <lord-icon src="https://cdn.lordicon.com/gsqxdxog.json" trigger="loop" colors="primary:#f7b84b,secondary:#f06548" style="width:100px;height:100px"></lord-icon>
+          <div class="mt-4 pt-2 fs-15 mx-4 mx-sm-5">
+            <h4>{{'COMMON.ARE_YOU_SURE' | translate }}</h4>
+            <p class="text-muted mx-4 mb-0">{{'MODULES.COLLABORATION.MAIN.ARE_YOU_SURE_YOU_WANT_TO_REMOVE_THIS_SECTION' | translate }}</p>
+          </div>
+        </div>
+        <div class="d-flex gap-2 justify-content-center mt-4 mb-2">
+          <button type="button" class="btn w-sm btn-light" data-bs-dismiss="modal" (click)="modal.close('Close click')">{{'COMMON.CLOSE' | translate }}</button>
+          <button type="button" class="btn w-sm btn-danger" id="remove-todoitem" (click)="deleteSection()">{{'COMMON.YES_DELETE_IT' | translate }}</button>
+        </div>
+      </div>
+    </div>
+  </ng-template>
+</ng-container>
+<div *ngIf="navigating$ | async" class="vh-100 py-4 text-center" fxLayout="column" fxLayoutAlign="center center" fxLayoutGap="1rem">
+  <div>
+    <lord-icon trigger="loop" style="width:72px;height:72px" [colors]="'primary:' + primaryColor + ',secondary:' + secondaryColor" src="https://cdn.lordicon.com/msoeawqm.json">
+    </lord-icon>
+  </div>
+  <div class="mt-4">
+    <h5>{{ 'COMMON.LOADING' | translate }}</h5>
+  </div>
+</div>

@@ -1,0 +1,70 @@
+<div [ngStyle]="{'display': loaded ? 'block' : 'none'}" [class.dark-mode]="darkMode">
+  <div *ngIf="pagesToBeShown?.length > 0" class="section-pager-bar border col-12 col-sm-8">
+    <div class="align-items-center col-7 justify-content-center section-pager col-sm-8">
+      <div (click)="onChangePage(page)" *ngFor="let page of pagesToBeShown" [class.active]="currentPage === page"
+        class="section-pager-item">
+        <p class="section-pager-item-text">{{page}}</p>
+      </div>
+      <p [class.text-muted]="!dark-mode" class="section-pager-item-text col-mobile" style="opacity: 0.5;">{{'OF' | translate}} {{lastPage}}</p>
+    </div>
+    <div class="section-pager-controls">
+      <!-- Left control button -->
+      <div
+        [class.disabled]="rtl ? currentPage === lastPage : currentPage === 1"
+        (click)="rtl ? (currentPage < lastPage ? onChangePage(currentPage + 1) : null) : (currentPage > 1 ? onChangePage(currentPage - 1) : null)"
+        class="slider-control left"
+      >
+        <svg class="slider-control-icon icon-small-arrow">
+          <use xlink:href="#svg-small-arrow"></use>
+        </svg>
+      </div>
+
+      <!-- Right control button -->
+      <div
+        [class.disabled]="rtl ? currentPage === 1 : currentPage === lastPage"
+        (click)="rtl ? (currentPage > 1 ? onChangePage(currentPage - 1) : null) : (currentPage < lastPage ? onChangePage(currentPage + 1) : null)"
+        class="slider-control right"
+      >
+        <svg class="slider-control-icon icon-small-arrow">
+          <use xlink:href="#svg-small-arrow"></use>
+        </svg>
+      </div>
+    </div>
+
+  </div>
+</div>
+<svg style="display: none;">
+  <symbol id="svg-small-arrow" viewBox="0 0 6 8" preserveAspectRatio="xMinYMin meet">
+    <path d="M6,4L1.5,8L0,6.665L3,4L0,1.333L1.5,0l3,2.666l0,0L6,4z"/>
+  </symbol>
+</svg>
+
+
+<!-- <div [class.border-dark]="darkMode" [ngClass]="{'dark': darkMode}" *ngIf="pagesToBeShown?.length > 0" class="section-pager-bar border col-12 col-sm-8">
+  <div class="align-items-center col-7 justify-content-center section-pager col-sm-8">
+    <div [ngClass]="{'dark': darkMode}" (click)="onChangePage(page)" *ngFor="let page of pagesToBeShown" [class.active]="currentPage === page"
+      class="section-pager-item">
+      <p [ngClass]="{'dark': darkMode}" class="section-pager-item-text">{{page}}</p>
+    </div>
+    <p class="section-pager-item-text text-muted" style="opacity: 0.5;">of {{lastPage}}</p>
+  </div>
+  <div class="section-pager-controls">
+    <div [ngClass]="{'dark': darkMode}" [class.disabled]="currentPage === 1" (click)="currentPage > 1 ? onChangePage(currentPage - 1) : null"
+      class="slider-control left">
+      <svg class="slider-control-icon icon-small-arrow">
+        <use xlink:href="#svg-small-arrow"></use>
+      </svg>
+    </div>
+    <div [ngClass]="{'dark': darkMode}" [class.disabled]="currentPage === lastPage"
+      (click)="currentPage < lastPage ? onChangePage(currentPage + 1) : null" class="slider-control right">
+      <svg class="slider-control-icon icon-small-arrow">
+        <use xlink:href="#svg-small-arrow"></use>
+      </svg>
+    </div>
+  </div>
+</div>
+<svg style="display: none;">
+  <symbol id="svg-small-arrow" viewBox="0 0 6 8" preserveAspectRatio="xMinYMin meet">
+    <path d="M6,4L1.5,8L0,6.665L3,4L0,1.333L1.5,0l3,2.666l0,0L6,4z"/>
+  </symbol>
+</svg> -->

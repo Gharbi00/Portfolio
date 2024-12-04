@@ -1,0 +1,125 @@
+<app-breadcrumbs title="{{ 'MENUITEMS.TITLE.BLOGS' | translate }}" [breadcrumbItems]="breadCrumbItems"></app-breadcrumbs>
+<ng-container *ngIf="!(navigating$ | async)">
+
+  <div class="row">
+    <div class="col-lg-12">
+      <div class="card" id="ticketsList">
+        <div class="card-header border-0">
+          <div class="d-flex align-items-center">
+            <h5 class="card-title mb-0 flex-grow-1">{{'MODULES.WEBSITE.BLOGS' | translate }}</h5>
+            <div class="flex-shrink-0 d-flex gap-1">
+              <a routerLink="/website/blog/new-blog" class="btn btn-success add-btn"><i class="ri-add-line align-bottom me-1"></i>{{ 'MODULES.ECOMMERCE.MAIN.ADD_NEW' | translate }}</a>
+            </div>
+          </div>
+        </div>
+        <div class="card-body">
+          <div class="row g-3">
+            <div class="col-xxl-10 col-sm-12">
+              <div class="search-box">
+                <form [formGroup]="searchForm">
+                  <input formControlName="searchString" type="text" name="searchTerm" class="form-control search bg-light border-light" placeholder="{{'PLACEHOLDER.SEARCH_FOR_BLOGS_OR_SOMETHINGS' | translate }}...">
+                  <i class="ri-search-line search-icon"></i>
+                </form>
+              </div>
+            </div>
+            <div class="col-xxl-2 col-sm-4">
+              <div ngbDropdown>
+                <input readonly [value]="selectedStatus.join(', ')" placeholder="{{'PLACEHOLDER.SELECT_STATUS' | translate }}" class="cursor-pointer form-select form-control dropdown-toggle" ngbDropdownToggle>
+                <div class="dropdown-menu dropdown-menu-right w-100 h-7 p-3" ngbDropdownMenu>
+                  <div *ngFor="let state of status" class="form-check">
+                    <input (change)="onChange(state, $event.target.checked)" class="form-check-input me-3" type="checkbox" [value]="">
+                    <label class="form-check-label d-flex align-items-center" for="anna-adame">
+                      {{'COMMON.STATE.' + state | translate}}
+                    </label>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="row">
+    <div *ngFor="let blog of blogs" class="col-sm-6 col-xl-3">
+      <div class="card">
+        <div class="card-body">
+          <div class="d-flex align-items-end justify-content-between">
+            <h4 routerLink="/website/blog/{{blog.id}}" class="card-title cursor-pointer mb-2">{{blog?.title}}</h4>
+            <div class="d-flex align-items-center">
+              <span class="badge h-x text-uppercase mx-h" [ngClass]="{'badge-soft-success': blog.statuse === 'PRIVACY',
+            'badge-soft-success': blog?.status === 'PUBLISHED',
+            'badge-soft-danger': blog?.status === 'DELETED' || blog?.status === 'DRAFT'
+          }">
+                {{ 'COMMON.STATE.' + blog?.status | translate  }}
+              </span>
+              <div class="flex-shrink-0">
+                <div class="d-flex gap-1 justify-content-end mt-2">
+                  <div class="dropdown" ngbDropdown>
+                    <button class="btn btn-link text-muted p-1 mt-n2 py-0 text-decoration-none fs-15 shadow-none arrow-none" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="true"
+                      ngbDropdownToggle>
+                      <i class="ri-more-fill fs-17"></i>
+                    </button>
+                    <div class="dropdown-menu cursor-pointer dropdown-menu-end" ngbDropdownMenu>
+                      <a *ngIf="blog?.status === 'DELETED' || blog?.status === 'DRAFT'" (click)="publishBlog(blog)" class="dropdown-item">
+                        <i class="ri-pencil-fill align-bottom me-2 text-muted"></i>{{'MODULES.WEBSITE.PUBLISH' | translate }}
+                      </a>
+                      <a *ngIf="blog?.status === 'PUBLISHED'" (click)="deleteBlog(blog)" class="dropdown-item">
+                        <i class="ri-eye-off-fill align-bottom me-2 text-muted"></i>{{'MODULES.WEBSITE.HIDE' | translate }}
+                      </a>
+                      <a routerLink="/website/blog/{{blog.id}}" class="dropdown-item">
+                        <i class="ri-pencil-fill align-bottom me-2 text-muted"></i>{{'COMMON.EDIT' | translate }}
+                      </a>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="image-container">
+          <img class="img-fluid" *ngIf="blog?.pictures?.length" [src]="blog?.pictures[0]?.baseUrl + '/' + blog?.pictures[0]?.path" alt="Card image cap" />
+          <img class="img-fluid" *ngIf="!blog?.pictures?.length" src="assets/images/blog.jpeg" alt="Card image cap" />
+        </div>
+        <div class="card-body h-92">
+          <p class="card-text">
+            {{blog?.seo?.metaDesription?.length > 100 ?
+            blog?.seo?.metaDesription.substr(0,100) + '...' :
+            blog?.seo?.metaDesription}}
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div *ngIf="!blogs?.length" class="py-4 mt-4 text-center" id="noresult">
+    <lord-icon src="https://cdn.lordicon.com/vlycxjwx.json" trigger="loop" [colors]="'primary:' + primaryColor + ',secondary:' + secondaryColor" style="width:72px;height:72px"></lord-icon>
+    <h5 class="mt-4">{{ 'COMMON.NO_RESULT' | translate }}</h5>
+  </div>
+  <div *ngIf="blogs?.length" class="px-3 mb-3">
+    <div class="row justify-content-md-between align-items-md-center gy-2">
+      <div class="col col-sm-6">
+        <div class="dataTables_info mb-2" id="tickets-table_info" role="status" aria-live="polite">{{'COMMON.SHOWING' | translate }} {{pagination?.startIndex + 1}}–{{pagination?.endIndex ===
+          pagination?.length ? pagination?.endIndex : pagination?.endIndex + 1}} {{'COMMON.OF' | translate }} {{pagination?.length}}
+          entries
+        </div>
+      </div>
+      <div class="col col-sm-6">
+        <div class="text-sm-right float-end listjs-pagination">
+          <ngb-pagination [maxSize]="5" [collectionSize]="pagination?.length" [(page)]="page" (pageChange)="onPageChange($event)" [pageSize]="pagination?.size">
+          </ngb-pagination>
+        </div>
+      </div>
+    </div>
+  </div>
+</ng-container>
+<div *ngIf="navigating$ | async" class="vh-100 py-4 text-center" fxLayout="column" fxLayoutAlign="center center" fxLayoutGap="1rem">
+  <div>
+    <lord-icon trigger="loop" style="width:72px;height:72px" [colors]="'primary:' + primaryColor + ',secondary:' + secondaryColor" src="https://cdn.lordicon.com/msoeawqm.json">
+    </lord-icon>
+  </div>
+  <div class="mt-4">
+    <h5>{{'COMMON.LOADING' | translate }}</h5>
+  </div>
+</div>

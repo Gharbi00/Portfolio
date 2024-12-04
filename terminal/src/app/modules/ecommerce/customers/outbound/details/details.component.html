@@ -1,0 +1,1255 @@
+<app-breadcrumbs title="{{'MENUITEMS.TITLE.OUTBOUND' | translate}}"
+  [breadcrumbItems]="breadCrumbItems"></app-breadcrumbs>
+<ng-container *ngIf="!(navigating$ | async)">
+  <div class="row">
+    <div class="card">
+      <div class="card-body checkout-tab">
+        <div class="step-arrow-nav mt-n3 mx-n3 mb-3">
+          <form [formGroup]="outboundForm">
+            <ul ngbNav (navChange)="onGlobalTabChanged($event.nextId)" #customNav="ngbNav" [activeId]="selectedNav"
+              class="nav nav-pills custom-nav nav-justified" role="tablist">
+              <li [ngbNavItem]="1" class="nav-item">
+                <a ngbNavLink class="nav-link fs-15 p-3" data-bs-toggle="tab" role="tab">
+                  <i
+                    class="ri-file-info-line fs-16 p-2 bg-soft-primary text-primary rounded-circle align-middle mx-2"></i>{{'MODULES.INVOICING.SHARED.DETAILS'
+                  | translate }}
+                </a>
+                <ng-template ngbNavContent>
+                  <div>
+                    <h5 class="mb-1">{{'MODULES.ECOMMERCE.MAIN.OUTBOUND_INFORMATION' | translate }}</h5>
+                    <p class="text-muted mb-4">{{'MODULES.ECOMMERCE.MAIN.FILL_INFORMATION_BELOW' | translate }}</p>
+                  </div>
+                  <div>
+                    <div class="mt-2 col-lg-8 d-flex flex-wrap">
+                      <div class="wh-30 me-3 mb-2">
+                        <ng-container *ngIf="outboundForm.get(['picture', 'baseUrl']).value">
+                          <span class="delete-icon w-6 h-6 flex items-center justify-center cursor-pointer"
+                            (click)="removePicture()">
+                            <i class="ri-delete-bin-fill ft text-danger"></i>
+                          </span>
+                          <img (click)="upload()" class="wh-30 rounded object-cover"
+                            [src]="outboundForm.get(['picture', 'baseUrl']).value + '/' + outboundForm.get(['picture', 'path']).value">
+                        </ng-container>
+                        <div *ngIf="!outboundForm.get(['picture', 'baseUrl']).value" (click)="upload()"
+                          class="wh-30 mb-3 col-4 border rounded overflow-hidden cursor-pointer d-flex align-items-center justify-content-center">
+                          <span class="fs-5 fw-bold">{{'COMMON.UPLOAD' | translate }}</span>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="row">
+                      <div class="mb-3 col-sm-6">
+                        <label for="billinginfo-firstName" class="form-label">{{'COMMON.TITLE' | translate }}</label>
+                        <input type="text" class="form-control" id="billinginfo-firstName"
+                          placeholder="{{'COMMON.ENTER' | translate }} {{'COMMON.TITLE' | translate }}"
+                          formControlName="title">
+                      </div>
+                      <div class="mb-3 col-sm-6">
+                        <label for="billinginfo-lastName" class="form-label">{{'COMMON.DESCRIPTION' | translate
+                          }}</label>
+                        <textarea formControlName="description"
+                          placeholder="{{'COMMON.ENTER_DESCRIPTION' | translate }}" name="description"
+                          class="form-control" rows="4"></textarea>
+                      </div>
+                    </div>
+                    <div class="mb-3 col-sm-6">
+                      <label for="billinginfo-firstName" class="form-label">{{'COMMON.TRIGGER' | translate }}</label>
+                      <ng-select [selectableGroup]="true" [closeOnSelect]="true" formControlName="trigger"
+                        [multiple]="false" [items]="triggers" [clearable]="false"
+                        placeholder="{{'PLACEHOLDER.SELECT_STATUS' | translate }}">
+                        <ng-template ng-label-tmp let-item="item" let-clear="clear">
+                          {{
+                          (item === 'SCHEDULED' ? 'COMMON.SCHEDULED':
+                          item === 'INSTANT' ? 'COMMON.INSTANT' : '') | translate
+                          }}
+                        </ng-template>
+                        <ng-template ng-option-tmp let-item$="item$" let-item="item">
+                          {{
+                          (item === 'SCHEDULED' ? 'COMMON.SCHEDULED':
+                          item === 'INSTANT' ? 'COMMON.INSTANT' : '') | translate
+                          }}
+                        </ng-template>
+                      </ng-select>
+                    </div>
+
+                    <div *ngIf="outboundForm.get('trigger').value === 'SCHEDULED'" class="form-check col-lg-4 mb-4">
+                      <input formControlName="executedAt" class="form-check-input" type="checkbox" id="Required">
+                      <label class="form-check-label" for="Required">{{'COMMON.EXECUTED_AT' | translate }} </label>
+                    </div>
+                    <div class="row g-4">
+                      <div class="col-lg-3">
+                        <div class="form-check card-radio">
+                          <input [disabled]="!emailIntegration?.server?.host" [(ngModel)]="selectedContent"
+                            value="email" [ngModelOptions]="{standalone: true}" id="shippingMethod01"
+                            name="shippingMethod" type="radio" class="form-check-input">
+                          <label class="form-check-label" for="shippingMethod01">
+                            <span class="fs-16 mb-1 text-wrap d-block">{{'COMMON.EMAIL' | translate }}</span>
+                            <span class="text-muted fw-normal text-wrap d-block">
+                              {{'MODULES.ECOMMERCE.MAIN.SEND_TARGETED_MESSAGE' | translate }}
+                            </span>
+                          </label>
+                        </div>
+                      </div>
+                      <div class="col-lg-3">
+                        <div class="form-check card-radio">
+                          <input [disabled]="!smsIntegration?.gateway" [(ngModel)]="selectedContent" value="sms"
+                            [ngModelOptions]="{standalone: true}" id="shippingMethod02" name="shippingMethod"
+                            type="radio" class="form-check-input">
+                          <label class="form-check-label" for="shippingMethod02">
+                            <span class="fs-16 mb-1 text-wrap d-block">{{'MODULES.ECOMMERCE.MAIN.SET_UP_SMS' | translate
+                              }}</span>
+                            <span class="text-muted fw-normal text-wrap d-block">
+                              {{'MODULES.ECOMMERCE.MAIN.START_SENDING_SMS' | translate }}
+                            </span>
+                          </label>
+                        </div>
+                      </div>
+                      <div class="col-lg-3">
+                        <div class="form-check card-radio">
+                          <input [disabled]="!notifIntegration?.web?.enable && !notifIntegration?.mobile?.enable"
+                            [(ngModel)]="selectedContent" value="push" [ngModelOptions]="{standalone: true}"
+                            id="shippingMethod03" name="shippingMethod" type="radio" class="form-check-input">
+                          <label class="form-check-label" for="shippingMethod03">
+                            <span class="fs-16 mb-1 text-wrap d-block">{{'COMMON.PUSH' | translate}}</span>
+                            <span class="text-muted fw-normal text-wrap d-block">
+                              {{'MODULES.ECOMMERCE.MAIN.MESSAGE_CUSTOMERS_VIA_APP' | translate }}
+                            </span>
+                          </label>
+                        </div>
+                      </div>
+                      <div class="col-lg-3">
+                        <div class="form-check card-radio">
+                          <input [disabled]="!widget?.active" [(ngModel)]="selectedContent" value="widget"
+                            [ngModelOptions]="{standalone: true}" id="shippingMethod04" name="shippingMethod"
+                            type="radio" class="form-check-input">
+                          <label [matTooltip]="!widget?.active ? ('COMMON.WIDGET_NOT_ENABLED' | translate) : null" matTooltipPosition="above" class="form-check-label" for="shippingMethod04">
+                            <span class="fs-16 mb-1 text-wrap d-block">{{'COMMON.WIDGET' | translate}}</span>
+                            <span class="text-muted fw-normal text-wrap d-block">
+                              {{'MODULES.ECOMMERCE.MAIN.WIDGET_OUTBOUND_DESCRIPTION' | translate }}
+                            </span>
+                          </label>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="d-flex align-items-start gap-3 mt-3">
+                      <button [disabled]="!outboundForm.get('title').value" (click)="selectedNav = 3" type="button"
+                        class="btn btn-primary btn-label right ms-auto nexttab" data-nexttab="pills-bill-address-tab"><i
+                          class="ri-arrow-right-line label-icon align-middle fs-16 ms-2"></i>{{'MODULES.ECOMMERCE.MAIN.NEXT_STEP'
+                        | translate }}</button>
+                    </div>
+                  </div>
+                </ng-template>
+              </li>
+              <ng-container *ngIf="selectedContent !== 'widget'">
+                <li [disabled]="!outboundForm.get('title').value" [ngbNavItem]="2" class="nav-item">
+                  <a ngbNavLink class="nav-link fs-15 p-3" data-bs-toggle="tab" role="tab">
+                    <i
+                      class="ri-group-2-line fs-16 p-2 bg-soft-primary text-primary rounded-circle align-middle mx-2"></i>{{'MENUITEMS.TS.AUDIENCE'
+                    | translate }}
+                  </a>
+                  <ng-template ngbNavContent>
+                    <div>
+                      <h5 class="mb-1">{{'MODULES.ECOMMERCE.MAIN.OUTBOUND_AUDIENCE' | translate }}</h5>
+                      <p class="text-muted mb-4">{{'MODULES.ECOMMERCE.MAIN.CHOOSE_AUDIENCE' | translate }}</p>
+                    </div>
+
+                    <div [ngClass]="{'p-11': quest?.audience}" class="card">
+                      <div *ngIf="!audience" class="card-body">
+                        <div class="text-center mb-4">
+                          <h4 class="fw-semibold fs-22">{{'MENUITEMS.CUSTOMERENGAGEMENT.AUDIENCES.SELECT_AUDIENCE' |
+                            translate }} </h4>
+                          <div class="d-flex mt-3 justify-content-center">
+                            <div class="alert alert-borderless alert-info col-lg-6" role="alert">
+                              <div class="d-flex align-items-center">
+                                <i class="fs-16 me-2 ri-information-fill"></i>
+                                <div>
+                                  {{'MENUITEMS.CUSTOMERENGAGEMENT.AUDIENCES.IF_NO_AUDIENCE_IS_SELECTED_THE_CONTENT_WILL_BE_DISTRIBUTED_TO_ALL_CAMPAIGNS'
+                                  | translate }}
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                          <p class="text-muted mb-4 fs-15">
+                            {{'MENUITEMS.CUSTOMERENGAGEMENT.AUDIENCES.SELECT_FROM_A_RANGE_OF_TARGETED_AUDIENCE_LISTS_BY_SIMPLY_CLICKING_ON_THE_BUTTONS_BELOW'
+                            | translate }}</p>
+                          <div class="mt-2 d-flex justify-content-center gap-2">
+                            <button (click)="openSelectAudienceModal()"
+                              class="btn btn-primary">{{'MENUITEMS.CUSTOMERENGAGEMENT.AUDIENCES.SELECT_AUDIENCE' |
+                              translate }}</button>
+                            <button [routerLink]="['/engagement/audiences/new-audience']" class="btn btn-primary">
+                              {{'MENUITEMS.CUSTOMERENGAGEMENT.AUDIENCES.CREATE_AUDIENCE' | translate }}</button>
+                          </div>
+                        </div>
+                      </div>
+
+                      <div *ngIf="audience" class="border rounded card-height-100">
+                        <div class="card-body">
+                          <div class="d-flex flex-column h-100">
+                            <div class="mb-4 align-items-center d-flex">
+                              <div class="text-muted mb-0 flex-grow-1">{{ audience?.updatedAt | date:'longDate' }}</div>
+                              <div class="flex-shrink-0">
+                                <div class="dropdown card-header-dropdown" ngbDropdown>
+                                  <a class="text-reset dropdown-btn arrow-none" href="javascript:void(0);"
+                                    data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false"
+                                    ngbDropdownToggle>
+                                    <span class="text-muted fs-18"><i class="mdi mdi-dots-vertical"></i></span>
+                                  </a>
+                                  <div class="dropdown-menu dropdown-menu-end" ngbDropdownMenu>
+                                    <a [routerLink]="['/engagement/audiences', audience?.id]"
+                                      routerLinkActive="router-link-active" class="dropdown-item"
+                                      href="javascript:void(0);">{{'COMMON.EDIT' | translate }}</a>
+                                    <a (click)="openDeleteModal(deleteModal)" class="dropdown-item"
+                                      href="javascript:void(0);">{{'COMMON.DELETE' | translate }}</a>
+                                  </div>
+                                </div>
+                              </div>
+                            </div>
+                            <div class="d-flex mb-3">
+                              <div class="flex-shrink-0 me-3">
+                                <div class="avatar-sm">
+                                  <span *ngIf="audience?.media?.pictures?.length"
+                                    class="avatar-title bg-soft-warning rounded-circle">
+                                    <img
+                                      [src]="audience?.media?.pictures[0].baseUrl + '/' + audience?.media?.pictures[0].path"
+                                      alt="" class="rounded-circle h-100 img-fluid">
+                                  </span>
+                                  <div *ngIf="!audience?.media?.pictures?.length"
+                                    class="avatar-title text-uppercase bg-soft-info text-danger rounded-circle shadow">
+                                    {{audience?.title?.charAt(0) || 'N'}}
+                                  </div>
+                                </div>
+                              </div>
+                              <div class="flex-grow-1">
+                                <h5 class="mb-1"><a [routerLink]="['/engagement/audiences', audience?.id]"
+                                    class="text-dark">{{audience?.title | translate}}</a></h5>
+                                <p class="text-muted text-truncate-two-lines mb-3">{{audience?.description}}</p>
+                              </div>
+                            </div>
+                            <div class="mt-auto">
+                              <div class="d-flex mb-2">
+                                <div class="flex-grow-1 mb-x">
+                                  <div>{{'MENUITEMS.CUSTOMERENGAGEMENT.AUDIENCES.REACH' | translate }}</div>
+                                </div>
+                                <div class="flex-shrink-0">
+                                  <div><i class="ri-list-check align-bottom me-1 text-muted"></i>
+                                    {{(audienceReach?.reach
+                                    || 0) +
+                                    '/' + (audienceReach?.total || 0) }} </div>
+                                </div>
+                              </div>
+                              <div class="progress animated-progess custom-progress progress-label">
+                                <div class="progress-bar bg-primary" role="progressbar" [style.width]="(+audience?.reach?.reach /
+                                              +audience?.reach?.total) * 100 + '%'" [aria-valuenow]="percentage"
+                                  aria-valuemin="0" aria-valuemax="100">
+                                  <div class="label">{{percentage}}%</div>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="d-flex align-items-start gap-3 mt-4">
+                      <button (click)="selectedNav = 1" type="button" class="btn btn-light btn-label previestab"
+                        data-previous="pills-bill-info-tab"><i
+                          class="ri-arrow-left-line label-icon align-middle fs-16 me-2"></i>{{'MODULES.ECOMMERCE.MAIN.BACK'
+                        | translate }}</button>
+                      <ng-container
+                        *ngIf="notifIntegration?.web?.enable || notifIntegration?.mobile?.enable || smsIntegration?.gateway || emailIntegration?.server?.host">
+                        <button [disabled]="!outboundForm.get('title').value" (click)="selectedNav = 3" type="button"
+                          class="btn btn-primary btn-label right ms-auto nexttab" data-nexttab="pills-payment-tab"><i
+                            class="ri-arrow-right-line label-icon align-middle fs-16 ms-2"></i>{{'MODULES.ECOMMERCE.MAIN.NEXT_STEP'
+                          | translate }}</button>
+                      </ng-container>
+                    </div>
+
+                    <ng-template #deleteModal let-modal>
+                      <div class="modal-content">
+                        <div class="modal-header">
+                          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"
+                            id="btn-close" (click)="modal.dismiss('Cross click')"></button>
+                        </div>
+                        <div class="modal-body">
+                          <div class="mt-2 text-center">
+                            <lord-icon src="https://cdn.lordicon.com/gsqxdxog.json" trigger="loop"
+                              colors="primary:#405189,secondary:#f06548" style="width:90px;height:90px"></lord-icon>
+                            <div class="mt-4 pt-2 fs-15 mx-4 mx-sm-5">
+                              <h4>{{'MENUITEMS.CUSTOMERENGAGEMENT.AUDIENCES.YOU_ARE_ABOUT_TO_DELETE_AN_AUDIENCE' |
+                                translate }}</h4>
+                              <p class="text-muted mx-4 mb-0">
+                                {{'MENUITEMS.CUSTOMERENGAGEMENT.AUDIENCES.DELETING_YOUR_AUDIENCE_WILL_REMOVE_ALL_OF_YOUR_INFORMATION_FROM_OUR_DATABASE'
+                                | translate }}
+                              </p>
+                            </div>
+                          </div>
+                          <div class="d-flex gap-2 justify-content-center mt-4 mb-2">
+                            <button type="button" class="btn btn-lg btn-light me-3"
+                              (click)="modal.close('Close click')">
+                              <i class="bi bi-x-lg"></i>{{'COMMON.CLOSE' | translate }}
+                            </button>
+                            <button type="button" class="btn w-sm btn-danger " id="delete-product"
+                              (click)="deleteAudience()" (click)="modal.close('Close click')">{{'COMMON.YES_DELETE_IT' |
+                              translate }}</button>
+                          </div>
+                        </div>
+                      </div>
+                    </ng-template>
+                  </ng-template>
+                </li>
+              </ng-container>
+              <ng-container *ngIf="selectedContent === 'email'">
+                <li [disabled]="!outboundForm.get('title').value" [ngbNavItem]="3" class="nav-item">
+                  <a ngbNavLink class="nav-link fs-15 p-3" data-bs-toggle="tab" role="tab">
+                    <i
+                      class="ri-mail-line fs-16 p-2 bg-soft-primary text-primary rounded-circle align-middle mx-2"></i>{{'MODULES.ECOMMERCE.MAIN.CONTENT'
+                    | translate }}
+                  </a>
+                  <ng-template ngbNavContent>
+                    <div>
+                      <h5 class="mb-1">{{
+                        (selectedContent === 'email' ? 'SHARED.EMAIL_INFORMATION' :
+                        selectedContent === 'widget' ? 'SHARED.WIDGET_INFORMATION' :
+                        selectedContent === 'sms' ? 'Sms' : 'SHARED.NOTIFICATION_INFORMATION') | translate
+                        }}</h5>
+                      <p class="text-muted mb-4">{{'SHARED.PLEASE_FILL_THE_INFORMATION_BELOW' | translate}}</p>
+                    </div>
+                    <div class="mt-4">
+                      <div class="d-flex align-items-center mb-2">
+                        <div class="flex-grow-1">
+                          <div class="d-flex justify-content-between align-items-center">
+                            <h5 class="fs-15 mb-0">{{'MODULES.ECOMMERCE.MAIN.DESIGN_YOUR_EMAIL' | translate }}</h5>
+                            <div *ngIf="outboundForm.get(['content', 'email', 'content']).value" class="d-flex gap-1">
+                              <button (click)="onChangeEditView()" class="btn btn-sm btn-soft-info">
+                                {{'MODULES.ECOMMERCE.MAIN.EDIT_EMAIL' | translate }}
+                              </button>
+                              <button (click)="changeTemplate()" class="btn btn-sm btn-soft-danger">
+                                {{'MODULES.ECOMMERCE.MAIN.CHANGE_TEMPLATE' | translate }}
+                              </button>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                      <div class="row justify-content-between">
+                        <div formGroupName="content" class="col-sm-5 gy-3">
+                          <div formGroupName="email">
+                            <div class="mb-3">
+                              <label for="billinginfo-firstName"
+                                class="form-label">{{'MODULES.ECOMMERCE.MAIN.SUBJECT_LINE' | translate }}</label>
+                              <input required type="text" class="form-control" id="billinginfo-firstName"
+                                placeholder="{{'COMMON.ENTER' | translate }} {{'MODULES.ECOMMERCE.MAIN.SUBJECT_LINE' | translate }}"
+                                formControlName="subject">
+                            </div>
+                            <div class="mb-3">
+                              <label for="billinginfo-lastName"
+                                class="form-label">{{'MODULES.ECOMMERCE.MAIN.PREVIEW_TEXT' | translate }}</label>
+                              <input required type="text" class="form-control" id="billinginfo-firstName"
+                                placeholder="{{'COMMON.ENTER' | translate }} {{'MODULES.ECOMMERCE.MAIN.PREVIEW_TEXT' | translate }}"
+                                formControlName="preview">
+                            </div>
+                          </div>
+                        </div>
+                        <div *ngIf="!safeEmail" class="col-sm-6 gy-3 row">
+                          <div class="col-sm-6">
+                            <div class="form-check card-radio">
+                              <input (change)="onChangeEmailText('email')" id="shippingAddress01" name="shippingAddress"
+                                type="radio" class="form-check-input" [checked]="selectedEmailType === 'email'">
+                              <label class="form-check-label" for="shippingAddress01">
+                                <div class="d-flex flex-column text-center">
+                                  <span><i class="ri-mail-line fs-2"></i></span>
+                                  <span
+                                    class="mb-1 fw-bold d-block text-muted text-uppercase">{{'MODULES.ECOMMERCE.MAIN.EMAIL_TEMPLATE'
+                                    | translate }}</span>
+                                </div>
+                                <span class="text-muted fw-normal text-wrap mb-1 d-block text-center">
+                                  {{'MODULES.ECOMMERCE.MAIN.PICK_PERFECT_EMAIL_TEMPLATE' | translate }}</span>
+                              </label>
+                            </div>
+                          </div>
+                          <div class="col-sm-6">
+                            <div class="form-check card-radio">
+                              <input (change)="onChangeEmailText('text')" [checked]="selectedEmailType === 'text'"
+                                id="shippingAddress02" name="shippingAddress" type="radio" class="form-check-input">
+                              <label class="form-check-label" for="shippingAddress02">
+                                <div class="d-flex flex-column text-center">
+                                  <span><i class="ri-file-text-line fs-2"></i></span>
+                                  <span
+                                    class="mb-1 fw-bold d-block text-muted text-uppercase">{{'MODULES.ECOMMERCE.MAIN.TEXT_ONLY'
+                                    | translate }}</span>
+                                </div>
+                                <span
+                                  class="text-muted fw-normal text-wrap mb-1 d-block text-center">{{'MODULES.ECOMMERCE.MAIN.TEXT_ONLY'
+                                  | translate }}</span>
+                              </label>
+                            </div>
+                          </div>
+                          <div>
+                            <div class="form-check card-radio">
+                              <input (change)="onChangeEmailText('html')" [checked]="selectedEmailType === 'html'"
+                                id="shippingAddress03" name="shippingAddress" type="radio" class="form-check-input">
+                              <label class="form-check-label" for="shippingAddress03">
+                                <div class="d-flex flex-column text-center">
+                                  <span><i class="ri-code-box-line fs-2"></i></span>
+                                  <span class="mb-1 fw-bold d-block text-muted text-uppercase">HTML</span>
+                                </div>
+                                <span
+                                  class="text-muted fw-normal text-wrap mb-1 d-block text-center">{{'MODULES.ECOMMERCE.MAIN.CUSTOM_CODE_EMAIL'
+                                  | translate }}</span>
+                              </label>
+                            </div>
+                          </div>
+                        </div>
+                        <div class="col-sm-7" *ngIf="safeEmail">
+                          <div *ngIf="selectedEmailType === 'text'" class="ql-container ql-snow mt-3">
+                            <div class="ql-editor" [innerHTML]="safeEmail">
+                            </div>
+                          </div>
+                          <div *ngIf="selectedEmailType === 'email' || selectedEmailType === 'html' "
+                            [innerHTML]="safeEmail"></div>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="d-flex align-items-start gap-3 mt-4">
+                      <button (click)="selectedNav = 2" type="button" class="btn btn-light btn-label previestab"
+                        data-previous="pills-bill-info-tab"><i
+                          class="ri-arrow-left-line label-icon align-middle fs-16 me-2"></i>{{'MODULES.ECOMMERCE.MAIN.BACK'
+                        | translate }}</button>
+                      <button
+                        [disabled]="!outboundForm.get(['content', 'email', 'subject']).value || !outboundForm.get(['content', 'email', 'preview']).value"
+                        (click)="selectedNav = 4" type="button" class="btn btn-primary btn-label right ms-auto nexttab"
+                        data-nexttab="pills-payment-tab"><i
+                          class="ri-arrow-right-line label-icon align-middle fs-16 ms-2"></i>{{'MODULES.ECOMMERCE.MAIN.NEXT_STEP'
+                        | translate }}</button>
+                    </div>
+                  </ng-template>
+                </li>
+                <li
+                  *ngIf="selectedEmailType === 'email' && (!outbound || !outboundForm.get(['content', 'email', 'content']).value)"
+                  [ngbNavItem]="4" class="nav-item"
+                  [disabled]="!outboundForm.get(['content', 'email', 'subject']).value || !outboundForm.get(['content', 'email', 'preview']).value">
+                  <a ngbNavLink class="nav-link fs-15 p-3" data-bs-toggle="tab" role="tab">
+                    <i
+                      class="ri-mail-add-line fs-16 p-2 bg-soft-primary text-primary rounded-circle align-middle mx-2"></i>
+                    {{'MODULES.ECOMMERCE.MAIN.TEMPLATES' | translate }}
+                  </a>
+                  <ng-template ngbNavContent>
+                    <ng-container *ngIf="selectedEmailType === 'email'">
+                      <div
+                        *ngIf="((loadingEmails$ | async) === false || null || undefined) && (emails$ | async)?.length"
+                        class="gap-5 row">
+                        <div class="card col-xxl-3 h-100 border border-1">
+                          <div class="card-body">
+                            <h5 class="mb-4">{{'MODULES.ECOMMERCE.MAIN.TEMPLATE_TYPES' | translate }}</h5>
+                            <div *ngFor="let item of emailNames; let i = index">
+                              <div class="custom-control custom-radio mb-3">
+                                <div class="form-check col-lg-6">
+                                  <input (change)="onChangeEmail($event.target.value)" class="form-check-input"
+                                    type="radio" [id]="item" name="loyaltyOption" [value]="item" [checked]="i === 0">
+                                  <label class="form-check-label" [for]="item">
+                                    {{
+                                    (item === 'STYLE' ? 'MODULES.SYSTEM.SHARED.STYLE' :
+                                    item === 'WELCOME_USER' ? 'MODULES.SYSTEM.SHARED.WELCOME_USER' :
+                                    item === 'VALIDATE_EMAIL' ? 'MODULES.SYSTEM.SHARED.VALIDATE_EMAIL' :
+                                    item === 'FORGOT_PASSWORD' ? 'MODULES.SYSTEM.SHARED.FORGOT_PASSWORD' :
+                                    item === 'CONFIRM_PASSWORD' ? 'MODULES.SYSTEM.SHARED.CONFIRM_PASSWORD' :
+                                    item === 'CONTACT_REQUEST' ? 'MODULES.SYSTEM.SHARED.CONTACT_REQUEST' :
+                                    item === 'DEMO_BOOKING' ? 'MODULES.SYSTEM.SHARED.DEMO_BOOKING' :
+                                    item === 'EXPORT' ? 'MODULES.SYSTEM.SHARED.EXPORT' :
+                                    item === 'FORM_EXPORT' ? 'MODULES.SYSTEM.SHARED.FORM_EXPORT' :
+                                    item === 'INVOICE' ? 'MODULES.SYSTEM.SHARED.INVOICE' :
+                                    item === 'DOCUMENT' ? 'MODULES.SYSTEM.SHARED.DOCUMENT' :
+                                    item === 'MERGE_ACCOUNTS' ? 'MODULES.SYSTEM.SHARED.MERGE_ACCOUNTS' :
+                                    item === 'PARTNERSHIP_REFERRAL' ? 'MODULES.SYSTEM.SHARED.PARTNERSHIP_REFERRAL' :
+                                    item === 'PARTNERSHIP_REQUEST' ? 'MODULES.SYSTEM.SHARED.PARTNERSHIP_REQUEST' :
+                                    item === 'POS_CONTACT_REQUEST' ? 'MODULES.SYSTEM.SHARED.POS_CONTACT_REQUEST' :
+                                    item === 'TABLE_GUIDANCE' ? 'MODULES.SYSTEM.SHARED.TABLE_GUIDANCE' :
+                                    item === 'SUBSCRIPTION' ? 'MODULES.SYSTEM.SHARED.SUBSCRIPTION' :
+                                    item === 'PAYMENT_DECLINED' ? 'MODULES.SYSTEM.SHARED.PAYMENT_DECLINED' :
+                                    item === 'PAYMENT_CONFIRMED' ? 'MODULES.SYSTEM.SHARED.PAYMENT_CONFIRMED' :
+                                    item === 'ARTICLE_CONFIRMED' ? 'MODULES.SYSTEM.SHARED.ARTICLE_CONFIRMED' :
+                                    item === 'ARTICLE_DELIVERED' ? 'MODULES.SYSTEM.SHARED.ARTICLE_DELIVERED' :
+                                    item === 'ARTICLE_READY_FOR_PICKUP' ?
+                                    'MODULES.SYSTEM.SHARED.ARTICLE_READY_FOR_PICKUP' :
+                                    item === 'ARTICLE_CANCELED' ? 'MODULES.SYSTEM.SHARED.ARTICLE_CANCELED' :
+                                    item === 'PROMOTION' ? 'MODULES.SYSTEM.SHARED.PROMOTION' :
+                                    item === 'NEWSLETTER' ? 'MODULES.SYSTEM.SHARED.NEWSLETTER' :
+                                    item === 'BLOG' ? 'MODULES.SYSTEM.SHARED.BLOG' :
+                                    item === 'OTHER' ? 'MODULES.SYSTEM.SHARED.OTHER' :
+                                    '') | translate
+                                    }}
+                                  </label>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                        <div class="col-xxl-8" *ngIf="(emails$ | async)?.length">
+                          <div class="row justify-content-around gap-3">
+                            <div *ngFor="let email of emails; let i = index"
+                              class="gallery-box card mb-0 col-lg-5 border border-2">
+                              <div class="gallery-container">
+                                <a class="image-popup" title="">
+                                  <img class="gallery-img img-fluid mx-auto"
+                                    [src]="email?.picture?.baseUrl + '/' + email?.picture?.path" alt="">
+                                  <div *ngIf="isDesktop" class="gallery-overlay">
+                                    <div class="d-flex justify-content-end mt-4 gap-2">
+                                      <h5 class="overlay-caption">
+                                        <div class="ms-5 d-flex">
+                                          <button (click)="useTemplate(i)"
+                                            class="btn btn-sm btn-success me-2">{{'MODULES.ECOMMERCE.MAIN.USE_TEMPLATE'
+                                            | translate }}</button>
+                                          <button (click)="openPreviewEmail(emailModal, email)"
+                                            class="btn btn-sm btn-info">{{'MODULES.ECOMMERCE.MAIN.PREVIEW' | translate
+                                            }}</button>
+                                        </div>
+                                      </h5>
+                                    </div>
+                                  </div>
+                                  <div *ngIf="!isDesktop" class="d-flex justify-content-end mt-4">
+                                    <button (click)="useTemplate(i)"
+                                      class="btn btn-sm btn-success me-2">{{'MODULES.ECOMMERCE.MAIN.USE_TEMPLATE' |
+                                      translate }}</button>
+                                    <button (click)="openPreviewEmail(emailModal, email)"
+                                      class="btn btn-sm btn-info">{{'MODULES.ECOMMERCE.MAIN.PREVIEW' | translate
+                                      }}</button>
+                                  </div>
+                                </a>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                      <div id="noresult" class="py-4 mt-4 text-center"
+                        *ngIf="(loadingEmails$ | async) || (!(loadingEmails$ | async) && !(emails$ | async)?.length)">
+                        <div *ngIf="loadingEmails$ | async">
+                          <lord-icon trigger="loop" style="width:72px;height:72px"
+                            [colors]="'primary:' + primaryColor + ',secondary:' + secondaryColor"
+                            src="https://cdn.lordicon.com/msoeawqm.json">
+                          </lord-icon>
+                          <h5 class="mt-4">{{'COMMON.LOADING' | translate }}</h5>
+                        </div>
+                        <div *ngIf="!(loadingEmails$ | async) && !(emails$ | async)?.length">
+                          <lord-icon trigger="loop" style="width:72px;height:72px"
+                            [colors]="'primary:' + primaryColor + ',secondary:' + secondaryColor"
+                            src="https://cdn.lordicon.com/vlycxjwx.json">
+                          </lord-icon>
+                          <h5 class="mt-4">{{ 'COMMON.NO_RESULT' | translate }}</h5>
+                        </div>
+                      </div>
+                    </ng-container>
+                    <ng-template #emailModal role="document" let-modal>
+                      <div class="modal-header p-3 bg-soft-info">
+                        <h5 class="modal-title" id="exampleModalLabel">{{selectedEmail?.title}}</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"
+                          id="close-modal" (click)="modal.dismiss('Cross click')"></button>
+                      </div>
+                      <div class="modal-body">
+                        <div *ngIf="isDesktop">
+                          <div class="d-flex justify-content-center">
+                            <ul ngbNav (navChange)="onNavChange($event.nextId)" #BottomCard="ngbNav" [activeId]="1"
+                              class="nav nav-pills nav-justified card-footer-tabs fs-17 col-lg-5">
+                              <li [ngbNavItem]="1">
+                                <a class="align-items-center d-flex gap-1 justify-content-center" ngbNavLink
+                                  placement="top">{{'MODULES.ECOMMERCE.MAIN.DESKTOP' | translate }}
+                                  <i class="ri-computer-line"></i>
+                                </a>
+                                <ng-template ngbNavContent>
+                                  <div class="border border-2 mxh-30" [innerHTML]="safeEmail"></div>
+                                </ng-template>
+                              </li>
+                              <li [ngbNavItem]="2">
+                                <a class="align-items-center d-flex gap-1 justify-content-center" ngbNavLink
+                                  placement="top">{{'MODULES.ECOMMERCE.MAIN.MOBILE' | translate }}
+                                  <i class="ri-smartphone-line"></i>
+                                </a>
+                                <ng-template ngbNavContent>
+                                  <div>
+                                    <div class="d-flex justify-content-center">
+                                      <div class="col-lg-5 border border-2 mxh-30" [innerHTML]="safeEmail">
+                                      </div>
+                                    </div>
+                                  </div>
+                                </ng-template>
+                              </li>
+                            </ul>
+                          </div>
+                          <div class="tab-content mt-4 text-muted">
+                            <div [ngbNavOutlet]="BottomCard"></div>
+                          </div>
+                        </div>
+                        <div *ngIf="!isDesktop" class="d-flex justify-content-center">
+                          <div class="border border-2 mxh-30" [innerHTML]="safeEmail"></div>
+                        </div>
+                      </div>
+                      <div class="modal-footer">
+                        <div class="d-flex justify-content-end mt-4 gap-2">
+                          <button (click)="modal.dismiss('Cross click')" class="btn btn-light">{{'COMMON.CANCEL' |
+                            translate }}</button>
+                          <button (click)="useTemplate(null, 'modal')"
+                            class="btn btn-info">{{'MODULES.ECOMMERCE.MAIN.USE_TEMPLATE' | translate }}</button>
+                        </div>
+                      </div>
+                    </ng-template>
+                    <div class="d-flex align-items-start gap-3 mt-4">
+                      <button
+                        (click)="selectedEmailType === 'email' && (!outbound || !outboundForm.get(['content', 'email', 'content']).value) ? selectedNav = 3 : selectedNav = 2"
+                        type="button" class="btn btn-light btn-label previestab" data-previous="pills-bill-info-tab"><i
+                          class="ri-arrow-left-line label-icon align-middle fs-16 me-2"></i>{{'MODULES.ECOMMERCE.MAIN.BACK'
+                        | translate }}
+                      </button>
+                      <button [disabled]="!outboundForm.get(['content', 'email', 'content']).value"
+                        (click)="selectedEmailType === 'email' && (!outbound || !outboundForm.get(['content', 'email', 'content']).value) ? selectedNav = 5 : selectedNav = 4"
+                        type="button" class="btn btn-primary btn-label right ms-auto nexttab"
+                        data-nexttab="pills-payment-tab"><i
+                          class="ri-arrow-right-line label-icon align-middle fs-16 ms-2"></i>
+                        {{'MODULES.ECOMMERCE.MAIN.NEXT_STEP' | translate }}
+                      </button>
+                    </div>
+                  </ng-template>
+                </li>
+                <li [disabled]="!outboundForm.get(['content', 'email', 'content']).value "
+                  [ngbNavItem]="selectedEmailType === 'email' && (!outbound || !outboundForm.get(['content', 'email', 'content']).value) ? 5 : 4"
+                  class="nav-item">
+                  <a ngbNavLink class="nav-link fs-15 p-3" data-bs-toggle="tab" role="tab">
+                    <i
+                      class="ri-mail-add-line fs-16 p-2 bg-soft-primary text-primary rounded-circle align-middle mx-2"></i>
+                    {{selectedEmailType === 'text' ? 'Text template' : selectedEmailType === 'html' ? 'Html
+                    template' : 'Email template'}}
+                  </a>
+                  <ng-template ngbNavContent>
+                    <div class="mt-4">
+                      <ul ngbNav #Badge="ngbNav" [activeId]="1"
+                        class="nav nav-tabs-custom rounded card-header-tabs border-bottom-0">
+                        <li [ngbNavItem]="1" class="nav-item">
+                          <a ngbNavLink class="d-flex gap-1 nav-link" data-bs-toggle="tab" role="tab">
+                            <i class="ri-money-dollar-circle-fill"></i>
+                            {{'MODULES.ECOMMERCE.MAIN.EDITOR' | translate }}
+                          </a>
+                          <ng-template ngbNavContent>
+                            <div formGroupName="content" class="mt-5">
+                              <ng-container formGroupName="email">
+                                <textarea *ngIf="selectedEmailType === 'email' || selectedEmailType === 'html'"
+                                  formControlName="content" placeholder="Type your text" name="description"
+                                  class="form-control" rows="10"></textarea>
+                                <quill-editor *ngIf="selectedEmailType === 'text'" formControlName="content"
+                                  class="custom-quill-editor" required></quill-editor>
+                              </ng-container>
+                            </div>
+                          </ng-template>
+                        </li>
+                        <li [ngbNavItem]="3" class="nav-item">
+                          <a ngbNavLink class="nav-link" data-bs-toggle="tab" role="tab">
+                            {{'MODULES.ECOMMERCE.MAIN.PREVIEW' | translate }}
+                          </a>
+                          <ng-template ngbNavContent>
+                            <div *ngIf="selectedEmailType === 'text'" formGroupName="content"
+                              class="ql-container ql-snow mt-5 col-lg-6">
+                              <ng-container formGroupName="email">
+                                <quill-view-html [content]="outboundForm.get(['content', 'email', 'content']).value"
+                                  theme="snow"></quill-view-html>
+                              </ng-container>
+                            </div>
+                            <div class="d-flex justify-content-center"
+                              *ngIf="selectedEmailType === 'email' || selectedEmailType === 'html'">
+                              <div class="border border-2 mt-5 col-lg-8" [innerHTML]="safeEmail"></div>
+                            </div>
+                          </ng-template>
+                        </li>
+                      </ul>
+                      <div class="tab-content text-muted">
+                        <div [ngbNavOutlet]="Badge"></div>
+                      </div>
+                    </div>
+                    <ng-template #emailModal role="document" let-modal>
+                      <div class="modal-header p-3 bg-soft-info">
+                        <h5 class="modal-title" id="exampleModalLabel">{{selectedEmail?.title}}</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"
+                          id="close-modal" (click)="modal.dismiss('Cross click')"></button>
+                      </div>
+                      <div class="modal-body">
+                        <div *ngIf="isDesktop">
+                          <div class="d-flex justify-content-center">
+                            <ul ngbNav (navChange)="onNavChange($event.nextId)" #BottomCard="ngbNav" [activeId]="1"
+                              class="nav nav-pills nav-justified card-footer-tabs fs-17 col-lg-5">
+                              <li [ngbNavItem]="1">
+                                <a class="align-items-center d-flex gap-1 justify-content-center" ngbNavLink
+                                  placement="top">{{'MODULES.ECOMMERCE.MAIN.DESKTOP' | translate }}
+                                  <i class="ri-computer-line"></i>
+                                </a>
+                                <ng-template ngbNavContent>
+                                  <div class="border border-2 mxh-30" [innerHTML]="safeEmail"></div>
+                                </ng-template>
+                              </li>
+                              <li [ngbNavItem]="2">
+                                <a class="align-items-center d-flex gap-1 justify-content-center" ngbNavLink
+                                  placement="top">{{'MODULES.ECOMMERCE.MAIN.MOBILE' | translate }}
+                                  <i class="ri-smartphone-line"></i>
+                                </a>
+                                <ng-template ngbNavContent>
+                                  <div>
+                                    <div class="d-flex justify-content-center">
+                                      <div class="col-lg-5 border border-2 mxh-30" [innerHTML]="safeEmail">
+                                      </div>
+                                    </div>
+                                  </div>
+                                </ng-template>
+                              </li>
+                            </ul>
+                          </div>
+                          <div class="tab-content mt-4 text-muted">
+                            <div [ngbNavOutlet]="BottomCard"></div>
+                          </div>
+                        </div>
+                        <div *ngIf="!isDesktop" class="d-flex justify-content-center">
+                          <div class="border border-2 mxh-30" [innerHTML]="safeEmail"></div>
+                        </div>
+                      </div>
+                      <div class="modal-footer">
+                        <div class="d-flex justify-content-end mt-4 gap-2">
+                          <button (click)="modal.dismiss('Cross click')" class="btn btn-light">{{'COMMON.CANCEL' |
+                            translate }}</button>
+                          <button (click)="useTemplate(null, 'modal')"
+                            class="btn btn-info">{{'MODULES.ECOMMERCE.MAIN.USE_TEMPLATE' | translate }}</button>
+                        </div>
+                      </div>
+                    </ng-template>
+                    <div class="d-flex align-items-start gap-3 mt-4">
+                      <button
+                        (click)="selectedEmailType === 'email' && (!outbound || !outboundForm.get(['content', 'email', 'content']).value) ? selectedNav = 4 : selectedNav = 3"
+                        type="button" class="btn btn-light btn-label previestab" data-previous="pills-bill-info-tab"><i
+                          class="ri-arrow-left-line label-icon align-middle fs-16 me-2"></i>{{'MODULES.ECOMMERCE.MAIN.BACK'
+                        | translate }}
+                      </button>
+                      <button
+                        (click)="selectedEmailType === 'email' && (!outbound || !outboundForm.get(['content', 'email', 'content']).value) ? selectedNav = 6 : selectedNav = 5"
+                        type="button" class="btn btn-primary btn-label right ms-auto nexttab"
+                        data-nexttab="pills-payment-tab"><i
+                          class="ri-arrow-right-line label-icon align-middle fs-16 ms-2"></i>
+                        {{'MODULES.ECOMMERCE.MAIN.NEXT_STEP' | translate }}
+                      </button>
+                    </div>
+                  </ng-template>
+                </li>
+                <li
+                  [ngbNavItem]="selectedEmailType === 'email' && (!outbound || !outboundForm.get(['content', 'email', 'content']).value) ? 6 : 5"
+                  class="nav-item">
+                  <a ngbNavLink class="nav-link fs-15 p-3" data-bs-toggle="tab" role="tab">
+                    <i
+                      class="ri-mail-send-line fs-16 p-2 bg-soft-primary text-primary rounded-circle align-middle mx-2"></i>
+                    {{selectedEmailType === 'email' ? 'Email Preview' : selectedEmailType === 'text' ? 'Text Preview' :
+                    'Html Preview'}}
+                  </a>
+                  <ng-template ngbNavContent>
+                    <div class="row justify-content-between">
+                      <div formGroupName="content" [ngClass]="{'mt-5': !isDesktop}" class="col-sm-5 gy-3">
+                        <div formGroupName="email">
+                          <div class="mb-3">
+                            <label for="billinginfo-firstName"
+                              class="form-label">{{'MODULES.ECOMMERCE.MAIN.SUBJECT_LINE' | translate }}</label>
+                            <input readonly type="text" class="form-control" id="billinginfo-firstName"
+                              placeholder="{{'COMMON.ENTER' | translate }} {{'COMMON.TITLE' | translate }}"
+                              formControlName="subject">
+                          </div>
+                          <div class="mb-3">
+                            <label for="billinginfo-lastName" class="form-label">{{'MODULES.ECOMMERCE.MAIN.PREVIEW' |
+                              translate }} text</label>
+                            <input readonly type="text" class="form-control" id="billinginfo-firstName"
+                              placeholder="{{'COMMON.ENTER' | translate }} {{'COMMON.TITLE' | translate }}"
+                              formControlName="preview">
+                          </div>
+                        </div>
+                      </div>
+                      <div class="col-sm-7">
+                        <ng-container *ngIf="selectedEmailType === 'email' || selectedEmailType === 'html'">
+                          <div *ngIf="isDesktop && !outbound">
+                            <div class="d-flex justify-content-center">
+                              <ul ngbNav (navChange)="onNavChange($event.nextId)" #emailPrv="ngbNav" [activeId]="1"
+                                class="nav nav-pills nav-justified card-footer-tabs fs-17 col-lg-5">
+                                <li [ngbNavItem]="1">
+                                  <a class="align-items-center d-flex gap-1 justify-content-center" ngbNavLink
+                                    placement="top">
+                                    {{'MODULES.ECOMMERCE.MAIN.DESKTOP' | translate }}
+                                    <i class="ri-computer-line"></i>
+                                  </a>
+                                  <ng-template ngbNavContent>
+                                    <div class="border border-2 mxh-30" [innerHTML]="safeEmail"></div>
+                                  </ng-template>
+                                </li>
+                                <li [ngbNavItem]="2">
+                                  <a class="align-items-center d-flex gap-1 justify-content-center" ngbNavLink
+                                    placement="top">
+                                    {{'MODULES.ECOMMERCE.MAIN.MOBILE' | translate }}
+                                    <i class="ri-smartphone-line"></i>
+                                  </a>
+                                  <ng-template ngbNavContent>
+                                    <div>
+                                      <div class="d-flex justify-content-center">
+                                        <div class="col-lg-5 border border-2 mxh-30" [innerHTML]="safeEmail"></div>
+                                      </div>
+                                    </div>
+                                  </ng-template>
+                                </li>
+                              </ul>
+                            </div>
+                            <div class="tab-content mt-4 text-muted">
+                              <div [ngbNavOutlet]="emailPrv"></div>
+                            </div>
+                          </div>
+                          <div *ngIf="!isDesktop || outbound" class="d-flex justify-content-center">
+                            <div class="border border-2 mxh-30 ok" [innerHTML]="safeEmail"></div>
+                          </div>
+                        </ng-container>
+                        <ng-container *ngIf="selectedEmailType === 'text'">
+                          <div>
+                            <quill-view-html [content]="outboundForm.get(['content', 'email', 'content']).value"
+                              theme="snow"></quill-view-html>
+                          </div>
+                        </ng-container>
+                      </div>
+                    </div>
+                    <div class="d-flex align-items-start gap-3 mt-4">
+                      <button (click)="selectedNav = 4" type="button" class="btn btn-light btn-label previestab"
+                        data-previous="pills-bill-info-tab"><i
+                          class="ri-arrow-left-line label-icon align-middle fs-16 me-2"></i>{{'MODULES.ECOMMERCE.MAIN.BACK'
+                        | translate }}
+                      </button>
+                      <button [disabled]="isButtonDisabled || outboundForm.invalid" (click)="save()" type="button"
+                        class="btn btn-primary btn-label right ms-auto nexttab"><i
+                          class="ri-bank-card-line label-icon align-middle fs-16 ms-2"></i>{{'COMMON.SAVE' | translate
+                        }}</button>
+                    </div>
+                  </ng-template>
+                </li>
+              </ng-container>
+              <ng-container *ngIf="selectedContent === 'sms'">
+                <li [disabled]="!outboundForm.get('title').value" [ngbNavItem]="3" class="nav-item">
+                  <a ngbNavLink class="nav-link fs-15 p-3" data-bs-toggle="tab" role="tab">
+                    <i
+                      class="ri-message-2-line fs-16 p-2 bg-soft-primary text-primary rounded-circle align-middle mx-2"></i>{{'MODULES.ECOMMERCE.MAIN.CONTENT'
+                    | translate }}
+                  </a>
+                  <ng-template ngbNavContent>
+                    <div>
+                      <h5 class="mb-1">{{
+                        (
+                        selectedContent === 'email' ? 'SHARED.EMAIL_INFORMATION' :
+                        selectedContent === 'widget' ? 'SHARED.WIDGET_INFORMATION' :
+                        selectedContent === 'sms' ? 'Sms' : 'SHARED.NOTIFICATION_INFORMATION'
+                        ) | translate
+                        }}</h5>
+                      <p class="text-muted mb-4">{{'SHARED.PLEASE_FILL_THE_INFORMATION_BELOW' | translate}}</p>
+                    </div>
+                    <div formGroupName="content" class="mt-4">
+                      <ng-container formGroupName="sms">
+                        <textarea formControlName="content" placeholder="Type your text" name="description"
+                          class="form-control" rows="10"></textarea>
+                      </ng-container>
+                    </div>
+                    <div class="d-flex align-items-start gap-3 mt-4">
+                      <button (click)="selectedNav = 2" type="button" class="btn btn-light btn-label previestab"
+                        data-previous="pills-bill-info-tab"><i
+                          class="ri-arrow-left-line label-icon align-middle fs-16 me-2"></i>{{'MODULES.ECOMMERCE.MAIN.BACK'
+                        | translate }}</button>
+                      <button [disabled]="isButtonDisabled || outboundForm.invalid" (click)="save()" type="button"
+                        class="btn btn-primary btn-label right ms-auto nexttab"><i
+                          class="ri-bank-card-line label-icon align-middle fs-16 ms-2"></i>{{'COMMON.SAVE' | translate
+                        }}</button>
+                    </div>
+                  </ng-template>
+                </li>
+              </ng-container>
+              <ng-container *ngIf="selectedContent === 'push'">
+                <li [disabled]="!outboundForm.get('title').value" [ngbNavItem]="3" class="nav-item">
+                  <a ngbNavLink class="nav-link fs-15 p-3" data-bs-toggle="tab" role="tab">
+                    <i
+                      class="ri-notification-line fs-16 p-2 bg-soft-primary text-primary rounded-circle align-middle mx-2"></i>{{'MODULES.ECOMMERCE.MAIN.CONTENT'
+                    | translate }}
+                  </a>
+                  <ng-template ngbNavContent>
+                    <div>
+                      <h5 class="mb-1">{{
+                        (selectedContent === 'email' ? 'SHARED.EMAIL_INFORMATION' :
+                        selectedContent === 'widget' ? 'SHARED.WIDGET_INFORMATION' :
+                        selectedContent === 'sms' ? 'Sms' : 'SHARED.NOTIFICATION_INFORMATION') | translate
+                        }}</h5>
+                      <p class="text-muted mb-4">{{'SHARED.PLEASE_FILL_THE_INFORMATION_BELOW' | translate}}</p>
+                    </div>
+                    <div formGroupName="content" class="mt-4">
+                      <div class="mt-2 col-lg-8 d-flex flex-wrap">
+                        <div class="wh-30 me-3 mb-2">
+                          <ng-container *ngIf="outboundForm.get(['content', 'push', 'picture', 'baseUrl']).value">
+                            <span class="delete-icon w-6 h-6 flex items-center justify-center cursor-pointer"
+                              (click)="removePicture('push')">
+                              <i class="ri-delete-bin-fill text-danger"></i>
+                            </span>
+                            <img (click)="upload('push')" class="wh-30 rounded object-cover"
+                              [src]="outboundForm.get(['content', 'push', 'picture', 'baseUrl']).value + '/' + outboundForm.get(['content', 'push', 'picture', 'path']).value">
+                          </ng-container>
+                          <div *ngIf="!outboundForm.get(['content', 'push', 'picture', 'baseUrl']).value"
+                            (click)="upload('push')"
+                            class="wh-30 mb-3 col-4 border rounded overflow-hidden cursor-pointer d-flex align-items-center justify-content-center">
+                            <span class="fs-5 fw-bold">{{'COMMON.UPLOAD' | translate }}</span>
+                          </div>
+                        </div>
+                      </div>
+                      <ng-container formGroupName="push">
+                        <div class="mb-3 col-sm-6">
+                          <label for="billinginfo-firstName" class="form-label">{{'COMMON.TITLE' | translate }}</label>
+                          <input type="text" class="form-control" id="billinginfo-firstName"
+                            placeholder="{{'COMMON.ENTER' | translate }} {{'COMMON.TITLE' | translate }}"
+                            formControlName="title">
+                        </div>
+                        <div class="mb-3 col-sm-6">
+                          <label for="billinginfo-lastName" class="form-label">{{'COMMON.DESCRIPTION' | translate
+                            }}</label>
+                          <textarea formControlName="description"
+                            placeholder="{{'COMMON.ENTER_DESCRIPTION' | translate }}" name="description"
+                            class="form-control" rows="4"></textarea>
+                        </div>
+                      </ng-container>
+                    </div>
+                    <div class="d-flex align-items-start gap-3 mt-4">
+                      <button (click)="selectedNav = 2" type="button" class="btn btn-light btn-label previestab"
+                        data-previous="pills-bill-info-tab"><i
+                          class="ri-arrow-left-line label-icon align-middle fs-16 me-2"></i>{{'MODULES.ECOMMERCE.MAIN.BACK'
+                        | translate }}</button>
+                      <button [disabled]="isButtonDisabled || outboundForm.invalid" (click)="save()" type="button"
+                        class="btn btn-primary btn-label right ms-auto nexttab"><i
+                          class="ri-bank-card-line label-icon align-middle fs-16 ms-2"></i>{{'COMMON.SAVE' | translate
+                        }}</button>
+                    </div>
+                  </ng-template>
+                </li>
+              </ng-container>
+              <ng-container *ngIf="selectedContent === 'widget'">
+                <li [disabled]="!outboundForm.get('title').value" [ngbNavItem]="3" class="nav-item">
+                  <a ngbNavLink class="nav-link fs-15 p-3" data-bs-toggle="tab" role="tab">
+                    <i
+                      class="ri-notification-line fs-16 p-2 bg-soft-primary text-primary rounded-circle align-middle mx-2"></i>{{'MODULES.ECOMMERCE.MAIN.CONTENT'
+                    | translate }}
+                  </a>
+                  <ng-template ngbNavContent>
+                    <div>
+                      <h5 class="mb-1">{{
+                        (selectedContent === 'email' ? 'SHARED.EMAIL_INFORMATION' :
+                        selectedContent === 'widget' ? 'SHARED.WIDGET_INFORMATION' :
+                        selectedContent === 'sms' ? 'Sms' : 'SHARED.NOTIFICATION_INFORMATION') | translate
+                        }}</h5>
+                      <p class="text-muted mb-4">{{'SHARED.PLEASE_FILL_THE_INFORMATION_BELOW' | translate}}</p>
+                    </div>
+                    <div formGroupName="content" class="mt-4">
+                      <div class="mt-2 col-lg-8 d-flex flex-wrap">
+                        <div class="wh-30 me-3 mb-2">
+                          <ng-container *ngIf="outboundForm.get(['content', 'widget', 'picture', 'baseUrl']).value">
+                            <span class="delete-icon w-6 h-6 flex items-center justify-center cursor-pointer"
+                              (click)="removePicture('widget')">
+                              <i class="ri-delete-bin-fill text-danger"></i>
+                            </span>
+                            <img (click)="upload('widget')" class="wh-30 rounded object-cover"
+                              [src]="outboundForm.get(['content', 'widget', 'picture', 'baseUrl']).value + '/' + outboundForm.get(['content', 'widget', 'picture', 'path']).value">
+                          </ng-container>
+                          <div *ngIf="!outboundForm.get(['content', 'widget', 'picture', 'baseUrl']).value"
+                            (click)="upload('widget')"
+                            class="wh-30 mb-3 col-4 border rounded overflow-hidden cursor-pointer d-flex align-items-center justify-content-center">
+                            <span class="fs-5 fw-bold">{{'COMMON.UPLOAD' | translate }}</span>
+                          </div>
+                        </div>
+                      </div>
+                      <ng-container formGroupName="widget">
+                        <div class="mb-3 col-sm-6">
+                          <label for="billinginfo-firstName" class="form-label">{{'COMMON.TITLE' | translate }}</label>
+                          <input type="text" class="form-control" id="billinginfo-firstName"
+                            placeholder="{{'COMMON.ENTER' | translate }} {{'COMMON.TITLE' | translate }}"
+                            formControlName="title">
+                        </div>
+                        <div class="mb-3 col-sm-6">
+                          <label for="billinginfo-lastName" class="form-label">{{'COMMON.DESCRIPTION' | translate
+                            }}</label>
+                          <textarea formControlName="description"
+                            placeholder="{{'COMMON.ENTER_DESCRIPTION' | translate }}" name="description"
+                            class="form-control" rows="4"></textarea>
+                        </div>
+                        <ng-container formGroupName="callToAction">
+                          <div class="mt-3 mb-3">
+                            <h4>{{'MODULES.WEBSITE.CALL_TO_ACTION' | translate }}</h4>
+                          </div>
+                          <div class="mb-3 col-sm-6">
+                            <label for="billinginfo-firstName" class="form-label">{{'MODULES.INVENTORY.LABEL' |
+                              translate
+                              }}</label>
+                            <input type="text" class="form-control" id="billinginfo-firstName"
+                              placeholder="{{'COMMON.ENTER' | translate }} {{'MODULES.INVENTORY.LABEL' | translate }}"
+                              formControlName="label">
+                          </div>
+                          <ng-container formGroupName="action">
+                            <div class="row">
+                              <div class="mb-3 col-sm-6">
+                                <label for="billinginfo-firstName" class="form-label">{{'COMMON.WIDGET_ACTION' |
+                                  translate }}</label>
+                                <ng-select (change)="onChangeAction()" [selectableGroup]="true" [closeOnSelect]="true"
+                                  formControlName="widgetAction" [multiple]="false" [items]="widgetActions"
+                                  [clearable]="false"
+                                  placeholder="{{'COMMON.ENTER' | translate }} {{'MENUITEMS.TS.LEADEBOARD' | translate }}">
+                                  <ng-template ng-label-tmp let-item="item" let-clear="clear">
+                                    {{
+                                    (
+                                    item === 'URL' ? 'COMMON.URL':
+                                    item === 'WIN' ? 'COMMON.WIN':
+                                    item === 'HOME' ? 'COMMON.HOME':
+                                    item === 'BADGES' ? 'COMMON.BADGES':
+                                    item === 'LEVELS' ? 'COMMON.LEVELS':
+                                    item === 'REDEEM' ? 'COMMON.REDEEM':
+                                    item === 'QUESTS' ? 'COMMON.QUESTS':
+                                    item === 'PROFILE' ? 'COMMON.PROFILE':
+                                    item === 'CHALLENGES' ? 'COMMON.CHALLENGES':
+                                    item === 'LEADERBOARD' ? 'COMMON.LEADERBOARD':
+                                    'COMMON.NOTIFICATION'
+                                    ) | translate
+                                    }}
+                                  </ng-template>
+                                  <ng-template ng-option-tmp let-item$="item$" let-item="item">
+                                    {{
+                                    (
+                                    item === 'URL' ? 'COMMON.URL':
+                                    item === 'WIN' ? 'COMMON.WIN':
+                                    item === 'HOME' ? 'COMMON.HOME':
+                                    item === 'BADGES' ? 'COMMON.BADGES':
+                                    item === 'LEVELS' ? 'COMMON.LEVELS':
+                                    item === 'QUESTS' ? 'COMMON.QUESTS':
+                                    item === 'REDEEM' ? 'COMMON.REDEEM':
+                                    item === 'PROFILE' ? 'COMMON.PROFILE':
+                                    item === 'CHALLENGES' ? 'COMMON.CHALLENGES':
+                                    item === 'LEADERBOARD' ? 'COMMON.LEADERBOARD':
+                                    'COMMON.NOTIFICATION'
+                                    ) | translate
+                                    }}
+                                  </ng-template>
+                                </ng-select>
+                              </div>
+                              <div class="mb-3 col-sm-6">
+                                <label for="billinginfo-firstName" class="form-label">{{'MENUITEMS.TS.LEADEBOARD' |
+                                  translate }}</label>
+                                <ng-select [selectableGroup]="true" [closeOnSelect]="true" formControlName="leaderboard"
+                                  [multiple]="false" [items]="leaderboardCycle" [clearable]="true"
+                                  placeholder="{{'COMMON.ENTER' | translate }} {{'MENUITEMS.TS.LEADEBOARD' | translate }}">
+                                  <ng-template ng-label-tmp let-item="item" let-clear="clear">
+                                    {{
+                                    (
+                                    item === 'OVERALL' ? 'COMMON.OVERALL':
+                                    item === 'WEEKLY' ? 'COMMON.WEEKLY':
+                                    item === 'MONTHLY' ? 'COMMON.MONTHLY':
+                                    item === 'DAILY' ? 'COMMON.DAILY' : ''
+                                    ) | translate
+                                    }}
+                                    <span class="ng-value-icon right" (click)="clear(item)" aria-hidden="true">×</span>
+                                  </ng-template>
+                                  <ng-template ng-option-tmp let-item$="item$" let-item="item">
+                                    {{
+                                    (
+                                    item === 'OVERALL' ? 'COMMON.OVERALL':
+                                    item === 'WEEKLY' ? 'COMMON.WEEKLY':
+                                    item === 'MONTHLY' ? 'COMMON.MONTHLY':
+                                    item === 'DAILY' ? 'COMMON.DAILY' : ''
+                                    ) | translate
+                                    }}
+                                  </ng-template>
+                                </ng-select>
+                              </div>
+                              <ng-container
+                                *ngIf="widgetAction.value === 'QUESTS' || widgetAction.value === 'CHALLENGES' || widgetAction.value === 'URL'">
+                                <div class="mb-3 col-sm-6">
+                                  <label for="email_id-field" class="align-items-center d-flex form-label gap-1">
+                                    {{
+                                    (
+                                    widgetAction.value === 'QUESTS' ? 'PLACEHOLDER.SELECT_CAMPAIGN' :
+                                    widgetAction.value === 'CHALLENGES' ? 'PLACEHOLDER.SELECT_CHALLENGE' :
+                                    'COMMON.ENTER_URL'
+                                    ) | translate
+                                    }}
+                                    <i matTooltip="{{'COMMON.OPTIONAL' | translate}}" matTooltipPosition="above"
+                                      class="ri-information-line fs-16"></i>
+                                  </label>
+                                  <ng-select *ngIf="widgetAction.value === 'QUESTS'" [hideSelected]="false"
+                                    [multiple]="false" [searchable]="false" formControlName="paramId" bindValue="id"
+                                    bindLabel="title" [items]="quests$ | async" [virtualScroll]="true"
+                                    placeholder="{{'PLACEHOLDER.SELECT_CAMPAIGN' | translate }}"
+                                    (scrollToEnd)="loadMoreQuests()">
+                                    <ng-template ng-label-tmp let-item="item" let-clear="clear">
+                                      {{item?.title}}
+                                      <span class="ng-value-icon right" (click)="clear(item)"
+                                        aria-hidden="true">×</span>
+                                    </ng-template>
+                                    <ng-template ng-option-tmp let-item$="item$" let-item="item">
+                                      <div class="d-flex gap-2 align-items-center">
+                                        <div class="d-flex cursor-pointer align-items-center">
+                                          <div class="flex-shrink-0">
+                                            <div class="avatar-xs bg-light p-1 rounded-circle h-x"
+                                              *ngIf="item?.advertiser?.pos?.picture?.baseUrl">
+                                              <img
+                                                [src]="item?.advertiser?.pos?.picture?.baseUrl + '/' + item?.advertiser?.pos?.picture?.path"
+                                                class="img-fluid h-100 rounded-circle">
+                                            </div>
+                                            <div class="avatar-xs bg-light p-1 rounded-circle h-x"
+                                              *ngIf="!item?.advertiser?.pos?.picture?.baseUrl && item?.target?.pos?.picture?.baseUrl">
+                                              <img
+                                                [src]="item?.target?.pos?.picture?.baseUrl + '/' + item?.target?.pos?.picture?.path"
+                                                class="img-fluid h-100 rounded-circle">
+                                            </div>
+                                            <div class="avatar-xs bg-light rounded-circle p-1 h-x"
+                                              *ngIf="!item?.advertiser?.pos?.picture?.baseUrl && !item?.target?.pos?.picture?.baseUrl">
+                                              <div
+                                                class="avatar-title bg-soft-success text-success rounded-circle fs-13">
+                                                {{item?.title?.charAt(0) || 'N'}}</div>
+                                            </div>
+                                          </div>
+                                          <div class="flex-grow-1 fw-medium ms-2 name">
+                                            {{item?.title}}
+                                          </div>
+                                        </div>
+                                      </div>
+                                    </ng-template>
+                                  </ng-select>
+                                  <ng-select *ngIf="widgetAction.value === 'CHALLENGES'" [hideSelected]="false"
+                                    [multiple]="false" [searchable]="false" formControlName="paramId" bindValue="id"
+                                    bindLabel="title" [items]="challenges$ | async" [virtualScroll]="true"
+                                    placeholder="{{'PLACEHOLDER.SELECT_CHALLENGE' | translate }}"
+                                    (scrollToEnd)="loadMoreChallenges()">
+                                    <ng-template ng-label-tmp let-item="item" let-clear="clear">
+                                      {{item?.title}}
+                                      <span class="ng-value-icon right" (click)="clear(item)"
+                                        aria-hidden="true">×</span>
+                                    </ng-template>
+                                    <ng-template ng-option-tmp let-item$="item$" let-item="item">
+                                      <div class="d-flex gap-2 align-items-center">
+                                        <div class="d-flex cursor-pointer align-items-center">
+                                          <div class="flex-shrink-0">
+                                            <div class="avatar-xs bg-light p-1 rounded-circle h-x"
+                                              *ngIf="item?.media?.pictures?.[0]?.baseUrl">
+                                              <img
+                                                [src]="item?.media?.pictures[0]?.baseUrl + '/' + item?.media?.pictures[0].path"
+                                                class="img-fluid h-100 rounded-circle">
+                                            </div>
+                                            <div class="avatar-xs bg-light rounded-circle p-1 h-x"
+                                              *ngIf="!item?.media?.pictures?.[0]?.baseUrl">
+                                              <div
+                                                class="avatar-title bg-soft-success text-success rounded-circle fs-13">
+                                                {{item?.title?.charAt(0) || 'N'}}</div>
+                                            </div>
+                                          </div>
+                                          <div class="flex-grow-1 fw-medium ms-2 name">
+                                            {{item?.title}}
+                                          </div>
+                                        </div>
+                                      </div>
+                                    </ng-template>
+                                  </ng-select>
+                                  <input *ngIf="widgetAction.value === 'URL'" type="text" class="form-control"
+                                    id="billinginfo-firstName" placeholder="{{'COMMON.ENTER_URL' | translate }}"
+                                    formControlName="paramId">
+                                </div>
+                              </ng-container>
+                            </div>
+                          </ng-container>
+                        </ng-container>
+                        <div class="mt-3 mb-3">
+                          <h4>{{'MODULES.INVENTORY.TRANSLATION' | translate }}</h4>
+                        </div>
+                        <ng-container formArrayName="translation">
+                          <ng-container *ngFor="let control of translation.controls; let i = index; let last = last"
+                            [formGroupName]="i">
+                            <div class="mb-3 col-sm-6">
+                              <label for="billinginfo-firstName" class="form-label">{{'COMMON.LANGUAGE' | translate
+                                }}</label>
+                              <ng-select [searchable]="false" required *ngIf="languages?.length"
+                                [selectableGroup]="true" [closeOnSelect]="true" formControlName="language"
+                                [multiple]="false" [items]="widgetLanguages" [clearable]="false"
+                                placeholder="{{'COMMON.ENTER' | translate }} {{'MODULES.INVENTORY.TRANSLATION' | translate }}">
+                                <ng-template ng-label-tmp let-item="item" let-clear="clear">
+                                  <div class="d-flex gap-1">
+                                    <span>{{item?.iconFlag}}</span>
+                                    <span>{{item?.name}}</span>
+                                  </div>
+                                </ng-template>
+                                <ng-template ng-option-tmp let-item$="item$" let-item="item">
+                                  <div class="d-flex gap-1">
+                                    <span>{{item?.iconFlag}}</span>
+                                    <span>{{item?.name}}</span>
+                                  </div>
+                                </ng-template>
+                              </ng-select>
+                            </div>
+                            <div formGroupName="content" class="row">
+                              <div class="mb-3 col-sm-6">
+                                <label for="billinginfo-firstName" class="form-label">{{'COMMON.TITLE' | translate
+                                  }}</label>
+                                <input required type="text" class="form-control" id="billinginfo-firstName"
+                                  placeholder="{{'COMMON.ENTER' | translate }} {{'COMMON.TITLE' | translate }}"
+                                  formControlName="title">
+                              </div>
+                              <div class="mb-3 col-sm-6">
+                                <label for="billinginfo-firstName" class="form-label">{{'MODULES.INVENTORY.LABEL' |
+                                  translate
+                                  }}</label>
+                                <input required type="text" class="form-control" id="billinginfo-firstName"
+                                  placeholder="{{'COMMON.ENTER' | translate }} {{'MODULES.INVENTORY.LABEL' | translate }}"
+                                  formControlName="label">
+                              </div>
+                              <div class="mb-3 col-sm-6">
+                                <label for="billinginfo-lastName" class="form-label">{{'COMMON.DESCRIPTION' |
+                                  translate
+                                  }}</label>
+                                <textarea required formControlName="description"
+                                  placeholder="{{'COMMON.ENTER_DESCRIPTION' | translate }}" name="description"
+                                  class="form-control" rows="4"></textarea>
+                              </div>
+                            </div>
+                            <div class="d-flex justify-content-end gap-1">
+                              <button (click)="addTranslation()" *ngIf="last && widgetLanguages?.length"
+                                class="btn btn-sm btn-soft-primary">
+                                <i class="ri-delete-bin-fill align-bottom fs-15"></i>
+                                {{'SHARED.ADD_FIELD' | translate}}
+                              </button>
+                              <button (click)="removeTranslation(i)" *ngIf="translation?.length > 1"
+                                class="btn btn-sm btn-soft-danger">
+                                <i class="ri-add-line align-middle me-1"></i>
+                                {{'SHARED.REMOVE_FIELD' | translate}}
+                              </button>
+                            </div>
+                          </ng-container>
+                        </ng-container>
+                      </ng-container>
+                    </div>
+                    <div class="d-flex align-items-start gap-3 mt-4">
+                      <button (click)="selectedNav = 2" type="button" class="btn btn-light btn-label previestab"
+                        data-previous="pills-bill-info-tab"><i
+                          class="ri-arrow-left-line label-icon align-middle fs-16 me-2"></i>{{'MODULES.ECOMMERCE.MAIN.BACK'
+                        | translate }}</button>
+                      <button [disabled]="isButtonDisabled || outboundForm.invalid" (click)="save()" type="button"
+                        class="btn btn-primary btn-label right ms-auto nexttab"><i
+                          class="ri-bank-card-line label-icon align-middle fs-16 ms-2"></i>{{'COMMON.SAVE' | translate
+                        }}</button>
+                    </div>
+                  </ng-template>
+                </li>
+              </ng-container>
+            </ul>
+          </form>
+        </div>
+        <div class="tab-content">
+          <div [ngbNavOutlet]="customNav"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</ng-container>
+
+<div *ngIf="navigating$ | async" class="vh-100 py-4 text-center" fxLayout="column" fxLayoutAlign="center center"
+  fxLayoutGap="1rem">
+  <div>
+    <lord-icon trigger="loop" style="width:72px;height:72px"
+      [colors]="'primary:' + primaryColor + ',secondary:' + secondaryColor"
+      src="https://cdn.lordicon.com/msoeawqm.json">
+    </lord-icon>
+  </div>
+  <div class="mt-4">
+    <h5>{{ 'COMMON.LOADING' | translate }}</h5>
+  </div>
+</div>

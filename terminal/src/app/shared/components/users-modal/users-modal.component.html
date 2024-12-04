@@ -1,0 +1,74 @@
+<div class="modal-header p-3 bg-soft-success">
+  <h5 class="modal-title" id="inviteMembersModalLabel">{{'MODULES.INVENTORY.MEMBERS' | translate }}</h5>
+  <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"
+    ></button>
+</div>
+<div class="modal-body p-4">
+  <div class="mb-4 d-flex align-items-center">
+    <div class="me-2">
+      <h5 class="mb-0 fs-13">{{'MODULES.INVENTORY.MEMBERS' | translate }} :</h5>
+    </div>
+    <div class="avatar-group justify-content-center">
+      <ng-container *ngFor="let member of selectedUsers">
+        <a *ngIf="member?.picture?.baseUrl" href="javascript:void(0);" class="avatar-group-item"
+          data-bs-trigger="hover" data-bs-placement="top">
+          <div class="avatar-xs">
+            <img [src]="member?.picture?.baseUrl + '/' + member?.picture?.path" alt=""
+              class="rounded-circle h-100 img-fluid">
+          </div>
+        </a>
+        <a *ngIf="!member?.picture" href="javascript: void(0);" class="avatar-group-item shadow"
+          [matTooltip]="member?.firstName" placement="top">
+          <div class="avatar-xs">
+            <div class="avatar-title rounded-circle bg-info text-uppercase shadow">
+              {{member?.firstName?.charAt(0) || 'N'}}
+            </div>
+          </div>
+        </a>
+      </ng-container>
+    </div>
+  </div>
+  <ngx-simplebar class="mx-n4 px-4" style="max-height: 225px;">
+    <div class="vstack gap-3">
+      <div *ngFor="let member of selectedUsers" class="d-flex align-items-center">
+        <div class="avatar-xs flex-shrink-0 me-3">
+          <div *ngIf="!member?.picture" class="col-md-auto">
+            <div class="avatar-xs mb-md-0 mb-4">
+              <div class="avatar-title rounded-circle bg-info text-uppercase shadow">
+                {{member?.firstName?.charAt(0) || 'N'}}
+              </div>
+            </div>
+          </div>
+          <img *ngIf="member?.picture" [src]="member?.picture?.baseUrl + '/' + member?.picture?.path"
+            class="img-fluid h-100 rounded-circle">
+        </div>
+        <div class="flex-grow-1">
+          <h5 class="fs-13 mb-0"><a href="javascript:void(0);" class="text-body d-block">{{member?.firstName}}
+              {{member?.lastName}}</a>
+          </h5>
+        </div>
+      </div>
+    </div>
+  </ngx-simplebar>
+</div>
+<div class="modal-footer">
+  <button type="button" class="btn btn-light w-xs" data-bs-dismiss="modal"
+    >{{ 'COMMON.CANCEL' | translate }}</button>
+</div>
+<!-- <ng-template #selectedUsersModal role="document" let-modal>
+</ng-template> -->
+
+<!-- <div class="row">
+  <div class="col-12">
+    <div class="page-title-box d-flex align-items-center justify-content-between">
+      <h4 class="mb-0">{{title}}</h4>
+      <div class="page-title-right">
+        <ol class="breadcrumb m-0">
+          <ng-container *ngFor="let item of breadcrumbItems">
+            <li class="breadcrumb-item" [routerLink]="item?.routerLink" routerLinkActive="router-link-active"  [class.active]="item.active">{{ item.label }}</li>
+          </ng-container>
+        </ol>
+      </div>
+    </div>
+  </div>
+</div> -->

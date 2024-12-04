@@ -1,0 +1,85 @@
+<div class="container mt-4" *ngIf="hasAmount && !puzzleDisplay" style="margin-bottom: 10%; padding: 0 28px;"
+  [class.dark-mode]="darkMode">
+  <div class="row">
+    <div class="col-12 col-md-12">
+      <div class="row">
+        <div class="col-12" style="margin-bottom: 30px;">
+          <h5 class="text-center">{{'CHOOSE_COMPLEXITY' | translate}}</h5>
+        </div>
+        <div *ngFor="let data of thresholds" class="col-md-6">
+          <div class="card widget-box" [class.dark-mode]="darkMode">
+            <p class="card-header">{{'TIME_LIMIT' | translate}}</p>
+            <div class="card-body">
+              <h6 class="card-title">{{
+                (data?.timer === 'HALF_MINUTE' ? '30_SECONDS' :
+                data?.timer === 'MINUTE' ? '1_MINUTE' :
+                data?.timer === 'TWO_MINUTES' ? '2_MINUTES' : '5_MINUTES') | translate
+                }}</h6>
+              <div class="experience-design" style="gap: 0.25rem">
+                <ng-container *ngFor="let item of data?.bonus">
+                  <p *ngIf="item?.walletType === 'QUALITATIVE' && item?.amount"
+                    class="align-items-center d-flex justify-content-center text-sticker">
+                    <svg class="text-sticker-icon icon-plus-small">
+                      <use xlink:href="#svg-plus-small"></use>
+                    </svg>
+                    {{ item?.amount | number: '1.0-0' }}
+                    <img *ngIf="!(loyaltySettings$ | async)?.qualitative?.picture?.baseUrl"
+                      src="https://sifca-storage.s3.eu-central-1.amazonaws.com/loyalcraft/reputation_512.gif"
+                      class="assets/img-fluid rounded-circle mb-1 m-1"
+                      style="margin-top: 5% !important; width: 25px !important" />
+                    <img *ngIf="(loyaltySettings$ | async)?.qualitative?.picture?.baseUrl"
+                      [src]="(loyaltySettings$ | async)?.qualitative?.picture?.baseUrl + '/' + (loyaltySettings$ | async)?.qualitative?.picture?.path"
+                      class="assets/img-fluid rounded-circle mb-1 m-1"
+                      style="margin-top: 5% !important; width: 25px !important" />
+                  </p>
+                  <p *ngIf="item?.walletType === 'QUANTITATIVE' && item?.amount"
+                    class="align-items-center d-flex justify-content-center text-sticker">
+                    <svg class="text-sticker-icon icon-plus-small">
+                      <use xlink:href="#svg-plus-small"></use>
+                    </svg>
+                    {{ item?.amount | number: '1.0-0' }}
+                    <ng-container *ngFor="let item of selectedQuestActivity?.quest?.remuneration">
+                      <ng-container *ngIf="item?.wallet?.walletType === 'QUANTITATIVE'">
+                        <img
+                          *ngIf="item?.wallet?.coin?.picture?.baseUrl"
+                          [src]="item?.wallet?.coin?.picture?.baseUrl + '/' + item?.wallet?.coin?.picture?.path"
+                          class="assets/img-fluid rounded-circle avatar-xxs mb-1 m-1"
+                          style="margin-top: 5% !important; width: 25px !important" />
+                        <lord-icon *ngIf="!item?.wallet?.coin?.picture?.baseUrl" class="m-1"
+                          src="https://cdn.lordicon.com/lxizbtuq.json" src="https://cdn.lordicon.com/lxizbtuq.json"
+                          trigger="loop" delay="2000" style="width:25px;height:25px">
+                        </lord-icon>
+                      </ng-container>
+                    </ng-container>
+                  </p>
+                </ng-container>
+              </div>
+              <a (click)="startGame(
+                  data?.timer === 'HALF_MINUTE' ? '30' :
+                  data?.timer === 'MINUTE' ? '60' :
+                  data?.timer === 'TWO_MINUTES' ? '120' : '300'
+                )" class="widget-box-button button custom small">{{'START_GAME' | translate}}</a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="d-flex dark-mode justify-content-end">
+    <button *ngIf="skipDisplay" (click)="skip()" class="secondary button mb-4 mt-5">
+      {{'SKIP' | translate}}
+    </button>
+  </div>
+</div>
+
+<ng-container *ngIf="puzzleDisplay">
+  <sliding-puzzle-game [hasAmount]="hasAmount" (performActivity)="perform($event)" (argsUpdate)="onArgsUpdate($event)"
+    [timer]="timer" [timeLeft]="timeLeft" (puzzleDisplayChange)="onPuzzleDisplayChange($event)"
+    style="margin-bottom: 10%;"></sliding-puzzle-game>
+</ng-container>
+
+<svg style="display: none">
+  <symbol id="svg-plus-small" viewBox="0 0 8 8" preserveAspectRatio="xMinYMin meet">
+    <path d="M8,5H5v3H3V5H0V3h3V0h2v3h3V5z" />
+  </symbol>
+</svg>

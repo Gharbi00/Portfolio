@@ -1,0 +1,131 @@
+<div [class.dark-mode]="darkMode">
+  <div class="content-grid col-md-12 header-margin notifications">
+    <div class="section-banner"
+      [ngStyle]="{ background: 'url(' + headerImagePath + ') no-repeat center center / cover' }">
+      <img class="section-banner-icon" [src]="newsFeedIcon?.baseUrl + '/' + newsFeedIcon?.path" alt="newsfeed-icon" />
+      <p class="section-banner-title">{{'STAY_UPDATED' | translate}}</p>
+      <p class="section-banner-text text-truncate">{{'INSTANT_ALERTS' | translate}}</p>
+    </div>
+  </div>
+  <div class="reward widget-box col-md-12 special-margin-bottom">
+    <div class="special-widget-box">
+      <p class="widget-box-title">{{'NOTIFICATIONS' | translate}}</p>
+      <div class="widget-box-content">
+        <div class="stat-block-list">
+          <ng-container
+            *ngIf="((loadingNotifications$ | async) === false || null || undefined) && notifications?.length">
+            <div *ngFor="let notif of notifications" class="stat-block">
+              <div class="stat-block-decoration" [class.mr-left]="rtl" *ngIf="notif?.event === 'ADHOC_NOTIFICATION'">
+                <img height="45" width="45" style="object-fit: cover;" class="me-3 h-100 w-100 rounded-circle"
+                  *ngIf="notif?.action?.adhocNotification?.picture?.baseUrl"
+                  [src]="notif?.action?.adhocNotification?.picture?.baseUrl + '/' + notif?.action?.adhocNotification?.picture?.path"
+                  alt="">
+                <img height="45" width="45" style="object-fit: cover;" class="me-3 h-100 w-100 rounded-circle"
+                  *ngIf="!notif?.action?.adhocNotification?.picture?.baseUrl"
+                  [src]="(pos$ | async)?.picture?.baseUrl + '/' + (pos$ | async)?.picture?.path" alt="">
+              </div>
+              <div class="stat-block-decoration" [class.mr-left]="rtl" *ngIf="notif?.event !== 'ADHOC_NOTIFICATION'">
+                <img height="45" width="45" style="object-fit: cover;" class="me-3 h-100 w-100 rounded-circle"
+                  [src]="(pos$ | async)?.picture?.baseUrl + '/' + (pos$ | async)?.picture?.path" alt="">
+              </div>
+              <div class="stat-block-info mt-0">
+                <div class="d-flex justify-content-between">
+                  <p [class.text-light]="darkMode" style="margin-top: 8px;
+                  font-size: 16px;
+                  font-weight: 700;">
+                    {{
+                    (notif?.event === 'ADHOC_NOTIFICATION' ? notif?.action?.adhocNotification?.title :
+                    notif?.event === 'REPUTATION_LOST' ? 'REPUTATION_LOST' :
+                    notif?.event === 'REPUTATION_ALMOST_LOST' ? 'REPUTATION_ALMOST_LOST' :
+                    notif?.event === 'REDEEM' ? 'REDEEM' :
+                    notif?.event === 'TURNOVER_LOST' ? 'TURNOVER_LOST' :
+                    notif?.event === 'TURNOVER_ALMOST_LOST' ? 'TURNOVER_ALMOST_LOST' :
+                    notif?.event === 'PUSH_AMOUNT' ? 'PUSH_AMOUNT' : '') | translate
+                    }}
+                  </p>
+                  <p *ngIf="notif?.event === 'REPUTATION_LOST' && +notif?.action?.reputationLoss !== 0"
+                    class="text-sticker">
+                    <svg style="fill: red !important;" class="text-sticker-icon icon-plus-small">
+                      <use xlink:href="#svg-minus-small"></use>
+                    </svg>
+                    <span class="text-danger">
+                      {{notif?.action?.reputationLoss | number: '1.0-0'}} </span>
+                    <img *ngIf="!(loyaltySettings$ | async)?.qualitative?.picture?.baseUrl"
+                      src="https://sifca-storage.s3.eu-central-1.amazonaws.com/loyalcraft/reputation_512.gif"
+                      class="assets/img-fluid rounded-circle mb-1"
+                      style="margin-top: 5% !important; width: 25px !important" />
+                    <img *ngIf="(loyaltySettings$ | async)?.qualitative?.picture?.baseUrl"
+                      [src]="(loyaltySettings$ | async)?.qualitative?.picture?.baseUrl + '/' + (loyaltySettings$ | async)?.qualitative?.picture?.path"
+                      class="assets/img-fluid rounded-circle mb-1"
+                      style="margin-top: 5% !important; width: 25px !important" />
+                  </p>
+                </div>
+                <p [class.text-light]="darkMode" style="margin-top: 18px;
+                color: #3e3f5e;
+                font-size: 14px;
+                font-weight: 500;
+                line-height: 1.4285714286em;
+                ">
+                  {{
+                  (notif?.event === 'PUSH_AMOUNT' ? 'SPECIAL_REWARD':
+                  notif?.event === 'REPUTATION_LOST' ? 'BONUS_FOR_ENGAGING' :
+                  notif?.event === 'REDEEM' ? 'REDEEM' :
+                  notif?.event === 'REPUTATION_ALMOST_LOST' ? 'REPUTATION_ALMOST_LOST_DESCRIPTION' :
+                  notif?.event === 'TURNOVER_LOST' ? 'TURNOVER_LOST_DESCRIPTION' :
+                  notif?.event === 'TURNOVER_ALMOST_LOST' ? 'TURNOVER_ALMOST_LOST_DESCRIPTION' :
+                  notif?.event === 'ADHOC_NOTIFICATION' ? notif?.action?.adhocNotification?.description : '') |
+                  translate
+                  }}
+                </p>
+                <p [class.text-muted]="darkMode" style="margin-top: 10px;
+                  color: #8f91ac;
+                  font-size: .75rem;
+                  font-weight: 500;
+                  ">{{notif?.dateDifference}}</p>
+              </div>
+            </div>
+          </ng-container>
+          <widget-pagination *ngIf="pagination?.length > perPage" [loaded]="((loadingNotifications$ | async) === false || null || undefined) && notifications?.length" (pageChanged)="onPageChange($event)"
+            [perPage]="perPage" [total]="pagination?.length"></widget-pagination>
+          <div id="noresult" class="py-4 mt-4 text-center"
+            *ngIf="(loadingNotifications$ | async) || (!(loadingNotifications$ | async) && !notifications?.length)">
+            <div *ngIf="loadingNotifications$ | async">
+              <div class="page-loader-indicator loader-bars">
+                <div class="loader-bar"></div>
+                <div class="loader-bar"></div>
+                <div class="loader-bar"></div>
+                <div class="loader-bar"></div>
+                <div class="loader-bar"></div>
+                <div class="loader-bar"></div>
+                <div class="loader-bar"></div>
+                <div class="loader-bar"></div>
+              </div>
+            </div>
+            <div *ngIf="!(loadingNotifications$ | async) && !notifications?.length">
+              <div class="notification-section animate-slide-down special-margin-bottom">
+                <div class="displayed-center mb-5">
+                  <svg class="empty-fill" width="150">
+                    <use xlink:href="#svg-notification"></use>
+                  </svg>
+                </div>
+                <p class="mb-2" style="font-size: larger; font-weight: 600;">{{'STAY_UPDATED' | translate}}</p>
+                <p style="font-weight: 500;">{{'NOTIFICATIONS_EMPTY_STATE' | translate}}</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+  <svg style="display: none">
+    <symbol id="svg-minus-small" viewBox="0 0 8 8" preserveAspectRatio="xMinYMin meet">
+      <rect y="3" width="8" height="2" />
+    </symbol>
+  </svg>
+  <svg style="display: none">
+    <symbol id="svg-notification" viewBox="0 0 20 20" preserveAspectRatio="xMinYMin meet">
+      <path
+        d="M18.583,14.127c-0.023-0.018-2.241-1.758-2.241-7.52C16.342,2.964,13.497,0,10.004,0C6.511,0,3.668,2.964,3.668,6.607c0,5.762-2.22,7.502-2.228,7.508c-0.365,0.254-0.525,0.725-0.397,1.158c0.129,0.434,0.517,0.73,0.957,0.73h16.007c0.433,0,0.81-0.293,0.943-0.719C19.086,14.861,18.932,14.389,18.583,14.127zM4.086,13.939C4.873,12.527,5.67,10.21,5.67,6.607c0-2.505,1.945-4.542,4.334-4.542c2.391,0,4.335,2.038,4.335,4.542c0,3.603,0.796,5.92,1.583,7.333H4.086z M12.418,17.146c-0.57-0.283-1.293-0.115-1.619,0.381c-0.126,0.191-0.327,0.326-0.567,0.383c-0.234,0.051-0.478,0.023-0.688-0.084c-0.138-0.07-0.255-0.174-0.336-0.297c-0.325-0.496-1.05-0.668-1.618-0.385c-0.568,0.283-0.766,0.914-0.44,1.408c0.286,0.438,0.7,0.803,1.194,1.055C8.854,19.867,9.421,20,9.997,20c0.281,0,0.564-0.031,0.843-0.096c0.856-0.197,1.573-0.676,2.016-1.348C13.182,18.061,12.984,17.432,12.418,17.146z" />
+    </symbol>
+  </svg>

@@ -1,0 +1,31 @@
+.w-8 {
+  width: 2rem;
+}
+.h-8 {
+  height: 2rem;
+}
+.uploader-wrapper {
+  position: relative;
+  .progress-wrapper {
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    z-index: 9;
+    position: absolute;
+    background: #ffffff4c;
+  }
+}
+
+.line-through {
+  text-decoration: line-through;
+}
+
+.edit-icon .ri-pencil-fill {
+  opacity: 0;
+  transition: opacity 0.2s;
+}
+
+.edit-icon:hover .ri-pencil-fill{
+  opacity: 1;
+}

@@ -1,0 +1,35 @@
+<div [class.dark-mode]="darkMode" [class.rtl]="rtl">
+  <div class="grid widget-box centered col-md-12 special-margin-bottom">
+    <div class="special-widget-box">
+      <div class="section-header-info mb-5">
+        <h2 class="section-title">{{'REWARDS' | translate}}</h2>
+      </div>
+      <owl-carousel-o [options]="challengesCarousel">
+        <ng-container *ngFor="let item of winners; let i = index">
+          <ng-template carouselSlide>
+            <div class="product-preview challenge-size">
+              <div class="text-center mb-2">
+                <span [ngClass]="{'text-white': darkMode, 'text-black': !darkMode}" style="font-size: 17px !important; font-weight: 600;">#{{item?.rank}} </span>
+              </div>
+              <a>
+                <figure class="product-preview-image liquid" [ngStyle]="{
+                'background-image': 'url(' + (item.reward?.media?.pictures?.length > 0
+                  ? item.reward?.media?.pictures[0]?.baseUrl + '/' + item.reward?.media?.pictures[0]?.path
+                  : defaultPicture) + ')',
+                'background-position': 'center',
+                'background-size': 'cover'
+              }">
+                </figure>
+              </a>
+              <div class="product-preview-info">
+                <p class="product-preview-title d-flex justify-content-between">
+                  <a>{{item?.reward?.name}}</a>
+                </p>
+              </div>
+            </div>
+          </ng-template>
+        </ng-container>
+      </owl-carousel-o>
+    </div>
+  </div>
+</div>

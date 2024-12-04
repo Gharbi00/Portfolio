@@ -1,0 +1,395 @@
+<app-breadcrumbs title="{{ 'MODULES.INVOICING.PURCHASES.SUPPLIERS.SUPPLIERS' | translate }}"
+  [breadcrumbItems]="breadCrumbItems"></app-breadcrumbs>
+<ng-container *ngIf="!(navigating$ | async)">
+
+  <div class="row">
+    <div class="col-lg-12">
+      <div class="card">
+        <div class="card-header border-0 rounded">
+          <div class="row g-2">
+            <div class="col-xl-3">
+              <div class="search-box">
+                <form [formGroup]="searchForm">
+                  <input formControlName="searchString" type="text" class="form-control search"
+                    placeholder="{{ 'MODULES.INVOICING.PURCHASES.SUPPLIERS.SEARCH_FOR_SUPPLIERS_&_OWNER_NAME_OR_SOMETHING' | translate }}"> <i
+                    class="ri-search-line search-icon"></i>
+                </form>
+              </div>
+            </div>
+            <div class="col-xl-2 ms-auto">
+              <div class="input-light">
+                <div ngbDropdown>
+                  <input [value]="selectedKinds.join(', ')" placeholder="{{ 'MODULES.INVOICING.PURCHASES.SUPPLIERS.CHOOSE_KIND' | translate }}"
+                    class="cursor-pointer form-select form-control dropdown-toggle" ngbDropdownToggle>
+                  <div class="dropdown-menu dropdown-menu-right w-100 h-7 p-3" ngbDropdownMenu>
+                    <div *ngFor="let kind of kinds" class="form-check">
+                      <input (change)="onKindChange(kind, $event.target.checked)" class="form-check-input me-3"
+                        type="checkbox" [value]="kind">
+                      <label class="form-check-label d-flex align-items-center" for="anna-adame">
+                        {{'MODULES.INVOICING.PURCHASES.SHARED.' + kind | translate }}
+                      </label>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="col-lg-auto">
+              <div class="hstack gap-2">
+                <button class="btn btn-success" data-bs-toggle="modal" data-bs-target="#addSeller"
+                  (click)="openCompanyModal(supplierModal, null)"><i class="ri-add-fill me-1 align-bottom"></i>{{ 'MODULES.INVOICING.PURCHASES.SUPPLIERS.ADD_SUPPLIER' | translate }}</button>
+                <button (click)="openImportModal(importModal)" type="button" class="btn btn-secondary"><i
+                    class="ri-file-upload-line align-bottom"></i>
+                    {{ 'COMMON.IMPORT' | translate }}</button>
+                <button (click)="downloadExcel()" type="button" class="btn btn-primary"><i
+                    class="ri-file-download-line align-bottom"></i>
+                    {{ 'COMMON.EXPORT' | translate }}</button>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="card-body">
+          <div>
+            <div class="table-responsive table-card mb-2">
+              <table class="table align-middle table-nowrap">
+                <thead>
+                  <tr class="bg-light text-muted text-uppercase">
+                    <th scope="col">{{ 'MODULES.INVOICING.PURCHASES.SUPPLIERS.COMPANY_NAME' | translate }}</th>
+                    <th scope="col">{{ 'COMMON.EMAIL' | translate }}</th>
+                    <th scope="col">{{ 'COMMON.PHONE' | translate }}</th>
+                    <th scope="col">{{ 'COMMON.WEBSITE' | translate }}</th>
+                    <th scope="col">{{ 'COMMON.LOCATION' | translate }}</th>
+                    <th scope="col">{{ 'COMMON.ACTION' | translate }}</th>
+                  </tr>
+                </thead>
+                <tbody *ngIf="((isLoading$ | async) === false || null || undefined) && (suppliers$ | async).length">
+                  <tr *ngFor="let data of suppliers$ | async" id="c_{{data.id}}">
+                    <td>
+                      <div routerLink="/purchases/suppliers/{{data.id}}"
+                        class="d-flex align-items-center cursor-pointer">
+                        <div class="flex-shrink-0">
+                          <img *ngIf="data.media?.pictures?.length"
+                            [src]="data.media?.pictures[0].baseUrl + '/' + data.media?.pictures[0].path"
+                            class="avatar-xxs rounded-circle image_src">
+                          <div *ngIf="!data?.media?.pictures?.length" class="avatar-xxs rounded-circle bg-light">
+                            <span class="avatar-title-x text-success">
+                              {{data?.name?.charAt(0) ||
+                              'N'}}
+                            </span>
+                          </div>
+                        </div>
+                        <div class="flex-grow-1 fw-medium link-primary cursor-pointer ms-2 name">
+                          {{data?.name}}</div>
+                      </div>
+                    </td>
+                    <td><ngb-highlight [result]="data.contact.email"></ngb-highlight>
+                    </td>
+                    <td><ngb-highlight [result]="data.contact?.phone?.number"></ngb-highlight>
+                    </td>
+                    <td><span href="{{data.contact?.website}}" target="_blank"
+                        class="star_value link-primary cursor-pointer">{{data?.contact?.website?.length > 20 ?
+                        data.contact.website.substr(0,20)+ '...' :
+                        data.contact.website}}</span></td>
+                    <td><ngb-highlight [result]="data?.address?.country?.name"></ngb-highlight>
+                    </td>
+                    <td>
+                      <ul class="list-inline hstack gap-2 mb-0">
+                        <li *ngIf="data.contact?.phone?.number" class="list-inline-item edit" placement="top">
+                          <a href="tel:{{data.contact?.phone?.number}}" class="text-primary d-inline-block">
+                            <i class="ri-phone-line fs-16"></i>
+                          </a>
+                        </li>
+                        <li *ngIf="data.contact?.phone?.number" class="list-inline-item edit" placement="top">
+                          <a target="_blank"
+                            href="https://wa.me/+{{data.contact?.phone?.countryCode}}{{data.contact?.phone?.number}}"
+                            class="text-primary d-inline-block">
+                            <i class="ri-question-answer-line fs-16"></i>
+                          </a>
+                        </li>
+                        <li class="list-inline-item" placement="top">
+                          <a routerLink="/purchases/suppliers/{{data.id}}"><i
+                              class="ri-eye-fill align-bottom text-primary"></i></a>
+                        </li>
+                        <li class="list-inline-item" placement="top">
+                          <a class="edit-item-btn" data-bs-toggle="modal"
+                            (click)="openCompanyModal(supplierModal, data)"><i
+                              class="ri-pencil-fill align-bottom text-primary"></i></a>
+                        </li>
+                        <li class="list-inline-item" placement="top">
+                          <a class="remove-item-btn" data-bs-toggle="modal"
+                            (click)="openDeleteCompany(deleteCompanyModel,data)">
+                            <i class="ri-delete-bin-fill align-bottom text-danger"></i>
+                          </a>
+                        </li>
+                      </ul>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+            <div *ngIf="(suppliers$ | async)?.length && !(isLoading$ | async)"
+              class="row justify-content-md-between align-items-md-center">
+              <div class="col col-sm-6">
+                <div class="dataTables_info mb-2" id="tickets-table_info" role="status" aria-live="polite">{{
+                  'COMMON.SHOWING' | translate }} {{pagination?.startIndex + 1}}–{{pagination?.endIndex ===
+                  pagination?.length ? pagination?.endIndex : pagination?.endIndex + 1}} {{ 'COMMON.OF' | translate }}
+                  {{pagination?.length}} {{ 'COMMON.ENTRIES' | translate }}
+                </div>
+              </div>
+              <div class="col col-sm-6">
+                <div class="text-sm-right float-end listjs-pagination">
+                  <ngb-pagination [collectionSize]="pagination?.length" [(page)]="page" [maxSize]="5"
+                    (pageChange)="onPageChange($event)" [pageSize]="pagination?.size">
+                  </ngb-pagination>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div *ngIf="(isLoading$ | async) || (!(isLoading$ | async) && !(suppliers$ | async).length)"
+          class="py-4 mt-4 text-center" id="noresult">
+          <div *ngIf="isLoading$ | async">
+            <lord-icon src="https://cdn.lordicon.com/msoeawqm.json" trigger="loop"
+            [colors]="'primary:' + primaryColor + ',secondary:' + secondaryColor" style="width:72px;height:72px"></lord-icon>
+          <h5 class="mt-4" >{{ 'COMMON.LOADING' | translate }}</h5>
+          </div>
+          <div *ngIf="!(isLoading$ | async) && !(suppliers$ | async).length">
+            <lord-icon src="https://cdn.lordicon.com/vlycxjwx.json" trigger="loop"
+            [colors]="'primary:' + primaryColor + ',secondary:' + secondaryColor" style="width:72px;height:72px"></lord-icon>
+          <h5 class="mt-4" >{{ 'COMMON.NO_RESULT' | translate }}</h5>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <ng-template #supplierModal role="document" let-modal>
+    <div class="modal-header bg-soft-info p-3">
+      <h5 class="modal-title" id="exampleModalLabel">{{(selectedSupplier ? 'SHARED.EDIT_SUPPLIER_COMPANY' : 'SHARED.ADD_SUPPLIER_COMPANY' ) | translate}}</h5>
+      <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" id="close-modal"
+        (click)="modal.dismiss('Cross click')"></button>
+    </div>
+    <form [formGroup]="supplierForm">
+      <div class="modal-body">
+        <div class="row">
+          <div class="col-lg-12">
+            <div class="text-center mb-3">
+              <div (click)="upload()" class="position-relative d-inline-block">
+                <div class="position-absolute bottom-0 end-0">
+                  <label for="company-logo-input" class="mb-0" data-bs-toggle="tooltip" data-bs-placement="right"
+                    title="Select Image">
+                    <div class="avatar-xs cursor-pointer">
+                      <div class="avatar-title bg-light border rounded-circle text-muted">
+                        <i class="ri-image-fill"></i>
+                      </div>
+                    </div>
+                  </label>
+                </div>
+                <div class="avatar-lg p-1">
+                  <div class="avatar-title bg-light rounded-circle">
+                    <img *ngIf="pictures.value[0]?.baseUrl === ''" src="assets/images/users/multi-user.jpg"
+                      id="companylogo-img" class="avatar-md rounded-circle object-cover" />
+                    <img *ngIf="pictures.value[0]?.baseUrl !== ''"
+                      [src]="pictures.value[0].baseUrl + '/' + pictures.value[0].path" id="companylogo-img"
+                      class="avatar-md rounded-circle object-cover" />
+                  </div>
+                </div>
+              </div>
+              <h5 class="fs-13 mt-3">{{ 'MODULES.INVOICING.PURCHASES.SUPPLIERS.COMPANY_LOGO' | translate }}</h5>
+            </div>
+            <div class="row">
+              <div class="mb-3 col-lg-6">
+                <label for="firstnameInput" class="form-label">{{ 'COMMON.NAME' | translate }}*</label>
+                <input required
+                  [ngClass]="{ 'is-invalid': supplierForm.get('name')?.touched && supplierForm.get('name').hasError('required') }"
+                  formControlName="name" type="text" class="form-control" id="firstnameInput"
+                  placeholder="{{ 'MODULES.INVOICING.PURCHASES.SUPPLIERS.ENTER_COMPANY_NAME' | translate }}">
+              </div>
+              <div class="mb-3 col-lg-6">
+                <label for="countryInput" class="form-label">{{ 'MODULES.INVOICING.PURCHASES.SUPPLIERS.KIND' | translate }}*</label>
+                <ng-container formGroupName="supplier">
+                  <select required
+                    [ngClass]="{ 'is-invalid': supplierForm.get(['supplier','kind'])?.touched && supplierForm.get('supplier','kind').hasError('required') }"
+                    class="form-select form-control-line" [formControlName]="'kind'">
+                    <option value="" disabled selected>{{ 'MODULES.INVOICING.PURCHASES.SUPPLIERS.SELECT_KIND' | translate }}</option>
+                    <option *ngFor="let kind of kinds" [value]="kind">
+                      {{'MODULES.INVOICING.PURCHASES.SHARED.' + kind | translate }}
+                    </option>
+                  </select>
+                  <div class="text-danger"
+                    *ngIf="supplierForm.get(['supplier','kind'])?.touched && supplierForm.get('supplier','kind').hasError('required')">{{'COMMON.REQUIRED' | translate }}
+                  </div>
+                </ng-container>
+              </div>
+              <div class="mb-3 col-lg-6">
+                <label for="firstnameInput" class="form-label">{{ 'COMMON.EXTERNAL_ID' | translate }}</label>
+                <input formControlName="externalId" type="text" class="form-control" id="firstnameInput"
+                  placeholder="{{ 'MODULES.INVOICING.PURCHASES.SUPPLIERS.ENTER_COMPANY_ID' | translate }}">
+              </div>
+              <ng-container formGroupName="legal">
+                <div class="col-lg-6">
+                  <div class="mb-3">
+                    <label for="lastnameInput" class="form-label">{{ 'COMMON.REG_NUMBER' | translate }}</label>
+                    <input formControlName="register" type="text" class="form-control" id="lastnameInput"
+                      placeholder="{{ 'COMMON.ENTER_REG_NUMBER' | translate }}">
+                  </div>
+                </div>
+                <div class="col-lg-6">
+                  <div class="mb-3">
+                    <label for="lastnameInput" class="form-label">{{ 'COMMON.VAT' | translate }}</label>
+                    <input formControlName="vat" type="text" class="form-control" id="lastnameInput"
+                      placeholder="{{ 'MODULES.INVOICING.PURCHASES.SUPPLIERS.ENTER_COMPANY_VAT' | translate }}">
+                  </div>
+                </div>
+                <div class="col-lg-6">
+                  <div class="mb-3">
+                    <label for="lastnameInput" class="form-label">{{ 'COMMON.LICENCE' | translate }}</label>
+                    <input formControlName="licence" type="text" class="form-control" id="lastnameInput"
+                      placeholder="{{ 'COMMON.ENTER' | translate }}  {{ 'COMMON.COMPANY' | translate }} {{ 'COMMON.LICENCE' | translate }}">
+                  </div>
+                </div>
+              </ng-container>
+              <ng-container formGroupName="contact">
+                <div class="col-lg-6">
+                  <ng-container formGroupName="phone">
+                    <div class="mb-3">
+                      <label for="phonenumberInput" class="form-label">{{ 'COMMON.PHONE_NUMBER' | translate }} </label>
+                      <input formControlName="number" type="text" class="form-control" id="phonenumberInput"
+                        placeholder="{{ 'COMMON.ENTER_PHONE_NUMBER' | translate }}">
+                    </div>
+                  </ng-container>
+                </div>
+                <div class="col-lg-6">
+                  <div class="mb-3">
+                    <label for="emailInput" class="form-label">{{ 'COMMON.EMAIL_ADDRESS' | translate }} </label>
+                    <input formControlName="email" type="email" class="form-control" id="emailInput"
+                      placeholder="{{ 'COMMON.ENTER' | translate }}  {{ 'COMMON.EMAIL_ADDRESS' | translate }} ">
+                  </div>
+                </div>
+                <div class="col-lg-6">
+                  <div class="mb-3">
+                    <label for="websiteInput1" class="form-label">{{ 'COMMON.WEBSITE' | translate }}</label>
+                    <input formControlName="website" type="text" class="form-control" id="websiteInput1"
+                      placeholder="www.example.com" />
+                  </div>
+                </div>
+              </ng-container>
+              <ng-container formGroupName="address">
+                <div class="col-lg-6">
+                  <div class="mb-3">
+                    <label for="designationInput" class="form-label">{{ 'COMMON.ADDRESS' | translate }}</label>
+                    <input formControlName="address" type="text" class="form-control" id="designationInput"
+                      placeholder="{{ 'COMMON.ADDRESS' | translate }}">
+                  </div>
+                </div>
+                <div class="col-lg-6">
+                  <div class="mb-3">
+                    <label for="cityInput" class="form-label">{{ 'COMMON.CITY' | translate }}</label>
+                    <input formControlName="city" type="text" class="form-control" id="cityInput" placeholder="{{ 'COMMON.CITY' | translate }}" />
+                  </div>
+                </div>
+                <div class="col-lg-6">
+                  <div class="mb-3">
+                    <label for="countryInput" class="form-label">{{ 'COMMON.COUNTRY' | translate }}</label>
+                    <select class="form-select form-control-line" [formControlName]="'country'">
+                      <option value="" disabled selected>{{ 'COMMON.SELECT_OPTION' | translate }}</option>
+                      <option *ngFor="let country of countries" [value]="country.id">
+                        {{ country.name.split('_').join(' ') | titlecase }}
+                      </option>
+                    </select>
+                  </div>
+                </div>
+                <div class="col-lg-6">
+                  <div class="mb-3">
+                    <label for="zipcodeInput" class="form-label">{{ 'COMMON.ZIP_CODE' | translate }}</label>
+                    <input formControlName="postCode" type="text" class="form-control" id="zipcodeInput"
+                      placeholder="{{ 'COMMON.ENTER' | translate }}  {{ 'COMMON.ZIP_CODE' | translate }}">
+                  </div>
+                </div>
+              </ng-container>
+              <div class="col-lg-6">
+                <div class="mb-3 pb-2">
+                  <label for="exampleFormControlTextarea" class="form-label">{{ 'COMMON.DESCRIPTION' | translate }}</label>
+                  <textarea formControlName="description" class="form-control" id="exampleFormControlTextarea"
+                    placeholder="{{ 'COMMON.ENTER_DESCRIPTION' | translate }}" rows="3"></textarea>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <div class="hstack gap-2 justify-content-end">
+          <button type="button" class="btn btn-light" data-bs-dismiss="modal"
+            (click)="modal.close('Close click')">{{ 'COMMON.CLOSE' | translate }}</button>
+          <button type="button" (click)="save()" [disabled]="isButtonDisabled || supplierForm.invalid"
+            class="btn btn-success" id="add-btn">
+            {{(selectedSupplier ? 'SHARED.EDIT_SUPPLIER_COMPANY' : 'SHARED.ADD_SUPPLIER_COMPANY' ) | translate}}</button>
+
+        </div>
+      </div>
+    </form>
+  </ng-template>
+
+  <ng-template #deleteCompanyModel let-modal>
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" id="deleteRecord-close"
+          (click)="modal.dismiss('Cross click')"></button>
+      </div>
+      <div class="modal-body">
+        <div class="mt-2 text-center">
+          <lord-icon src="https://cdn.lordicon.com/gsqxdxog.json" trigger="loop"
+            colors="primary:#405189,secondary:#f06548" style="width:90px;height:90px"></lord-icon>
+          <div class="mt-4 pt-2 fs-15 mx-4 mx-sm-5">
+            <h4>{{ 'MODULES.INVOICING.PURCHASES.INVOICES.DELETE_CONTACT_WARNING' | translate }}</h4>
+            <p class="text-muted mx-4 mb-0">{{ 'MODULES.INVOICING.PURCHASES.INVOICES.DELETE_CONTACT_DESCRIPTION' | translate }}
+            </p>
+          </div>
+        </div>
+        <div class="d-flex gap-2 justify-content-center mt-4 mb-2">
+          <button class="btn btn-link link-success fw-medium text-decoration-none" data-bs-dismiss="modal"
+            (click)="modal.close('Close click')"><i class="ri-close-line me-1 align-middle"></i>{{ 'COMMON.CLOSE' |
+            translate }}</button>
+          <button type="button" class="btn w-sm btn-danger " id="delete-product" (click)="deleteCustomerCompany()">{{
+            'COMMON.YES_DELETE_IT' | translate }}</button>
+        </div>
+      </div>
+    </div>
+  </ng-template>
+  <ng-template #importModal role="document" let-modal>
+    <div class="modal-header bg-soft-info p-3">
+      <h5 class="modal-title" id="exampleModalLabel">{{ 'COMMON.EXPORT' | translate }}</h5>
+      <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" id="close-modal"
+        (click)="modal.dismiss('Cross click')"></button>
+    </div>
+    <div class="modal-body">
+      <p>
+        {{ 'MODULES.INVOICING.PURCHASES.SUPPLIERS.A_PARAGRAPH' | translate }}
+      </p>
+    </div>
+    <div class="modal-footer">
+      <div class="hstack gap-2 justify-content-end">
+        <button type="button" class="btn btn-light" data-bs-dismiss="modal"
+          (click)="modal.close('Close click')">{{ 'COMMON.CLOSE' | translate }}</button>
+        <button type="button" (click)="!loadingImport ? uploadExcel() : null" class="btn btn-primary btn-load">
+          <span *ngIf="!loadingImport">{{'COMMON.IMPORT_EXCEL' | translate }}</span>
+          <span *ngIf="loadingImport" class="d-flex align-items-center">
+            <span class="spinner-border flex-shrink-0" role="status">
+              <span class="visually-hidden">{{ 'COMMON.LOADING' | translate }}</span> </span>
+            <span class="flex-grow-1 ms-2">{{ 'COMMON.LOADING' | translate }}</span> </span>
+        </button>
+      </div>
+    </div>
+  </ng-template>
+</ng-container>
+<div *ngIf="navigating$ | async" class="vh-100 py-4 text-center" fxLayout="column" fxLayoutAlign="center center"
+  fxLayoutGap="1rem">
+  <div>
+    <lord-icon trigger="loop" style="width:72px;height:72px" [colors]="'primary:' + primaryColor + ',secondary:' + secondaryColor"
+      src="https://cdn.lordicon.com/msoeawqm.json">
+    </lord-icon>
+  </div>
+  <div class="mt-4">
+    <h5>{{ 'COMMON.LOADING' | translate }}</h5>
+  </div>
+</div>

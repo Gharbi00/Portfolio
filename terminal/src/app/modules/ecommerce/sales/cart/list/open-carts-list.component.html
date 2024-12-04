@@ -1,0 +1,199 @@
+<app-breadcrumbs title="{{ 'MENUITEMS.TITLE.JOB_CATEGORIES' | translate }}" [breadcrumbItems]="breadCrumbItems"></app-breadcrumbs>
+<ng-container *ngIf="!(navigating$ | async)">
+
+  <div class="row">
+    <div class="col-lg-12">
+      <div class="card" id="ticketsList">
+        <div class="card-header border-0">
+          <div class="row g-4 align-items-center">
+            <div class="col-sm">
+              <div>
+                <h5 class="card-title mb-0">{{ 'MENUITEMS.TS.OPEN_CARTS' | translate }}</h5>
+              </div>
+            </div>
+            <div class="col-sm-auto">
+              <div class="search-box">
+                <form [formGroup]="searchForm">
+                  <input type="text" formControlName="searchString" name="searchTerm" class="form-control" placeholder="{{'PLACEHOLDER.SEARCH_FOR_POSITIONS' | translate }}">
+                  <i class="ri-search-line search-icon"></i>
+                </form>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="card-body">
+          <div class="table-card gridjs-border-none">
+            <div class="table-responsive">
+              <table class="table align-middle custom-datatable" id="datatableexample">
+                <thead>
+                  <tr class="bg-light text-uppercase text-muted">
+                    <th>{{ 'COMMON.CUSTOMER' | translate }}</th>
+                    <th>{{ 'COMMON.DATE' | translate }}</th>
+                    <th>{{ 'COMMON.QUANTITY' | translate }}</th>
+                    <th>{{ 'MODULES.INVOICING.PURCHASES.SUPPLIERS.PRICE' | translate }}</th>
+                    <th>{{ 'COMMON.TAX' | translate }}</th>
+                    <th>{{ 'COMMON.ACTION' | translate }}</th>
+                  </tr>
+                </thead>
+                <tbody *ngIf="((loadingCarts$ | async) === false || null || undefined) && (shoppingCarts$ | async).length">
+                  <tr *ngFor="let cart of shoppingCarts$ | async;let i = index;" id="p_{{cart?.id}}">
+                    <td>
+                      <span>
+                        <div class="d-flex cursor-pointer align-items-center">
+                          <div class="flex-shrink-0 me-3">
+                            <div class="avatar-sm bg-light p-1 rounded-circle h-x" *ngIf="cart?.user?.pictures?.length">
+                              <img [src]="cart?.user?.pictures[0]?.baseUrl + '/' + cart?.user?.pictures[0]?.path" class="img-fluid h-100 rounded-circle">
+                            </div>
+                            <div class="avatar-sm bg-light rounded-circle p-1 h-x" *ngIf="!cart?.user?.pictures?.length">
+                              <div class="avatar-title bg-soft-success text-success rounded-circle fs-13">
+                                {{cart?.user?.firstName?.charAt(0) || 'N'}}</div>
+                            </div>
+                          </div>
+                          <div [routerLink]="['/ecommerce/customers/customers', cart?.user?.id]" class="flex-grow-1">
+                            <h5 class="fs-14 mb-1">
+                              <a class="cursor-pointer fw-medium link-primary">
+                                {{ (cart?.user?.firstName || '') + ' ' +
+                                (cart?.user?.lastName ||
+                                '') }}
+                              </a>
+                            </h5>
+                          </div>
+                        </div>
+                      </span>
+                    </td>
+                    <td>{{cart?.updatedAt | date: 'dd-MM-yyyy hh:mm:ss'}}</td>
+                    <td>{{productQuantity(cart) | translate}}</td>
+                    <td class="hidden sm:block">{{cart.price?.gross?.afterReduction |
+                      currency:'DT':'symbol':'1.3-3'}}</td>
+                    <td class="hidden lg:block">{{cart.taxValue?.afterReduction | currency:'DT':'symbol':'1.3-3' }}</td>
+                    <td>
+                      <ul class="list-inline hstack gap-2 mb-0">
+                        <li *ngIf="cart?.user?.phone?.number" class="list-inline-item edit">
+                          <a href="tel:{{cart?.user?.phone?.number}}" class="text-primary d-inline-block">
+                            <i class="ri-phone-line fs-16"></i>
+                          </a>
+                        </li>
+                        <li *ngIf="cart?.user?.phone?.number" class="list-inline-item edit">
+                          <a target="_blank" href="https://wa.me/+{{cart?.user?.phone?.countryCode}}{{cart?.user?.phone?.number}}" class="text-primary d-inline-block">
+                            <i class="ri-question-answer-line fs-16"></i>
+                          </a>
+                        </li>
+                        <li *ngIf="cart?.user?.email" class="list-inline-item edit">
+                          <a href="mailto:{{cart?.user?.email}}" class="text-info d-inline-block edit-item-btn">
+                            <i class="ri-mail-line fs-16"></i>
+                          </a>
+                        </li>
+                        <li class="list-inline-item">
+                          <a (click)="openCartModal(cartModal, cart)" href="javascript:void(0);" data-bs-toggle="modal" class="text-info d-inline-block edit-item-btn">
+                            <i class="ri-eye-fill fs-16"></i>
+                          </a>
+                        </li>
+                      </ul>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+          <div *ngIf="((loadingCarts$ | async) === false || null || undefined) && (shoppingCarts$ | async).length" class="px-3">
+            <div class="row justify-content-md-between align-items-md-center gy-2">
+              <div class="col col-sm-6">
+                <div class="dataTables_info mb-2" id="tickets-table_info" role="status" aria-live="polite">{{ 'COMMON.SHOWING' | translate }} {{pagination?.startIndex + 1}}–{{pagination?.endIndex ===
+                  pagination?.length ? pagination?.endIndex : pagination?.endIndex + 1}}{{ 'COMMON.OF' | translate }}
+                  {{pagination?.length}}{{ 'COMMON.ENTRIES' | translate }}
+                </div>
+              </div>
+              <div class="col col-sm-6">
+                <div class="text-sm-right float-end listjs-pagination">
+                  <ngb-pagination [maxSize]="5" [collectionSize]="pagination?.length" [(page)]="page" (pageChange)="onPageChange($event)" [pageSize]="pagination?.size">
+                  </ngb-pagination>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div id="noresult" class="py-4 mt-4 text-center" *ngIf="(loadingCarts$ | async) || (!(loadingCarts$ | async) && !(shoppingCarts$ | async).length)">
+            <div *ngIf="loadingCarts$ | async">
+              <lord-icon trigger="loop" style="width:72px;height:72px" [colors]="'primary:' + primaryColor + ',secondary:' + secondaryColor" src="https://cdn.lordicon.com/msoeawqm.json">
+              </lord-icon>
+              <h5 class="mt-4">{{ 'COMMON.LOADING' | translate }}</h5>
+            </div>
+            <div *ngIf="!(loadingCarts$ | async) && !(shoppingCarts$ | async).length">
+              <lord-icon trigger="loop" style="width:72px;height:72px" [colors]="'primary:' + primaryColor + ',secondary:' + secondaryColor" src="https://cdn.lordicon.com/msoeawqm.json">
+              </lord-icon>
+              <h5 class="mt-4">{{ 'COMMON.NO_RESULT' | translate }}</h5>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <ng-template #cartModal role="document" let-modal>
+    <div class="modal-header bg-soft-info p-3">
+      <h5 class="modal-title" id="exampleModalLabel">{{ 'MODULES.ECOMMERCE.MAIN.OPEN_CART' | translate }}</h5>
+      <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" id="close-modal" (click)="modal.dismiss('Cross click')"></button>
+    </div>
+    <div class="modal-body">
+      <h4 class="mb-3">{{ 'COMMON.ARTICLE' | translate }}s</h4>
+      <div *ngFor="let product of selectedCart?.products; let first = first; let last = last" class="d-flex mb-2">
+        <div class="flex-shrink-0 me-3">
+          <div class="avatar-sm">
+            <span *ngIf="product?.barcode?.media?.pictures?.length" class="avatar-title bg-soft-warning">
+              <img [src]="product?.barcode?.media?.pictures[0]?.baseUrl + '/' + product?.barcode?.media?.pictures[0]?.path" alt="" class="rounded-circle h-100 img-fluid">
+            </span>
+            <div *ngIf="!product?.barcode?.media?.pictures?.length" class="avatar-title text-uppercase bg-soft-info text-danger shadow">
+              {{product?.barcode?.name?.charAt(0) || 'N'}}
+            </div>
+          </div>
+        </div>
+        <div class="flex-grow-1">
+          <h5 class="mb-1 fs-15"><a class="text-dark">{{product?.barcode?.name}}</a></h5>
+          <p class="text-muted text-truncate-two-lines mb-3">{{ product.price.unitNet | currency:'DT':'symbol':'1.3-3' }}
+            X {{ product?.quantity }}</p>
+        </div>
+      </div>
+      <div class="border-top border-top-dashed d-flex justify-content-end mt-3 pt-3">
+        <table class="align-middle mb-0 table table-borderless table-nowrap table-sm w-40">
+          <tbody>
+            <tr>
+              <th scope="row">{{ 'COMMON.SUBTOTAL' | translate }}:</th>
+              <td class="text-end">
+                {{ selectedCart?.price?.net?.afterReduction |
+                currency:'DT':'symbol':'1.3-3' }}
+              </td>
+            </tr>
+            <tr>
+              <th scope="row">{{ 'COMMON.TAX' | translate }}:</th>
+              <td class="text-end">
+                {{ selectedCart?.taxValue?.afterReduction |
+                currency:'DT':'symbol':'1.3-3' }}
+              </td>
+            </tr>
+            <tr>
+              <th scope="row">{{ 'COMMON.TOTAL' | translate }}:</th>
+              <td class="text-end">
+                {{
+                selectedCart?.price?.gross?.afterReduction | currency:'DT':'symbol':'1.3-3' }}
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+    </div>
+    <div class="modal-footer">
+      <div class="hstack justify-content-end">
+        <button type="button" class="btn btn-light" data-bs-dismiss="modal" (click)="modal.close('Close click')">{{ 'COMMON.CLOSE' | translate }}</button>
+      </div>
+    </div>
+  </ng-template>
+</ng-container>
+<div *ngIf="navigating$ | async" class="vh-100 py-4 text-center" fxLayout="column" fxLayoutAlign="center center" fxLayoutGap="1rem">
+  <div>
+    <lord-icon trigger="loop" style="width:72px;height:72px" [colors]="'primary:' + primaryColor + ',secondary:' + secondaryColor" src="https://cdn.lordicon.com/msoeawqm.json">
+    </lord-icon>
+  </div>
+  <div class="mt-4">
+    <h5>{{ 'COMMON.LOADING' | translate }}</h5>
+  </div>
+</div>

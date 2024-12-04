@@ -1,0 +1,590 @@
+<ng-container *ngIf="!(navigating$ | async)">
+
+  <div class="position-relative mx-n4 mt-n4">
+    <div class="profile-wid-bg profile-setting-img">
+      <img src="assets/images/profile-bg.jpg" class="profile-wid-img" alt="">
+      <div class="overlay-content">
+        <div class="text-end p-3">
+          <div class="p-0 ms-auto rounded-circle profile-photo-edit">
+            <input id="profile-foreground-img-file-input" type="file" class="profile-foreground-img-file-input">
+            <label for="profile-foreground-img-file-input" class="profile-photo-edit btn btn-light">
+              <i class="ri-image-edit-line align-bottom me-1"></i> {{ 'MODULES.SYSTEM.CHANGE_COVER' | translate }}
+            </label>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-xxl-3">
+      <div class="card mt-n5">
+        <div class="card-body p-4">
+          <div class="text-center">
+            <div (click)="upload()" class="profile-user position-relative d-inline-block mx-auto mb-4">
+              <img *ngIf="pictures?.length" [src]="pictures.value[0].baseUrl + '/' + pictures.value[0].path"
+                class="rounded-circle avatar-xl img-thumbnail user-profile-image shadow" alt="user-profile-image">
+              <img *ngIf="!pictures?.length" src="assets/images/companies/img-2.png"
+                class="rounded-circle avatar-xl img-thumbnail user-profile-image shadow" alt="user-profile-image">
+              <div class="avatar-xs p-0 rounded-circle profile-photo-edit">
+                <label for="profile-img-file-input" class="profile-photo-edit avatar-xs">
+                  <span class="avatar-title rounded-circle bg-light text-body shadow">
+                    <i class="ri-camera-fill"></i>
+                  </span>
+                </label>
+              </div>
+            </div>
+            <h5 class="fs-16 mb-1">{{company?.name}}</h5>
+            <p class="text-muted mb-0">{{company?.description}}</p>
+          </div>
+        </div>
+      </div>
+      <div class="card">
+        <div class="card-body">
+          <div class="d-flex align-items-center mb-5">
+            <div class="flex-grow-1">
+              <h5 class="card-title mb-0">{{ 'MODULES.SYSTEM.COMPLETE_PROFILE' | translate }}</h5>
+            </div>
+            <div class="flex-shrink-0">
+              <a href="javascript:void(0);" class="badge bg-light text-primary fs-12"><i
+                  class="ri-edit-box-line align-bottom me-1"></i>{{ 'COMMON.EDIT' | translate }}</a>
+            </div>
+          </div>
+          <div class="progress animated-progess custom-progress progress-label">
+            <div class="progress-bar bg-danger" role="progressbar" style="width: 30%" aria-valuenow="30"
+              aria-valuemin="0" aria-valuemax="100">
+              <div class="label">30%</div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="card">
+        <div class="card-body">
+          <div class="d-flex align-items-center mb-4">
+            <div class="flex-grow-1">
+              <h5 class="card-title mb-0">{{ 'COMMON.SOCIAL' | translate }}</h5>
+            </div>
+            <div class="flex-shrink-0">
+              <div class="col-lg-12">
+                <div class="hstack gap-2 justify-content-end">
+                  <button type="button" [disabled]="isSocialButtonDisabled" (click)="editSocial()"
+                    class="btn btn-sm btn-primary">{{ 'COMMON.SAVE' | translate }}</button>
+                </div>
+              </div>
+            </div>
+          </div>
+          <form *ngIf="socialForm" [formGroup]="socialForm">
+            <div class="mb-3 d-flex">
+              <ng-container formGroupName="facebook">
+                <div class="avatar-xs d-block flex-shrink-0 me-3">
+                  <span style="background-color: #4267B2 !important"
+                    class="avatar-title rounded-circle fs-16 bg-dark text-light shadow">
+                    <i style="color: #ffff !important;" class="ri-facebook-circle-fill"></i>
+                  </span>
+                </div>
+                <input class="form-control" [placeholder]="'Facebook'" formControlName="value">
+              </ng-container>
+            </div>
+            <div class="mb-3 d-flex">
+              <ng-container formGroupName="instagram">
+                <div class="avatar-xs d-block flex-shrink-0 me-3">
+                  <span style="background-color: #C13584 !important"
+                    class="avatar-title rounded-circle fs-16 bg-dark text-light shadow">
+                    <i style="color: #ffff !important;" class="ri-instagram-fill"></i>
+                  </span>
+                </div>
+                <input class="form-control" [placeholder]="'Instagram'" formControlName="value">
+              </ng-container>
+            </div>
+            <div class="mb-3 d-flex">
+              <ng-container formGroupName="twitter">
+                <div class="avatar-xs d-block flex-shrink-0 me-3">
+                  <span style="background-color: #00acee !important"
+                    class="avatar-title rounded-circle fs-16 bg-dark text-light shadow">
+                    <i style="color: #ffff !important;" class="ri-twitter-fill"></i>
+                  </span>
+                </div>
+                <input class="form-control" [placeholder]="'Twitter'" formControlName="value">
+              </ng-container>
+            </div>
+            <div class="mb-3 d-flex">
+              <ng-container formGroupName="youtube">
+                <div class="avatar-xs d-block flex-shrink-0 me-3">
+                  <span style="background-color: #c4302b !important"
+                    class="avatar-title rounded-circle fs-16 bg-dark text-light shadow">
+                    <i style="color: #ffff !important;" class="ri-youtube-fill"></i>
+                  </span>
+                </div>
+                <input class="form-control" [placeholder]="'Youtube'" formControlName="value">
+              </ng-container>
+            </div>
+            <div class="mb-3 d-flex">
+              <ng-container formGroupName="linkedin">
+                <div class="avatar-xs d-block flex-shrink-0 me-3">
+                  <span style="background-color: #0e76a8 !important"
+                    class="avatar-title rounded-circle fs-16 bg-dark text-light shadow">
+                    <i style="color: #ffff !important;" class="ri-linkedin-fill"></i>
+                  </span>
+                </div>
+                <input class="form-control" [placeholder]="'Linkedin'" formControlName="value">
+              </ng-container>
+            </div>
+            <div class="mb-3 d-flex">
+              <ng-container formGroupName="pinterest">
+                <div class="avatar-xs d-block flex-shrink-0 me-3">
+                  <span style="background-color: #c8232c !important"
+                    class="avatar-title rounded-circle fs-16 bg-dark text-light shadow">
+                    <i style="color: #ffff !important;" class="ri-pinterest-fill"></i>
+                  </span>
+                </div>
+                <input class="form-control" [placeholder]="'pinterest'" formControlName="value">
+              </ng-container>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+    <div class="col-xxl-9">
+      <div class="card mt-xxl-n5">
+        <div class="card-header">
+          <ul ngbNav #customNav="ngbNav" [activeId]="1"
+            class="nav nav-tabs-custom rounded card-header-tabs border-bottom-0" role="tablist">
+            <li [ngbNavItem]="1" class="nav-item">
+              <a ngbNavLink class="nav-link" data-bs-toggle="tab" role="tab">
+                <i class="fas fa-home"></i>
+                {{ 'MODULES.SYSTEM.COMPANY_DETAILS' | translate }}
+              </a>
+              <ng-template ngbNavContent>
+                <form [formGroup]="companyForm" *ngIf="companyForm">
+                  <div class="row">
+                    <div class="col-lg-6">
+                      <div class="mb-3">
+                        <label for="firstnameInput" class="form-label"> {{ 'COMMON.NAME' | translate }}</label>
+                        <input formControlName="name" type="text" class="form-control" id="firstnameInput"
+                          placeholder="{{ 'MODULES.SYSTEM.ENTER_COMPANY_NAME' | translate }}">
+                      </div>
+                    </div>
+                    <div class="col-lg-6">
+                      <ng-container formGroupName="legal">
+                        <div class="mb-3">
+                          <label for="lastnameInput" class="form-label">{{ 'COMMON.REG_NUMBER' | translate }}</label>
+                          <input formControlName="register" type="text" class="form-control" id="lastnameInput"
+                            placeholder="{{ 'MODULES.SYSTEM.ENTER_REG_NUMBER' | translate }}">
+                        </div>
+                      </ng-container>
+                    </div>
+                    <ng-container formGroupName="contact">
+                      <div class="col-lg-6">
+                        <ng-container formGroupName="phone">
+                          <div class="mb-3">
+                            <label for="phonenumberInput" class="form-label">{{ 'COMMON.PHONE_NUMBER' | translate
+                              }}</label>
+                            <input formControlName="number" type="text" class="form-control" id="phonenumberInput"
+                              placeholder="{{ 'COMMON.ENTER_PHONE_NUMBER' | translate }}">
+                          </div>
+                        </ng-container>
+                      </div>
+                      <div class="col-lg-6">
+                        <div class="mb-3">
+                          <label for="emailInput" class="form-label">{{ 'COMMON.EMAIL_ADDRESS' | translate }}</label>
+                          <input formControlName="email" type="email" class="form-control" id="emailInput"
+                            placeholder="{{ 'COMMON.ENTER_EMAIL' | translate }}">
+                        </div>
+                      </div>
+                      <div class="col-lg-6">
+                        <div class="mb-3">
+                          <label for="websiteInput1" class="form-label">{{ 'COMMON.WEBSITE' | translate }}</label>
+                          <input formControlName="website" type="text" class="form-control" id="websiteInput1"
+                            placeholder="www.example.com" />
+                        </div>
+                      </div>
+                    </ng-container>
+                    <ng-container formGroupName="address">
+                      <div class="col-lg-6">
+                        <div class="mb-3">
+                          <label for="designationInput" class="form-label"> {{ 'COMMON.ADDRESS' | translate }}</label>
+                          <input formControlName="address" type="text" class="form-control" id="designationInput"
+                            placeholder="{{ 'MODULES.SYSTEM.DESIGNATION' | translate }}">
+                        </div>
+                      </div>
+                      <div class="col-lg-4">
+                        <div class="mb-3">
+                          <label for="cityInput" class="form-label"> {{ 'COMMON.CITY' | translate }}</label>
+                          <input formControlName="city" type="text" class="form-control" id="cityInput"
+                            placeholder="{{ 'COMMON.CITY' | translate }}" />
+                        </div>
+                      </div>
+                      <div class="col-lg-4">
+                        <div class="mb-3">
+                          <label for="countryInput" class="form-label">{{ 'COMMON.COUNTRY' | translate }}</label>
+                          <select class="form-select form-control-line" [formControlName]="'country'" [required]="true">
+                            <option *ngFor="let country of countries" [value]="country.id">
+                              <div fxLayout="row" fxLayoutAlign="space-between">
+                                <span>{{ country.name.split('_').join(' ') | titlecase }}</span>
+                                <span *ngIf="country?.iconFlag">{{country.iconFlag}}</span>
+                              </div>
+                            </option>
+                          </select>
+                        </div>
+                      </div>
+                      <div class="col-lg-4">
+                        <div class="mb-3">
+                          <label for="zipcodeInput" class="form-label">{{ 'COMMON.ZIP_CODE' | translate }}</label>
+                          <input formControlName="postCode" type="text" class="form-control" id="zipcodeInput"
+                            placeholder="{{ 'COMMON.ENTER_ZIPCODE' | translate }}">
+                        </div>
+                      </div>
+                    </ng-container>
+                    <div class="col-lg-12">
+                      <div class="mb-3 pb-2">
+                        <label for="exampleFormControlTextarea" class="form-label">{{ 'COMMON.DESCRIPTION' | translate
+                          }}</label>
+                        <textarea formControlName="description" class="form-control" id="exampleFormControlTextarea"
+                          placeholder="{{ 'COMMON.ENTER_DESCRIPTION' | translate }}" rows="3"></textarea>
+                      </div>
+                    </div>
+                    <div class="col-lg-12">
+                      <div class="hstack gap-2 justify-content-end">
+                        <button type="button" [disabled]="isButtonDisabled || companyForm.invalid" (click)="save()"
+                          class="btn btn-primary">{{ 'MODULES.SYSTEM.UPDATES' | translate }}</button>
+                      </div>
+                    </div>
+                  </div>
+                </form>
+              </ng-template>
+            </li>
+            <li [ngbNavItem]="2" class="nav-item">
+              <a ngbNavLink class="nav-link" data-bs-toggle="tab" role="tab">
+                <i class="far fa-envelope"></i>
+                {{ 'MODULES.SYSTEM.BANK_ACCOUNTS' | translate }}
+              </a>
+              <ng-template ngbNavContent>
+                <div id="newlink">
+                  <div id="1">
+                    <div class="row">
+                      <div class="col-lg-12 mb-3">
+                        <div class="hstack justify-content-end gap-2">
+                          <button type="button" (click)="openBankModal(bankModal, null)" class="btn btn-success">
+                            {{ 'MODULES.SYSTEM.ADD_NEW_BANK' | translate }}
+                          </button>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div *ngIf="company?.banks?.length" class="card-body">
+                  <div class="table-responsive table-card mb-3">
+                    <table class="table align-middle table-nowrap mb-0">
+                      <thead>
+                        <tr class="bg-light text-muted text-uppercase">
+                          <th>{{ 'MODULES.SYSTEM.BANK' | translate }}</th>
+                          <th>{{ 'MODULES.SYSTEM.ACCOUNT' | translate }}</th>
+                          <th>{{ 'MODULES.SYSTEM.BANK' | translate }} IBAN</th>
+                          <th>{{ 'MODULES.SYSTEM.HOLDER_NAME' | translate }}</th>
+                          <th>{{ 'MODULES.SYSTEM.HOLDER_TYPE' | translate }}</th>
+                          <th class="d-flex justify-content-center">{{ 'COMMON.ACTION' | translate }}</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        <tr *ngFor="let bank of company?.banks" id="c_{{bank?.id}}">
+                          <td>
+                            <div>
+                              {{bank?.bank?.name?.length > 14 ?
+                              bank?.bank?.name?.substr(0,14) + '...' :
+                              bank?.bank?.name}}
+                            </div>
+                          </td>
+                          <td><ngb-highlight [result]="bank?.account"></ngb-highlight></td>
+                          <td><ngb-highlight [result]="bank?.iban"></ngb-highlight></td>
+                          <td><ngb-highlight [result]="bank?.holder?.name"></ngb-highlight></td>
+                          <td><ngb-highlight [result]="bank?.holder?.type"></ngb-highlight></td>
+                          <td>
+                            <ul class="d-flex justify-content-center list-inline hstack gap-2 mb-0">
+                              <li (click)="openBankModal(bankModal, bank)" class="list-inline-item edit"
+                                matTooltip="View" placement="top">
+                                <a href="javascript:void(0);" data-bs-toggle="modal"
+                                  class="text-primary d-inline-block edit-item-btn">
+                                  <i class="ri-pencil-fill fs-16"></i>
+                                </a>
+                              </li>
+                            </ul>
+                          </td>
+                        </tr>
+                      </tbody>
+                    </table>
+                  </div>
+                </div>
+                <div *ngIf="!company.banks?.length" class="py-4 mt-4 text-center" id="noresult">
+                  <lord-icon src="https://cdn.lordicon.com/vlycxjwx.json" trigger="loop"
+                    [colors]="'primary:' + primaryColor + ',secondary:' + secondaryColor" style="width:72px;height:72px"></lord-icon>
+                  <h5 class="mt-4">{{ 'COMMON.NO_RESULT' | translate }}</h5>
+                </div>
+              </ng-template>
+            </li>
+            <li [ngbNavItem]="3" class="nav-item">
+              <a ngbNavLink class="nav-link" data-bs-toggle="tab" role="tab">
+                <i class="far fa-envelope"></i>{{ 'MODULES.SYSTEM.PRIVACY' | translate }}
+              </a>
+              <ng-template ngbNavContent>
+                <div class="mb-4 pb-2">
+                  <h5 class="card-title text-decoration-underline mb-3">{{ 'MODULES.SYSTEM.SECURITY' | translate }}:</h5>
+                  <div class="d-flex flex-column flex-sm-row mb-4 mb-sm-0">
+                    <div class="flex-grow-1">
+                      <h6 class="fs-14 mb-1">{{ 'MODULES.SYSTEM.TWO_FACTOR_AUTHENTICATION' | translate }}</h6>
+                      <p class="text-muted"> {{ 'MODULES.SYSTEM.TWO_FACTOR_AUTHENTICATION_DESCRIPTION' | translate }}</p>
+                    </div>
+                    <div class="flex-shrink-0 ms-sm-3">
+                      <a href="javascript:void(0);" class="btn btn-sm btn-primary"> {{ 'MODULES.SYSTEM.ENABLE_TWO_FACTOR_AUTHENTICATION' | translate }}</a>
+                    </div>
+                  </div>
+                  <div class="d-flex flex-column flex-sm-row mb-4 mb-sm-0 mt-2">
+                    <div class="flex-grow-1">
+                      <h6 class="fs-14 mb-1">{{ 'MODULES.SYSTEM.SECONDARY_VERIFICATION' | translate }}</h6>
+                      <p class="text-muted"> {{ 'MODULES.SYSTEM.SECONDARY_VERIFICATION_DESCRIPTION' | translate }}</p>
+                    </div>
+                    <div class="flex-shrink-0 ms-sm-3">
+                      <a href="javascript:void(0);" class="btn btn-sm btn-primary">{{
+                        'MODULES.SYSTEM.SET_UP_SECONDARY_METHOD' | translate }}</a>
+                    </div>
+                  </div>
+                  <div class="d-flex flex-column flex-sm-row mb-4 mb-sm-0 mt-2">
+                    <div class="flex-grow-1">
+                      <h6 class="fs-14 mb-1"> {{ 'MODULES.SYSTEM.GENERATE_BACKUP_CODES' | translate }}</h6>
+                      <p class="text-muted mb-sm-0"> {{ 'MODULES.SYSTEM.GENERATE_BACKUP_CODES_DESCRIPTION' | translate }}</p>
+                    </div>
+                    <div class="flex-shrink-0 ms-sm-3">
+                      <a href="javascript:void(0);" class="btn btn-sm btn-primary">{{
+                        'MODULES.SYSTEM.GENERATE_BACKUP_CODES' | translate }}</a>
+                    </div>
+                  </div>
+                </div>
+                <div class="mb-3">
+                  <h5 class="card-title text-decoration-underline mb-3"> {{ 'MODULES.SYSTEM.APPLICATION_NOTIFICATIONS' |
+                    translate }}:</h5>
+                  <ul class="list-unstyled mb-0">
+                    <li class="d-flex">
+                      <div class="flex-grow-1">
+                        <label for="directMessage" class="form-check-label fs-14"> {{ 'MODULES.SYSTEM.DIRECT_MESSAGES' |
+                          translate }}</label>
+                        <p class="text-muted"> {{ 'MODULES.SYSTEM.MESSAGES_FROM_PEOPLE_YOU_FOLLOW' | translate }}</p>
+                      </div>
+                      <div class="flex-shrink-0">
+                        <div class="form-check form-switch">
+                          <input class="form-check-input" type="checkbox" role="switch" id="directMessage" checked />
+                        </div>
+                      </div>
+                    </li>
+                    <li class="d-flex mt-2">
+                      <div class="flex-grow-1">
+                        <label class="form-check-label fs-14" for="desktopNotification">
+                          {{ 'MODULES.SYSTEM.SHOW_DESKTOP_NOTIFICATIONS' | translate }}
+                        </label>
+                        <p class="text-muted"> {{ 'MODULES.SYSTEM.CHOOSE_DEFAULT_SETTING' | translate }}  {{ 'MODULES.SYSTEM.BLOCK_A_SITE' | translate }}</p>
+                      </div>
+                      <div class="flex-shrink-0">
+                        <div class="form-check form-switch">
+                          <input class="form-check-input" type="checkbox" role="switch" id="desktopNotification"
+                            checked />
+                        </div>
+                      </div>
+                    </li>
+                    <li class="d-flex mt-2">
+                      <div class="flex-grow-1">
+                        <label class="form-check-label fs-14" for="emailNotification">
+                          {{ 'MODULES.SYSTEM.SHOW_EMAIL_NOTIFICATIONS' | translate }}
+                        </label>
+                        <p class="text-muted">  {{ 'MODULES.SYSTEM.EMAIL_NOTIFICATIONS_SETTINGS' | translate }} </p>
+                      </div>
+                      <div class="flex-shrink-0">
+                        <div class="form-check form-switch">
+                          <input class="form-check-input" type="checkbox" role="switch" id="emailNotification" />
+                        </div>
+                      </div>
+                    </li>
+                    <li class="d-flex mt-2">
+                      <div class="flex-grow-1">
+                        <label class="form-check-label fs-14" for="chatNotification">
+                          {{ 'MODULES.SYSTEM.SHOW_CHAT_NOTIFICATIONS' | translate }}
+                        </label>
+                        <p class="text-muted"> {{ 'MODULES.SYSTEM.PREVENT_DUPLICATE_MOBILE_NOTIFICATIONS' | translate }}</p>
+                      </div>
+                      <div class="flex-shrink-0">
+                        <div class="form-check form-switch">
+                          <input class="form-check-input" type="checkbox" role="switch" id="chatNotification" />
+                        </div>
+                      </div>
+                    </li>
+                    <li class="d-flex mt-2">
+                      <div class="flex-grow-1">
+                        <label class="form-check-label fs-14" for="purchaesNotification">
+                          {{ 'MODULES.SYSTEM.SHOW_PURCHASE_NOTIFICATIONS' | translate }}
+                        </label>
+                        <p class="text-muted">{{ 'MODULES.SYSTEM.GET_REAL_TIME_PURCHASE_ALERTS' | translate }}
+                        </p>
+                      </div>
+                      <div class="flex-shrink-0">
+                        <div class="form-check form-switch">
+                          <input class="form-check-input" type="checkbox" role="switch" id="purchaesNotification" />
+                        </div>
+                      </div>
+                    </li>
+                  </ul>
+                </div>
+                <div>
+                  <h5 class="card-title text-decoration-underline mb-3">{{ 'MODULES.SYSTEM.DELETE_THIS_ACCOUNT' | translate }}:</h5>
+                  <p class="text-muted">{{ 'MODULES.SYSTEM.DELETE_ACCOUNT_INSTRUCTIONS' | translate }}</p>
+                  <div>
+                    <input type="password" class="form-control" id="passwordInput" placeholder="{{ 'COMMON.ENTER_PASSWORD' | translate }}"
+                      value="make@321654987" style="max-width: 265px;">
+                  </div>
+                  <div class="hstack gap-2 mt-3">
+                    <a href="javascript:void(0);" class="btn btn-soft-danger">{{ 'MODULES.SYSTEM.CLOSE_AND_DELETE_THIS_ACCOUNT' | translate }}</a>
+                    <a href="javascript:void(0);" class="btn btn-light">{{ 'COMMON.CANCEL' | translate }}</a>
+                  </div>
+                </div>
+              </ng-template>
+            </li>
+          </ul>
+        </div>
+        <div class="card-body p-4">
+          <div class="tab-content">
+            <div [ngbNavOutlet]="customNav"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <ng-template #bankModal role="document" let-modal>
+    <div class="modal-body">
+      <div class="flex-shrink-0">
+        <div class="d-flex justify-content-end mb-3">
+          <button type="button" class="btn-close btn-close-white" id="createMemberBtn-close" data-bs-dismiss="modal"
+            aria-label="Close" (click)="modal.close('close click')"></button>
+        </div>
+      </div>
+      <form *ngIf="bankForm" [formGroup]="bankForm">
+        <div class="mb-3">
+          <label class="col-sm-12">{{ 'MODULES.SYSTEM.BANK' | translate }}</label>
+          <div class="col-sm-12">
+            <select class="form-select form-control-line" required [formControlName]="'bank'">
+              <option *ngFor="let bank of banks" [value]="bank.id">
+                <div fxLayout="row" fxLayoutAlign="space-between">
+                  <div fxLayout="row" fxLayoutAlign="space-between">
+                    <span>{{ bank.name.split('_').join('') | titlecase }}</span>
+                    <!-- <span *ngIf="country?.iconFlag">{{country.iconFlag}}</span> -->
+                    <img class="wh" [src]="bank?.logo?.png?.size256?.baseUrl + '/' + bank?.logo?.png?.size256?.path">
+                  </div>
+                  <!-- <span>
+                  {{ bank.name.split('_').join('') | titlecase }}
+                </span>
+                <img fxFlexAlign="center" class="wh" [src]="bank?.logo?.png?.size256?.baseUrl + '/' + bank?.logo?.png?.size256?.path"> -->
+                </div>
+              </option>
+            </select>
+          </div>
+        </div>
+        <div class="mb-3">
+          <label class="col-md-12">{{ 'MODULES.SYSTEM.BANK_ACCOUNT' | translate }}</label>
+          <div class="col-md-12">
+            <input formControlName="account" type="text" placeholder="{{ 'MODULES.SYSTEM.BANK_ACCOUNT' | translate }}"
+              class="form-control form-control-line">
+          </div>
+        </div>
+        <div class="mb-3">
+          <label class="col-md-12">{{ 'MODULES.SYSTEM.BANK_IBAN' | translate }}</label>
+          <div class="col-md-12">
+            <input [formControlName]="'iban'" type="text" placeholder="{{ 'MODULES.SYSTEM.BANK_IBAN' | translate }}"
+              class="form-control form-control-line">
+          </div>
+        </div>
+        <ng-container [formGroupName]="'holder'">
+          <div class="mb-3">
+            <label class="col-md-12">{{ 'MODULES.SYSTEM.BANK_HOLDER_NAME' | translate }}</label>
+            <div class="col-md-12">
+              <input [formControlName]="'name'" type="text" placeholder="{{ 'MODULES.SYSTEM.BANK_HOLDER_NAME' | translate }}"
+                class="form-control form-control-line">
+            </div>
+          </div>
+          <div class="mb-3">
+            <label class="col-sm-12">{{ 'MODULES.SYSTEM.BANK_HOLDER_TYPE' | translate }}</label>
+            <div class="col-sm-12">
+              <select placeholder="{{ 'MODULES.SYSTEM.BANK_HOLDER_TYPE' | translate }}" class="form-select form-control-line" required
+                [formControlName]="'type'">
+                <option *ngFor="let type of holderType" [value]="type">{{
+                  type.split('_').join('
+                  ') | titlecase }}</option>
+              </select>
+            </div>
+          </div>
+          <ng-container [formGroupName]="'address'">
+            <div class="mb-3">
+              <label class="col-md-12"> {{ 'MODULES.SYSTEM.BANK_HOLDER_ADDRESS' |translate }}</label>
+              <div class="col-md-12">
+                <input [formControlName]="'address'" type="text"
+                  placeholder=" {{ 'MODULES.SYSTEM.HOLDER_ADDRESS' | translate }}"
+                  class="form-control form-control-line">
+              </div>
+            </div>
+            <div class="mb-3">
+              <label class="col-md-12"> {{ 'MODULES.SYSTEM.BANK_HOLDER_POSTCODE' |
+                translate }}</label>
+              <div class="col-md-12">
+                <input [formControlName]="'postCode'" type="text"
+                  placeholder=" {{ 'MODULES.SYSTEM.BANK_HOLDER_POSTCODE' | translate }}"
+                  class="form-control form-control-line">
+              </div>
+            </div>
+            <div class="mb-3">
+              <label class="col-md-12"> {{ 'MODULES.SYSTEM.BANK_HOLDER_CITY' |
+                translate }}</label>
+              <div class="col-md-12">
+                <input [formControlName]="'city'" type="text"
+                  placeholder="  {{ 'MODULES.SYSTEM.BANK_HOLDER_CITY' | translate }}"
+                  class="form-control form-control-line">
+              </div>
+            </div>
+            <div class="mb-3">
+              <label class="col-md-12"> {{ 'MODULES.SYSTEM.BANK_HOLDER_ADDRESS' |translate }} </label>
+              <div class="col-md-12">
+                <input [formControlName]="'address'" type="text"
+                  placeholder=" {{ 'MODULES.SYSTEM.BANK_HOLDER_ADDRESS' | translate }} "
+                  class="form-control form-control-line">
+              </div>
+            </div>
+            <div class="mb-3">
+              <label class="col-sm-12">{{ 'MODULES.SYSTEM.BANK_HOLDER_COUNTRY' |translate }}</label>
+              <div class="col-sm-12">
+                <select placeholder="  {{ 'MODULES.SYSTEM.BANK_HOLDER_COUNTRY' | translate }}"
+                  class="form-select form-control-line" required [formControlName]="'country'">
+                  <option *ngFor="let country of countries" [value]="country.id">
+                    <div fxLayout="row" fxLayoutAlign="space-between">
+                      <span>{{ country.name.split('_').join(' ') | titlecase }}</span>
+                      <span *ngIf="country?.iconFlag">{{country.iconFlag}}</span>
+                    </div>
+                  </option>
+                </select>
+              </div>
+            </div>
+          </ng-container>
+        </ng-container>
+        <div class="hstack gap-2 justify-content-end">
+          <button type="button" class="btn btn-light" data-bs-dismiss="modal" (click)="modal.close('close click')">{{
+            'COMMON.CLOSE' | translate }}</button>
+          <button type="button" [disabled]="bankForm.invalid || isBankButtonDisabled" class="btn btn-success"
+            id="addNewMember" (click)="saveBank()"> {{ 'MODULES.SYSTEM.EDIT_BANK' | translate }}</button>
+        </div>
+      </form>
+    </div>
+  </ng-template>
+</ng-container>
+<div *ngIf="navigating$ | async" class="vh-100 py-4 text-center" fxLayout="column" fxLayoutAlign="center center"
+  fxLayoutGap="1rem">
+  <div>
+    <lord-icon trigger="loop" style="width:72px;height:72px" [colors]="'primary:' + primaryColor + ',secondary:' + secondaryColor"
+      src="https://cdn.lordicon.com/msoeawqm.json">
+    </lord-icon>
+  </div>
+  <div class="mt-4">
+    <h5>{{ 'COMMON.LOADING' | translate }}</h5>
+  </div>
+</div>

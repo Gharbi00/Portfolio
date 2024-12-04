@@ -1,0 +1,28 @@
+iiiii
+<div class="row mb-3">
+  <label class="fw-semibold fs-6 mb-2">{{ 'SHARED.SMILEY'| translate }}</label>
+  <div class="d-flex">
+    <div
+      *ngFor="let data of generateRange(levels); let j = index"
+      class="col-1">
+      <!-- 'selected-emoji text-danger': j === selectedEmojiIndex -->
+      <i
+      [ngClass]="{
+        'bx-angry': j === 0,
+        'bx-tired': j === 1,
+        'bx-confused': j === 2,
+        'bx-dizzy': j === 3,
+        'bx-meh-alt': j === 4,
+        'bx-smile': j === 5,
+        'bx-wink-smile': j === 6,
+        'bx-cool': j === 7,
+        'bx-happy-alt': j === 8,
+        'bx-happy-heart-eyes': j === 9
+      }"
+      class="bx fs-1 emoji"
+      >
+      <!-- (click)="selectEmoji(j,k)"  -->
+  </i>
+    </div>
+  </div>
+</div>

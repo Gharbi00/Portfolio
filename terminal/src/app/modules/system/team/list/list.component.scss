@@ -1,0 +1,9 @@
+.items-wrapper {
+  max-height: 50vh;
+  overflow-y: auto;
+  .item {
+    &:hover {
+      background: darken(#ffffff, 30%);
+    }
+  }
+}

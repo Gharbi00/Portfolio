@@ -1,0 +1,428 @@
+<app-breadcrumbs title="{{ 'MODULES.DASHBOARDS.CRM.TITLE' | translate }}" [breadcrumbItems]="breadCrumbItems"></app-breadcrumbs>
+<div class="row mb-3 pb-1">
+  <div class="col-12">
+    <div class="d-flex align-items-lg-center flex-lg-row flex-column">
+      <div class="flex-grow-1">
+        <h4 class="fs-16 mb-1">{{'MODULES.DASHBOARDS.CRM.ENTRY_TEXT' | translate}}</h4>
+        <p class="text-muted mb-0">{{'MODULES.DASHBOARDS.CRM.CONCISE_SNAPSHOT' | translate}}</p>
+      </div>
+      <div class="mt-3 mt-lg-0">
+        <div class="row g-3 mb-0 align-items-center">
+          <div class="col-sm-auto">
+            <div class="input-group">
+              <input (flatpickrClose)="onChangeFilter($event)" class="form-control flatpickr-input" type="text" mwlFlatpickr [altInput]="true" [(ngModel)]="filter" [convertModelValue]="true"
+                mode="range">
+              <div class="input-group-text bg-primary border-primary text-white"><i class="ri-calendar-2-line"></i>
+              </div>
+            </div>
+          </div>
+          <div class="col-auto">
+            <button type="button" class="btn btn-soft-success shadow-none" routerLink="/crm/pipeline"><i class="ri-add-circle-line align-middle me-1"></i>{{'MODULES.DASHBOARDS.CRM.ADD_DEAL' |
+              translate}}</button>
+          </div>
+          <div class="col-auto">
+            <button type="button" class="btn btn-soft-info btn-icon waves-effect waves-light layout-rightside-btn shadow-none" (click)="toggleActivity()"><i class="ri-pulse-line"></i></button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="row">
+  <div *ngIf="((loadingCrmStats$ | async) === false || null || undefined) && statData?.length" class="col-xl-12">
+    <div class="card crm-widget">
+      <div class="card-body p-0">
+        <div class="row row-cols-xxl-5 row-cols-md-3 row-cols-1 g-0">
+          <div *ngFor="let stat of statData">
+            <app-crm-stat [title]="stat?.title | translate" [value]="stat?.value | translate" [icon]="stat?.icon | translate" [profit]="stat?.profit | translate"></app-crm-stat>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div id="noresult" class="py-4 mt-4 text-center" *ngIf="(loadingCrmStats$ | async) || (!(loadingCrmStats$ | async) && !statData?.length)">
+    <div *ngIf="loadingCrmStats$ | async">
+      <lord-icon trigger="loop" style="width:72px;height:72px" [colors]="'primary:' + primaryColor + ',secondary:' + secondaryColor" src="https://cdn.lordicon.com/msoeawqm.json">
+      </lord-icon>
+      <h5 class="mt-4">{{'COMMON.LOADING' | translate }}</h5>
+    </div>
+    <div *ngIf="!(loadingCrmStats$ | async) && !statData?.length">
+      <lord-icon trigger="loop" style="width:72px;height:72px" [colors]="'primary:' + primaryColor + ',secondary:' + secondaryColor" src="https://cdn.lordicon.com/vlycxjwx.json">
+      </lord-icon>
+      <h5 class="mt-4">{{ 'COMMON.NO_RESULT' | translate }}</h5>
+    </div>
+  </div>
+</div>
+
+<div class="row">
+  <div class="col-xxl-3 col-md-6">
+    <div class="card">
+      <div class="card-header align-items-center d-flex">
+        <h4 class="card-title mb-0 flex-grow-1">{{ 'MODULES.DASHBOARDS.CRM.SALES_FORECAST' | translate }}</h4>
+        <div class="flex-shrink-0">
+          <div class="dropdown card-header-dropdown" ngbDropdown>
+            <a class="text-reset arrow-none" href="javascript:void(0);" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false" ngbDropdownToggle>
+              <span class="text-muted fs-18"><i class="mdi mdi-dots-horizontal"></i></span>
+            </a>
+            <div class="dropdown-menu dropdown-menu-end" ngbDropdownMenu>
+              <a (click)="onChangeMonth(month, 'sales')" *ngFor="let month of lastMonths" class="dropdown-item" href="javascript:void(0);">{{month}}</a>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div *ngIf="((crmSalesForecast$ | async) === false || null || undefined)" class="card-body pb-0">
+        <div *ngIf="isBrowser" class="mb-n3">
+          <apx-chart *ngIf="salesForecastChart" [series]="salesForecastChart?.series" [chart]="salesForecastChart?.chart" [colors]="salesForecastChart?.colors"
+            [dataLabels]="salesForecastChart?.dataLabels" [plotOptions]="salesForecastChart?.plotOptions" [yaxis]="salesForecastChart?.yaxis" [legend]="salesForecastChart?.legend"
+            [fill]="salesForecastChart?.fill" [stroke]="salesForecastChart?.stroke" [tooltip]="salesForecastChart?.tooltip" [xaxis]="salesForecastChart?.xaxis" dir="ltr"></apx-chart>
+        </div>
+      </div>
+      <div id="noresult" class="py-4 mt-4 text-center" *ngIf="(crmSalesForecast$ | async) || (!(crmSalesForecast$ | async) && !statData?.length)">
+        <div *ngIf="crmSalesForecast$ | async">
+          <lord-icon trigger="loop" style="width:72px;height:72px" [colors]="'primary:' + primaryColor + ',secondary:' + secondaryColor" src="https://cdn.lordicon.com/msoeawqm.json">
+          </lord-icon>
+          <h5 class="mt-4">{{'COMMON.LOADING' | translate }}</h5>
+        </div>
+        <div *ngIf="!(crmSalesForecast$ | async) && !statData?.length">
+          <lord-icon trigger="loop" style="width:72px;height:72px" [colors]="'primary:' + primaryColor + ',secondary:' + secondaryColor" src="https://cdn.lordicon.com/vlycxjwx.json">
+          </lord-icon>
+          <h5 class="mt-4">{{ 'COMMON.NO_RESULT' | translate }}</h5>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="col-xxl-3 col-md-6">
+    <div class="card card-height-100">
+      <div class="card-header align-items-center d-flex">
+        <h4 class="card-title mb-0 flex-grow-1">{{ 'MODULES.DASHBOARDS.CRM.DEAL_TYPE' | translate }}</h4>
+        <div class="flex-shrink-0">
+          <div class="dropdown card-header-dropdown" ngbDropdown>
+            <a class="text-reset arrow-none" href="javascript:void(0);" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false" ngbDropdownToggle>
+              <span class="text-muted fs-18"><i class="mdi mdi-dots-horizontal"></i></span>
+            </a>
+            <div class="dropdown-menu dropdown-menu-end" ngbDropdownMenu>
+              <a (click)="onChangeMonth(month, 'deal')" *ngFor="let month of lastMonths" class="dropdown-item" href="javascript:void(0);">{{month}}</a>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div *ngIf="((loadingGetCrmDealType$ | async) === false || null || undefined) && dealType?.length" class="card-body pb-0">
+        <div *ngIf="isBrowser" class="mb-n3">
+          <apx-chart *ngIf="dealTypeChart" [series]="dealTypeChart?.series" [chart]="dealTypeChart?.chart" [stroke]="dealTypeChart?.stroke" [fill]="dealTypeChart?.fill"
+            [markers]="dealTypeChart?.markers" [colors]="dealTypeChart?.colors" [xaxis]="dealTypeChart?.xaxis" dir="ltr"></apx-chart>
+        </div>
+      </div>
+      <div id="noresult" class="py-4 mt-4 text-center" *ngIf="(loadingGetCrmDealType$ | async) || (!(loadingGetCrmDealType$ | async) && !dealType?.length)">
+        <div *ngIf="loadingGetCrmDealType$ | async">
+          <lord-icon trigger="loop" style="width:72px;height:72px" [colors]="'primary:' + primaryColor + ',secondary:' + secondaryColor" src="https://cdn.lordicon.com/msoeawqm.json">
+          </lord-icon>
+          <h5 class="mt-4">{{'COMMON.LOADING' | translate }}</h5>
+        </div>
+        <div *ngIf="!(loadingGetCrmDealType$ | async) && !dealType?.length">
+          <lord-icon trigger="loop" style="width:72px;height:72px" [colors]="'primary:' + primaryColor + ',secondary:' + secondaryColor" src="https://cdn.lordicon.com/vlycxjwx.json">
+          </lord-icon>
+          <h5 class="mt-4">{{ 'COMMON.NO_RESULT' | translate }}</h5>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="col-xxl-6">
+    <div class="card card-height-100">
+      <div class="card-header align-items-center d-flex">
+        <h4 class="card-title mb-0 flex-grow-1">{{ 'MODULES.DASHBOARDS.CRM.BALANCE_OVERVIEW' | translate }}</h4>
+        <div class="flex-shrink-0">
+          <div class="dropdown card-header-dropdown" ngbDropdown>
+            <a class="text-reset arrow-none" href="javascript:void(0);" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false" ngbDropdownToggle>
+              <span class="text-muted fs-18"><i class="mdi mdi-dots-horizontal"></i></span>
+            </a>
+            <div class="dropdown-menu dropdown-menu-end" ngbDropdownMenu>
+              <a (click)="onChangeMonth(month, 'balance')" *ngFor="let month of lastMonths" class="dropdown-item" href="javascript:void(0);">{{month}}</a>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div *ngIf="((loadingCrmBalancedOverview$ | async) === false || null || undefined)" class="card-body px-0">
+        <ul class="list-inline main-chart text-center mb-0">
+          <li class="list-inline-item chart-border-left me-0 border-0">
+            <h4 class="text-primary">${{balanceOverview.revenue}} <span class="text-muted d-inline-block fs-13 align-middle ms-2">{{ 'MODULES.DASHBOARDS.CRM.REVENUE' |
+                translate }}</span></h4>
+          </li>
+          <li class="list-inline-item chart-border-left me-0">
+            <!-- <h4>${{balanceOverview.expense}}<span class="text-muted d-inline-block fs-13 align-middle ms-2">{{ 'MODULES.DASHBOARDS.CRM.EXPENSES' | translate }}</span>
+                        </h4> -->
+          </li>
+          <li class="list-inline-item chart-border-left me-0">
+            <!-- <h4><span data-plugin="counterup">{{balanceOverview.profit}}</span>%<span class="text-muted d-inline-block fs-13 align-middle ms-2">{{ 'MODULES.DASHBOARDS.CRM.PROFIT_RATIO' | translate }}</span></h4> -->
+          </li>
+        </ul>
+        <div *ngIf="isBrowser" class="mb-n3">
+          <apx-chart [series]="splineAreaChart.series" [chart]="splineAreaChart.chart" [dataLabels]="splineAreaChart.dataLabels" [stroke]="splineAreaChart.stroke" [xaxis]="splineAreaChart.xaxis"
+            [yaxis]="splineAreaChart.yaxis" [colors]="splineAreaChart.colors" [fill]="splineAreaChart.fill" dir="ltr"></apx-chart>
+        </div>
+      </div>
+      <div id="noresult" class="py-4 mt-4 text-center" *ngIf="(loadingCrmBalancedOverview$ | async) || (!(loadingCrmBalancedOverview$ | async) && !statData?.length)">
+        <div *ngIf="loadingCrmBalancedOverview$ | async">
+          <lord-icon trigger="loop" style="width:72px;height:72px" [colors]="'primary:' + primaryColor + ',secondary:' + secondaryColor" src="https://cdn.lordicon.com/msoeawqm.json">
+          </lord-icon>
+          <h5 class="mt-4">{{'COMMON.LOADING' | translate }}</h5>
+        </div>
+        <div *ngIf="!(loadingCrmBalancedOverview$ | async) && !statData?.length">
+          <lord-icon trigger="loop" style="width:72px;height:72px" [colors]="'primary:' + primaryColor + ',secondary:' + secondaryColor" src="https://cdn.lordicon.com/vlycxjwx.json">
+          </lord-icon>
+          <h5 class="mt-4">{{ 'COMMON.NO_RESULT' | translate }}</h5>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="row">
+  <div class="col-xl-7">
+    <div class="card">
+      <div class="card-header align-items-center d-flex">
+        <h4 class="card-title mb-0 flex-grow-1">{{ 'MODULES.DASHBOARDS.CRM.DEALS_STATUS' | translate }}</h4>
+        <div class="flex-shrink-0">
+          <div class="dropdown card-header-dropdown" ngbDropdown>
+            <a class="text-reset arrow-none" href="javascript:void(0);" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false" ngbDropdownToggle>
+              <span class="text-muted fs-18"><i class="mdi mdi-dots-horizontal"></i></span>
+            </a>
+            <div class="dropdown-menu dropdown-menu-end" ngbDropdownMenu>
+              <a (click)="onChangeMonth(month, 'dealStatus')" *ngFor="let month of lastMonths" class="dropdown-item" href="javascript:void(0);">{{month}}</a>
+            </div>
+          </div>
+        </div>
+        <div class="ms-2 flex-shrink-0">
+          <div class="dropdown card-header-dropdown" ngbDropdown>
+            <a class="text-reset cursor-pointer dropdown-btn arrow-none" ngbDropdownToggle>
+              <span class="text-muted"><i class="ri-filter-line align-middle me-1 fs-15"></i>{{ 'COMMON.FILTER' |
+                translate }}</span>
+            </a>
+            <div class="dropdown-menu p-2 dropdown-menu-end" ngbDropdownMenu>
+              <div *ngFor="let baord of boardList$ | async" class="form-check">
+                <input [value]="baord?.name" [checked]="selectedNames.includes(board?.name)" (change)="onBoardListChange($event.target.checked, baord?.name)" type="checkbox" class="form-check-input"
+                  id="dropdownCheck" />
+                <label class="form-check-label" for="dropdownCheck">
+                  {{ baord?.name }}
+                </label>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div *ngIf="((loadingBoardCards$ | async) === false || null || undefined) && (boardCards$ | async)?.length" class="card-body">
+        <div class="table-responsive table-card">
+          <app-deals-status [DealsStatus]="boardCards$ | async"></app-deals-status>
+        </div>
+      </div>
+
+      <div *ngIf="((loadingBoardCards$ | async) === false || null || undefined) && (boardCards$ | async)?.length" class="px-3 p-3">
+        <div class="row justify-content-md-between align-items-md-center gy-2">
+          <div class="col col-sm-6">
+            <div class="dataTables_info mb-2" id="tickets-table_info" role="status" aria-live="polite">{{'COMMON.SHOWING' | translate }} {{cardsPagination?.startIndex + 1}}–{{cardsPagination?.endIndex ===
+              cardsPagination?.length ? cardsPagination?.endIndex : cardsPagination?.endIndex + 1}} {{'COMMON.OF' | translate }}
+              {{cardsPagination?.length}} {{'COMMON.ENTRIES' | translate }}
+            </div>
+          </div>
+          <div class="col col-sm-6">
+            <div class="text-sm-right float-end listjs-pagination">
+              <ngb-pagination [maxSize]="5" [collectionSize]="cardsPagination?.length" [(page)]="page" (pageChange)="onPageChange($event)" [pageSize]="cardsPagination?.size">
+              </ngb-pagination>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div id="noresult" class="py-4 mt-4 text-center" *ngIf="(loadingBoardCards$ | async) || (!(loadingBoardCards$ | async) && !(boardCards$ | async)?.length)">
+        <div *ngIf="loadingBoardCards$ | async">
+          <lord-icon trigger="loop" style="width:72px;height:72px" [colors]="'primary:' + primaryColor + ',secondary:' + secondaryColor" src="https://cdn.lordicon.com/msoeawqm.json">
+          </lord-icon>
+          <h5 class="mt-4">{{'COMMON.LOADING' | translate }}</h5>
+        </div>
+        <div *ngIf="!(loadingBoardCards$ | async) && !(boardCards$ | async)?.length">
+          <lord-icon trigger="loop" style="width:72px;height:72px" [colors]="'primary:' + primaryColor + ',secondary:' + secondaryColor" src="https://cdn.lordicon.com/vlycxjwx.json">
+          </lord-icon>
+          <h5 class="mt-4">{{ 'COMMON.NO_RESULT' | translate }}</h5>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="col-xl-5">
+    <div class="card card-height-100">
+      <div class="card-header align-items-center d-flex">
+        <h4 class="card-title mb-0 flex-grow-1">{{ 'MODULES.DASHBOARDS.CRM.CXM_TASKS' | translate }}</h4>
+        <div class="flex-shrink-0">
+          <div class="dropdown card-header-dropdown" ngbDropdown>
+            <a class="text-reset cursor-pointer dropdown-btn arrow-none" ngbDropdownToggle>
+              <span class="text-muted"><i class="ri-filter-line align-middle me-1 fs-15"></i>{{ 'COMMON.FILTER' |
+                translate }}</span>
+            </a>
+            <div class="dropdown-menu p-2 dropdown-menu-end" ngbDropdownMenu>
+              <div *ngFor="let task of tasks" class="form-check">
+                <input [value]="task" (change)="onTaskChange($event?.target?.checked, task)" type="checkbox" class="form-check-input" id="dropdownCheck" />
+                <label class="form-check-label" for="dropdownCheck">
+                  {{
+                  task === 'MEETING' ? 'SHARED.MEETING' :
+                  task === 'CALL' ? 'SHARED.CALL' :
+                  task === 'CONFERENCE' ? 'SHARED.CONFERENCE' :
+                  task === 'DEMO' ? 'SHARED.DEMO' :
+                  'SHARED.CHAT'
+                  }}
+                </label>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div *ngIf="((loadingCardProcedures$ | async) === false || null || undefined) && (crmBoardCardProcedures$ | async)?.length" class="card-body p-0">
+        <div class="align-items-center p-3 justify-content-between d-flex">
+          <div class="flex-shrink-0">{{'COMMON.SHOWING' | translate }} {{pagination?.startIndex + 1}}–{{pagination?.endIndex ===
+            pagination?.length ? pagination?.endIndex : pagination?.endIndex + 1}} {{'COMMON.OF' | translate }}
+            {{pagination?.length}} {{'COMMON.ENTRIES' | translate }}
+          </div>
+          <button type="button" class="btn btn-sm btn-success" routerLink="/tasks/list-view"><i class="ri-add-line align-middle me-1"></i>{{ 'MODULES.DASHBOARDS.CRM.ADD_TASK' | translate }}</button>
+        </div>
+        <ngx-simplebar style="max-height: 219px;">
+          <ul class="list-group list-group-flush border-dashed px-3">
+            <li *ngFor="let card of crmBoardCardProcedures$ | async " class="list-group-item ps-0">
+              <div class="d-flex align-items-start">
+                <div class="flex-grow-1">
+                  <label class="form-check-label mb-0 ps-2" for="task_one"> {{card?.title}} </label>
+                </div>
+                <div class="flex-shrink-0 ms-2">
+                  <p class="text-muted fs-12 mb-0">{{card?.time | date:'longDate'}}</p>
+                </div>
+              </div>
+            </li>
+          </ul>
+        </ngx-simplebar>
+        <div class="p-3 pt-2">
+          <button *ngIf="!(isLastProcedures$ | async)" (click)="proceduresNextPage()" class="btn btn-sm btn-light">{{
+            'COMMON.SHOW_MORE' | translate }}</button>
+        </div>
+      </div>
+      <div id="noresult" class="py-4 mt-4 text-center" *ngIf="(loadingCardProcedures$ | async) || (!(loadingCardProcedures$ | async) && !(crmBoardCardProcedures$ | async)?.length)">
+        <div *ngIf="loadingCardProcedures$ | async">
+          <lord-icon trigger="loop" style="width:72px;height:72px" [colors]="'primary:' + primaryColor + ',secondary:' + secondaryColor" src="https://cdn.lordicon.com/msoeawqm.json">
+          </lord-icon>
+          <h5 class="mt-4">{{'COMMON.LOADING' | translate }}</h5>
+        </div>
+        <div *ngIf="!(loadingCardProcedures$ | async) && !(crmBoardCardProcedures$ | async)?.length">
+          <lord-icon trigger="loop" style="width:72px;height:72px" [colors]="'primary:' + primaryColor + ',secondary:' + secondaryColor" src="https://cdn.lordicon.com/vlycxjwx.json">
+          </lord-icon>
+          <h5 class="mt-4">{{ 'COMMON.NO_RESULT' | translate }}</h5>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<div class="row">
+  <div class="col-xxl-5">
+    <div class="card">
+      <div class="card-header align-items-center d-flex">
+        <h4 class="card-title mb-0 flex-grow-1">{{ 'MODULES.DASHBOARDS.CRM.UPCOMING_ACTIVITIES' | translate }}</h4>
+      </div>
+      <div *ngIf="((loadingUpcommingActivities$ | async) === false || null || undefined) && (upCommingActivities$ | async)?.length" class="card-body pt-0">
+        <ul class="list-group list-group-flush border-dashed">
+          <app-upcoming-activities [UpcomingActivities]="upCommingActivities$ | async"></app-upcoming-activities>
+        </ul>
+      </div>
+      <div *ngIf="((loadingUpcommingActivities$ | async) === false || null || undefined) && (upCommingActivities$ | async)?.length" class="px-3 p-3">
+        <div class="row justify-content-md-between align-items-md-center gy-2">
+          <div class="col col-sm-6">
+            <div class="dataTables_info mb-2" id="tickets-table_info" role="status" aria-live="polite">{{'COMMON.SHOWING' | translate }} {{upcommingPagination?.startIndex + 1}}–{{upcommingPagination?.endIndex ===
+              upcommingPagination?.length ? upcommingPagination?.endIndex : upcommingPagination?.endIndex + 1}} {{'COMMON.OF' | translate }}
+              {{upcommingPagination?.length}} {{'COMMON.ENTRIES' | translate }}
+            </div>
+          </div>
+          <div class="col col-sm-6">
+            <div class="text-sm-right float-end listjs-pagination">
+              <ngb-pagination [maxSize]="5" [collectionSize]="upcommingPagination?.length" [(page)]="upcommingPage" (pageChange)="onActivitiesPageChange($event)"
+                [pageSize]="upcommingPagination?.size">
+              </ngb-pagination>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div id="noresult" class="py-4 mt-4 text-center" *ngIf="(loadingUpcommingActivities$ | async) || (!(loadingUpcommingActivities$ | async) && !(upCommingActivities$ | async)?.length)">
+        <div *ngIf="loadingUpcommingActivities$ | async">
+          <lord-icon trigger="loop" style="width:72px;height:72px" [colors]="'primary:' + primaryColor + ',secondary:' + secondaryColor" src="https://cdn.lordicon.com/msoeawqm.json">
+          </lord-icon>
+          <h5 class="mt-4">{{'COMMON.LOADING' | translate }}</h5>
+        </div>
+        <div *ngIf="!(loadingUpcommingActivities$ | async) && !(upCommingActivities$ | async)?.length">
+          <lord-icon trigger="loop" style="width:72px;height:72px" [colors]="'primary:' + primaryColor + ',secondary:' + secondaryColor" src="https://cdn.lordicon.com/vlycxjwx.json">
+          </lord-icon>
+          <h5 class="mt-4">{{ 'COMMON.NO_RESULT' | translate }}</h5>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="col-xxl-7">
+    <div class="card card-height-100">
+      <div class="card-header align-items-center d-flex">
+        <h4 class="card-title mb-0 flex-grow-1">{{ 'MODULES.DASHBOARDS.CRM.CLOSING_DEALS' | translate }}</h4>
+        <div class="flex-shrink-0">
+          <div class="dropdown card-header-dropdown" ngbDropdown>
+            <a class="text-reset cursor-pointer dropdown-btn arrow-none" ngbDropdownToggle>
+              <span class="text-muted"><i class="ri-filter-line align-middle me-1 fs-15"></i>{{ 'COMMON.FILTER' |
+                translate }}</span>
+            </a>
+            <div class="dropdown-menu p-2 dropdown-menu-end" ngbDropdownMenu>
+              <div *ngFor="let item of priorities" class="form-check">
+                <input [value]="item" [checked]="selectedDeals.includes(item)" (change)="onChangeDeal($event.target.checked, item)" type="checkbox" class="form-check-input" id="dropdownCheck" />
+                <label class="form-check-label" for="dropdownCheck">
+                  {{
+                  (item === 'LOW' ? 'COMMON.PRIORITY.LOW' :
+                  item === 'NORMAL' ? 'COMMON.PRIORITY. NORMAL' :
+                  item === 'HIGH' ? 'COMMON.PRIORITY.HIGH' : 'COMMON.PRIORITY.CRITICAL') | translate
+                  }}
+                </label>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div *ngIf="((loadingBoardCardsByBoard$ | async) === false || null || undefined) && (boardCardsByBoard$ | async).length" class="card-body">
+        <div class="table-responsive">
+          <app-closing-deals [ClosingDeals]="boardCardsByBoard$ | async"></app-closing-deals>
+        </div>
+      </div>
+      <div *ngIf="((loadingBoardCardsByBoard$ | async) === false || null || undefined) && (boardCardsByBoard$ | async)?.length" class="px-3 p-3">
+        <div class="row justify-content-md-between align-items-md-center gy-2">
+          <div class="col col-sm-6">
+            <div class="dataTables_info mb-2" id="tickets-table_info" role="status" aria-live="polite">{{'COMMON.SHOWING' | translate }} {{boardCardsPagination?.startIndex + 1}}–{{boardCardsPagination?.endIndex ===
+              boardCardsPagination?.length ? boardCardsPagination?.endIndex : boardCardsPagination?.endIndex + 1}} {{'COMMON.OF' | translate }}
+              {{boardCardsPagination?.length}} {{'COMMON.ENTRIES' | translate }}
+            </div>
+          </div>
+          <div class="col col-sm-6">
+            <div class="text-sm-right float-end listjs-pagination">
+              <ngb-pagination [maxSize]="5" [collectionSize]="boardCardsPagination?.length" [(page)]="boardCardPage" (pageChange)="onDealPageChange($event)" [pageSize]="boardCardsPagination?.size">
+              </ngb-pagination>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div id="noresult" class="py-4 mt-4 text-center" *ngIf="(loadingBoardCardsByBoard$ | async) || (!(loadingBoardCardsByBoard$ | async) && !(boardCardsByBoard$ | async)?.length)">
+        <div *ngIf="loadingBoardCardsByBoard$ | async">
+          <lord-icon trigger="loop" style="width:72px;height:72px" [colors]="'primary:' + primaryColor + ',secondary:' + secondaryColor" src="https://cdn.lordicon.com/msoeawqm.json">
+          </lord-icon>
+          <h5 class="mt-4">{{'COMMON.LOADING' | translate }}</h5>
+        </div>
+        <div *ngIf="!(loadingBoardCardsByBoard$ | async) && !(boardCardsByBoard$ | async)?.length">
+          <lord-icon trigger="loop" style="width:72px;height:72px" [colors]="'primary:' + primaryColor + ',secondary:' + secondaryColor" src="https://cdn.lordicon.com/vlycxjwx.json">
+          </lord-icon>
+          <h5 class="mt-4">{{ 'COMMON.NO_RESULT' | translate }}</h5>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

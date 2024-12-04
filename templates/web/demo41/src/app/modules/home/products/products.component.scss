@@ -1,0 +1,22 @@
+
+.no-slider .product-box {
+    @media (max-width: 420px){
+    flex: 0 0 100%;
+    max-width: calc(78% - 39px)!important;
+ 
+    align-items: center!important;
+    justify-items: center!important;
+}
+}
+.product-box .product-arrow .slick-prev, .product-box .product-arrow .slick-next {
+    opacity: 0;
+    -webkit-transform: scale(0);
+    transform: scale(0);
+    -webkit-transition: all 0.5s ease;
+    transition: all 0.5s ease;
+    margin-top: -10px;
+}
+.no-slider{
+    display: flex;
+    justify-content: center;
+}

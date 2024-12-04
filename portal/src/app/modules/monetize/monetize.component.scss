@@ -1,0 +1,116 @@
+::ng-deep.owl-theme .owl-dots .owl-dot span {
+    text-indent: -50000px;
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    border: 1px solid #000;
+    margin: 0 5px;
+    transition: all .3s ease-in-out;
+}
+
+:ng-deep.owl-theme .owl-dots .owl-dot.active span {
+    background: #000 !important;
+}
+
+:ng-deep.owl-theme .owl-dots .owl-dot:hover span {
+
+    background: #000 !important;
+}
+
+:ng-deep.owl-theme .owl-dots .owl-dot span {
+
+    background: #ffffff;
+
+}
+
+::ng-deep.owl-carousel .owl-item img {
+    display: block;
+
+}
+
+::ng-deep .custom-brands .owl-item {
+    width: 174px !important;
+    margin-left: 1%;
+}
+
+.theme-btn-nine {
+
+    border-radius: 8px !important;
+
+}
+
+
+:host::ng-deep.owl-theme .owl-dots .owl-dot {
+
+    float: left;
+    width: 33.333333%;
+    height: 6px;
+    background: rgba(216, 216, 216, 0.35);
+    position: relative;
+}
+
+:host::ng-deep.owl-theme .owl-dots .owl-dot span {
+    text-indent: -50000px;
+    width: 8px;
+    height: 6px;
+    border-radius: 0;
+    border: none;
+    margin: 0 5px;
+    transition: all 0.3s ease-in-out;
+    width: 100%;
+    border-radius: 20px;
+}
+
+:host::ng-deep.owl-theme .owl-dots .owl-dot.active span,
+.owl-theme .owl-dots .owl-dot:hover span {
+    background: #FFD084;
+}
+
+.fancy-text-block-sixteen .img-slick-slider {
+    box-shadow: none !important;
+    margin-bottom: 90px;
+}
+
+
+:host::ng-deep.rtl.owl-theme .owl-dots {
+    margin-top: 10px;
+    transform: scaleX(-1);
+}
+
+@media (max-width: 991px) {
+    :host::ng-deep.hero-banner-eleven {
+        margin-top: 0px !important;
+        padding-top: 0px !important;
+    }
+}
+
+.slick-dots button {
+    float: left;
+    width: 33.333333%;
+    height: 8px;
+    background: rgba(216, 216, 216, .35);
+    position: relative;
+    border-radius: 4px !important;
+}
+
+.slick-dots .active {
+    height: 8px !important;
+    background: #FFD084 !important;
+    border-radius: 4px !important;
+    transition: all .3s ease-in-out;
+
+
+}
+
+:host::ng-deep.carousel-indicators {
+
+    margin-right: 0% !important;
+    margin-left: 0% !important;
+
+
+}
+
+.w-100 {
+    width: 80% !important;
+    margin: 0px 10%;
+}

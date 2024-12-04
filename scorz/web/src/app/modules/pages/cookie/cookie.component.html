@@ -1,0 +1,114 @@
+<div class="terms_and_policy">
+    <div class="container">
+        <div class="tab-content">
+            <div>
+                <h2 class="font-gilroy-bold">Cookie policy</h2>
+                <div class="update-date">LAST UPDATED: 6/26/2020</div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-lg-4">
+                <ul class="nav nav-tabs">
+                    <li class="nav-item" *ngFor="let navTitle of navs; let i=index">
+                        <a class="nav-link" data-toggle="tab" [class.active]="activeTab === i" (click)="switchTab(i)"
+                            style="cursor: pointer;">{{navTitle}}</a>
+                    </li>
+                </ul>
+            </div>
+
+            <div class="col-lg-8" data-aos="fade-up">
+                <div class="tab-content" [@scaleAnimation]="activeTab === 0 ? 'open' : '*'">
+                    <ng-container *ngIf="activeTab === 0 ," id="opt1" class="tab-pane fade">
+                        <h2 class="font-gilroy-bold">Introduction</h2>
+                        <div class="update-date"></div>
+                        <p>This Cookie Policy explains how Elevok ("we," "us," or "our") uses cookies and similar
+                            tracking technologies when you visit our website.</p>
+                    </ng-container>
+                </div>
+                <div class="tab-content" [@scaleAnimation]="activeTab === 1 ? 'open' : '*'">
+                    <ng-container *ngIf="activeTab === 1" id="opt2" class="tab-pane fade">
+                        <h2 class="font-gilroy-bold">What are Cookies</h2>
+                        <p>Cookies are small pieces of text sent by your web browser by a website you visit. A cookie
+                            file is stored in your web browser and allows the website or a third-party to
+                            recognize you and make your next visit easier and the website more useful to you.</p>
+                    </ng-container>
+                </div>
+                <div class="tab-content" [@scaleAnimation]="activeTab === 2 ? 'open' : '*'">
+                    <ng-container *ngIf="activeTab === 2" id="opt3" class="tab-pane fade">
+                        <h2 class="font-gilroy-bold">How We Use Cookies</h2>
+                        <div class="update-date"></div>
+                        <p>When you use and access our website, we may place a number of cookies files in your web
+                            browser. We use cookies for the following purposes:</p>
+                        <ul>
+                            <li>To enable certain functions of the website</li>
+                            <li>To provide analytics</li>
+                            <li>To store your preferences</li>
+                            <li>To enable advertisements delivery, including behavioral advertising</li>
+                        </ul>
+                    </ng-container>
+                </div>
+                <div class="tab-content" [@scaleAnimation]="activeTab === 3 ? 'open' : '*'">
+                    <ng-container *ngIf="activeTab === 3" id="opt4" class="tab-pane fade active show">
+                        <h2 class="font-gilroy-bold">Types of Cookies We Use</h2>
+                        <div class="update-date"></div>
+                        <ul>
+                            <li>Essential Cookies: These cookies are essential for you to browse the website and use its
+                                features. Without these cookies, certain services cannot be provided.</li>
+                            <li>Performance Cookies: These cookies collect information about how you use our website,
+                                such as which pages you visit most often. These cookies do not collect information
+                                that identifies you. All information these cookies collect is aggregated and therefore
+                                anonymous.</li>
+                            <li>Functionality Cookies: These cookies allow the website to remember choices you make and
+                                provide enhanced, more personal features.</li>
+                            <li>Advertising Cookies: These cookies are used to deliver advertisements that are relevant
+                                to you and your interests. They are also used to limit the number of times you
+                                see an advertisement, as well as help measure the effectiveness of the advertising
+                                campaign.</li>
+                        </ul>
+                    </ng-container>
+                </div>
+                <div class="tab-content" [@scaleAnimation]="activeTab === 4 ? 'open' : '*'">
+                    <ng-container *ngIf="activeTab === 4" id="opt5" class="tab-pane fade">
+                        <h2 class="font-gilroy-bold">Your Choices Regarding Cookies</h2>
+                        <div class="update-date"></div>
+                        <p>If you'd like to delete cookies or instruct your web browser to delete or refuse cookies,
+                            please visit the help pages of your web browser. Please note, however, that if you
+                            delete cookies or refuse to accept them, you might not be able to use all of the features we
+                            offer, you may not be able to store your preferences, and some of our pages
+                            might not display properly.</p>
+                    </ng-container>
+                </div>
+                <div class="tab-content" [@scaleAnimation]="activeTab === 5 ? 'open' : '*'">
+                    <ng-container *ngIf="activeTab === 5" id="opt6" class="tab-pane fade">
+                        <h2 class="font-gilroy-bold">More Information about Cookies</h2>
+                        <p>You can learn more about cookies and the following third-party websites:</p>
+                        <ul>
+                            <li><a href="https://allaboutcookies.org/" target="_blank">AllAboutCookies</a></li>
+                            <li><a href="https://thenai.org/" target="_blank">Network Advertising Initiative</a></li>
+                        </ul>
+                    </ng-container>
+                </div>
+                <div class="tab-content" [@scaleAnimation]="activeTab === 6 ? 'open' : '*'">
+                    <ng-container *ngIf="activeTab === 6" id="opt7" class="tab-pane fade">
+                        <h2 class="font-gilroy-bold">Changes to Our Cookie Policy</h2>
+                        <div class="update-date"></div>
+                        <p>We may update our Cookie Policy from time to time. We will notify you of any changes by
+                            posting the new Cookie Policy on this page.</p>
+                    </ng-container>
+                </div>
+                <div class="tab-content" [@scaleAnimation]="activeTab === 7 ? 'open' : '*'">
+                    <ng-container *ngIf="activeTab === 7" id="opt8" class="tab-pane fade">
+                        <h2 class="font-gilroy-bold">Contact Us</h2>
+                        <div class="update-date"></div>
+                        <p>If you have any questions about our Cookie Policy, please contact us:</p>
+                        <ul>
+                            <li>By email: contact@elevok.com</li>
+                            <li><a href="https://diktup.com/" target="_blank">By visiting this page on our website</a>
+                            </li>
+                        </ul>
+                    </ng-container>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

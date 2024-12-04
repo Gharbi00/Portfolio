@@ -1,0 +1,80 @@
+<section class="ratio_asos">
+    <div class="container">
+        <div class="row">
+            <div class="col-xl-3 col-lg-4 order-lg-1">
+                <div class="product-left-title right-content">
+                    <div>
+                        <h3>Biggest offer of the sale</h3>
+                        <p>Lorem ipsum, dolor sit amet consectetur adipisicing elit. Explicabo totam officiis nisi
+                            neque non ex, odio atque digniss ab suscipit? Iste </p>
+                        <a href="#" class="btn btn-outline btn-sm">view all product</a>
+
+                    </div>
+                </div>
+            </div>
+            <div class="col-xl-9 col-lg-8">
+                <!-- Product slider -->
+                <div class="custom-arrow-3 product-m no-arrow slick-initialized slick-slider">
+                    <div class="slick-list draggable">
+
+                        <owl-carousel-o [options]="ProductCarousel" class="slick-track"
+                            style="opacity: 1; width: 3990px; ">
+                            <ng-container *ngFor="let product of ProductData">
+
+                                <ng-template carouselSlide class="slick-slide slick-active" style="width: 285px;">
+
+
+                                    <div class="slick-slide slick-active" data-slick-index="2" aria-hidden="false"
+                                        style="width: 285px;">
+                                        <div>
+                                            <div class="product-box" style="width: 100%; display: inline-block;">
+                                                <div class="img-wrapper">
+                                                    <div class="lable-block"><span *ngIf="product.new" class="lable3">new</span> <span
+                                                            *ngIf="product.onsale" class="lable4">onsale</span></div>
+                                                    <div class="front">
+                                                        <a href="product-page(no-sidebar).html"
+                                                            class="bg-size blur-up lazyloaded"
+                                                            style="background-image: url(&quot;../assets/images/fragrance/pro/5.jpg&quot;); background-size: cover; background-position: center center; display: block;"
+                                                            tabindex="0"><img src="{{product.src}}"
+                                                                class="img-fluid blur-up lazyload bg-img" alt=""
+                                                                ></a>
+                                                    </div>
+                                                    <div class="cart-info cart-wrap bg-color-cls">
+                                                        <button data-bs-toggle="modal" data-bs-target="#addtocart"
+                                                            title="Add to cart" tabindex="0"><i
+                                                                class="ti-shopping-cart"></i></button> <a
+                                                            href="javascript:void(0)" title="Add to Wishlist"
+                                                            tabindex="0"><i class="ti-heart" aria-hidden="true"></i></a>
+                                                        <a href="#" data-bs-toggle="modal" data-bs-target="#quick-view"
+                                                            title="Quick View" tabindex="0"><i class="ti-search"
+                                                                aria-hidden="true"></i></a> <a href="compare.html"
+                                                            title="Compare" tabindex="0"><i class="ti-reload"
+                                                                aria-hidden="true"></i></a>
+                                                    </div>
+                                                </div>
+                                                <div class="product-detail">
+                                                    <div class="rating"><i class="fa fa-star"></i> <i
+                                                            class="fa fa-star"></i> <i class="fa fa-star"></i> <i
+                                                            class="fa fa-star"></i> <i class="fa fa-star"></i>
+                                                    </div>
+                                                    <a href="product-page(no-sidebar).html" tabindex="0">
+                                                        <h6>{{product.name}}</h6>
+                                                    </a>
+                                                    <h4>${{product.newPrice}}</h4>
+                                                    <del>${{product.oldPrice}} </del>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+
+                                </ng-template>
+                            </ng-container>
+                        </owl-carousel-o>
+                    </div>
+                </div>
+                <!-- Product slider end -->
+            </div>
+        </div>
+    </div>
+</section>

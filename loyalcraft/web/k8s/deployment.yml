@@ -1,0 +1,30 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: loyalcraft-portal
+  namespace: loyalcraft-portal
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: loyalcraft-portal
+  template:
+    metadata:
+      labels:
+        app: loyalcraft-portal
+    spec:
+      containers:
+        - name: loyalcraft-container
+          image: git.diktup.cloud:5050/sifca/sifca-monorepo:loyalcraft-portal-prod-1.0
+          #imagePullPolicy: Always
+          imagePullPolicy: IfNotPresent
+          #imagePullPolicy: Never
+          ports:
+            - containerPort: 4000
+          env:
+            - name: API_SERVER
+              value: 'loyalcraft.com'
+            - name: NODE_OPTIONS
+              value: '--max-old-space-size=16000'
+      imagePullSecrets:
+        - name: gitlab-registry-secret

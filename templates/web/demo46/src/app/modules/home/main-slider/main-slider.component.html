@@ -1,0 +1,26 @@
+<section class="p-0 effect-cls ">
+    <div class="slide-1 home-slider slick-initialized slick-slider">
+        <div class="slick-list draggable">
+            <owl-carousel-o [options]="MainSlider" class="slick-track">
+                <ng-container *ngFor="let slider of mainSlider">
+                    <ng-template carouselSlide>
+                        <div>
+                            <div class="slick-slide slick-cloned" data-slick-index="-1" aria-hidden="true" tabindex="-1"
+                                style="max-width: 2000px;">
+                                <div>
+                                    <div style="width: 100%; display: inline-block;">
+                                        <div class="home text-center p-center bg-size blur-up lazyloaded"
+                                            style="background-image: url(&quot;{{slider.src}}&quot;); background-size: cover; background-position: center center; display: block;">
+                                            <img src="{{slider.src}}" alt=""
+                                                class="bg-img blur-up " style="display: none;">
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </ng-template>
+                </ng-container>
+            </owl-carousel-o>
+        </div>
+    </div>
+</section>

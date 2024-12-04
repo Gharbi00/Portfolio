@@ -1,0 +1,43 @@
+<section class="p-0 position-relative overflow-hidden">
+    <div class="home-slider">
+        <div class="product-slick-animated slick-initialized slick-slider">
+            <div class="slick-list draggable">
+                <owl-carousel-o [options]="MainSlider" class="slick-track">
+                    <ng-container *ngFor="let slider of mainSlider">
+                        <ng-template carouselSlide>
+
+                            <div class="slick-slide" data-slick-index="0" aria-hidden="true"
+                                style="width: 1349px; position: relative; left: 0px; top: 0px; z-index: 998;  transition: opacity 800ms ease 0s;"
+                                tabindex="-1">
+                                <div>
+                                    <div style="width: 100%; display: inline-block;">
+                                        <div class="home bg-size blur-up lazyloaded"
+                                            style="background-image: url(&quot;{{slider.src}}&quot;); background-size: cover; background-position: center center; display: block;">
+                                            <img src="../assets/images/marketplace/home-slider/2.jpg" alt=""
+                                                class="bg-img blur-up lazyloaded" style="display: none;">
+                                            <div class="container">
+                                                <div class="row">
+                                                    <div class="col">
+                                                        <div class="slider-contain">
+                                                            <div>
+                                                                <h4>welcome to multikart</h4>
+                                                                <h1>flat 10% off</h1>
+                                                                <a href="#" class="btn btn-solid" tabindex="0">shop now</a>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                        </ng-template>
+                    </ng-container>
+                </owl-carousel-o>
+            </div>
+        </div>
+
+    </div>
+</section>

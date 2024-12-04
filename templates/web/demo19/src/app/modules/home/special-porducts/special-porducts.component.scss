@@ -1,0 +1,45 @@
+:host::ng-deep  .owl-item{
+   
+        display: grid;
+    place-items: center;}
+
+    .theme-tab .tab-title .current a, .theme-tab .tab-title2 .current a {
+        color: var(--theme-color);
+    }
+    .theme-tab .tab-title a, .theme-tab .tab-title2 a {
+        color: #2d2a25;
+        text-transform: uppercase;
+    }
+    .theme-tab .tab-title li, .theme-tab .tab-title2 li {
+        padding-left: 25px;
+        padding-right: 25px;
+    }
+    .theme-tab .tab-title, .theme-tab .tab-title2 {
+        text-align: center;
+        font-size: 18px;
+        margin-bottom: 30px;
+        margin-top: -6px;
+    }
+    
+    
+    .game-product .product-box .add-button {
+        background-color: var(--theme-color);
+        color: white;
+        text-align: center;
+        font-size: 18px;
+        text-transform: capitalize;
+        position: absolute;
+        width: 100%;
+        bottom: -40px;
+        padding: 5px 0;
+        -webkit-transition: all 0.5s ease;
+        transition: all 0.5s ease;
+        cursor: pointer;
+    }
+    .game-product .product-box .cart-info {
+        bottom: 40px;
+        right: 10px;
+    }
+    .game-product .product-box .product-detail {
+        text-align: center;
+    }

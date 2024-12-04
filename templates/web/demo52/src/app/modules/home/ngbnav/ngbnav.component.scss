@@ -1,0 +1,14 @@
+.theme-tab .tab-title .current a, .theme-tab .tab-title2 .current a {
+   color: var(--theme-color);
+}
+.theme-tab .tab-title a, .theme-tab .tab-title2 a {
+   color: #d5d5d5;
+   text-transform: uppercase;
+}
+.theme-tab .tab-title li, .theme-tab .tab-title2 li {
+   padding-left: 25px;
+   padding-right: 25px;
+}
+.title6 {
+   text-align: center;
+}

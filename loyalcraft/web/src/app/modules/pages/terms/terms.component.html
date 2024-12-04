@@ -1,0 +1,151 @@
+<div class="terms_and_policy">
+    <div class="container">
+        <div class="tab-content">
+            <div>
+                <h2 class="font-gilroy-bold">{{'TERMS_AND_CONDITIONS' | translate}}</h2>
+                <div class="update-date">{{'LAST_UPDATED' | translate}} 6/26/2020</div>
+
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-lg-4">
+                <ul class="nav nav-tabs">
+                    <li class="nav-item" *ngFor="let navTitle of navs; let i=index">
+                        <a class="nav-link" data-toggle="tab" [class.active]="activeTab === i" (click)="switchTab(i)"
+                            style="cursor: pointer;">{{navTitle | translate}}</a>
+                    </li>
+                </ul>
+            </div>
+
+            <div class="col-lg-8" data-aos="fade-up">
+                <div class="tab-content" [@scaleAnimation]="activeTab === 0 ? 'open' : '*'">
+                    <ng-container *ngIf="activeTab === 0 ," id="opt1" class="tab-pane fade">
+                        <h2 class="font-gilroy-bold">{{'INTRODUCTION' | translate}}</h2>
+                        <div class="update-date"></div>
+                        <p>{{'INTRODUCTION_TEXT' | translate}}
+                        </p>
+                    </ng-container>
+                </div>
+                <div class="tab-content" [@scaleAnimation]="activeTab === 1 ? 'open' : '*'">
+                    <ng-container *ngIf="activeTab === 1" id="opt2" class="tab-pane fade">
+                        <h2 class="font-gilroy-bold">{{'TERMS_MODIFICATION' | translate}}</h2>
+                        <div class="update-date"></div>
+                        <p>{{'TERMS_MODIFICATION_TEXT' | translate}}</p>
+                    </ng-container>
+                </div>
+                <div class="tab-content" [@scaleAnimation]="activeTab === 2 ? 'open' : '*'">
+                    <ng-container *ngIf="activeTab === 2" id="opt3" class="tab-pane fade">
+                        <h2 class="font-gilroy-bold">{{'USER_RESPONSBILITIES' | translate}}</h2>
+                        <div class="update-date"></div>
+                        <h3 class="font-gilroy-bold">{{'ACCOUNT_SECURITY' | translate}}</h3>
+                        <p>{{'ACCOUNT_SECURITY_TEXT' | translate}}</p>
+                        <ul>
+                            <li >{{'MAINTAINING_CONFIDENTIALITY' | translate}}</li>
+                            <li >{{'NOTIFYING_US' | translate}}</li>
+
+                        </ul>
+                        
+
+                        <h3 class="font-gilroy-bold">{{'PROHIBITED_ACTIVITIES' | translate}}</h3>
+                        <p>{{'PROHIBITED_ACTIVITIES_TEXT' | translate}}</p>
+                        <ul>
+                            <li >{{'ENGAGE_ILLEGAL' | translate}}</li>
+                            <li >{{'HARASS_OTHERS' | translate}}</li>
+                            <li >{{'DISRUPT_APP' | translate}}</li>
+                            <li >{{'IMPERSONATE_OTHERS' | translate}}</li>
+
+                        </ul>
+                    </ng-container>
+                </div>
+                <div class="tab-content" [@scaleAnimation]="activeTab === 3 ? 'open' : '*'">
+                    <ng-container *ngIf="activeTab === 3" id="opt3" class="tab-pane fade">
+                        <h2 class="font-gilroy-bold">{{'INTELLECTUAL_PROPERTY' | translate}}</h2>
+                        <div class="update-date"></div>
+                        <h3 class="font-gilroy-bold">{{'OWNERSHIP' | translate}}</h3>
+                        <p>{{'OWNERSHIP_TEXT' | translate}}</p>
+                        <h3 class="font-gilroy-bold">{{'LICENSE_GRANT' | translate}}</h3>
+                        <p>{{'LICENSE_GRANT_TEXT' | translate}}</p>
+
+                        <ul>
+                            <li >{{'MODIFY_CREATE' | translate}}</li>
+                            <li >{{'DISTRIBUTE' | translate}}</li>
+
+                        </ul>
+                        
+
+
+                    </ng-container>
+                </div>
+                <div class="tab-content" [@scaleAnimation]="activeTab === 4 ? 'open' : '*'">
+                    <ng-container *ngIf="activeTab === 4" id="opt5" class="tab-pane fade active show">
+                        <h2 class="font-gilroy-bold">{{'LIMITATION_LIABILITY' | translate}}</h2>
+                        <div class="update-date"></div>
+                        <h3 class="font-gilroy-bold">{{'DISCLAIMER_WARRANTIES' | translate}}</h3>
+                        <p>{{'DISCLAIMER_WARRANTIES_TEXT' | translate}}
+                        </p>
+                        <h3 class="font-gilroy-bold">{{'LIMITATION_LIABILITY_MINI' | translate}}</h3>
+                        <p>{{'LIMITATION_LIABILITY_MINI_TEXT' | translate}}
+                        </p>
+                    </ng-container>
+                </div>
+                <div class="tab-content" [@scaleAnimation]="activeTab === 5 ? 'open' : '*'">
+                    <ng-container *ngIf="activeTab === 5" id="opt6" class="tab-pane fade">
+                        <h2 class="font-gilroy-bold">{{'TERMINATION' | translate}}</h2>
+                        <div class="update-date"></div>
+                        <p>{{'TERMINATION_TEXT' | translate}}
+                        </p>
+                        <ul>
+                            <li>{{'TERMINATE_ACCESS' | translate}}</li>
+                            <li>{{'TERMINATE_SERVICES' | translate}}</li>
+                        </ul>
+                    </ng-container>
+                </div>
+                <div class="tab-content" [@scaleAnimation]="activeTab === 6 ? 'open' : '*'">
+                    <ng-container *ngIf="activeTab === 6" id="opt7" class="tab-pane fade">
+                        <h2 class="font-gilroy-bold">{{'GOVERNING_LAW' | translate}}</h2>
+                        <div class="update-date"></div>
+                        <p>{{'GOVERNING_LAW_TEXT' | translate}}
+                        </p>
+                    </ng-container>
+                </div>
+                <div class="tab-content" [@scaleAnimation]="activeTab === 7 ? 'open' : '*'">
+                    <ng-container *ngIf="activeTab === 7" id="opt8" class="tab-pane fade">
+                        <h2 class="font-gilroy-bold">{{'DISPUTE_RESOLUTION' | translate}}</h2>
+                        <h3 class="font-gilroy-bold">{{'MEDITATION' | translate}}</h3>
+                        <p>{{'MEDITATION_TEXT' | translate}}
+                        </p>
+                        <h3 class="font-gilroy-bold">{{'CLASS_ACTION' | translate}}</h3>
+                        <p>{{'CLASS_ACTION_TEXT' | translate}}
+                        </p>
+                    </ng-container>
+                </div>
+                <div class="tab-content" [@scaleAnimation]="activeTab === 8 ? 'open' : '*'">
+                    <ng-container *ngIf="activeTab === 8" id="opt9" class="tab-pane fade">
+                        <h2 class="font-gilroy-bold">{{'MISCELLANEOUS' | translate}}</h2>
+                        <div class="update-date"></div>
+                        <h3 class="font-gilroy-bold">{{'SEVERABILITY' | translate}}</h3>
+                        <p>{{'SEVERABILITY_TEXT' | translate}}
+                        </p>
+                        <h3 class="font-gilroy-bold">{{'NO_WAIVER' | translate}}</h3>
+                        <p>{{'NO_WAIVER_TEXT' | translate}}
+                        </p>
+                    </ng-container>
+                </div>
+                <div class="tab-content" [@scaleAnimation]="activeTab === 9 ? 'open' : '*'">
+                    <ng-container *ngIf="activeTab === 9" id="opt6" class="tab-pane fade">
+                        <h2 class="font-gilroy-bold">{{'CONTACT_INFORAMTION' | translate}}</h2>
+                        <div class="update-date"></div>
+
+                        <p>{{'CONTACT_US_DESCRIPTION1' | translate}}</p>
+                        <ul>
+                            <li><a href="https://diktup.com" target="_blank">{{'EMAIL' | translate}}</a></li>
+                            <li><a href="https://diktup.com" target="_blank">{{'WEBSITE' | translate}}</a></li>
+                            <li><a href="https://maps.app.goo.gl/Gi2MdgFVjev2YGS47" target="_blank">{{'ADDRESS_CONTACT' | translate}}</a></li>
+                        </ul>
+                    </ng-container>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>

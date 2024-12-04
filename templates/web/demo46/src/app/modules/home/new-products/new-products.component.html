@@ -1,0 +1,263 @@
+<section class="section-b-space">
+    <div class="container">
+        <div class="row multiple-slider">
+            <div class="col-lg-3 col-sm-6">
+                <div class="theme-card">
+                    <h5 class="title-border">new products</h5>
+                    <div class="offer-slider slide-1 slick-initialized slick-slider">
+                        <div class="slick-list draggable">
+                            <owl-carousel-o [options]="NewProductsCarousel2" class="slick-track"
+                                style="opacity: 1; width: 1305px;">
+                                <ng-container *ngFor="let product of NewProductsData; let i = index">
+
+                                    <ng-template carouselSlide class="slick-slide slick-current slick-active" 
+                                    style="width: 261px; ">
+                                        <div *ngIf="i * 2 +1 < NewProductsData.length">
+                                                <div>
+                                                    <div style="width: 100%; display: inline-block;">
+                                                        <div class="media">
+                                                            <a href="product-page(no-sidebar).html" tabindex="0"><img
+                                                                    class="img-fluid blur-up lazyloaded"
+                                                                    src="{{NewProductsData[i*2].src}}" alt=""></a>
+                                                            <div class="media-body align-self-center">
+                                                                <div class="rating">
+                                                                    <i class="fa fa-star"></i>
+                                                                    <i class="fa fa-star"></i>
+                                                                    <i class="fa fa-star"></i>
+                                                                    <i class="fa fa-star"></i>
+                                                                    <i class="fa fa-star"></i>
+                                                                </div>
+                                                                <a href="product-page(no-sidebar).html" tabindex="0">
+                                                                    <h6>{{NewProductsData[i * 2].name}}</h6>
+                                                                </a>
+                                                                <h4>${{NewProductsData[i * 2].oldPrice}} <del>${{NewProductsData[i * 2].newPrice}}</del></h4>
+                                                            </div>
+                                                        </div>
+                                                        <div class="media">
+                                                            <a href="product-page(no-sidebar).html" tabindex="0"><img
+                                                                    class="img-fluid blur-up lazyloaded"
+                                                                    src="{{NewProductsData[i * 2 +1].src}}" alt=""></a>
+                                                            <div class="media-body align-self-center">
+                                                                <div class="rating">
+                                                                    <i class="fa fa-star"></i>
+                                                                    <i class="fa fa-star"></i>
+                                                                    <i class="fa fa-star"></i>
+                                                                    <i class="fa fa-star"></i>
+                                                                    <i class="fa fa-star"></i>
+                                                                </div>
+                                                                <a href="product-page(no-sidebar).html" tabindex="0">
+                                                                    <h6>{{NewProductsData[i*2 +1].name}}</h6>
+                                                                </a>
+                                                                <h4>{{NewProductsData[i*2 +1].newPrice}}</h4>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        
+                                    </ng-template>
+
+                                </ng-container>
+
+                            </owl-carousel-o>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-3 col-sm-6">
+                <div class="theme-card">
+                    <h5 class="title-border">new products</h5>
+                    <div class="offer-slider slide-1 slick-initialized slick-slider">
+                        <div class="slick-list draggable">
+                            <owl-carousel-o [options]="NewProductsCarousel2" class="slick-track"
+                                style="opacity: 1; width: 1305px;">
+                                <ng-container *ngFor="let product of NewProductsData; let i = index">
+
+                                    <ng-template carouselSlide class="slick-slide slick-current slick-active" 
+                                    style="width: 261px; ">
+                                        <div *ngIf="i * 2 +1 < NewProductsData.length">
+                                                <div>
+                                                    <div style="width: 100%; display: inline-block;">
+                                                        <div class="media">
+                                                            <a href="product-page(no-sidebar).html" tabindex="0"><img
+                                                                    class="img-fluid blur-up lazyloaded"
+                                                                    src="{{NewProductsData[i*2].src}}" alt=""></a>
+                                                            <div class="media-body align-self-center">
+                                                                <div class="rating">
+                                                                    <i class="fa fa-star"></i>
+                                                                    <i class="fa fa-star"></i>
+                                                                    <i class="fa fa-star"></i>
+                                                                    <i class="fa fa-star"></i>
+                                                                    <i class="fa fa-star"></i>
+                                                                </div>
+                                                                <a href="product-page(no-sidebar).html" tabindex="0">
+                                                                    <h6>{{NewProductsData[i * 2].name}}</h6>
+                                                                </a>
+                                                                <h4>${{NewProductsData[i * 2].oldPrice}} <del>${{NewProductsData[i * 2].newPrice}}</del></h4>
+                                                            </div>
+                                                        </div>
+                                                        <div class="media">
+                                                            <a href="product-page(no-sidebar).html" tabindex="0"><img
+                                                                    class="img-fluid blur-up lazyloaded"
+                                                                    src="{{NewProductsData[i * 2 +1].src}}" alt=""></a>
+                                                            <div class="media-body align-self-center">
+                                                                <div class="rating">
+                                                                    <i class="fa fa-star"></i>
+                                                                    <i class="fa fa-star"></i>
+                                                                    <i class="fa fa-star"></i>
+                                                                    <i class="fa fa-star"></i>
+                                                                    <i class="fa fa-star"></i>
+                                                                </div>
+                                                                <a href="product-page(no-sidebar).html" tabindex="0">
+                                                                    <h6>{{NewProductsData[i*2 +1].name}}</h6>
+                                                                </a>
+                                                                <h4>{{NewProductsData[i*2 +1].newPrice}}</h4>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        
+                                    </ng-template>
+
+                                </ng-container>
+
+                            </owl-carousel-o>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-lg-3 col-sm-6">
+                <div class="theme-card">
+                    <h5 class="title-border">new products</h5>
+                    <div class="offer-slider slide-1 slick-initialized slick-slider">
+                        <div class="slick-list draggable">
+                            <owl-carousel-o [options]="NewProductsCarousel2" class="slick-track"
+                                style="opacity: 1; width: 1305px;">
+                                <ng-container *ngFor="let product of NewProductsData; let i = index">
+
+                                    <ng-template carouselSlide class="slick-slide slick-current slick-active" 
+                                    style="width: 261px; ">
+                                        <div *ngIf="i * 2 +1 < NewProductsData.length">
+                                                <div>
+                                                    <div style="width: 100%; display: inline-block;">
+                                                        <div class="media">
+                                                            <a href="product-page(no-sidebar).html" tabindex="0"><img
+                                                                    class="img-fluid blur-up lazyloaded"
+                                                                    src="{{NewProductsData[i*2].src}}" alt=""></a>
+                                                            <div class="media-body align-self-center">
+                                                                <div class="rating">
+                                                                    <i class="fa fa-star"></i>
+                                                                    <i class="fa fa-star"></i>
+                                                                    <i class="fa fa-star"></i>
+                                                                    <i class="fa fa-star"></i>
+                                                                    <i class="fa fa-star"></i>
+                                                                </div>
+                                                                <a href="product-page(no-sidebar).html" tabindex="0">
+                                                                    <h6>{{NewProductsData[i * 2].name}}</h6>
+                                                                </a>
+                                                                <h4>${{NewProductsData[i * 2].oldPrice}} <del>${{NewProductsData[i * 2].newPrice}}</del></h4>
+                                                            </div>
+                                                        </div>
+                                                        <div class="media">
+                                                            <a href="product-page(no-sidebar).html" tabindex="0"><img
+                                                                    class="img-fluid blur-up lazyloaded"
+                                                                    src="{{NewProductsData[i * 2 +1].src}}" alt=""></a>
+                                                            <div class="media-body align-self-center">
+                                                                <div class="rating">
+                                                                    <i class="fa fa-star"></i>
+                                                                    <i class="fa fa-star"></i>
+                                                                    <i class="fa fa-star"></i>
+                                                                    <i class="fa fa-star"></i>
+                                                                    <i class="fa fa-star"></i>
+                                                                </div>
+                                                                <a href="product-page(no-sidebar).html" tabindex="0">
+                                                                    <h6>{{NewProductsData[i*2 +1].name}}</h6>
+                                                                </a>
+                                                                <h4>{{NewProductsData[i*2 +1].newPrice}}</h4>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        
+                                    </ng-template>
+
+                                </ng-container>
+
+                            </owl-carousel-o>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-lg-3 col-sm-6">
+                <div class="theme-card">
+                    <h5 class="title-border">new products</h5>
+                    <div class="offer-slider slide-1 slick-initialized slick-slider">
+                        <div class="slick-list draggable">
+                            <owl-carousel-o [options]="NewProductsCarousel2" class="slick-track"
+                                style="opacity: 1; width: 1305px;">
+                                <ng-container *ngFor="let product of NewProductsData; let i = index">
+
+                                    <ng-template carouselSlide class="slick-slide slick-current slick-active" 
+                                    style="width: 261px; ">
+                                        <div *ngIf="i * 2 +1 < NewProductsData.length">
+                                                <div>
+                                                    <div style="width: 100%; display: inline-block;">
+                                                        <div class="media">
+                                                            <a href="product-page(no-sidebar).html" tabindex="0"><img
+                                                                    class="img-fluid blur-up lazyloaded"
+                                                                    src="{{NewProductsData[i*2].src}}" alt=""></a>
+                                                            <div class="media-body align-self-center">
+                                                                <div class="rating">
+                                                                    <i class="fa fa-star"></i>
+                                                                    <i class="fa fa-star"></i>
+                                                                    <i class="fa fa-star"></i>
+                                                                    <i class="fa fa-star"></i>
+                                                                    <i class="fa fa-star"></i>
+                                                                </div>
+                                                                <a href="product-page(no-sidebar).html" tabindex="0">
+                                                                    <h6>{{NewProductsData[i * 2].name}}</h6>
+                                                                </a>
+                                                                <h4>${{NewProductsData[i * 2].oldPrice}} <del>${{NewProductsData[i * 2].newPrice}}</del></h4>
+                                                            </div>
+                                                        </div>
+                                                        <div class="media">
+                                                            <a href="product-page(no-sidebar).html" tabindex="0"><img
+                                                                    class="img-fluid blur-up lazyloaded"
+                                                                    src="{{NewProductsData[i * 2 +1].src}}" alt=""></a>
+                                                            <div class="media-body align-self-center">
+                                                                <div class="rating">
+                                                                    <i class="fa fa-star"></i>
+                                                                    <i class="fa fa-star"></i>
+                                                                    <i class="fa fa-star"></i>
+                                                                    <i class="fa fa-star"></i>
+                                                                    <i class="fa fa-star"></i>
+                                                                </div>
+                                                                <a href="product-page(no-sidebar).html" tabindex="0">
+                                                                    <h6>{{NewProductsData[i*2 +1].name}}</h6>
+                                                                </a>
+                                                                <h4>{{NewProductsData[i*2 +1].newPrice}}</h4>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        
+                                    </ng-template>
+
+                                </ng-container>
+
+                            </owl-carousel-o>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</section>
+
+

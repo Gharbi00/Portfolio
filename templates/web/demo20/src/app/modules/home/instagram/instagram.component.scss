@@ -1,0 +1,11 @@
+
+
+::ng-deep.special-footer{
+    @media(max-width:900px){
+        margin-bottom: 800px;
+
+    }
+    @media(min-width:900px){
+        margin-bottom: 400px;
+    }
+}

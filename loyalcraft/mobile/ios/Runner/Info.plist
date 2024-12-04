@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+	<dict>
+		<key>GIDClientID</key>
+		<string>414853982494-1njtgbg62pa3qc7n29j83okjc8cbgmog.apps.googleusercontent.com</string>
+		<key>CLIENT_ID</key>
+		<string>414853982494-1njtgbg62pa3qc7n29j83okjc8cbgmog.apps.googleusercontent.com</string>
+		<key>REVERSED_CLIENT_ID</key>
+		<string>com.googleusercontent.apps.414853982494-1njtgbg62pa3qc7n29j83okjc8cbgmog</string>
+		<key>CADisableMinimumFrameDurationOnPhone</key>
+		<true/>
+		<key>CFBundleDevelopmentRegion</key>
+		<string>$(DEVELOPMENT_LANGUAGE)</string>
+		<key>CFBundleDisplayName</key>
+		<string>Loyalcraft</string>
+		<key>CFBundleExecutable</key>
+		<string>$(EXECUTABLE_NAME)</string>
+		<key>CFBundleIdentifier</key>
+		<string>$(PRODUCT_BUNDLE_IDENTIFIER)</string>
+		<key>CFBundleInfoDictionaryVersion</key>
+		<string>6.0</string>
+		<key>CFBundleName</key>
+		<string>Loyalcraft</string>
+		<key>CFBundlePackageType</key>
+		<string>APPL</string>
+		<key>CFBundleShortVersionString</key>
+		<string>$(FLUTTER_BUILD_NAME)</string>
+		<key>CFBundleSignature</key>
+		<string>????</string>
+		<key>CFBundleURLTypes</key>
+		<array>
+			<dict>
+				<key>CFBundleTypeRole</key>
+				<string>Editor</string>
+				<key>CFBundleURLSchemes</key>
+				<array>
+					<string>fb1223473545660760</string>
+					<string>com.googleusercontent.apps.414853982494-1njtgbg62pa3qc7n29j83okjc8cbgmog</string>
+				</array>
+			</dict>
+		</array>
+		<key>CFBundleVersion</key>
+		<string>$(FLUTTER_BUILD_NUMBER)</string>
+		<key>FacebookAppID</key>
+		<string>1223473545660760</string>
+		<key>FacebookClientToken</key>
+		<string>4c913422c7ce83e35a227a377f3afc6b</string>
+		<key>FacebookDisplayName</key>
+		<string>Loyalcraft</string>
+		<key>LSApplicationQueriesSchemes</key>
+		<array>
+			<string>fb</string>
+			<string>fbapi</string>
+			<string>fbshareextension</string>
+			<string>fb-messenger-share-api</string>
+			<string>facebook-reels</string>
+			<string>facebook-stories</string>
+		</array>
+		<key>LSRequiresIPhoneOS</key>
+		<true/>
+		<key>NSAppTransportSecurity</key>
+		<dict>
+			<key>NSAllowsArbitraryLoads</key>
+			<true/>
+		</dict>
+		<key>NSLocationAlwaysAndWhenInUseUsageDescription</key>
+		<string>Loyalcraft uses your location to help you update your residential address.</string>
+		<key>NSLocationAlwaysUsageDescription</key>
+		<string>Loyalcraft uses your location to help you update your residential address.</string>
+		<key>NSLocationWhenInUseUsageDescription</key>
+		<string>Loyalcraft uses your location to help you update your residential address.</string>
+		<key>NSMediaLibraryUsageDescription</key>
+		<string>Loyalcraft uses access to your media library to let you update your profile picture.</string>
+		<key>NSMicrophoneUsageDescription</key>
+		<string>Loyalcraft uses your microphone to let you record videos for chat.</string>
+		<key>NSPhotoLibraryUsageDescription</key>
+		<string>Loyalcraft uses access to your photo library to let you update your profile picture.</string>
+		<key>NSCameraUsageDescription</key>
+		<string>Loyalcraft uses your camera to let you update your profile picture.</string>
+		<key>UIApplicationSupportsIndirectInputEvents</key>
+		<true/>
+		<key>BGTaskSchedulerPermittedIdentifiers</key>
+		<array>
+			<string>$(PRODUCT_BUNDLE_IDENTIFIER)</string>
+		</array>
+		<key>UIBackgroundModes</key>
+		<array>
+			<string>processing</string>
+			<string>remote-notification</string>
+		</array>
+		<key>UILaunchStoryboardName</key>
+		<string>LaunchScreen</string>
+		<key>UIMainStoryboardFile</key>
+		<string>Main</string>
+		<key>UIStatusBarHidden</key>
+		<false/>
+		<key>UISupportedInterfaceOrientations</key>
+		<array>
+			<string>UIInterfaceOrientationPortrait</string>
+			<string>UIInterfaceOrientationLandscapeLeft</string>
+			<string>UIInterfaceOrientationLandscapeRight</string>
+		</array>
+		<key>UISupportedInterfaceOrientations~ipad</key>
+		<array>
+			<string>UIInterfaceOrientationPortrait</string>
+			<string>UIInterfaceOrientationPortraitUpsideDown</string>
+			<string>UIInterfaceOrientationLandscapeLeft</string>
+			<string>UIInterfaceOrientationLandscapeRight</string>
+		</array>
+	</dict>
+</plist>

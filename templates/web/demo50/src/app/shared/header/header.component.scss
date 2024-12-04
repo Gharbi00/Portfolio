@@ -1,0 +1,32 @@
+/* ::ng-deep header .main-navbar .nav-menu > li > a {
+    color: #ffffff;
+}
+ */
+:host::ng-deep .setting{
+    @media(width < 600px){
+        display: none!important;
+    }
+}
+:host::ng-deep header.header-tools .top-header .container {
+    background-color: transparent;
+}
+.header-tools .top-header .header-dropdown li a {
+    color: #101010;
+}
+
+header.header-tools .top-header .header-dropdown li a i {
+    color: #121212;
+}
+
+
+header.header-tools .top-header .header-dropdown li {
+    color: #000000;
+
+}
+header.header-tools .top-header .header-contact li {
+    color: #000000;
+}
+/* ::ng-deep.dark .main-navbar .nav-menu {
+    background-color: transparent!important;
+} */
+

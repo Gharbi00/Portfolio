@@ -1,0 +1,15 @@
+.theme-tab .tab-title a, .theme-tab .tab-title2 a {
+    color: #2d2a25;
+    text-transform: uppercase;
+}
+.theme-tab .tab-title a, .theme-tab .tab-title2 a :hover{
+    color:var(--theme-color) !important;
+}
+.theme-tab .tab-title a, .theme-tab .tab-title2 a :active{
+    color:var(--theme-color) !important;
+}
+
+.theme-tab .tab-title2 li {
+    padding-left: 25px;
+    padding-right: 25px;
+}

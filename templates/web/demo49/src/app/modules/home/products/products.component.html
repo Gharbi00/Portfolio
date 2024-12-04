@@ -1,0 +1,85 @@
+<div class="title1  section-t-space title5">
+    <h4>special offer</h4>
+    <h2 class="title-inner1">top collection</h2>
+    <hr role="tournament6">
+</div>
+
+<div class="container">
+    <div class="row">
+        <div class="col-lg-6 offset-lg-3">
+            <div class="product-para">
+                <p class="text-center">Lorem Ipsum is simply dummy text of the printing and typesetting industry.
+                    Lorem Ipsum has been the industry's standard dummy text ever since the 1500s,</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<section class="section-b-space pt-0 j-box ratio_square">
+    <div class="container">
+        <div class="row">
+            <div class="col">
+                <div class="product-4 product-m no-arrow slick-initialized slick-slider">
+                    <div class="slick-list draggable">
+
+
+                        <owl-carousel-o [options]="ProductCarousel" class="slick-track"
+                            style="opacity: 1; width: 3990px; ">
+                            <ng-container *ngFor="let product of ProductData">
+                                
+                            <ng-template carouselSlide  class="slick-slide slick-cloned" data-slick-index="-4" aria-hidden="true" tabindex="-1"
+                                style="width: 285px;">
+                                <div>
+                                    <div class="product-box" style="width: 100%; display: inline-block;">
+                                        <div class="img-wrapper">
+                                            <div class="lable-block">
+                                                <span class="lable3">new</span>
+                                                <span class="lable4">on sale</span>
+                                            </div>
+                                            <!-- front image -->
+                                            <div class="front">
+                                                <a href="product-page(no-sidebar).html"
+                                                    class="bg-size blur-up lazyloaded"
+                                                    style="background-image: url(&quot;{{product.src}}&quot;); background-size: cover; background-position: center center; display: block;"
+                                                    tabindex="-1"><img src="{{product.src}}"
+                                                        class="img-fluid blur-up lazyload bg-img" alt=""
+                                                        ></a>
+                                            </div>
+                                            <div class="cart-info cart-wrap">
+                                                <button data-bs-toggle="modal" data-bs-target="#addtocart"
+                                                    title="Add to cart" tabindex="-1"><i
+                                                        class="ti-shopping-cart"></i></button>
+                                                <a href="javascript:void(0)" title="Add to Wishlist" tabindex="-1"><i
+                                                        class="ti-heart" aria-hidden="true"></i></a>
+                                                <a href="#" data-bs-toggle="modal" data-bs-target="#quick-view"
+                                                    title="Quick View" tabindex="-1"><i class="ti-search"
+                                                        aria-hidden="true"></i></a>
+                                                <a href="compare.html" title="Compare" tabindex="-1"><i
+                                                        class="ti-reload" aria-hidden="true"></i></a>
+                                            </div>
+                                        </div>
+                                        <div class="product-detail">
+                                            <div class="rating">
+                                                <i class="fa fa-star"></i>
+                                                <i class="fa fa-star"></i>
+                                                <i class="fa fa-star"></i>
+                                                <i class="fa fa-star"></i>
+                                                <i class="fa fa-star"></i>
+                                            </div>
+                                            <a href="product-page(no-sidebar).html" tabindex="-1">
+                                                <h6>{{product.name}} </h6>
+                                            </a>
+                                            <h4>${{product.newPrice}}  <del>${{product.oldPrice}} </del></h4>
+                                        </div>
+                                    </div>
+                                </div>
+                            </ng-template>
+                            </ng-container>
+                        </owl-carousel-o>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>

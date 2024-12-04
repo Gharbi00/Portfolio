@@ -1,0 +1,51 @@
+<div class="axil-main-slider-area main-slider-style-2">
+    <div class="container">
+        <div class="slider-offset-left">
+            <div class="row row--20">
+                <div class="col-lg-9">
+                    <div class="slider-box-wrap">
+                        <div
+                            class="slider-activation-one axil-slick-dots slick-initialized slick-slider slick-dotted">
+                            <div class="slick-list draggable">
+                                <owl-carousel-o [options]="carouselOptions" class="slick-track" style="opacity: 1;display: flex; ">
+                                    <ng-container *ngFor="let product of products">
+                                        <ng-template carouselSlide >
+                                    <div class="single-slide slick-slide"  style="">
+                                        <div class="main-slider-content">
+                                            <span class="subtitle"><i class="fal fa-watch"></i> Smartwatch</span>
+                                            <h1 class="title">{{product.name}}</h1>
+                                            <div class="shop-btn">
+                                                <a href="/shop" class="axil-btn" tabindex="-1">Shop Now <i
+                                                        class="fal fa-long-arrow-right"></i></a>
+                                            </div>
+                                        </div>
+                                        <div class="main-slider-thumb">
+                                            <img src="{{product.src}}" alt="Product">
+                                        </div>
+                                    </div>
+
+                                </ng-template>
+                                </ng-container>
+                                </owl-carousel-o>
+                            </div>
+
+
+
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-3">
+                    <div class="slider-product-box">
+                        <div class="product-thumb">
+                            <a href="/single-product">
+                                <img src="assets/images/product/product-41.png" alt="Product">
+                            </a>
+                        </div>
+                        <h6 class="title"><a href="/single-product">Yantiti Leather Bags</a></h6>
+                        <span class="price">$29.99</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

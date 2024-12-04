@@ -1,0 +1,110 @@
+<main class=" col-xl-10 doc-main-body" data-bs-spy="scroll" data-bs-target="#push-api" data-bs-offset="0" tabindex="0">
+  <h2>Push Points to User</h2>
+  <div id="introduction">
+    <h3>Introduction</h3>
+    <p>With this endpoint, administrators can dynamically enhance user engagement by injecting points directly into a
+      user's account. Whether incentivizing specific actions, acknowledging achievements,
+      or reinforcing positive behaviors, this functionality enables seamless point allocation to drive desired user
+      behaviors. By pushing points programmatically, administrators can execute targeted
+      engagement initiatives and foster deeper connections with their user base.</p>
+  </div>
+  <div id="endpoint">
+    <h3>Endpoint</h3>
+    <div class="mark-red">
+      <pre>URL: /wallet/push</pre>
+      <pre>Method: <span class="s1">POST</span></pre>
+    </div>
+  </div>
+  <div id="headers">
+    <h3>Request Headers</h3>
+    <p>Here you need to insert the bearer token obtained from the Login and Get Access Token API.</p>
+    <pre class="bg-black"><code>
+  <span class="s2">&lbrace;</span>
+    <span class="s2">"Authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..."</span>
+  <span class="s2">&rbrace;</span>
+      </code>
+    </pre>
+  </div>
+  <div id="params">
+    <h3>Request Parameters</h3>
+    <div class="mark-red">
+      <pre><span class="s1">user</span>: User's unique identifier.</pre>
+      <pre><span class="s1">card</span>: Loyalty card identifier.</pre>
+      <pre><span class="s1">amount</span>: Total amount of the purchase.</pre>
+      <pre><span class="s1">transactionId</span>: Unique reference of the purchase.</pre>
+      <pre><span class="s1">deductAmount</span>: Amount of points to deduct.</pre>
+      <pre><span class="s1">source</span>: Source of the transaction must me be one of the following.
+        - WEB
+        - MOBILE
+        - PHYSICAL
+      </pre>
+    </div>
+    <p class="note">Note: Only one of the parameters, either <code>user</code> or <code>card</code>, is required.
+      <code>transactionId</code> is optional, used only when you want to track unicity of your
+      transactions. <code>deductAmount</code> is optional, used only when you need to deduct points when pushing.</p>
+    <p class="note">Note: if you don't pass <code>source</code>, <code>PHYSICAL</code> will be the deffault value.</p>
+  </div>
+  <div id="error">
+    <h3>Error Handling</h3>
+    <p>The API returns appropriate error responses in case the user's card is not found or if no wallets are found for
+      the provided user.</p>
+    <div class="mark-red">
+      <pre><span class="s1">404 Not Found</span>: If the user's card is not found.</pre>
+      <pre><span class="s1">404 Not Acceptable</span>: If the cashback is not active.</pre>
+    </div>
+  </div>
+  <div id="request">
+    <h3>Sample Request</h3>
+    <p>Upon successful authentication, the API returns an access token.</p>
+    <pre class="bg-black"><code>
+  <span class="s1">POST /wallet/push</span>
+  <span class="s1">Authorization: Bearer YOUR_ACCESS_TOKEN</span>
+  <span class="s2">&lbrace;</span>
+    <span class="s2">"card": "loyalty_card_number",</span>
+    <span class="s2">"amount": 154.84,</span>
+    <span class="s2">"deductAmount": 45,</span>
+    <span class="s2">"transactionId": "84541248854",</span>
+    <span class="s2">"source": "WEB"</span>
+  <span class="s2">&rbrace;</span>
+      </code>
+    </pre>
+  </div>
+  <div id="params">
+    <h3>Response</h3>
+    <div class="mark-red">
+      <pre><span class="s1">status</span>: Status response code.</pre>
+      <pre><span class="s1">response</span>: Response content.</pre>
+      <pre><span class="s1">qualitativeAmount</span>: Amount of qualitative (status) points pushed.</pre>
+      <pre><span class="s1">quantitativeAmount</span>: Amount of quantitative points pushed.</pre>
+    </div>
+  </div>
+  <div id="response">
+    <h3>Sample Response</h3>
+    <p>Upon successful authentication, the API returns an access token.</p>
+    <pre class="bg-black"><code>
+  <span class="s2">&lbrace;</span>
+    <span class="s2">"status": 200</span>
+    <span class="s2">"response": "Amount was pushed successfully."</span>
+    <span class="s2">"qualitativeAmount": "150"</span>
+    <span class="s2">"quantitativeAmount": "45"</span>
+  <span class="s2">&rbrace;</span>
+      </code>
+    </pre>
+  </div>
+  <div class="doc-pagination pt-40">
+    <app-pagination></app-pagination>
+  </div>
+</main> <!-- /.doc-main-body -->
+<nav class="d-none d-xl-block col-xl-3 doc-sideNav">
+  <div class="wrapper">
+    <nav class="main-side-nav" id="push-api">
+      <a href="push-api/#introduction" class="nav-link">Introduction</a>
+      <a href="push-api/#endpoint" class="nav-link">Endpoint</a>
+      <a href="push-api/#headers" class="nav-link">Request Headers</a>
+      <a href="push-api/#params" class="nav-link">Request Parameters</a>
+      <a href="push-api/#error" class="nav-link">Error Handling</a>
+      <a href="push-api/#request" class="nav-link">Sample Request</a>
+      <a href="push-api/#response" class="nav-link">Sample Response</a>
+    </nav>
+  </div>
+</nav>

@@ -1,0 +1,85 @@
+<section class="addtocart_count ratio_square">
+    <div class="container">
+        <div class="row">
+            <div class="col-12">
+                <div class="title1">
+                    <h4>recent story</h4>
+                    <h2 class="title-inner1">trending products</h2>
+                </div>
+                <div class="product-5 product-m no-arrow slick-initialized slick-slider">
+                    <div class="slick-list draggable">
+                        <owl-carousel-o [options]="ProductCarousel" class="slick-track"
+                            style="opacity: 1; width: 3990px; ">
+                            <ng-container *ngFor="let product of ProductData">
+
+                                <ng-template carouselSlide class="slick-slide slick-active" style="width:285px; ">
+
+                                    <div class="slick-slide slick-current slick-active" data-slick-index="0"
+                                        aria-hidden="false" >
+                                        <div>
+                                            <div class="product-box product-wrap product-style-1"
+                                                style="width: 100%; display: inline-block;">
+                                                <div class="img-wrapper">
+                                                    <div class="lable-block"><span *ngIf="product.new" class="lable3">new</span> <span
+                                                            class="lable4" *ngIf="product.onsale" >on
+                                                            sale</span></div>
+                                                    <div class="front">
+                                                        <a href="product-page(no-sidebar).html"
+                                                            class="bg-size blur-up lazyloaded"
+                                                            style="background-image: url(&quot;{{product.src}}&quot;); background-size: cover; background-position: center center; display: block;"
+                                                            tabindex="0"><img
+                                                                src="{{product.src}}"
+                                                                class="img-fluid blur-up lazyload bg-img" alt=""
+                                                                ></a>
+                                                    </div>
+                                                    <div class="cart-info cart-wrap">
+                                                        <a href="javascript:void(0)" title="Add to Wishlist"
+                                                            tabindex="0"><i class="ti-heart" aria-hidden="true"></i></a>
+                                                        <a href="#" data-bs-toggle="modal" data-bs-target="#quick-view"
+                                                            title="Quick View" tabindex="0"><i class="ti-search"
+                                                                aria-hidden="true"></i></a>
+                                                        <a href="compare.html" title="Compare" tabindex="0"><i
+                                                                class="ti-reload" aria-hidden="true"></i></a>
+                                                    </div>
+                                                    <div class="addtocart_btn">
+                                                        <button class="add-button add_cart" title="Add to cart"
+                                                            tabindex="0">
+                                                            Add to Cart
+                                                        </button>
+                                                        <div class="qty-box cart_qty">
+                                                            <div class="input-group">
+                                                                <button type="button" class="btn quantity-left-minus"
+                                                                    data-type="minus" data-field="" tabindex="0">
+                                                                    <i class="fa fa-minus" aria-hidden="true"></i>
+                                                                </button>
+                                                                <input type="text" name="quantity"
+                                                                    class="form-control input-number qty-input"
+                                                                    value="1" tabindex="0">
+                                                                <button type="button" class="btn quantity-right-plus"
+                                                                    data-type="plus" data-field="" tabindex="0">
+                                                                    <i class="fa fa-plus" aria-hidden="true"></i>
+                                                                </button>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="product-detail text-center">
+                                                    <a href="product-page(no-sidebar).html" tabindex="0">
+                                                        <h6>{{product.name}}</h6>
+                                                    </a>
+                                                    <h4>${{product.newPrice}}<del>${{product.oldPrice}}</del></h4>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+
+                                </ng-template>
+                            </ng-container>
+                        </owl-carousel-o>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>

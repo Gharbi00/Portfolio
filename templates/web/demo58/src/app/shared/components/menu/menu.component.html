@@ -1,0 +1,315 @@
+
+
+<div class="bottom-part">
+  <div class="container" style="    background-color: white;
+  bottom: -30px;
+  position: relative;
+">
+      <div class="row">
+          <div class="col-xl-3" style="background-color: #f39910;" >
+              <div class="category-menu d-none d-xl-block h-100" type="button" (click)="handleClick()">
+                  <div id="toggle-sidebar" class="toggle-sidebar">
+                      <i class="fa fa-bars sidebar-bar"></i>
+                      <h5 class="mb-0">shop by category</h5>
+                  </div>
+              </div>
+              <div class="sidenav fixed-sidebar marketplace-sidebar"  id="dropdownnav" [style.display]="isClicked ? 'block' : 'none'">
+                  <nav class="">
+                      <div>
+                          <div class="sidebar-back text-start d-xl-none d-block"><i class="fa fa-angle-left pe-2" aria-hidden="true"></i> Back</div>
+                      </div>
+                      <ul id="sub-menu" class="sm pixelstrap sm-vertical hover-unset" data-smartmenus-id="17053928802838628">
+                          <li> <a href="#" class="has-submenu" id="sm-17053928802838628-1" aria-haspopup="true" aria-controls="sm-17053928802838628-2" aria-expanded="false">TV &amp; Audio<span class="sub-arrow"></span></a>
+                              <ul class="mega-menu clothing-menu sm-nowrap" id="sm-17053928802838628-2" role="group" aria-hidden="true" aria-labelledby="sm-17053928802838628-1" aria-expanded="false" style="width: auto; display: none; top: auto; left: 0px; margin-left: 259px; margin-top: -70.9062px; min-width: 10em; max-width: 20em;">
+                                  <li>
+                                      <div class="row m-0">
+                                          <div class="col-xl-4">
+                                              <div class="link-section">
+                                                  <h5>women's fashion</h5>
+                                                  <ul>
+                                                      <li><a href="#">dresses</a></li>
+                                                      <li><a href="#">skirts</a></li>
+                                                      <li><a href="#">westarn wear</a></li>
+                                                      <li><a href="#">ethic wear</a></li>
+                                                      <li><a href="#">sport wear</a></li>
+                                                  </ul>
+                                                  <h5>men's fashion</h5>
+                                                  <ul>
+                                                      <li><a href="#">sports wear</a></li>
+                                                      <li><a href="#">western wear</a></li>
+                                                      <li><a href="#">ethic wear</a></li>
+                                                  </ul>
+                                              </div>
+                                          </div>
+                                          <div class="col-xl-4">
+                                              <div class="link-section">
+                                                  <h5>accessories</h5>
+                                                  <ul>
+                                                      <li><a href="#">fashion jewellery</a></li>
+                                                      <li><a href="#">caps and hats</a></li>
+                                                      <li><a href="#">precious jewellery</a></li>
+                                                      <li><a href="#">necklaces</a></li>
+                                                      <li><a href="#">earrings</a></li>
+                                                      <li><a href="#">wrist wear</a></li>
+                                                      <li><a href="#">ties</a></li>
+                                                      <li><a href="#">cufflinks</a></li>
+                                                      <li><a href="#">pockets squares</a></li>
+                                                  </ul>
+                                              </div>
+                                          </div>
+                                          <div class="col-xl-4">
+                                              <a href="#" class="mega-menu-banner"><img src="../assets/images/mega-menu/fashion.jpg" alt="" class="img-fluid blur-up lazyloaded"></a>
+                                          </div>
+                                      </div>
+                                  </li>
+                              </ul><span class="scroll-up" style="top: auto; left: 0px; margin-left: 259px; width: 815px; z-index: 2; display: none; margin-top: -274px; visibility: hidden;"><span class="scroll-up-arrow"></span></span><span class="scroll-down" style="display: none; top: auto; left: 0px; margin-left: 259px; width: 815px; z-index: 2; margin-top: 94px; visibility: hidden;"><span class="scroll-down-arrow"></span></span>
+                          </li>
+                          <li> <a href="#" class="has-submenu" id="sm-17053928802838628-3" aria-haspopup="true" aria-controls="sm-17053928802838628-4" aria-expanded="false">air conditioners<span class="sub-arrow"></span></a>
+                              <ul id="sm-17053928802838628-4" role="group" aria-hidden="true" aria-labelledby="sm-17053928802838628-3" aria-expanded="false" class="sm-nowrap" style="width: auto; display: none; top: auto; left: 0px; margin-left: 259px; margin-top: -41px; min-width: 10em; max-width: 20em;">
+                                  <li><a href="#">makeup</a></li>
+                                  <li><a href="#">skincare</a></li>
+                                  <li><a href="#">premium beaty</a></li>
+                                  <li> <a href="#" class="has-submenu" id="sm-17053928802838628-5" aria-haspopup="true" aria-controls="sm-17053928802838628-6" aria-expanded="false">more<span class="sub-arrow"></span></a>
+                                      <ul id="sm-17053928802838628-6" role="group" aria-hidden="true" aria-labelledby="sm-17053928802838628-5" aria-expanded="false">
+                                          <li><a href="#">fragrances</a></li>
+                                          <li><a href="#">luxury beauty</a></li>
+                                          <li><a href="#">hair care</a></li>
+                                          <li><a href="#">tools &amp; brushes</a></li>
+                                      </ul>
+                                  </li>
+                              </ul>
+                          </li>
+                          <li> <a href="#" class="has-submenu" id="sm-17053928802838628-7" aria-haspopup="true" aria-controls="sm-17053928802838628-8" aria-expanded="false">Refrigerators<span class="sub-arrow"></span></a>
+                              <ul id="sm-17053928802838628-8" role="group" aria-hidden="true" aria-labelledby="sm-17053928802838628-7" aria-expanded="false" class="sm-nowrap" style="width: auto; min-width: 10em; display: none; max-width: 20em; top: auto; left: 0px; margin-left: 259px; margin-top: -41px;">
+                                  <li><a href="#">shopper bags</a></li>
+                                  <li><a href="#">laptop bags</a></li>
+                                  <li><a href="#">clutches</a></li>
+                                  <li> <a href="#" class="has-submenu" id="sm-17053928802838628-9" aria-haspopup="true" aria-controls="sm-17053928802838628-10" aria-expanded="false">purses<span class="sub-arrow"></span></a>
+                                      <ul id="sm-17053928802838628-10" role="group" aria-hidden="true" aria-labelledby="sm-17053928802838628-9" aria-expanded="false">
+                                          <li><a href="#">purses</a></li>
+                                          <li><a href="#">wallets</a></li>
+                                          <li><a href="#">leathers</a></li>
+                                          <li><a href="#">satchels</a></li>
+                                      </ul>
+                                  </li>
+                              </ul>
+                          </li>
+                          <li> <a href="#" class="has-submenu" id="sm-17053928802838628-11" aria-haspopup="true" aria-controls="sm-17053928802838628-12" aria-expanded="false">Washing Machines<span class="sub-arrow"></span></a>
+                              <ul id="sm-17053928802838628-12" role="group" aria-hidden="true" aria-labelledby="sm-17053928802838628-11" aria-expanded="false" class="sm-nowrap" style="width: auto; display: none; top: auto; left: 0px; margin-left: 259px; margin-top: -41px; min-width: 10em; max-width: 20em;">
+                                  <li><a href="#">sport shoes</a></li>
+                                  <li><a href="#">formal shoes</a></li>
+                                  <li><a href="#">casual shoes</a></li>
+                              </ul>
+                          </li>
+                          <li><a href="#">Kitchen &amp; Home</a></li>
+                          <li><a href="#">Gaming Consoles</a></li>
+                          <li> <a href="#" class="has-submenu" id="sm-17053928802838628-13" aria-haspopup="true" aria-controls="sm-17053928802838628-14" aria-expanded="false">cameras<span class="sub-arrow"></span></a>
+                              <ul id="sm-17053928802838628-14" role="group" aria-hidden="true" aria-labelledby="sm-17053928802838628-13" aria-expanded="false" class="sm-nowrap" style="width: auto; min-width: 10em; display: none; max-width: 20em; top: auto; left: 0px; margin-left: 259px; margin-top: -94px;">
+                                  <li><a href="#">fashion jewellery</a></li>
+                                  <li><a href="#">caps and hats</a></li>
+                                  <li><a href="#">precious jewellery</a></li>
+                                  <li> <a href="#" class="has-submenu" id="sm-17053928802838628-15" aria-haspopup="true" aria-controls="sm-17053928802838628-16" aria-expanded="false">more..<span class="sub-arrow"></span></a>
+                                      <ul id="sm-17053928802838628-16" role="group" aria-hidden="true" aria-labelledby="sm-17053928802838628-15" aria-expanded="false">
+                                          <li><a href="#">necklaces</a></li>
+                                          <li><a href="#">earrings</a></li>
+                                          <li><a href="#">wrist wear</a></li>
+                                          <li> <a href="#" class="has-submenu" id="sm-17053928802838628-17" aria-haspopup="true" aria-controls="sm-17053928802838628-18" aria-expanded="false">accessories<span class="sub-arrow"></span></a>
+                                              <ul id="sm-17053928802838628-18" role="group" aria-hidden="true" aria-labelledby="sm-17053928802838628-17" aria-expanded="false">
+                                                  <li><a href="#">ties</a></li>
+                                                  <li><a href="#">cufflinks</a></li>
+                                                  <li><a href="#">pockets squares</a></li>
+                                                  <li><a href="#">helmets</a></li>
+                                                  <li><a href="#">scarves</a></li>
+                                                  <li> <a href="#" class="has-submenu" id="sm-17053928802838628-19" aria-haspopup="true" aria-controls="sm-17053928802838628-20" aria-expanded="false">more...<span class="sub-arrow"></span></a>
+                                                      <ul id="sm-17053928802838628-20" role="group" aria-hidden="true" aria-labelledby="sm-17053928802838628-19" aria-expanded="false">
+                                                          <li><a href="#">accessory gift sets</a></li>
+                                                          <li><a href="#">travel accessories</a></li>
+                                                          <li><a href="#">phone cases</a></li>
+                                                      </ul>
+                                                  </li>
+                                              </ul>
+                                          </li>
+                                          <li><a href="#">belts &amp; more</a></li>
+                                          <li><a href="#">wearable</a></li>
+                                      </ul>
+                                  </li>
+                              </ul>
+                          </li>
+                          <li><a href="#">Heating &amp; Cooling</a></li>
+                          <li><a href="#">All accessories </a></li>
+                          <li><a href="#">All Electronics </a></li>
+                      </ul>
+                  </nav>
+              </div>
+          </div>
+          <div class="col-xl-9">
+              <div class="main-nav-center">
+                  <nav class="text-start">
+                      <!-- Sample menu definition -->
+                      <ul id="main-menu" class="sm pixelstrap sm-horizontal hover-unset" data-smartmenus-id="17053928802776343" style=" padding-top: 2%;   right: -100px;
+                      position: relative!important;">
+                          <li>
+                              <div class="mobile-back text-end">Back<i class="fa fa-angle-right ps-2" aria-hidden="true"></i></div>
+                          </li>
+                          <li><a  routerLink="/shop">Shop</a></li>
+                          <li><a   routerLink="/blog">Blog</a></li>
+                          <li><a   routerLink="/about">About</a></li>
+                          <li><a   routerLink="/contact">Contact</a></li>
+                          
+                      </ul>
+                  </nav>
+              </div>
+          </div>
+      </div>
+  </div>
+</div>
+
+<div class="main-navbar" >
+  <div id="mainnav">
+    <div class="toggle-nav" (click)="mainMenuToggle()">
+      <i class="fa fa-bars sidebar-bar"></i>
+    </div>
+    <ul class="nav-menu" [class.opennav]="navServices?.mainMenuToggle">
+
+      <li class="back-btn">
+        <div class="mobile-back text-end" (click)="mainMenuToggle()">
+          <span>Back</span>
+          <i class="fa fa-angle-right ps-2" aria-hidden="true"></i>
+        </div>
+      </li>
+
+      <li *ngFor="let menuItem of menuItems" [class.mega-menu]="menuItem.megaMenu">
+       
+        <a routerLink="menuItem.path" class="nav-link" *ngIf="menuItem.type === 'sub'" 
+            (click)="toggletNavActive(menuItem)">
+          {{ menuItem.title | translate }}
+          <div class="lable-nav" *ngIf="menuItem.badge">{{ menuItem.badgeText | translate }}</div>
+          <span class="sub-arrow" *ngIf="menuItem.children"></span>
+        </a>
+        <!-- Link -->
+        <a routerLink="menuItem.path" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}" class="nav-link"
+          *ngIf="menuItem.type === 'link'">
+          {{ menuItem.title }}
+          <div class="lable-nav" *ngIf="menuItem.badge">{{ menuItem.badgeText | translate }}</div>
+          <span class="sub-arrow" *ngIf="menuItem.children"></span>
+        </a>
+        <!-- External Link -->
+        <a href="{{ menuItem.path }}" class="nav-link" *ngIf="menuItem.type === 'extLink'">
+          {{ menuItem.title }}
+          <div class="lable-nav" *ngIf="menuItem.badge">{{ menuItem.badgeText | translate }}</div>
+          <span class="sub-arrow" *ngIf="menuItem.children"></span>
+        </a>
+        <!-- External Tab Link -->
+        <a href="{{ menuItem.path }}" class="nav-link" *ngIf="menuItem.type === 'extTabLink'">
+          {{ menuItem.title }}
+          <div class="lable-nav" *ngIf="menuItem.badge">{{ menuItem.badgeText | translate }}</div>
+          <span class="sub-arrow" *ngIf="menuItem.children"></span>
+        </a>
+
+        <!-- 2nd Level Menu -->
+        <ul class="nav-submenu" [class.opensubmenu]="menuItem.active" *ngIf="menuItem.children">
+          <li *ngFor="let childrenItem of menuItem.children">
+            <!-- Sub -->
+            <a href="javascript:void(0)" *ngIf="childrenItem.type === 'sub'" 
+                (click)="toggletNavActive(childrenItem)">
+              {{ childrenItem.title | translate }}
+              <span class="new-tag" *ngIf="childrenItem.badge">{{ childrenItem.badgeText | translate }}</span>
+              <span class="sub-arrow" *ngIf="childrenItem.children"></span>
+            </a>
+            <!-- Link -->
+            <a routerLink="childrenItem.path" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}" 
+              *ngIf="childrenItem.type === 'link' ">
+              {{ childrenItem.title | translate }}
+              <span class="new-tag" *ngIf="childrenItem.badge">{{ childrenItem.badgeText | translate }}</span>
+              <span class="sub-arrow" *ngIf="childrenItem.children"></span>
+            </a>
+            <!-- External Link -->
+            <a href="{{ childrenItem.path }}"
+              *ngIf="childrenItem.type === 'extLink' ">
+              {{ childrenItem.title | translate }}
+              <span class="new-tag" *ngIf="childrenItem.badge">{{ childrenItem.badgeText | translate }}</span>
+              <span class="sub-arrow" *ngIf="childrenItem.children"></span>
+            </a>
+            <!-- External Tab Link -->
+            <a href="{{ childrenItem.path }}" target="_blank"
+              *ngIf="childrenItem.type === 'extTabLink' ">
+              {{ childrenItem.title | translate }}
+              <span class="new-tag" *ngIf="childrenItem.badge">{{ childrenItem.badgeText | translate }}</span>
+              <span class="sub-arrow" *ngIf="childrenItem.children"></span>
+            </a>
+
+            <!-- 3rd Level Menu -->
+            <ul *ngIf="childrenItem.children" [class.opensubchild]="childrenItem.active" class="nav-sub-childmenu">
+              <li *ngFor="let childrenSubItem of childrenItem.children">
+                <!-- Link -->
+                <a routerLink="childrenSubItem.path" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}" 
+                  *ngIf="childrenSubItem.type === 'link' ">
+                  {{ childrenSubItem.title | translate }}
+                  <span class="new-tag" *ngIf="childrenSubItem.badge">{{ childrenSubItem.badgeText | translate }}</span>
+                </a>
+                <!-- External Link -->
+                <a href="{{ childrenSubItem.path }}"
+                  *ngIf="childrenSubItem.type === 'extLink' ">
+                  {{ childrenSubItem.title | translate }}
+                  <span class="new-tag" *ngIf="childrenSubItem.badge">{{ childrenSubItem.badgeText | translate }}</span>
+                </a>
+                <!-- External Tab Link -->
+                <a href="{{ childrenSubItem.path }}" target="_blank"
+                  *ngIf="childrenSubItem.type === 'extTabLink' ">
+                  {{ childrenSubItem.title | translate }}
+                  <span class="new-tag" *ngIf="childrenSubItem.badge">{{ childrenSubItem.badgeText | translate }}</span>
+                </a>
+              </li>
+            </ul>
+          </li>
+        </ul>
+
+        <div class="mega-menu-container" *ngIf="menuItem.megaMenu && menuItem.children">
+          <div class="container">
+            <div class="row">
+              <div class="col mega-box" *ngFor="let childrenItem of menuItem.children">
+                <div class="link-section">
+                  <div class="menu-title">
+                    <h5>
+                        {{ childrenItem.title | translate }}
+                        <span class="sub-arrow" *ngIf="childrenItem.children"></span>
+                    </h5>
+                  </div>
+                  <div class="menu-content opensubmegamenu">
+                    <ul *ngIf="childrenItem.children">
+                      <li *ngFor="let childrenSubItem of childrenItem.children">
+                        <!-- Sub -->
+                          <a href="javascript:void(0)" *ngIf="childrenSubItem.type === 'sub'">
+                            {{ childrenSubItem.title | translate }}
+                            <span class="new-tag" *ngIf="childrenSubItem.badge">{{ childrenSubItem.badgeText | translate }}</span>
+                          </a>
+                          <!-- Link -->
+                          <a routerLink="childrenSubItem.path" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}" 
+                            *ngIf="childrenSubItem.type === 'link' ">
+                            {{ childrenSubItem.title | translate }}
+                            <span class="new-tag" *ngIf="childrenSubItem.badge">{{ childrenSubItem.badgeText | translate }}</span>
+                          </a>
+                          <!-- External Link -->
+                          <a href="{{ childrenSubItem.path }}"
+                            *ngIf="childrenSubItem.type === 'extLink' ">
+                            {{ childrenSubItem.title | translate }}
+                            <span class="new-tag" *ngIf="childrenSubItem.badge">{{ childrenSubItem.badgeText | translate }}</span>
+                          </a>
+                          <!-- External Tab Link -->
+                          <a href="{{ childrenSubItem.path }}" target="_blank"
+                            *ngIf="childrenSubItem.type === 'extTabLink' ">
+                            {{ childrenSubItem.title | translate }}
+                            <span class="new-tag" *ngIf="childrenSubItem.badge">{{ childrenSubItem.badgeText | translate }}</span>
+                          </a>
+                      </li>
+                    </ul>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </li>
+    </ul>
+  </div>
+</div>

@@ -1,0 +1,24 @@
+:host::ng-deep .owl-item {
+    width: 264px !important;
+    margin-left: 1%;
+}
+
+.nav-item {
+    cursor: pointer;
+}
+
+::ng-deep.button-color :hover {
+    border: 2px solid #3BB0D7 !important;
+    background: #3BB0D7 !important;
+    transition: all 0.2s ease-in-out !important;
+}
+
+body .theme-btn-fourteen :hover {
+
+    background: #3BB0D7 !important;
+
+}
+
+::ng-deep.overflow-hidden {
+    overflow-x: hidden !important;
+}

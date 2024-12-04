@@ -1,0 +1,68 @@
+.far {
+    padding-top: 11px
+}
+
+:host::ng-deep.owl-theme .owl-nav [class*=owl-] {
+
+    font-size: 14px;
+    margin: 5px;
+    padding: 4px 7px;
+    width: 50px;
+    height: 50px;
+    background: var(--color-lighter);
+    color: var(--color-body);
+    border: none;
+    border-radius: 6px;
+    z-index: 2;
+
+
+
+}
+
+:host::ng-deep .owl-theme .owl-nav {
+
+    position: absolute;
+    left: 1010px;
+    z-index: 999;
+    top: -90px;
+
+
+
+
+}
+
+:host::ng-deep.fal {
+    padding-top: 12px !important;
+}
+
+:host::ng-deep .explore-product-activation {
+    @media(width < 800px) {
+        place-items: center;
+        display: grid;
+    }
+
+}
+
+:host::ng-deep .explore-product-activation {
+    @media(width < 800px) {
+        place-items: center;
+        display: grid;
+    }
+
+}
+
+:host::ng-deep .axil-new-arrivals-product-area {
+    @media(width > 800px) {
+        padding: 80px;
+
+    }
+
+}
+
+:host::ng-deep.product-content {
+    @media(width <600px) {
+        margin-right: -40px;
+        margin-bottom: 65%;
+    }
+
+}

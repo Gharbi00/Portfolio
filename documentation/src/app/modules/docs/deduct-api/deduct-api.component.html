@@ -1,0 +1,89 @@
+<main class=" col-xl-10 doc-main-body" data-bs-spy="scroll" data-bs-target="#deduct-api" data-bs-offset="0"
+  tabindex="0">
+  <h2>Deduct Points from User</h2>
+  <div id="introduction">
+    <h3>Introduction</h3>
+    <p>This endpoint facilitates the deduction of points from a user's account, providing administrators with the
+      ability
+      to enforce consequences or manage reward redemptions effectively. Whether mitigating rule violations, implementing
+      penalty systems, or facilitating reward redemption transactions, this functionality ensures precise control over
+      point allocations. By deducting points when necessary, administrators can maintain fairness, uphold
+      accountability,
+      and cultivate a balanced rewards ecosystem.</p>
+  </div>
+  <div id="endpoint">
+    <h3>Endpoint</h3>
+    <div class="mark-red">
+      <pre>URL: /wallet/deduct</pre>
+      <pre>Method: <span class="s1">POST</span></pre>
+    </div>
+  </div>
+  <div id="headers">
+    <h3>Request Headers</h3>
+    <p>Here you need to insert the bearer token obtained from the Login and Get Access Token API.</p>
+    <pre class="bg-black"><code>
+  <span class="s2">&lbrace;</span>
+    <span class="s2">"Authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..."</span>
+  <span class="s2">&rbrace;</span>
+      </code>
+    </pre>
+  </div>
+  <div id="params">
+    <h3>Request Parameters</h3>
+    <div class="mark-red">
+      <pre><span class="s1">user</span>: User's unique identifier.</pre>
+      <pre><span class="s1">card</span>: Loyalty card identifier.</pre>
+      <pre><span class="s1">amount</span>: Total amount of the coins you need to deduct.</pre>
+    </div>
+    <p class="note">Note: Only one of the parameters, either <code>user</code> or <code>card</code>, is required.</p>
+  </div>
+  <div id="error">
+    <h3>Error Handling</h3>
+    <p>The API returns appropriate error responses in case the user's card is not found or if no wallets are found for
+      the
+      provided user.</p>
+    <div class="mark-red">
+      <pre><span class="s1">404 Not Found</span>: If the user's card is not found.</pre>
+    </div>
+  </div>
+  <div id="request">
+    <h3>Sample Request</h3>
+    <p>Upon successful authentication, the API returns an access token.</p>
+    <pre class="bg-black"><code>
+  <span class="s1">POST /wallet/deduct</span>
+  <span class="s1">Authorization: Bearer YOUR_ACCESS_TOKEN</span>
+  <span class="s2">&lbrace;</span>
+    <span class="s2">"card": "loyalty_card_number",</span>
+    <span class="s2">"amount": 87</span>
+  <span class="s2">&rbrace;</span>
+      </code>
+    </pre>
+  </div>
+  <div id="response">
+    <h3>Sample Response</h3>
+    <p>Upon successful authentication, the API returns an access token.</p>
+    <pre class="bg-black"><code>
+  <span class="s2">&lbrace;</span>
+    <span class="s2">"status": 200,</span>
+    <span class="s2">"response": "Amount was deducted successfully."</span>
+  <span class="s2">&rbrace;</span>
+      </code>
+    </pre>
+  </div>
+  <div class="doc-pagination pt-40">
+    <app-pagination></app-pagination>
+  </div>
+</main> <!-- /.doc-main-body -->
+<nav class="d-none d-xl-block col-xl-3 doc-sideNav">
+  <div class="wrapper">
+    <nav class="main-side-nav" id="deduct-api">
+      <a href="deduct-api/#introduction" class="nav-link">Introduction</a>
+      <a href="deduct-api/#endpoint" class="nav-link">Endpoint</a>
+      <a href="deduct-api/#headers" class="nav-link">Request Headers</a>
+      <a href="deduct-api/#params" class="nav-link">Request Parameters</a>
+      <a href="deduct-api/#error" class="nav-link">Error Handling</a>
+      <a href="deduct-api/#request" class="nav-link">Sample Request</a>
+      <a href="deduct-api/#response" class="nav-link">Sample Response</a>
+    </nav>
+  </div>
+</nav>

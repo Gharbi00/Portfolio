@@ -1,0 +1,36 @@
+:host::ng-deep.owl-carousel .owl-item img {
+    @media(width > 399px){
+    
+    width: 20%;
+}
+    @media(width < 400px){
+        
+        width: 30%;
+    
+    }
+
+}
+
+:host::ng-deep .slick-slide{
+    @media(width > 800px){
+    width: 190px;
+     max-height: 90px;
+    }
+    @media(width < 800px){
+        width: 250px;
+         max-height: 90px;
+        }
+}
+:host::ng-deep .owl-carousel .owl-item {
+    @media (max-width > 800px) {
+      width: 80%;
+    }
+  
+    @media (max-width < 800px) {
+      width: 90%;
+    }
+    display: grid !important;
+    place-items: center!important;
+  }
+
+

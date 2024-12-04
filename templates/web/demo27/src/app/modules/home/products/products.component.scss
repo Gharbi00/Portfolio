@@ -1,0 +1,32 @@
+.bg-title.wo-bg .theme-tab .tab-title .current a {
+    color: var(--theme-color);
+ }
+ 
+ .theme-tab .tab-title a, .theme-tab .tab-title2 a {
+    color: #2d2a25;
+    text-transform: uppercase;
+ }
+ .theme-tab .tab-title li, .theme-tab .tab-title2 li {
+    padding-left: 25px;
+    padding-right: 25px;
+ }
+ .addtocart_count .product-box.product-style-1 .add-button {
+    background-color: #f8f8f8;
+    margin-top: 10px;
+ }
+ .addtocart_count .product-box .add-button {
+    background-color: #f5f5f5;
+    color: black;
+    text-align: center;
+    font-size: 18px;
+    width: 100%;
+    padding: 5px 0;
+    -webkit-transition: all 0.5s ease;
+    transition: all 0.5s ease;
+    border: none;
+    cursor: pointer;
+ }
+ .product-style-1.product-box {
+    border: 1px solid #f5f5f5;
+    padding: 10px;
+}

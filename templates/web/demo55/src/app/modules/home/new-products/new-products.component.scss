@@ -1,0 +1,63 @@
+
+
+:host::ng-deep .hello{
+    @media(width < 1200px){
+        display:none;
+    }
+}
+.media{
+    padding-left: 5%;
+}
+::ng-deep.theme-card .owl-prev:before, ::ng-deep.theme-card .owl-next:before {
+    font: normal normal normal 30px/1 FontAwesome;
+    color: #ffffff;
+    opacity: 1;
+}
+.bg-title .theme-card h5.title-border {
+    padding: 10px;
+    color: white;
+    background-color: var(--theme-color);
+    border-radius: 5px;
+}
+.bg-title .theme-tab .bg-title-part {
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-align: center;
+    -ms-flex-align: center;
+    align-items: center;
+    margin-bottom: 30px;
+    margin-top: -6px;
+    background-color: var(--theme-color);
+    padding: 10px;
+    border-radius: 5px;
+}
+.bg-title .theme-tab .bg-title-part .title-border {
+    margin-bottom: 0;
+    color: white;
+    text-transform: capitalize;
+}
+h5 {
+    font-size: 16px;
+    font-weight: 400;
+    color: #222;
+    line-height: 24px;
+    letter-spacing: 0.05em;
+}
+.bg-title .theme-tab .bg-title-part .tab-title .current a {
+    color: white;
+}
+.bg-title .theme-tab .bg-title-part .tab-title a {
+    color: rgba(255,255,255,0.7);
+    text-transform: uppercase;
+}
+.theme-tab .tab-title li, .theme-tab .tab-title2 li {
+    padding-left: 25px;
+    padding-right: 25px;
+}
+.bg-title .theme-tab .bg-title-part .tab-title {
+    margin-bottom: 0;
+    margin-top: 0;
+    margin-left: auto;
+    text-align: right;
+}

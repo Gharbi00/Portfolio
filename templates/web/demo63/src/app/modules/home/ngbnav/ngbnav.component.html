@@ -1,0 +1,619 @@
+<section class="pt-0 ratio_asos section-b-space">
+    <div class="container">
+        <div class="row">
+            <div class="col-12">
+                <div class="title1 wo-border section-t-space">
+                    <h4>exclusive products</h4>
+                    <h2 class="title-inner1 font-courgette">special products</h2>
+                </div>
+            </div>
+            <div class="col-12">
+                <div class="theme-tab">
+                    <ul class="tabs tab-title border-title">
+                        <li [class.current]="activeTab === 'tab-1'" (click)="switchTab('tab-1')"><a>New Products</a></li>
+                        <li [class.current]="activeTab === 'tab-2'" (click)="switchTab('tab-2')"><a>Featured Products</a></li>
+                        <li [class.current]="activeTab === 'tab-3'" (click)="switchTab('tab-3')"><a >Best Sellers</a></li>
+                    </ul>
+                    <div class="tab-content-cls" [@tabAnimation]="activeTab">
+                        <ng-container *ngIf="activeTab==='tab-1'" class="tab-content active default" style="display: block;">
+                            <div class="no-slider row">
+                                <div class="product-box">
+                                    <div class="img-wrapper">
+                                        <div class="lable-block"><span class="lable3">new</span> <span class="lable4">on sale</span></div>
+                                        <div class="front">
+                                            <a href="product-page(no-sidebar).html" class="bg-size blur-up lazyloaded" style="background-image: url(&quot;../assets/images/fragrance/pro/2.jpg&quot;); background-size: cover; background-position: center center; display: block;"><img src="../assets/images/fragrance/pro/2.jpg" class="img-fluid blur-up lazyload bg-img" alt="" ></a>
+                                        </div>
+                                        <div class="cart-info cart-wrap bg-color-cls">
+                                            <button data-bs-toggle="modal" data-bs-target="#addtocart" title="Add to cart"><i class="ti-shopping-cart"></i></button> <a href="javascript:void(0)" title="Add to Wishlist"><i class="ti-heart" aria-hidden="true"></i></a> <a href="#" data-bs-toggle="modal" data-bs-target="#quick-view" title="Quick View"><i class="ti-search" aria-hidden="true"></i></a>
+                                            <a href="compare.html" title="Compare"><i class="ti-reload" aria-hidden="true"></i></a>
+                                        </div>
+                                    </div>
+                                    <div class="product-detail">
+                                        <div class="rating"><i class="fa fa-star"></i> <i class="fa fa-star"></i>
+                                            <i class="fa fa-star"></i> <i class="fa fa-star"></i> <i class="fa fa-star"></i>
+                                        </div>
+                                        <a href="product-page(no-sidebar).html">
+                                            <h6>Fragrance body mist</h6>
+                                        </a>
+                                        <h4>$100.00</h4>
+                                    </div>
+                                </div>
+                                <div class="product-box">
+                                    <div class="img-wrapper">
+                                        <div class="lable-block"><span class="lable3">new</span> <span class="lable4">on sale</span></div>
+                                        <div class="front">
+                                            <a href="product-page(no-sidebar).html" class="bg-size blur-up lazyloaded" style="background-image: url(&quot;../assets/images/fragrance/pro/2.jpg&quot;); background-size: cover; background-position: center center; display: block;"><img src="../assets/images/fragrance/pro/2.jpg" class="img-fluid blur-up lazyload bg-img" alt="" ></a>
+                                        </div>
+                                        <div class="cart-info cart-wrap bg-color-cls">
+                                            <button data-bs-toggle="modal" data-bs-target="#addtocart" title="Add to cart"><i class="ti-shopping-cart"></i></button> <a href="javascript:void(0)" title="Add to Wishlist"><i class="ti-heart" aria-hidden="true"></i></a> <a href="#" data-bs-toggle="modal" data-bs-target="#quick-view" title="Quick View"><i class="ti-search" aria-hidden="true"></i></a>
+                                            <a href="compare.html" title="Compare"><i class="ti-reload" aria-hidden="true"></i></a>
+                                        </div>
+                                    </div>
+                                    <div class="product-detail">
+                                        <div class="rating"><i class="fa fa-star"></i> <i class="fa fa-star"></i>
+                                            <i class="fa fa-star"></i> <i class="fa fa-star"></i> <i class="fa fa-star"></i>
+                                        </div>
+                                        <a href="product-page(no-sidebar).html">
+                                            <h6>Fragrance body mist</h6>
+                                        </a>
+                                        <h4>$100.00</h4>
+                                    </div>
+                                </div>
+                                <div class="product-box">
+                                    <div class="img-wrapper">
+                                        <div class="front">
+                                            <a href="product-page(no-sidebar).html" class="bg-size blur-up lazyloaded" style="background-image: url(&quot;../assets/images/fragrance/pro/3.jpg&quot;); background-size: cover; background-position: center center; display: block;"><img src="../assets/images/fragrance/pro/3.jpg" class="img-fluid blur-up lazyload bg-img" alt="" ></a>
+                                        </div>
+                                        <div class="cart-info cart-wrap bg-color-cls">
+                                            <button data-bs-toggle="modal" data-bs-target="#addtocart" title="Add to cart"><i class="ti-shopping-cart"></i></button> <a href="javascript:void(0)" title="Add to Wishlist"><i class="ti-heart" aria-hidden="true"></i></a> <a href="#" data-bs-toggle="modal" data-bs-target="#quick-view" title="Quick View"><i class="ti-search" aria-hidden="true"></i></a>
+                                            <a href="compare.html" title="Compare"><i class="ti-reload" aria-hidden="true"></i></a>
+                                        </div>
+                                    </div>
+                                    <div class="product-detail">
+                                        <div class="rating"><i class="fa fa-star"></i> <i class="fa fa-star"></i>
+                                            <i class="fa fa-star"></i> <i class="fa fa-star"></i> <i class="fa fa-star"></i>
+                                        </div>
+                                        <a href="product-page(no-sidebar).html">
+                                            <h6>body &amp; hair mist</h6>
+                                        </a>
+                                        <h4>$80.00</h4>
+                                        <ul class="color-variant quantity-variant">
+                                            <li class="bg-light">10ml</li>
+                                            <li class="bg-light">20ml</li>
+                                            <li class="bg-light">30ml</li>
+                                        </ul>
+                                    </div>
+                                </div>
+                                <div class="product-box">
+                                    <div class="img-wrapper">
+                                        <div class="lable-block"><span class="lable3">new</span> <span class="lable4">on sale</span></div>
+                                        <div class="front">
+                                            <a href="product-page(no-sidebar).html" class="bg-size blur-up lazyloaded" style="background-image: url(&quot;../assets/images/fragrance/pro/4.jpg&quot;); background-size: cover; background-position: center center; display: block;"><img src="../assets/images/fragrance/pro/4.jpg" class="img-fluid blur-up lazyload bg-img" alt="" ></a>
+                                        </div>
+                                        <div class="cart-info cart-wrap bg-color-cls">
+                                            <button data-bs-toggle="modal" data-bs-target="#addtocart" title="Add to cart"><i class="ti-shopping-cart"></i></button> <a href="javascript:void(0)" title="Add to Wishlist"><i class="ti-heart" aria-hidden="true"></i></a> <a href="#" data-bs-toggle="modal" data-bs-target="#quick-view" title="Quick View"><i class="ti-search" aria-hidden="true"></i></a>
+                                            <a href="compare.html" title="Compare"><i class="ti-reload" aria-hidden="true"></i></a>
+                                        </div>
+                                    </div>
+                                    <div class="product-detail">
+                                        <div class="rating"><i class="fa fa-star"></i> <i class="fa fa-star"></i>
+                                            <i class="fa fa-star"></i> <i class="fa fa-star"></i> <i class="fa fa-star"></i>
+                                        </div>
+                                        <a href="product-page(no-sidebar).html">
+                                            <h6>perfume body mist</h6>
+                                        </a>
+                                        <h4>$110.00</h4>
+                                        <ul class="color-variant quantity-variant">
+                                            <li class="bg-light">10ml</li>
+                                            <li class="bg-light">20ml</li>
+                                            <li class="bg-light">30ml</li>
+                                        </ul>
+                                    </div>
+                                </div>
+                                <div class="product-box">
+                                    <div class="img-wrapper">
+                                        <div class="lable-block"><span class="lable3">new</span> <span class="lable4">on sale</span></div>
+                                        <div class="front">
+                                            <a href="product-page(no-sidebar).html" class="bg-size blur-up lazyloaded" style="background-image: url(&quot;../assets/images/fragrance/pro/5.jpg&quot;); background-size: cover; background-position: center center; display: block;"><img src="../assets/images/fragrance/pro/5.jpg" class="img-fluid blur-up lazyload bg-img" alt="" ></a>
+                                        </div>
+                                        <div class="cart-info cart-wrap bg-color-cls">
+                                            <button data-bs-toggle="modal" data-bs-target="#addtocart" title="Add to cart"><i class="ti-shopping-cart"></i></button> <a href="javascript:void(0)" title="Add to Wishlist"><i class="ti-heart" aria-hidden="true"></i></a> <a href="#" data-bs-toggle="modal" data-bs-target="#quick-view" title="Quick View"><i class="ti-search" aria-hidden="true"></i></a>
+                                            <a href="compare.html" title="Compare"><i class="ti-reload" aria-hidden="true"></i></a>
+                                        </div>
+                                    </div>
+                                    <div class="product-detail">
+                                        <div class="rating"><i class="fa fa-star"></i> <i class="fa fa-star"></i>
+                                            <i class="fa fa-star"></i> <i class="fa fa-star"></i> <i class="fa fa-star"></i>
+                                        </div>
+                                        <a href="product-page(no-sidebar).html">
+                                            <h6>organic perfumes</h6>
+                                        </a>
+                                        <h4>$25.70</h4>
+                                        <ul class="color-variant quantity-variant">
+                                            <li class="bg-light">10ml</li>
+                                            <li class="bg-light">20ml</li>
+                                            <li class="bg-light">30ml</li>
+                                        </ul>
+                                    </div>
+                                </div>
+                                <div class="product-box">
+                                    <div class="img-wrapper">
+                                        <div class="front">
+                                            <a href="product-page(no-sidebar).html" class="bg-size blur-up lazyloaded" style="background-image: url(&quot;../assets/images/fragrance/pro/6.jpg&quot;); background-size: cover; background-position: center center; display: block;"><img src="../assets/images/fragrance/pro/6.jpg" class="img-fluid blur-up lazyload bg-img" alt="" ></a>
+                                        </div>
+                                        <div class="cart-info cart-wrap bg-color-cls">
+                                            <button data-bs-toggle="modal" data-bs-target="#addtocart" title="Add to cart"><i class="ti-shopping-cart"></i></button> <a href="javascript:void(0)" title="Add to Wishlist"><i class="ti-heart" aria-hidden="true"></i></a> <a href="#" data-bs-toggle="modal" data-bs-target="#quick-view" title="Quick View"><i class="ti-search" aria-hidden="true"></i></a>
+                                            <a href="compare.html" title="Compare"><i class="ti-reload" aria-hidden="true"></i></a>
+                                        </div>
+                                    </div>
+                                    <div class="product-detail">
+                                        <div class="rating"><i class="fa fa-star"></i> <i class="fa fa-star"></i>
+                                            <i class="fa fa-star"></i> <i class="fa fa-star"></i> <i class="fa fa-star"></i>
+                                        </div>
+                                        <a href="product-page(no-sidebar).html">
+                                            <h6>perfume first date</h6>
+                                        </a>
+                                        <h4>$125.00</h4>
+                                        <ul class="color-variant quantity-variant">
+                                            <li class="bg-light">10ml</li>
+                                        </ul>
+                                    </div>
+                                </div>
+                                <div class="product-box">
+                                    <div class="img-wrapper">
+                                        <div class="lable-block"><span class="lable3">new</span> <span class="lable4">on sale</span></div>
+                                        <div class="front">
+                                            <a href="product-page(no-sidebar).html" class="bg-size blur-up lazyloaded" style="background-image: url(&quot;../assets/images/fragrance/pro/7.jpg&quot;); background-size: cover; background-position: center center; display: block;"><img src="../assets/images/fragrance/pro/7.jpg" class="img-fluid blur-up lazyload bg-img" alt="" ></a>
+                                        </div>
+                                        <div class="cart-info cart-wrap bg-color-cls">
+                                            <button data-bs-toggle="modal" data-bs-target="#addtocart" title="Add to cart"><i class="ti-shopping-cart"></i></button> <a href="javascript:void(0)" title="Add to Wishlist"><i class="ti-heart" aria-hidden="true"></i></a> <a href="#" data-bs-toggle="modal" data-bs-target="#quick-view" title="Quick View"><i class="ti-search" aria-hidden="true"></i></a>
+                                            <a href="compare.html" title="Compare"><i class="ti-reload" aria-hidden="true"></i></a>
+                                        </div>
+                                    </div>
+                                    <div class="product-detail">
+                                        <div class="rating"><i class="fa fa-star"></i> <i class="fa fa-star"></i>
+                                            <i class="fa fa-star"></i> <i class="fa fa-star"></i> <i class="fa fa-star"></i>
+                                        </div>
+                                        <a href="product-page(no-sidebar).html">
+                                            <h6>eau de parfum</h6>
+                                        </a>
+                                        <h4>$110.12</h4>
+                                        <ul class="color-variant quantity-variant">
+                                            <li class="bg-light">10ml</li>
+                                            <li class="bg-light">20ml</li>
+                                        </ul>
+                                    </div>
+                                </div>
+                                <div class="product-box">
+                                    <div class="img-wrapper">
+                                        <div class="front">
+                                            <a href="product-page(no-sidebar).html" class="bg-size blur-up lazyloaded" style="background-image: url(&quot;../assets/images/fragrance/pro/8.jpg&quot;); background-size: cover; background-position: center center; display: block;"><img src="../assets/images/fragrance/pro/8.jpg" class="img-fluid blur-up lazyload bg-img" alt="" ></a>
+                                        </div>
+                                        <div class="cart-info cart-wrap bg-color-cls">
+                                            <button data-bs-toggle="modal" data-bs-target="#addtocart" title="Add to cart"><i class="ti-shopping-cart"></i></button> <a href="javascript:void(0)" title="Add to Wishlist"><i class="ti-heart" aria-hidden="true"></i></a> <a href="#" data-bs-toggle="modal" data-bs-target="#quick-view" title="Quick View"><i class="ti-search" aria-hidden="true"></i></a>
+                                            <a href="compare.html" title="Compare"><i class="ti-reload" aria-hidden="true"></i></a>
+                                        </div>
+                                    </div>
+                                    <div class="product-detail">
+                                        <div class="rating"><i class="fa fa-star"></i> <i class="fa fa-star"></i>
+                                            <i class="fa fa-star"></i> <i class="fa fa-star"></i> <i class="fa fa-star"></i>
+                                        </div>
+                                        <a href="product-page(no-sidebar).html">
+                                            <h6>unisex luxury gift</h6>
+                                        </a>
+                                        <h4>$120.50</h4>
+                                        <ul class="color-variant quantity-variant">
+                                            <li class="bg-light">10ml</li>
+                                            <li class="bg-light">20ml</li>
+                                            <li class="bg-light">30ml</li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                        </ng-container>
+                        <ng-container *ngIf="activeTab==='tab-2'" class="tab-content">
+                            <div class="no-slider row">
+                                <div class="product-box">
+                                    <div class="img-wrapper">
+                                        <div class="lable-block"><span class="lable3">new</span> <span class="lable4">on sale</span></div>
+                                        <div class="front">
+                                            <a href="product-page(no-sidebar).html" class="bg-size blur-up lazyload" style="background-image: url(&quot;../assets/images/fragrance/pro/4.jpg&quot;); background-size: cover; background-position: center center; display: block;"><img src="../assets/images/fragrance/pro/4.jpg" class="img-fluid blur-up lazyload bg-img" alt="" ></a>
+                                        </div>
+                                        <div class="cart-info cart-wrap bg-color-cls">
+                                            <button data-bs-toggle="modal" data-bs-target="#addtocart" title="Add to cart"><i class="ti-shopping-cart"></i></button> <a href="javascript:void(0)" title="Add to Wishlist"><i class="ti-heart" aria-hidden="true"></i></a> <a href="#" data-bs-toggle="modal" data-bs-target="#quick-view" title="Quick View"><i class="ti-search" aria-hidden="true"></i></a>
+                                            <a href="compare.html" title="Compare"><i class="ti-reload" aria-hidden="true"></i></a>
+                                        </div>
+                                    </div>
+                                    <div class="product-detail">
+                                        <div class="rating"><i class="fa fa-star"></i> <i class="fa fa-star"></i>
+                                            <i class="fa fa-star"></i> <i class="fa fa-star"></i> <i class="fa fa-star"></i>
+                                        </div>
+                                        <a href="product-page(no-sidebar).html">
+                                            <h6>perfume body mist</h6>
+                                        </a>
+                                        <h4>$110.00</h4>
+                                        <ul class="color-variant quantity-variant">
+                                            <li class="bg-light">10ml</li>
+                                            <li class="bg-light">20ml</li>
+                                            <li class="bg-light">30ml</li>
+                                        </ul>
+                                    </div>
+                                </div>
+                                <div class="product-box">
+                                    <div class="img-wrapper">
+                                        <div class="lable-block"><span class="lable3">new</span> <span class="lable4">on sale</span></div>
+                                        <div class="front">
+                                            <a href="product-page(no-sidebar).html" class="bg-size blur-up lazyload" style="background-image: url(&quot;../assets/images/fragrance/pro/5.jpg&quot;); background-size: cover; background-position: center center; display: block;"><img src="../assets/images/fragrance/pro/5.jpg" class="img-fluid blur-up lazyload bg-img" alt="" ></a>
+                                        </div>
+                                        <div class="cart-info cart-wrap bg-color-cls">
+                                            <button data-bs-toggle="modal" data-bs-target="#addtocart" title="Add to cart"><i class="ti-shopping-cart"></i></button> <a href="javascript:void(0)" title="Add to Wishlist"><i class="ti-heart" aria-hidden="true"></i></a> <a href="#" data-bs-toggle="modal" data-bs-target="#quick-view" title="Quick View"><i class="ti-search" aria-hidden="true"></i></a>
+                                            <a href="compare.html" title="Compare"><i class="ti-reload" aria-hidden="true"></i></a>
+                                        </div>
+                                    </div>
+                                    <div class="product-detail">
+                                        <div class="rating"><i class="fa fa-star"></i> <i class="fa fa-star"></i>
+                                            <i class="fa fa-star"></i> <i class="fa fa-star"></i> <i class="fa fa-star"></i>
+                                        </div>
+                                        <a href="product-page(no-sidebar).html">
+                                            <h6>organic perfumes</h6>
+                                        </a>
+                                        <h4>$125.70</h4>
+                                        <ul class="color-variant quantity-variant">
+                                            <li class="bg-light">10ml</li>
+                                            <li class="bg-light">20ml</li>
+                                            <li class="bg-light">30ml</li>
+                                        </ul>
+                                    </div>
+                                </div>
+                                <div class="product-box">
+                                    <div class="img-wrapper">
+                                        <div class="front">
+                                            <a href="product-page(no-sidebar).html" class="bg-size blur-up lazyload" style="background-image: url(&quot;../assets/images/fragrance/pro/6.jpg&quot;); background-size: cover; background-position: center center; display: block;"><img src="../assets/images/fragrance/pro/6.jpg" class="img-fluid blur-up lazyload bg-img" alt="" ></a>
+                                        </div>
+                                        <div class="cart-info cart-wrap bg-color-cls">
+                                            <button data-bs-toggle="modal" data-bs-target="#addtocart" title="Add to cart"><i class="ti-shopping-cart"></i></button> <a href="javascript:void(0)" title="Add to Wishlist"><i class="ti-heart" aria-hidden="true"></i></a> <a href="#" data-bs-toggle="modal" data-bs-target="#quick-view" title="Quick View"><i class="ti-search" aria-hidden="true"></i></a>
+                                            <a href="compare.html" title="Compare"><i class="ti-reload" aria-hidden="true"></i></a>
+                                        </div>
+                                    </div>
+                                    <div class="product-detail">
+                                        <div class="rating"><i class="fa fa-star"></i> <i class="fa fa-star"></i>
+                                            <i class="fa fa-star"></i> <i class="fa fa-star"></i> <i class="fa fa-star"></i>
+                                        </div>
+                                        <a href="product-page(no-sidebar).html">
+                                            <h6>perfume first date</h6>
+                                        </a>
+                                        <h4>$125.00</h4>
+                                        <ul class="color-variant quantity-variant">
+                                            <li class="bg-light">10ml</li>
+                                        </ul>
+                                    </div>
+                                </div>
+                                <div class="product-box">
+                                    <div class="img-wrapper">
+                                        <div class="front">
+                                            <a href="product-page(no-sidebar).html" class="bg-size blur-up lazyload" style="background-image: url(&quot;../assets/images/fragrance/pro/1.jpg&quot;); background-size: cover; background-position: center center; display: block;"><img src="../assets/images/fragrance/pro/1.jpg" class="img-fluid blur-up lazyload bg-img" alt="" ></a>
+                                        </div>
+                                        <div class="cart-info cart-wrap bg-color-cls">
+                                            <button data-bs-toggle="modal" data-bs-target="#addtocart" title="Add to cart"><i class="ti-shopping-cart"></i></button> <a href="javascript:void(0)" title="Add to Wishlist"><i class="ti-heart" aria-hidden="true"></i></a> <a href="#" data-bs-toggle="modal" data-bs-target="#quick-view" title="Quick View"><i class="ti-search" aria-hidden="true"></i></a>
+                                            <a href="compare.html" title="Compare"><i class="ti-reload" aria-hidden="true"></i></a>
+                                        </div>
+                                    </div>
+                                    <div class="product-detail">
+                                        <div class="rating"><i class="fa fa-star"></i> <i class="fa fa-star"></i>
+                                            <i class="fa fa-star"></i> <i class="fa fa-star"></i> <i class="fa fa-star"></i>
+                                        </div>
+                                        <a href="product-page(no-sidebar).html">
+                                            <h6>cherry blossom fragrance</h6>
+                                        </a>
+                                        <h4>123.00</h4>
+                                        <ul class="color-variant quantity-variant">
+                                            <li class="bg-light">10ml</li>
+                                            <li class="bg-light">20ml</li>
+                                            <li class="bg-light">30ml</li>
+                                        </ul>
+                                    </div>
+                                </div>
+                                <div class="product-box">
+                                    <div class="img-wrapper">
+                                        <div class="lable-block"><span class="lable3">new</span> <span class="lable4">on sale</span></div>
+                                        <div class="front">
+                                            <a href="product-page(no-sidebar).html" class="bg-size blur-up lazyload" style="background-image: url(&quot;../assets/images/fragrance/pro/2.jpg&quot;); background-size: cover; background-position: center center; display: block;"><img src="../assets/images/fragrance/pro/2.jpg" class="img-fluid blur-up lazyload bg-img" alt="" ></a>
+                                        </div>
+                                        <div class="cart-info cart-wrap bg-color-cls">
+                                            <button data-bs-toggle="modal" data-bs-target="#addtocart" title="Add to cart"><i class="ti-shopping-cart"></i></button> <a href="javascript:void(0)" title="Add to Wishlist"><i class="ti-heart" aria-hidden="true"></i></a> <a href="#" data-bs-toggle="modal" data-bs-target="#quick-view" title="Quick View"><i class="ti-search" aria-hidden="true"></i></a>
+                                            <a href="compare.html" title="Compare"><i class="ti-reload" aria-hidden="true"></i></a>
+                                        </div>
+                                    </div>
+                                    <div class="product-detail">
+                                        <div class="rating"><i class="fa fa-star"></i> <i class="fa fa-star"></i>
+                                            <i class="fa fa-star"></i> <i class="fa fa-star"></i> <i class="fa fa-star"></i>
+                                        </div>
+                                        <a href="product-page(no-sidebar).html">
+                                            <h6>Fragrance body mist</h6>
+                                        </a>
+                                        <h4>$100.00</h4>
+                                    </div>
+                                </div>
+                                <div class="product-box">
+                                    <div class="img-wrapper">
+                                        <div class="front">
+                                            <a href="product-page(no-sidebar).html" class="bg-size blur-up lazyload" style="background-image: url(&quot;../assets/images/fragrance/pro/3.jpg&quot;); background-size: cover; background-position: center center; display: block;"><img src="../assets/images/fragrance/pro/3.jpg" class="img-fluid blur-up lazyload bg-img" alt="" ></a>
+                                        </div>
+                                        <div class="cart-info cart-wrap bg-color-cls">
+                                            <button data-bs-toggle="modal" data-bs-target="#addtocart" title="Add to cart"><i class="ti-shopping-cart"></i></button> <a href="javascript:void(0)" title="Add to Wishlist"><i class="ti-heart" aria-hidden="true"></i></a> <a href="#" data-bs-toggle="modal" data-bs-target="#quick-view" title="Quick View"><i class="ti-search" aria-hidden="true"></i></a>
+                                            <a href="compare.html" title="Compare"><i class="ti-reload" aria-hidden="true"></i></a>
+                                        </div>
+                                    </div>
+                                    <div class="product-detail">
+                                        <div class="rating"><i class="fa fa-star"></i> <i class="fa fa-star"></i>
+                                            <i class="fa fa-star"></i> <i class="fa fa-star"></i> <i class="fa fa-star"></i>
+                                        </div>
+                                        <a href="product-page(no-sidebar).html">
+                                            <h6>body &amp; hair mist</h6>
+                                        </a>
+                                        <h4>$80.00</h4>
+                                        <ul class="color-variant quantity-variant">
+                                            <li class="bg-light">10ml</li>
+                                            <li class="bg-light">20ml</li>
+                                            <li class="bg-light">30ml</li>
+                                        </ul>
+                                    </div>
+                                </div>
+                                <div class="product-box">
+                                    <div class="img-wrapper">
+                                        <div class="lable-block"><span class="lable3">new</span> <span class="lable4">on sale</span></div>
+                                        <div class="front">
+                                            <a href="product-page(no-sidebar).html" class="bg-size blur-up lazyload" style="background-image: url(&quot;../assets/images/fragrance/pro/7.jpg&quot;); background-size: cover; background-position: center center; display: block;"><img src="../assets/images/fragrance/pro/7.jpg" class="img-fluid blur-up lazyload bg-img" alt="" ></a>
+                                        </div>
+                                        <div class="cart-info cart-wrap bg-color-cls">
+                                            <button data-bs-toggle="modal" data-bs-target="#addtocart" title="Add to cart"><i class="ti-shopping-cart"></i></button> <a href="javascript:void(0)" title="Add to Wishlist"><i class="ti-heart" aria-hidden="true"></i></a> <a href="#" data-bs-toggle="modal" data-bs-target="#quick-view" title="Quick View"><i class="ti-search" aria-hidden="true"></i></a>
+                                            <a href="compare.html" title="Compare"><i class="ti-reload" aria-hidden="true"></i></a>
+                                        </div>
+                                    </div>
+                                    <div class="product-detail">
+                                        <div class="rating"><i class="fa fa-star"></i> <i class="fa fa-star"></i>
+                                            <i class="fa fa-star"></i> <i class="fa fa-star"></i> <i class="fa fa-star"></i>
+                                        </div>
+                                        <a href="product-page(no-sidebar).html">
+                                            <h6>eau de parfum</h6>
+                                        </a>
+                                        <h4>$110.12</h4>
+                                        <ul class="color-variant quantity-variant">
+                                            <li class="bg-light">10ml</li>
+                                            <li class="bg-light">20ml</li>
+                                        </ul>
+                                    </div>
+                                </div>
+                                <div class="product-box">
+                                    <div class="img-wrapper">
+                                        <div class="front">
+                                            <a href="product-page(no-sidebar).html" class="bg-size blur-up lazyload" style="background-image: url(&quot;../assets/images/fragrance/pro/8.jpg&quot;); background-size: cover; background-position: center center; display: block;"><img src="../assets/images/fragrance/pro/8.jpg" class="img-fluid blur-up lazyload bg-img" alt="" ></a>
+                                        </div>
+                                        <div class="cart-info cart-wrap bg-color-cls">
+                                            <button data-bs-toggle="modal" data-bs-target="#addtocart" title="Add to cart"><i class="ti-shopping-cart"></i></button> <a href="javascript:void(0)" title="Add to Wishlist"><i class="ti-heart" aria-hidden="true"></i></a> <a href="#" data-bs-toggle="modal" data-bs-target="#quick-view" title="Quick View"><i class="ti-search" aria-hidden="true"></i></a>
+                                            <a href="compare.html" title="Compare"><i class="ti-reload" aria-hidden="true"></i></a>
+                                        </div>
+                                    </div>
+                                    <div class="product-detail">
+                                        <div class="rating"><i class="fa fa-star"></i> <i class="fa fa-star"></i>
+                                            <i class="fa fa-star"></i> <i class="fa fa-star"></i> <i class="fa fa-star"></i>
+                                        </div>
+                                        <a href="product-page(no-sidebar).html">
+                                            <h6>unisex luxury gift</h6>
+                                        </a>
+                                        <h4>$120.50</h4>
+                                        <ul class="color-variant quantity-variant">
+                                            <li class="bg-light">10ml</li>
+                                            <li class="bg-light">20ml</li>
+                                            <li class="bg-light">30ml</li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                        </ng-container>
+                        <ng-container *ngIf="activeTab==='tab-3'" class="tab-content">
+                            <div class="no-slider row">
+                                <div class="product-box">
+                                    <div class="img-wrapper">
+                                        <div class="front">
+                                            <a href="product-page(no-sidebar).html" class="bg-size blur-up lazyload" style="background-image: url(&quot;../assets/images/fragrance/pro/6.jpg&quot;); background-size: cover; background-position: center center; display: block;"><img src="../assets/images/fragrance/pro/6.jpg" class="img-fluid blur-up lazyload bg-img" alt="" ></a>
+                                        </div>
+                                        <div class="cart-info cart-wrap bg-color-cls">
+                                            <button data-bs-toggle="modal" data-bs-target="#addtocart" title="Add to cart"><i class="ti-shopping-cart"></i></button> <a href="javascript:void(0)" title="Add to Wishlist"><i class="ti-heart" aria-hidden="true"></i></a> <a href="#" data-bs-toggle="modal" data-bs-target="#quick-view" title="Quick View"><i class="ti-search" aria-hidden="true"></i></a>
+                                            <a href="compare.html" title="Compare"><i class="ti-reload" aria-hidden="true"></i></a>
+                                        </div>
+                                    </div>
+                                    <div class="product-detail">
+                                        <div class="rating"><i class="fa fa-star"></i> <i class="fa fa-star"></i>
+                                            <i class="fa fa-star"></i> <i class="fa fa-star"></i> <i class="fa fa-star"></i>
+                                        </div>
+                                        <a href="product-page(no-sidebar).html">
+                                            <h6>perfume first date</h6>
+                                        </a>
+                                        <h4>$125.00</h4>
+                                        <ul class="color-variant quantity-variant">
+                                            <li class="bg-light">10ml</li>
+                                        </ul>
+                                    </div>
+                                </div>
+                                <div class="product-box">
+                                    <div class="img-wrapper">
+                                        <div class="lable-block"><span class="lable3">new</span> <span class="lable4">on sale</span></div>
+                                        <div class="front">
+                                            <a href="product-page(no-sidebar).html" class="bg-size blur-up lazyload" style="background-image: url(&quot;../assets/images/fragrance/pro/7.jpg&quot;); background-size: cover; background-position: center center; display: block;"><img src="../assets/images/fragrance/pro/7.jpg" class="img-fluid blur-up lazyload bg-img" alt="" ></a>
+                                        </div>
+                                        <div class="cart-info cart-wrap bg-color-cls">
+                                            <button data-bs-toggle="modal" data-bs-target="#addtocart" title="Add to cart"><i class="ti-shopping-cart"></i></button> <a href="javascript:void(0)" title="Add to Wishlist"><i class="ti-heart" aria-hidden="true"></i></a> <a href="#" data-bs-toggle="modal" data-bs-target="#quick-view" title="Quick View"><i class="ti-search" aria-hidden="true"></i></a>
+                                            <a href="compare.html" title="Compare"><i class="ti-reload" aria-hidden="true"></i></a>
+                                        </div>
+                                    </div>
+                                    <div class="product-detail">
+                                        <div class="rating"><i class="fa fa-star"></i> <i class="fa fa-star"></i>
+                                            <i class="fa fa-star"></i> <i class="fa fa-star"></i> <i class="fa fa-star"></i>
+                                        </div>
+                                        <a href="product-page(no-sidebar).html">
+                                            <h6>eau de parfum</h6>
+                                        </a>
+                                        <h4>$110.12</h4>
+                                        <ul class="color-variant quantity-variant">
+                                            <li class="bg-light">10ml</li>
+                                            <li class="bg-light">20ml</li>
+                                        </ul>
+                                    </div>
+                                </div>
+                                <div class="product-box">
+                                    <div class="img-wrapper">
+                                        <div class="front">
+                                            <a href="product-page(no-sidebar).html" class="bg-size blur-up lazyload" style="background-image: url(&quot;../assets/images/fragrance/pro/8.jpg&quot;); background-size: cover; background-position: center center; display: block;"><img src="../assets/images/fragrance/pro/8.jpg" class="img-fluid blur-up lazyload bg-img" alt="" ></a>
+                                        </div>
+                                        <div class="cart-info cart-wrap bg-color-cls">
+                                            <button data-bs-toggle="modal" data-bs-target="#addtocart" title="Add to cart"><i class="ti-shopping-cart"></i></button> <a href="javascript:void(0)" title="Add to Wishlist"><i class="ti-heart" aria-hidden="true"></i></a> <a href="#" data-bs-toggle="modal" data-bs-target="#quick-view" title="Quick View"><i class="ti-search" aria-hidden="true"></i></a>
+                                            <a href="compare.html" title="Compare"><i class="ti-reload" aria-hidden="true"></i></a>
+                                        </div>
+                                    </div>
+                                    <div class="product-detail">
+                                        <div class="rating"><i class="fa fa-star"></i> <i class="fa fa-star"></i>
+                                            <i class="fa fa-star"></i> <i class="fa fa-star"></i> <i class="fa fa-star"></i>
+                                        </div>
+                                        <a href="product-page(no-sidebar).html">
+                                            <h6>unisex luxury gift</h6>
+                                        </a>
+                                        <h4>$120.50</h4>
+                                        <ul class="color-variant quantity-variant">
+                                            <li class="bg-light">10ml</li>
+                                            <li class="bg-light">20ml</li>
+                                            <li class="bg-light">30ml</li>
+                                        </ul>
+                                    </div>
+                                </div>
+                                <div class="product-box">
+                                    <div class="img-wrapper">
+                                        <div class="lable-block"><span class="lable3">new</span> <span class="lable4">on sale</span></div>
+                                        <div class="front">
+                                            <a href="product-page(no-sidebar).html" class="bg-size blur-up lazyload" style="background-image: url(&quot;../assets/images/fragrance/pro/2.jpg&quot;); background-size: cover; background-position: center center; display: block;"><img src="../assets/images/fragrance/pro/2.jpg" class="img-fluid blur-up lazyload bg-img" alt="" ></a>
+                                        </div>
+                                        <div class="cart-info cart-wrap bg-color-cls">
+                                            <button data-bs-toggle="modal" data-bs-target="#addtocart" title="Add to cart"><i class="ti-shopping-cart"></i></button> <a href="javascript:void(0)" title="Add to Wishlist"><i class="ti-heart" aria-hidden="true"></i></a> <a href="#" data-bs-toggle="modal" data-bs-target="#quick-view" title="Quick View"><i class="ti-search" aria-hidden="true"></i></a>
+                                            <a href="compare.html" title="Compare"><i class="ti-reload" aria-hidden="true"></i></a>
+                                        </div>
+                                    </div>
+                                    <div class="product-detail">
+                                        <div class="rating"><i class="fa fa-star"></i> <i class="fa fa-star"></i>
+                                            <i class="fa fa-star"></i> <i class="fa fa-star"></i> <i class="fa fa-star"></i>
+                                        </div>
+                                        <a href="product-page(no-sidebar).html">
+                                            <h6>Fragrance body mist</h6>
+                                        </a>
+                                        <h4>$100.00</h4>
+                                    </div>
+                                </div>
+                                <div class="product-box">
+                                    <div class="img-wrapper">
+                                        <div class="front">
+                                            <a href="product-page(no-sidebar).html" class="bg-size blur-up lazyload" style="background-image: url(&quot;../assets/images/fragrance/pro/3.jpg&quot;); background-size: cover; background-position: center center; display: block;"><img src="../assets/images/fragrance/pro/3.jpg" class="img-fluid blur-up lazyload bg-img" alt="" ></a>
+                                        </div>
+                                        <div class="cart-info cart-wrap bg-color-cls">
+                                            <button data-bs-toggle="modal" data-bs-target="#addtocart" title="Add to cart"><i class="ti-shopping-cart"></i></button> <a href="javascript:void(0)" title="Add to Wishlist"><i class="ti-heart" aria-hidden="true"></i></a> <a href="#" data-bs-toggle="modal" data-bs-target="#quick-view" title="Quick View"><i class="ti-search" aria-hidden="true"></i></a>
+                                            <a href="compare.html" title="Compare"><i class="ti-reload" aria-hidden="true"></i></a>
+                                        </div>
+                                    </div>
+                                    <div class="product-detail">
+                                        <div class="rating"><i class="fa fa-star"></i> <i class="fa fa-star"></i>
+                                            <i class="fa fa-star"></i> <i class="fa fa-star"></i> <i class="fa fa-star"></i>
+                                        </div>
+                                        <a href="product-page(no-sidebar).html">
+                                            <h6>body &amp; hair mist</h6>
+                                        </a>
+                                        <h4>$80.00</h4>
+                                        <ul class="color-variant quantity-variant">
+                                            <li class="bg-light">10ml</li>
+                                            <li class="bg-light">20ml</li>
+                                            <li class="bg-light">30ml</li>
+                                        </ul>
+                                    </div>
+                                </div>
+                                <div class="product-box">
+                                    <div class="img-wrapper">
+                                        <div class="front">
+                                            <a href="product-page(no-sidebar).html" class="bg-size blur-up lazyload" style="background-image: url(&quot;../assets/images/fragrance/pro/1.jpg&quot;); background-size: cover; background-position: center center; display: block;"><img src="../assets/images/fragrance/pro/1.jpg" class="img-fluid blur-up lazyload bg-img" alt="" ></a>
+                                        </div>
+                                        <div class="cart-info cart-wrap bg-color-cls">
+                                            <button data-bs-toggle="modal" data-bs-target="#addtocart" title="Add to cart"><i class="ti-shopping-cart"></i></button> <a href="javascript:void(0)" title="Add to Wishlist"><i class="ti-heart" aria-hidden="true"></i></a> <a href="#" data-bs-toggle="modal" data-bs-target="#quick-view" title="Quick View"><i class="ti-search" aria-hidden="true"></i></a>
+                                            <a href="compare.html" title="Compare"><i class="ti-reload" aria-hidden="true"></i></a>
+                                        </div>
+                                    </div>
+                                    <div class="product-detail">
+                                        <div class="rating"><i class="fa fa-star"></i> <i class="fa fa-star"></i>
+                                            <i class="fa fa-star"></i> <i class="fa fa-star"></i> <i class="fa fa-star"></i>
+                                        </div>
+                                        <a href="product-page(no-sidebar).html">
+                                            <h6>cherry blossom fragrance</h6>
+                                        </a>
+                                        <h4>$123.00</h4>
+                                        <ul class="color-variant quantity-variant">
+                                            <li class="bg-light">10ml</li>
+                                            <li class="bg-light">20ml</li>
+                                            <li class="bg-light">30ml</li>
+                                        </ul>
+                                    </div>
+                                </div>
+                                <div class="product-box">
+                                    <div class="img-wrapper">
+                                        <div class="lable-block"><span class="lable3">new</span> <span class="lable4">on sale</span></div>
+                                        <div class="front">
+                                            <a href="product-page(no-sidebar).html" class="bg-size blur-up lazyload" style="background-image: url(&quot;../assets/images/fragrance/pro/4.jpg&quot;); background-size: cover; background-position: center center; display: block;"><img src="../assets/images/fragrance/pro/4.jpg" class="img-fluid blur-up lazyload bg-img" alt="" ></a>
+                                        </div>
+                                        <div class="cart-info cart-wrap bg-color-cls">
+                                            <button data-bs-toggle="modal" data-bs-target="#addtocart" title="Add to cart"><i class="ti-shopping-cart"></i></button> <a href="javascript:void(0)" title="Add to Wishlist"><i class="ti-heart" aria-hidden="true"></i></a> <a href="#" data-bs-toggle="modal" data-bs-target="#quick-view" title="Quick View"><i class="ti-search" aria-hidden="true"></i></a>
+                                            <a href="compare.html" title="Compare"><i class="ti-reload" aria-hidden="true"></i></a>
+                                        </div>
+                                    </div>
+                                    <div class="product-detail">
+                                        <div class="rating"><i class="fa fa-star"></i> <i class="fa fa-star"></i>
+                                            <i class="fa fa-star"></i> <i class="fa fa-star"></i> <i class="fa fa-star"></i>
+                                        </div>
+                                        <a href="product-page(no-sidebar).html">
+                                            <h6>perfume body mist</h6>
+                                        </a>
+                                        <h4>$110.00</h4>
+                                        <ul class="color-variant quantity-variant">
+                                            <li class="bg-light">10ml</li>
+                                            <li class="bg-light">20ml</li>
+                                            <li class="bg-light">30ml</li>
+                                        </ul>
+                                    </div>
+                                </div>
+                                <div class="product-box">
+                                    <div class="img-wrapper">
+                                        <div class="lable-block"><span class="lable3">new</span> <span class="lable4">on sale</span></div>
+                                        <div class="front">
+                                            <a href="product-page(no-sidebar).html" class="bg-size blur-up lazyload" style="background-image: url(&quot;../assets/images/fragrance/pro/5.jpg&quot;); background-size: cover; background-position: center center; display: block;"><img src="../assets/images/fragrance/pro/5.jpg" class="img-fluid blur-up lazyload bg-img" alt="" ></a>
+                                        </div>
+                                        <div class="cart-info cart-wrap bg-color-cls">
+                                            <button data-bs-toggle="modal" data-bs-target="#addtocart" title="Add to cart"><i class="ti-shopping-cart"></i></button> <a href="javascript:void(0)" title="Add to Wishlist"><i class="ti-heart" aria-hidden="true"></i></a> <a href="#" data-bs-toggle="modal" data-bs-target="#quick-view" title="Quick View"><i class="ti-search" aria-hidden="true"></i></a>
+                                            <a href="compare.html" title="Compare"><i class="ti-reload" aria-hidden="true"></i></a>
+                                        </div>
+                                    </div>
+                                    <div class="product-detail">
+                                        <div class="rating"><i class="fa fa-star"></i> <i class="fa fa-star"></i>
+                                            <i class="fa fa-star"></i> <i class="fa fa-star"></i> <i class="fa fa-star"></i>
+                                        </div>
+                                        <a href="product-page(no-sidebar).html">
+                                            <h6>organic perfumes</h6>
+                                        </a>
+                                        <h4>$125.70</h4>
+                                        <ul class="color-variant quantity-variant">
+                                            <li class="bg-light">10ml</li>
+                                            <li class="bg-light">20ml</li>
+                                            <li class="bg-light">30ml</li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                        </ng-container>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>

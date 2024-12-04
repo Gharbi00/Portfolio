@@ -1,0 +1,46 @@
+.main-navbar{
+    @media(width > 1200px){
+        margin-right: 230px;
+    }
+ 
+}
+.mb-0{
+    font-size: 25px;
+    font-weight: 400;
+    color: #ffffff;
+    line-height: 55px;
+    letter-spacing: 0.05em;
+    left: 12%;
+    position: relative;
+}
+.sidebar-bar{
+    left: 92%;
+    position: absolute;
+    bottom: 42%;
+    filter: invert(1);
+}
+.bottom-part{
+    @media(width<1200px){
+        display: none;
+        z-index: 0;
+    }
+}
+.main-navbar{
+    @media(width >1200px){
+        display: none;
+        z-index: 0;
+    }
+}
+
+.pixelstrap a, .pixelstrap a:hover, .pixelstrap a:active {
+    padding-right: 45px;
+    color: #222;
+    font-size: 16px;
+    font-weight: 400;
+    line-height: 23px;
+    text-decoration: none;
+    text-transform: uppercase;
+    padding-top: 42px;
+    padding-bottom: 42px;
+    letter-spacing: 0.07em;
+}

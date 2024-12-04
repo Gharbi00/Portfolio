@@ -1,0 +1,68 @@
+<div class="theme-main-menu sticky-menu theme-menu-five fixed">
+  <div class="d-flex align-items-center justify-content-center">
+    <div class="logo">
+      <a routerLink="/" aria-label="Home">
+        <img src="assets/images/logo/lc-logo.svg" alt="Loyalcraft Logo" />
+      </a>
+    </div>
+
+    <nav id="mega-menu-holder" class="navbar navbar-expand-lg" >
+      <div class="nav-container">
+        <button class="navbar-toggler" [ngClass]="{'open': isCollapsed}" (click)="toggleCollapse()">
+          <span></span>
+        </button>
+        <div class="navbar-collapse collapse" id="navbarSupportedContent" [ngClass]="{ 'show': isCollapsed }">
+          <div class="d-lg-flex justify-content-between align-items-center"   >
+            <ul class="navbar-nav main-side-nav font-gordita" id="one-page-nav" id="navbar-example2" >
+              <li class="nav-item">
+                <a routerLink="/" class="nav-link">{{'HOME' | translate}}</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link"  href="#start-winning" style="cursor: pointer;">{{'START_WINNING' | translate}}</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="#redeem" style="cursor: pointer;">{{'REDEEM' | translate}}</a>
+              </li>
+              <li class="nav-item">
+                <a routerLink="/contact" class="nav-link">{{'CONTACT_US' | translate}}</a>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </nav>
+    <div class="right-widget d-flex">
+      <ul class="d-flex align-items-center">
+        <li>
+          <div class="dropdown download-btn style-two">
+            <button class="dropdown-toggle" type="button" style="font-weight: 700;" [ngClass]="{'open': isCollapsed}"
+              (click)="toggleCollapse()">
+              {{'DOWNLOAD' | translate}}
+            </button>
+            <div class="dropdown-menu" [ngClass]="{ 'show': isCollapsed }">
+              <a class="dropdown-item d-flex align-items-center" target="_blank" href="https://apps.apple.com/app/loyalcraft/id6502938384">
+                <img src="assets/images/icon/103.svg" alt="">
+                <span>IOS</span>
+              </a>
+              <a class="dropdown-item d-flex align-items-center" target="_blank" href="https://play.google.com/store/apps/details?id=com.loyalcraft.master">
+                <img src="assets/images/icon/103.svg" alt="">
+                <span>Android</span>
+              </a>
+            </div>
+          </div>
+        </li>
+      </ul>
+      <div class="dropdown image-right">
+        <img style="margin-left: 30px;cursor: pointer;" [src]="flagvalue" alt="user-image"
+          class="me-2 rounded" height="40" width="40" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+        <ul class="dropdown-menu">
+          <a *ngFor="let item of listLang" style="padding: 0px 25px;display: flex;margin-bottom: 4%; cursor: pointer;"
+            (click)="setLanguage(item.lang,item.flag)"> <img src="{{item.flag}}" alt="user-image" class="me-2 rounded"
+              height="30" width="30">
+            <span style="margin:6%;" class="align-middle">{{item.text}}</span>
+          </a>
+        </ul>
+      </div>
+    </div>
+  </div>
+</div>

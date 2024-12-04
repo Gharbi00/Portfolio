@@ -1,0 +1,11 @@
+
+
+:host::ng-deep .hello{
+    @media(width < 1200px){
+        display:none;
+    }
+}
+
+:host::ng-deep.owl-carousel{
+padding-left: 2%;
+}

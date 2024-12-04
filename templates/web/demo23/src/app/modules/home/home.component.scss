@@ -1,0 +1,38 @@
+.vertical-banner .vertical-content h2 {
+    font-size: calc(17px + (22 - 17) * ((100vw - 320px) / (1920 - 320)));
+    margin-bottom: calc(2px + (6 - 2) * ((100vw - 320px) / (1920 - 320)));
+}
+
+.vertical-banner .vertical-content {
+    margin-top: 15px;
+    text-align: center;
+}
+
+.vertical-banner .vertical-content a {
+    color: #909090;
+    border-bottom: 1px solid #909090;
+    font-size: calc(16px + (20 - 16) * ((100vw - 320px) / (1920 - 320)));
+    text-transform: capitalize;
+}
+.category-img-wrapper .category-wrap .category-content h3 {
+    font-size: calc(16px + (20 - 16) * ((100vw - 320px) / (1920 - 320)));
+    color: #000;
+    text-transform: capitalize;
+    font-weight: 700;
+    margin-bottom: calc(0px + (4 - 0) * ((100vw - 320px) / (1920 - 320)));
+}
+.category-img-wrapper .category-wrap .category-content a {
+    color: #909090;
+    font-size: calc(14px + (16 - 14) * ((100vw - 320px) / (1920 - 320)));
+}
+.category-img-wrapper .category-wrap .category-content.top-content {
+    padding-top: 0;
+    padding-bottom: 14px;
+}
+.category-img-wrapper .category-wrap .category-content {
+    text-align: center;
+    padding-top: 14px;
+}
+.theme-color-1 {
+    --theme-color: #f0583d!important;
+}

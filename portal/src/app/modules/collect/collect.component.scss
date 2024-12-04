@@ -1,0 +1,64 @@
+::ng-deep.owl-carousel .owl-item img {
+    display: block;
+
+}
+
+::ng-deep .owl-item {
+    max-width: 380px !important;
+}
+
+
+
+.fancy-feature-thirtyFive .slider-arrows li:first-child i {
+    transform: rotate(-180deg);
+    display: inline-block;
+}
+
+::ng-deep.owl-theme .owl-nav [class*=owl-] {
+    background: transparent;
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    text-align: center;
+    line-height: 50px;
+    color: #000;
+    font-size: 25px;
+    margin-right: 8px;
+    cursor: pointer;
+    transform: scale(0.8);
+    transition: all 0.3s ease-in-out;
+}
+
+::ng-deep.owl-theme .owl-nav .owl-prev {
+    transform: rotateY(-180deg);
+    display: inline-block;
+
+
+}
+
+::ng-deep.owl-theme .owl-nav .owl-next {
+    width: 60px;
+    height: 60px;
+
+
+}
+
+::ng-deep.owl-theme .owl-nav .owl-prev :hover {
+
+    color: #fff;
+    transform: scale(1);
+
+}
+
+::ng-deep.owl-theme .owl-nav .owl-next :hover {
+
+    color: #fff;
+    transform: scale(1);
+
+}
+
+
+:host::ng-deep.main-page-wrapper {
+    overflow-x: hidden !important;
+    padding-top: 150px;
+}

@@ -1,0 +1,38 @@
+<section class="p-0">
+    <div class="slide-1 home-slider slick-initialized slick-slider">
+        <div class="slick-list draggable">
+            <owl-carousel-o [options]="MainSlider" class="slick-track">
+                <ng-container *ngFor="let slider of mainSlider">
+                    <ng-template carouselSlide>
+
+                        <div class="slick-slide slick-cloned" data-slick-index="-1" aria-hidden="true" tabindex="-1"
+                            style="width: 1249px;">
+                            <div>
+                                <div style="width: 100%; display: inline-block;">
+                                    <div class="home text-start p-right bg-size blur-up lazyloaded"
+                                        style="background-image: url(&quot;{{slider.src}}&quot;); background-size: cover; background-position: center center; display: block;">
+                                        <img src="../assets/images/home-banner/32.jpg" alt=""
+                                            class="bg-img blur-up lazyload" style="display: none;">
+                                        <div class="container">
+                                            <div class="row">
+                                                <div class="col">
+                                                    <div class="slider-contain">
+                                                        <div>
+                                                            <h4>save upto 10%</h4>
+                                                            <h1>plant collection</h1><a href="#" class="btn btn-solid" tabindex="0">shop now</a>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                    </ng-template>
+                </ng-container>
+            </owl-carousel-o>
+        </div>
+    </div>
+</section>

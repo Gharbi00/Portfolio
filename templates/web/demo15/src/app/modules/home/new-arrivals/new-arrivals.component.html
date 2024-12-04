@@ -1,0 +1,71 @@
+<div class="axil-new-arrivals-product-area fullwidth-container bg-color-white axil-section-gap pb--0" >
+    <div class="container ml--xxl-0">
+        <div class="product-area pb--50">
+            <div class="section-title-wrapper">
+                <span class="title-highlighter highlighter-primary"><i class="far fa-shopping-basket"></i> This
+                    Week’s</span>
+                <h2 class="title">New Arrivals</h2>
+            </div>
+            <div
+                class="new-arrivals-product-activation slick-layout-wrapper--15 axil-slick-arrow arrow-top-slide slick-initialized slick-slider">
+                
+                <div class="slick-list draggable" >
+                    <owl-carousel-o [options]="carouselOptions" class="explore-product-activation" >
+
+                        <ng-container *ngFor="let product of products" >
+                            <ng-template carouselSlide >
+                                <div class="slick-single-layout slick-slide slick-cloned" data-slick-index="-4"
+                                    aria-hidden="true" tabindex="-1" style="width: 275px; margin-bottom: -120px;margin-left: -10px;">
+                                    <div class="axil-product product-style-two">
+                                        <div class="thumbnail">
+                                            <a routerlink="single-product" tabindex="-1">
+                                                <img data-sal="zoom-out" 
+                                                    src="{{product.src}}" alt="Product Images">
+                                            </a>
+                                        </div>
+                                        <div class="product-content" style="margin-right: -40px;">
+                                            <div class="inner">
+                                                <div class="color-variant-wrapper">
+                                                    <ul class="color-variant">
+                                                        <li class="color-extra-01 active"><span><span
+                                                                    class="color"></span></span>
+                                                        </li>
+                                                        <li class="color-extra-02"><span><span
+                                                                    class="color"></span></span>
+                                                        </li>
+                                                        <li class="color-extra-03"><span><span
+                                                                    class="color"></span></span>
+                                                        </li>
+                                                    </ul>
+                                                </div>
+                                                <h5 class="title"><a routerlink="single-product" tabindex="-1">Google
+                                                        Home</a></h5>
+                                                <div class="product-price-variant">
+                                                    <span class="price old-price">${{product.oldPrice}}</span>
+                                                    <span class="price current-price">${{product.newPrice}}</span>
+                                                </div>
+                                            </div>
+                                            <div class="product-hover-action" >
+                                                <ul class="cart-action" >
+                                                    <li class="quickview"><a routerlink="#" data-bs-toggle="modal"
+                                                            data-bs-target="#quick-view-modal" tabindex="-1"><i
+                                                                class="far fa-eye" style="padding-top: 10px;"></i></a></li>
+                                                    <li class="select-option"><a routerlink="single-product"
+                                                            tabindex="-1">Select Option</a></li>
+                                                    <li class="wishlist"><a routerlink="/wishlist" tabindex="-1"><i
+                                                                class="far fa-heart" style="padding-top: 10px;"></i></a></li>
+                                                </ul>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </ng-template>
+                        </ng-container>
+                    </owl-carousel-o>
+                </div>
+
+                
+            </div>
+        </div>
+    </div>
+</div>

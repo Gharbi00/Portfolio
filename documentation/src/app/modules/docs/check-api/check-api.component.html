@@ -1,0 +1,105 @@
+<main class=" col-xl-10 doc-main-body" data-bs-spy="scroll" data-bs-target="#check-api" data-bs-offset="0" tabindex="0">
+  <h2>Check User Wallets and Reputation</h2>
+  <div id="introduction">
+    <h3>Introduction</h3>
+    <p>This endpoint offers a comprehensive snapshot of a user's engagement within the platform. It retrieves detailed
+      information regarding the user's various wallets, including their quantitative and
+      qualitative points balances. Additionally, it provides insight into the user's reputation score, reflecting their
+      overall activity and loyalty. This data empowers administrators to assess user
+      engagement levels, tailor rewards, and optimize retention strategies effectively.</p>
+  </div>
+  <div id="endpoint">
+    <h3>Endpoint</h3>
+    <div class="mark-red">
+      <pre>URL: /wallet/check</pre>
+      <pre>Method: <span class="s1">POST</span></pre>
+    </div>
+  </div>
+  <div id="headers">
+    <h3>Request Headers</h3>
+    <p>Here you need to insert the bearer token obtained from the Login and Get Access Token API.</p>
+    <pre class="bg-black"><code>
+  <span class="s2">&lbrace;</span>
+    <span class="s2">"Authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..."</span>
+  <span class="s2">&rbrace;</span>
+      </code>
+    </pre>
+  </div>
+  <div id="params">
+    <h3>Request Parameters</h3>
+    <div class="mark-red">
+      <pre><span class="s1">user</span>: User's unique identifier.</pre>
+      <pre><span class="s1">card</span>: Loyalty card identifier.</pre>
+      <pre><span class="s1">referral</span>: Referral reference.</pre>
+    </div>
+    <p class="note">Note: Only one of the parameters, either <code>user</code> or <code>card</code>, is required.
+      <code>referral</code> is optional, pass it only when it's available
+    </p>
+  </div>
+  <div id="error">
+    <h3>Error Handling</h3>
+    <p>The API returns appropriate error responses in case the user's card is not found or if no wallets are found for
+      the
+      provided user.</p>
+    <div class="mark-red">
+      <pre><span class="s1">404 Not Found</span>: If the user's card is not found.</pre>
+      <pre><span class="s1">404 Not Found</span>: If no wallets are found for the provided user.</pre>
+      <pre><span class="s1">400 Bad Request</span>: Reference incorrect!</pre>
+      <pre><span class="s1">400 Bad Request</span>: You already redeemed this reference.</pre>
+      <pre><span class="s1">400 Bad Request</span>: Someone else already redeemed this reference.</pre>
+    </div>
+  </div>
+  <div id="request">
+    <h3>Sample Request</h3>
+    <p>Upon successful authentication, the API returns an access token.</p>
+    <pre class="bg-black"><code>
+  <span class="s1">POST /wallet/check</span>
+  <span class="s1">Authorization: Bearer YOUR_ACCESS_TOKEN</span>
+  <span class="s2">&lbrace;</span>
+    <span class="s2">"card": "loyalty_card_number"</span>
+  <span class="s2">&rbrace;</span>
+      </code>
+    </pre>
+  </div>
+  <div id="response">
+    <h3>Sample Response</h3>
+    <p>Upon successful authentication, the API returns an access token.</p>
+    <pre class="bg-black"><code>
+  <span class="s2">&lbrace;</span>
+    <span class="s2">"wallet": &lbrace;</span>
+      <span class="s2">"amount": "330"</span>
+      <span class="s2">"walletType": "QUANTITATIVE"</span>
+      <span class="s2">"coin": &lbrace;</span>
+        <span class="s2">"name": "Shop Coin"</span>
+        <span class="s2">"id": "65d38c76c706c90012f25ebb"</span>
+      <span class="s2">&rbrace;</span>
+    <span class="s2">&rbrace;</span>,
+    <span class="s2">"currentReputation": &lbrace;</span>
+      <span class="s2">"color": "#FFC107"</span>
+      <span class="s2">"reputationLevel": "YELLOW"</span>
+      <span class="s2">"perks": &lbrace;</span>
+        <span class="s2">"discount": "15"</span>
+        <span class="s2">"description": "html_format_perks_display"</span>
+      <span class="s2">&rbrace;</span>
+    <span class="s2">&rbrace;</span>
+  <span class="s2">&rbrace;</span>
+      </code>
+    </pre>
+  </div>
+  <div class="doc-pagination pt-40">
+    <app-pagination></app-pagination>
+  </div>
+</main> <!-- /.doc-main-body -->
+<nav class="d-none d-xl-block col-xl-3 doc-sideNav">
+  <div class="wrapper">
+    <nav class="main-side-nav" id="check-api">
+      <a href="check-api/#introduction" class="nav-link">Introduction</a>
+      <a href="check-api/#endpoint" class="nav-link">Endpoint</a>
+      <a href="check-api/#headers" class="nav-link">Request Headers</a>
+      <a href="check-api/#params" class="nav-link">Request Parameters</a>
+      <a href="check-api/#error" class="nav-link">Error Handling</a>
+      <a href="check-api/#request" class="nav-link">Sample Request</a>
+      <a href="check-api/#response" class="nav-link">Sample Response</a>
+    </nav>
+  </div>
+</nav>

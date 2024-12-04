@@ -1,0 +1,41 @@
+<section class="p-0 layout-7">
+    <div class="slider-animate home-slider slick-initialized slick-slider">
+        <div class="slick-list draggable">
+            <owl-carousel-o [options]="MainSlider">
+                <ng-container *ngFor="let slider of mainSlider">
+                    <ng-template carouselSlide>
+                        <div>
+                            <div class="main-screen">
+                                <div class="home bg-size blur-up lazyloaded"
+                                    style="background-image: url(&quot;../assets/images/bicycle/home-slider/1.jpg&quot;); background-size: cover; background-position: center center; display: block;">
+                                    <img src="{{slider.src}}" alt="" class="bg-img blur-up lazyloaded"
+                                        style="display: none;">
+                                    <div class="container">
+                                        <div class="row">
+                                            <div class="col">
+                                                <div class="slider-contain product-detail">
+                                                    <div>
+                                                        <h4 class="fadeInUp animated" data-animation-in="fadeInUp" style="opacity: 1;">welcome to book store</h4>
+                                                        <h1 class="font-cormorant">MUST READS</h1>
+                                                        
+                                                        <ul data-animation-in="fadeInUp">
+                                                            <li class="bg-light0"></li>
+                                                            <li class="bg-light1"></li>
+                                                            <li class="bg-light2"></li>
+                                                        </ul>
+
+                                                        <a href="#" class="btn btn-solid">Shop Now</a>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </ng-template>
+                </ng-container>
+            </owl-carousel-o>
+        </div>
+    </div>
+</section>

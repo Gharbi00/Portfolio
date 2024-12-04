@@ -1,0 +1,25 @@
+:host::ng-deep.owl-item{
+   display: flex;
+   align-items: center;
+   justify-content: center;
+}
+::ng-deep.theme-tab .tab-title .current a, .theme-tab .tab-title2 .current a {
+   color: var(--theme-color);
+}
+.theme-tab .tab-title li, .theme-tab .tab-title2 li {
+   padding-left: 25px;
+   padding-right: 25px;
+}
+.theme-tab .tab-title a, .theme-tab .tab-title2 a {
+   color: #2d2a25;
+   text-transform: capitalize;
+}
+.dark .theme-tab .tab-title2 a {
+   color: #cbcbcb!important;
+}
+.theme-tab .tab-title2 .current {
+   background-color: transparent;
+}
+.theme-tab .tab-title2 .current a {
+   background-color: transparent;
+}

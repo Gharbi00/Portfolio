@@ -1,0 +1,100 @@
+<div class="terms_and_policy">
+    <div class="container">
+        <div class="tab-content">
+            <div>
+                <h2 class="font-gilroy-bold">{{'COOKIE_POLICY' | translate}}</h2>
+                <div class="update-date">{{'LAST_UPDATED' | translate}} 6/26/2020</div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-lg-4">
+                <ul class="nav nav-tabs">
+                    <li class="nav-item" *ngFor="let navTitle of navs; let i=index">
+                        <a class="nav-link" data-toggle="tab" [class.active]="activeTab === i" (click)="switchTab(i)"
+                            style="cursor: pointer;">{{navTitle | translate}}</a>
+                    </li>
+                </ul>
+            </div>
+
+            <div class="col-lg-8" data-aos="fade-up">
+                <div class="tab-content" [@scaleAnimation]="activeTab === 0 ? 'open' : '*'">
+                    <ng-container *ngIf="activeTab === 0 ," id="opt1" class="tab-pane fade">
+                        <h2 class="font-gilroy-bold">{{'INTRODUCTION' | translate}}</h2>
+                        <div class="update-date"></div>
+                        <p>{{'INTRODUCTION_DESCRIPTION' | translate}}</p>
+                    </ng-container>
+                </div>
+                <div class="tab-content" [@scaleAnimation]="activeTab === 1 ? 'open' : '*'">
+                    <ng-container *ngIf="activeTab === 1" id="opt2" class="tab-pane fade">
+                        <h2 class="font-gilroy-bold">{{'WHAT_ARE_COOKIES' | translate}}</h2>
+                        <p>{{'WHAT_ARE_COOKIES_DESCRIPTION' | translate}}</p>
+                    </ng-container>
+                </div>
+                <div class="tab-content" [@scaleAnimation]="activeTab === 2 ? 'open' : '*'">
+                    <ng-container *ngIf="activeTab === 2" id="opt3" class="tab-pane fade">
+                        <h2 class="font-gilroy-bold">{{'HOW_WE_USE_COOKIES' | translate}}</h2>
+                        <div class="update-date"></div>
+                        <p>{{'HOW_WE_USE_COOKIES_DESCRIPTION' | translate}}</p>
+                        <ul>
+                            <li>{{'ENABLE_CERTAIN_FUNCTIONS' | translate}}</li>
+                            <li>{{'PROVIDE_ANALYTICS' | translate}}</li>
+                            <li>{{'STORE_PREFERENCES' | translate}}</li>
+                            <li>{{'ENABLE_AD_DELIVERY' | translate}}</li>
+                        </ul>
+                    </ng-container>
+                </div>
+                <div class="tab-content" [@scaleAnimation]="activeTab === 3 ? 'open' : '*'">
+                    <ng-container *ngIf="activeTab === 3" id="opt4" class="tab-pane fade active show">
+                        <h2 class="font-gilroy-bold">{{'TYPES_OF_COOKIES_WE_USE' | translate}}</h2>
+                        <div class="update-date"></div>
+                        <ul>
+                            <li>{{'ESSENTIAL_COOKIES' | translate}}: {{'ESSENTIAL_COOKIES_DESCRIPTION' | translate}}
+                            </li>
+                            <li>{{'FUNCTIONALITY_COOKIES' | translate}}: {{'FUNCTIONALITY_COOKIES_DESCRIPTION' |
+                                translate}}</li>
+                            <li>{{'ADVERTISING_COOKIES' | translate}}: {{'ADVERTISING_COOKIES_DESCRIPTION' | translate}}
+                            </li>
+                        </ul>
+                    </ng-container>
+                </div>
+                <div class="tab-content" [@scaleAnimation]="activeTab === 4 ? 'open' : '*'">
+                    <ng-container *ngIf="activeTab === 4" id="opt5" class="tab-pane fade">
+                        <h2 class="font-gilroy-bold">{{'YOUR_CHOICES_REGARDING_COOKIES' | translate}}</h2>
+                        <div class="update-date"></div>
+                        <p>{{'YOUR_CHOICES_REGARDING_COOKIES_DESCRIPTION' | translate}}</p>
+                    </ng-container>
+                </div>
+                <div class="tab-content" [@scaleAnimation]="activeTab === 5 ? 'open' : '*'">
+                    <ng-container *ngIf="activeTab === 5" id="opt6" class="tab-pane fade">
+                        <h2 class="font-gilroy-bold">{{'MORE_INFORMATION_ABOUT_COOKIES' | translate}}</h2>
+                        <p>{{'MORE_INFORMATION_ABOUT_COOKIES_DESCRIPTION' | translate}}</p>
+                        <ul>
+                            <li><a href="https://allaboutcookies.org/" target="_blank">{{'ALL_ABOUT_COOKIES' |
+                                    translate}}</a></li>
+                            <li><a href="https://thenai.org/" target="_blank">{{'NETWORK_ADVERTISING_INITIATIVE' |
+                                    translate}}</a></li>
+                        </ul>
+                    </ng-container>
+                </div>
+                <div class="tab-content" [@scaleAnimation]="activeTab === 6 ? 'open' : '*'">
+                    <ng-container *ngIf="activeTab === 6" id="opt7" class="tab-pane fade">
+                        <h2 class="font-gilroy-bold">{{'CHANGES_TO_COOKIE_POLICY' | translate}}</h2>
+                        <div class="update-date"></div>
+                        <p>{{'CHANGES_TO_COOKIE_POLICY_DESCRIPTION' | translate}}</p>
+                    </ng-container>
+                </div>
+                <div class="tab-content" [@scaleAnimation]="activeTab === 7 ? 'open' : '*'">
+                    <ng-container *ngIf="activeTab === 7" id="opt8" class="tab-pane fade">
+                        <h2 class="font-gilroy-bold">{{'CONTACT_US' | translate}}</h2>
+                        <div class="update-date"></div>
+                        <p>{{'CONTACT_US_DESCRIPTION_COOKIE' | translate}}</p>
+                        <ul>
+                            <li>{{'CONTACT_EMAIL' | translate}} contact@elevok.com</li>
+                            <li><a href="https://diktup.com/" target="_blank">{{'CONTACT_PAGE' | translate}}</a></li>
+                        </ul>
+                    </ng-container>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,80 @@
+<main class=" col-xl-10 doc-main-body" data-bs-spy="scroll" data-bs-target="#npm" data-bs-offset="0" tabindex="0">
+  <h2>Integration Guide with npm Package</h2>
+  <div id="introduction">
+    <h3>Introduction</h3>
+    <p>This guide provides step-by-step instructions on how to integrate Elevok into your project using the npm package.
+      Elevok is a versatile customer engagement and loyalty platform that allows businesses to create and manage loyalty
+      programs, track customer behavior, and reward loyal customers.</p>
+  </div>
+  <div id="prerequisites">
+    <h3>Prerequisites</h3>
+    <p>Before you begin the integration process, ensure that you have the following:</p>
+    <ul class="list-item-one">
+      <li>Node.js and npm installed on your machine.</li>
+      <li>Access to your Elevok API key and secret key.</li>
+      <li>Access to Elevok private npm registry</li>
+    </ul>
+  </div>
+  <div id="installation">
+    <h3>Installation </h3>
+    <p>Install the npm Package: Open your terminal and navigate to your project directory. Run the following command to
+      install the Elevok npm package:</p>
+    <div class="mark-blue">
+      <pre>npm install @diktup/elevok</pre>
+    </div>
+    <p>Alternatively, you can use yarn to install the package:</p>
+    <div class="mark-blue">
+      <pre>yarn add @diktup/elevok</pre>
+    </div>
+  </div>
+  <div id="getting-started">
+    <h3>Getting Started</h3>
+    <p>Import Elevok: In your JavaScript file, import the Elevok module at the top of the file:</p>
+    <pre class="bg-black"><code>
+  <span class="s3">import Elevok from 'elevok';</span></code>
+    </pre>
+    <p>Initialize Elevok: Initialize Elevok with your API key, secret key, and other configuration parameters:</p>
+    <pre class="bg-black">
+      <code>
+  <span class="s3">const elevok = new Elevok(&lbrace;</span>
+    <span class="s2">apiKey: 'YOUR_API_KEY',</span>
+    <span class="s2">secretKey: 'YOUR_SECRET_KEY',</span>
+    <span class="s4">// Add other configuration parameters as needed</span>
+  <span class="s3">&rbrace;);</span>
+      </code>
+    </pre>
+  </div>
+  <div id="config">
+    <h3>Additional Configuration</h3>
+    <p>Customization: Depending on your specific requirements, you may need to configure additional settings or
+      customize
+      Elevok's behavior. Refer to the Elevok documentation for more details on available configuration options.</p>
+  </div>
+  <div id="integration">
+    <h3>Testing and Integration</h3>
+    <p>Testing: Thoroughly test your integration to ensure that Elevok is functioning as expected in your project.
+      Verify
+      that all methods are working correctly and handle any edge cases or errors.</p>
+    <p></p>
+    <p>By following these steps, you should be able to successfully integrate Elevok into your project using the npm
+      package. Elevok provides a powerful set of tools for managing customer engagement and loyalty, helping businesses
+      to
+      build stronger relationships with their customers and drive growth. For more information, refer to the Elevok
+      documentation and API reference.</p>
+  </div>
+  <div class="doc-pagination pt-40">
+    <app-pagination></app-pagination>
+  </div>
+</main>
+<nav class="d-none d-xl-block col-xl-3 doc-sideNav">
+  <div class="wrapper">
+    <nav class="main-side-nav" id="npm">
+      <a href="npm/#introduction" class="nav-link">Introduction</a>
+      <a href="npm/#prerequisites" class="nav-link">Prerequisites</a>
+      <a href="npm/#installation" class="nav-link">Installation</a>
+      <a href="npm/#getting-started" class="nav-link">Getting Started</a>
+      <a href="npm/#config" class="nav-link">Additional Configuration</a>
+      <a href="npm/#integration" class="nav-link">Testing and Integration</a>
+    </nav>
+  </div>
+</nav>

@@ -1,0 +1,37 @@
+.img-category .img-fluid {
+    border-radius: 100%;
+    margin: 0 auto;
+    width: 85%;
+    border: 3px solid #fff;
+    -webkit-transition: all 0.5s ease;
+    transition: all 0.5s ease;
+}
+.img-category .img-fluid :hover {
+border-color: var(--theme-color);
+}
+.img-category h4 {
+    text-transform: capitalize;
+    margin-top: 12px;
+    color: #000;
+    font-weight: 600;
+    display: inline-block;
+    position: relative;
+    z-index: 1;
+    display: grid;
+    place-items: center;
+    left: -8%;
+}
+.full-banner.custom-space {
+    padding: 100px 0!important;
+}
+.banner-content-bottom .collection-banner .contain-banner {
+    -webkit-box-pack: center;
+    -ms-flex-pack: center;
+    justify-content: center;
+    background: -webkit-gradient(linear, left bottom, left top, from(#f8f9fa), color-stop(74%, rgba(248,249,250,0.82)), to(rgba(248,249,250,0.04)));
+    background: linear-gradient(to top, #f8f9fa 0%, rgba(248,249,250,0.82) 74%, rgba(248,249,250,0.04) 100%);
+    padding: 25px;
+    height: auto;
+    bottom: 0;
+    top: unset;
+}

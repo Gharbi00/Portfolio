@@ -1,0 +1,82 @@
+.product-style-5.product-box {
+    background-color: #f8f8f8;
+    text-align: left;
+    border-radius: 15px;
+    padding: 15px;
+}
+.product-box, .product-wrap {
+    position: relative;
+    -webkit-transition: all 0.5s ease;
+    transition: all 0.5s ease;
+    vertical-align: middle;
+}
+.product-style-5.product-box .img-wrapper {
+    width: 70%;
+    margin-top: 20px;
+}
+.product-box .img-wrapper, .product-wrap .img-wrapper {
+    position: relative;
+    overflow: hidden;
+    z-index: 0;
+}
+.product-style-5.product-box h6 {
+    font-weight: 500;
+    font-size: calc(14px + (18 - 14) * ((100vw - 320px) / (1920 - 320)));
+    color: #222;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+.product-style-5.product-box h5 {
+    margin-top: calc(3px + (6 - 3) * ((100vw - 320px) / (1920 - 320)));
+    margin-bottom: 3px;
+    font-size: 16px;
+    color: #777;
+}
+.product-style-5.product-box h4 {
+    margin-bottom: 0;
+    font-weight: 600;
+}
+.fa {
+    display: inline-block;
+    font: normal normal normal 14px/1 FontAwesome;
+    font-size: inherit;
+    text-rendering: auto;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+.product-style-5.product-box .addtocart_btn .add_cart {
+    position: absolute;
+    right: 15px;
+    bottom: 15px;
+    -webkit-box-shadow: none;
+    box-shadow: none;
+    border: none;
+    background-color: var(--theme-color);
+    color: #fff;
+    width: 36px;
+    height: 36px;
+    font-size: 16px;
+    padding: 0;
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-align: center;
+    -ms-flex-align: center;
+    align-items: center;
+    -webkit-box-pack: center;
+    -ms-flex-pack: center;
+    justify-content: center;
+    border-radius: 10px;
+    z-index: 1;
+}
+.product-style-5.product-box .addtocart_btn .cart_qty.qty-box {
+    position: absolute;
+    bottom: 0;
+    display: none;
+    right: -12px;
+}
+::ng-deep.owl-item{
+    display: grid;
+    place-items: center;
+}

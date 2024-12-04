@@ -1,0 +1,28 @@
+:host::ng-deep.owl-theme .owl-nav [class*=owl-] {
+    @media(width  >500px){
+    color: #000;
+    font-size: 14px;
+    margin: 5px;
+    padding: 4px 7px;
+    background: #D6D6D6;
+    display: inline-block;
+    cursor: pointer;
+    border-radius: 3px;}
+    @media(width  <500px){
+    display: none;
+    }
+}
+:host::ng-deep.main-screen{
+    
+        width:100%;
+
+    }
+:host::ng-deep.position-relative{
+    @media(width > 800px){
+        margin-top: 120px;
+    }
+}
+:host::ng-deep.owl-item{
+   
+    place-items: center;
+}

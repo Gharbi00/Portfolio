@@ -1,0 +1,50 @@
+<div class="modal-dialog modal-dialog-centered" role="document">
+  <main class="main-body modal-content clearfix">
+    <button type="button" class="close" data-dismiss="modal" aria-label="Close" data-bs-dismiss="modal">
+      <img src="assets/images/icon/close.svg" alt="">
+    </button>
+    <div class="left-side">
+      <div class="d-flex flex-column justify-content-between h-100">
+        <div class="row">
+          <div class="col-xl-10 col-lg-8 m-auto">
+            <blockquote>{{'QUOTE' | translate}}</blockquote>
+            <span class="bio">—Estée Lauder</span>
+          </div>
+        </div>
+        <img src="assets/images/assets/ils_18.svg" alt="" class="illustration mt-auto">
+      </div>
+    </div> <!-- /.left-side -->
+    <div class="right-side">
+      <h2 class="form-title">{{'CONTACT_US' | translate}}</h2>
+      <form action="#" id="contact-form" action="inc/contact.php" data-toggle="validator">
+        <div class="messages"></div>
+        <div class="row controls">
+          <div class="col-12">
+            <div class="input-group-meta form-group mb-15">
+              <label>{{'NAME' | translate}}</label>
+              <input type="text" placeholder="{{'YOUR_NAME' | translate}}" name="Fname" required="required"
+                data-error="Name is required.">
+              <div class="help-block with-errors"></div>
+            </div>
+          </div>
+          <div class="col-12">
+            <div class="input-group-meta form-group mb-35">
+              <label>{{'EMAIL' | translate}}*</label>
+              <input type="email" placeholder="{{'EMAIL_ADDRESS' | translate}}" name="email" required="required"
+                data-error="Valid email is required.">
+              <div class="help-block with-errors"></div>
+            </div>
+          </div>
+          <div class="col-12">
+            <div class="input-group-meta form-group mb-25">
+              <textarea placeholder="{{'YOUR_MESSAGE' | translate}}" name="message" required="required"
+                data-error="Please,leave us a message."></textarea>
+              <div class="help-block with-errors"></div>
+            </div>
+          </div>
+          <div class="col-12"><button class="theme-btn-seven w-100">{{'SEND_MESSAGE' | translate}}</button></div>
+        </div>
+      </form>
+    </div> <!-- /.right-side -->
+  </main> <!-- /.main-body -->
+</div>

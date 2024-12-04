@@ -1,0 +1,30 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: elevok-docs
+  namespace: elevok-docs
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: elevok-docs
+  template:
+    metadata:
+      labels:
+        app: elevok-docs
+    spec:
+      containers:
+        - name: elevok-container
+          image: git.diktup.cloud:5050/sifca/sifca-monorepo:elevok-docs-prod-1.0.9
+          #imagePullPolicy: Always
+          imagePullPolicy: IfNotPresent
+          #imagePullPolicy: Never
+          ports:
+            - containerPort: 80
+          env:
+            - name: API_SERVER
+              value: 'loyalcraft.com'
+            - name: NODE_OPTIONS
+              value: '--max-old-space-size=16000'
+      imagePullSecrets:
+        - name: gitlab-registry-secret

@@ -1,0 +1,25 @@
+html, body {
+    scroll-behavior: smooth;
+    transition: scroll-behavior 1s ease;
+  }
+  /* Initially hide the back-to-top button */
+
+
+/* Show the button when the *ngIf condition is true */
+.show {
+  display: inline-block;
+}
+
+/* Add an animation when the button appears */
+
+
+@keyframes fadeInUp {
+  from {
+    transform: translateY(20px);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}

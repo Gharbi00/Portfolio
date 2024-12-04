@@ -1,0 +1,102 @@
+<main class=" col-xl-10 doc-main-body" data-bs-spy="scroll" data-bs-target="#web" data-bs-offset="0" tabindex="0">
+  <h2>Elevok Widget Integration</h2>
+  <div id="introduction">
+    <h3>Introduction</h3>
+    <p>The Elevok Player Widget is a versatile interface that empowers your users with access to key loyalty program
+      features directly on your website or web application. Follow this guide to seamlessly integrate the Elevok
+      player's
+      profile into your platform.</p>
+  </div>
+  <div id="embed">
+    <h3>Embedding the Widget</h3>
+    <p>To showcase the Elevok Player Widget on your website or web application, you'll need to insert a JavaScript code
+      snippet into the relevant section of your webpage. Here's how:</p>
+    <ul class="list-item-one">
+      <li>Copy the Code Snippet: Grab the JavaScript code snippet provided below.</li>
+      <pre class="bg-black"><code><span class="s1">&lt;!-- index.html --&gt;</span>
+  
+  <span class="s1">&lt;!DOCTYPE html&gt;</span>
+  <span class="s2">&lt;html&gt;</span>
+  <span class="s2">&lt;head&gt;</span>
+    <span class="s2">// Your head content ........</span>
+  <span class="s2"></span>
+    <span class="s2">&lt;script src="<span class="s3">https://widget.elevok.com/sdk.js</span>" defer=<span class="s3">"defer"</span>&gt;</span><span class="s2">&lt;/script&gt;</span>
+  <span class="s2">&lt;/head&gt;</span>
+  <span class="s2">&lt;body&gt;</span>
+    <span class="s2">// Your body content ........</span>
+  <span class="s2"></span>
+    <span class="s2">&lt;script&gt; window.widgetInit = &lbrace; appId: 'Your_Client_Key', locale: 'en', theme: 'light' &rbrace;;&lt;/script&gt;</span>
+  <span class="s2">&lt;/body&gt;</span>
+  <span class="s2">&lt;/html&gt;</span></code>
+    </pre>
+      <li>Paste the Snippet: Insert the code snippet just before the closing body and the head tag in the HTML of your
+        webpage. If you're utilizing dynamic page generation technologies such as PHP or ASP, include the snippet in the
+        header file that is incorporated in each page.</li>
+    </ul>
+  </div>
+  <div id="modes">
+    <h3>Widget Modes </h3>
+    <p>The Elevok Player Widget supports two modes: guest view and player view, serving distinct purposes while
+      utilizing
+      the same code snippet.</p>
+    <ul class="list-item-one">
+      <li>Guest View: Ideal for non-logged-in users to explore your loyalty program and encourage registration.</li>
+      <li>Player View: Tailored for logged-in users to track their progress and enjoy program benefits.</li>
+    </ul>
+  </div>
+  <div id="config">
+    <h3>Guest View Configuration</h3>
+    <p>For non-logged-in users, utilize the following snippet and replace 'Your_API_Key' with your unique API Key
+      obtained
+      from Elevok.</p>
+    <img src="assets/images/doc/img_01.png" alt="" class="img-meta">
+  </div>
+  <div id="setup">
+    <h3>Player View Setup</h3>
+    <p>To switch to player mode, execute the Elevok Consumer Login API during user login or registration in your main
+      application. This API notifies the widget about the new user, enabling seamless transitions between guest and
+      player
+      views.</p>
+    <div class="mark-blue">
+      Upon initializing the widget with player data, Elevok's player profile undergoes creation or updating on the
+      backend. To enrich your Elevok player profile with attributes not directly accessible via the user interface, send
+      the dta you need via the Player Login API.
+    </div>
+    <img src="assets/images/doc/img_01.png" alt="" class="img-meta">
+    <div class="mark-red">
+      Selecting an Immutable Player Unique ID
+      The Elevok user profile is established utilizing the playerUniqueId. It's imperative to opt for a unique
+      identifier
+      that remains constant and is never altered. Should this identifier change for a particular player, there's a
+      significant risk of forfeiting all original data associated with that player, including accrued points and rewards
+      within Elevok. Thus, it's strongly advised against utilizing mutable identifiers such as email addresses or mobile
+      numbers, as they are subject to change by the user at any given time.
+    </div>
+  </div>
+  <div id="additional">
+    <h3>Additional Resources</h3>
+    <p>For detailed information on the Elevok Consumer Login API and other integration capabilities, please refer to the
+      Elevok API specifications documentation.</p>
+    <p></p>
+    <p>By integrating the Elevok Player Widget and leveraging the Consumer Login API, you can provide a personalized and
+      engaging experience for your users, driving increased loyalty and satisfaction. For further assistance or advanced
+      configurations, consult the Elevok Help Center.</p>
+    <img src="assets/images/doc/img_01.png" alt="" class="img-meta">
+  </div>
+
+  <div class="doc-pagination pt-40">
+    <app-pagination></app-pagination>
+  </div>
+</main> <!-- /.doc-main-body -->
+<nav class="d-none d-xl-block col-xl-3 doc-sideNav">
+  <div class="wrapper">
+    <nav class="main-side-nav" id="web">
+      <a href="web/#introduction" class="nav-link">Introduction</a>
+      <a href="web/#embed" class="nav-link">Embedding the Widget</a>
+      <a href="web/#modes" class="nav-link">Widget Modes</a>
+      <a href="web/#config" class="nav-link">Guest View Configuration</a>
+      <a href="web/#setup" class="nav-link">Player View Setup</a>
+      <a href="web/#additional" class="nav-link">Additional Resources</a>
+    </nav>
+  </div>
+</nav>

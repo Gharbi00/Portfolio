@@ -1,0 +1,26 @@
+:host::ng-deep.owl-theme .owl-nav [class*=owl-] {
+    @media(width  >500px){
+    color: #000;
+    font-size: 14px;
+    margin: 5px;
+    padding: 4px 7px;
+    background: #D6D6D6;
+    display: inline-block;
+    cursor: pointer;
+    border-radius: 3px;}
+    @media(width  <500px){
+    display: none;
+    }
+}
+:host::ng-deep.main-screen{
+    
+        width:100%;
+
+    }
+    .home-slider .p-bottom .slider-contain, .center-slider .p-bottom .slider-contain {
+        -webkit-box-align: end;
+        -ms-flex-align: end;
+        align-items: flex-end;
+        padding-bottom: calc(20px + (50 - 20) * ((100vw - 320px) / (1920 - 320)));
+    }
+    

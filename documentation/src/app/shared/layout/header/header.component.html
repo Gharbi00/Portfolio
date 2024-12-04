@@ -1,0 +1,45 @@
+<div class="theme-main-menu sticky-menu theme-menu-five fixed">
+  <div class="d-flex align-items-center justify-content-center">
+    <div class="logo">
+      <a routerLink="/"><img src="assets/images/logo/logo_elev.svg" alt="" /></a>
+    </div>
+
+    <nav id="mega-menu-holder" class="navbar navbar-expand-lg">
+      <div class="nav-container">
+        <button class="button-color" class="navbar-toggler" [ngClass]="{'open': isCollapsed}" (click)="toggleCollapse()">
+          <span></span>
+        </button>
+        <div class="navbar-collapse collapse" id="navbarSupportedContent" [ngClass]="{ 'show': isCollapsed }">
+          <div class="d-lg-flex justify-content-between align-items-center">
+            <ul class="navbar-nav main-side-nav font-gordita" id="one-page-nav">
+              <li class="nav-item">
+                <div routerLink="/" class="nav-link" style="cursor: pointer;">Elevok Developer Guide V5.2</div>
+              </li>
+            </ul>
+
+            <ul class="right-widget user-login-button d-flex align-items-center justify-content-center">
+              <li>
+                <a href="https://app.elevok.com" target="_blank" class="signIn-action d-flex align-items-center">
+                  <img src="assets/images/icon/52.svg" alt="">
+                  <span>Login</span>
+                </a>
+              </li>
+              <li class="sign-up-custom">
+                <a href="https://elevok.com" target="_blank" class="signUp-action d-flex align-items-center">
+                  <span>Getting Started</span>
+                  <img src="assets/images/icon/53.svg" alt="">
+                </a>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </nav>
+    <div class="right-widget" style="display: none;">
+      <a routerLink="#" data-toggle="modal" data-target="#contactModal" class="demo-button"><span>Request A Demo</span>
+        <img src="assets/images/icon/user.svg" alt="" /></a>
+    </div>
+  </div>
+</div>
+
+

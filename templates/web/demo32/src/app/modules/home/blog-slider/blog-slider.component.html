@@ -1,0 +1,47 @@
+<div class="container">
+    <div class="row">
+        <div class="col">
+            <div class="title1 section-t-space">
+                <h4>Recent Story</h4>
+                <h2 class="title-inner1">from the blog</h2>
+            </div>
+        </div>
+    </div>
+</div>
+<section class="blog gym-blog pt-0 ratio_115">
+    <div class="container container-lg">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="slide-4 no-arrow slick-default-margin slick-initialized slick-slider">
+                    <div class="slick-list draggable">
+                        <owl-carousel-o [options]="BlogCarousel" class="slick-track" style="opacity: 1; width: 5137px; ">
+                            <ng-container *ngFor="let blog of BlogData" >
+                                <ng-template carouselSlide style="width:285px">
+
+
+                                    <div class="slick-slide slick-active" data-slick-index="3" aria-hidden="false" style="width: 285px;"><div><div class="col-md-12" style="width: 100%; display: inline-block;">
+                                        <a href="#" tabindex="0">
+                                            <div class="basic-effect">
+                                                <div class="bg-size blur-up lazyloaded" style="background-image: url(&quot;{{blog.src}}&quot;); background-size: cover; background-position: center center; display: block;">
+                                                    <img src="{{blog.src}}" class="img-fluid blur-up lazyload bg-img" alt="" >
+                                                </div>
+                                                <span></span>
+                                            </div>
+                                        </a>
+                                        <div class="blog-details">
+                                            <h4>{{blog.date}}</h4>
+                                            <a href="#" tabindex="0">
+                                                <p>{{blog.description}}</p>
+                                            </a>
+                                            <h6>{{blog.person}}</h6>
+                                        </div>
+                                    </div></div></div>
+                        </ng-template>
+                    </ng-container>
+                        </owl-carousel-o>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>

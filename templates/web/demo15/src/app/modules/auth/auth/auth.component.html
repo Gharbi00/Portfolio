@@ -1,0 +1,162 @@
+
+
+<main>
+
+        <div class="col-sm-4">
+            <a routerlink="/" class="site-logo"><img src="./assets/images/logo/logo.png" alt="logo"></a>
+        </div>
+
+
+    <div class="container">
+
+      <div class="row justify-content-center">
+        <div class="col-lg-8">
+          <div class="tp-login-wrapper">
+            <ul ngbNav [(activeId)]="activeId" #nav="ngbNav" style="    justify-content: center;">
+
+              <li [ngbNavItem]="1">
+                <a ngbNavLink>
+                  <h4 class="tp-login-title">Login</h4>
+                </a>
+                <ng-template ngbNavContent>
+                  <form class="singin-form" [formGroup]="signInForm">
+                    <div class="form-group">
+                        <label>Email</label> 
+                        <input type="email" class="form-control" name="email" value="annie@example.com" [formControlName]="'login'" required>
+                        <span role="alert"
+                        *ngIf="signInForm.get('login').touched && signInForm.get('login').hasError('required') || signInForm.get('login').hasError('email') "
+                        class="text-danger">
+                        Email is required and must be a valid email address
+                      </span>
+                    </div>
+                    <div class="form-group">
+                        <label>Password</label>
+                        <input type="password" class="form-control" name="password" value="123456789" [type]="isShowPass ? 'text' : 'password'" name="singin-password"
+                        [formControlName]="'password'" required>
+                        <span *ngIf="
+                        (password?.hasError('required') && password?.touched) ||
+                        (password?.errors?.['minlength'] && password?.dirty) ||
+                        (formSubmitted && !password?.value)" class="text-danger">
+                          Password is required and must be a 6 character
+                        </span>
+                    </div>
+                    <div class="form-group d-flex align-items-center justify-content-between">
+                    <a (click)="forgotPwd()" class="forgot-link cursor-pointer">Forgot password?</a>
+                  </div>
+                    <div class="form-group d-flex align-items-center justify-content-between">
+                        <button type="submit" class="axil-btn btn-bg-primary submit-btn" (click)="signIn()">Sign In</button>
+                        <!-- <a routerlink="/forgot-password" class="forgot-btn">Forget password?</a> -->
+                    </div>
+                </form>
+
+                  </ng-template>
+               
+                
+
+              </li>
+
+              <li [ngbNavItem]="2">
+                <a ngbNavLink>
+                  <h4 class="tp-login-title">Sign Up</h4>
+                </a>
+                <ng-template ngbNavContent>
+                  <form [formGroup]="signUpForm" class="singin-form">
+                    <div class="form-group">
+                        <label>First Name*</label>
+                        <input type="text" class="form-control" name="username" value="anniemario" [formControlName]="'firstName'">
+                        <span *ngIf="signUpForm.get('firstName').touched && signUpForm.get('firstName').hasError('required')"
+                        class="text-danger">
+                        First Name  is required
+                      </span>
+                    </div>
+                    <div class="form-group">
+                      <label>Last Name*</label>
+                      <input type="text" class="form-control" name="username" value="anniemario" [formControlName]="'lastName'">
+                      <span *ngIf="signUpForm.get('lastName').touched && signUpForm.get('lastName').hasError('required')"
+                      class="text-danger">
+                      Last Name  is required
+                    </span>
+                  </div>
+                    <div class="form-group">
+                        <label>Email*</label>
+                        <input type="email"
+                        autocomplete="off"
+                        id="register-email"
+                        
+                        name="register-email"
+                        (blur)="checkEmail()"
+                        formControlName="email">
+                        <span
+                        *ngIf="signUpForm.get('email').touched && signUpForm.get('email').hasError('required') || signUpForm.get('email').hasError('email')"
+                          class="text-danger">
+                          Email is required and must be a valid email address
+                        </span>
+                        <span
+                        *ngIf="signUpForm.get('email').touched && signUpForm.get('email').hasError('required') || signUpForm.get('email').hasError('alreadyExists')"
+                          class="text-danger">
+                          E-mail already exists!
+                        </span>
+                    </div>
+                    <ng-container formGroupName="pwd"> 
+                    <div class="form-group">
+                        <label>Password*</label>
+                        <input type="password"  id="register-password" [formControlName]="'password'" name="register-password" [type]="isShowPass ? 'text' : 'password'"
+                        placeholder="Min. 6 character" formControlName="password">
+                        <span
+                        *ngIf="(password?.hasError('required') && password?.touched) || (password?.errors?.['minlength'] && password?.dirty) || (formSubmitted && !password?.value)"
+                        class="text-danger">
+                        Password is required and must be a 6 character
+                      </span>
+                    </div>
+                    <div class="form-group">
+                        <label>Confirm Password*</label>
+                        <input type="password" class="form-control" id="register-confirm-password" [formControlName]="'confirmPassword'" name="register-confirm-password"
+                        placeholder="Min. 6 character" formControlName="password">
+                        <span class="text-danger" *ngIf="signUpForm.get(['pwd', 'confirmPassword']).touched && signUpForm.get(['pwd', 'confirmPassword']).hasError('required')">
+                            Required!
+                        </span>
+                        <span class="text-danger" *ngIf="signUpForm.get(['pwd', 'confirmPassword']).touched && signUpForm.get(['pwd', 'confirmPassword']).hasError('mustMatch')">
+                          Passwords must match!
+                        </span>
+                    </div>
+                </ng-container>
+                    <div class="form-group">
+                        <button type="submit" class="axil-btn btn-bg-primary submit-btn" (click)="signUp()">Create Account</button>
+                    </div>
+                </form>
+                  </ng-template>
+                  <!-- register form end -->
+                
+              </li>
+              <li *ngIf="recoverPwd" [ngbNavItem]="3">
+                <a ngbNavLink>
+                  <h4 class="tp-login-title" >Forgot password</h4>
+                </a>
+                <ng-template ngbNavContent> 
+                  <form [formGroup]="forgotPasswordForm" class="singin-form">
+                    <div class="form-group">
+                        <label>Email</label>
+                        <input type="email" class="form-control" name="email" value="annie@example.com"  [formControlName]="'email'" required>
+                        <span class="text-danger" role="alert" *ngIf="forgotPasswordForm.get('email').touched && forgotPasswordForm.get('email').hasError('required')">
+                            Please enter your email address !
+                          </span>
+                    </div>
+                    <div class="form-group">
+                        <button type="submit" class="axil-btn btn-bg-primary submit-btn" [disabled]="forgotPasswordForm.invalid || isResetButtonDisabled" type="button" (click)="sendResetLink()" 
+                        [disabled]="forgotPasswordForm.invalid">Send Reset Instructions</button>
+                    </div>
+                </form>
+              </ng-template>
+              </li>
+
+            </ul>
+            <div [ngbNavOutlet]="nav"></div>
+
+          </div>
+        </div>
+      </div>
+    </div>
+
+
+
+</main>

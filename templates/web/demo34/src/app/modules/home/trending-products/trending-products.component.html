@@ -1,0 +1,73 @@
+<section class="ratio_square">
+    <div class="container">
+        <div class="row">
+            <div class="col-12">
+                <div class="title-basic">
+                    <h2 class="title"><i class="ti-bolt"></i> deals of the day</h2>
+                    <div class="timer">
+                        <p id="demo">EXPIRED</p>
+                    </div>
+                </div>
+                <div class="product-5 product-m no-arrow slick-initialized slick-slider">
+                    <div class="slick-list draggable">
+                        <owl-carousel-o [options]="TrendingProducts" class="slick-track"
+                            style="opacity: 1; width: 1710px; ">
+
+                            <ng-container *ngFor="let slider of trendingProducts">
+                                <ng-template carouselSlide>
+
+                                    <div class="slick-slide" data-slick-index="0" aria-hidden="true" tabindex="-1">
+                                        <div>
+                                            <div class="product-box product-wrap"
+                                                style="width: 100%; display: inline-block;">
+                                                <div class="img-wrapper">
+                                                    <div class="front">
+                                                        <a href="product-page(no-sidebar).html"
+                                                            class="bg-size blur-up lazyloaded"
+                                                            style="background-image: url(&quot;assets/images/electronics/pro/19.jpg&quot;); background-size: cover; background-position: center center; display: block;"
+                                                            tabindex="0"><img
+                                                                src="{{slider.src}}"
+                                                                class="img-fluid blur-up lazyload bg-img" alt=""
+                                                                style="background-size: cover; background-position: center center; display: block;"></a>
+                                                    </div>
+                                                    <div class="cart-box style-1 rounded-0">
+                                                        <button onclick="openCart()" title="Add to cart"
+                                                            tabindex="-1"><i class="ti-shopping-cart"></i></button>
+                                                        <a href="javascript:void(0)" title="Add to Wishlist"
+                                                            tabindex="-1"><i class="ti-heart"
+                                                                aria-hidden="true"></i></a>
+                                                        <a href="#" data-bs-toggle="modal" data-bs-target="#quick-view"
+                                                            title="Quick View" tabindex="-1"><i class="ti-search"
+                                                                aria-hidden="true"></i></a>
+                                                        <a href="compare.html" title="Compare" tabindex="-1"><i
+                                                                class="ti-reload" aria-hidden="true"></i></a>
+                                                    </div>
+                                                </div>
+                                                <div class="product-detail">
+                                                    <div class="rating"><i class="fa fa-star"></i> <i
+                                                            class="fa fa-star"></i> <i class="fa fa-star"></i> <i
+                                                            class="fa fa-star"></i> <i class="fa fa-star"></i>
+                                                    </div>
+                                                    <a href="product-page(no-sidebar).html" tabindex="-1">
+                                                        <h6>{{slider.name}}</h6>
+                                                    </a>
+                                                    <h4>${{slider.price}}</h4>
+                                                    <ul class="color-variant">
+                                                        <li class="bg-color1"></li>
+                                                        <li class="bg-color3"></li>
+                                                    </ul>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </ng-template>
+                            </ng-container>
+
+
+                        </owl-carousel-o>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>

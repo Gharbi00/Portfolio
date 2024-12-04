@@ -1,0 +1,50 @@
+/* ::ng-deep.owl-theme .owl-dots .owl-dot span {
+    text-indent: -50000px;
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    border: 1px solid #000;
+    margin: 0 5px;
+    transition: all .3s ease-in-out;
+}
+:ng-deep.owl-theme .owl-dots .owl-dot.active span {
+    background: #000!important;
+}
+:ng-deep.owl-theme .owl-dots .owl-dot:hover span{
+
+    background: #000!important;
+}
+:ng-deep.owl-theme .owl-dots .owl-dot span {
+
+     background: #ffffff; 
+
+}
+::ng-deep.owl-carousel .owl-item img {
+    display: block;
+     
+} */
+::ng-deep .owl-item {
+    max-width: 202px !important;
+
+}
+
+.main-page-wrapper {
+    overflow-x: clip;
+    padding-top: 150px;
+}
+
+.hero-banner-two .container {
+    max-width: 1400px !important;
+    position: relative;
+    padding: 0 40px;
+}
+
+.accordion-style-two .card .card-header button:before {
+    content: "\f100" !important;
+    font-family: 'gordita' !important;
+    position: absolute;
+    font-size: 28px;
+    right: 0;
+    top: 30%;
+    transition: all 0.3s ease-in-out;
+}

@@ -1,0 +1,30 @@
+/* :host::ng-deep .bg-img1{
+    height: 600px;
+    width: 1348px;
+
+}
+
+:host::ng-deep.nft-collection-box{
+    width: 350px;
+}
+:host::ng-deep .slider3{
+    display: flex;
+
+}
+:host::ng-deep.slider3{
+    @media(width < 1300px){
+        display: grid !important;
+        place-items: center;
+    }
+    
+}
+:host::ng-deep .slider-special{
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+
+} */
+
+::ng-deep.theme-color-1 {
+    --theme-color: #fa869b!important;
+}

@@ -1,0 +1,50 @@
+::ng-deep:root {
+  --theme-deafult: #000000 !important;
+  --theme-color: #000000 !important;
+
+  // This gradient color only for gym and marijuana layout
+  --theme-gradient1: #01effc;
+  --theme-gradient2: #485ff2;
+}
+
+::ng-deep.colored-image {
+  /* filter:invert(81%) sepia(13%) saturate(2932%) hue-rotate(200deg) brightness(76%) contrast(76%); */
+  filter: hue-rotate(229deg) brightness(155%);
+
+}
+
+.theme-settings {
+  position: fixed;
+  right: 0;
+  top: 50%;
+  -webkit-transform: translateY(-50%);
+  transform: translateY(-50%);
+  z-index: 1;
+}
+
+.theme-settings ul li {
+  width: 40px;
+  height: 38px;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  z-index: 1;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -webkit-box-pack: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  font-size: 14px;
+  text-decoration: none;
+  border-radius: 5px;
+  border-top-right-radius: 0;
+  border-bottom-right-radius: 0;
+  background-color: #f7f7f7;
+  -webkit-box-shadow: 0px 0px 5px 0px rgba(154, 154, 154, 0.54);
+  box-shadow: 0px 0px 5px 0px rgba(154, 154, 154, 0.54);
+  margin-bottom: 15px;
+  margin-left: auto;
+  cursor: pointer;
+  font-weight: 600;
+}

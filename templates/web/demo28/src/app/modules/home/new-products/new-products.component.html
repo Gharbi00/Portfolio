@@ -1,0 +1,939 @@
+<section class="small-section pb-0">
+    <div class="collection-wrapper">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-3 col-md-4 col-sm-6 col-6">
+                    <div class="h-100 b-top bg-size"
+                        style="background-image: url(&quot;../assets/images/marketplace/banner/vertical2.jpg&quot;); background-size: cover; background-position: center center; display: block;">
+                        <img src="../assets/images/marketplace/banner/vertical2.jpg" class="img-fluid bg-img bg-top"
+                            alt="" style="display: none;">
+                    </div>
+                </div>
+                <div class="collection-content col-xl-9 p-0-xl">
+                    <div class="page-main-content">
+                        <!-- product deal section -->
+                        <div class="ratio_115">
+                            <div class="container">
+                                <div class="row">
+                                    <div class="col-12">
+                                        <div class="title-basic">
+                                            <h2 class="title"><i class="ti-bolt"></i> deals of the day</h2>
+                                            <div class="timer">
+                                                <p id="demo">EXPIRED</p>
+                                            </div>
+                                        </div>
+                                        <div
+                                            class="marketplace-slider product-m no-arrow mb-4 slick-initialized slick-slider">
+
+                                            <div class="slick-list draggable">
+                                                <owl-carousel-o [options]="ProductCarousel" class="slick-track"
+                                                    style="opacity: 1; width: 2990px; ">
+                                                    <ng-container *ngFor="let product of ProductData">
+
+                                                        <ng-template carouselSlide class="slick-slide slick-active"
+                                                            style="width: 202px;">
+
+
+                                                            <div>
+                                                                <div>
+                                                                    <div class="product-box"
+                                                                        style="width: 100%; display: inline-block;">
+                                                                        <div class="img-wrapper">
+                                                                            <div class="front">
+                                                                                <a href="product-page(no-sidebar).html"
+                                                                                    class="bg-size blur-up lazyloaded"
+                                                                                    style="background-image: url(&quot;{{product.src}}&quot;); background-size: cover; background-position: center center; display: block;"
+                                                                                    tabindex="0"><img
+                                                                                        src="../assets/images/electronics/pro/21.jpg"
+                                                                                        class="img-fluid blur-up lazyload bg-img"
+                                                                                        alt=""
+                                                                                        style="display: none;"></a>
+                                                                            </div>
+                                                                            <div
+                                                                                class="cart-info cart-wrap bg-color-cls sm-box">
+                                                                                <button onclick="openCart()"
+                                                                                    title="Add to cart" tabindex="0"><i
+                                                                                        class="ti-shopping-cart"></i></button>
+                                                                                <a href="javascript:void(0)"
+                                                                                    title="Add to Wishlist"
+                                                                                    tabindex="0"><i class="ti-heart"
+                                                                                        aria-hidden="true"></i></a>
+                                                                                <a href="#" data-bs-toggle="modal"
+                                                                                    data-bs-target="#quick-view"
+                                                                                    title="Quick View" tabindex="0"><i
+                                                                                        class="ti-search"
+                                                                                        aria-hidden="true"></i></a>
+                                                                                <a href="compare.html" title="Compare"
+                                                                                    tabindex="0"><i class="ti-reload"
+                                                                                        aria-hidden="true"></i></a>
+                                                                            </div>
+                                                                        </div>
+                                                                        <div class="product-detail">
+                                                                            <div class="rating"><i
+                                                                                    class="fa fa-star"></i> <i
+                                                                                    class="fa fa-star"></i> <i
+                                                                                    class="fa fa-star"></i> <i
+                                                                                    class="fa fa-star"></i> <i
+                                                                                    class="fa fa-star"></i>
+                                                                            </div>
+                                                                            <a href="product-page(no-sidebar).html"
+                                                                                tabindex="0">
+                                                                                <h6>{{product.name}}</h6>
+                                                                            </a>
+                                                                            <h4>${{product.newPrice}}</h4>
+                                                                            <ul class="color-variant">
+                                                                                <li class="bg-color1"></li>
+                                                                                <li class="bg-color2"></li>
+                                                                            </ul>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+
+
+                                                        </ng-template>
+                                                    </ng-container>
+                                                </owl-carousel-o>
+                                            </div><button class="slick-next slick-arrow" aria-label="Next" type="button"
+                                                style="display: inline-block;">Next</button>
+                                        </div>
+
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!--                         <div class="pb-0 ratio2_1 small-section">
+                            <div class="container">
+                                <div class="row partition2">
+                                    <div class="col-md-6">
+                                        <a href="#">
+                                            <div class="collection-banner p-right text-end">
+                                                <div class="img-part bg-size blur-up lazyloaded"
+                                                    style="background-image: url(&quot;../assets/images/marketplace/banner/19.jpg&quot;); background-size: cover; background-position: center center; display: block;">
+                                                    <img src="../assets/images/marketplace/banner/19.jpg"
+                                                        class="img-fluid blur-up lazyload bg-img" alt=""
+                                                        style="display: none;">
+                                                </div>
+                                                <div class="contain-banner banner-2">
+                                                    <div>
+                                                        <h4 class="text-muted">save 20%</h4>
+                                                        <h2 class="text-dark">shoes</h2>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </a>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <a href="#">
+                                            <div class="collection-banner p-right text-end">
+                                                <div class="img-part bg-size blur-up lazyloaded"
+                                                    style="background-image: url(&quot;../assets/images/marketplace/banner/20.jpg&quot;); background-size: cover; background-position: center center; display: block;">
+                                                    <img src="../assets/images/marketplace/banner/20.jpg"
+                                                        class="img-fluid blur-up lazyload bg-img" alt=""
+                                                        style="display: none;">
+                                                </div>
+                                                <div class="contain-banner banner-2">
+                                                    <div>
+                                                        <h4 class="text-muted">save 60%</h4>
+                                                        <h2 class="text-dark">phones</h2>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                
+                        <div class="ratio_115 bg-title small-section pb-0 wo-bg">
+                            <div class="container">
+                                <div class="row">
+                                    <div class="col">
+                                        <div class="theme-tab">
+                                            <div class="bg-title-part mt-0">
+                                                <div class="title-basic mb-0">
+                                                    <h2 class="title">Recommendations for you</h2>
+                                                </div>
+                                                <ul class="tabs tab-title w-bg">
+                                                    <li  [class.current]="activeTab === 'tab-1'" (click)="switchTab('tab-1')"  class="current">
+                                                        <a >New Products</a>
+                                                    </li>
+                                                    <li [class.current]="activeTab === 'tab-2'" (click)="switchTab('tab-2')" class="">
+                                                        <a >Featured Products</a>
+                                                    </li>
+                                                </ul>
+                                            </div>
+                                            <div class="tab-content-cls" [@tabAnimation]="activeTab">
+                                                <ng-container *ngIf="activeTab==='tab-1'"  class="tab-content active default"
+                                                    style="display: block;">
+                                                    <div
+                                                        class="row row-cols-xxl-5 row-cols-xl-4 row-cols-lg-5 row-cols-md-4 row-cols-2 gy-4">
+                                                        <div class="product-box">
+                                                            <div class="img-wrapper">
+                                                                <div class="front">
+                                                                    <a href="product-page(no-sidebar).html"
+                                                                        class="bg-size blur-up lazyloaded"
+                                                                        style="background-image: url(&quot;../assets/images/marketplace/pro/18.jpg&quot;); background-size: cover; background-position: center center; display: block;"><img
+                                                                            src="../assets/images/marketplace/pro/18.jpg"
+                                                                            class="img-fluid blur-up lazyload bg-img"
+                                                                            alt="" style="display: none;"></a>
+                                                                </div>
+                                                                <div class="cart-info cart-wrap bg-color-cls sm-box">
+                                                                    <button onclick="openCart()" title="Add to cart"><i
+                                                                            class="ti-shopping-cart"></i></button>
+                                                                    <a href="javascript:void(0)"
+                                                                        title="Add to Wishlist"><i class="ti-heart"
+                                                                            aria-hidden="true"></i></a>
+                                                                    <a href="#" data-bs-toggle="modal"
+                                                                        data-bs-target="#quick-view"
+                                                                        title="Quick View"><i class="ti-search"
+                                                                            aria-hidden="true"></i></a>
+                                                                    <a href="compare.html" title="Compare"><i
+                                                                            class="ti-reload"
+                                                                            aria-hidden="true"></i></a>
+                                                                </div>
+                                                            </div>
+                                                            <div class="product-detail">
+                                                                <div class="rating"><i class="fa fa-star"></i> <i
+                                                                        class="fa fa-star"></i> <i
+                                                                        class="fa fa-star"></i> <i
+                                                                        class="fa fa-star"></i> <i
+                                                                        class="fa fa-star"></i>
+                                                                </div>
+                                                                <a href="product-page(no-sidebar).html">
+                                                                    <h6>Block With Truck Toy</h6>
+                                                                </a>
+                                                                <h4>$10.00</h4>
+                                                                <ul class="color-variant">
+                                                                    <li class="bg-color1"></li>
+                                                                    <li class="bg-color2"></li>
+                                                                </ul>
+                                                            </div>
+                                                        </div>
+                                                        <div class="product-box">
+                                                            <div class="img-wrapper">
+                                                                <div class="front">
+                                                                    <a href="product-page(no-sidebar).html"
+                                                                        class="bg-size blur-up lazyloaded"
+                                                                        style="background-image: url(&quot;../assets/images/electronics/pro/20.jpg&quot;); background-size: cover; background-position: center center; display: block;"><img
+                                                                            src="../assets/images/electronics/pro/20.jpg"
+                                                                            class="img-fluid blur-up lazyload bg-img"
+                                                                            alt="" style="display: none;"></a>
+                                                                </div>
+                                                                <div class="cart-info cart-wrap bg-color-cls sm-box">
+                                                                    <button onclick="openCart()" title="Add to cart"><i
+                                                                            class="ti-shopping-cart"></i></button>
+                                                                    <a href="javascript:void(0)"
+                                                                        title="Add to Wishlist"><i class="ti-heart"
+                                                                            aria-hidden="true"></i></a>
+                                                                    <a href="#" data-bs-toggle="modal"
+                                                                        data-bs-target="#quick-view"
+                                                                        title="Quick View"><i class="ti-search"
+                                                                            aria-hidden="true"></i></a>
+                                                                    <a href="compare.html" title="Compare"><i
+                                                                            class="ti-reload"
+                                                                            aria-hidden="true"></i></a>
+                                                                </div>
+                                                            </div>
+                                                            <div class="product-detail">
+                                                                <div class="rating"><i class="fa fa-star"></i> <i
+                                                                        class="fa fa-star"></i> <i
+                                                                        class="fa fa-star"></i> <i
+                                                                        class="fa fa-star"></i> <i
+                                                                        class="fa fa-star"></i>
+                                                                </div>
+                                                                <a href="product-page(no-sidebar).html">
+                                                                    <h6>Laptop</h6>
+                                                                </a>
+                                                                <h4>$800.00</h4>
+                                                                <ul class="color-variant">
+                                                                    <li class="bg-color1"></li>
+                                                                    <li class="bg-color2"></li>
+                                                                </ul>
+                                                            </div>
+                                                        </div>
+                                                        <div class="product-box">
+                                                            <div class="img-wrapper">
+                                                                <div class="front">
+                                                                    <a href="product-page(no-sidebar).html"
+                                                                        class="bg-size blur-up lazyloaded"
+                                                                        style="background-image: url(&quot;../assets/images/marketplace/pro/19.jpg&quot;); background-size: cover; background-position: center center; display: block;"><img
+                                                                            src="../assets/images/marketplace/pro/19.jpg"
+                                                                            class="img-fluid blur-up lazyload bg-img"
+                                                                            alt="" style="display: none;"></a>
+                                                                </div>
+                                                                <div class="cart-info cart-wrap bg-color-cls sm-box">
+                                                                    <button onclick="openCart()" title="Add to cart"><i
+                                                                            class="ti-shopping-cart"></i></button>
+                                                                    <a href="javascript:void(0)"
+                                                                        title="Add to Wishlist"><i class="ti-heart"
+                                                                            aria-hidden="true"></i></a>
+                                                                    <a href="#" data-bs-toggle="modal"
+                                                                        data-bs-target="#quick-view"
+                                                                        title="Quick View"><i class="ti-search"
+                                                                            aria-hidden="true"></i></a>
+                                                                    <a href="compare.html" title="Compare"><i
+                                                                            class="ti-reload"
+                                                                            aria-hidden="true"></i></a>
+                                                                </div>
+                                                            </div>
+                                                            <div class="product-detail">
+                                                                <div class="rating"><i class="fa fa-star"></i> <i
+                                                                        class="fa fa-star"></i> <i
+                                                                        class="fa fa-star"></i> <i
+                                                                        class="fa fa-star"></i> <i
+                                                                        class="fa fa-star"></i>
+                                                                </div>
+                                                                <a href="product-page(no-sidebar).html">
+                                                                    <h6>Gallant Dumbbell Set</h6>
+                                                                </a>
+                                                                <h4>$180.20</h4>
+                                                                <ul class="color-variant">
+                                                                    <li class="bg-color1"></li>
+                                                                    <li class="bg-color2"></li>
+                                                                </ul>
+                                                            </div>
+                                                        </div>
+                                                        <div class="product-box">
+                                                            <div class="img-wrapper">
+                                                                <div class="front">
+                                                                    <a href="product-page(no-sidebar).html"
+                                                                        class="bg-size blur-up lazyloaded"
+                                                                        style="background-image: url(&quot;../assets/images/marketplace/pro/16.jpg&quot;); background-size: cover; background-position: center center; display: block;"><img
+                                                                            src="../assets/images/marketplace/pro/16.jpg"
+                                                                            class="img-fluid blur-up lazyload bg-img"
+                                                                            alt="" style="display: none;"></a>
+                                                                </div>
+                                                                <div class="cart-info cart-wrap bg-color-cls sm-box">
+                                                                    <button onclick="openCart()" title="Add to cart"><i
+                                                                            class="ti-shopping-cart"></i></button>
+                                                                    <a href="javascript:void(0)"
+                                                                        title="Add to Wishlist"><i class="ti-heart"
+                                                                            aria-hidden="true"></i></a>
+                                                                    <a href="#" data-bs-toggle="modal"
+                                                                        data-bs-target="#quick-view"
+                                                                        title="Quick View"><i class="ti-search"
+                                                                            aria-hidden="true"></i></a>
+                                                                    <a href="compare.html" title="Compare"><i
+                                                                            class="ti-reload"
+                                                                            aria-hidden="true"></i></a>
+                                                                </div>
+                                                            </div>
+                                                            <div class="product-detail">
+                                                                <div class="rating"><i class="fa fa-star"></i> <i
+                                                                        class="fa fa-star"></i> <i
+                                                                        class="fa fa-star"></i> <i
+                                                                        class="fa fa-star"></i> <i
+                                                                        class="fa fa-star"></i>
+                                                                </div>
+                                                                <a href="product-page(no-sidebar).html">
+                                                                    <h6>Orange Solid Rounded T-shirt</h6>
+                                                                </a>
+                                                                <h4>$10.00</h4>
+                                                                <ul class="color-variant">
+                                                                    <li class="bg-color1"></li>
+                                                                    <li class="bg-color2"></li>
+                                                                </ul>
+                                                            </div>
+                                                        </div>
+                                                        <div class="product-box">
+                                                            <div class="img-wrapper">
+                                                                <div class="front">
+                                                                    <a href="product-page(no-sidebar).html"
+                                                                        class="bg-size blur-up lazyloaded"
+                                                                        style="background-image: url(&quot;../assets/images/marketplace/pro/17.jpg&quot;); background-size: cover; background-position: center center; display: block;"><img
+                                                                            src="../assets/images/marketplace/pro/17.jpg"
+                                                                            class="img-fluid blur-up lazyload bg-img"
+                                                                            alt="" style="display: none;"></a>
+                                                                </div>
+                                                                <div class="cart-info cart-wrap bg-color-cls sm-box">
+                                                                    <button onclick="openCart()" title="Add to cart"><i
+                                                                            class="ti-shopping-cart"></i></button>
+                                                                    <a href="javascript:void(0)"
+                                                                        title="Add to Wishlist"><i class="ti-heart"
+                                                                            aria-hidden="true"></i></a>
+                                                                    <a href="#" data-bs-toggle="modal"
+                                                                        data-bs-target="#quick-view"
+                                                                        title="Quick View"><i class="ti-search"
+                                                                            aria-hidden="true"></i></a>
+                                                                    <a href="compare.html" title="Compare"><i
+                                                                            class="ti-reload"
+                                                                            aria-hidden="true"></i></a>
+                                                                </div>
+                                                            </div>
+                                                            <div class="product-detail">
+                                                                <div class="rating"><i class="fa fa-star"></i> <i
+                                                                        class="fa fa-star"></i> <i
+                                                                        class="fa fa-star"></i> <i
+                                                                        class="fa fa-star"></i> <i
+                                                                        class="fa fa-star"></i>
+                                                                </div>
+                                                                <a href="product-page(no-sidebar).html">
+                                                                    <h6>Modern Arm Chair</h6>
+                                                                </a>
+                                                                <h4>$100.00</h4>
+                                                                <ul class="color-variant">
+                                                                    <li class="bg-color1"></li>
+                                                                    <li class="bg-color2"></li>
+                                                                </ul>
+                                                            </div>
+                                                        </div>
+                                                        <div class="product-box">
+                                                            <div class="img-wrapper">
+                                                                <div class="front">
+                                                                    <a href="product-page(no-sidebar).html"
+                                                                        class="bg-size blur-up lazyloaded"
+                                                                        style="background-image: url(&quot;../assets/images/marketplace/pro/20.jpg&quot;); background-size: cover; background-position: center center; display: block;"><img
+                                                                            src="../assets/images/marketplace/pro/20.jpg"
+                                                                            class="img-fluid blur-up lazyload bg-img"
+                                                                            alt="" style="display: none;"></a>
+                                                                </div>
+                                                                <div class="cart-info cart-wrap bg-color-cls sm-box">
+                                                                    <button onclick="openCart()" title="Add to cart"><i
+                                                                            class="ti-shopping-cart"></i></button>
+                                                                    <a href="javascript:void(0)"
+                                                                        title="Add to Wishlist"><i class="ti-heart"
+                                                                            aria-hidden="true"></i></a>
+                                                                    <a href="#" data-bs-toggle="modal"
+                                                                        data-bs-target="#quick-view"
+                                                                        title="Quick View"><i class="ti-search"
+                                                                            aria-hidden="true"></i></a>
+                                                                    <a href="compare.html" title="Compare"><i
+                                                                            class="ti-reload"
+                                                                            aria-hidden="true"></i></a>
+                                                                </div>
+                                                            </div>
+                                                            <div class="product-detail">
+                                                                <div class="rating"><i class="fa fa-star"></i> <i
+                                                                        class="fa fa-star"></i> <i
+                                                                        class="fa fa-star"></i> <i
+                                                                        class="fa fa-star"></i> <i
+                                                                        class="fa fa-star"></i>
+                                                                </div>
+                                                                <a href="product-page(no-sidebar).html">
+                                                                    <h6>Weight Machines</h6>
+                                                                </a>
+                                                                <h4>$120.10</h4>
+                                                                <ul class="color-variant">
+                                                                    <li class="bg-color1"></li>
+                                                                    <li class="bg-color2"></li>
+                                                                </ul>
+                                                            </div>
+                                                        </div>
+                                                        <div class="product-box">
+                                                            <div class="img-wrapper">
+                                                                <div class="front">
+                                                                    <a href="product-page(no-sidebar).html"
+                                                                        class="bg-size blur-up lazyloaded"
+                                                                        style="background-image: url(&quot;../assets/images/electronics/pro/25.jpg&quot;); background-size: cover; background-position: center center; display: block;"><img
+                                                                            src="../assets/images/electronics/pro/25.jpg"
+                                                                            class="img-fluid blur-up lazyload bg-img"
+                                                                            alt="" style="display: none;"></a>
+                                                                </div>
+                                                                <div class="cart-info cart-wrap bg-color-cls sm-box">
+                                                                    <button onclick="openCart()" title="Add to cart"><i
+                                                                            class="ti-shopping-cart"></i></button>
+                                                                    <a href="javascript:void(0)"
+                                                                        title="Add to Wishlist"><i class="ti-heart"
+                                                                            aria-hidden="true"></i></a>
+                                                                    <a href="#" data-bs-toggle="modal"
+                                                                        data-bs-target="#quick-view"
+                                                                        title="Quick View"><i class="ti-search"
+                                                                            aria-hidden="true"></i></a>
+                                                                    <a href="compare.html" title="Compare"><i
+                                                                            class="ti-reload"
+                                                                            aria-hidden="true"></i></a>
+                                                                </div>
+                                                            </div>
+                                                            <div class="product-detail">
+                                                                <div class="rating"><i class="fa fa-star"></i> <i
+                                                                        class="fa fa-star"></i> <i
+                                                                        class="fa fa-star"></i> <i
+                                                                        class="fa fa-star"></i> <i
+                                                                        class="fa fa-star"></i>
+                                                                </div>
+                                                                <a href="product-page(no-sidebar).html">
+                                                                    <h6>Rounded CCTV Camera</h6>
+                                                                </a>
+                                                                <h4>$200.00</h4>
+                                                                <ul class="color-variant">
+                                                                    <li class="bg-color1"></li>
+                                                                    <li class="bg-color2"></li>
+                                                                </ul>
+                                                            </div>
+                                                        </div>
+                                                        <div class="product-box">
+                                                            <div class="img-wrapper">
+                                                                <div class="front">
+                                                                    <a href="product-page(no-sidebar).html"
+                                                                        class="bg-size blur-up lazyloaded"
+                                                                        style="background-image: url(&quot;../assets/images/electronics/pro/24.jpg&quot;); background-size: cover; background-position: center center; display: block;"><img
+                                                                            src="../assets/images/electronics/pro/24.jpg"
+                                                                            class="img-fluid blur-up lazyload bg-img"
+                                                                            alt="" style="display: none;"></a>
+                                                                </div>
+                                                                <div class="cart-info cart-wrap bg-color-cls sm-box">
+                                                                    <button onclick="openCart()" title="Add to cart"><i
+                                                                            class="ti-shopping-cart"></i></button>
+                                                                    <a href="javascript:void(0)"
+                                                                        title="Add to Wishlist"><i class="ti-heart"
+                                                                            aria-hidden="true"></i></a>
+                                                                    <a href="#" data-bs-toggle="modal"
+                                                                        data-bs-target="#quick-view"
+                                                                        title="Quick View"><i class="ti-search"
+                                                                            aria-hidden="true"></i></a>
+                                                                    <a href="compare.html" title="Compare"><i
+                                                                            class="ti-reload"
+                                                                            aria-hidden="true"></i></a>
+                                                                </div>
+                                                            </div>
+                                                            <div class="product-detail">
+                                                                <div class="rating"><i class="fa fa-star"></i> <i
+                                                                        class="fa fa-star"></i> <i
+                                                                        class="fa fa-star"></i> <i
+                                                                        class="fa fa-star"></i> <i
+                                                                        class="fa fa-star"></i>
+                                                                </div>
+                                                                <a href="product-page(no-sidebar).html">
+                                                                    <h6>Brown Wireless Bluetooth Headphone</h6>
+                                                                </a>
+                                                                <h4>$100.00</h4>
+                                                                <ul class="color-variant">
+                                                                    <li class="bg-color1"></li>
+                                                                    <li class="bg-color2"></li>
+                                                                </ul>
+                                                            </div>
+                                                        </div>
+
+                                                    </div>
+                                                </ng-container>
+                                                <ng-container *ngIf="activeTab==='tab-2'"  class="tab-content active default"
+                                                style="display: block;">
+                                                <div
+                                                    class="row row-cols-xxl-5 row-cols-xl-4 row-cols-lg-5 row-cols-md-4 row-cols-2 gy-4">
+                                                    <div class="product-box">
+                                                        <div class="img-wrapper">
+                                                            <div class="front">
+                                                                <a href="product-page(no-sidebar).html"
+                                                                    class="bg-size blur-up lazyloaded"
+                                                                    style="background-image: url(&quot;../assets/images/marketplace/pro/18.jpg&quot;); background-size: cover; background-position: center center; display: block;"><img
+                                                                        src="../assets/images/marketplace/pro/18.jpg"
+                                                                        class="img-fluid blur-up lazyload bg-img"
+                                                                        alt="" style="display: none;"></a>
+                                                            </div>
+                                                            <div class="cart-info cart-wrap bg-color-cls sm-box">
+                                                                <button onclick="openCart()" title="Add to cart"><i
+                                                                        class="ti-shopping-cart"></i></button>
+                                                                <a href="javascript:void(0)"
+                                                                    title="Add to Wishlist"><i class="ti-heart"
+                                                                        aria-hidden="true"></i></a>
+                                                                <a href="#" data-bs-toggle="modal"
+                                                                    data-bs-target="#quick-view"
+                                                                    title="Quick View"><i class="ti-search"
+                                                                        aria-hidden="true"></i></a>
+                                                                <a href="compare.html" title="Compare"><i
+                                                                        class="ti-reload"
+                                                                        aria-hidden="true"></i></a>
+                                                            </div>
+                                                        </div>
+                                                        <div class="product-detail">
+                                                            <div class="rating"><i class="fa fa-star"></i> <i
+                                                                    class="fa fa-star"></i> <i
+                                                                    class="fa fa-star"></i> <i
+                                                                    class="fa fa-star"></i> <i
+                                                                    class="fa fa-star"></i>
+                                                            </div>
+                                                            <a href="product-page(no-sidebar).html">
+                                                                <h6>Block With Truck Toy</h6>
+                                                            </a>
+                                                            <h4>$10.00</h4>
+                                                            <ul class="color-variant">
+                                                                <li class="bg-color1"></li>
+                                                                <li class="bg-color2"></li>
+                                                            </ul>
+                                                        </div>
+                                                    </div>
+                                                    <div class="product-box">
+                                                        <div class="img-wrapper">
+                                                            <div class="front">
+                                                                <a href="product-page(no-sidebar).html"
+                                                                    class="bg-size blur-up lazyloaded"
+                                                                    style="background-image: url(&quot;../assets/images/electronics/pro/20.jpg&quot;); background-size: cover; background-position: center center; display: block;"><img
+                                                                        src="../assets/images/electronics/pro/20.jpg"
+                                                                        class="img-fluid blur-up lazyload bg-img"
+                                                                        alt="" style="display: none;"></a>
+                                                            </div>
+                                                            <div class="cart-info cart-wrap bg-color-cls sm-box">
+                                                                <button onclick="openCart()" title="Add to cart"><i
+                                                                        class="ti-shopping-cart"></i></button>
+                                                                <a href="javascript:void(0)"
+                                                                    title="Add to Wishlist"><i class="ti-heart"
+                                                                        aria-hidden="true"></i></a>
+                                                                <a href="#" data-bs-toggle="modal"
+                                                                    data-bs-target="#quick-view"
+                                                                    title="Quick View"><i class="ti-search"
+                                                                        aria-hidden="true"></i></a>
+                                                                <a href="compare.html" title="Compare"><i
+                                                                        class="ti-reload"
+                                                                        aria-hidden="true"></i></a>
+                                                            </div>
+                                                        </div>
+                                                        <div class="product-detail">
+                                                            <div class="rating"><i class="fa fa-star"></i> <i
+                                                                    class="fa fa-star"></i> <i
+                                                                    class="fa fa-star"></i> <i
+                                                                    class="fa fa-star"></i> <i
+                                                                    class="fa fa-star"></i>
+                                                            </div>
+                                                            <a href="product-page(no-sidebar).html">
+                                                                <h6>Laptop</h6>
+                                                            </a>
+                                                            <h4>$800.00</h4>
+                                                            <ul class="color-variant">
+                                                                <li class="bg-color1"></li>
+                                                                <li class="bg-color2"></li>
+                                                            </ul>
+                                                        </div>
+                                                    </div>
+                                                    <div class="product-box">
+                                                        <div class="img-wrapper">
+                                                            <div class="front">
+                                                                <a href="product-page(no-sidebar).html"
+                                                                    class="bg-size blur-up lazyloaded"
+                                                                    style="background-image: url(&quot;../assets/images/marketplace/pro/19.jpg&quot;); background-size: cover; background-position: center center; display: block;"><img
+                                                                        src="../assets/images/marketplace/pro/19.jpg"
+                                                                        class="img-fluid blur-up lazyload bg-img"
+                                                                        alt="" style="display: none;"></a>
+                                                            </div>
+                                                            <div class="cart-info cart-wrap bg-color-cls sm-box">
+                                                                <button onclick="openCart()" title="Add to cart"><i
+                                                                        class="ti-shopping-cart"></i></button>
+                                                                <a href="javascript:void(0)"
+                                                                    title="Add to Wishlist"><i class="ti-heart"
+                                                                        aria-hidden="true"></i></a>
+                                                                <a href="#" data-bs-toggle="modal"
+                                                                    data-bs-target="#quick-view"
+                                                                    title="Quick View"><i class="ti-search"
+                                                                        aria-hidden="true"></i></a>
+                                                                <a href="compare.html" title="Compare"><i
+                                                                        class="ti-reload"
+                                                                        aria-hidden="true"></i></a>
+                                                            </div>
+                                                        </div>
+                                                        <div class="product-detail">
+                                                            <div class="rating"><i class="fa fa-star"></i> <i
+                                                                    class="fa fa-star"></i> <i
+                                                                    class="fa fa-star"></i> <i
+                                                                    class="fa fa-star"></i> <i
+                                                                    class="fa fa-star"></i>
+                                                            </div>
+                                                            <a href="product-page(no-sidebar).html">
+                                                                <h6>Gallant Dumbbell Set</h6>
+                                                            </a>
+                                                            <h4>$180.20</h4>
+                                                            <ul class="color-variant">
+                                                                <li class="bg-color1"></li>
+                                                                <li class="bg-color2"></li>
+                                                            </ul>
+                                                        </div>
+                                                    </div>
+                                                    <div class="product-box">
+                                                        <div class="img-wrapper">
+                                                            <div class="front">
+                                                                <a href="product-page(no-sidebar).html"
+                                                                    class="bg-size blur-up lazyloaded"
+                                                                    style="background-image: url(&quot;../assets/images/marketplace/pro/16.jpg&quot;); background-size: cover; background-position: center center; display: block;"><img
+                                                                        src="../assets/images/marketplace/pro/16.jpg"
+                                                                        class="img-fluid blur-up lazyload bg-img"
+                                                                        alt="" style="display: none;"></a>
+                                                            </div>
+                                                            <div class="cart-info cart-wrap bg-color-cls sm-box">
+                                                                <button onclick="openCart()" title="Add to cart"><i
+                                                                        class="ti-shopping-cart"></i></button>
+                                                                <a href="javascript:void(0)"
+                                                                    title="Add to Wishlist"><i class="ti-heart"
+                                                                        aria-hidden="true"></i></a>
+                                                                <a href="#" data-bs-toggle="modal"
+                                                                    data-bs-target="#quick-view"
+                                                                    title="Quick View"><i class="ti-search"
+                                                                        aria-hidden="true"></i></a>
+                                                                <a href="compare.html" title="Compare"><i
+                                                                        class="ti-reload"
+                                                                        aria-hidden="true"></i></a>
+                                                            </div>
+                                                        </div>
+                                                        <div class="product-detail">
+                                                            <div class="rating"><i class="fa fa-star"></i> <i
+                                                                    class="fa fa-star"></i> <i
+                                                                    class="fa fa-star"></i> <i
+                                                                    class="fa fa-star"></i> <i
+                                                                    class="fa fa-star"></i>
+                                                            </div>
+                                                            <a href="product-page(no-sidebar).html">
+                                                                <h6>Orange Solid Rounded T-shirt</h6>
+                                                            </a>
+                                                            <h4>$10.00</h4>
+                                                            <ul class="color-variant">
+                                                                <li class="bg-color1"></li>
+                                                                <li class="bg-color2"></li>
+                                                            </ul>
+                                                        </div>
+                                                    </div>
+                                                    <div class="product-box">
+                                                        <div class="img-wrapper">
+                                                            <div class="front">
+                                                                <a href="product-page(no-sidebar).html"
+                                                                    class="bg-size blur-up lazyloaded"
+                                                                    style="background-image: url(&quot;../assets/images/marketplace/pro/17.jpg&quot;); background-size: cover; background-position: center center; display: block;"><img
+                                                                        src="../assets/images/marketplace/pro/17.jpg"
+                                                                        class="img-fluid blur-up lazyload bg-img"
+                                                                        alt="" style="display: none;"></a>
+                                                            </div>
+                                                            <div class="cart-info cart-wrap bg-color-cls sm-box">
+                                                                <button onclick="openCart()" title="Add to cart"><i
+                                                                        class="ti-shopping-cart"></i></button>
+                                                                <a href="javascript:void(0)"
+                                                                    title="Add to Wishlist"><i class="ti-heart"
+                                                                        aria-hidden="true"></i></a>
+                                                                <a href="#" data-bs-toggle="modal"
+                                                                    data-bs-target="#quick-view"
+                                                                    title="Quick View"><i class="ti-search"
+                                                                        aria-hidden="true"></i></a>
+                                                                <a href="compare.html" title="Compare"><i
+                                                                        class="ti-reload"
+                                                                        aria-hidden="true"></i></a>
+                                                            </div>
+                                                        </div>
+                                                        <div class="product-detail">
+                                                            <div class="rating"><i class="fa fa-star"></i> <i
+                                                                    class="fa fa-star"></i> <i
+                                                                    class="fa fa-star"></i> <i
+                                                                    class="fa fa-star"></i> <i
+                                                                    class="fa fa-star"></i>
+                                                            </div>
+                                                            <a href="product-page(no-sidebar).html">
+                                                                <h6>Modern Arm Chair</h6>
+                                                            </a>
+                                                            <h4>$100.00</h4>
+                                                            <ul class="color-variant">
+                                                                <li class="bg-color1"></li>
+                                                                <li class="bg-color2"></li>
+                                                            </ul>
+                                                        </div>
+                                                    </div>
+                                                    <div class="product-box">
+                                                        <div class="img-wrapper">
+                                                            <div class="front">
+                                                                <a href="product-page(no-sidebar).html"
+                                                                    class="bg-size blur-up lazyloaded"
+                                                                    style="background-image: url(&quot;../assets/images/marketplace/pro/20.jpg&quot;); background-size: cover; background-position: center center; display: block;"><img
+                                                                        src="../assets/images/marketplace/pro/20.jpg"
+                                                                        class="img-fluid blur-up lazyload bg-img"
+                                                                        alt="" style="display: none;"></a>
+                                                            </div>
+                                                            <div class="cart-info cart-wrap bg-color-cls sm-box">
+                                                                <button onclick="openCart()" title="Add to cart"><i
+                                                                        class="ti-shopping-cart"></i></button>
+                                                                <a href="javascript:void(0)"
+                                                                    title="Add to Wishlist"><i class="ti-heart"
+                                                                        aria-hidden="true"></i></a>
+                                                                <a href="#" data-bs-toggle="modal"
+                                                                    data-bs-target="#quick-view"
+                                                                    title="Quick View"><i class="ti-search"
+                                                                        aria-hidden="true"></i></a>
+                                                                <a href="compare.html" title="Compare"><i
+                                                                        class="ti-reload"
+                                                                        aria-hidden="true"></i></a>
+                                                            </div>
+                                                        </div>
+                                                        <div class="product-detail">
+                                                            <div class="rating"><i class="fa fa-star"></i> <i
+                                                                    class="fa fa-star"></i> <i
+                                                                    class="fa fa-star"></i> <i
+                                                                    class="fa fa-star"></i> <i
+                                                                    class="fa fa-star"></i>
+                                                            </div>
+                                                            <a href="product-page(no-sidebar).html">
+                                                                <h6>Weight Machines</h6>
+                                                            </a>
+                                                            <h4>$120.10</h4>
+                                                            <ul class="color-variant">
+                                                                <li class="bg-color1"></li>
+                                                                <li class="bg-color2"></li>
+                                                            </ul>
+                                                        </div>
+                                                    </div>
+                                                    <div class="product-box">
+                                                        <div class="img-wrapper">
+                                                            <div class="front">
+                                                                <a href="product-page(no-sidebar).html"
+                                                                    class="bg-size blur-up lazyloaded"
+                                                                    style="background-image: url(&quot;../assets/images/electronics/pro/25.jpg&quot;); background-size: cover; background-position: center center; display: block;"><img
+                                                                        src="../assets/images/electronics/pro/25.jpg"
+                                                                        class="img-fluid blur-up lazyload bg-img"
+                                                                        alt="" style="display: none;"></a>
+                                                            </div>
+                                                            <div class="cart-info cart-wrap bg-color-cls sm-box">
+                                                                <button onclick="openCart()" title="Add to cart"><i
+                                                                        class="ti-shopping-cart"></i></button>
+                                                                <a href="javascript:void(0)"
+                                                                    title="Add to Wishlist"><i class="ti-heart"
+                                                                        aria-hidden="true"></i></a>
+                                                                <a href="#" data-bs-toggle="modal"
+                                                                    data-bs-target="#quick-view"
+                                                                    title="Quick View"><i class="ti-search"
+                                                                        aria-hidden="true"></i></a>
+                                                                <a href="compare.html" title="Compare"><i
+                                                                        class="ti-reload"
+                                                                        aria-hidden="true"></i></a>
+                                                            </div>
+                                                        </div>
+                                                        <div class="product-detail">
+                                                            <div class="rating"><i class="fa fa-star"></i> <i
+                                                                    class="fa fa-star"></i> <i
+                                                                    class="fa fa-star"></i> <i
+                                                                    class="fa fa-star"></i> <i
+                                                                    class="fa fa-star"></i>
+                                                            </div>
+                                                            <a href="product-page(no-sidebar).html">
+                                                                <h6>Rounded CCTV Camera</h6>
+                                                            </a>
+                                                            <h4>$200.00</h4>
+                                                            <ul class="color-variant">
+                                                                <li class="bg-color1"></li>
+                                                                <li class="bg-color2"></li>
+                                                            </ul>
+                                                        </div>
+                                                    </div>
+                                                    <div class="product-box">
+                                                        <div class="img-wrapper">
+                                                            <div class="front">
+                                                                <a href="product-page(no-sidebar).html"
+                                                                    class="bg-size blur-up lazyloaded"
+                                                                    style="background-image: url(&quot;../assets/images/electronics/pro/24.jpg&quot;); background-size: cover; background-position: center center; display: block;"><img
+                                                                        src="../assets/images/electronics/pro/24.jpg"
+                                                                        class="img-fluid blur-up lazyload bg-img"
+                                                                        alt="" style="display: none;"></a>
+                                                            </div>
+                                                            <div class="cart-info cart-wrap bg-color-cls sm-box">
+                                                                <button onclick="openCart()" title="Add to cart"><i
+                                                                        class="ti-shopping-cart"></i></button>
+                                                                <a href="javascript:void(0)"
+                                                                    title="Add to Wishlist"><i class="ti-heart"
+                                                                        aria-hidden="true"></i></a>
+                                                                <a href="#" data-bs-toggle="modal"
+                                                                    data-bs-target="#quick-view"
+                                                                    title="Quick View"><i class="ti-search"
+                                                                        aria-hidden="true"></i></a>
+                                                                <a href="compare.html" title="Compare"><i
+                                                                        class="ti-reload"
+                                                                        aria-hidden="true"></i></a>
+                                                            </div>
+                                                        </div>
+                                                        <div class="product-detail">
+                                                            <div class="rating"><i class="fa fa-star"></i> <i
+                                                                    class="fa fa-star"></i> <i
+                                                                    class="fa fa-star"></i> <i
+                                                                    class="fa fa-star"></i> <i
+                                                                    class="fa fa-star"></i>
+                                                            </div>
+                                                            <a href="product-page(no-sidebar).html">
+                                                                <h6>Brown Wireless Bluetooth Headphone</h6>
+                                                            </a>
+                                                            <h4>$100.00</h4>
+                                                            <ul class="color-variant">
+                                                                <li class="bg-color1"></li>
+                                                                <li class="bg-color2"></li>
+                                                            </ul>
+                                                        </div>
+                                                    </div>
+
+                                                </div>
+                                            </ng-container>
+
+
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div> -->
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+
+<section class="section-b-space bg-size blur-up lazyloaded" style
+    style="margin-top:50px;background-image: url(&quot;../assets/images/marketplace/product-banner.jpg&quot;); background-size: cover; background-position: center center; display: block;">
+    <img src="../assets/images/marketplace/product-banner.jpg" alt="" class="bg-img blur-up lazyload"
+        style="display: none;">
+    <div class="ratio_square">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-4 col-md-6">
+                    <div class="theme-card card-border bg-light border-0">
+                        <h5 class="title-border">new product</h5>
+                        <div class="offer-slider slide-1 slick-initialized slick-slider">
+                            <div class="slick-list draggable">
+
+                                                <owl-carousel-o [options]="NewProductsCarousel2" class="slick-track"
+                                                    style="opacity: 1; width: 1770px; ">
+                                                    <ng-container *ngFor="let product of NewProductsData; let i = index">
+                                                        <ng-container *ngIf="i * 2 +1 < NewProductsData.length">
+                                                            <ng-template carouselSlide
+                                                                class="slick-slide slick-current slick-active"
+                                                                style="width: 261px; ">
+        
+                                                                <div class="media">
+                                                                    <a href="product-page(no-sidebar).html" tabindex="0"><img
+                                                                            alt="" class="img-fluid blur-up lazyloaded"
+                                                                            src="{{NewProductsData[i * 2].src}}"></a>
+                                                                    <div class="media-body align-self-center">
+                                                                        <div class="rating"><i class="fa fa-star"></i> <i
+                                                                                class="fa fa-star"></i> <i
+                                                                                class="fa fa-star"></i> <i
+                                                                                class="fa fa-star"></i> <i
+                                                                                class="fa fa-star"></i></div>
+                                                                        <a href="product-page(no-sidebar).html" tabindex="0">
+                                                                            <h6>{{NewProductsData[i * 2].name}}</h6>
+                                                                        </a>
+                                                                        <h4>${{NewProductsData[i * 2].oldPrice}}</h4>
+                                                                    </div>
+                                                                </div>
+                                                                <div class="media">
+                                                                    <a href="product-page(no-sidebar).html" tabindex="0"><img
+                                                                            alt="" class="img-fluid blur-up lazyloaded"
+                                                                            src="{{NewProductsData[i*2 +1].src}}"></a>
+                                                                    <div class="media-body align-self-center">
+                                                                        <div class="rating"><i class="fa fa-star"></i> <i
+                                                                                class="fa fa-star"></i> <i
+                                                                                class="fa fa-star"></i> <i
+                                                                                class="fa fa-star"></i> <i
+                                                                                class="fa fa-star"></i></div>
+                                                                        <a href="product-page(no-sidebar).html" tabindex="0">
+                                                                            <h6>{{NewProductsData[i*2 +1].name}}</h6>
+                                                                        </a>
+                                                                        <h4>${{NewProductsData[i*2 +1].oldPrice}}</h4>
+                                                                    </div>
+                                                                </div>
+                                    
+        
+        
+                                                            </ng-template>
+                                                        </ng-container>
+                                                    </ng-container>
+        
+                                                </owl-carousel-o>
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>

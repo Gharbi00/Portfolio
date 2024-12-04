@@ -1,0 +1,123 @@
+<div class="theme-main-menu sticky-menu theme-menu-five fixed" [class.rtl]="rtl$ | async">
+
+  <div class="d-flex align-items-center justify-content-center hello-right">
+    <div class="logo order-lg-1">
+      <a routerLink="/"> <img src="assets/images/logo/logo_elev.svg" alt="" /></a>
+    </div>
+    <nav id="mega-menu-holder" class="navbar navbar-expand-lg order-lg-2">
+      <div class="nav-container">
+        <button class="button-color" class="navbar-toggler" [ngClass]="{'open': isCollapsed}"
+          (click)="toggleCollapse()">
+          <span></span>
+        </button>
+        <div class="navbar-collapse collapse" id="navbarSupportedContent" [ngClass]="{ 'show': isCollapsed }">
+          <div class="d-lg-flex justify-content-between align-items-center">
+            <ul class="navbar-nav main-side-nav font-gordita" id="one-page-nav">
+              <li class="nav-item">
+                <a routerLink="/" class="nav-link">{{'HOME' | translate}}</a>
+              </li>
+              <li class="nav-item dropdown position-static " style="cursor: pointer;">
+                <a (click)="toggleCollapseMegaMenu()" class="nav-link dropdown-toggle"
+                  data-toggle="dropdown">{{'PRODUCT' | translate}}</a>
+                <div class="dropdown-menu " [ngClass]="{ 'show': megaMenuCollapsed }">
+                  <ul class="mega-menu d-flex">
+                    <li>
+                      <a routerLink="/engage" class="dropdown-item img-box">
+                        <img src="assets/images/assets/ils_20x.svg" alt="" />
+                        <span class="font-rubik">{{'STOP_LOSING_CUSTOMERS' | translate}}</span>
+                      </a>
+                    </li>
+                    <li>
+                      <a routerLink="/collect" class="dropdown-item img-box">
+                        <img src="assets/images/assets/ils_12x.svg" alt="" />
+                        <span class="font-rubik">{{'STAND_OUT_FROM_COMPETITION' | translate}}</span>
+                      </a>
+                    </li>
+                    <li>
+                      <a routerLink="/grow" class="dropdown-item img-box">
+                        <img src="assets/images/assets/ils_21x.svg" alt="" />
+                        <span class="font-rubik">{{'GROW_YOUR_REVENUE' | translate}}</span>
+                      </a>
+                    </li>
+                    <li>
+                      <a routerLink="/monetize" class="dropdown-item img-box">
+                        <img src="assets/images/assets/ils_17x.svg" alt="" />
+                        <span class="font-rubik">{{'MONETIZE_YOUR_COMMUNITY' | translate}}</span>
+                      </a>
+                    </li>
+
+                  </ul>
+                </div>
+              </li>
+              <li class="nav-item">
+                <a href="https://developer.elevok.com" target="_blank" class="nav-link">{{'DOCS' | translate}}</a>
+              </li>
+              <li class="nav-item">
+                <a routerLink="/blog" class="nav-link">{{'BLOG' | translate}}</a>
+              </li>
+              <li class="nav-item nav-item-special">
+                <a href="https://app.elevok.com" class="nav-link">{{'LOGIN' | translate}}</a>
+              </li>
+              <li class="nav-item nav-item-special" data-bs-toggle="modal" data-bs-target="#staticBackdrop">
+                <a class="nav-link">{{'GETTING_STARTED' | translate}}</a>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </nav>
+
+    <ul class="right-widget user-login-button d-flex align-items-center justify-content-center order-lg-3">
+      <li>
+        <a href="https://app.elevok.com" target="_blank" class="signIn-action d-flex align-items-center">
+          <img src="assets/images/icon/52.svg" alt="">
+          <span>{{'LOGIN' | translate}}</span>
+        </a>
+      </li>
+      <li class="sign-up-custom special-sign-up">
+
+        <a href="#" class="signUp-action d-flex align-items-center" data-bs-toggle="modal"
+          data-bs-target="#staticBackdrop">
+          <span>{{'GETTING_STARTED' | translate}}</span>
+          <img src="assets/images/icon/53.svg" alt="" [class.invert]="rtl$ | async">
+        </a>
+        <!-- Button trigger modal -->
+
+
+
+      </li>
+      <div class="dropdown image-right">
+        <img style="margin-left: 30px;cursor: pointer;" [src]="flagvalue" alt="user-image" class="me-2 rounded"
+          height="40" width="40" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+        <ul class="dropdown-menu">
+          <a *ngFor="let item of listLang" style="padding: 0px 25px;display: flex;margin-bottom: 4%; cursor: pointer;"
+            (click)="setLanguage(item.lang,item.flag)"> <img src="{{item.flag}}" alt="user-image" class="me-2 rounded"
+              height="30" width="30">
+            <span style="margin: 0 6%;" class="align-middle">{{item.text}}</span>
+          </a>
+        </ul>
+      </div>
+    </ul>
+    <ul
+      class="language-responsive right-widget user-login-button  align-items-center justify-content-center order-lg-3 ">
+      <div class="dropdown image-right">
+        <img style="margin-left: 30px;cursor: pointer;" [src]="flagvalue" alt="user-image" class="me-2 rounded"
+          height="40" width="40" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+        <ul class="dropdown-menu">
+          <a *ngFor="let item of listLang" style="padding: 0px 25px;display: flex;margin-bottom: 4%; cursor: pointer;"
+            (click)="setLanguage(item.lang,item.flag)"> <img src="{{item.flag}}" alt="user-image" class="me-2 rounded"
+              height="30" width="30">
+            <span style="margin: 0 6%;" class="align-middle">{{item.text}}</span>
+          </a>
+        </ul>
+      </div>
+    </ul>
+  </div>
+</div>
+
+
+<!-- Modal -->
+<div class="modal fade modal-contact-popup-one" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false"
+  tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+  <app-contact-us></app-contact-us>
+</div>

@@ -1,0 +1,22 @@
+#mega-menu-holder .dropdown-toggle::after {
+    content: "\f100";
+    font-family: Flaticon;
+    border: none !important;
+    font-size: 10px;
+    position: absolute;
+    right: -15px;
+    top: 34%;
+    color: inherit;
+    transition: all 0.3s ease-in-out;
+}
+
+#mega-menu-holder .mega-menu {
+    flex-wrap: wrap;
+    padding: 0 5px;
+    justify-content: center;
+}
+
+.theme-menu-five .navbar-nav .nav-item .nav-link {
+    font-weight: 450;
+
+}

@@ -1,0 +1,99 @@
+<div class="axil-product-area bg-color-white axil-section-gap pb--0">
+    <div class="container">
+        <div class="product-area pb--80">
+            <div class="section-title-wrapper" style="margin-bottom:-60px ;">
+                <span class="title-highlighter highlighter-primary"> <i class="far fa-shopping-basket"></i> Our
+                    Products</span>
+                <h2 class="title">Explore our Products</h2>
+            </div>
+            <div class="explore-product-activation slick-layout-wrapper slick-layout-wrapper--15 axil-slick-arrow arrow-top-slide slick-initialized slick-slider">
+
+                <div class="slick-list draggable">
+                    <owl-carousel-o [options]="carouselOptions" class="slick-track"
+                        style="opacity: 1;  ">
+                        <ng-container *ngFor="let product of products">
+                            <ng-template carouselSlide>
+                        <div class="slick-single-layout slick-slide slick-cloned"  style="max-width: 1100px;padding-top: 60px; min-height: 1000px;">
+                           
+                                <div class="col-xl-3 col-lg-4 col-sm-6 col-12 mb--30" style="min-width:260px" >
+                                    <div class="axil-product product-style-one" >
+                                        <div class="thumbnail">
+                                            <a href="single-product.html" tabindex="-1">
+                                                <img src="assets/images/product/furniture/product-5.png"
+                                                    alt="Product Images">
+                                            </a>
+                                            <div class="label-block label-right">
+                                                <div class="product-badget">{{product.reduction}}% Off</div>
+                                            </div>
+                                            <div class="product-hover-action">
+                                                <ul class="cart-action">
+                                                    <li class="quickview"><a href="#" data-bs-toggle="modal"
+                                                            data-bs-target="#quick-view-modal" tabindex="-1"><i
+                                                                class="far fa-eye"></i></a></li>
+                                                    <li class="select-option"><a href="cart.html" tabindex="-1">Add to
+                                                            Cart</a></li>
+                                                    <li class="wishlist"><a href="wishlist.html" tabindex="-1"><i
+                                                                class="far fa-heart"></i></a></li>
+                                                </ul>
+                                            </div>
+                                        </div>
+                                        <div class="product-content">
+                                            <div class="inner">
+                                                <h5 class="title"><a href="single-product.html" tabindex="-1">{{product.name}}</a></h5>
+                                                <div class="product-price-variant">
+                                                    <span class="price current-price">${{product.newPrice}}</span>
+                                                    <span class="price old-price">${{product.oldPrice}}</span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="col-xl-3 col-lg-4 col-sm-6 col-12 mb--30" style="min-width:260px"  >
+                                    <div class="axil-product product-style-one" >
+                                        <div class="thumbnail">
+                                            <a href="single-product.html" tabindex="-1">
+                                                <img src="assets/images/product/furniture/product-5.png"
+                                                    alt="Product Images">
+                                            </a>
+                                            <div class="label-block label-right">
+                                                <div class="product-badget">{{product.reduction}}% Off</div>
+                                            </div>
+                                            <div class="product-hover-action">
+                                                <ul class="cart-action">
+                                                    <li class="quickview"><a href="#" data-bs-toggle="modal"
+                                                            data-bs-target="#quick-view-modal" tabindex="-1"><i
+                                                                class="far fa-eye"></i></a></li>
+                                                    <li class="select-option"><a href="cart.html" tabindex="-1">Add to
+                                                            Cart</a></li>
+                                                    <li class="wishlist"><a href="wishlist.html" tabindex="-1"><i
+                                                                class="far fa-heart"></i></a></li>
+                                                </ul>
+                                            </div>
+                                        </div>
+                                        <div class="product-content">
+                                            <div class="inner">
+                                                <h5 class="title"><a href="single-product.html" tabindex="-1">{{product.name}}</a></h5>
+                                                <div class="product-price-variant">
+                                                    <span class="price current-price">${{product.newPrice}}</span>
+                                                    <span class="price old-price">${{product.oldPrice}}</span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                        </div>
+                    </ng-template> 
+                </ng-container>
+                    </owl-carousel-o>
+                </div>
+                <!-- End .slick-single-layout -->
+            </div>
+            <div class="row">
+                <div class="col-lg-12 text-center mt--20 mt_sm--0">
+                    <a href="shop.html" class="axil-btn btn-bg-lighter btn-load-more">View All Products</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

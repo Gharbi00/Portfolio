@@ -1,0 +1,47 @@
+.slick-layout-wrapper--30 .slick-list {
+    margin: 0px -72px !important;
+}
+:host::ng-deep.owl-theme .owl-nav [class*=owl-] {
+  
+    font-size: 14px;
+    margin: 5px;
+    padding: 4px 7px;
+    width: 50px;
+    height: 50px;
+    background: var(--color-lighter);
+    color: var(--color-body);
+    border: none;
+    border-radius: 6px;
+    z-index: 2;
+   
+  
+    
+  }
+  :host::ng-deep .owl-theme .owl-nav {
+  
+    position: absolute;
+    left: 1110px;
+    z-index: 999; /* Ensure the navigation is above other content */
+    top: -90px;
+   
+    
+    
+    
+  }
+  :host::ng-deep.fal{
+    padding-top: 12px!important;
+  }
+
+  :host::ng-deep.owl-item{
+    display: grid;
+    place-items: center;
+  }
+  :host::ng-deep.product-content{
+    margin-bottom: 85%;
+    @media(width >800px){
+      margin-right: -64px;
+    }
+    @media(width <800px){
+      margin-right: 0px;
+    }
+  }

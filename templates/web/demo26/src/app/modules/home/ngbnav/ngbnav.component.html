@@ -1,0 +1,72 @@
+<div class="col-xl-8 col-lg-8 col-md-12">
+    <div class="theme-tab">
+        <div class="bg-title-part">
+            <h5 class="title-border">RECOMMENDATIONS FOR YOU</h5>
+            <ul class="tabs tab-title">
+                <li class="current" [class.current]="activeTab === 'tab-1'" (click)="switchTab('tab-1')"><a >New Products</a> </li>
+                <li class="" [class.current]="activeTab === 'tab-2'" (click)="switchTab('tab-2')"><a >Featured Products</a></li>
+            </ul>
+        </div>
+        <div class="tab-content-cls ratio_asos" [@tabAnimation]="activeTab">
+            <ng-container *ngIf="activeTab==='tab-1'"  class="tab-content active default" style="display: block;">
+                <div class="product-4 game-product product-m no-arrow slick-initialized slick-slider">
+                    
+                    <div class="slick-list draggable">
+                        <owl-carousel-o [options]="ProductCarousel" class="slick-track"
+                            style="opacity: 1; width: 3040px;" >
+                            <ng-container *ngFor="let product of ProductsData">
+                            <ng-template carouselSlide class="slick-slide slick-cloned" style="width: 190px;">
+                                <div>
+                                    <div class="product-box" style="width: 100%; display: inline-block;">
+                                        <div class="img-wrapper">
+                                            <div class="front">
+                                                <a href="product-page(no-sidebar).html"
+                                                    class="bg-size blur-up lazyloaded"
+                                                    style="background-image: url(&quot;{{product.src}}&quot;); background-size: cover; background-position: center center; display: block;"
+                                                    tabindex="-1"><img
+                                                        src="../assets/images/marketplace/7.jpg"
+                                                        class="img-fluid blur-up lazyload bg-img" alt=""
+                                                        style="display: none;"></a>
+                                            </div>
+                                            <div class="cart-info cart-wrap">
+                                                <a href="javascript:void(0)" title="Add to Wishlist"
+                                                    tabindex="-1"><i class="ti-heart"
+                                                        aria-hidden="true"></i></a>
+                                                <a href="#" data-bs-toggle="modal"
+                                                    data-bs-target="#quick-view" title="Quick View"
+                                                    tabindex="-1"><i class="ti-search"
+                                                        aria-hidden="true"></i></a>
+                                                <a href="compare.html" title="Compare" tabindex="-1"><i
+                                                        class="ti-reload" aria-hidden="true"></i></a>
+                                            </div>
+                                            <div class="add-button" data-bs-toggle="modal"
+                                                data-bs-target="#addtocart">
+                                                add to
+                                                cart</div>
+                                        </div>
+                                        <div class="product-detail">
+                                            <div class="rating"><i class="fa fa-star"></i> <i
+                                                    class="fa fa-star"></i>
+                                                <i class="fa fa-star"></i> <i class="fa fa-star"></i> <i
+                                                    class="fa fa-star"></i>
+                                            </div>
+                                            <a href="product-page(no-sidebar).html" tabindex="-1">
+                                                <h6>{{product.name}}</h6>
+                                            </a>
+                                            <h4>${{product.newPrice}}</h4>
+                                        </div>
+                                    </div>
+                                </div>
+                            </ng-template>
+                        </ng-container>
+                        </owl-carousel-o>
+                    </div>
+                </div>
+            </ng-container>
+
+        </div>
+    </div>
+    <div class="banner-tools">
+        <img src="../assets/images/offer-banner1.jpg" alt="" class="img-fluid">
+    </div>
+</div>

@@ -1,0 +1,30 @@
+:host::ng-deep  .owl-item{
+   
+    display: grid;
+place-items: center;}
+.product-christmas .product-box .product-detail, .product-christmas .product-box .product-info {
+    padding-left: 0;
+    text-align: center;
+}
+.product-christmas .product-box .cart-wrap {
+    bottom: -26px;
+    text-align: right;
+    left: 0;
+}
+.product-christmas .product-box .cart-info, .product-christmas .product-box .cart-wrap {
+    position: absolute;
+    bottom: -26px;
+    text-align: center;
+    margin: 0 auto;
+    right: 0;
+    left: 0;
+    -webkit-box-pack: center;
+    -ms-flex-pack: center;
+    justify-content: center;
+    opacity: 0;
+    -webkit-transition: all 0.5s ease;
+    transition: all 0.5s ease;
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+}

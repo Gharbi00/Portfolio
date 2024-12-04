@@ -1,0 +1,109 @@
+<main class=" col-xl-10 doc-main-body" data-bs-spy="scroll" data-bs-target="#player-login" data-bs-offset="0"
+  tabindex="0">
+  <h2>Player Login API</h2>
+  <div id="introduction">
+    <h3>Introduction</h3>
+    <p>The Player API in Elevok allows you to create, update, and display player information, as well as attach or
+      detach
+      tags. Players are uniquely identified by a playerUniqueId. This API provides comprehensive control over managing
+      player data within the Elevok platform.</p>
+  </div>
+  <div id="endpoint">
+    <h3>Endpoint</h3>
+    <div class="mark-red">
+      <pre>URL: /cauth/login</pre>
+      <pre>Method: <span class="s1">POST</span></pre>
+    </div>
+  </div>
+  <div id="headers">
+    <h3>Request Headers</h3>
+    <p>Here you need to insert the bearer token obtained from the Login and Get Access Token API.</p>
+    <pre class="bg-black"><code>
+  <span class="s2">&lbrace;</span>
+    <span class="s2">"Authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..."</span>
+  <span class="s2">&rbrace;</span>
+      </code>
+    </pre>
+  </div>
+  <div id="params">
+    <h3>Request Parameters</h3>
+    <div class="mark-red">
+      <pre><span class="s1">identifier*</span>: Unique user ID on the client side.</pre>
+      <pre><span class="s1">reference*</span>: Session reference found in local storate or cookies under key <span style="font-weight: bold; color: #006eff;">elvkwdigtref</span>.</pre>
+      <pre><span class="s1">email</span>: User's email address.</pre>
+      <pre><span class="s1">firstName</span>: User's first name.</pre>
+      <pre><span class="s1">lastName</span>: User's last name.</pre>
+      <pre><span class="s1">dateOfBirth</span>: User's date of birth.</pre>
+      <pre><span class="s1">username</span>: User's username.</pre>
+      <pre><span class="s1">phoneCode</span>: Country code for the user's phone number.</pre>
+      <pre><span class="s1">phoneNumber</span>: User's phone number.</pre>
+      <pre><span class="s1">referral</span>: Referral code if existing.</pre>
+      <pre><span class="s1">gender</span>: User's gender. Must be one of the following:
+        - MALE
+        - FEMALE
+        - PREFER_NOT_TO_SAY
+      </pre>
+      <pre><span class="s1">maritalStatus</span>: User's marital status. Must be one of the following:
+        - SINGLE
+        - MARRIED
+        - ENGAGED
+        - WIDOWED
+        - DIVORCED
+        - SEPERATED
+        - IN_RELATIONSHIP
+        - PREFER_NOT_TO_SAY
+      </pre>
+    </div>
+  </div>
+  <div id="error">
+    <h3>Error Handling</h3>
+    <p>The API returns appropriate error responses in case of missing parameters or if the target user is not found in
+      the
+      database.404 Not Found: If the target user is not found in the database.</p>
+    <div class="mark-red">
+      <pre><span class="s1">404 Not Found</span>: If the target user is not found in the database.</pre>
+    </div>
+  </div>
+  <div id="request">
+    <h3>Sample Request</h3>
+    <p>Upon successful authentication, the API returns an access token.</p>
+    <pre class="bg-black"><code>
+  <span class="s1">POST /cauth/login</span>
+  <span class="s1">Authorization: Bearer YOUR_ACCESS_TOKEN</span>
+  <span class="s2">&lbrace;</span>
+    <span class="s2">"identifier": "unique_user_identifier",</span>
+    <span class="s2">"email": "user@example.com",</span>
+    <span class="s2">"firstName": "John",</span>
+    <span class="s2">"lastName": "Doe"</span>
+  <span class="s2">&rbrace;</span>
+      </code>
+    </pre>
+  </div>
+  <div id="response">
+    <h3>Sample Response</h3>
+    <p>Upon successful authentication, the API returns an access token.</p>
+    <pre class="bg-black"><code>
+  <span class="s2">&lbrace;</span>
+    <span class="s2">"expiresIn": "360000000"</span>
+    <span class="s2">"accessToken": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..."</span>
+  <span class="s2">&rbrace;</span>
+      </code>
+    </pre>
+  </div>
+  <div class="doc-pagination pt-40">
+    <app-pagination></app-pagination>
+  </div>
+</main> <!-- /.doc-main-body -->
+<nav class="d-none d-xl-block col-xl-3 doc-sideNav">
+  <div class="wrapper">
+    <nav class="main-side-nav" id="player-login">
+      <a href="player-login/#introduction" class="nav-link">Introduction</a>
+      <a href="player-login/#endpoint" class="nav-link">Endpoint</a>
+      <a href="player-login/#headers" class="nav-link">Request Headers</a>
+      <a href="player-login/#params" class="nav-link">Request Parameters</a>
+      <a href="player-login/#error" class="nav-link">Error Handling</a>
+      <a href="player-login/#request" class="nav-link">Sample Request</a>
+      <a href="player-login/#response" class="nav-link">Sample Response</a>
+    </nav>
+  </div>
+</nav>

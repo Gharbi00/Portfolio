@@ -1,0 +1,38 @@
+.theme-tab .tab-title li, .theme-tab .tab-title2 li {
+   padding-left: 25px;
+   padding-right: 25px;
+}
+
+.font-courgette {
+   font-family: 'Courgette', cursive;
+   text-transform: capitalize !important;
+}
+
+.theme-tab .tab-title .current a, .theme-tab .tab-title2 .current a {
+   color: var(--theme-color);
+}
+
+.theme-tab .tab-title a, .theme-tab .tab-title2 a {
+   color: #898989;
+   text-transform: uppercase;
+}
+
+.theme-tab .tab-title, .theme-tab .tab-title2 {
+   text-align: center;
+   font-size: 18px;
+   margin-bottom: 30px;
+   margin-top: -6px;
+}
+
+.theme-tab .tab-title.border-title li, .theme-tab .tab-title2.border-title li {
+   border-left: 1px solid #bbb;
+}
+
+.quantity-variant li {
+   padding: 3px 5px;
+   font-size: 12px;
+   background-color: #f1f1f1 !important;
+   height: auto !important;
+   width: auto !important;
+   border-radius: 5px !important;
+}

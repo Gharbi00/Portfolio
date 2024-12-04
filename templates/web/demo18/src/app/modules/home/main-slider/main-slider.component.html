@@ -1,0 +1,35 @@
+<section class="p-0 position-relative height-85 bg_cls">
+    <div class="home-slider slider-animate slick-initialized slick-slider">
+        <div class="slick-list draggable">
+            <div class="slick-track" >
+
+                <div class="slick-slide" data-slick-index="0" aria-hidden="true"
+                    style="position: sticky; "
+                    tabindex="-1">
+                    <owl-carousel-o [options]="MainSlider"> 
+                        <ng-container *ngFor="let slider of mainSlider" >
+                        <ng-template carouselSlide>
+                    <div>
+                        <div class="slick-slide slick-cloned" data-slick-index="-1" aria-hidden="true" tabindex="-1" style="max-width: 1903px;"><div><div style="width: 100%; display: inline-block;">
+                            <img src="{{slider.src}}" class="img-fluid" alt="">
+                            <div class="slider-details">
+                                <div>
+                                    <h3>bring</h3>
+                                    <h2>christmas</h2>
+                                    <h1>sale</h1>
+                                    <h4>upto - 50%</h4>
+                                    <h4>OFF</h4>
+                                    <a href="#" class="btn btn-white" tabindex="-1">shop now</a>
+                                </div>
+                            </div>
+                        </div></div></div>
+                    </div>
+                </ng-template>
+            </ng-container> 
+        </owl-carousel-o>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</section>

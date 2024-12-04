@@ -1,0 +1,47 @@
+#mega-menu-holder .dropdown-toggle::after {
+    content: "\f100";
+    font-family: Flaticon;
+    border: none !important;
+    font-size: 10px;
+    position: absolute;
+    right: -15px;
+    top: 34%;
+    color: inherit;
+    transition: all 0.3s ease-in-out;
+}
+
+#mega-menu-holder .mega-menu {
+
+    padding: 0 5px;
+
+}
+
+@media (min-width:992px) {
+    #mega-menu-holder .mega-menu li {
+        flex: 0 0 25%;
+        max-width: 25%!important;
+        padding: 10px 10px 0;
+    }
+    
+}
+.sign-up-custom :hover {
+    border: 2px solid #3BB0D7;
+    background: #3BB0D7;
+    transition: all 0.2s ease-in-out;
+}
+.signUp-action {
+    border: 2px solid #000;
+    background: #000;
+    padding: 0 20px;
+    color: #fff;
+    margin-left: 35px;
+    font-size: 16px;
+    font-weight: 500;
+    line-height: 46px;
+    
+}
+@media (max-width:650px) {
+    .right-widget {
+        display: none!important;
+    } 
+}

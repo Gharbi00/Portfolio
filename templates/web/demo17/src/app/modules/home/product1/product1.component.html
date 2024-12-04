@@ -1,0 +1,125 @@
+<div class="axil-product-area bg-color-white axil-section-gapcommon" style="margin-bottom: 200px; max-height: 1500px; ">
+    <div class="container">
+        <div class="section-title-border slider-section-title" style="margin-bottom: -60px;">
+            <h2 class="title">Popular Weekly Deals 💥</h2>
+        </div>
+        <div
+            class="popular-product-activation slick-layout-wrapper slick-layout-wrapper--15 axil-slick-angle angle-top-slide slick-initialized slick-slider">
+
+            <div class="slick-list draggable">
+                <owl-carousel-o [options]="carouselOptions" class="slick-track" style="opacity: 1;padding-top: 80px; ">
+                    <ng-container *ngFor="let product of products">
+                    <ng-template carouselSlide>
+                    <div class="slick-single-layout slick-slide slick-cloned" style="width:1140px;" >
+                        <div class="">
+                            <div class="col-md-6 col-12 box" >
+                                <div class="axil-product product-style-eight product-list-style-3">
+                                    <div class="thumbnail">
+                                        <a href="/single-product-8" tabindex="-1">
+                                            <img class="main-img" src="{{product.src}}"
+                                                alt="Product Images">
+                                        </a>
+                                    </div>
+                                    <div class="product-content">
+                                        <div class="inner">
+                                            <div class="product-cate"><a href="/#" tabindex="-1">{{product.name}} </a></div>
+                                            <div class="color-variant-wrapper">
+                                                <ul class="color-variant">
+                                                    <li class="color-extra-01 active"><span><span
+                                                                class="color"></span></span>
+                                                    </li>
+                                                    <li class="color-extra-02"><span><span class="color"></span></span>
+                                                    </li>
+                                                    <li class="color-extra-03"><span><span class="color"></span></span>
+                                                    </li>
+                                                    <li class="color-extra-04"><span><span class="color"></span></span>
+                                                    </li>
+                                                    <li class="color-extra-04"><span><span class="color"></span></span>
+                                                    </li>
+                                                    <li class="color-extra-05"><span><span class="color"></span></span>
+                                                    </li>
+                                                </ul>
+                                            </div>
+                                            <h5 class="title"><a href="/single-product-8" tabindex="-1"> {{product.description}}</a></h5>
+                                            <div class="product-rating">
+                                                <span class="icon">
+                                                    <i class="fas fa-star"></i>
+                                                    <i class="fas fa-star"></i>
+                                                    <i class="fas fa-star"></i>
+                                                    <i class="fas fa-star"></i>
+                                                    <i class="fas fa-star"></i>
+                                                </span>
+                                                <span class="rating-number"> {{product.rating}} </span>
+                                            </div>
+                                            <div class="product-price-variant">
+                                                <span class="price-text">${{product.oldPrice}} </span>
+                                                <span class="price current-price">${{product.newPrice}}</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="label-block label-right">
+                                        <div class="product-badget sold-out">{{product.offer}}</div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-6 col-12 box">
+                                <div class="axil-product product-style-eight product-list-style-3">
+                                    <div class="thumbnail">
+                                        <a href="/single-product-8" tabindex="-1">
+                                            <img class="main-img" src="{{product.src}}"
+                                                alt="Product Images">
+                                        </a>
+                                    </div>
+                                    <div class="product-content">
+                                        <div class="inner">
+                                            <div class="product-cate"><a href="/#" tabindex="-1">{{product.name}} </a></div>
+                                            <div class="color-variant-wrapper">
+                                                <ul class="color-variant">
+                                                    <li class="color-extra-01 active"><span><span
+                                                                class="color"></span></span>
+                                                    </li>
+                                                    <li class="color-extra-02"><span><span class="color"></span></span>
+                                                    </li>
+                                                    <li class="color-extra-03"><span><span class="color"></span></span>
+                                                    </li>
+                                                    <li class="color-extra-04"><span><span class="color"></span></span>
+                                                    </li>
+                                                    <li class="color-extra-04"><span><span class="color"></span></span>
+                                                    </li>
+                                                    <li class="color-extra-05"><span><span class="color"></span></span>
+                                                    </li>
+                                                </ul>
+                                            </div>
+                                            <h5 class="title"><a href="/single-product-8" tabindex="-1"> {{product.description}}</a></h5>
+                                            <div class="product-rating">
+                                                <span class="icon">
+                                                    <i class="fas fa-star"></i>
+                                                    <i class="fas fa-star"></i>
+                                                    <i class="fas fa-star"></i>
+                                                    <i class="fas fa-star"></i>
+                                                    <i class="fas fa-star"></i>
+                                                </span>
+                                                <span class="rating-number"> {{product.rating}} </span>
+                                            </div>
+                                            <div class="product-price-variant">
+                                                <span class="price-text">${{product.oldPrice}} </span>
+                                                <span class="price current-price">${{product.newPrice}}</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="label-block label-right">
+                                        <div class="product-badget sold-out">{{product.offer}}</div>
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                </ng-template>
+            </ng-container>
+                </owl-carousel-o>
+            </div>
+
+        </div>
+    </div>
+</div>

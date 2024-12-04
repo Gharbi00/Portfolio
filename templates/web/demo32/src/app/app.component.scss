@@ -1,0 +1,11 @@
+::ng-deep:root {
+    --theme-deafult: #dd5e89!important;
+    --theme-color: #dd5e89!important;
+    --theme-color2: #f7bb97!important;
+    // This gradient color only for gym and marijuana layout
+    --theme-gradient1: #01effc;
+    --theme-gradient2: #485ff2;
+  }
+  ::ng-deep.colored-image {
+    filter: invert(25%);
+  }

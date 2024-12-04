@@ -1,0 +1,30 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: elevok-portal
+  namespace: elevok-portal
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: elevok-portal
+  template:
+    metadata:
+      labels:
+        app: elevok-portal
+    spec:
+      containers:
+        - name: elevok-container
+          image: git.diktup.cloud:5050/sifca/sifca-monorepo:elevok-portal-prod-1.0
+          #imagePullPolicy: Always
+          imagePullPolicy: IfNotPresent
+          #imagePullPolicy: Never
+          ports:
+            - containerPort: 4000
+          env:
+            - name: API_SERVER
+              value: 'elevok.com'
+            - name: NODE_OPTIONS
+              value: '--max-old-space-size=16000'
+      imagePullSecrets:
+        - name: gitlab-registry-secret

@@ -1,0 +1,21 @@
+@media(min-width:1200px){ 
+.shop-sidebar-demo .shop-main {
+    width: calc(100% - 320px);
+    padding: 0 0px;
+    margin-left: 320px;
+    margin-top: 88px;
+}}
+
+::ng-deep.theme-color-1 {
+    --theme-color: #ee7a63!important;
+}
+
+.shop-sidebar-demo .shop-main .small-slider .home {
+    border-radius: 15px !important;
+    overflow: hidden;
+    background-position: right !important;
+}
+@media (max-width: 1367px){ 
+.shop-sidebar-demo .shop-main .small-slider .home>div {
+    background: linear-gradient(272deg, rgba(255,255,255,0.4) 0%, rgba(255,255,255,0.85) 100%);
+}}

@@ -1,0 +1,46 @@
+<div class="bg-color-white axil-section-gapcommon" >
+    <div class="container">
+        <div class="slider-section-title section-title-border" style="margin-bottom: -60px;">
+            <h2 class="title">Featured Categories</h2>
+        </div>
+        <div
+            class="categrie-product-activation-4 slick-layout-wrapper--15 axil-slick-angle angle-top-slide slick-initialized slick-slider">
+
+            <div class="slick-list draggable">
+                <owl-carousel-o [options]="carouselOptions" class="slick-track" style="opacity: 1; ">
+                    <ng-container *ngFor="let product of products">
+                        <ng-template carouselSlide>
+                    <div class="slick-single-layout slick-slide slick-cloned" data-slick-index="-1" aria-hidden="true"
+                        tabindex="-1" style="width: 1140px; padding-top: 60px;margin-bottom: 40px;">
+                        <div class="row-cols-lg-5 row-cols-sm-3 row-cols-2">
+
+                            <div class="col">
+                                <div class="categrie-product categrie-product-4" data-sal="zoom-out"
+                                    data-sal-delay="100" data-sal-duration="500">
+                                    <a href="/shop-sidebar" class="cate-thumb" tabindex="-1">
+                                        <img src="{{product.src}}" alt="product categorie">
+                                        <h5 class="cat-title"> {{product.name}} </h5>
+                                    </a>
+                                </div>
+                            </div>
+                            <div class="col" >
+                                <div class="categrie-product categrie-product-4" data-sal="zoom-out"
+                                    data-sal-delay="100" data-sal-duration="500">
+                                    <a href="/shop-sidebar" class="cate-thumb" tabindex="-1">
+                                        <img src="{{product.src}}" alt="product categorie">
+                                        <h5 class="cat-title"> {{product.name}} </h5>
+                                    </a>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                </ng-template> 
+            </ng-container>
+                </owl-carousel-o>
+            </div>
+
+
+        </div>
+    </div>
+</div>

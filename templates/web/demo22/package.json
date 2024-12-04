@@ -1,0 +1,15 @@
+{
+  "name": "demo22",
+  "version": "1.0.0",
+  "description": "",
+  "main": "jest.config.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "minify-assets": "node minify-assets.js",
+    "build:sandbox": "ng build --configuration=sandbox"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {}
+}

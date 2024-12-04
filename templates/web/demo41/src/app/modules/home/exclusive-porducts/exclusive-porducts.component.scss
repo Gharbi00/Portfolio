@@ -1,0 +1,16 @@
+:host::ng-deep.owl-theme{
+    
+    padding: 20px;
+}
+:host::ng-deep.col-lg-4{
+    
+    
+    
+    @media (width < 992px)
+{
+
+    width: 80%!important;
+}}
+:host::ng-deep.row{
+    justify-content: center!important;
+}

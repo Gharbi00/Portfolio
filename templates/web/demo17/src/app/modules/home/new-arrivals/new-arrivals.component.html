@@ -1,0 +1,64 @@
+<div class="axil-best-seller-product-area bg-color-white axil-section-gap pb--50 pb_sm--30">
+    <div class="container">
+        <div class="section-title-wrapper" style="margin-bottom: -80px;">
+            <h2 class="title">Recently Viewed 💥</h2>
+        </div>
+
+        <div
+            class="new-arrivals-product-activation-2 product-transparent-layout slick-layout-wrapper--15 axil-slick-arrow arrow-top-slide product-slide-mobile slick-initialized slick-slider">
+
+            <div class="slick-list draggable">
+                <owl-carousel-o [options]="carouselOptions" class="slick-track" style="opacity: 1;padding-top: 70px;  ">
+                    <ng-container *ngFor="let product of products">
+                        <ng-template carouselSlide>
+                            <div class="slick-single-layout slick-slide slick-cloned" data-slick-index="-4" aria-hidden="true"
+                            tabindex="-1" style="width: 285px;">
+                            <div class="axil-product product-style-eight">
+                                <div class="thumbnail">
+                                    <a href="/single-product-8" tabindex="0">
+                                        <img data-sal="zoom-out" data-sal-delay="150" data-sal-duration="800" loading="lazy" class="main-img sal-animate" src="{{product.src}}" alt="Product Images">
+                                    </a>
+                                    <div class="label-block label-left">
+                                        <div class="product-badget"> {{product.offer}} </div>
+                                    </div>
+                                    <div class="product-hover-action">
+                                        <ul class="cart-action">
+                                            <li class="select-option">
+                                                <a href="/single-product-8" tabindex="0">
+                                                    <i class="far fa-shopping-cart"></i> Add to Cart
+                                                </a>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                </div>
+                                <div class="product-content">
+                                    <div class="inner">
+                                        <h5 class="title"><a href="/single-product-8" tabindex="-1">{{product.name}} </a></h5>
+                                        <div class="product-rating">
+                                            <span class="icon">
+                                                <i class="fas fa-star"></i>
+                                                <i class="fas fa-star"></i>
+                                                <i class="fas fa-star"></i>
+                                                <i class="fas fa-star"></i>
+                                                <i class="fas fa-star"></i>
+                                            </span>
+                                            <span class="rating-number"> {{product.rating}}</span>
+                                        </div>
+                                        <div class="product-price-variant">
+                                            <span class="price old-price">${{product.oldPrice}}</span>
+                                            <span class="price current-price">${{product.newPrice}}</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        </ng-template>
+                    </ng-container>
+                </owl-carousel-o>
+            </div>
+        </div>
+    </div>
+</div>
+
+

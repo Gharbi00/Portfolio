@@ -1,0 +1,35 @@
+<section class="vegetables-category">
+    <div class="container">
+        <div class="vector-slide-8 no-arrow slick-default-margin ratio_square slick-initialized slick-slider">
+            <div class="slick-list draggable">
+                <owl-carousel-o [options]="BrandCarousel" class="slick-track" style="opacity: 1; width: 4704px; ">
+
+                    <ng-container *ngFor="let category of trendingProducts">
+
+                        <ng-template carouselSlide class="slick-slide " data-slick-index="0" aria-hidden="false"
+                            style="width: 224px;">
+                            <div class="slick-slide slick-cloned" data-slick-index="-7" aria-hidden="true" tabindex="-1"
+                                style="width: 163px;">
+                                <div>
+                                    <div class="" style="width: 100%; display: inline-block;">
+                                        <a href="#" tabindex="-1">
+                                            <div class="category-boxes">
+                                                <div class="img-sec">
+                                                    <img src="{{category.src}}"
+                                                        class="img-fluid" alt="">
+                                                </div>
+                                                <h4>{{category.name}}</h4>
+                                            </div>
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+                        </ng-template>
+                    </ng-container>
+
+
+                </owl-carousel-o>
+            </div>
+        </div>
+    </div>
+</section>

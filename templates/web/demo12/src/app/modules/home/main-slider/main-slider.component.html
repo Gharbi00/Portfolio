@@ -1,0 +1,35 @@
+<div class="axil-main-slider-area main-slider-style-5">
+    <div class="container">
+        <div class="slider-box-wrap">
+            <div class="slider-activation-two axil-slick-dots slick-initialized slick-slider slick-dotted">
+                
+                    <owl-carousel-o [options]="carouselOptions" class="slick-track" style="opacity: 1; ">
+                        <ng-container *ngFor="let product of products"><ng-template carouselSlide>
+                            <div class="slick-list draggable" style="height: 520px;">
+                        <div class="single-slide slick-slide slick-current slick-active" 
+                          
+                            style="max-width: 970px; position: relative; left: 0px; top: 0px; z-index: 999; opacity: 1;">
+                            <div class="main-slider-content">
+                                <span class="subtitle"><i class="fas fa-fire"></i> Hot Deal In This Week</span>
+                                <h1 class="title">{{product.name}}</h1>
+                                <div class="shop-btn">
+                                    <a href="shop.html" class="axil-btn btn-bg-white" tabindex="0"><i
+                                            class="fal fa-shopping-cart"></i> Shop Now</a>
+                                </div>
+                            </div>
+                            <div class="main-slider-thumb">
+                                <img src="{{product.src}}" alt="Product">
+                            </div>
+                        </div>
+                    </div>
+                    </ng-template> 
+                </ng-container>
+                    </owl-carousel-o>
+                
+
+
+
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,70 @@
+<section class="bag-product ratio_square">
+    <div class="container">
+        <div class="row">
+            <div class="col-12">
+                <div class="title-basic">
+                    <h2 class="title font-fraunces"><i class="ti-bolt"></i>{{dynamicValue}}</h2>
+                </div>
+            </div>
+            <div class="col-12">
+                <div class="slide-6-product product-m no-arrow slick-initialized slick-slider">
+                    <div class="slick-list draggable">
+
+                        <owl-carousel-o [options]="ProductCarousel" class="slick-track"
+                            style="opacity: 1; width: 3990px; ">
+                            <ng-container *ngFor="let product of ProductData">
+
+                                <ng-template carouselSlide class="slick-slide slick-active"  style="width: 228px;">
+
+
+                                        <div>
+                                            <div class="product-box product-wrap product-style-3"
+                                                style="width: 100%; display: inline-block;">
+                                                <div class="img-wrapper">
+                                                    <div class="front">
+                                                        <a href="product-page(no-sidebar).html"
+                                                            class="bg-size blur-up lazyloaded"
+                                                            style="background-image: url(&quot;{{product.src}}&quot;); background-size: cover; background-position: center center; display: block;"
+                                                            tabindex="0"><img alt=""
+                                                                src="../assets/images/marketplace/pro/50.jpg"
+                                                                class="img-fluid blur-up lazyload bg-img"
+                                                                style="display: none;"></a>
+                                                    </div>
+                                                    <div class="cart-detail"><a href="javascript:void(0)"
+                                                            title="Add to Wishlist" tabindex="0"><i class="ti-heart"
+                                                                aria-hidden="true"></i></a> <a href="#"
+                                                            data-bs-toggle="modal" data-bs-target="#quick-view"
+                                                            title="Quick View" tabindex="0"><i class="ti-search"
+                                                                aria-hidden="true"></i></a> <a href="compare.html"
+                                                            title="Compare" tabindex="0"><i class="ti-reload"
+                                                                aria-hidden="true"></i></a></div>
+                                                </div>
+                                                <div class="product-info">
+                                                    <div class="rating"><i class="fa fa-star"></i> <i
+                                                            class="fa fa-star"></i> <i class="fa fa-star"></i> <i
+                                                            class="fa fa-star"></i> <i class="fa fa-star"></i>
+                                                    </div>
+                                                    <a href="product-page(no-sidebar).html" tabindex="0">
+                                                        <h6> {{product.name}}</h6>
+                                                    </a>
+                                                    <h4>${{product.newPrice}}</h4>
+                                                    <div class="add-btn">
+                                                        <a href="javascript:void(0)" class="" tabindex="0">
+                                                            <i class="ti-shopping-cart"></i> add to cart
+                                                        </a>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                              
+
+                                </ng-template>
+                            </ng-container>
+                        </owl-carousel-o>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</section>

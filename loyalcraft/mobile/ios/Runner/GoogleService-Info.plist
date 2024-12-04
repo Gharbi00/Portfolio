@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>CLIENT_ID</key>
+	<string>414853982494-1njtgbg62pa3qc7n29j83okjc8cbgmog.apps.googleusercontent.com</string>
+	<key>REVERSED_CLIENT_ID</key>
+	<string>com.googleusercontent.apps.414853982494-1njtgbg62pa3qc7n29j83okjc8cbgmog</string>
+	<key>ANDROID_CLIENT_ID</key>
+	<string>414853982494-aapkc8qc7ifuf2ujdi790d480mp47hhs.apps.googleusercontent.com</string>
+	<key>API_KEY</key>
+	<string>AIzaSyAHJCkXSRwQxXy-mw2KC7Kr2mLgtIw14sU</string>
+	<key>GCM_SENDER_ID</key>
+	<string>414853982494</string>
+	<key>PLIST_VERSION</key>
+	<string>1</string>
+	<key>BUNDLE_ID</key>
+	<string>com.loyalcraft.master</string>
+	<key>PROJECT_ID</key>
+	<string>loyalcraftapp</string>
+	<key>STORAGE_BUCKET</key>
+	<string>loyalcraftapp.appspot.com</string>
+	<key>IS_ADS_ENABLED</key>
+	<false></false>
+	<key>IS_ANALYTICS_ENABLED</key>
+	<false></false>
+	<key>IS_APPINVITE_ENABLED</key>
+	<true></true>
+	<key>IS_GCM_ENABLED</key>
+	<true></true>
+	<key>IS_SIGNIN_ENABLED</key>
+	<true></true>
+	<key>GOOGLE_APP_ID</key>
+	<string>1:414853982494:ios:354e5fe2a116ca230c010f</string>
+</dict>
+</plist>

@@ -1,0 +1,58 @@
+.title-basic .title {
+    font-size: calc(16px + (24 - 16) * ((100vw - 320px) / (1920 - 320)));
+    margin-bottom: 0;
+}
+.bg-title .theme-tab .bg-title-part .tab-title {
+    margin-bottom: 0;
+    margin-top: 0px;
+    margin-left: auto;
+    text-align: right;
+}
+.bg-title .theme-tab .bg-title-part .tab-title.w-bg li.current {
+    background-color: var(--theme-color);
+}
+.bg-title .theme-tab .bg-title-part .tab-title.w-bg li {
+    padding: 4px 18px !important;
+}
+.bg-title.wo-bg .theme-tab .bg-title-part {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    background-color: transparent;
+    padding: 0 0 14px 0;
+    border-radius: 0;
+    border-bottom: 1px solid #ddd;
+}
+.bg-title .theme-tab .bg-title-part .tab-title.w-bg li.current a {
+    color: white;
+}
+.bg-title.wo-bg .theme-tab .tab-title a {
+    color: #2d2a25;
+}
+.title-basic {
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-align: center;
+    -ms-flex-align: center;
+    align-items: center;
+    margin-bottom: calc(16px + (22 - 16) * ((100vw - 320px) / (1920 - 320)));
+}
+@media (max-width: 767px){ 
+.bg-title .theme-tab .bg-title-part {
+    display: block;
+    text-align: center;
+}}
+.bg-title .theme-tab .bg-title-part {
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-align: center;
+    -ms-flex-align: center;
+    align-items: center;
+    margin-bottom: 30px;
+    margin-top: -6px;
+    background-color: var(--theme-color);
+    padding: 10px;
+    border-radius: 5px;
+}

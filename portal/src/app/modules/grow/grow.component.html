@@ -1,0 +1,236 @@
+<div class="main-page-wrapper ">
+
+  <div class="hero-banner-two">
+    <div class="container">
+      <div class="row align-items-start justify-content-between">
+        <div class="col-lg-6 order-lg-last">
+          <div class="illustration-holder">
+            <img src="assets/images/assets/ils-01.png" alt="" class="illustration_01">
+            <img src="assets/images/assets/ils-01.1.png" alt="" class="shapes shape-one">
+            <img src="assets/images/assets/ils-01.2.png" alt="" class="shapes shape-two">
+            <img src="assets/images/assets/ils-01.3.png" alt="" class="shapes shape-three">
+          </div>
+        </div>
+
+        <div class="col-xl-5 col-lg-6 order-lg-first">
+          <div class="hero-text-wrapper md-mt-50">
+            <h1>
+              <span>{{'MAXIMIZE' | translate}}
+                <img src="assets/images/shape/line-shape-1.svg" alt="" class="cs-screen">
+              </span> {{'POINT_VALUE' | translate}}
+            </h1>
+            <p class="sub-text">{{'INTEGRATE_PARTNERS' | translate}}</p>
+            <a type="button" class="theme-btn-nine button-color" data-bs-toggle="modal"
+              data-bs-target="#staticBackdrop">{{'GET_STARTED' | translate}}</a>
+            <ul class="list-item d-flex mt-20">
+              <li>{{'EXPAND' | translate}}</li>
+              <li>{{'ENGAGE' | translate}}</li>
+              <li>{{'MONETIZE' | translate}}</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+  <div class="fancy-feature-four mt-20">
+    <div class="bg-wrapper">
+      <img src="assets/images/shape/18.svg" alt="" class="shapes shape-right">
+      <img src="assets/images/shape/19.svg" alt="" class="shapes shape-left">
+      <div class="container">
+        <div class="title-style-two text-center mb-100 md-mb-50">
+          <div class="row">
+            <div class="col-xl-8 col-lg-9 col-md-10 m-auto">
+              <p>{{'HOW_IT_WORKS' | translate}}</p>
+              <h2>{{'ONBOARDING_PARTNERS' | translate}}
+                <span>{{'GROWTH' | translate}}. <img src="assets/images/shape/line-shape-2.svg" alt=""></span>
+              </h2>
+            </div>
+          </div>
+        </div>
+        <div class="inner-content">
+          <img src="assets/images/shape/20.svg" alt="" class="shapes shape-one">
+          <img src="assets/images/shape/21.svg" alt="" class="shapes shape-two">
+          <div class="row justify-content-center">
+            <div class="col-lg-4 col-md-6 d-flex aos-init" data-aos="fade-up" data-aos-duration="1200">
+              <div class="block-style-five">
+                <div class="icon"><img src="assets/images/icon/20.svg" alt=""></div>
+                <h6 class="title"><span>{{'INVITE_PARTNERS' | translate}}</span></h6>
+                <p>{{'INVITE_PARTNERS_DESCRIPTION' | translate}}</p>
+              </div>
+            </div>
+            <div class="col-lg-4 col-md-6 d-flex aos-init" data-aos="fade-up" data-aos-duration="1200"
+              data-aos-delay="100">
+              <div class="block-style-five">
+                <div class="icon"><img src="assets/images/icon/21.svg" alt=""></div>
+                <h6 class="title"><span>{{'SEAMLESS_ENGAGEMENT' | translate}}</span></h6>
+                <p>{{'SEAMLESS_ENGAGEMENT_DESCRIPTION' | translate}}</p>
+              </div>
+            </div>
+            <div class="col-lg-4 col-md-6 d-flex aos-init" data-aos="fade-up" data-aos-duration="1200"
+              data-aos-delay="200">
+              <div class="block-style-five">
+                <div class="icon"><img src="assets/images/icon/22.svg" alt=""></div>
+                <h6 class="title"><span>{{'MONETIZE_YOUR_POINTS' | translate}}</span></h6>
+                <p>{{'MONETIZE_YOUR_POINTS_DESCRIPTION' | translate}}</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+  <div class="fancy-text-block-six mt-250 md-mt-130">
+    <div class="container">
+      <div class="row">
+        <div class="col-lg-6 aos-init aos-animate" data-aos="fade-right" data-aos-duration="1200">
+          <div class="title-style-three mb-35">
+            <p>{{'GET_INTO_A_WIN_WIN_PARTNERSHIP' | translate}}</p>
+            <h2>
+              <span>{{'MAIN_REASONS_TO' | translate}} <img src="assets/images/shape/line-shape-3.svg" alt=""></span>
+              {{'PARTNER_UP' | translate}}
+            </h2>
+          </div>
+          <div id="accordion" class="accordion-style-two pr-5" *ngFor="let reason of reasonsToChooseUs;let i = index">
+            <div class="card">
+              <div class="card-header" id="headingOne">
+                <h5 class="mb-0">
+                  <button class="button-color" class="btn btn-link" (click)="toggleAccordion(i)">
+                    {{reason.question | translate}}
+                  </button>
+                </h5>
+              </div>
+              <div id="collapseOne" class="collapse show" [style.display]="isAccordionOpen(i) ? 'block' : 'none'"
+                [@fadeDownCustomAnimation]="isAccordionOpen(i) ? '*' : 'void'"
+                [@fadeUpCustomAnimation]="isAccordionOpen(i) ? 'void' : '*'">
+                <div class="card-body">
+                  <p>{{reason.answer | translate}}</p>
+                </div>
+              </div>
+            </div>
+
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="img-meta-container aos-init aos-animate" data-aos="fade-left" data-aos-duration="1200"
+      data-aos-delay="100">
+      <img src="assets/images/media/img_72.png" alt="">
+      <img src="assets/images/shape/22.svg" alt="" class="shapes shape-one">
+      <img src="assets/images/shape/23.svg" alt="" class="shapes shape-two">
+      <img src="assets/images/shape/24.svg" alt="" class="shapes shape-three">
+      <img src="assets/images/shape/25.svg" alt="" class="shapes shape-four">
+      <img src="assets/images/shape/26.svg" alt="" class="shapes shape-five">
+      <img src="assets/images/shape/27.svg" alt="" class="shapes shape-six">
+      <img src="assets/images/shape/28.svg" alt="" class="shapes shape-seven">
+    </div>
+  </div>
+
+
+  <div class="counter-with-icon-one pt-200 md-pt-80">
+    <div class="container">
+      <div class="row justify-content-center">
+        <div class="col-lg-4 col-6 aos-init aos-animate" data-aos="fade-up" data-aos-duration="1200">
+          <div class="counter-box-three">
+            <div class="icon"><img src="assets/images/icon/23.svg" alt=""></div>
+            <h2 class="number"><span class="timer" data-from="0" data-to="13" data-speed="1500"
+                data-refresh-interval="5" [countUp]="140" [options]="{ enableScrollSpy: true }"></span>M€</h2>
+            <p class="font-rubik">{{'PARTNER_REVENUE' | translate}}</p>
+          </div>
+        </div>
+        <div class="col-lg-4 col-6 aos-init aos-animate" data-aos="fade-up" data-aos-duration="1200"
+          data-aos-delay="100">
+          <div class="counter-box-three">
+            <div class="icon"><img src="assets/images/icon/24.svg" alt=""></div>
+            <h2 class="number"><span class="timer" data-from="0" data-to="30000" data-speed="1200"
+                data-refresh-interval="5" [countUp]="360" [options]="{ enableScrollSpy: true }"></span>k</h2>
+            <p class="font-rubik">{{'LEAD_GENERATED' | translate}}</p>
+          </div>
+        </div>
+        <div class="col-lg-4 col-6 aos-init aos-animate" data-aos="fade-up" data-aos-duration="1200"
+          data-aos-delay="200">
+          <div class="counter-box-three">
+            <div class="icon"><img src="assets/images/icon/25.svg" alt=""></div>
+            <h2 class="number"><span class="timer" data-from="0" data-to="134" data-speed="1200"
+                data-refresh-interval="5" [countUp]="64" [options]="{ enableScrollSpy: true }"></span>%</h2>
+            <p class="font-rubik">{{'CUSTOMER_GROWTH' | translate}}</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="fancy-feature-ten mt-100 md-mt-70" id="feature">
+    <div class="bg-wrapper">
+      <div class="container">
+        <div class="row justify-content-between align-items-center">
+          <div class="col-md-6 aos-init aos-animate" data-aos="fade-right" data-aos-duration="1200">
+            <div class="title-style-six">
+              <h2>{{'UNLOCKING_THE' | translate}} <span> {{'WIN_WIN' | translate}}</span> {{'PARTENRSHIPS' | translate}}
+              </h2>
+            </div>
+          </div>
+          <div class="col-lg-5 col-md-6 aos-init aos-animate" data-aos="fade-left" data-aos-duration="1200">
+            <p class="sub-text pt-30 pb-30">{{'DISCOVER_WIN_WIN_PARTNERSHIPS' | translate}}</p>
+          </div>
+        </div>
+
+        <div class="row justify-content-center mt-35 md-mt-20">
+          <div class="col-lg-4 col-md-6 aos-init aos-animate" data-aos="fade-up" data-aos-duration="1200">
+            <div class="block-style-fifteen mt-40">
+              <div class="icon d-flex align-items-center justify-content-center" style="background:#FFEBDB;"><img
+                  src="assets/images/icon/68.svg" alt=""></div>
+              <h3>{{'EXPAND_YOUR_HORIZON' | translate}}</h3>
+              <p>{{'EXPAND_YOUR_HORIZON_REPEAT_DESCRIPTION' | translate}}</p>
+              <!-- <a href="#" class="mt-30"><img src="assets/images/icon/69.svg" alt=""></a> -->
+            </div>
+          </div>
+          <div class="col-lg-4 col-md-6 aos-init aos-animate" data-aos="fade-up" data-aos-duration="1200"
+            data-aos-delay="100">
+            <div class="block-style-fifteen mt-40">
+              <div class="icon d-flex align-items-center justify-content-center" style="background:#E0F8F8;"><img
+                  src="assets/images/icon/67.svg" alt=""></div>
+              <h3>{{'STOP_LOSING_START_WINNING_REPEAT' | translate}}</h3>
+              <p>{{'STOP_LOSING_START_WINNING_REPEAT_DESCRIPTION' | translate}}</p>
+              <!-- <a href="#" class="mt-30"><img src="assets/images/icon/69.svg" alt=""></a> -->
+            </div> <!-- /.block-style-fifteen -->
+          </div>
+          <div class="col-lg-4 col-md-6 aos-init aos-animate" data-aos="fade-up" data-aos-duration="1200"
+            data-aos-delay="200">
+            <div class="block-style-fifteen mt-40">
+              <div class="icon d-flex align-items-center justify-content-center" style="background:#F7EDFF;"><img
+                  src="assets/images/icon/70.svg" alt=""></div>
+              <h3>{{'EXPAND_YOUR_BASE_REPEAT' | translate}}</h3>
+              <p>{{'EXPAND_YOUR_BASE_REPEAT_DESCRIPTION' | translate}}</p>
+              <!-- <a href="#" class="mt-30"><img src="assets/images/icon/69.svg" alt=""></a> -->
+            </div> <!-- /.block-style-fifteen -->
+          </div>
+        </div>
+      </div>
+      <img src="assets/images/shape/137.svg" alt="" class="shapes shape-one">
+    </div> <!-- /.bg-wrapper -->
+  </div>
+
+
+  <div class="fancy-short-banner-six mt-150 md-mt-80">
+    <img src="assets/images/shape/143.svg" alt="" class="shapes shape-one">
+    <div class="container">
+      <div class="row">
+        <div class="col-xl-9 col-lg-11 m-auto aos-init aos-animate" data-aos="fade-up" data-aos-duration="1200">
+          <div class="title-style-six text-center">
+            <h2>{{'LOVE_OUR_PRODUCT' | translate}} <br>{{'GRAB_IT_TODAY' | translate}} <span>{{'FREE' |
+                translate}}</span></h2>
+          </div>
+        </div>
+      </div>
+      <p data-aos="fade-up" data-aos-duration="1200" data-aos-delay="100" class="aos-init">
+        {{'TRY_IT_RISK_FREE_CANCELATION' | translate}}</p>
+      <a class="theme-btn-nine aos-init" type="button" data-aos="fade-up" data-aos-duration="1200" data-aos-delay="150"
+        data-bs-toggle="modal" data-bs-target="#staticBackdrop">{{'GET_STARTED_' | translate}}</a>
+    </div>
+  </div>
+</div>

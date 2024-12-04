@@ -1,0 +1,25 @@
+
+
+::ng-deep.toggle-nav {
+
+    margin-right: -425px!important;
+}
+::ng-deep .settings{
+    @media(width < 770px){
+        display: none!important;
+    }
+}
+
+.top-header {
+    background-color: #222!important;
+}
+
+
+
+.top-header .header-contact li {
+    color: rgba(255,255,255,0.8);
+
+}
+.top-header .header-dropdown li {
+    color: rgba(255,255,255,0.8);
+}

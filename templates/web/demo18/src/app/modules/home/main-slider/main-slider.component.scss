@@ -1,0 +1,54 @@
+:host::ng-deep.owl-theme .owl-nav [class*=owl-] {
+    @media(width  >500px){
+    color: #000;
+    font-size: 14px;
+    margin: 5px;
+    padding: 4px 7px;
+    background: #D6D6D6;
+    display: inline-block;
+    cursor: pointer;
+    border-radius: 3px;}
+    @media(width  <500px){
+    display: none;
+    }
+}
+:host::ng-deep.main-screen{
+    
+        width:100%;
+
+    }
+    .home-slider .slider-details, .center-slider .slider-details {
+        position: absolute;
+        background-color: rgba(0,0,0,0.1);
+        border-radius: 100%;
+        display: -webkit-box;
+        display: -ms-flexbox;
+        display: flex;
+        -webkit-box-align: center;
+        -ms-flex-align: center;
+        align-items: center;
+        -webkit-box-pack: center;
+        -ms-flex-pack: center;
+        justify-content: center;
+        top: 26%;
+        right: 18%;
+        text-align: center;
+        padding: 55px;
+        width: 510px;
+        height: 510px;
+    }
+    @media (max-width: 1630px){
+body.christmas .home-slider .slider-details {
+    width: 400px;
+    height: 400px;
+} }
+
+.home-slider .slider-details h2, .home-slider .slider-details h3, .home-slider .slider-details h4, .center-slider .slider-details h2, .center-slider .slider-details h3, .center-slider .slider-details h4 {
+    color: white;
+}
+.home-slider .slider-details h3, .center-slider .slider-details h3 {
+    color: #fff;
+    position: relative;
+    text-transform: uppercase;
+    display: inline-block;
+}

@@ -1,0 +1,8 @@
+.home-slider .slick-prev, .home-slider .slick-next, .center-slider .slick-prev, .center-slider .slick-next {
+    opacity: 0;
+    -webkit-transform: scale(1);
+    transform: scale(1);
+    -webkit-transition: all 0.5s ease;
+    transition: all 0.5s ease;
+    margin-top: -10px;
+}

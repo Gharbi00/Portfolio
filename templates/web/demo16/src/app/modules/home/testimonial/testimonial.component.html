@@ -1,0 +1,38 @@
+<div class="axil-testimoial-area axil-section-gap bg-vista-white" style="margin-top: 150px;">
+    <div class="container">
+        <div class="section-title-wrapper" style="margin-bottom: -60px;">
+            <span class="title-highlighter highlighter-secondary"> <i class="fal fa-quote-left" style="padding-top: 0px!important;"></i>Testimonials</span>
+            <h2 class="title">Users Feedback</h2>
+        </div>
+        <!-- End .section-title -->
+        <div
+            class="testimonial-slick-activation testimonial-style-one-wrapper slick-layout-wrapper--20 axil-slick-arrow arrow-top-slide slick-initialized slick-slider">
+            <div class="slick-list draggable">
+                <owl-carousel-o [options]="carouselOptions" class="slick-track" style="opacity: 1;padding-top: 50px;">
+                    
+                    <ng-container *ngFor="let testimonial of testomonials">
+                        <ng-template carouselSlide>
+                            <div class="slick-single-layout testimonial-style-one slick-slide slick-cloned"
+                                data-slick-index="-3" aria-hidden="true" tabindex="-1"
+                                style="width: 384px; margin-bottom: -150px;">
+                                <div class="review-speech">
+                                    <p>{{testimonial.description}} </p>
+                                </div>
+                                <div class="media">
+                                    <div class="thumbnail">
+                                        <img src="{{testimonial.src}}" alt="testimonial image">
+                                    </div>
+                                    <div class="media-body">
+                                        <span class="designation">{{testimonial.designation}}</span>
+                                        <h6 class="title">{{testimonial.name}}</h6>
+                                    </div>
+                                </div>
+                                <!-- End .thumbnail -->
+                            </div>
+                        </ng-template>
+                    </ng-container>
+                </owl-carousel-o>
+            </div>
+        </div>
+    </div>
+</div>

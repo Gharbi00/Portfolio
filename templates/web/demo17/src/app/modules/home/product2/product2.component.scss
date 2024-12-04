@@ -1,0 +1,43 @@
+:host::ng-deep.owl-theme .owl-nav [class*=owl-] {
+  
+    outline: none;
+    width: 40px;
+    height: 40px;
+    background: #a4f3e4;
+    color: #ffffff;
+    border: none;
+    border-radius: 50%;
+
+   
+  
+    
+}
+:host::ng-deep .owl-theme .owl-nav {
+  
+    position: absolute;
+    left: 1010px;
+    z-index: 999; /* Ensure the navigation is above other content */
+    top: -15px;
+   
+    
+    
+    
+}
+:host::ng-deep.fal{
+    padding-top: 10px!important;
+}
+:host::ng-deep .col{
+    @media(width < 1000px){
+            width: 180px;
+        
+    }
+    @media(width < 500px){
+        width: 260px;
+    
+}
+   
+}
+:host::ng-deep.owl-item {
+display: grid!important;
+place-items: center!important;
+}

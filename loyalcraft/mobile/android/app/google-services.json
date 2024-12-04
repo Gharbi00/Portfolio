@@ -1,0 +1,63 @@
+{
+  "project_info": {
+    "project_number": "414853982494",
+    "project_id": "loyalcraftapp",
+    "storage_bucket": "loyalcraftapp.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:414853982494:android:53e5620991c991920c010f",
+        "android_client_info": {
+          "package_name": "com.loyalcraft.master"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "414853982494-aapkc8qc7ifuf2ujdi790d480mp47hhs.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.loyalcraft.master",
+            "certificate_hash": "ea99c044297dfa651eadd5f7c528811f176f764c"
+          }
+        },
+        {
+          "client_id": "414853982494-nbkpfvacm6c7dlfahan85la9efr3h03u.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.loyalcraft.master",
+            "certificate_hash": "3eca48773d04fb9021de7af8f15c85eb0cfb94ea"
+          }
+        },
+        {
+          "client_id": "414853982494-63kag9n52boq1lupso8soigarphliprn.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAIRIEDkBA-HBuXq6iSCeTWAUblzbZbOgQ"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "414853982494-63kag9n52boq1lupso8soigarphliprn.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "414853982494-1njtgbg62pa3qc7n29j83okjc8cbgmog.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.loyalcraft.master",
+                "app_store_id": "6502938384"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

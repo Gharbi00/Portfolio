@@ -1,0 +1,81 @@
+name: loyalcraft
+description: A new Flutter project.
+publish_to: none
+version: 0.0.40+40
+environment:
+  sdk: '>=3.3.4 <4.0.0'
+dependencies:
+  flutter:
+    sdk: flutter
+  flutter_localizations:
+    sdk: flutter  
+  ## DIKTUP PACKAGES
+  flutter_diktup_social_media: ^0.0.11
+  flutter_diktup_utilities: ^0.0.7
+  flutter_loyalcraft_gql: ^0.0.34
+  ## --
+  simple_circular_progress_bar: ^1.0.2
+  flutter_staggered_grid_view: ^0.7.0
+  flutter_widget_from_html: ^0.15.2
+  youtube_player_flutter: ^9.1.1
+  flutter_facebook_auth: ^7.1.1
+  flutter_native_splash: ^2.4.2
+  linear_progress_bar: ^1.1.2
+  google_maps_flutter: ^2.9.0
+  webview_flutter_plus: ^0.4.7
+  firebase_messaging: ^15.1.3
+  sign_in_with_apple: ^6.1.3
+  cached_network_image: ^3.4.1
+  shared_preferences: ^2.3.2
+  qr_code_dart_scan: ^0.9.2
+  slide_countdown: ^2.0.0
+  webview_flutter: ^4.9.0
+  cupertino_icons: ^1.0.8
+  carousel_slider: ^5.0.0
+  google_sign_in: ^6.2.1
+  barcode_widget: ^2.0.4
+  flutter_svg: ^2.0.10+1
+  path_provider: ^2.1.4
+  firebase_core: ^3.6.0
+  image_picker: ^1.1.2
+  connectivity_plus: ^6.1.0
+  video_player: ^2.9.2
+  flutter_bloc: ^8.1.6
+  share_plus: ^10.1.0
+  geolocator: ^13.0.1
+  app_links: ^6.3.2
+  flip_card: ^0.7.0
+  graphql: ^5.1.3
+  shimmer: ^3.0.0
+  image: ^4.3.0
+  http: ^1.2.2
+  path: ^1.9.0
+dependency_overrides:
+  flutter_plugin_android_lifecycle: ^2.0.23
+flutter_native_splash:
+  image: img/splash-screen.png
+  fullscreen: false
+  color: '#FFFFFF'
+flutter:
+  uses-material-design: true
+  assets:
+    - map_style/
+    - countries/
+    - locale/
+    - sound/
+    - img/
+  fonts:
+    - family: Mulish
+      fonts:
+        - asset: font/Mulish-Light.ttf
+          weight: 200
+        - asset: font/Mulish-Regular.ttf
+          weight: 400
+        - asset: font/Mulish-Medium.ttf
+          weight: 600
+        - asset: font/Mulish-SemiBold.ttf
+          weight: 800
+        - asset: font/Mulish-Bold.ttf
+          weight: 900
+        - asset: font/Mulish-ExtraBold.ttf
+          weight: 900

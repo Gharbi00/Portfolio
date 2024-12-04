@@ -1,0 +1,73 @@
+<div class="bag-product ratio_square section-t-space">
+    <div class="container-fluid p-0">
+        <div class="row">
+            <div class="col-12">
+                <div class="title8">
+                    <h2>{{Title}}</h2>
+                    <p>{{subTitle}}</p>
+                </div>
+            </div>
+            <div class="col-12">
+                <div class="slide-6-veg slick-sm-margin no-arrow slick-initialized slick-slider">
+                    <div class="slick-list draggable">
+                        <owl-carousel-o [options]="ProductCarousel" class="slick-track"
+                            style="opacity: 1; width: 3990px; ">
+                            <ng-container *ngFor="let product of ProductData">
+
+                                <ng-template carouselSlide class="slick-slide slick-active" style="width: 239px;">
+
+                                    <div class="slick-slide slick-current slick-active" data-slick-index="0"
+                                        aria-hidden="false" style="width: 243px;">
+                                        <div>
+                                            <div class="product-box product-style-5"
+                                                style="width: 100%; display: inline-block;">
+                                                <a href="product-page.html" tabindex="0">
+                                                    <h6>Lemon - Organically Grown (Loose)</h6>
+                                                </a>
+                                                <h5>1 Kg</h5>
+                                                <h4>$5.00</h4>
+                                                <div class="addtocart_btn">
+                                                    <button class="add-button add_cart" title="Add to cart"
+                                                        tabindex="0">
+                                                        <i class="fa fa-plus"></i>
+                                                    </button>
+                                                    <div class="qty-box cart_qty">
+                                                        <div class="input-group">
+                                                            <button type="button" class="btn quantity-left-minus"
+                                                                data-type="minus" data-field="" tabindex="0">
+                                                                <i class="fa fa-minus" aria-hidden="true"></i>
+                                                            </button>
+                                                            <input type="text" name="quantity"
+                                                                class="form-control input-number qty-input" value="1"
+                                                                tabindex="0">
+                                                            <button type="button" class="btn quantity-right-plus"
+                                                                data-type="plus" data-field="" tabindex="0">
+                                                                <i class="fa fa-plus" aria-hidden="true"></i>
+                                                            </button>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="img-wrapper">
+                                                    <div class="front">
+                                                        <a href="product-page.html" class="bg-size blur-up lazyloaded"
+                                                            style="background-image: url(&quot;../assets/images/vegetables/pro/png/1.png&quot;); background-size: cover; background-position: center center; display: block;"
+                                                            tabindex="0"><img alt=""
+                                                                src="../assets/images/vegetables/pro/png/1.png"
+                                                                class="img-fluid blur-up lazyload bg-img"
+                                                                ></a>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+
+                                </ng-template>
+                            </ng-container>
+                        </owl-carousel-o>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

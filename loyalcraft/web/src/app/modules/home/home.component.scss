@@ -1,0 +1,132 @@
+::ng-deep.owl-theme .owl-dots .owl-dot span {
+    text-indent: -50000px;
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    border: 1px solid #000;
+    margin: 0 5px;
+    transition: all .3s ease-in-out;
+}
+:ng-deep.owl-theme .owl-dots .owl-dot.active span {
+    background: #000!important;
+}
+:ng-deep.owl-theme .owl-dots .owl-dot:hover span{
+
+    background: #000!important;
+}
+:ng-deep.owl-theme .owl-dots .owl-dot span {
+
+     background: #ffffff; 
+
+}
+::ng-deep.rtl.flaticon-right-arrow:before,.rtl.flaticon-right-arrow:before{
+    transform: scaleX(-1)!important;
+  }
+::ng-deep.owl-carousel .owl-item img {
+    display: block;
+     
+}
+::ng-deep .custom-brands .owl-item{
+    width: 174px!important;
+    margin-left:1%;
+}
+.dropdown-toggle::after {
+
+    content:none !important;
+
+}
+.dropdown-menu {
+    position: inherit!important;
+}
+
+.triggered-animation {
+    opacity: 0;
+    transform: translateY(50px);
+    transition: opacity 0.5s ease, transform 0.5s ease;
+  }
+  
+  .triggered-animation.active {
+    opacity: 1;
+    transform: translateY(0);
+  }
+  .custom-collapse {
+    transform: scale(1, 1);
+
+}
+
+::ng-deep .custom-testomonials .owl-item{
+    width: 461px!important;
+    margin-left:1%;
+}
+ .theme-btn-nine {
+
+    border-radius: 8px!important;
+
+}
+
+ ::ng-deep.owl-prev li {
+    width: 20px;
+    line-height: 20px;
+    text-align: center;
+    cursor: pointer;
+    margin: 0 7px;
+    font-size: 26px;
+    color: #5d5d5d;
+    transition: all .3s ease-in-out;
+    transform: scale(.6);
+}
+
+::ng-deep.owl-theme .owl-nav [class*=owl-] {
+    color: black;
+    font-size: 14px;
+    margin: 5px;
+    padding: 4px 7px;
+    background: transparent;
+    display: inline-block;
+    cursor: pointer;
+    border-radius: 3px;
+}
+::ng-deep.owl-theme .owl-nav  :hover{
+
+    background: transparent;
+
+}
+::ng-deep.custom-owl .owl-item {
+
+   display: flex;
+   justify-content: center;
+
+}  
+::ng-deep.custom-owl .owl-item {
+
+    display: flex;
+    justify-content: center;
+ 
+ }  
+
+::ng-deep.owl-theme .owl-nav .owl-prev{
+    left: -75px;
+    transform: rotateY(180deg);
+    position: relative;
+}
+::ng-deep.center{
+    @media (min-width:1000px) {
+        transform: scale(1.2);
+        transition: transform 0.7s ease;
+    }
+    
+    
+
+    
+
+}
+::ng-deep.overflow-hidden {
+    overflow-x: hidden!important;
+  }
+
+  ::ng-deep .rtl.flaticon-right-arrow{
+    transform: scaleX(-1)!important;
+  }
+  ::ng-deep .slick-track{
+   direction: ltr!important;
+  }

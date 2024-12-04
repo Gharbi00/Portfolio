@@ -1,0 +1,109 @@
+<div class="terms_and_policy">
+    <div class="container">
+        <div class="tab-content">
+            <div>
+                <h2 class="font-gilroy-bold">{{'TERMS_AND_CONDITIONS' | translate}}</h2>
+                <div class="update-date">{{'LAST_UPDATED' | translate}} 6/26/2020</div>
+
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-lg-4">
+                <ul class="nav nav-tabs">
+                    <li class="nav-item" *ngFor="let navTitle of navs; let i=index">
+                        <a class="nav-link" data-toggle="tab" [class.active]="activeTab === i" (click)="switchTab(i)"
+                            style="cursor: pointer;">{{navTitle | translate}}</a>
+                    </li>
+                </ul>
+            </div>
+
+            <div class="col-lg-8" data-aos="fade-up">
+                <div class="tab-content" [@scaleAnimation]="activeTab === 0 ? 'open' : '*'">
+                    <ng-container *ngIf="activeTab === 0 ," id="opt1" class="tab-pane fade">
+                        <h2 class="font-gilroy-bold">{{'INTRODUCTION' | translate}}</h2>
+                        <div class="update-date"></div>
+                        <p>{{'INTRODUCTION_TEXT' | translate}}
+                        </p>
+                    </ng-container>
+                </div>
+                <div class="tab-content" [@scaleAnimation]="activeTab === 1 ? 'open' : '*'">
+                    <ng-container *ngIf="activeTab === 1" id="opt2" class="tab-pane fade">
+                        <h2 class="font-gilroy-bold">{{'INTELLECTUAL_PROPERTY_RIGHTS' | translate}}</h2>
+                        <div class="update-date"></div>
+                        <p>{{'IP_TEXT' | translate}}</p>
+                    </ng-container>
+                </div>
+                <div class="tab-content" [@scaleAnimation]="activeTab === 2 ? 'open' : '*'">
+                    <ng-container *ngIf="activeTab === 2" id="opt3" class="tab-pane fade">
+                        <h2 class="font-gilroy-bold">{{'RESTRICTIONS' | translate}}</h2>
+                        <div class="update-date"></div>
+                        <p>{{'SPECIFICALLY_RESTRICTED' | translate}}</p>
+                        <ul>
+                            <li *ngFor="let restriction of ('RESTRICTIONS_LIST' | translate)">{{ restriction }}</li>
+
+                        </ul>
+                    </ng-container>
+                </div>
+                <div class="tab-content" [@scaleAnimation]="activeTab === 3 ? 'open' : '*'">
+                    <ng-container *ngIf="activeTab === 3" id="opt4" class="tab-pane fade">
+                        <h2 class="font-gilroy-bold">{{'YOUR_CONTENT' | translate}}</h2>
+                        <div class="update-date"></div>
+                        <p>{{'YOUR_CONTENT_TEXT' | translate}}</p>
+                    </ng-container>
+                </div>
+                <div class="tab-content" [@scaleAnimation]="activeTab === 4 ? 'open' : '*'">
+                    <ng-container *ngIf="activeTab === 4" id="opt5" class="tab-pane fade active show">
+                        <h2 class="font-gilroy-bold">{{'NO_WARRANTIES' | translate}}</h2>
+                        <div class="update-date"></div>
+                        <p>{{'NO_WARRANTIES_TEXT' | translate}}
+                        </p>
+                    </ng-container>
+                </div>
+                <div class="tab-content" [@scaleAnimation]="activeTab === 5 ? 'open' : '*'">
+                    <ng-container *ngIf="activeTab === 5" id="opt6" class="tab-pane fade">
+                        <h2 class="font-gilroy-bold">{{'LIMITATION_OF_LIABILITY' | translate}}</h2>
+                        <div class="update-date"></div>
+                        <p>{{'LIMITATION_OF_LIABILITY_TEXT' | translate}}
+                        </p>
+                    </ng-container>
+                </div>
+                <div class="tab-content" [@scaleAnimation]="activeTab === 6 ? 'open' : '*'">
+                    <ng-container *ngIf="activeTab === 6" id="opt7" class="tab-pane fade">
+                        <h2 class="font-gilroy-bold">{{'INDEMNIFICATION' | translate}}</h2>
+                        <div class="update-date"></div>
+                        <p>{{'INDEMNIFICATION_TEXT' | translate}}
+                        </p>
+                    </ng-container>
+                </div>
+                <div class="tab-content" [@scaleAnimation]="activeTab === 7 ? 'open' : '*'">
+                    <ng-container *ngIf="activeTab === 7" id="opt8" class="tab-pane fade">
+                        <h2 class="font-gilroy-bold">{{'SEVERABILITY' | translate}}</h2>
+                        <p>{{'SEVERABILITY_TEXT' | translate}}
+                        </p>
+                    </ng-container>
+                </div>
+                <div class="tab-content" [@scaleAnimation]="activeTab === 8 ? 'open' : '*'">
+                    <ng-container *ngIf="activeTab === 8" id="opt9" class="tab-pane fade">
+                        <h2 class="font-gilroy-bold">{{'VARIATION_OF_TERMS' | translate}}</h2>
+                        <div class="update-date"></div>
+                        <p>{{'VARIATION_OF_TERMS_TEXT' | translate}}
+                        </p>
+                    </ng-container>
+                </div>
+                <div class="tab-content" [@scaleAnimation]="activeTab === 9 ? 'open' : '*'">
+                    <ng-container *ngIf="activeTab === 9" id="opt10" class="tab-pane fade">
+                        <h2 class="font-gilroy-bold">{{'ENTIRE_AGREEMENT' | translate}}</h2>
+                        <p>{{'ENTIRE_AGREEMENT_TEXT' | translate}}</p>
+                    </ng-container>
+                </div>
+                <div class="tab-content" [@scaleAnimation]="activeTab === 10 ? 'open' : '*'">
+                    <ng-container *ngIf="activeTab === 10" id="opt11" class="tab-pane fade">
+                        <h2 class="font-gilroy-bold">{{'GOVERNING_LAW_AND_JURISDICTION' | translate}}</h2>
+                        <div class="update-date"></div>
+                        <p>{{'GOVERNING_LAW_AND_JURISDICTION_TEXT' | translate}}</p>
+                    </ng-container>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

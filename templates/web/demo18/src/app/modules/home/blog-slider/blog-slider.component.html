@@ -1,0 +1,144 @@
+<section class="blog-section grey-bg section-b-space">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-9">
+                <div class="title2 text-start">
+                    <h2 class="title-inner1">from the blog</h2>
+                </div>
+                <div class="slide-3 no-arrow slick-initialized slick-slider">
+                    <div class="slick-list draggable">
+
+                        <owl-carousel-o [options]="BlogCarousel" class="slick-track"
+                            style="opacity: 1; width: 5200px; ">
+                            <ng-container *ngFor="let blog of BlogData">
+                                <ng-template carouselSlide>
+
+
+                                    <div class="slick-slide" data-slick-index="0" aria-hidden="true"
+                                        style="width: 400px;" tabindex="-1">
+                                        <div>
+                                            <div style="width: 100%; display: inline-block;">
+                                                <div class="blog-wrap">
+                                                    <a href="#" tabindex="-1">
+                                                        <div class="blog-image">
+                                                            <img src="{{blog.src}}"
+                                                                class="img-fluid" alt="">
+                                                        </div>
+                                                        <div class="blog-details text-start p-0">
+                                                            <h4>{{blog.date}}</h4>
+                                                            <p>{{blog.description}} </p>
+                                                            <h6>{{blog.person}}</h6>
+                                                        </div>
+                                                    </a>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </ng-template>
+                            </ng-container>
+                        </owl-carousel-o>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-3">
+                <div class="review-box">
+                    <div class="slide-1 slick-initialized slick-slider">
+                        <div class="slick-list draggable">
+                            <owl-carousel-o [options]="MainSlider" class="slick-track"
+                                style="opacity: 1; width: 1700px; ">
+                                <ng-template carouselSlide class="slick-slide slick-cloned"  data-slick-index="-1" aria-hidden="true"
+                                    tabindex="-1" style="width: 340px;">
+                                    <div>
+                                        <div style="width: 100%; display: inline-block;">
+                                            <div class="review-content">
+                                                <div class="avtar">
+                                                    <img src="../assets/images/christmas/testimonial/1.jpg" alt="">
+                                                </div>
+                                                <h5>mark jecno</h5>
+                                                <h6>designer</h6>
+                                                <p>There are many variations of passages of Lorem Ipsum available, but
+                                                    the majority
+                                                    have suffered alterationdummy text .</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </ng-template>
+                                <ng-template carouselSlide class="slick-slide slick-current slick-active" data-slick-index="0"
+                                    aria-hidden="false" style="width: 340px;">
+                                    <div>
+                                        <div style="width: 100%; display: inline-block;">
+                                            <div class="review-content">
+                                                <div class="avtar">
+                                                    <img src="../assets/images/christmas/testimonial/1.jpg" alt="">
+                                                </div>
+                                                <h5>mark jecno</h5>
+                                                <h6>designer</h6>
+                                                <p>There are many variations of passages of Lorem Ipsum available, but
+                                                    the majority
+                                                    have suffered alterationdummy text .</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </ng-template>
+                                <ng-template carouselSlide class="slick-slide" data-slick-index="1" aria-hidden="true" tabindex="-1"
+                                    style="width: 340px;">
+                                    <div>
+                                        <div style="width: 100%; display: inline-block;">
+                                            <div class="review-content">
+                                                <div class="avtar">
+                                                    <img src="../assets/images/christmas/testimonial/1.jpg" alt="">
+                                                </div>
+                                                <h5>mark jecno</h5>
+                                                <h6>designer</h6>
+                                                <p>There are many variations of passages of Lorem Ipsum available, but
+                                                    the majority
+                                                    have suffered alterationdummy text .</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </ng-template>
+                                <ng-template carouselSlide class="slick-slide slick-cloned" data-slick-index="2" aria-hidden="true"
+                                    tabindex="-1" style="width: 340px;">
+                                    <div>
+                                        <div style="width: 100%; display: inline-block;">
+                                            <div class="review-content">
+                                                <div class="avtar">
+                                                    <img src="../assets/images/christmas/testimonial/1.jpg" alt="">
+                                                </div>
+                                                <h5>mark jecno</h5>
+                                                <h6>designer</h6>
+                                                <p>There are many variations of passages of Lorem Ipsum available, but
+                                                    the majority
+                                                    have suffered alterationdummy text .</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </ng-template>
+                                <ng-template carouselSlide class="slick-slide slick-cloned" data-slick-index="3" aria-hidden="true"
+                                    tabindex="-1" style="width: 340px;">
+                                    <div>
+                                        <div style="width: 100%; display: inline-block;">
+                                            <div class="review-content">
+                                                <div class="avtar">
+                                                    <img src="../assets/images/christmas/testimonial/1.jpg" alt="">
+                                                </div>
+                                                <h5>mark jecno</h5>
+                                                <h6>designer</h6>
+                                                <p>There are many variations of passages of Lorem Ipsum available, but
+                                                    the majority
+                                                    have suffered alterationdummy text .</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </ng-template>
+                            </owl-carousel-o>
+                        </div>
+                    </div>
+                    <div class="santa-img">
+                        <img src="../assets/images/christmas/testimonial/santa.png" alt="" class="img-fluid">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>

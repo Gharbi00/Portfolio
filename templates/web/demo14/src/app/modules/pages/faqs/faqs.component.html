@@ -1,0 +1,43 @@
+<main class="main-wrapper">
+    <!-- Start Breadcrumb Area  -->
+    <div class="axil-breadcrumb-area">
+        <div class="container">
+            <div class="row align-items-center">
+                <div class="col-lg-6 col-md-8">
+                    <div class="inner">
+                        <ul class="axil-breadcrumb">
+                            <li class="axil-breadcrumb-item"><a routerlink="/">Home</a></li>
+                            <li class="separator"></li>
+                            <li class="axil-breadcrumb-item active" aria-current="page">{{ landingPages[0]?.pageTitle }}</li>
+                        </ul>
+                        <h1 class="title">{{ landingPages[0]?.pageTitle }}</h1>
+                    </div>
+                </div>
+                <div class="col-lg-6 col-md-4">
+                    <div class="inner">
+                        <div class="bradcrumb-thumb">
+                            <img [src]="image" alt="Image">
+                        </div>
+                    </div>
+                </div>
+            </div>
+      
+        </div>
+    </div>
+    <div class="page-content" style="margin-bottom: 50px;" [@fade]>
+        <div class="text-center container" style="margin-bottom: 50px;">
+          <h2 class="title" style="text-decoration: underline;">{{ landingPages[0]?.pageTitle }}</h2>
+          <p>{{landingPages[0]?.pageDescription}}</p>
+        </div>
+        <div *ngIf="landingPages[0]?.sectionData?.length" class="list-group" style="text-align: center;">
+          <div *ngFor="let data of landingPages[0]?.sectionData" class="list-group-item">
+            <h4 style="margin-bottom:20px;color:#c59deb;">{{data?.sectionTitle}}</h4>
+            <p *ngFor="let item of data?.sectionContent?.split('\n')" class="tpab-text mb-30">{{item}}</p>
+            <div *ngIf="data?.sectionPictures?.length">
+              <div class="center" *ngFor="let picture of data?.sectionPictures">
+                <img class="lazyload" [alt]="picture?.alt" [src]="picture?.baseUrl + '/' + picture?.path">
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>

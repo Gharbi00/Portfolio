@@ -1,0 +1,80 @@
+<main class=" col-xl-10 doc-main-body" data-bs-spy="scroll" data-bs-target="#deduct-api" data-bs-offset="0"
+  tabindex="0">
+  <h2>Get the last widget outbound message</h2>
+  <div id="introduction">
+    <h3>Introduction</h3>
+    <p>This endpoint retrieves the latest widget outbound data for a specific target extracted from the authorization token.</p>
+  </div>
+  <div id="endpoint">
+    <h3>Endpoint</h3>
+    <div class="mark-red">
+      <pre>URL: /outbound/last</pre>
+      <pre>Method: <span class="s1">POST</span></pre>
+    </div>
+  </div>
+  <div id="headers">
+    <h3>Request Headers</h3>
+    <p>Here you need to insert the bearer token obtained from the Login and Get Access Token API.</p>
+    <pre class="bg-black"><code>
+  <span class="s2">&lbrace;</span>
+    <span class="s2">"Authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..."</span>
+  <span class="s2">&rbrace;</span>
+      </code>
+    </pre>
+  </div>
+  <div id="params">
+    <h3>Request Parameters</h3>
+    <div class="mark-red">
+      <pre><span class="s1">reference*</span>: Session reference found in local storage or cookies under key <span style="font-weight: bold; color: #006eff;">elevkusr</span>.</pre>
+    </div>
+    <p class="note">Note: In case you don't find this reference you can skip it because it's optional. Before showing the outbound plese verify if you have the identifier in your cookies with the name you choose when saving it.</p>
+  </div>
+  <div id="error">
+    <h3>Error Handling</h3>
+    <div class="mark-red">
+      <pre><span class="s1">404 Not found</span>: In case there is no inbound information to show to the user.</pre>
+    </div>
+  </div>
+  <div id="request">
+    <h3>Sample Request</h3>
+    <p>Upon successful authentication, the API returns an access token.</p>
+    <pre class="bg-black"><code>
+<span class="s1">POST /outbound/last</span>
+<span class="s1">Authorization: Bearer YOUR_ACCESS_TOKEN</span>
+<span class="s2">&lbrace;</span>
+  <span class="s2">"reference": "asdfa87asdf"</span>
+<span class="s2">&rbrace;</span>
+      </code>
+    </pre>
+  </div>
+  <div id="response">
+    <h3>Sample Response</h3>
+    <p>Upon successful request, the API returns a confirmation.</p>
+    <pre class="bg-black"><code>
+  <span class="s2">&lbrace;</span>
+    <span class="s2">"identifier": "23452kjn23452hb23456346",</span>
+    <span class="s2">"title": "Congratulations! You've earned loyalty points!",</span>
+    <span class="s2">"description": "You just earned 500 loyalty points! Use them to unlock exclusive rewards or to save on your next purchase. Keep collecting points to enjoy even more benefits!"</span>
+    <span class="s2">"picture": "https://example.com/example.png"</span>
+    <span class="s2">"icon": "ico-refvs"</span>
+  <span class="s2">&rbrace;</span>
+      </code>
+    </pre>
+  </div>
+  <div class="doc-pagination pt-40">
+    <app-pagination></app-pagination>
+  </div>
+</main> <!-- /.doc-main-body -->
+<nav class="d-none d-xl-block col-xl-3 doc-sideNav">
+  <div class="wrapper">
+    <nav class="main-side-nav" id="deduct-api">
+      <a href="deduct-api/#introduction" class="nav-link">Introduction</a>
+      <a href="deduct-api/#endpoint" class="nav-link">Endpoint</a>
+      <a href="deduct-api/#headers" class="nav-link">Request Headers</a>
+      <a href="deduct-api/#params" class="nav-link">Request Parameters</a>
+      <a href="deduct-api/#error" class="nav-link">Error Handling</a>
+      <a href="deduct-api/#request" class="nav-link">Sample Request</a>
+      <a href="deduct-api/#response" class="nav-link">Sample Response</a>
+    </nav>
+  </div>
+</nav>

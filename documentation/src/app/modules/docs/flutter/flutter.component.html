@@ -1,0 +1,534 @@
+<main class=" col-xl-10 doc-main-body" data-bs-spy="scroll" data-bs-target="#navbar-example3" data-bs-offset="0"
+  tabindex="0">
+  <h2>Flutter SDK Documentation</h2>
+  <div id="introduction">
+    <h3>Getting Started</h3>
+    <p>The Elevok Widget is a versatile tool designed to enhance user interaction within your application. It offers a
+      comprehensive range of features aimed at optimizing engagement and functionality. Whether you're looking to track
+      user loyalty, streamline profile management, or gain valuable insights into user reputation and achievements, the
+      Elevok Widget delivers. Its stackable bubble design seamlessly integrates into your app's interface, providing a
+      non-intrusive user experience. Moreover, you can customize its appearance to align with your app's branding,
+      ensuring a cohesive and visually appealing integration. With the Elevok Widget, you empower users to engage more
+      deeply with your app while maintaining a consistent and polished user interface.</p>
+    <p>Install the Elevok Widget <a href="https://pub.dev/packages/flutter_elevok_widget/install"
+        target="_blank">Flutter
+        SDK</a> in Your App. The Elevok Widget SDK for Flutter allows you to display the Elevok Widget customer profile
+      in
+      your app, track customer events, and integrate referrals seamlessly.</p>
+  </div>
+
+  <div id="installation">
+    <h3>Installation</h3>
+    <p>Follow these steps to install the <a href="https://pub.dev/packages/flutter_elevok_widget/install"
+        target="_blank">Flutter SDK</a> into your app. Use this package as a library.</p>
+    <p>Run the following command :</p>
+    <div class="mark-blue">
+      <pre>flutter pub add flutter_elevok_widget</pre>
+    </div>
+    <p>This will add a line like this to your package's `pubspec.yaml` file and automatically run `flutter pub get` :
+    </p>
+    <div class="mark-red">
+      <pre>dependencies :</pre>
+      <pre>  flutter_elevok_widget : ^x.x.x</pre>
+    </div>
+    <p>Alternatively, your editor might support `flutter pub get`. Check your editor's documentation to learn more.</p>
+    <p>Now, in your Dart code, you can import the package :</p>
+    <div class="mark-red">
+      <pre>import 'package :flutter_elevok_widget/flutter_elevok_widget.dart';</pre>
+    </div>
+  </div>
+  <div id="integration">
+    <h3>Integration</h3>
+    <p>To integrate the ElevokWidget into your app, follow these steps :</p>
+    <ul class="list-item-one">
+      <li>Import the ElevokWidget package at the beginning of your Dart file :</li>
+      <div class="mark-red">
+        <pre>import 'package :flutter_elevok_widget/flutter_elevok_widget.dart';</pre>
+      </div>
+      <li>Wrap your `MaterialApp` with the `ElevokWidget` widget, configuring it with the necessary parameters :</li>
+      <pre class="bg-black">
+        <code>
+  <span class="s2">ElevokWidget(</span>
+    <span class="s2">themeMode : ThemeMode.system,</span>
+    <span class="s2">locale : const Locale('fr', 'FR'),</span>
+    <span class="s2">signInRedirection : (BuildContext buildContext) &lbrace;</span>
+      <span class="s2">// Note that, If you're using something that requires a BuildContext, you should use the BuildContext returned from our function.</span>
+      <span class="s2">// Redirect the user to the sign-in view, for example  :</span>
+      <span class="s2">Navigator.push(context, MaterialPageRoute(builder : (context) => const SignIn()));</span>
+    <span class="s2">&rbrace;</span>
+    <span class="s2">child : MaterialApp(</span>
+      <span class="s2">// Your MaterialApp configuration goes here</span>
+    <span class="s2">),</span>
+  <span class="s2">);</span>
+        </code>
+      </pre>
+    </ul>
+    <p>Now, the ElevokWidget will be integrated into your app, allowing it to be displayed seamlessly across all screens
+      :</p>
+    <p>Parameters :</p>
+    <div class="mark-red">
+      <pre><span class="s1">child (Widget)</span> : Main app. eg. Material App. (Mandatory)</pre>
+      <pre><span class="s1">themeMode (ThemeMode)</span> : Theme mode, eg ThemeMode.system or ThemeMode.dark or ThemeMode.light. (Optional)</pre>
+      <pre><span class="s1">locale (Locale)</span> : App locale with this format eg. Locale(‘en’,’US’). (Optional)</pre>
+      <pre><span class="s1">signInRedirection (BuildContext buildContext)</span> : Callback function triggered when the login button in the widget is tapped. (Optional)</pre>
+    </div>
+    <p class="note">Note : Fields marked with * are mandatory.</p>
+  </div>
+  <div id="authentication">
+    <h3>Authentication</h3>
+    <p>For integrating the Elevok Sign-In Widget into your application, you have two modes : full user mode and guest
+      user mode.</p>
+    <ul class="list-item-one">
+      <li>Full User Mode. In this mode, users provide their email, first name, last name, and optionally, their phone
+        number. These details help personalize their experience within the app. Example :</li>
+      <pre class="bg-black">
+        <code>
+  <span class="s2">Final ElevokLoginResponse result  = await ElevokFunctions.signInWidget(</span>
+    <span class="s2">publicKey : 'xxxxxxxxxxxx',</span>
+    <span class="s2">secretKey : 'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx',</span>
+    <span class="s2">appID : 'xxxxxxxxxxxxxxxxxxxxxxxx',</span>
+    <span class="s2">identifier : 'xxxxxxxxxxxxxxxxxxxxx', // Unique identifier for the user</span>
+    <span class="s2">email : 'johndoe@example.com',</span>
+    <span class="s2">firstName : 'John',</span>
+    <span class="s2">lastName : 'Doe',</span>
+    <span class="s2">phoneNumber : '123 456 7891',</span>
+    <span class="s2">phoneNumberCountryCode : '+43',</span>
+  <span class="s2">);</span>
+        </code>
+      </pre>
+      <li>Guest User Mode. Guest user mode is simpler, requiring only the essential authentication keys and app ID. This
+        mode allows users to access basic functionalities of the app without providing personal information. Example :
+      </li>
+      <pre class="bg-black">
+        <code>
+  <span class="s2">Final ElevokLoginResponse result = await ElevokFunctions.signInWidget(</span>
+    <span class="s2">publicKey : 'xxxxxxxxxxxx',</span>
+    <span class="s2">secretKey : 'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx',</span>
+    <span class="s2">appID : 'xxxxxxxxxxxxxxxxxxxxxxxx',</span>
+  <span class="s2">);</span>
+        </code>
+      </pre>
+    </ul>
+    <p>Choose the mode that best suits your application's requirements, whether it's providing a personalized experience
+      for registered users or allowing quick access for guests.</p>
+    <p>Here are the different responses you can expect from the Elevok login function, along with their descriptions :
+    </p>
+    <ul class="list-item-one">
+      <li>Incorrect Credentials :</li>
+      <div class="mark-red">
+        <pre><span class="s1">Response</span> : Incorrect credentials. Please double-check your login information and try again. If the issue persists, reach out to our support team for assistance.</pre>
+        <pre><span class="s1">Code</span> : 0</pre>
+        <pre><span class="s1">Success</span> : false</pre>
+      </div>
+      <li>Login Successful (Guest User) :</li>
+      <div class="mark-red">
+        <pre><span class="s1">Response</span> : Login successful! You are now logged in as a guest user.</pre>
+        <pre><span class="s1">Code</span> : 1</pre>
+        <pre><span class="s1">Success</span> : true</pre>
+      </div>
+      <li>Unknown Error (Guest User Login) :</li>
+      <div class="mark-red">
+        <pre><span class="s1">Response</span> : An unknown error occurred while attempting to log in as a guest user. Please try again, and if the problem persists, contact our support team for help.</pre>
+        <pre><span class="s1">Code</span> : 2</pre>
+        <pre><span class="s1">Success</span> : false</pre>
+      </div>
+      <li>Unknown Error (Full User Login) :</li>
+      <div class="mark-red">
+        <pre>Response : An unknown error occurred while attempting to log in as a full user. Please try again, and if the issue persists, contact our support team for assistance.</pre>
+        <pre><span class="s1">Code</span> : 3</pre>
+        <pre><span class="s1">Success</span> : false</pre>
+      </div>
+      <li>Login Successful (Full User) :</li>
+      <div class="mark-red">
+        <pre><span class="s1">Response</span> : Login successful! You are now logged in as a full user.</pre>
+        <pre><span class="s1">Code</span> : 4</pre>
+        <pre><span class="s1">Success</span> : true</pre>
+      </div>
+      <li>Unknown Error (Full User Login, Retry) :</li>
+      <div class="mark-red">
+        <pre><span class="s1">Response</span> : An unknown error occurred while attempting to log in as a full user. Please try again, and if the issue persists, contact our support team for assistance.</pre>
+        <pre><span class="s1">Code</span> : 5</pre>
+        <pre><span class="s1">Success</span> : false</pre>
+      </div>
+      <li>General Unknown Error :</li>
+      <div class="mark-red">
+        <pre><span class="s1">Response</span> : An unknown error occurred. Please contact our support team for further assistance.</pre>
+        <pre><span class="s1">Code</span> : 6</pre>
+        <pre><span class="s1">Success</span> : false</pre>
+      </div>
+    </ul>
+    <p>These responses provide clear feedback for handling login attempts, ensuring users are informed of any issues
+      encountered during the login process and guiding them on further actions if needed.</p>
+    <p>Each time the Elevok Widget is initialized with a new Identifier, Email, and Phone Number, it automatically
+      creates or updates the corresponding profile information on its side. This ensures that user data remains current
+      and synchronized with the application's database.</p>
+    <p>Selecting an unchangeable unique identifier for the Elevok Widget is crucial for creating and maintaining
+      profile. Using a unique Identifier ensures stability in tracking and retaining customer data, such as points and
+      rewards, without the risk of data loss. It's advised against using mutable identifiers like email addresses or
+      mobile numbers, which can be updated by customers, potentially leading to data discrepancies or loss of
+      accumulated rewards and points within Elevok Widget.</p>
+  </div>
+  <div id="check">
+    <h3>Wallet Check</h3>
+    <p>The <code>checkUserWalletAndReputation</code> function retrieves and provides detailed information about the
+      user's
+      wallet and current reputation level within the Elevok Widget.</p>
+    <pre class="bg-black">
+      <code>
+  <span class="s2">final result = await ElevokFunctions.checkUserWalletAndReputation();</span>
+      </code>
+    </pre>
+    <p>The function returns an instance of <code>ElevokCheckWalletAndReputationResponse</code>, which contains :</p>
+    <ul class="list-item-one">
+      <li>Wallet Information : Details about the user's wallet, including the amount of coins, wallet type, and coin
+        details.</li>
+      <li>Current Reputation : Information about the user's current reputation level, including associated perks.</li>
+    </ul>
+    <p>The following section provides a detailed explanation of various Flutter classes used within the Elevok Widget
+      Check scope :</p>
+    <ul class="list-item-one">
+      <li>Class `Wallet` represents details about the user's wallet.</li>
+      <div class="mark-red">
+        <pre><span class="s1">amount</span> : Amount of coins in the user's wallet.</pre>
+        <pre><span class="s1">walletType</span> : Type of wallet, represented using `WalletType` enumeration.</pre>
+        <pre><span class="s1">coin</span> : Details of the specific coin in the wallet, represented by the `Coin` class.</pre>
+      </div>
+      <li>Class `Coin` represents details of a specific type of coin.</li>
+      <div class="mark-red">
+        <pre><span class="s1">id</span> : Identifier for the coin.</pre>
+        <pre><span class="s1">name</span> : Name of the coin.</pre>
+        <pre><span class="s1">picture</span> : Image associated with the coin, represented by the `Picture` class.</pre>
+        <pre><span class="s1">unitValue</span> : Value of the coin in terms of units, represented by the `UnitValue` class.</pre>
+      </div>
+      <li>Class `Picture` represents an image associated with a coin.</li>
+      <div class="mark-red">
+        <pre><span class="s1">baseUrl</span> : Base URL for the image.</pre>
+        <pre><span class="s1">path</span> : Path to the image file.</pre>
+      </div>
+      <li>Class `UnitValue` represents the value of a coin in terms of units.</li>
+      <div class="mark-red">
+        <pre><span class="s1">amount</span> : Amount or value of the coin.</pre>
+        <pre><span class="s1">currency</span> : Instance of `Currency` class representing the currency details.</pre>
+      </div>
+      <li>Class `Currency` represents details about a currency.</li>
+      <div class="mark-red">
+        <pre><span class="s1">flagSquare</span> : Image of the currency's square flag, represented by the `Picture` class.</pre>
+        <pre><span class="s1">iconFlag</span> : Icon representing the currency's flag.</pre>
+        <pre><span class="s1">name</span> : Name of the currency.</pre>
+        <pre><span class="s1">code</span> : Code representing the currency.</pre>
+      </div>
+      <li>Class `CurrentReputation` represents the user's current reputation level.</li>
+      <div class="mark-red">
+        <pre><span class="s1">reputationLevel</span> : Current level of reputation for the user.</pre>
+        <pre><span class="s1">color</span> : Color representation associated with the reputation level.</pre>
+        <pre><span class="s1">perks</span> : Instance of `Perks` class providing additional perks or benefits associated with the reputation level.</pre>
+      </div>
+      <li>Class `Perks` represents additional perks or benefits associated with a reputation level.</li>
+      <div class="mark-red">
+        <pre><span class="s1">description</span> : Description of the perks.</pre>
+        <pre><span class="s1">discount</span> : Discount associated with the perks.</pre>
+      </div>
+    </ul>
+    <p>These classes collectively manage and provide structured access to wallet and reputation information for users
+      interacting with the Elevok Widget in your Flutter application. Each class encapsulates specific data attributes
+      and
+      relationships to facilitate efficient handling and presentation of user-related data.</p>
+  </div>
+  <div id="push">
+    <h3>Wallet Push</h3>
+    <p>The <code>pushAmountToUser</code> function allows pushing an amount to the user's wallet. Optionally, it deducts
+      coins from the user's wallet if specified. It needs to be used in this way :</p>
+    <pre class="bg-black">
+      <code>
+  <span class="s2">final result = await ElevokFunctions.pushAmountToUser(</span>
+    <span class="s2">amount : _amount,</span>
+    <span class="s2">deductAmount : _coins, // Optional, used when redeeming points</span>
+    <span class="s2">transactionId : 'xxxxxxxxxxx', // Optional external identifier</span>
+  <span class="s2">);</span>
+      </code>
+    </pre>
+    <p>Parameters :</p>
+    <ul class="list-item-one">
+      <li>amount : The amount to push to the user's wallet (mandatory).</li>
+      <li>deductAmount : The amount of coins to deduct from the user's wallet (optional). Use this when redeeming points
+        for a purchase.</li>
+      <li>transactionId : Optional external identifier for tracking purposes & To ensure transaction uniqueness.</li>
+    </ul>
+    <p class="note">Note : If <code>deductAmount</code> is provided, it subtracts the specified coins from the user's
+      wallet after pushing the amount. Use <code>transactionId</code> to associate the transaction with an external
+      system
+      or identifier.</p>
+  </div>
+  <div id="deduct">
+    <h3>Wallet Deduct</h3>
+    <p>The <code>deductCoinsFromUser</code> function deducts a specified amount of coins from the user's wallet. It
+      needs
+      to be used in this way :</p>
+    <pre class="bg-black">
+      <code>
+  <span class="s2">final result = await ElevokFunctions.deductCoinsFromUser(</span>
+    <span class="s2">amount : _coins,</span>
+  <span class="s2">);</span>
+      </code>
+    </pre>
+    <p>Parameters :</p>
+    <ul class="list-item-one">
+      <li>amount : The amount of coins to deduct from the user's wallet (mandatory).</li>
+    </ul>
+    <p class="note">Note : Use this function separately when deducting coins from the user's wallet without pushing an
+      amount.</p>
+    <p>These functions provide flexible ways to manage user wallet transactions within the Elevok Widget, allowing for
+      seamless integration of point redemption and wallet management functionalities in your Flutter application.</p>
+  </div>
+  <div id="signout">
+    <h3>User Signout</h3>
+    <p>The <code>signOutWidget</code> function is used to sign out a user from the Elevok Widget and hide the widget
+      from
+      the application interface. It needs to be used in this way :</p>
+    <pre class="bg-black">
+      <code>
+  <span class="s2">ElevokFunctions.signOutWidget();</span>
+      </code>
+    </pre>
+    <p class="note">Note : Call this function when you want to sign out a user from the Elevok Widget and hide the
+      widget
+      from the application interface. It ensures that the user's session and associated data within the Elevok Widget
+      are
+      properly cleared and managed.</p>
+    <p>Use <code>signOutWidget</code> to seamlessly manage user sessions and ensure a smooth sign-out process within
+      your
+      Flutter application integrated with the Elevok Widget.</p>
+  </div>
+  <div id="buttons">
+    <h3>Animated Buttons</h3>
+    <p>To animate buttons or any type of widget in your application, simply wrap the widget with
+      <code>ElevokAnimatedButton</code>. The <code>activityID</code> parameter is mandatory to uniquely identify the
+      activity. To enable it you need to wrap your widget with <code>ElevokAnimatedButton</code> to make it animated.
+      The
+      <code>activityID</code> argument is required.
+    </p>
+    <pre class="bg-black">
+      <code>
+  <span class="s2">ElevokAnimatedButton(</span>
+    <span class="s2">activityID : 'xxxxxxxxxxxxxxxxxxxxxxxx',</span>
+    <span class="s2">child : YourWidget(),</span>
+  <span class="s2">);</span>
+      </code>
+    </pre>
+    <p>The <code>ElevokAnimatedButton</code> also supports sharing links on social media platforms, such as Facebook
+      (Now,
+      we only support facebook share). For this, use the <code>elevokSocialMediaData</code> parameter to specify the
+      link
+      and an optional hashtag. To share a link on Facebook, provide the <code>link</code> (mandatory) and an optional
+      <code>hashtag</code> using <code>ElevokSocialMediaData</code>. Example :
+    </p>
+    <pre class="bg-black">
+      <code>
+  <span class="s2">ElevokAnimatedButton(</span>
+    <span class="s2">activityID : 'xxxxxxxxxxxxxxxxxxxxxxxx',</span>
+    <span class="s2">elevokSocialMediaData : ElevokSocialMediaData(</span>
+      <span class="s2">link : 'https ://example.com/photoID=0293480923OJ4KL', // Mandatory link</span>
+      <span class="s2">hashtag : '#bestSellerOfTheWeek', // Optional hashtag</span>
+    <span class="s2">),</span>
+    <span class="s2">child : YourWidget(),</span>
+  <span class="s2">);</span>
+      </code>
+    </pre>
+    <p>Parameters :</p>
+    <ul class="list-item-one">
+      <li>activityID : A unique identifier for the animated activity (mandatory).</li>
+      <li>elevokSocialMediaData : Contains social media sharing details (mandatory if the activity is share post on
+        Facebook).</li>
+      <li>link : The URL to be shared on social media (mandatory).</li>
+      <li>hashtag : A hashtag to be included with the shared link (optional).</li>
+      <li>child : The widget to be animated and displayed (mandatory).</li>
+    </ul>
+    <p class="note">Note : Ensure <code>activityID</code> is unique to guarantee uniqueness in transactions and
+      activities. The <code>link</code> parameter in <code>ElevokSocialMediaData</code> is mandatory for social media
+      sharing. The <code>hashtag</code> parameter is optional but can enhance the visibility of your shared content on
+      social media.</p>
+  </div>
+  <div id="googleMaps">
+    <h3>Google Maps Integration: Android & IOS</h3>
+    <p>To integrate Google Maps in your Flutter application for both Android and iOS, Run this command:</p>
+    <pre class="bg-black">
+      <code>
+  <span class="s2">$ flutter pub add google_maps_flutter</span>
+      </code>
+    </pre>
+    <p><strong>Android</strong></p>
+    <ul class="list-item-one">
+      <li>Add Permissions: Ensure the necessary permissions are added in your <code>AndroidManifest.xml</code> file</li>
+      <pre class="bg-black">
+        <code>
+  <span class="s2">// ADD THIS INSIDE &lt;manifest&gt;</span>
+  <span class="s2">&lt;uses-permission android:name=&quot;android.permission.ACCESS_COARSE_LOCATION&quot; /&gt;</span>
+  <span class="s2">&lt;uses-permission android:name=&quot;android.permission.ACCESS_FINE_LOCATION&quot; /&gt;</span>
+  <span class="s2">&lt;uses-permission android:name=&quot;android.permission.INTERNET&quot; /&gt;</span>
+        </code>
+      </pre>
+      <li>Add Meta-Data for API Key: Include the Google Maps API key in your <code>AndroidManifest.xml</code> file:</li>
+      <pre class="bg-black">
+        <code>
+  <span class="s2">// ADD THIS INSIDE &lt;application&gt;</span>
+  <span class="s2">&lt;meta-data</span>
+  <span class="s2">android:name=&quot;com.google.android.geo.API_KEY&quot;</span>
+  <span class="s2">android:value=&quot;YOUR_GOOGLE_MAPS_API_KEY&quot; /&gt;</span>
+        </code>
+      </pre>
+    </ul>
+    <p><strong>iOS</strong></p>
+    <ul class="list-item-one">
+      <li>Add Google Maps Dependency: Add Google Maps dependency in your <code>AppDelegate.swift</code>:</li>
+      <pre class="bg-black">
+        <code>
+  <span class="s2">// ADD THIS IMPORT AT THE END OF THE FILE</span>
+  <span class="s2">import GoogleMaps</span>
+  <span class="s2">// ADD THIS LINE ABOVE ""GeneratedPluginRegistrant.register(with: self)""</span>
+  <span class="s2">GMSServices.provideAPIKey("YOUR_GOOGLE_MAPS_API_KEY")</span>
+        </code>
+      </pre>
+      <li>Update <code>Info.plist</code>: Ensure the following entries are included in your <code>Info.plist</code>:
+      </li>
+      <pre class="bg-black">
+        <code>
+  <span class="s2">&lt;key&gt;NSLocationWhenInUseUsageDescription&lt;/key&gt;</span>
+  <span class="s2">&lt;string&gt;This allows you to send locations in chat.&lt;/string&gt;</span>
+  <span class="s2">&lt;key&gt;NSLocationAlwaysUsageDescription&lt;/key&gt;</span>
+  <span class="s2">&lt;string&gt;This allows you to send locations in chat.&lt;/string&gt;</span>
+  <span class="s2">&lt;key&gt;NSLocationAlwaysAndWhenInUseUsageDescription&lt;/key&gt;</span>
+  <span class="s2">&lt;string&gt;This allows you to send locations in chat.&lt;/string&gt;</span>
+        </code>
+      </pre>
+    </ul>
+  </div>
+  <div id="facebookSDK">
+    <h3>Integrate Facebook SDK: Android & IOS</h3>
+    <p><strong>Android</strong></p>
+    <ul class="list-item-one">
+      <li>Add Permissions and Provider: Ensure the necessary permissions and provider are added in your
+        <code>AndroidManifest.xml</code> file:
+      </li>
+      <pre class="bg-black">
+        <code>
+  <span class="s2">// ADD THIS INSIDE &lt;manifest&gt;</span>
+  <span class="s2">&lt;uses-permission android:name=&quot;android.permission.INTERNET&quot; /&gt;</span>
+  <span class="s2">&lt;queries&gt;</span>
+  <span class="s2">&lt;package android:name=&quot;com.facebook.katana&quot; /&gt;</span>
+  <span class="s2">&lt;provider android:authorities=&quot;com.facebook.katana.provider.PlatformProvider&quot; /&gt;</span>
+  <span class="s2">&lt;/queries&gt;</span>
+        </code>
+      </pre>
+      <pre class="bg-black">
+        <code>
+  <span class="s2">// ADD THIS INSIDE &lt;application&gt;</span>
+  <span class="s2">&lt;provider</span>
+  <span class="s2">android:name=&quot;com.facebook.FacebookContentProvider&quot;</span>
+  <span class="s2">android:authorities=&quot;com.facebook.app.FacebookContentProviderYOUR_APP_ID&quot;</span>
+  <span class="s2">android:exported=&quot;true&quot; /&gt;</span>
+  <span class="s2">&lt;meta-data</span>
+  <span class="s2">android:name=&quot;com.facebook.sdk.ApplicationId&quot;</span>
+  <span class="s2">android:value=&quot;YOUR_APP_ID&quot; /&gt;</span>
+  <span class="s2">&lt;meta-data</span>
+  <span class="s2">android:name=&quot;com.facebook.sdk.ClientToken&quot;</span>
+  <span class="s2">android:value=&quot;YOUR_CLIENT_TOKEN&quot; /&gt;</span>
+        </code>
+      </pre>
+    </ul>
+    <p><strong>iOS</strong></p>
+    <ul class="list-item-one">
+      <li>Update <code>Info.plist</code>: Ensure the following entries are included in your <code>Info.plist</code>:
+      </li>
+      <pre class="bg-black">
+        <code>
+  <span class="s2">&lt;key&gt;CFBundleURLTypes&lt;/key&gt;</span>
+  <span class="s2">&lt;array&gt;</span>
+    <span class="s2">&lt;dict&gt;</span>
+    <span class="s2">&lt;key&gt;CFBundleTypeRole&lt;/key&gt;</span>
+    <span class="s2">&lt;key&gt;CFBundleURLSchemes&lt;/key&gt;</span>
+    <span class="s2">&lt;array&gt;</span>
+      <span class="s2">&lt;string&gt;fbYOUR_APP_ID&lt;/string&gt;</span>
+    <span class="s2">&lt;/array&gt;</span>
+    <span class="s2">&lt;/dict&gt;</span>
+  <span class="s2">&lt;/array&gt;</span>
+  <span class="s2">&lt;key&gt;FacebookAppID&lt;/key&gt;</span>
+  <span class="s2">&lt;string&gt;YOUR_APP_ID&lt;/string&gt;</span>
+  <span class="s2">&lt;key&gt;FacebookClientToken&lt;/key&gt;</span>
+  <span class="s2">&lt;string&gt;YOUR_CLIENT_TOKEN&lt;/string&gt;</span>
+  <span class="s2">&lt;key&gt;LSApplicationQueriesSchemes&lt;/key&gt;</span>
+  <span class="s2">&lt;array&gt;</span>
+    <span class="s2">&lt;string&gt;fb&lt;/string&gt;</span>
+    <span class="s2">&lt;string&gt;fbapi&lt;/string&gt;</span>
+    <span class="s2">&lt;string&gt;fbshareextension&lt;/string&gt;</span>
+    <span class="s2">&lt;string&gt;facebook-reels&lt;/string&gt;</span>
+    <span class="s2">&lt;string&gt;facebook-stories&lt;/string&gt;</span>
+  <span class="s2">&lt;/array&gt;</span>
+        </code>
+      </pre>
+    </ul>
+  </div>
+  <div id="accessApp">
+    <h3>Integrate Necessary Access: Android & IOS</h3>
+    <p><strong>Android</strong></p>
+    <ul class="list-item-one">
+      <li>Ensure the following permissions are added in your <code>AndroidManifest.xml</code> file:</li>
+      <pre class="bg-black">
+        <code>
+  <span class="s2">// ADD THIS INSIDE &lt;manifest&gt;</span>
+  <span class="s2">&lt;uses-permission android:name=&quot;android.permission.WRITE_EXTERNAL_STORAGE&quot; /&gt;</span>
+  <span class="s2">&lt;uses-permission android:name=&quot;android.permission.ACCESS_COARSE_LOCATION&quot; /&gt;</span>
+  <span class="s2">&lt;uses-permission android:name=&quot;android.permission.READ_EXTERNAL_STORAGE&quot; /&gt;</span>
+  <span class="s2">&lt;uses-permission android:name=&quot;android.permission.ACCESS_FINE_LOCATION&quot; /&gt;</span>
+  <span class="s2">&lt;uses-permission android:name=&quot;android.permission.INTERNET&quot; /&gt;</span>
+  <span class="s2">&lt;uses-permission android:name=&quot;android.permission.CAMERA&quot; /&gt;</span>
+        </code>
+      </pre>
+    </ul>
+    <p><strong>iOS</strong></p>
+    <ul class="list-item-one">
+      <li>Ensure the following entries are included in your <code>Info.plist</code>:</li>
+      <pre class="bg-black">
+        <code>
+  <span class="s2">&lt;key&gt;NSCameraUsageDescription&lt;/key&gt;</span>
+  <span class="s2">&lt;string&gt;This allows you to access your camera&lt;/string&gt;</span>
+  <span class="s2">&lt;key&gt;NSPhotoLibraryUsageDescription&lt;/key&gt;</span>
+  <span class="s2">&lt;string&gt;This allows you to access your photo library&lt;/string&gt;</span>
+  <span class="s2">&lt;key&gt;NSMicrophoneUsageDescription&lt;/key&gt;</span>
+  <span class="s2">&lt;string&gt;This allows you to access your microphone.&lt;/string&gt;</span>
+  <span class="s2">&lt;key&gt;NSLocationWhenInUseUsageDescription&lt;/key&gt;</span>
+  <span class="s2">&lt;string&gt;This allows you to send locations in chat.&lt;/string&gt;</span>
+  <span class="s2">&lt;key&gt;NSLocationAlwaysUsageDescription&lt;/key&gt;</span>
+  <span class="s2">&lt;string&gt;This allows you to send locations in chat.&lt;/string&gt;</span>
+  <span class="s2">&lt;key&gt;NSLocationAlwaysAndWhenInUseUsageDescription&lt;/key&gt;</span>
+  <span class="s2">&lt;string&gt;This allows you to send locations in chat.&lt;/string&gt;</span>
+  <span class="s2">&lt;dict&gt;</span>
+    <span class="s2">&lt;key&gt;NSAllowsArbitraryLoads&lt;/key&gt;</span>
+    <span class="s2">&lt;true/&gt;</span>
+  <span class="s2">&lt;/dict&gt;</span>
+        </code>
+      </pre>
+    </ul>
+  </div>
+
+  <div class="doc-pagination pt-40">
+    <app-pagination></app-pagination>
+  </div>
+</main> <!-- /.doc-main-body -->
+<nav class="d-none d-xl-block col-xl-3 doc-sideNav">
+  <div class="wrapper">
+    <nav class="main-side-nav" id="flutter">
+      <a href="flutter/#introduction" class="nav-link">Getting Started</a>
+      <a href="flutter/#installation" class="nav-link">Installation</a>
+      <a href="flutter/#integration" class="nav-link">Integration</a>
+      <a href="flutter/#authentication" class="nav-link">Authentication</a>
+      <a href="flutter/#check" class="nav-link">Wallet Check</a>
+      <a href="flutter/#push" class="nav-link">Wallet Push</a>
+      <a href="flutter/#deduct" class="nav-link">Wallet Deduct</a>
+      <a href="flutter/#signout" class="nav-link">User Signout</a>
+      <a href="flutter/#buttons" class="nav-link">Animated Buttons</a>
+      <a href="flutter/#googleMaps" class="nav-link">Google Maps</a>
+      <a href="flutter/#facebookSDK" class="nav-link">Facebook SDK</a>
+      <a href="flutter/#accessApp" class="nav-link">Necessary Access</a>
+    </nav>
+  </div>
+</nav>

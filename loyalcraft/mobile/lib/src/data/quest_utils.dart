@@ -1,0 +1,3 @@
+class QuestUtils {
+  QuestUtils();
+}

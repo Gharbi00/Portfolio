@@ -1,0 +1,17 @@
+<div class="axil-newsletter-area axil-section-gap pt--0" style="margin-top: 200px;">
+    <div class="container">
+        <div class="etrade-newsletter-wrapper bg_image bg_image--12" [style.background-image]="'url(' + 'assets/images/bg/bg-image-5.jpg' + ')'">
+            <div class="newsletter-content">
+                <span class="title-highlighter highlighter-primary2"><i
+                        class="fas fa-envelope-open"></i>Newsletter</span>
+                <h2 class="title mb--40 mb_sm--30">Get weekly update</h2>
+                <form [formGroup]="newsLetterForm" class="input-group newsletter-form">
+                    <div class="position-relative newsletter-inner mb--15">
+                        <input placeholder="Your Email" name="EMAIL" required autocomplete="off" type="text" formControlName="email" type="email" >
+                    </div>
+                    <button type="submit" [disabled]="newsLetterForm.invalid || isButtonDisabled" (click)="submitNewsLetter()" class="axil-btn mb--15">Subscribe</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>

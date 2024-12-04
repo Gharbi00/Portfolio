@@ -1,0 +1,19 @@
+<ngx-loading-bar></ngx-loading-bar>
+<router-outlet></router-outlet>
+<app-tap-to-top></app-tap-to-top>
+<!-- <app-layout-box></app-layout-box> -->
+
+<div class="theme-settings">
+    <ul>
+      <li>
+        <div class="dark-btn" (click)="toggleDarkMode()">
+          {{ darkModeEnabled ? 'Light' : 'Dark' }}
+        </div>
+      </li>
+<!--       <li>
+        <div class="dark-btn" (click)="toggleRtl()">
+            {{ Rtlenabled ? 'Ltr' : 'Rtl' }}
+          </div>
+      </li> -->
+    </ul>
+  </div>

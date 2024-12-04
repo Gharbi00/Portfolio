@@ -1,0 +1,27 @@
+<!-- <div class="page-pagination-two pt-30">
+  <ul class="d-flex align-items-center justify-content-center">
+    <li class="arrow"><a [routerLink]="" [queryParams]="{page: (actualPage - 1)}" queryParamsHandling="merge"><i
+          class="flaticon-right-arrow"></i></a></li>
+    <li [class.active]="actualPage===page" *ngFor="let page of getNumberRange()"><a [routerLink]=""
+        [queryParams]="{page: page}" queryParamsHandling="merge">{{page}}</a></li>
+
+    <li>...</li>
+    <li><a href="#">Last</a></li>
+    <li class="arrow"><a [routerLink]="" [queryParams]="{page: (actualPage + 1)}" queryParamsHandling="merge"><i
+          class="flaticon-right-arrow"></i></a></li>
+  </ul>
+</div> -->
+
+
+<div data-aos="fade-up" data-aos-delay="100" data-aos-duration="500" data-aos-easing="ease-in"
+  class="pok-pagination aos-init aos-animate">
+  <ul>
+    <li [class.disabled]="actualPage===1"><a [routerLink]="" [queryParams]="{page: (actualPage - 1)}" queryParamsHandling="merge"><i
+          class="fa-solid fa-angles-left"></i></a></li>
+    <li *ngFor="let page of pagesToBeShown"><a [routerLink]="" [queryParams]="{page: page}"
+        queryParamsHandling="merge" [class.active]="actualPage===page">{{page}}</a></li>
+
+    <li [class.disabled]="actualPage===length + 1"><a [routerLink]="" [queryParams]="{page: (actualPage + 1)}" queryParamsHandling="merge"><i
+          class="fa-solid fa-angles-right"></i></a></li>
+  </ul>
+</div>

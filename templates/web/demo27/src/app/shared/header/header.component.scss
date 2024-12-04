@@ -1,0 +1,134 @@
+/* ::ng-deep header .main-navbar .nav-menu > li > a {
+    color: #898989;
+}
+ */
+:host::ng-deep .setting{
+    @media(width < 600px){
+        display: none!important;
+    }
+}
+:host::ng-deep header.header-tools .top-header .container {
+    background-color: transparent;
+}
+.top-header .header-contact li {
+    color: #898989;}
+    .top-header .header-dropdown li a {
+       
+        color: #898989;
+    }
+    .top-header .header-dropdown li {
+   
+        color: #898989;;
+
+    }
+    .top-header .header-dropdown li a i {
+        color: #898989;
+       
+    }
+
+
+.scrollable-div {
+  width: 100%;
+
+  
+
+
+  z-index: 1;
+}
+
+.fixed-div {
+  position: fixed;
+  top: 0;
+  
+  z-index: 2;
+}
+.scrollable-div{
+    @media (max-width:577px) {
+        height: 40px;
+        
+    }
+}
+
+::ng-deep header .main-navbar .nav-menu > li > a {
+    display: block;
+    padding-right: 61px;
+    color: #222;
+    font-size: 16px;
+    font-weight: 400;
+    line-height: 23px;
+    text-decoration: none;
+    text-transform: uppercase;
+    padding-top: 44px;
+    padding-bottom: 31px;
+    padding-left: 0;
+    letter-spacing: 0.07em;
+    position: relative;
+}
+
+
+@media(min-width:1200px){
+.main-menu .menu-left {
+  
+        left: 5%;
+        position: relative;
+    }
+
+
+}
+header.left-header.left-header-sm .sidenav {
+    top: 105px;
+    z-index: 1;
+    width: 240px;
+    left: 0;
+    @media(max-width:1200px){
+        display: none;
+    }
+}
+
+.sm {
+    -webkit-box-sizing: border-box;
+    box-sizing: border-box;
+    position: relative;
+    z-index: 1;
+}
+.sm, .sm ul, .sm li {
+    display: block;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    line-height: normal;
+    direction: ltr;
+    text-align: left;
+}
+
+header.left-header.left-header-sm .sidenav .left-sidebar_center .pixelstrap>li {
+    border-bottom: 1px solid #f3f3f3;
+}
+@media (min-width: 1200px){
+.pixelstrap.sm-vertical>li {
+    border-left: 0 !important;
+} }
+header.left-header.left-header-sm .sidenav .left-sidebar_center .pixelstrap>li>a img {
+    display: block;
+    margin-left: auto;
+    margin-right: auto !important;
+    width: 48px;
+    border: none;
+}
+
+header.left-header.left-header-sm .sidenav .left-sidebar_center .pixelstrap>li>a {
+    padding: 10px 0 20px 0;
+    text-align: center;
+}
+.pixelstrap a, .pixelstrap a:hover, .pixelstrap a:active {
+    padding-right: 45px;
+    color: #222;
+    font-size: 16px;
+    font-weight: 400;
+    line-height: 23px;
+    text-decoration: none;
+    text-transform: uppercase;
+    padding-top: 42px;
+    padding-bottom: 42px;
+    letter-spacing: 0.07em;
+}

@@ -1,0 +1,7 @@
+
+
+:host::ng-deep .hello{
+    @media(width < 1200px){
+        display:none;
+    }
+}

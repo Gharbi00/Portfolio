@@ -1,0 +1,50 @@
+<section class="p-0 position-relative height-85 bg_cls">
+    <div class="home-slider slider-animate slick-initialized slick-slider">
+        <div class="slick-list draggable">
+            <div class="slick-track" >
+
+                <div class="slick-slide" data-slick-index="0" aria-hidden="true"
+                    style="position: sticky; "
+                    tabindex="-1">
+                    <owl-carousel-o [options]="MainSlider"> 
+                        <ng-container *ngFor="let slider of mainSlider" >
+                        <ng-template carouselSlide>
+                    <div>
+                        <div class="main-screen" >
+                            <div class="home bg-size blur-up lazyloaded"
+                                style="background-image: url(&quot;../assets/images/bicycle/home-slider/1.jpg&quot;); background-size: cover; background-position: center center; display: block;">
+                                <img src="{{slider.src}}" alt=""
+                                    class="bg-img blur-up lazyloaded" style="display: none;">
+                                <div class="container">
+                                    <div class="row">
+                                        <div class="col">
+                                            <div class="slider-contain product-detail">
+                                                <div>
+                                                    <h1 class="font-cormorant">Hero Cycles</h1>
+                                                    <p class="d-lg-block d-none"> {{slider.description}} </p>
+                                                    <ul data-animation-in="fadeInUp">
+                                                        <li class="bg-light0"></li>
+                                                        <li class="bg-light1"></li>
+                                                        <li class="bg-light2"></li>
+                                                    </ul>
+                                                    <h3 class="">
+                                                        <span>${{slider.newPrice}}</span><del>${{slider.oldPrice}}</del>
+                                                    </h3>
+                                                    <a href="#" class="btn btn-solid" >add to cart</a>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </ng-template>
+            </ng-container> 
+        </owl-carousel-o>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</section>

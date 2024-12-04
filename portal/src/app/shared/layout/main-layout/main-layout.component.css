@@ -1,0 +1,10 @@
+::ng-deep.scroll-top {
+    background: #262626;
+    color: #fff;
+}
+
+::ng-deep.scroll-top:hover {
+    background: #3BB0D7;
+    transition: all 0.3s ease-in-out !important;
+
+}

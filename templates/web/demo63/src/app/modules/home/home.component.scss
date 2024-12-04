@@ -1,0 +1,12 @@
+.font-courgette {
+    font-family: 'Courgette', cursive;
+    text-transform: capitalize !important;
+}
+
+::ng-deep.theme-color-1 {
+    --theme-color: #6d6659!important;
+}
+.full-banner.small-banner {
+    padding-top: 45px !important;
+    padding-bottom: 45px !important;
+}

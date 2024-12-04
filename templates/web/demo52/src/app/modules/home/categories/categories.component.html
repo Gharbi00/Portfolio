@@ -1,0 +1,42 @@
+<div class="container">
+    <section class="section-b-space border-section border-top-0 category-rounded">
+        <div class="row">
+            <div class="col">
+                <div class="slide-6 no-arrow slick-initialized slick-slider">
+                    <div class="slick-list draggable">
+                        <owl-carousel-o [options]="BrandCarousel" class="slick-track"
+                            style="opacity: 1; width: 4704px; ">
+
+                            <ng-container *ngFor="let category of trendingProducts">
+
+                                <ng-template carouselSlide class="slick-slide " data-slick-index="0" aria-hidden="false"
+                                    style="width: 224px;">
+                                    <div>
+                                        <div class="category-block" style="width: 100%; display: inline-block;">
+                                            <div>
+                                                <a href="#" tabindex="0">
+                                                    <div class="category-image svg-image">
+                                                        <svg>
+                                                            <use xlink:href="../assets/svg/icons.svg#rings"></use>
+                                                        </svg>
+                                                    </div>
+                                                </a>
+                                                <div class="category-details">
+                                                    <a href="#" tabindex="0">
+                                                        <h5>rings</h5>
+                                                    </a>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </ng-template>
+                            </ng-container>
+
+
+                        </owl-carousel-o>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+</div>

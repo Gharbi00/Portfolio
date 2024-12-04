@@ -1,0 +1,41 @@
+<div class="axil-categorie-area bg-color-white axil-section-gapcommon">
+    
+    <div class="container">
+        <div class="section-title-wrapper">
+            <span class="title-highlighter highlighter-secondary"> <i class="far fa-tags"></i> Categories</span>
+            <h2 class="title">Browse by Category</h2>
+        </div>
+
+        <div class="categrie-product-activation slick-layout-wrapper--15 axil-slick-arrow arrow-top-slide slick-initialized slick-slider">
+                    <owl-carousel-o [options]="carouselOptions" class="owl-theme owl-loaded">
+
+                        <ng-template carouselPrev>
+                            <button class="slide-arrow prev-arrow slick-arrow">
+                                <i class="fal fa-long-arrow-left"></i>
+                            </button>
+                        </ng-template>
+                        <ng-container *ngFor="let category of categories" style="width: 120px !important; max-width: 120px !important;" >
+                        <ng-template carouselSlide  >
+                           
+                                <div class="slick-single-layout " >
+                                    <div class="categrie-product" >
+                                        <a href="#" tabindex="0">
+                                            <img class="img-fluid" [src]="category.image" alt="product categorie" style="width: 50% !important; max-width: 50% !important;">
+                                            <h6 class="cat-title"> {{category.title}} </h6>
+                                        </a>
+                                    </div>
+                                </div>
+                            
+                            <!-- End .categrie-product -->
+                        </ng-template>
+                    </ng-container>
+                    <ng-template carouselNext>
+                        <button class="slide-arrow next-arrow slick-arrow">
+                            <i class="fal fa-long-arrow-right"></i>
+                        </button>
+                    </ng-template>
+                    </owl-carousel-o>
+
+        </div>
+    </div>
+</div>

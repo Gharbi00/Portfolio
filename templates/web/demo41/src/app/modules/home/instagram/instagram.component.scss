@@ -1,0 +1,10 @@
+:host::ng-deep.owl-item{
+    display: grid;
+    place-items: center;
+}
+:host::ng-deep.owl-carousel .owl-stage {
+    position: relative;
+    touch-action: manipulation;
+    width: 9000px!important;
+}
+

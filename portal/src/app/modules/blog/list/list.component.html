@@ -1,0 +1,65 @@
+<div class="fancy-hero-five">
+    <img src="assets/images/shape/95.svg" alt="" class="shapes shape-one">
+    <img src="assets/images/shape/96.svg" alt="" class="shapes shape-two">
+    <div class="bg-wrapper">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-7 m-auto text-center">
+                    <h6 class="page-title">{{'INSIGHTS_STORIES' | translate}}</h6>
+                    <h1 class="heading">
+                        <span>{{'EXPLORE_CAPTIVATING' | translate}}<img src="assets/images/shape/line-shape-11.svg"
+                                alt=""></span>
+                        {{'STORIES' | translate}}
+                    </h1>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="blog-page-white-bg blog-v4">
+    <div class="container">
+        <div class="wrapper">
+            <div *ngFor="let blog of getSlicedBlogs()" class="post-meta aos-init" data-aos="fade-up"
+                data-aos-duration="1200">
+                <img [src]="blog?.pictures[0]?.baseUrl + '/' + blog?.pictures[0]?.path" [alt]="blog?.pictures[0]?.alt"
+                    class="image-meta">
+                <div class="post">
+                    <div class="date">{{ blog.createdAt | date : 'longDate' }}</div>
+                    <h3><a [routerLink]="['/blog/' + blog.url]" class="title">{{blog.title}}</a></h3>
+                    <quill-view-html [content]="blog.sectionData[0]?.sectionContent" theme="snow"></quill-view-html>
+                    <a [routerLink]="['/blog/' + blog.url]" class="read-more">
+                        <span>{{'CONTINUE_READING' | translate}}</span>
+                        <i class="fa fa-angle-right" aria-hidden="true"></i>
+                    </a>
+                </div>
+            </div>
+            <app-pagination [perPage]="perPage" [total]="blogs.length" [length]="pagesToBeShown - 1"></app-pagination>
+        </div>
+    </div>
+</div>
+
+<div class="fancy-short-banner-four m0 pt-150 md-pt-100">
+    <div class="container">
+        <div class="bg-wrapper">
+            <div class="row align-items-center">
+                <div class="col-lg-6">
+                    <div class="title">
+                        <h6>{{'SUBSCRIBE_NOW' | translate}}</h6>
+                        <h2>{{'SUBSCRIBE_TO_OUR_NEWSLETTER' | translate}}</h2>
+                    </div>
+                </div>
+                <div class="col-lg-6">
+                    <div class="form-wrapper">
+                        <form action="#">
+                            <input type="text" placeholder="{{'EMAIL_ADDRESS' | translate}}">
+                            <button class="button-color">{{'SUBSCRIBE' | translate}}</button>
+                        </form>
+                        <p class="font-rubik">{{'ALREADY_A_MEMBER' | translate}} <a href="https://app.elevok.com"
+                                target="_blank">{{'SIGN_IN' | translate}}</a></p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

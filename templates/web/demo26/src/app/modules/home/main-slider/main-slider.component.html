@@ -1,0 +1,59 @@
+<section class="p-0 small-slider">
+    <div class="slider-animate home-slider slick-initialized slick-slider">
+        <div class="slick-list draggable">
+            <owl-carousel-o [options]="MainSlider" class="slick-track">
+                <ng-container *ngFor="let slider of mainSlider">
+                    <ng-template carouselSlide>
+
+                        <div class="slick-slide slick-current slick-active" data-slick-index="0" aria-hidden="false"
+                            style="width: 1349px; position: relative; left: 0px; top: 0px; z-index: 999; opacity: 1;">
+                            <div>
+                                <div style="width: 100%; display: inline-block;">
+                                    <div class="home bg-size blur-up lazyloaded"
+                                        style="background-image: url(&quot;{{slider.src}}&quot;); background-size: cover; background-position: center center; display: block;">
+                                        <img src="../assets/images/vegetables/banner/16.jpg" alt=""
+                                            class="bg-img blur-up lazyloaded" style="display: none;">
+                                        <div class="container">
+                                            <div class="row">
+                                                <div class="col">
+                                                    <div class="slider-contain product-detail">
+                                                        <div>
+                                                            <h4 class="animated fadeInUp"
+                                                                data-animation-in="fadeInUp" style="opacity: 1;">
+                                                                moods of the
+                                                                earth</h4>
+                                                            <h1 class="animated fadeInUp"
+                                                                data-animation-in="fadeInUp" data-delay-in="0.3"
+                                                                style="opacity: 1; animation-delay: 0.3s;">
+                                                                trending products</h1>
+                                                            <p class="animated d-lg-block d-none fadeInUp"
+                                                                data-delay-in="0.4" data-animation-in="fadeInUp"
+                                                                style="opacity: 1; animation-delay: 0.4s;">
+                                                                An ode to the Earth's artistry, watch how these
+                                                                marvels come
+                                                                alive with
+                                                                diamonds, rubies, tanzanite, citrines, emeralds,
+                                                                rubellite,
+                                                                sapphires</p>
+                                                            <a href="#"
+                                                                class="btn btn-solid animated rounded-3 fadeInUp"
+                                                                data-animation-in="fadeInUp" data-delay-in="0.5"
+                                                                tabindex="0"
+                                                                style="opacity: 1; animation-delay: 0.5s;">shop
+                                                                now</a>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                    </ng-template>
+                </ng-container>
+            </owl-carousel-o>
+        </div>
+    </div>
+</section>

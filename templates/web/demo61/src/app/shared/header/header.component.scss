@@ -1,0 +1,15 @@
+::ng-deep header .main-navbar .nav-menu > li > a {
+    color: #ffffff;
+}
+.top-header {
+     background-color: transparent; 
+}
+@media(800px > width> 450px){
+    .top-header{
+        display: none !important;
+    }
+    .not-displayed{
+        display: none !important;
+    }
+}
+

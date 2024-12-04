@@ -1,0 +1,30 @@
+<header  style="position: absolute;
+width: 100%;
+background-color: transparent;" [class.fixed]="stick && sticky">
+  <div class="mobile-fix-option"></div>
+
+  <div class="container">
+    <div class="row">
+      <div class="col-sm-12">
+        <div class="main-menu">
+          <div class="menu-left">
+            <!-- <app-left-menu></app-left-menu> -->
+            <div class="brand-logo">
+              <a routerLink="/" id="headerlogo">
+                <img [src]="'../assets/images/icon/logo/13.png'" class="img-fluid" alt="logo">
+              </a>
+            </div>
+          </div>
+          <div class="menu-right pull-right">
+            <div>
+              <app-menu></app-menu>
+            </div>
+            <div>
+              <app-settings class="setting"></app-settings>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</header>

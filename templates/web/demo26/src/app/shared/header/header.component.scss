@@ -1,0 +1,66 @@
+/* ::ng-deep header .main-navbar .nav-menu > li > a {
+    color: #ffffff;
+}
+ */
+:host::ng-deep .setting{
+    @media(width < 600px){
+        display: none!important;
+    }
+}
+:host::ng-deep header.header-tools .top-header .container {
+    background-color: transparent;
+}
+.top-header .header-contact li {
+    color: #ffffff;}
+    .top-header .header-dropdown li a {
+       
+        color: #ffffff;
+    }
+    .top-header .header-dropdown li {
+   
+        color: #ffffff;;
+
+    }
+    .top-header .header-dropdown li a i {
+        color: #ffffff;
+       
+    }
+.top-header {
+    background-color:var(--theme-color) ;
+}
+
+.scrollable-div {
+  width: 100%;
+  background-color: #ffffff;
+  z-index: 1;
+}
+
+
+.fixed-div {
+  position: fixed;
+  top: 0;
+  
+  z-index: 2;
+}
+.scrollable-div{
+    @media (max-width:577px) {
+        height: 40px;
+        
+    }
+}
+
+::ng-deep header .main-navbar .nav-menu > li > a {
+    display: block;
+    padding-right: 61px;
+    color: #222222;
+    font-size: 16px;
+    font-weight: 400;
+    line-height: 23px;
+    text-decoration: none;
+    text-transform: uppercase;
+    padding-top: 31px;
+    padding-bottom: 31px;
+    padding-left: 0;
+    letter-spacing: 0.07em;
+    position: relative;
+}

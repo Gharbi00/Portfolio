@@ -1,0 +1,382 @@
+<section *ngIf="loading">
+  <div id="preloader" >
+    <div id="ctn-preloader" class="ctn-preloader">
+      <div class="animation-preloader">
+        <div class="spinner"></div>
+        <div class="txt-loading">
+          <span data-text-preloader="L" class="letters-loading">
+            L
+          </span>
+          <span data-text-preloader="O" class="letters-loading">
+            O
+          </span>
+          <span data-text-preloader="Y" class="letters-loading">
+            Y
+          </span>
+          <span data-text-preloader="A" class="letters-loading">
+            A
+          </span>
+          <span data-text-preloader="L" class="letters-loading">
+            L
+          </span>
+          <span data-text-preloader="C" class="letters-loading">
+            C
+          </span>
+          <span data-text-preloader="R" class="letters-loading">
+            R
+          </span>
+          <span data-text-preloader="A" class="letters-loading">
+            A
+          </span>
+          <span data-text-preloader="F" class="letters-loading">
+            F
+          </span>
+          <span data-text-preloader="T" class="letters-loading">
+            T
+          </span>
+        </div>
+      </div>	
+    </div>
+  </div>
+</section>
+
+<div *ngIf="!loading" class="font-gordita overflow-hidden"  style="padding-top: 150px;" [class.rtl]="rtl$ | async" >
+  <div class="hero-banner-ten">
+    <div class="container">
+      <div class="row">
+        <div class="col-xl-9 col-lg-11 col-md-8 m-auto">
+          <h1 class="hero-heading">{{'EARN_POINTS_EVERYWHERE' | translate}}</h1>
+          <p class="hero-sub-heading">{{'EARN_POINTS' | translate}}</p>
+        </div>
+      </div>
+      <div class="d-sm-flex align-items-center justify-content-center button-group" [class.rtl]="rtl$ | async">
+        <a href="https://apps.apple.com/app/loyalcraft/id6502938384" target="_blank" class="d-flex align-items-center ios-button">
+          <img src="assets/images/icon/apple.svg" alt="" class="icon">
+          <div>
+            <span>{{'DOWNLOAD_ON' | translate}}</span>
+            <strong>App store</strong>
+          </div>
+        </a>
+        <a href="https://play.google.com/store/apps/details?id=com.loyalcraft.master" target="_blank" class="d-flex align-items-center windows-button">
+          <img src="assets/images/icon/playstore.svg" alt="" class="icon">
+          <div>
+            <span>{{'GET_IT_ON' | translate}}</span>
+            <strong>Google play</strong>
+          </div>
+        </a>
+      </div>
+    </div>
+    <div class="icon-box-one"><img src="assets/images/logo/logo-28.svg" alt=""></div>
+    <div class="icon-box-two"><img src="assets/images/logo/logo-40.svg" alt=""></div>
+    <div class="icon-box-three"><img src="assets/images/logo/logo-41.svg" alt=""></div>
+    <div class="icon-box-four"><img src="assets/images/logo/logo-45.gif" alt=""></div>
+    <div class="icon-box-five"><img src="assets/images/logo/logo-43.svg" alt=""></div>
+    <div class="icon-box-six"><img src="assets/images/logo/logo-44.svg" alt=""></div>
+    <div class="icon-box-seven"><img src="assets/images/logo/logo-42.svg" alt=""></div>
+    <div class="icon-box-eight"><img src="assets/images/logo/logo-46.gif" alt=""></div>
+  </div> 
+
+  <div class="app-screen-preview-one">
+    <div class="container">
+      <div class="app-preview-slider-one slick-initialized slick-slider">
+        <div class="slick-list draggable" style="padding: 0px;">
+          <owl-carousel-o   [options]="productsCarousel" class="slick-track custom-owl" style="opacity: 1; max-height: 800px; ">
+            <ng-container *ngFor="let img of productsData">
+              <ng-template carouselSlide class="item slick-slide slick-cloned" data-slick-index="-4" id="" aria-hidden="true" let-owlItem tabindex="-1">
+
+                <div [ngClass]="{center: owlItem.isCentered}" class="img-holder"><img [src]="img" alt=""></div>
+              </ng-template>
+            </ng-container>
+          </owl-carousel-o>
+        </div>
+
+
+
+      </div>
+    </div>
+    <img src="assets/images/shape/bg5.svg" alt="" class="shapes round-bg">
+    <img src="assets/images/shape/216.svg" alt="" class="shapes shape-one">
+    <img src="assets/images/shape/217.svg" alt="" class="shapes shape-two">
+    <img src="assets/images/shape/218.svg" alt="" class="shapes shape-three">
+    <img src="assets/images/shape/219.svg" alt="" class="shapes shape-four">
+  </div> 
+
+
+
+  <div class="fancy-feature-twentyTwo mt-200 pt-130 md-mt-80 sm-pt-100" id="product">
+    <div class="container">
+      <div class="title-style-ten mb-40 md-mb-20">
+        <div class="row align-items-center">
+          <div class="col-lg-7">
+            <h2>{{'START_EARNING_REWARDS_TODAY' | translate}}</h2>
+          </div>
+          <div class="col-lg-5">
+            <p class="md-pt-20">{{'GET_STARTED_TODAY' | translate}}</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="row justify-content-center">
+        <div class="col-lg-4 col-md-6 aos-init" data-aos="fade-up" data-aos-duration="1700" data-aos-delay="300">
+          <div class="block-style-twentyTwo" >
+            <div class="icon d-flex align-items-center justify-content-center" style="background:#FFEBDB;"><img src="assets/images/icon/140.svg" alt=""></div>
+            <h4>{{'EARN_AND_REDEEM' | translate}}</h4>
+            <p>{{'ENGAGE_IN_ACTIVITIES' | translate}}</p>
+            <!-- <a href="#" class="arrow-icon"><img src="assets/images/icon/135.svg" alt=""></a> -->
+          </div> <!-- /.block-style-twentyTwo -->
+        </div>
+        <div class="col-lg-4 col-md-6 aos-init" data-aos="fade-up" data-aos-duration="1700" data-aos-delay="400">
+          <div class="block-style-twentyTwo" >
+            <div class="icon d-flex align-items-center justify-content-center" style="background:#E0F8F8;"><img src="assets/images/icon/133.svg" alt=""></div>
+            <h4>{{'BRAND_APPRECIATION' | translate}}</h4>
+            <p>{{'RECEIVE_POINTS_FROM_BRANDS' | translate}}</p>
+            <!-- <a href="#" class="arrow-icon"><img src="assets/images/icon/135.svg" alt=""></a> -->
+          </div> <!-- /.block-style-twentyTwo -->
+        </div>
+        <div class="col-lg-4 col-md-6 aos-init" data-aos="fade-up" data-aos-duration="1700" data-aos-delay="500">
+          <div class="block-style-twentyTwo" >
+            <div class="icon d-flex align-items-center justify-content-center" style="background:#F7EDFF;"><img src="assets/images/icon/134.svg" alt=""></div>
+            <h4>{{'FLEXIBLE_EXCHANGE' | translate}}</h4>
+            <p>{{'EXCHANGE_POINTS_FOR_REWARDS' | translate}}</p>
+            <!-- <a href="#" class="arrow-icon"><img src="assets/images/icon/135.svg" alt=""></a> -->
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="fancy-feature-twentyFive lg-container mt-200 md-mt-100" id="start-winning">
+    <div class="container">
+      <div class="block-style-twentyFive">
+        <div class="row align-items-center" style="margin-right: 0px;
+        margin-left: 0px;">
+          <div class="col-xl-7 col-lg-6 col-md-10 m-auto aos-init" data-aos="fade-right" data-aos-duration="1700" data-aos-delay="300">
+            <div class="screen-container">
+              <img src="assets/images/media/illustration.svg" alt="">
+            </div>
+          </div>
+          <div class="col-xl-5 col-lg-6 aos-init" data-aos="fade-left" data-aos-duration="1700" data-aos-delay="300">
+            <div class="text-wrapper pl-xl-5">
+              <h6>{{'OVER' | translate}} <span>150,000+ {{'BRANDS' | translate}}</span></h6>
+              <h3 class="title">{{'EARN_REWARDS_EVERYWHERE' | translate}}</h3>
+              <p>{{'PRESENT_YOUR_CARD' | translate}}
+              </p>
+            </div> 
+          </div>
+        </div>
+      </div> 
+
+      <div class="block-style-twentyFive mt-200 md-mt-120">
+        <div class="row align-items-center" style="margin-right: 0px;
+        margin-left: 0px;">
+          <div class="col-xl-7 col-lg-6 col-md-10 m-auto text-center text-lg-right order-lg-last aos-init" data-aos="fade-left" data-aos-duration="1700" data-aos-delay="300">
+            <div class="screen-container">
+              <img src="assets/images/shape/bg6.svg" alt="" class="ml-auto bg-round-shape">
+              <div class="block-content">
+                <div class="row align-items-center">
+                  <div class="col-sm-6">
+                    <div class="feature-meta">
+                      <div class="icon d-flex align-items-end"><img src="assets/images/icon/11.svg" alt=""></div>
+                      <h4>{{'VIDEO' | translate}} <br> {{'WATCHING' | translate}}</h4>
+                    </div> 
+                  </div>
+                  <div class="col-sm-6">
+                    <div class="feature-meta">
+                      <div class="icon d-flex align-items-end"><img src="assets/images/icon/17.svg" alt=""></div>
+                      <h4>{{'SOCIALIZE_AND' | translate}} <br>{{'SHARE' | translate}}</h4>
+                    </div> 
+                    <div class="feature-meta">
+                      <div class="icon d-flex align-items-end"><img src="assets/images/icon/09.svg" alt=""></div>
+                      <h4>{{'TAKE' | translate}} <br>{{'SURVEYS' | translate}}</h4>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="col-xl-5 col-lg-6 aos-init" data-aos="fade-right" data-aos-duration="1700" data-aos-delay="300">
+            <div class="text-wrapper order-lg-first">
+              <h6>{{'REWARD_HUB' | translate}}</h6>
+              <h3 class="title">{{'ENDLESS_REWARDS_INFINITE_POSSIBILITIES' | translate}}</h3>
+              <p>{{'EXPERIENCE_EARNING_POSSIBILITIES' | translate}}</p>
+              <ul>
+                <li class="rtl-li">{{'EARN_REWARDS_FOR_ACTIONS' | translate}}</li>
+                <li class="rtl-li">{{'EXPLORE_ENDLESS_POSSIBILITIES' | translate}}</li>
+                <li class="rtl-li">{{'UNLOCK_EXCITING_REWARDS' | translate}}</li>
+              </ul>
+            </div> 
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="client-feedback-slider-seven mt-250 md-mt-100" id="feedback">
+    <div class="inner-container">
+      <div class="container">
+        <div class="row">
+          <div class="col-lg-8 m-auto">
+            <img src="assets/images/icon/143.svg" alt="" class="m-auto">
+            <div class="title-style-eleven text-center mt-30">
+              <h2>{{'CHECK_COMMUNITY_FEEDBACK' | translate}}</h2>
+            </div>
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="col-xl-8 col-lg-10 m-auto">
+            <div class="clientSliderFive mt-80 md-mt-50 slick-initialized slick-slider">
+              <div class="slick-list draggable" style="padding: 0px;">
+                <owl-carousel-o [options]="testomonialsCarousel" class="slick-track" style="opacity: 1;">
+                  <ng-container *ngFor="let testomonial of testomonialsData">
+                    <ng-template carouselSlide class="item slick-slide slick-cloned" data-slick-index="-2" id="" aria-hidden="true"  tabindex="-1">
+                      <p>{{testomonial.description | translate}}</p>
+                      <!-- <div class="name">{{testomonial.name}}</div>
+                      <span>{{testomonial.job}}</span> -->
+                    </ng-template>
+                  </ng-container>
+
+
+
+                </owl-carousel-o>
+              </div>
+
+            </div> <!-- /.clientSliderFive -->
+            <!--             <ul class="d-flex justify-content-center slider-arrow mt-40">
+              <li class="prev_f slick-arrow" style=""><i class="flaticon-right-arrow"></i></li>
+              <li class="next_f slick-arrow" style=""><i class="flaticon-right-arrow"></i></li>
+            </ul> -->
+            <img src="assets/images/shape/156.svg" alt="" class="shapes shape-one">
+            <img src="assets/images/shape/157.svg" alt="" class="shapes shape-two">
+            <img src="assets/images/shape/158.svg" alt="" class="shapes shape-three">
+          </div>
+        </div>
+      </div>
+    </div> 
+    <img src="assets/images/shape/bg7.svg" alt="" class="bg-image">
+  </div> 
+
+  <div class="useable-tools-section-three mt-250 mb-200 md-mt-120 md-mb-80" id="redeem">
+    <div class="container">
+      <div class="row">
+        <div class="col-lg-6">
+          <div class="title-style-ten">
+            <h6>{{'OUR_PARTNERS' | translate}}</h6>
+            <h2>{{'REWARD_PARTNERS_AWAIT' | translate}}</h2>
+          </div>
+          <p class="sub-text">{{'EXPLORE_NETWORK_OF_PARTNERS' | translate}}</p>
+        </div>
+      </div>
+    </div> 
+    <div class="logo-wrapper d-flex flex-wrap justify-content-center align-items-center">
+      <div class="logo bg-white d-flex align-items-center justify-content-center"><img src="assets/images/logo/logo-32.svg" alt=""></div>
+      <div class="logo bg-white d-flex align-items-center justify-content-center"><img src="assets/images/logo/logo-33.svg" alt=""></div>
+      <div class="logo bg-white d-flex align-items-center justify-content-center"><img src="assets/images/logo/logo-34.svg" alt=""></div>
+      <div class="logo bg-white d-flex align-items-center justify-content-center"><img src="assets/images/logo/logo-35.svg" alt=""></div>
+      <div class="logo bg-white d-flex align-items-center justify-content-center"><img src="assets/images/logo/logo-36.svg" alt=""></div>
+      <div class="logo bg-white d-flex align-items-center justify-content-center"><img src="assets/images/logo/logo-37.svg" alt=""></div>
+      <div class="logo bg-white d-flex align-items-center justify-content-center"><img src="assets/images/logo/logo-38.svg" alt=""></div>
+    </div>
+  </div>
+
+  <div class="faq-classic with-bg">
+    <img src="assets/images/shape/86.svg" alt="" class="shapes shape-one" />
+    <img src="assets/images/shape/87.svg" alt="" class="shapes shape-two" />
+    <img src="assets/images/shape/88.svg" alt="" class="shapes shape-three" />
+    <img src="assets/images/shape/89.svg" alt="" class="shapes shape-four" />
+    <img src="assets/images/shape/90.svg" alt="" class="shapes shape-five" />
+    <img src="assets/images/shape/91.svg" alt="" class="shapes shape-six" />
+    <div class="container">
+      <div class="title-style-four text-center mb-100 md-mb-70">
+        <div class="row">
+          <div class="col-lg-7 m-auto">
+            <h6>{{'FAQ' | translate}}</h6>
+            <h2>
+              <span>{{'FAQS' | translate}}<img src="assets/images/shape/line-shape-2.svg" alt="" /></span>
+            </h2>
+          </div>
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="col-lg-6">
+          <div id="accordion" *ngFor="
+              let faq of faqAccordions.slice(0, faqAccordions.length / 2);
+              let i = index
+            ">
+            <div class="card">
+              <div class="card-header" id="headingOne" [class.rtl]="rtl$ | async">
+                <h5 class="mb-0">
+                  <button class="button-color" class="btn btn-link" (click)="toggleAccordion(i)" [class.rtl]="rtl$ | async">
+                    {{ faq.question | translate }}
+                  </button>
+                </h5>
+              </div>
+              <div id="collapseOne custom-collapse" class="custom-collapse" [@fadeDownCustomAnimation]="isAccordionOpen(i) ? '*' : 'void'" [style.display]="isAccordionOpen(i) ? 'block' : 'none'">
+                <div class="card-body">
+                  <p>{{ faq.answer | translate }}</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="col-lg-6">
+
+          <div id="accordion" *ngFor="
+              let faq of faqAccordions.slice(faqAccordions.length/2,faqAccordions.length );
+              let i =  index ;
+            ">
+            <div class="card">
+              <div class="card-header" id="headingOne" [class.rtl]="rtl$ | async">
+                <h5 class="mb-0">
+                  <button class="button-color" [class.rtl]="rtl$ | async" class="btn btn-link" (click)="toggleAccordion(i + faqAccordions.length/2)">
+                    {{ faq.question | translate }}
+                  </button>
+                </h5>
+              </div>
+              <div id="collapseOne" [@fadeDownCustomAnimation]="isAccordionOpen(i + faqAccordions.length/2) ? '*' : 'void'">
+                <div class="card-body" [style.display]="isAccordionOpen(i + faqAccordions.length/2) ? 'block' : 'none'">
+                  <p>{{ faq.answer | translate }}</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="fancy-short-banner-twelve">
+    <div class="container">
+      <div class="row">
+        <div class="col-xl-10 col-lg-11 m-auto aos-init" data-aos="fade-up" data-aos-duration="1700" data-aos-delay="300">
+          <div class="title-style-ten text-center">
+            <h2 class="specialh2">{{'LOVE_LOYALCRAFT_APP' | translate}}</h2> 
+            <p class="pt-25 pb-45">{{'COMPLETELY_FREE' | translate}}</p>
+          </div>
+        </div>
+      </div>
+      <div  data-aos="fade-up" data-aos-duration="1700" data-aos-delay="300" data-aos-delay="150" class="aos-init">
+        <div style="padding-bottom: 50px;    margin-top: -18px;" class="d-sm-flex align-items-center justify-content-center button-group " [class.rtl]="rtl$ | async">
+          <a href="https://apps.apple.com/app/loyalcraft/id6502938384" target="_blank" class="d-flex align-items-center ios-button">
+            <img src="assets/images/icon/apple-black.svg" alt="" class="icon">
+            <div>
+              <span>{{'DOWNLOAD_ON' | translate}}</span>
+              <strong>App store</strong>
+            </div>
+          </a>
+          <a href="https://play.google.com/store/apps/details?id=com.loyalcraft.master" target="_blank" class="d-flex align-items-center windows-button">
+            <img src="assets/images/icon/playstore.svg" alt="" class="icon">
+            <div>
+              <span>{{'GET_IT_ON' | translate}}</span>
+              <strong>Google play</strong>
+            </div>
+          </a>
+        </div>
+      </div>
+    </div>
+    <img src="assets/images/shape/220.svg" alt="" class="shapes shape-one">
+    <img src="assets/images/shape/221.svg" alt="" class="shapes shape-two">
+  </div>
+</div>

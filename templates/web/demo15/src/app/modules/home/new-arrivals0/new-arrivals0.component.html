@@ -1,0 +1,54 @@
+<div class="axil-new-arrivals-product-area fullwidth-container bg-color-white axil-section-gap pb--0" style="margin-bottom: -250px;">
+    <div class="container ml--xxl-0">
+        <div class="product-area pb--50">
+            <div class="section-title-wrapper">
+                <span class="title-highlighter highlighter-primary"><i class="far fa-shopping-basket"></i> This
+                    Week’s</span>
+                <h2 class="title">New Arrivals</h2>
+            </div>
+            <div
+                class="new-arrivals-product-activation slick-layout-wrapper--15 axil-slick-arrow arrow-top-slide slick-initialized slick-slider">
+
+                <div class="slick-list draggable">
+                    <owl-carousel-o [options]="carouselOptions" class="explore-product-activation" >
+
+                        <ng-container *ngFor="let product of products" >
+                            <ng-template carouselSlide >
+                                <div class="slick-single-layout slick-slide slick-current slick-active" data-slick-index="0" aria-hidden="false" tabindex="0" style="width: 285px;">
+                                    <div class="axil-product product-style-four">
+                                        <div class="thumbnail">
+                                            <a href="single-product.html" tabindex="0">
+                                                <img data-sal="fade" data-sal-delay="100" data-sal-duration="1500" src="assets/images/product/fashion/product-1.png" alt="Product Images" class="sal-animate">
+                                                <img class="hover-img" src="{{product.src}}" alt="Product Images">
+                                            </a>
+                                            <div class="label-block label-right">
+                                                <div class="product-badget">20% OFF</div>
+                                            </div>
+                                            <div class="product-hover-action">
+                                                <ul class="cart-action">
+                                                    <li class="wishlist"><a href="wishlist.html" tabindex="0"><i class="far fa-heart"></i></a></li>
+                                                    <li class="select-option"><a href="cart.html" tabindex="0">Add to Cart</a></li>
+                                                    <li class="quickview"><a href="#" data-bs-toggle="modal" data-bs-target="#quick-view-modal" tabindex="0"><i class="far fa-eye"></i></a></li>
+                                                </ul>
+                                            </div>
+                                        </div>
+                                        <div class="product-content">
+                                            <div class="inner">
+                                                <h5 class="title"><a href="single-product.html" tabindex="0">{{product.name}}</a></h5>
+                                                <div class="product-price-variant">
+                                                    <span class="price old-price">$ {{product.oldPrice}} </span>
+                                                    <span class="price current-price">$ {{product.newPrice}} </span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </ng-template>
+                        </ng-container>
+                    </owl-carousel-o>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>

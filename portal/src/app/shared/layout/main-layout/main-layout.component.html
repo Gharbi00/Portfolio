@@ -1,0 +1,8 @@
+<app-header></app-header>
+<router-outlet></router-outlet>
+<app-footer></app-footer>
+
+<button class="scroll-top" [@fadeUpAnimation]="showButton" [style.display]="showButton ? 'block' : 'none'"
+        (click)="scrollToTop()" [class.aos-animate]="showButton" data-aos="fade-up" data-aos-duration="1200">
+        <i class="fa fa-angle-up" aria-hidden="true"></i>
+</button>

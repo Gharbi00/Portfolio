@@ -1,0 +1,184 @@
+<section class="section-b-space dark-overlay bg-size blur-up lazyloaded"
+    style="background-image: url(&quot;../assets/images/books/product-bg.jpg&quot;); background-size: cover; background-position: center center; display: block;">
+    <img src="../assets/images/books/product-bg.jpg" alt="" class="bg-img blur-up lazyloaded" style="display: none;">
+    <div class="ratio_square">
+        <div class="container">
+            <div class="row">
+                <div class="col-12">
+                    <div class="title2">
+                        <h4>exclusive products</h4>
+                        <h2 class="title-inner2">special products</h2>
+                    </div>
+                </div>
+            </div>
+            <div class="row margin-default">
+
+
+                <div class="col-lg-4">
+                    <div class="theme-card card-border bg-white">
+                        <h5 class="title-border">best sellers</h5>
+                        <div class="offer-slider slide-1 slick-initialized slick-slider">
+                            <div class="slick-list draggable">
+                                <owl-carousel-o [options]="ExclusiveProductsCarousel" class="slick-track" style="opacity: 1; width: 2205px;">
+                                    <ng-container *ngFor="let productList of exclusiveProducts">
+                                      <ng-container *ngFor="let product of productList.bestSellers; let i = index">
+                                        <!-- Ensure that we have at least two products remaining in the array -->
+                                        <ng-container *ngIf="i + 1 < productList.bestSellers.length">
+                                          <ng-template carouselSlide>
+                                            <div class="slick-slide slick-cloned" aria-hidden="true" style="width: 441px;">
+                                              <div>
+                                                <div style="width: 100%; display: inline-block;">
+                                                  <div class="media">
+                                                    <a href="product-page(no-sidebar).html"><img alt="" class="img-fluid blur-up lazyloaded"
+                                                        src="{{productList.bestSellers[i].src}}"></a>
+                                                    <div class="media-body align-self-center">
+                                                      <div class="rating"><i class="fa fa-star"></i> <i class="fa fa-star"></i> <i class="fa fa-star"></i>
+                                                        <i class="fa fa-star"></i> <i class="fa fa-star"></i>
+                                                      </div>
+                                                      <a href="product-page(no-sidebar).html">
+                                                        <h6>{{productList.bestSellers[i].name}}</h6>
+                                                      </a>
+                                                      <h4>${{productList.bestSellers[i].price}}</h4>
+                                                    </div>
+                                                  </div>
+                                                  <div class="media">
+                                                    <a href="product-page(no-sidebar).html"><img alt="" class="img-fluid blur-up lazyloaded"
+                                                        src="{{productList.bestSellers[i + 1].src}}"></a>
+                                                    <div class="media-body align-self-center">
+                                                      <div class="rating"><i class="fa fa-star"></i> <i class="fa fa-star"></i> <i class="fa fa-star"></i>
+                                                        <i class="fa fa-star"></i> <i class="fa fa-star"></i>
+                                                      </div>
+                                                      <a href="product-page(no-sidebar).html">
+                                                        <h6>{{productList.bestSellers[i + 1].name}}</h6>
+                                                      </a>
+                                                      <h4>${{productList.bestSellers[i + 1].price}}</h4>
+                                                    </div>
+                                                  </div>
+                                                </div>
+                                              </div>
+                                            </div>
+                                          </ng-template>
+                                        </ng-container>
+                                      </ng-container>
+                                   </ng-container>
+                                  </owl-carousel-o>
+                                  
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-lg-4">
+                    <div class="theme-card card-border bg-white">
+                        <h5 class="title-border">new arrivals</h5>
+                        <div class="offer-slider slide-1 slick-initialized slick-slider">
+                            <div class="slick-list draggable">
+                                <owl-carousel-o [options]="ExclusiveProductsCarousel" class="slick-track" style="opacity: 1; width: 2205px;">
+                                    <ng-container *ngFor="let productList of exclusiveProducts">
+                                      <ng-container *ngFor="let product of productList.newArrivals; let i = index">
+                         
+                                        <ng-container *ngIf="i + 1 < productList.newArrivals.length">
+                                          <ng-template carouselSlide>
+                                            <div class="slick-slide slick-cloned" aria-hidden="true" style="width: 441px;">
+                                              <div>
+                                                <div style="width: 100%; display: inline-block;">
+                                                  <div class="media">
+                                                    <a href="product-page(no-sidebar).html"><img alt="" class="img-fluid blur-up lazyloaded"
+                                                        src="{{productList.newArrivals[i].src}}"></a>
+                                                    <div class="media-body align-self-center">
+                                                      <div class="rating"><i class="fa fa-star"></i> <i class="fa fa-star"></i> <i class="fa fa-star"></i>
+                                                        <i class="fa fa-star"></i> <i class="fa fa-star"></i>
+                                                      </div>
+                                                      <a href="product-page(no-sidebar).html">
+                                                        <h6>{{productList.newArrivals[i].name}}</h6>
+                                                      </a>
+                                                      <h4>${{productList.newArrivals[i].price}}</h4>
+                                                    </div>
+                                                  </div>
+                                                  <div class="media">
+                                                    <a href="product-page(no-sidebar).html"><img alt="" class="img-fluid blur-up lazyloaded"
+                                                        src="{{productList.newArrivals[i + 1].src}}"></a>
+                                                    <div class="media-body align-self-center">
+                                                      <div class="rating"><i class="fa fa-star"></i> <i class="fa fa-star"></i> <i class="fa fa-star"></i>
+                                                        <i class="fa fa-star"></i> <i class="fa fa-star"></i>
+                                                      </div>
+                                                      <a href="product-page(no-sidebar).html">
+                                                        <h6>{{productList.newArrivals[i + 1].name}}</h6>
+                                                      </a>
+                                                      <h4>${{productList.newArrivals[i + 1].price}}</h4>
+                                                    </div>
+                                                  </div>
+                                                </div>
+                                              </div>
+                                            </div>
+                                          </ng-template>
+                                        </ng-container>
+                                      </ng-container>
+                                   </ng-container>
+                                  </owl-carousel-o>
+                                  
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-lg-4">
+                    <div class="theme-card card-border bg-white">
+                        <h5 class="title-border">pre orders</h5>
+                        <div class="offer-slider slide-1 slick-initialized slick-slider">
+                            <div class="slick-list draggable">
+                                <owl-carousel-o [options]="ExclusiveProductsCarousel" class="slick-track" style="opacity: 1; width: 2205px;">
+                                    <ng-container *ngFor="let productList of exclusiveProducts">
+                                      <ng-container *ngFor="let product of productList.preOrders; let i = index">
+               
+                                        <ng-container *ngIf="i + 1 < productList.preOrders.length">
+                                          <ng-template carouselSlide>
+                                            <div class="slick-slide slick-cloned" aria-hidden="true" style="width: 441px;">
+                                              <div>
+                                                <div style="width: 100%; display: inline-block;">
+                                                  <div class="media">
+                                                    <a href="product-page(no-sidebar).html"><img alt="" class="img-fluid blur-up lazyloaded"
+                                                        src="{{productList.preOrders[i].src}}"></a>
+                                                    <div class="media-body align-self-center">
+                                                      <div class="rating"><i class="fa fa-star"></i> <i class="fa fa-star"></i> <i class="fa fa-star"></i>
+                                                        <i class="fa fa-star"></i> <i class="fa fa-star"></i>
+                                                      </div>
+                                                      <a href="product-page(no-sidebar).html">
+                                                        <h6>{{productList.preOrders[i].name}}</h6>
+                                                      </a>
+                                                      <h4>${{productList.preOrders[i].price}}</h4>
+                                                    </div>
+                                                  </div>
+                                                  <div class="media">
+                                                    <a href="product-page(no-sidebar).html"><img alt="" class="img-fluid blur-up lazyloaded"
+                                                        src="{{productList.preOrders[i + 1].src}}"></a>
+                                                    <div class="media-body align-self-center">
+                                                      <div class="rating"><i class="fa fa-star"></i> <i class="fa fa-star"></i> <i class="fa fa-star"></i>
+                                                        <i class="fa fa-star"></i> <i class="fa fa-star"></i>
+                                                      </div>
+                                                      <a href="product-page(no-sidebar).html">
+                                                        <h6>{{productList.preOrders[i + 1].name}}</h6>
+                                                      </a>
+                                                      <h4>${{productList.preOrders[i + 1].price}}</h4>
+                                                    </div>
+                                                  </div>
+                                                </div>
+                                              </div>
+                                            </div>
+                                          </ng-template>
+                                        </ng-container>
+                                      </ng-container>
+                                    </ng-container>
+                                  </owl-carousel-o>
+                                  
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            
+            </div>
+        </div>
+    </div>
+</section>
+
+

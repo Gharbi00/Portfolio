@@ -1,0 +1,48 @@
+.main-navbar{
+    @media(width > 1200px){
+        margin-right: 230px;
+    }
+ 
+}
+.mb-0{
+    font-size: 25px;
+    font-weight: 400;
+    color: #ffffff;
+    line-height: 55px;
+    letter-spacing: 0.05em;
+    left: 12%;
+    position: relative;
+}
+.sidebar-bar{
+    left: 92%;
+    position: absolute;
+    bottom: 42%;
+    filter: invert(1);
+}
+.bottom-part{
+    @media(width<1200px){
+        display: none;
+        z-index: 0;
+    }
+}
+.main-navbar{
+    @media(width >1200px){
+        display: none;
+        z-index: 0;
+    }
+}
+.marketplace-sidebar.sidenav.fixed-sidebar {
+    position: absolute;
+    top: 66px;
+    right: -3%;
+    width: calc(118% - 41px);
+    z-index: 1;
+    display: none;
+}
+.marketplace-sidebar.sidenav .pixelstrap > li > a {
+    padding: 6px 22px 0px 23px;
+}
+
+.pixelstrap li{
+    padding-top: 3%;
+}

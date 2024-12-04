@@ -1,0 +1,46 @@
+variables:
+  DEMO14_TAG: sifca-demo14-1.0
+
+##########################################
+## STAGE: CONTAINERIZE                  ##
+##########################################
+
+containerize:demo14:
+  stage: containerize
+  image: docker:23.0.5
+  services:
+    - docker:23.0.5-dind
+  script:
+    - docker system prune -a -f
+    - docker build -t $IMAGE_NAME:$DEMO14_TAG --build-arg CI_SERVER_HOST=$CI_SERVER_HOST --build-arg CI_PROJECT_ID=$CI_PROJECT_ID --build-arg CI_JOB_TOKEN=$CI_JOB_TOKEN -f apps/clients/templates/web/demo14/Dockerfile.demo .
+    - docker tag $IMAGE_NAME:$DEMO14_TAG $CI_REGISTRY_IMAGE:$DEMO14_TAG
+    - docker push $CI_REGISTRY_IMAGE:$DEMO14_TAG
+  when: manual
+  rules:
+    - if: '$CI_COMMIT_MESSAGE =~ /demo/'  # trigger the build step if the commit message contains the word "demo"
+
+##########################################
+## STAGE: DEPLOY                        ##
+##########################################
+
+deploy:demo14:
+  stage: deploy
+  dependencies:
+    - containerize:demo14
+  variables:
+    CONTAINER_NAME: sifca-demo14
+  script:
+    - ssh -o StrictHostKeyChecking=no -i $DEMO_KEY ubuntu@"$DEMO_SERVER" "
+        docker login -u $CI_REGISTRY_USER -p $CI_REGISTRY_PASSWORD $CI_REGISTRY &&
+        docker pull $CI_REGISTRY_IMAGE:$DEMO14_TAG &&
+        RUNNING_CONTAINER=\$(docker ps -aqf "name=$CONTAINER_NAME") &&
+        if [ -n \"\$RUNNING_CONTAINER\" ]; then
+            echo stopping and removing container $RUNNING_CONTAINER &&
+            docker stop \$RUNNING_CONTAINER &&
+            docker rm \$RUNNING_CONTAINER;
+        fi &&
+        docker system prune -a -f &&
+        docker run -d -p 514:80 -e API_SERVER=demo14-sifca.diktup.cloud -e BACKEND_SERVER=sfca-sbx-bck.diktup.cloud --name $CONTAINER_NAME $CI_REGISTRY_IMAGE:$DEMO14_TAG"
+  when: manual
+  rules:
+    - if: '$CI_COMMIT_MESSAGE =~ /demo/'  # trigger the build step if the commit message contains the word "demo"

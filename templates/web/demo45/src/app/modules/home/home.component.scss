@@ -1,0 +1,23 @@
+/* .banner-style-2.absolute-banner .absolute-bg .collection-banner .absolute-img img {
+    position: absolute;
+    left: 40px;
+    top: -40px;
+    -webkit-transition: all 0.5s ease;
+    transition: all 0.5s ease;
+} */
+@media (max-width: 1430px){ 
+.banner-style-2.absolute-banner .absolute-bg .collection-banner .absolute-img img {
+    width: 38%;
+}}
+.dark-box.four-product>div {
+    @media (max-width:800px) {
+        flex: 0 0 50% !important;
+        
+    }
+    @media (min-width:800px) {
+    max-width: 25% !important;
+    -webkit-box-flex: 0 !important;
+    -ms-flex: 0 0 25% !important;
+    flex: 0 0 25% !important;
+    margin-bottom: 20px;}
+}

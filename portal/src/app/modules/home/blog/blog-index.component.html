@@ -1,0 +1,26 @@
+<div class="feature-blog-five lg-container mt-160 md-mt-120">
+  <div class="container">
+    <div class="title-style-eleven text-center mb-40 md-mb-20 aos-init aos-animate" data-aos="fade-up"
+      data-aos-duration="1200">
+      <h2>{{'INSIGHTS_STORIES' | translate}}</h2>
+      <p class="mt-25 md-mt-10">{{'LATEST_UPDATES' | translate}} </p>
+    </div>
+
+    <div class="row">
+      <div *ngFor="let post of posts" class="col-lg-4 col-sm-6 d-flex aos-init aos-animate" data-aos="fade-up"
+        data-aos-duration="1200">
+        <article class="post-meta mt-30">
+          <figure class="post-img m0"><a [routerLink]="['/blog/' + post.url]" class="w-100 d-block"
+              style="height: 220px;"><img [src]="post?.pictures[0]?.baseUrl + '/' + post?.pictures[0]?.path"
+                [alt]="post?.pictures[0]?.alt" class="w-100 tran4s"></a></figure>
+          <div class="post-data">
+            <a [routerLink]="['/blog/' + post.url]" class="blog-title">
+              <h5>{{ post.title }}</h5>
+            </a>
+            <a [routerLink]="['/blog/' + post.url]" class="read-btn tran3s">{{'CONTINUE_READING' | translate}}</a>
+          </div>
+        </article>
+      </div>
+    </div>
+  </div>
+</div>

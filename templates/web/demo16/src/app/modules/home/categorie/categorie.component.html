@@ -1,0 +1,37 @@
+<div class="axil-categorie-area bg-color-white axil-section-gap pb--0">
+    <div class="container">
+        <div class="product-area pb--50">
+            <div class="col col-lg-4" style="margin-bottom: -80px;">
+                <span class="title-highlighter highlighter-secondary"><i class="far fa-shopping-basket"></i>The
+                    Categories</span>
+                <h2 class="title">Browse by Category</h2>
+            </div>
+            <div
+                class="categrie-product-activation-3 slick-layout-wrapper--15 axil-slick-arrow arrow-top-slide slick-initialized slick-slider">
+
+                <div class="slick-list draggable">
+                    <owl-carousel-o [options]="carouselOptions" class="slick-track" style="opacity: 1;width: 1300px;padding-top: 40px; "   > 
+                        
+
+
+                        <ng-container *ngFor="let categorie of categories" >
+                            <ng-template carouselSlide >
+                        <div class="slick-single-layout slick-slide slick-active" style="width: 163px; margin-bottom: -400px;" >
+                            <div class="categrie-product categrie-product-3 sal-animate">
+                                <a href="#" >
+                                    <img class="img-fluid" src="{{categorie.src}}"
+                                        alt="product categorie">
+                                    <h6 class="cat-title">{{categorie.name}}</h6>
+                                </a>
+                            </div>
+                        </div>
+                    </ng-template>
+                    </ng-container>
+
+                    </owl-carousel-o>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>

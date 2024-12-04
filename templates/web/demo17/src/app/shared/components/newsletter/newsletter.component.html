@@ -1,0 +1,10 @@
+
+
+    <div class="axil-footer-widget footer-widget-newsletter">
+        <h4 class="widget-title">Stay Up To Date</h4>
+        <p>Subscribe to our newsletter and get <span>20% discount</span> offer in your first order</p>
+        <form [formGroup]="newsLetterForm" class="input-group">
+            <input  class="form-control" placeholder="Your Email" name="EMAIL" required autocomplete="off" type="text" formControlName="email" type="email">
+            <button class="submit-btn" type="submit" [disabled]="newsLetterForm.invalid || isButtonDisabled" (click)="submitNewsLetter()" >SUBSCRIBE</button>
+        </form>
+    </div>

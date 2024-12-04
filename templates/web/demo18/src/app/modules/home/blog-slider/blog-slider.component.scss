@@ -1,0 +1,94 @@
+/* :host::ng-deep  .owl-item{
+    
+    display: grid;
+place-items: center;} */
+
+:host::ng-deep .owl-prev, .owl-next {
+    position: static;
+}
+:host::ng-deep .owl-next {
+    position: static;
+}
+:host::ng-deep.owl-theme .owl-nav [class*=owl-] {
+    color: #605656;
+    font-size: 27px;
+    margin: 5px;
+    padding: 9px 4px;
+    background: transparent;
+    display: inline-block;
+    cursor: pointer;
+    border-radius: 3px;
+}
+:host::ng-deep.owl-theme .owl-nav [class*=owl-]:hover {
+    color: #ffffff; /* Change the color for hover state */
+    background: #605656; /* Change the background color for hover state */
+}
+
+.blog-section .review-box .santa-img {
+    position: absolute;
+    top: 0;
+    right: -116px;
+}
+.blog-section .review-box {
+    background-color: #fff;
+    z-index: 1;
+    text-align: center;
+    padding: 30px;
+    position: relative;
+}
+.slick-slider.slick-slider {
+    overflow: visible;
+}
+.slick-slider {
+    position: relative;
+    display: block;
+    -webkit-box-sizing: border-box;
+    box-sizing: border-box;
+    -webkit-touch-callout: none;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+    -ms-touch-action: pan-y;
+    touch-action: pan-y;
+    -webkit-tap-highlight-color: transparent;
+}
+.blog-section .review-box .review-content .avtar {
+    border: 1px solid #eee;
+    padding: 5px;
+    border-radius: 100%;
+    display: inline-block;
+    margin-top: 10px;
+}
+.blog-section .review-box .review-content .avtar img {
+    border-radius: 100%;
+    height: 60px;
+    width: auto;
+    margin: 0 auto;
+    border: 1px solid #eee;
+}
+.blog-section .review-box .review-content h5 {
+    margin-bottom: 0;
+    text-transform: uppercase;
+    font-weight: 700;
+    color: var(--theme-color);
+    margin-top: 15px;
+}
+.blog-section .review-box .review-content h6 {
+    margin-bottom: 0;
+    margin-top: 10px;
+    text-transform: capitalize;
+    color: #555;
+    font-size: 16px;
+}
+.blog-section .review-box:after {
+    position: absolute;
+    content: "";
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    border: 3px solid var(--theme-color);
+    opacity: 0.5;
+    z-index: -1;
+}

@@ -1,0 +1,72 @@
+<section class="ratio_asos gradient-slider">
+    <div class="container container-lg">
+        <div class="row">
+            <div class="col-12">
+                <div class="title1 title-fancy">
+                    <h4>exclusive products</h4>
+                    <h2 class="title-inner1 title-gradient">special products</h2>
+                </div>
+            </div>
+            <div class="col">
+                <div class="product-5 product-m no-arrow slick-initialized slick-slider">
+                    <div class="slick-list draggable">
+                        <owl-carousel-o [options]="TrendingProducts" class="slick-track"
+                            style="opacity: 1; width: 1710px; ">
+
+                            <ng-container *ngFor="let slider of trendingProducts">
+                                <ng-template carouselSlide>
+
+                                    <div class="slick-slide slick-active" data-slick-index="1" aria-hidden="false"
+                                        style="width: 285px;">
+                                        <div>
+                                            <div class="product-box" style="width: 100%; display: inline-block;">
+                                                <div class="img-wrapper">
+                                                    <div class="lable-block"><span class="lable-gradient">new</span>
+                                                        <span class="lable4">on
+                                                            sale</span></div>
+                                                    <a href="product-page(no-sidebar).html"
+                                                        class="bg-size blur-up lazyloaded"
+                                                        style="background-image: url(&quot;{{slider.src}}&quot;); background-size: cover; background-position: center center; display: block;"
+                                                        tabindex="0"><img src="{{slider.src}}"
+                                                            class="img-fluid blur-up lazyload bg-img" alt=""
+                                                            ></a>
+                                                    <div class="cart-box cart-box-bottom">
+                                                        <button data-bs-toggle="modal" data-bs-target="#addtocart"
+                                                            title="Add to cart" tabindex="0"><i
+                                                                class="ti-shopping-cart"></i></button> <a
+                                                            href="javascript:void(0)" title="Add to Wishlist"
+                                                            tabindex="0"><i class="ti-heart" aria-hidden="true"></i></a>
+                                                        <a href="#" data-bs-toggle="modal" data-bs-target="#quick-view"
+                                                            title="Quick View" tabindex="0"><i class="ti-search"
+                                                                aria-hidden="true"></i></a>
+                                                        <a href="compare.html" title="Compare" tabindex="0"><i
+                                                                class="ti-reload" aria-hidden="true"></i></a>
+                                                    </div>
+                                                </div>
+                                                <div class="product-detail">
+                                                    <div class="detail-inline">
+                                                        <a href="product-page(no-sidebar).html" tabindex="0">
+                                                            <h6>{{slider.name}}</h6>
+                                                        </a>
+                                                        <h4>${{slider.price}}</h4>
+                                                    </div>
+                                                    <ul class="color-variant pt-0">
+                                                        <li class="bg-light0"></li>
+                                                        <li class="bg-light1"></li>
+                                                        <li class="bg-light2"></li>
+                                                    </ul>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </ng-template>
+                            </ng-container>
+
+
+                        </owl-carousel-o>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>

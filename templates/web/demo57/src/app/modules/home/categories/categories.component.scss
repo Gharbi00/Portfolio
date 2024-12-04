@@ -1,0 +1,33 @@
+
+
+:host::ng-deep .owl-prev {
+        left: 33%;
+        z-index: 1;
+        display: block;
+
+}
+:host::ng-deep .owl-next {
+    right: 33%;
+    z-index: 1;
+
+    display: block;
+
+}
+:host::ng-deep.owl-theme .owl-nav [class*=owl-] {
+    @media(width  >1000px){
+    color: #FFF;
+    font-size: 30px;
+    width: 30px;
+    height: 30px;
+    margin: 2px;
+    padding: 12px 7px;
+    background: var(--theme-color);
+    display: inline-block;
+    cursor: pointer;
+    border-radius: 16px;
+    opacity: 0.6;
+}
+@media(width  <1000px){
+display: none;
+}
+}

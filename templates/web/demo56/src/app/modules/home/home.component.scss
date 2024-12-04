@@ -1,0 +1,23 @@
+.title6 {
+    text-align: center;
+}
+
+
+::ng-deep.theme-color-1 {
+    --theme-color: #3e5067!important;
+}
+
+.custom-slick {
+    float: left;
+    height: 100%;
+    min-height: 1px;
+    margin-right: 20px;
+}
+.product-vertical .full-box .theme-card .offer-slider {
+    background-color: white;
+}
+.custom-track{
+    @media(max-width:1000px){
+        flex-wrap: wrap;
+    }
+}

@@ -1,0 +1,29 @@
+:host::ng-deep.product-responsive{
+     @media only screen and (width < 500px){
+        text-align: center;
+        max-width: 90px;
+     }
+     @media only screen and (width < 700px){
+      text-align: center;
+      max-width: 140px;
+   }
+   @media only screen and  ( 700px < width < 1000px){
+      text-align: center;
+      max-width: 180px;
+   }
+   @media only screen and  ( 1000px < width < 1200px){
+      text-align: center;
+      max-width: 200px;
+   }
+}
+:host::ng-deep.axil-most-sold-product{
+   @media( 991px< width<1200px ){
+      margin-top: 36%;
+   }
+   @media( 576px< width<991px ){
+      margin-top: 132%;
+   }
+   @media( width<576px ){
+      margin-top: 830%;
+   }
+}

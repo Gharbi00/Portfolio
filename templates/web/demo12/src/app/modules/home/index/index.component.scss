@@ -1,0 +1,23 @@
+:host::ng-deep.axil-product.product-style-seven .product-content .cart-btn a{
+    padding-top: 10px;
+  }
+  :host::ng-deep.fa-shopping-basket,:host::ng-deep.fa-couch{
+padding-top: 0px;
+  }
+  :host::ng-deep.sale-countdown .countdown-section {
+    @media(width <500px){
+    background-color: var(--color-lighter);
+    height: 35px;
+    width: 35px;
+    margin-right: 10px;
+    position: relative;
+    }
+}
+:host::ng-deep.sale-countdown{
+  @media(width <500px){
+    margin-left: 43%;
+  margin-top: 11%;
+  width: 60%;
+}
+justify-content: end;
+}

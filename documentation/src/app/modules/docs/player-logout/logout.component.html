@@ -1,0 +1,86 @@
+<main class=" col-xl-10 doc-main-body" data-bs-spy="scroll" data-bs-target="#player-login" data-bs-offset="0"
+  tabindex="0">
+  <h2>Player Logout API</h2>
+  <div id="introduction">
+    <h3>Introduction</h3>
+    <p>The logout endpoint facilitates user session management in real-time. It allows users to transition from their
+      current session into guest mode instantly. This feature ensures smooth user experience transitions and session
+      security.</p>
+    <p>By invoking the logout endpoint, users can securely end their current session, enabling quick access to guest
+      functionalities or initiating a new session as needed. This real-time functionality enhances user control and
+      privacy within the Elevok platform.</p>
+  </div>
+  <div id="endpoint">
+    <h3>Endpoint</h3>
+    <div class="mark-red">
+      <pre>URL: /cauth/logout</pre>
+      <pre>Method: <span class="s1">POST</span></pre>
+    </div>
+  </div>
+  <div id="headers">
+    <h3>Request Headers</h3>
+    <p>Here you need to insert the bearer token obtained from the Login and Get Access Token API.</p>
+    <pre class="bg-black"><code>
+  <span class="s2">&lbrace;</span>
+    <span class="s2">"Authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..."</span>
+  <span class="s2">&rbrace;</span>
+      </code>
+    </pre>
+  </div>
+  <div id="params">
+    <h3>Request Parameters</h3>
+    <div class="mark-red">
+      <pre><span class="s1">identifier*</span>: Unique user ID on the client side.</pre>
+      <pre><span class="s1">reference*</span>: Session reference found in local storate or cookies under key <span style="font-weight: bold; color: #006eff;">elvkwdigtref</span>.</pre>
+    </div>
+  </div>
+  <div id="error">
+    <h3>Error Handling</h3>
+    <p>The API returns appropriate error responses in case of missing parameters or if the target user is not found in
+      the
+      database.404 Not Found: If the target user is not found in the database.</p>
+    <div class="mark-red">
+      <pre><span class="s1">404 Not Found</span>: If the target user is not found in the database.</pre>
+    </div>
+  </div>
+  <div id="request">
+    <h3>Sample Request</h3>
+    <p>Upon successful authentication, the API returns an access token.</p>
+    <pre class="bg-black"><code>
+  <span class="s1">POST /cauth/logout</span>
+  <span class="s1">Authorization: Bearer YOUR_ACCESS_TOKEN</span>
+  <span class="s2">&lbrace;</span>
+    <span class="s2">"identifier": "unique_user_identifier",</span>
+    <span class="s2">"reference": "fdasf5412adf",</span>
+  <span class="s2">&rbrace;</span>
+      </code>
+    </pre>
+  </div>
+  <div id="response">
+    <h3>Sample Response</h3>
+    <p>Upon successful logout, the API returns a response.</p>
+    <pre class="bg-black"><code>
+  <span class="s2">&lbrace;</span>
+    <span class="s2">"success": "true"</span>
+    <span class="s2">"message": "Logged out successfully"</span>
+  <span class="s2">&rbrace;</span>
+      </code>
+    </pre>
+  </div>
+  <div class="doc-pagination pt-40">
+    <app-pagination></app-pagination>
+  </div>
+</main> <!-- /.doc-main-body -->
+<nav class="d-none d-xl-block col-xl-3 doc-sideNav">
+  <div class="wrapper">
+    <nav class="main-side-nav" id="player-login">
+      <a href="logout-api/#introduction" class="nav-link">Introduction</a>
+      <a href="logout-api/#endpoint" class="nav-link">Endpoint</a>
+      <a href="logout-api/#headers" class="nav-link">Request Headers</a>
+      <a href="logout-api/#params" class="nav-link">Request Parameters</a>
+      <a href="logout-api/#error" class="nav-link">Error Handling</a>
+      <a href="logout-api/#request" class="nav-link">Sample Request</a>
+      <a href="logout-api/#response" class="nav-link">Sample Response</a>
+    </nav>
+  </div>
+</nav>

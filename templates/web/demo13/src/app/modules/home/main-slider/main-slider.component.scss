@@ -1,0 +1,71 @@
+.custom-carousel {
+    position: relative;
+    overflow: hidden;
+  }
+  
+  .carousel-slide {
+    position: relative;
+    height: 100%;
+    width: 100%;
+    transition: transform 0.5s ease;
+  }
+  
+  .carousel-content {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 50%;
+    background-color: #fff; /* Adjust as needed */
+    transition: transform 0.5s ease;
+  }
+  
+  .carousel-content.right {
+    transform: translateX(100%);
+  }
+  
+  .carousel-content.left {
+    transform: translateX(-100%);
+  }
+  
+  .carousel-content.bottom {
+    transform: translateY(100%);
+  }
+  .owl-dots {
+    list-style: none;
+    padding: 0;
+    margin: 10px 0; /* Adjust margin as needed */
+    text-align: center;
+  }
+:host::ng-deep .owl-theme .owl-dots .owl-dot {
+  background-color: rgb(201, 201, 201)!important;
+  opacity: 1;
+  height: 5px;
+  width: 26px;
+  border-radius: 6px;
+  background-color: #e6e6e6;
+  padding: 0;
+  margin-left: 5px;
+  margin-right: 5px;
+  margin-top: 20px;
+ 
+
+   
+  }
+  
+  :host::ng-deep .owl-theme .owl-dots .owl-dot.active {
+    
+    background-color: var(--color-secondary) !important;
+    opacity: 1;
+    margin-left: 5px;
+    margin-right: 5px;
+    height: 5px; 
+    width: 34px;
+    border-radius: 6px;
+    background-color: #e6e6e6;
+    padding: 0;
+  }
+  :host::ng-deep .owl-theme .owl-dots .owl-dot span  {
+    background:transparent;
+}
+

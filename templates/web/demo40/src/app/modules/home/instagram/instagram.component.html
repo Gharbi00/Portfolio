@@ -1,0 +1,40 @@
+<section class="instagram ratio_square bg_cls">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12">
+                <h2 class="title-borderless"># instagram</h2>
+                <div class="slide-5 no-arrow slick-instagram slick-initialized slick-slider">
+                    <div class="slick-list draggable">
+                       
+                        <div  class="slick-track" style="width: 100%;">
+                            <owl-carousel-o [options]="InstaCarousel">
+                            <ng-container *ngFor="let insta of InstaData">
+                                <ng-template carouselSlide>
+
+
+                                    <div class="slick-slide" style="width: 279px; ">
+                                        <div>
+                                            <div style="width: 100%;">
+                                                <a href="#" tabindex="-1">
+                                                    <div class="instagram-box bg-size"
+                                                        style="background-image: url(&quot;../assets/images/bicycle/insta/3.jpg&quot;); background-size: cover; background-position: center center; display: block;">
+                                                        <img src="{{insta.src}}"  class="bg-img"
+                                                            style="width: 100%; ">
+                                                        <div class="overlay"><i class="fa fa-instagram"></i></div>
+                                                    </div>
+                                                </a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </ng-template>
+                            </ng-container>
+                        </owl-carousel-o>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+

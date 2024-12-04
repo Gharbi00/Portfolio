@@ -1,0 +1,87 @@
+<main class=" col-xl-10 doc-main-body" data-bs-spy="scroll" data-bs-target="#mobile" data-bs-offset="0" tabindex="0">
+  <h2>Generic Mobile App setup</h2>
+  <div id="introduction">
+    <h3>Introduction</h3>
+    <p>Display your user's Elevok customer profile, inclusive of all details, reward campaigns, and leaderboard
+      information within your application.</p>
+  </div>
+  <div id="sync">
+    <h3>Elevok User Profile Sync</h3>
+    <p>The initial step involves syncing customer profiles upon login or registration, allowing Elevok to track their
+      progress and administer rewards effectively.</p>
+    <p>To sync customer profiles, utilize the Player Login API method, which facilitates the creation or updating of
+      customer profiles with each call.</p>
+    <p>It's advisable to invoke the Player Login API during every login or account update process.</p>
+    <p>Depending on your application's architecture, profile sync API calls can be executed either from your backend
+      system or directly within the app.</p>
+    <img src="assets/images/doc/img_01.png" alt="" class="img-meta">
+  </div>
+
+  <div id="profile">
+    <h3>Displaying Elevok Customer Profile </h3>
+    <p>The subsequent step is to showcase the Elevok customer's loyalty profile within your application, enabling users
+      to
+      monitor their progress, points, and rewards.</p>
+    <p>You have two options for integrating Elevok's loyalty profile into your mobile app:</p>
+    <ul class="list-item-one">
+      <li>Utilizing the pre-built widget.</li>
+      <li>Utilizing Elevok's extensive APIs to customize the UI elements as desired.</li>
+    </ul>
+    <p>Elevok provides a pre-built widget that seamlessly integrates into your mobile app, particularly if your
+      framework
+      supports Webviews.</p>
+    <p>Let's illustrate the sequence to display the Elevok profile widget using a Webview:</p>
+    <ul class="list-item-one">
+      <li>Add a menu item to your app menu or customer's profile page.</li>
+      <li>Upon click, open a Webview pointing to a self-hosted webpage with embedded Elevok widget scripts.</li>
+      <li>Pass customer data to the Webview.</li>
+    </ul>
+    <div class="mark-blue">
+      <pre>https://example.com/elevok-widget/index.html</pre>
+    </div>
+    <p>For the mobile app scenario, ensure the 'embed:true' parameter exists in the loading script to accommodate
+      mobile-specific requirements.</p>
+    <div class="mark-blue">
+      <pre>embed:true</pre>
+    </div>
+    <p>Pass customer data to your Webview by either directly passing parameters if supported by the framework or through
+      query strings while loading the Webview.</p>
+    <pre class="bg-black"><code><span class="s1">&lt;!-- index.html --&gt;</span>
+  
+  <span class="s1">&lt;!DOCTYPE html&gt;</span>
+  <span class="s2">&lt;html&gt;</span>
+    <span class="s2">&lt;head&gt;</span>
+      <span class="s2">// Your head content ........</span>
+    <span class="s2"></span>
+      <span class="s2">&lt;script src="<span class="s3">https://widget.elevok.com/sdk.js</span>" defer=<span class="s3">"defer"</span>&gt;</span><span class="s2">&lt;/script&gt;</span>
+    <span class="s2">&lt;/head&gt;</span>
+    <span class="s2">&lt;body&gt;</span>
+      <span class="s2">// Your body content ........</span>
+    <span class="s2"></span>
+      <span class="s2">&lt;script&gt; window.widgetInit = &lbrace; appId: 'Your_Client_Key', locale: 'en', theme: 'light' &rbrace;;&lt;/script&gt;</span>
+    <span class="s2">&lt;/body&gt;</span>
+  <span class="s2">&lt;/html&gt;</span></code>
+      </pre>
+    <p>By following these steps, you can seamlessly pass customer data to the Elevok widget script and provide users
+      with
+      a personalized experience.</p>
+    <p>If you opt for using the pre-built widget in a Webview, ensure smooth Webview interactions within your app, such
+      as
+      navigating to and from the Webview. Consider displaying the Webview as a modal with a back button for enhanced
+      user
+      experience.</p>
+  </div>
+
+  <div class="doc-pagination pt-40">
+    <app-pagination></app-pagination>
+  </div>
+</main> <!-- /.doc-main-body -->
+<nav class="d-none d-xl-block col-xl-3 doc-sideNav">
+  <div class="wrapper">
+    <nav class="main-side-nav" id="mobile">
+      <a href="mobile/#introduction" class="nav-link">Introduction</a>
+      <a href="mobile/#sync" class="nav-link">Elevok User Profile Sync</a>
+      <a href="mobile/#profile" class="nav-link">Customer Profile</a>
+    </nav>
+  </div>
+</nav>

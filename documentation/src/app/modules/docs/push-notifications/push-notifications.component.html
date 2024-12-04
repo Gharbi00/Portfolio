@@ -1,0 +1,88 @@
+<main class=" col-xl-10 doc-main-body" data-bs-spy="scroll" data-bs-target="#push-notif" data-bs-offset="0"
+  tabindex="0">
+  <h2>Push Notification Configuration</h2>
+  <div id="introduction">
+    <h3>Introduction</h3>
+    <p>To send push notifications to your customers, you need to configure your push notification settings. This section
+      will guide you through the steps to set up push notifications for both web and
+      mobile platforms within Elevok. You can find these settings in the Elevok Marketplace under the Notification app.
+    </p>
+  </div>
+  <div id="method">
+    <h3>Execution Method</h3>
+    <ul class="list-item-one">
+      <li>Elevok Execution: If you prefer Elevok to execute push notifications for you, simply configure the Elevok flag
+        to enable this feature.</li>
+      <li>Custom Endpoint: If you wish to use your own push notification mechanism, prepare an endpoint to send push
+        notifications.</li>
+    </ul>
+  </div>
+  <div id="custom">
+    <h3>Configuring Custom Endpoint</h3>
+    <p>If you choose to use your own push notification mechanism, follow these steps:</p>
+    <ul class="list-item-one">
+      <li>URL: Provide the URL of your REST endpoint.</li>
+      <li>HTTP Method: Specify the HTTP method (e.g., POST) used to send push notifications.</li>
+      <li>Headers: Configure any required headers for authentication or other purposes.</li>
+      <li>Parameters: Define any parameters required by your endpoint, including the user key.</li>
+      <li>Notification Title Key: Specify the key used in the payload JSON to represent the notification title.</li>
+      <li>Notification Description Key: Specify the key used in the payload JSON to represent the notification
+        description.</li>
+      <li>Notification Picture Key: Specify the key used in the payload JSON to represent the notification picture.</li>
+      <li>User Key: Specify the key used in the payload JSON to identify the recipient user.</li>
+    </ul>
+  </div>
+  <div id="example">
+    <h3>Example Configuration</h3>
+    <ul class="list-item-one">
+      <li>* URL: https://your-custom-endpoint.com/send-notification</li>
+      <li>* HTTP Method: POST</li>
+      <li>Headers</li>
+      <pre class="bg-black"><code>
+  <span class="s2">Content-Type: application/json</span>
+  <span class="s2">Authorization: Bearer your-auth-token </span></code>
+    </pre>
+      <li>Parameters</li>
+      <pre class="bg-black"><code>
+  <span class="s2">"rec_t": <span class="s3">"tok-id"</span>,</span>
+  <span class="s2">"api-f": <span class="s3">"pif-65625"</span> </span></code>
+    </pre>
+      <li>Notification Title Key: "title"</li>
+      <li>Notification Description Key: "description"</li>
+      <li>Notification Picture Key: "picture_url"</li>
+      <li>User Key: "user_id"</li>
+    </ul>
+  </div>
+  <div id="execution">
+    <h3>Push Notification Execution</h3>
+    <ul class="list-item-one">
+      <li>After configuring your push notification settings, Elevok will execute push notifications automatically if the
+        Elevok flag is enabled.</li>
+      <li>If you are using a custom endpoint, Elevok will send push notification requests to your specified endpoint
+        using
+        the configured parameters.</li>
+      <li>Test your push notification setup to ensure that notifications are delivered as expected.</li>
+    </ul>
+    <p></p>
+    <p>By properly configuring your push notification settings, you can effectively engage your customers across both
+      web
+      and mobile platforms. For more detailed instructions and troubleshooting tips, please refer to the Elevok Help
+      Center.</p>
+  </div>
+  <!-- <img src="assets/images/doc/img_01.png" alt="" class="img-meta"> -->
+
+  <div class="doc-pagination pt-40">
+    <app-pagination></app-pagination>
+  </div>
+</main>
+<nav class="d-none d-xl-block col-xl-3 doc-sideNav">
+  <div class="wrapper">
+    <nav class="main-side-nav" id="push-notif">
+      <a href="push-notifications/#introduction" class="nav-link">Introduction</a>
+      <a href="push-notifications/#method" class="nav-link">Execution Method</a>
+      <a href="push-notifications/#custom" class="nav-link">Configuring Custom Endpoint</a>
+      <a href="push-notifications/#example" class="nav-link">Example Configuration</a>
+      <a href="push-notifications/#execution" class="nav-link">Push Notification Execution</a>
+    </nav>
+  </div>
+</nav>

@@ -1,0 +1,988 @@
+<section class="ratio_square bag-product">
+    <div class="container">
+        <div class="row">
+            <div class="col">
+                <div class="theme-tab">
+                    <div class="title6">
+                        <h2 class="font-cormorant">top collection</h2>
+                        <ul class="tabs tab-title">
+                            <li  style="cursor: pointer;" class="" [class.current]="activeTab === 'tab-1'" (click)="switchTab('tab-1')" ><a >New Products</a></li>
+                            <li  style="cursor: pointer;"class="" [class.current]="activeTab === 'tab-2'" (click)="switchTab('tab-2')"><a>Featured Products</a></li>
+                            <li  style="cursor: pointer;"class="current"  [class.current]="activeTab === 'tab-3'" (click)="switchTab('tab-3')"><a >Best Sellers</a></li>
+                        </ul>
+                    </div>
+
+                    <div class="tab-content-cls" [@tabAnimation]="activeTab" style="    padding-left: 4%;">
+                        <ng-container *ngIf="activeTab==='tab-1'" class="tab-content active default" >
+                            <div class="product-4 product-m no-arrow slick-initialized slick-slider">
+                                <div class="slick-list draggable">
+                                    <owl-carousel-o [options]="ProductCarousel" class="slick-track"
+                                        style="opacity: 1; width: 1425px; ">
+                                        <ng-template carouselSlide class="slick-slide slick-current slick-active" data-slick-index="0"
+                                            aria-hidden="false" style="width: 285px;">
+                                            <div>
+                                                <div class="product-box product-wrap product-style-2"
+                                                    style="width: 100%; display: inline-block;">
+                                                    <div class="img-wrapper">
+                                                        <div class="front">
+                                                            <a href="product-page(no-sidebar).html"
+                                                                class="bg-size blur-up lazyloaded"
+                                                                style="background-image: url(&quot;../assets/images/jewellery/pro-grey/6.jpg&quot;); background-size: cover; background-position: center center; display: block;"
+                                                                tabindex="0"><img alt=""
+                                                                    src="../assets/images/jewellery/pro-grey/6.jpg"
+                                                                    class="img-fluid blur-up lazyload bg-img"
+                                                                    ></a>
+                                                        </div>
+                                                        <div class="cart-detail"><a href="javascript:void(0)"
+                                                                title="Add to Wishlist" tabindex="0"><i class="ti-heart"
+                                                                    aria-hidden="true"></i></a> <a href="#"
+                                                                data-bs-toggle="modal" data-bs-target="#quick-view"
+                                                                title="Quick View" tabindex="0"><i class="ti-search"
+                                                                    aria-hidden="true"></i></a> <a href="compare.html"
+                                                                title="Compare" tabindex="0"><i class="ti-reload"
+                                                                    aria-hidden="true"></i></a>
+                                                        </div>
+                                                    </div>
+                                                    <div class="product-info">
+                                                        <a href="product-page(no-sidebar).html" tabindex="0">
+                                                            <h6>platanium bracelet Set</h6>
+                                                        </a>
+                                                        <h4>$320.60</h4>
+                                                        <ul class="color-variant image-swatch-demo">
+                                                            <li>
+                                                                <div class="bg-size blur-up lazyloaded"
+                                                                    style="background-image: url(&quot;../assets/images/jewellery/icon/rose-gold.jpg&quot;); background-size: cover; background-position: center center; display: block;">
+                                                                    <img src="../assets/images/jewellery/icon/rose-gold.jpg"
+                                                                        alt="" class="img-fluid blur-up lazyload bg-img"
+                                                                        ></div>
+                                                            </li>
+                                                            <li>
+                                                                <div class="bg-size blur-up lazyloaded"
+                                                                    style="background-image: url(&quot;../assets/images/jewellery/icon/gold.jpg&quot;); background-size: cover; background-position: center center; display: block;">
+                                                                    <img src="../assets/images/jewellery/icon/gold.jpg"
+                                                                        alt="" class="img-fluid blur-up lazyload bg-img"
+                                                                        ></div>
+                                                            </li>
+                                                            <li>
+                                                                <div class="bg-size blur-up lazyloaded"
+                                                                    style="background-image: url(&quot;../assets/images/jewellery/icon/silver.jpg&quot;); background-size: cover; background-position: center center; display: block;">
+                                                                    <img src="../assets/images/jewellery/icon/silver.jpg"
+                                                                        alt="" class="img-fluid blur-up lazyload bg-img"
+                                                                        ></div>
+                                                            </li>
+                                                        </ul>
+                                                        <div class="add-btn">
+                                                            <a href="javascript:void(0)" class="" tabindex="0">
+                                                                <i class="ti-shopping-cart"></i> add to cart
+                                                            </a>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </ng-template>
+                                        <ng-template carouselSlide class="slick-slide slick-active" data-slick-index="1" aria-hidden="false"
+                                            style="width: 285px;">
+                                            <div>
+                                                <div class="product-box product-wrap product-style-2"
+                                                    style="width: 100%; display: inline-block;">
+                                                    <div class="img-wrapper">
+                                                        <div class="front">
+                                                            <a href="product-page(no-sidebar).html"
+                                                                class="bg-size blur-up lazyloaded"
+                                                                style="background-image: url(&quot;../assets/images/jewellery/pro-grey/7.jpg&quot;); background-size: cover; background-position: center center; display: block;"
+                                                                tabindex="0"><img alt=""
+                                                                    src="../assets/images/jewellery/pro-grey/7.jpg"
+                                                                    class="img-fluid blur-up lazyload bg-img"
+                                                                    ></a>
+                                                        </div>
+                                                        <div class="cart-detail"><a href="javascript:void(0)"
+                                                                title="Add to Wishlist" tabindex="0"><i class="ti-heart"
+                                                                    aria-hidden="true"></i></a> <a href="#"
+                                                                data-bs-toggle="modal" data-bs-target="#quick-view"
+                                                                title="Quick View" tabindex="0"><i class="ti-search"
+                                                                    aria-hidden="true"></i></a> <a href="compare.html"
+                                                                title="Compare" tabindex="0"><i class="ti-reload"
+                                                                    aria-hidden="true"></i></a>
+                                                        </div>
+                                                    </div>
+                                                    <div class="product-info">
+                                                        <a href="product-page(no-sidebar).html" tabindex="0">
+                                                            <h6>multilayer Rose Gold Parl Necklace</h6>
+                                                        </a>
+                                                        <h4>$180.10</h4>
+                                                        <ul class="color-variant image-swatch-demo">
+                                                            <li>
+                                                                <div class="bg-size blur-up lazyloaded"
+                                                                    style="background-image: url(&quot;../assets/images/jewellery/icon/rose-gold.jpg&quot;); background-size: cover; background-position: center center; display: block;">
+                                                                    <img src="../assets/images/jewellery/icon/rose-gold.jpg"
+                                                                        alt="" class="img-fluid blur-up lazyload bg-img"
+                                                                        ></div>
+                                                            </li>
+                                                            <li>
+                                                                <div class="bg-size blur-up lazyloaded"
+                                                                    style="background-image: url(&quot;../assets/images/jewellery/icon/gold.jpg&quot;); background-size: cover; background-position: center center; display: block;">
+                                                                    <img src="../assets/images/jewellery/icon/gold.jpg"
+                                                                        alt="" class="img-fluid blur-up lazyload bg-img"
+                                                                        ></div>
+                                                            </li>
+                                                            <li>
+                                                                <div class="bg-size blur-up lazyloaded"
+                                                                    style="background-image: url(&quot;../assets/images/jewellery/icon/silver.jpg&quot;); background-size: cover; background-position: center center; display: block;">
+                                                                    <img src="../assets/images/jewellery/icon/silver.jpg"
+                                                                        alt="" class="img-fluid blur-up lazyload bg-img"
+                                                                        ></div>
+                                                            </li>
+                                                        </ul>
+                                                        <div class="add-btn">
+                                                            <a href="javascript:void(0)" class="" tabindex="0">
+                                                                <i class="ti-shopping-cart"></i> add to cart
+                                                            </a>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </ng-template>
+                                        <ng-template carouselSlide class="slick-slide slick-active" data-slick-index="2" aria-hidden="false"
+                                            style="width: 285px;">
+                                            <div>
+                                                <div class="product-box product-wrap product-style-2"
+                                                    style="width: 100%; display: inline-block;">
+                                                    <div class="img-wrapper">
+                                                        <div class="front">
+                                                            <a href="product-page(no-sidebar).html"
+                                                                class="bg-size blur-up lazyloaded"
+                                                                style="background-image: url(&quot;../assets/images/jewellery/pro-grey/8.jpg&quot;); background-size: cover; background-position: center center; display: block;"
+                                                                tabindex="0"><img alt=""
+                                                                    src="../assets/images/jewellery/pro-grey/8.jpg"
+                                                                    class="img-fluid blur-up lazyload bg-img"
+                                                                    ></a>
+                                                        </div>
+                                                        <div class="cart-detail"><a href="javascript:void(0)"
+                                                                title="Add to Wishlist" tabindex="0"><i class="ti-heart"
+                                                                    aria-hidden="true"></i></a> <a href="#"
+                                                                data-bs-toggle="modal" data-bs-target="#quick-view"
+                                                                title="Quick View" tabindex="0"><i class="ti-search"
+                                                                    aria-hidden="true"></i></a> <a href="compare.html"
+                                                                title="Compare" tabindex="0"><i class="ti-reload"
+                                                                    aria-hidden="true"></i></a>
+                                                        </div>
+                                                    </div>
+                                                    <div class="product-info">
+                                                        <a href="product-page(no-sidebar).html" tabindex="0">
+                                                            <h6>Butterfly Sheap Rose Gold Earrings</h6>
+                                                        </a>
+                                                        <h4>$500.00</h4>
+                                                        <ul class="color-variant image-swatch-demo">
+                                                            <li>
+                                                                <div class="bg-size blur-up lazyloaded"
+                                                                    style="background-image: url(&quot;../assets/images/jewellery/icon/rose-gold.jpg&quot;); background-size: cover; background-position: center center; display: block;">
+                                                                    <img src="../assets/images/jewellery/icon/rose-gold.jpg"
+                                                                        alt="" class="img-fluid blur-up lazyload bg-img"
+                                                                        ></div>
+                                                            </li>
+                                                            <li>
+                                                                <div class="bg-size blur-up lazyloaded"
+                                                                    style="background-image: url(&quot;../assets/images/jewellery/icon/gold.jpg&quot;); background-size: cover; background-position: center center; display: block;">
+                                                                    <img src="../assets/images/jewellery/icon/gold.jpg"
+                                                                        alt="" class="img-fluid blur-up lazyload bg-img"
+                                                                        ></div>
+                                                            </li>
+                                                            <li>
+                                                                <div class="bg-size blur-up lazyloaded"
+                                                                    style="background-image: url(&quot;../assets/images/jewellery/icon/silver.jpg&quot;); background-size: cover; background-position: center center; display: block;">
+                                                                    <img src="../assets/images/jewellery/icon/silver.jpg"
+                                                                        alt="" class="img-fluid blur-up lazyload bg-img"
+                                                                        ></div>
+                                                            </li>
+                                                        </ul>
+                                                        <div class="add-btn">
+                                                            <a href="javascript:void(0)" class="" tabindex="0">
+                                                                <i class="ti-shopping-cart"></i> add to cart
+                                                            </a>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </ng-template>
+                                        <ng-template carouselSlide class="slick-slide slick-active" data-slick-index="3" aria-hidden="false"
+                                            style="width: 285px;">
+                                            <div>
+                                                <div class="product-box product-wrap product-style-2"
+                                                    style="width: 100%; display: inline-block;">
+                                                    <div class="img-wrapper">
+                                                        <div class="lable-block"><span class="lable3">new</span></div>
+                                                        <div class="front">
+                                                            <a href="product-page(no-sidebar).html"
+                                                                class="bg-size blur-up lazyloaded"
+                                                                style="background-image: url(&quot;../assets/images/jewellery/pro-grey/9.jpg&quot;); background-size: cover; background-position: center center; display: block;"
+                                                                tabindex="0"><img alt=""
+                                                                    src="../assets/images/jewellery/pro-grey/9.jpg"
+                                                                    class="img-fluid blur-up lazyload bg-img"
+                                                                    ></a>
+                                                        </div>
+                                                        <div class="cart-detail"><a href="javascript:void(0)"
+                                                                title="Add to Wishlist" tabindex="0"><i class="ti-heart"
+                                                                    aria-hidden="true"></i></a> <a href="#"
+                                                                data-bs-toggle="modal" data-bs-target="#quick-view"
+                                                                title="Quick View" tabindex="0"><i class="ti-search"
+                                                                    aria-hidden="true"></i></a> <a href="compare.html"
+                                                                title="Compare" tabindex="0"><i class="ti-reload"
+                                                                    aria-hidden="true"></i></a>
+                                                        </div>
+                                                    </div>
+                                                    <div class="product-info">
+                                                        <a href="product-page(no-sidebar).html" tabindex="0">
+                                                            <h6>Astra Diamond Necklace</h6>
+                                                        </a>
+                                                        <h4>$1050.00</h4>
+                                                        <ul class="color-variant image-swatch-demo">
+                                                            <li>
+                                                                <div class="bg-size blur-up lazyloaded"
+                                                                    style="background-image: url(&quot;../assets/images/jewellery/icon/rose-gold.jpg&quot;); background-size: cover; background-position: center center; display: block;">
+                                                                    <img src="../assets/images/jewellery/icon/rose-gold.jpg"
+                                                                        alt="" class="img-fluid blur-up lazyload bg-img"
+                                                                        ></div>
+                                                            </li>
+                                                            <li>
+                                                                <div class="bg-size blur-up lazyloaded"
+                                                                    style="background-image: url(&quot;../assets/images/jewellery/icon/gold.jpg&quot;); background-size: cover; background-position: center center; display: block;">
+                                                                    <img src="../assets/images/jewellery/icon/gold.jpg"
+                                                                        alt="" class="img-fluid blur-up lazyload bg-img"
+                                                                        ></div>
+                                                            </li>
+                                                            <li>
+                                                                <div class="bg-size blur-up lazyloaded"
+                                                                    style="background-image: url(&quot;../assets/images/jewellery/icon/silver.jpg&quot;); background-size: cover; background-position: center center; display: block;">
+                                                                    <img src="../assets/images/jewellery/icon/silver.jpg"
+                                                                        alt="" class="img-fluid blur-up lazyload bg-img"
+                                                                        ></div>
+                                                            </li>
+                                                        </ul>
+                                                        <div class="add-btn">
+                                                            <a href="javascript:void(0)" class="" tabindex="0">
+                                                                <i class="ti-shopping-cart"></i> add to cart
+                                                            </a>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </ng-template>
+                                        <ng-template carouselSlide class="slick-slide" data-slick-index="4" aria-hidden="true" tabindex="-1"
+                                            style="width: 285px;">
+                                            <div>
+                                                <div class="product-box product-wrap product-style-2"
+                                                    style="width: 100%; display: inline-block;">
+                                                    <div class="img-wrapper">
+                                                        <div class="lable-block"><span class="lable3">new</span></div>
+                                                        <div class="front">
+                                                            <a href="product-page(no-sidebar).html"
+                                                                class="bg-size blur-up lazyloaded"
+                                                                style="background-image: url(&quot;../assets/images/jewellery/pro-grey/10.jpg&quot;); background-size: cover; background-position: center center; display: block;"
+                                                                tabindex="-1"><img alt=""
+                                                                    src="../assets/images/jewellery/pro-grey/10.jpg"
+                                                                    class="img-fluid blur-up lazyload bg-img"
+                                                                    ></a>
+                                                        </div>
+                                                        <div class="cart-detail"><a href="javascript:void(0)"
+                                                                title="Add to Wishlist" tabindex="-1"><i
+                                                                    class="ti-heart" aria-hidden="true"></i></a> <a
+                                                                href="#" data-bs-toggle="modal"
+                                                                data-bs-target="#quick-view" title="Quick View"
+                                                                tabindex="-1"><i class="ti-search"
+                                                                    aria-hidden="true"></i></a> <a href="compare.html"
+                                                                title="Compare" tabindex="-1"><i class="ti-reload"
+                                                                    aria-hidden="true"></i></a>
+                                                        </div>
+                                                    </div>
+                                                    <div class="product-info">
+                                                        <a href="product-page(no-sidebar).html" tabindex="-1">
+                                                            <h6>Multilayer Gold Sliver chain</h6>
+                                                        </a>
+                                                        <h4>$550.00</h4>
+                                                        <ul class="color-variant image-swatch-demo">
+                                                            <li>
+                                                                <div class="bg-size blur-up lazyloaded"
+                                                                    style="background-image: url(&quot;../assets/images/jewellery/icon/rose-gold.jpg&quot;); background-size: cover; background-position: center center; display: block;">
+                                                                    <img src="../assets/images/jewellery/icon/rose-gold.jpg"
+                                                                        alt="" class="img-fluid blur-up lazyload bg-img"
+                                                                        ></div>
+                                                            </li>
+                                                            <li>
+                                                                <div class="bg-size blur-up lazyloaded"
+                                                                    style="background-image: url(&quot;../assets/images/jewellery/icon/gold.jpg&quot;); background-size: cover; background-position: center center; display: block;">
+                                                                    <img src="../assets/images/jewellery/icon/gold.jpg"
+                                                                        alt="" class="img-fluid blur-up lazyload bg-img"
+                                                                        ></div>
+                                                            </li>
+                                                            <li>
+                                                                <div class="bg-size blur-up lazyloaded"
+                                                                    style="background-image: url(&quot;../assets/images/jewellery/icon/silver.jpg&quot;); background-size: cover; background-position: center center; display: block;">
+                                                                    <img src="../assets/images/jewellery/icon/silver.jpg"
+                                                                        alt="" class="img-fluid blur-up lazyload bg-img"
+                                                                        ></div>
+                                                            </li>
+                                                        </ul>
+                                                        <div class="add-btn">
+                                                            <a href="javascript:void(0)" class="" tabindex="-1">
+                                                                <i class="ti-shopping-cart"></i> add to cart
+                                                            </a>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </ng-template>
+                                    </owl-carousel-o>
+                                </div>
+                            </div>
+                        </ng-container>
+                        <ng-container *ngIf="activeTab==='tab-2'" class="tab-content active default" >
+                            <div class="product-4 product-m no-arrow slick-initialized slick-slider">
+                                <div class="slick-list draggable">
+                                    <owl-carousel-o [options]="ProductCarousel" class="slick-track"
+                                        style="opacity: 1; width: 1425px; ">
+                                        <ng-template carouselSlide class="slick-slide slick-current slick-active" data-slick-index="0"
+                                            aria-hidden="false" style="width: 285px;">
+                                            <div>
+                                                <div class="product-box product-wrap product-style-2"
+                                                    style="width: 100%; display: inline-block;">
+                                                    <div class="img-wrapper">
+                                                        <div class="front">
+                                                            <a href="product-page(no-sidebar).html"
+                                                                class="bg-size blur-up lazyloaded"
+                                                                style="background-image: url(&quot;../assets/images/jewellery/pro-grey/6.jpg&quot;); background-size: cover; background-position: center center; display: block;"
+                                                                tabindex="0"><img alt=""
+                                                                    src="../assets/images/jewellery/pro-grey/6.jpg"
+                                                                    class="img-fluid blur-up lazyload bg-img"
+                                                                    ></a>
+                                                        </div>
+                                                        <div class="cart-detail"><a href="javascript:void(0)"
+                                                                title="Add to Wishlist" tabindex="0"><i class="ti-heart"
+                                                                    aria-hidden="true"></i></a> <a href="#"
+                                                                data-bs-toggle="modal" data-bs-target="#quick-view"
+                                                                title="Quick View" tabindex="0"><i class="ti-search"
+                                                                    aria-hidden="true"></i></a> <a href="compare.html"
+                                                                title="Compare" tabindex="0"><i class="ti-reload"
+                                                                    aria-hidden="true"></i></a>
+                                                        </div>
+                                                    </div>
+                                                    <div class="product-info">
+                                                        <a href="product-page(no-sidebar).html" tabindex="0">
+                                                            <h6>platanium bracelet Set</h6>
+                                                        </a>
+                                                        <h4>$320.60</h4>
+                                                        <ul class="color-variant image-swatch-demo">
+                                                            <li>
+                                                                <div class="bg-size blur-up lazyloaded"
+                                                                    style="background-image: url(&quot;../assets/images/jewellery/icon/rose-gold.jpg&quot;); background-size: cover; background-position: center center; display: block;">
+                                                                    <img src="../assets/images/jewellery/icon/rose-gold.jpg"
+                                                                        alt="" class="img-fluid blur-up lazyload bg-img"
+                                                                        ></div>
+                                                            </li>
+                                                            <li>
+                                                                <div class="bg-size blur-up lazyloaded"
+                                                                    style="background-image: url(&quot;../assets/images/jewellery/icon/gold.jpg&quot;); background-size: cover; background-position: center center; display: block;">
+                                                                    <img src="../assets/images/jewellery/icon/gold.jpg"
+                                                                        alt="" class="img-fluid blur-up lazyload bg-img"
+                                                                        ></div>
+                                                            </li>
+                                                            <li>
+                                                                <div class="bg-size blur-up lazyloaded"
+                                                                    style="background-image: url(&quot;../assets/images/jewellery/icon/silver.jpg&quot;); background-size: cover; background-position: center center; display: block;">
+                                                                    <img src="../assets/images/jewellery/icon/silver.jpg"
+                                                                        alt="" class="img-fluid blur-up lazyload bg-img"
+                                                                        ></div>
+                                                            </li>
+                                                        </ul>
+                                                        <div class="add-btn">
+                                                            <a href="javascript:void(0)" class="" tabindex="0">
+                                                                <i class="ti-shopping-cart"></i> add to cart
+                                                            </a>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </ng-template>
+                                        <ng-template carouselSlide class="slick-slide slick-active" data-slick-index="1" aria-hidden="false"
+                                            style="width: 285px;">
+                                            <div>
+                                                <div class="product-box product-wrap product-style-2"
+                                                    style="width: 100%; display: inline-block;">
+                                                    <div class="img-wrapper">
+                                                        <div class="front">
+                                                            <a href="product-page(no-sidebar).html"
+                                                                class="bg-size blur-up lazyloaded"
+                                                                style="background-image: url(&quot;../assets/images/jewellery/pro-grey/7.jpg&quot;); background-size: cover; background-position: center center; display: block;"
+                                                                tabindex="0"><img alt=""
+                                                                    src="../assets/images/jewellery/pro-grey/7.jpg"
+                                                                    class="img-fluid blur-up lazyload bg-img"
+                                                                    ></a>
+                                                        </div>
+                                                        <div class="cart-detail"><a href="javascript:void(0)"
+                                                                title="Add to Wishlist" tabindex="0"><i class="ti-heart"
+                                                                    aria-hidden="true"></i></a> <a href="#"
+                                                                data-bs-toggle="modal" data-bs-target="#quick-view"
+                                                                title="Quick View" tabindex="0"><i class="ti-search"
+                                                                    aria-hidden="true"></i></a> <a href="compare.html"
+                                                                title="Compare" tabindex="0"><i class="ti-reload"
+                                                                    aria-hidden="true"></i></a>
+                                                        </div>
+                                                    </div>
+                                                    <div class="product-info">
+                                                        <a href="product-page(no-sidebar).html" tabindex="0">
+                                                            <h6>multilayer Rose Gold Parl Necklace</h6>
+                                                        </a>
+                                                        <h4>$180.10</h4>
+                                                        <ul class="color-variant image-swatch-demo">
+                                                            <li>
+                                                                <div class="bg-size blur-up lazyloaded"
+                                                                    style="background-image: url(&quot;../assets/images/jewellery/icon/rose-gold.jpg&quot;); background-size: cover; background-position: center center; display: block;">
+                                                                    <img src="../assets/images/jewellery/icon/rose-gold.jpg"
+                                                                        alt="" class="img-fluid blur-up lazyload bg-img"
+                                                                        ></div>
+                                                            </li>
+                                                            <li>
+                                                                <div class="bg-size blur-up lazyloaded"
+                                                                    style="background-image: url(&quot;../assets/images/jewellery/icon/gold.jpg&quot;); background-size: cover; background-position: center center; display: block;">
+                                                                    <img src="../assets/images/jewellery/icon/gold.jpg"
+                                                                        alt="" class="img-fluid blur-up lazyload bg-img"
+                                                                        ></div>
+                                                            </li>
+                                                            <li>
+                                                                <div class="bg-size blur-up lazyloaded"
+                                                                    style="background-image: url(&quot;../assets/images/jewellery/icon/silver.jpg&quot;); background-size: cover; background-position: center center; display: block;">
+                                                                    <img src="../assets/images/jewellery/icon/silver.jpg"
+                                                                        alt="" class="img-fluid blur-up lazyload bg-img"
+                                                                        ></div>
+                                                            </li>
+                                                        </ul>
+                                                        <div class="add-btn">
+                                                            <a href="javascript:void(0)" class="" tabindex="0">
+                                                                <i class="ti-shopping-cart"></i> add to cart
+                                                            </a>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </ng-template>
+                                        <ng-template carouselSlide class="slick-slide slick-active" data-slick-index="2" aria-hidden="false"
+                                            style="width: 285px;">
+                                            <div>
+                                                <div class="product-box product-wrap product-style-2"
+                                                    style="width: 100%; display: inline-block;">
+                                                    <div class="img-wrapper">
+                                                        <div class="front">
+                                                            <a href="product-page(no-sidebar).html"
+                                                                class="bg-size blur-up lazyloaded"
+                                                                style="background-image: url(&quot;../assets/images/jewellery/pro-grey/8.jpg&quot;); background-size: cover; background-position: center center; display: block;"
+                                                                tabindex="0"><img alt=""
+                                                                    src="../assets/images/jewellery/pro-grey/8.jpg"
+                                                                    class="img-fluid blur-up lazyload bg-img"
+                                                                    ></a>
+                                                        </div>
+                                                        <div class="cart-detail"><a href="javascript:void(0)"
+                                                                title="Add to Wishlist" tabindex="0"><i class="ti-heart"
+                                                                    aria-hidden="true"></i></a> <a href="#"
+                                                                data-bs-toggle="modal" data-bs-target="#quick-view"
+                                                                title="Quick View" tabindex="0"><i class="ti-search"
+                                                                    aria-hidden="true"></i></a> <a href="compare.html"
+                                                                title="Compare" tabindex="0"><i class="ti-reload"
+                                                                    aria-hidden="true"></i></a>
+                                                        </div>
+                                                    </div>
+                                                    <div class="product-info">
+                                                        <a href="product-page(no-sidebar).html" tabindex="0">
+                                                            <h6>Butterfly Sheap Rose Gold Earrings</h6>
+                                                        </a>
+                                                        <h4>$500.00</h4>
+                                                        <ul class="color-variant image-swatch-demo">
+                                                            <li>
+                                                                <div class="bg-size blur-up lazyloaded"
+                                                                    style="background-image: url(&quot;../assets/images/jewellery/icon/rose-gold.jpg&quot;); background-size: cover; background-position: center center; display: block;">
+                                                                    <img src="../assets/images/jewellery/icon/rose-gold.jpg"
+                                                                        alt="" class="img-fluid blur-up lazyload bg-img"
+                                                                        ></div>
+                                                            </li>
+                                                            <li>
+                                                                <div class="bg-size blur-up lazyloaded"
+                                                                    style="background-image: url(&quot;../assets/images/jewellery/icon/gold.jpg&quot;); background-size: cover; background-position: center center; display: block;">
+                                                                    <img src="../assets/images/jewellery/icon/gold.jpg"
+                                                                        alt="" class="img-fluid blur-up lazyload bg-img"
+                                                                        ></div>
+                                                            </li>
+                                                            <li>
+                                                                <div class="bg-size blur-up lazyloaded"
+                                                                    style="background-image: url(&quot;../assets/images/jewellery/icon/silver.jpg&quot;); background-size: cover; background-position: center center; display: block;">
+                                                                    <img src="../assets/images/jewellery/icon/silver.jpg"
+                                                                        alt="" class="img-fluid blur-up lazyload bg-img"
+                                                                        ></div>
+                                                            </li>
+                                                        </ul>
+                                                        <div class="add-btn">
+                                                            <a href="javascript:void(0)" class="" tabindex="0">
+                                                                <i class="ti-shopping-cart"></i> add to cart
+                                                            </a>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </ng-template>
+                                        <ng-template carouselSlide class="slick-slide slick-active" data-slick-index="3" aria-hidden="false"
+                                            style="width: 285px;">
+                                            <div>
+                                                <div class="product-box product-wrap product-style-2"
+                                                    style="width: 100%; display: inline-block;">
+                                                    <div class="img-wrapper">
+                                                        <div class="lable-block"><span class="lable3">new</span></div>
+                                                        <div class="front">
+                                                            <a href="product-page(no-sidebar).html"
+                                                                class="bg-size blur-up lazyloaded"
+                                                                style="background-image: url(&quot;../assets/images/jewellery/pro-grey/9.jpg&quot;); background-size: cover; background-position: center center; display: block;"
+                                                                tabindex="0"><img alt=""
+                                                                    src="../assets/images/jewellery/pro-grey/9.jpg"
+                                                                    class="img-fluid blur-up lazyload bg-img"
+                                                                    ></a>
+                                                        </div>
+                                                        <div class="cart-detail"><a href="javascript:void(0)"
+                                                                title="Add to Wishlist" tabindex="0"><i class="ti-heart"
+                                                                    aria-hidden="true"></i></a> <a href="#"
+                                                                data-bs-toggle="modal" data-bs-target="#quick-view"
+                                                                title="Quick View" tabindex="0"><i class="ti-search"
+                                                                    aria-hidden="true"></i></a> <a href="compare.html"
+                                                                title="Compare" tabindex="0"><i class="ti-reload"
+                                                                    aria-hidden="true"></i></a>
+                                                        </div>
+                                                    </div>
+                                                    <div class="product-info">
+                                                        <a href="product-page(no-sidebar).html" tabindex="0">
+                                                            <h6>Astra Diamond Necklace</h6>
+                                                        </a>
+                                                        <h4>$1050.00</h4>
+                                                        <ul class="color-variant image-swatch-demo">
+                                                            <li>
+                                                                <div class="bg-size blur-up lazyloaded"
+                                                                    style="background-image: url(&quot;../assets/images/jewellery/icon/rose-gold.jpg&quot;); background-size: cover; background-position: center center; display: block;">
+                                                                    <img src="../assets/images/jewellery/icon/rose-gold.jpg"
+                                                                        alt="" class="img-fluid blur-up lazyload bg-img"
+                                                                        ></div>
+                                                            </li>
+                                                            <li>
+                                                                <div class="bg-size blur-up lazyloaded"
+                                                                    style="background-image: url(&quot;../assets/images/jewellery/icon/gold.jpg&quot;); background-size: cover; background-position: center center; display: block;">
+                                                                    <img src="../assets/images/jewellery/icon/gold.jpg"
+                                                                        alt="" class="img-fluid blur-up lazyload bg-img"
+                                                                        ></div>
+                                                            </li>
+                                                            <li>
+                                                                <div class="bg-size blur-up lazyloaded"
+                                                                    style="background-image: url(&quot;../assets/images/jewellery/icon/silver.jpg&quot;); background-size: cover; background-position: center center; display: block;">
+                                                                    <img src="../assets/images/jewellery/icon/silver.jpg"
+                                                                        alt="" class="img-fluid blur-up lazyload bg-img"
+                                                                        ></div>
+                                                            </li>
+                                                        </ul>
+                                                        <div class="add-btn">
+                                                            <a href="javascript:void(0)" class="" tabindex="0">
+                                                                <i class="ti-shopping-cart"></i> add to cart
+                                                            </a>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </ng-template>
+                                        <ng-template carouselSlide class="slick-slide" data-slick-index="4" aria-hidden="true" tabindex="-1"
+                                            style="width: 285px;">
+                                            <div>
+                                                <div class="product-box product-wrap product-style-2"
+                                                    style="width: 100%; display: inline-block;">
+                                                    <div class="img-wrapper">
+                                                        <div class="lable-block"><span class="lable3">new</span></div>
+                                                        <div class="front">
+                                                            <a href="product-page(no-sidebar).html"
+                                                                class="bg-size blur-up lazyloaded"
+                                                                style="background-image: url(&quot;../assets/images/jewellery/pro-grey/10.jpg&quot;); background-size: cover; background-position: center center; display: block;"
+                                                                tabindex="-1"><img alt=""
+                                                                    src="../assets/images/jewellery/pro-grey/10.jpg"
+                                                                    class="img-fluid blur-up lazyload bg-img"
+                                                                    ></a>
+                                                        </div>
+                                                        <div class="cart-detail"><a href="javascript:void(0)"
+                                                                title="Add to Wishlist" tabindex="-1"><i
+                                                                    class="ti-heart" aria-hidden="true"></i></a> <a
+                                                                href="#" data-bs-toggle="modal"
+                                                                data-bs-target="#quick-view" title="Quick View"
+                                                                tabindex="-1"><i class="ti-search"
+                                                                    aria-hidden="true"></i></a> <a href="compare.html"
+                                                                title="Compare" tabindex="-1"><i class="ti-reload"
+                                                                    aria-hidden="true"></i></a>
+                                                        </div>
+                                                    </div>
+                                                    <div class="product-info">
+                                                        <a href="product-page(no-sidebar).html" tabindex="-1">
+                                                            <h6>Multilayer Gold Sliver chain</h6>
+                                                        </a>
+                                                        <h4>$550.00</h4>
+                                                        <ul class="color-variant image-swatch-demo">
+                                                            <li>
+                                                                <div class="bg-size blur-up lazyloaded"
+                                                                    style="background-image: url(&quot;../assets/images/jewellery/icon/rose-gold.jpg&quot;); background-size: cover; background-position: center center; display: block;">
+                                                                    <img src="../assets/images/jewellery/icon/rose-gold.jpg"
+                                                                        alt="" class="img-fluid blur-up lazyload bg-img"
+                                                                        ></div>
+                                                            </li>
+                                                            <li>
+                                                                <div class="bg-size blur-up lazyloaded"
+                                                                    style="background-image: url(&quot;../assets/images/jewellery/icon/gold.jpg&quot;); background-size: cover; background-position: center center; display: block;">
+                                                                    <img src="../assets/images/jewellery/icon/gold.jpg"
+                                                                        alt="" class="img-fluid blur-up lazyload bg-img"
+                                                                        ></div>
+                                                            </li>
+                                                            <li>
+                                                                <div class="bg-size blur-up lazyloaded"
+                                                                    style="background-image: url(&quot;../assets/images/jewellery/icon/silver.jpg&quot;); background-size: cover; background-position: center center; display: block;">
+                                                                    <img src="../assets/images/jewellery/icon/silver.jpg"
+                                                                        alt="" class="img-fluid blur-up lazyload bg-img"
+                                                                        ></div>
+                                                            </li>
+                                                        </ul>
+                                                        <div class="add-btn">
+                                                            <a href="javascript:void(0)" class="" tabindex="-1">
+                                                                <i class="ti-shopping-cart"></i> add to cart
+                                                            </a>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </ng-template>
+                                    </owl-carousel-o>
+                                </div>
+                            </div>
+                        </ng-container>
+                        <ng-container *ngIf="activeTab==='tab-3'" class="tab-content active default" >
+                            <div class="product-4 product-m no-arrow slick-initialized slick-slider">
+                                <div class="slick-list draggable">
+                                    <owl-carousel-o [options]="ProductCarousel" class="slick-track"
+                                        style="opacity: 1; width: 1425px; ">
+                                        <ng-template carouselSlide class="slick-slide slick-current slick-active" data-slick-index="0"
+                                            aria-hidden="false" style="width: 285px;">
+                                            <div>
+                                                <div class="product-box product-wrap product-style-2"
+                                                    style="width: 100%; display: inline-block;">
+                                                    <div class="img-wrapper">
+                                                        <div class="front">
+                                                            <a href="product-page(no-sidebar).html"
+                                                                class="bg-size blur-up lazyloaded"
+                                                                style="background-image: url(&quot;../assets/images/jewellery/pro-grey/6.jpg&quot;); background-size: cover; background-position: center center; display: block;"
+                                                                tabindex="0"><img alt=""
+                                                                    src="../assets/images/jewellery/pro-grey/6.jpg"
+                                                                    class="img-fluid blur-up lazyload bg-img"
+                                                                    ></a>
+                                                        </div>
+                                                        <div class="cart-detail"><a href="javascript:void(0)"
+                                                                title="Add to Wishlist" tabindex="0"><i class="ti-heart"
+                                                                    aria-hidden="true"></i></a> <a href="#"
+                                                                data-bs-toggle="modal" data-bs-target="#quick-view"
+                                                                title="Quick View" tabindex="0"><i class="ti-search"
+                                                                    aria-hidden="true"></i></a> <a href="compare.html"
+                                                                title="Compare" tabindex="0"><i class="ti-reload"
+                                                                    aria-hidden="true"></i></a>
+                                                        </div>
+                                                    </div>
+                                                    <div class="product-info">
+                                                        <a href="product-page(no-sidebar).html" tabindex="0">
+                                                            <h6>platanium bracelet Set</h6>
+                                                        </a>
+                                                        <h4>$320.60</h4>
+                                                        <ul class="color-variant image-swatch-demo">
+                                                            <li>
+                                                                <div class="bg-size blur-up lazyloaded"
+                                                                    style="background-image: url(&quot;../assets/images/jewellery/icon/rose-gold.jpg&quot;); background-size: cover; background-position: center center; display: block;">
+                                                                    <img src="../assets/images/jewellery/icon/rose-gold.jpg"
+                                                                        alt="" class="img-fluid blur-up lazyload bg-img"
+                                                                        ></div>
+                                                            </li>
+                                                            <li>
+                                                                <div class="bg-size blur-up lazyloaded"
+                                                                    style="background-image: url(&quot;../assets/images/jewellery/icon/gold.jpg&quot;); background-size: cover; background-position: center center; display: block;">
+                                                                    <img src="../assets/images/jewellery/icon/gold.jpg"
+                                                                        alt="" class="img-fluid blur-up lazyload bg-img"
+                                                                        ></div>
+                                                            </li>
+                                                            <li>
+                                                                <div class="bg-size blur-up lazyloaded"
+                                                                    style="background-image: url(&quot;../assets/images/jewellery/icon/silver.jpg&quot;); background-size: cover; background-position: center center; display: block;">
+                                                                    <img src="../assets/images/jewellery/icon/silver.jpg"
+                                                                        alt="" class="img-fluid blur-up lazyload bg-img"
+                                                                        ></div>
+                                                            </li>
+                                                        </ul>
+                                                        <div class="add-btn">
+                                                            <a href="javascript:void(0)" class="" tabindex="0">
+                                                                <i class="ti-shopping-cart"></i> add to cart
+                                                            </a>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </ng-template>
+                                        <ng-template carouselSlide class="slick-slide slick-active" data-slick-index="1" aria-hidden="false"
+                                            style="width: 285px;">
+                                            <div>
+                                                <div class="product-box product-wrap product-style-2"
+                                                    style="width: 100%; display: inline-block;">
+                                                    <div class="img-wrapper">
+                                                        <div class="front">
+                                                            <a href="product-page(no-sidebar).html"
+                                                                class="bg-size blur-up lazyloaded"
+                                                                style="background-image: url(&quot;../assets/images/jewellery/pro-grey/7.jpg&quot;); background-size: cover; background-position: center center; display: block;"
+                                                                tabindex="0"><img alt=""
+                                                                    src="../assets/images/jewellery/pro-grey/7.jpg"
+                                                                    class="img-fluid blur-up lazyload bg-img"
+                                                                    ></a>
+                                                        </div>
+                                                        <div class="cart-detail"><a href="javascript:void(0)"
+                                                                title="Add to Wishlist" tabindex="0"><i class="ti-heart"
+                                                                    aria-hidden="true"></i></a> <a href="#"
+                                                                data-bs-toggle="modal" data-bs-target="#quick-view"
+                                                                title="Quick View" tabindex="0"><i class="ti-search"
+                                                                    aria-hidden="true"></i></a> <a href="compare.html"
+                                                                title="Compare" tabindex="0"><i class="ti-reload"
+                                                                    aria-hidden="true"></i></a>
+                                                        </div>
+                                                    </div>
+                                                    <div class="product-info">
+                                                        <a href="product-page(no-sidebar).html" tabindex="0">
+                                                            <h6>multilayer Rose Gold Parl Necklace</h6>
+                                                        </a>
+                                                        <h4>$180.10</h4>
+                                                        <ul class="color-variant image-swatch-demo">
+                                                            <li>
+                                                                <div class="bg-size blur-up lazyloaded"
+                                                                    style="background-image: url(&quot;../assets/images/jewellery/icon/rose-gold.jpg&quot;); background-size: cover; background-position: center center; display: block;">
+                                                                    <img src="../assets/images/jewellery/icon/rose-gold.jpg"
+                                                                        alt="" class="img-fluid blur-up lazyload bg-img"
+                                                                        ></div>
+                                                            </li>
+                                                            <li>
+                                                                <div class="bg-size blur-up lazyloaded"
+                                                                    style="background-image: url(&quot;../assets/images/jewellery/icon/gold.jpg&quot;); background-size: cover; background-position: center center; display: block;">
+                                                                    <img src="../assets/images/jewellery/icon/gold.jpg"
+                                                                        alt="" class="img-fluid blur-up lazyload bg-img"
+                                                                        ></div>
+                                                            </li>
+                                                            <li>
+                                                                <div class="bg-size blur-up lazyloaded"
+                                                                    style="background-image: url(&quot;../assets/images/jewellery/icon/silver.jpg&quot;); background-size: cover; background-position: center center; display: block;">
+                                                                    <img src="../assets/images/jewellery/icon/silver.jpg"
+                                                                        alt="" class="img-fluid blur-up lazyload bg-img"
+                                                                        ></div>
+                                                            </li>
+                                                        </ul>
+                                                        <div class="add-btn">
+                                                            <a href="javascript:void(0)" class="" tabindex="0">
+                                                                <i class="ti-shopping-cart"></i> add to cart
+                                                            </a>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </ng-template>
+                                        <ng-template carouselSlide class="slick-slide slick-active" data-slick-index="2" aria-hidden="false"
+                                            style="width: 285px;">
+                                            <div>
+                                                <div class="product-box product-wrap product-style-2"
+                                                    style="width: 100%; display: inline-block;">
+                                                    <div class="img-wrapper">
+                                                        <div class="front">
+                                                            <a href="product-page(no-sidebar).html"
+                                                                class="bg-size blur-up lazyloaded"
+                                                                style="background-image: url(&quot;../assets/images/jewellery/pro-grey/8.jpg&quot;); background-size: cover; background-position: center center; display: block;"
+                                                                tabindex="0"><img alt=""
+                                                                    src="../assets/images/jewellery/pro-grey/8.jpg"
+                                                                    class="img-fluid blur-up lazyload bg-img"
+                                                                    ></a>
+                                                        </div>
+                                                        <div class="cart-detail"><a href="javascript:void(0)"
+                                                                title="Add to Wishlist" tabindex="0"><i class="ti-heart"
+                                                                    aria-hidden="true"></i></a> <a href="#"
+                                                                data-bs-toggle="modal" data-bs-target="#quick-view"
+                                                                title="Quick View" tabindex="0"><i class="ti-search"
+                                                                    aria-hidden="true"></i></a> <a href="compare.html"
+                                                                title="Compare" tabindex="0"><i class="ti-reload"
+                                                                    aria-hidden="true"></i></a>
+                                                        </div>
+                                                    </div>
+                                                    <div class="product-info">
+                                                        <a href="product-page(no-sidebar).html" tabindex="0">
+                                                            <h6>Butterfly Sheap Rose Gold Earrings</h6>
+                                                        </a>
+                                                        <h4>$500.00</h4>
+                                                        <ul class="color-variant image-swatch-demo">
+                                                            <li>
+                                                                <div class="bg-size blur-up lazyloaded"
+                                                                    style="background-image: url(&quot;../assets/images/jewellery/icon/rose-gold.jpg&quot;); background-size: cover; background-position: center center; display: block;">
+                                                                    <img src="../assets/images/jewellery/icon/rose-gold.jpg"
+                                                                        alt="" class="img-fluid blur-up lazyload bg-img"
+                                                                        ></div>
+                                                            </li>
+                                                            <li>
+                                                                <div class="bg-size blur-up lazyloaded"
+                                                                    style="background-image: url(&quot;../assets/images/jewellery/icon/gold.jpg&quot;); background-size: cover; background-position: center center; display: block;">
+                                                                    <img src="../assets/images/jewellery/icon/gold.jpg"
+                                                                        alt="" class="img-fluid blur-up lazyload bg-img"
+                                                                        ></div>
+                                                            </li>
+                                                            <li>
+                                                                <div class="bg-size blur-up lazyloaded"
+                                                                    style="background-image: url(&quot;../assets/images/jewellery/icon/silver.jpg&quot;); background-size: cover; background-position: center center; display: block;">
+                                                                    <img src="../assets/images/jewellery/icon/silver.jpg"
+                                                                        alt="" class="img-fluid blur-up lazyload bg-img"
+                                                                        ></div>
+                                                            </li>
+                                                        </ul>
+                                                        <div class="add-btn">
+                                                            <a href="javascript:void(0)" class="" tabindex="0">
+                                                                <i class="ti-shopping-cart"></i> add to cart
+                                                            </a>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </ng-template>
+                                        <ng-template carouselSlide class="slick-slide slick-active" data-slick-index="3" aria-hidden="false"
+                                            style="width: 285px;">
+                                            <div>
+                                                <div class="product-box product-wrap product-style-2"
+                                                    style="width: 100%; display: inline-block;">
+                                                    <div class="img-wrapper">
+                                                        <div class="lable-block"><span class="lable3">new</span></div>
+                                                        <div class="front">
+                                                            <a href="product-page(no-sidebar).html"
+                                                                class="bg-size blur-up lazyloaded"
+                                                                style="background-image: url(&quot;../assets/images/jewellery/pro-grey/9.jpg&quot;); background-size: cover; background-position: center center; display: block;"
+                                                                tabindex="0"><img alt=""
+                                                                    src="../assets/images/jewellery/pro-grey/9.jpg"
+                                                                    class="img-fluid blur-up lazyload bg-img"
+                                                                    ></a>
+                                                        </div>
+                                                        <div class="cart-detail"><a href="javascript:void(0)"
+                                                                title="Add to Wishlist" tabindex="0"><i class="ti-heart"
+                                                                    aria-hidden="true"></i></a> <a href="#"
+                                                                data-bs-toggle="modal" data-bs-target="#quick-view"
+                                                                title="Quick View" tabindex="0"><i class="ti-search"
+                                                                    aria-hidden="true"></i></a> <a href="compare.html"
+                                                                title="Compare" tabindex="0"><i class="ti-reload"
+                                                                    aria-hidden="true"></i></a>
+                                                        </div>
+                                                    </div>
+                                                    <div class="product-info">
+                                                        <a href="product-page(no-sidebar).html" tabindex="0">
+                                                            <h6>Astra Diamond Necklace</h6>
+                                                        </a>
+                                                        <h4>$1050.00</h4>
+                                                        <ul class="color-variant image-swatch-demo">
+                                                            <li>
+                                                                <div class="bg-size blur-up lazyloaded"
+                                                                    style="background-image: url(&quot;../assets/images/jewellery/icon/rose-gold.jpg&quot;); background-size: cover; background-position: center center; display: block;">
+                                                                    <img src="../assets/images/jewellery/icon/rose-gold.jpg"
+                                                                        alt="" class="img-fluid blur-up lazyload bg-img"
+                                                                        ></div>
+                                                            </li>
+                                                            <li>
+                                                                <div class="bg-size blur-up lazyloaded"
+                                                                    style="background-image: url(&quot;../assets/images/jewellery/icon/gold.jpg&quot;); background-size: cover; background-position: center center; display: block;">
+                                                                    <img src="../assets/images/jewellery/icon/gold.jpg"
+                                                                        alt="" class="img-fluid blur-up lazyload bg-img"
+                                                                        ></div>
+                                                            </li>
+                                                            <li>
+                                                                <div class="bg-size blur-up lazyloaded"
+                                                                    style="background-image: url(&quot;../assets/images/jewellery/icon/silver.jpg&quot;); background-size: cover; background-position: center center; display: block;">
+                                                                    <img src="../assets/images/jewellery/icon/silver.jpg"
+                                                                        alt="" class="img-fluid blur-up lazyload bg-img"
+                                                                        ></div>
+                                                            </li>
+                                                        </ul>
+                                                        <div class="add-btn">
+                                                            <a href="javascript:void(0)" class="" tabindex="0">
+                                                                <i class="ti-shopping-cart"></i> add to cart
+                                                            </a>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </ng-template>
+                                        <ng-template carouselSlide class="slick-slide" data-slick-index="4" aria-hidden="true" tabindex="-1"
+                                            style="width: 285px;">
+                                            <div>
+                                                <div class="product-box product-wrap product-style-2"
+                                                    style="width: 100%; display: inline-block;">
+                                                    <div class="img-wrapper">
+                                                        <div class="lable-block"><span class="lable3">new</span></div>
+                                                        <div class="front">
+                                                            <a href="product-page(no-sidebar).html"
+                                                                class="bg-size blur-up lazyloaded"
+                                                                style="background-image: url(&quot;../assets/images/jewellery/pro-grey/10.jpg&quot;); background-size: cover; background-position: center center; display: block;"
+                                                                tabindex="-1"><img alt=""
+                                                                    src="../assets/images/jewellery/pro-grey/10.jpg"
+                                                                    class="img-fluid blur-up lazyload bg-img"
+                                                                    ></a>
+                                                        </div>
+                                                        <div class="cart-detail"><a href="javascript:void(0)"
+                                                                title="Add to Wishlist" tabindex="-1"><i
+                                                                    class="ti-heart" aria-hidden="true"></i></a> <a
+                                                                href="#" data-bs-toggle="modal"
+                                                                data-bs-target="#quick-view" title="Quick View"
+                                                                tabindex="-1"><i class="ti-search"
+                                                                    aria-hidden="true"></i></a> <a href="compare.html"
+                                                                title="Compare" tabindex="-1"><i class="ti-reload"
+                                                                    aria-hidden="true"></i></a>
+                                                        </div>
+                                                    </div>
+                                                    <div class="product-info">
+                                                        <a href="product-page(no-sidebar).html" tabindex="-1">
+                                                            <h6>Multilayer Gold Sliver chain</h6>
+                                                        </a>
+                                                        <h4>$550.00</h4>
+                                                        <ul class="color-variant image-swatch-demo">
+                                                            <li>
+                                                                <div class="bg-size blur-up lazyloaded"
+                                                                    style="background-image: url(&quot;../assets/images/jewellery/icon/rose-gold.jpg&quot;); background-size: cover; background-position: center center; display: block;">
+                                                                    <img src="../assets/images/jewellery/icon/rose-gold.jpg"
+                                                                        alt="" class="img-fluid blur-up lazyload bg-img"
+                                                                        ></div>
+                                                            </li>
+                                                            <li>
+                                                                <div class="bg-size blur-up lazyloaded"
+                                                                    style="background-image: url(&quot;../assets/images/jewellery/icon/gold.jpg&quot;); background-size: cover; background-position: center center; display: block;">
+                                                                    <img src="../assets/images/jewellery/icon/gold.jpg"
+                                                                        alt="" class="img-fluid blur-up lazyload bg-img"
+                                                                        ></div>
+                                                            </li>
+                                                            <li>
+                                                                <div class="bg-size blur-up lazyloaded"
+                                                                    style="background-image: url(&quot;../assets/images/jewellery/icon/silver.jpg&quot;); background-size: cover; background-position: center center; display: block;">
+                                                                    <img src="../assets/images/jewellery/icon/silver.jpg"
+                                                                        alt="" class="img-fluid blur-up lazyload bg-img"
+                                                                        ></div>
+                                                            </li>
+                                                        </ul>
+                                                        <div class="add-btn">
+                                                            <a href="javascript:void(0)" class="" tabindex="-1">
+                                                                <i class="ti-shopping-cart"></i> add to cart
+                                                            </a>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </ng-template>
+                                    </owl-carousel-o>
+                                </div>
+                            </div>
+                        </ng-container>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>

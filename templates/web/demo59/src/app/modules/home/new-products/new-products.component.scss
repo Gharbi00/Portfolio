@@ -1,0 +1,19 @@
+
+
+:host::ng-deep .hello{
+    @media(width < 1200px){
+        display:none;
+    }
+}
+
+:host::ng-deep.owl-carousel{
+padding-left: 2%;
+}
+
+::ng-deep.dark .theme-card .owl-prev:before {
+filter: invert(1)!important;
+}
+
+::ng-deep.dark.theme-card .owl-next:before {
+    filter: invert(1)!important;
+    }

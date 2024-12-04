@@ -1,0 +1,46 @@
+:host::ng-deep .setting {
+    @media(width < 600px) {
+        display: none !important;
+    }
+}
+
+:host::ng-deep header.header-tools .top-header .container {
+    background-color: transparent;
+}
+
+.header-tools .top-header .header-dropdown li a {
+    color: #101010;
+}
+
+header.header-tools .top-header .header-dropdown li a i {
+    color: #121212;
+}
+
+
+header.header-tools .top-header .header-dropdown li {
+    color: #000000;
+
+}
+
+header.header-tools .top-header .header-contact li {
+    color: #000000;
+}
+
+header.sticky {
+    position: sticky !important;
+}
+
+::ng-deep.toggle-nav {
+    @media (max-width: 577px) {
+        padding-top: 58px !important;
+    }
+}
+::ng-deep.main-nav-center .toggle-nav {
+    @media (max-width: 991px){ 
+    
+        top: -57px!important;
+    }}
+    @media (max-width: 1199px){
+    header .main-navbar .nav-menu.opennav {
+        right: 0;
+    } }

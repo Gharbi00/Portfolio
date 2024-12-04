@@ -1,0 +1,19 @@
+.media {
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-align: start;
+    -ms-flex-align: start;
+    align-items: flex-start;
+}
+.product-parallax .theme-card .offer-slider>div .media {
+    background-color: #fff;
+}
+
+.theme-card.card-border .offer-slider {
+    padding-top: 0;
+    padding-bottom: 10px;
+}
+.product-parallax .theme-card .offer-slider>div .media:first-child {
+    margin-bottom: 20px;
+}

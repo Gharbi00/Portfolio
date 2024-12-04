@@ -1,0 +1,40 @@
+:host::ng-deep.owl-theme .owl-nav [class*=owl-] {
+
+    font-size: 14px;
+    margin: 5px;
+    padding: 4px 7px;
+    width: 50px;
+    height: 50px;
+    background: var(--color-lighter);
+    color: var(--color-body);
+    border: none;
+    border-radius: 6px;
+    z-index: 2;
+}
+
+
+:host::ng-deep .owl-theme .owl-nav {
+    position: absolute;
+    left: 950px;
+    z-index: 0;
+    
+    top: -80px;
+
+    @media(width<800px) {
+        display: none;
+    }
+}
+
+
+:host::ng-deep.fal {
+    padding-top: 12px !important;
+}
+
+
+/* :host::ng-deep .slick-track {
+    @media(width < 450px) {
+        place-items: center;
+        display: grid;
+    }
+
+} */

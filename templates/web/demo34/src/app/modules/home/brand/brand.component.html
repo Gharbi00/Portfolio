@@ -1,0 +1,36 @@
+
+
+<section class="section-b-space bg_cls"
+    style="box-shadow: rgba(0, 0, 0, 0.5) 0px 13px 30px -20px; margin-bottom: 50px;margin-top: 100px;">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="slide-6 no-arrow slick-initialized slick-slider">
+                    <div class="slick-list draggable">
+                        <owl-carousel-o [options]="BrandCarousel" class="slick-track"
+                            style="opacity: 1; ">
+                            <ng-container *ngFor="let brand of BrandData"> 
+                                <ng-template carouselSlide>
+
+
+                            <div class="slick-slide slick-cloned" data-slick-index="-5" aria-hidden="true" tabindex="-1"
+                                style="width: 224px;">
+                                <div>
+                                    <div style="width: 60%; display: inline-block;">
+                                        <div class="logo-block">
+                                            <a href="#" tabindex="-1"><img src="{{brand.src}}"
+                                                    alt=""></a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </ng-template>
+                    </ng-container>
+                            
+                        </owl-carousel-o>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>

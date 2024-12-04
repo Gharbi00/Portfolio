@@ -1,0 +1,89 @@
+<div class="axil-main-slider-area main-slider-style-1">
+  <div class="container">
+
+    <owl-carousel-o [options]="sliderOptions" class="custom-carousel">
+
+      <ng-container *ngFor="let slide of slides;let i =index">
+        <ng-template carouselSlide>
+          <div class="row align-items-center">
+            <div class="col-lg-5 col-sm-6">
+              <div class="main-slider-content">
+                <div class="slider-content-activation-one slick-initialized slick-slider">
+                  <div class="slick-list draggable">
+                    <div class="slick-track" style="opacity: 1; max-width: 2500px;">
+                      <div class="single-slide " data-sal="slide-up" data-sal-delay="400" data-sal-duration="800">
+                        <span class="subtitle"><i class="fas fa-fire"></i> Hot Deal In This Week</span>
+                        <h1 class="title">{{ slide.SlideTitle }}</h1>
+                        <div class="slide-action">
+                          <div class="shop-btn">
+                            <a href="/shop" class="axil-btn btn-bg-white" tabindex="-1"><i
+                                class="fal fa-shopping-cart"></i>Shop Now</a>
+                          </div>
+                          <div class="item-rating">
+                            <div class="thumb">
+                              <ul>
+                                <li *ngFor="let author of slide.authors"><img src="{{ author }}" alt="Author"></li>
+                              </ul>
+                            </div>
+                            <div class="content">
+                              <span class="rating-icon">
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fal fa-star"></i>
+                              </span>
+                              <span class="review-text">
+                                <span>100+</span> Reviews
+                              </span>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="col-lg-7 col-sm-6">
+              <div class="main-slider-large-thumb">
+                <div class="slider-thumb-activation-one axil-slick-dots slick-initialized slick-slider slick-dotted">
+                  <div class="slick-list draggable">
+                    <div class="slick-track" style="opacity: 1; ">
+                      <div class="single-slide">
+                        <img src="{{ slide.thumbImage}}" alt="Product">
+                        <div class="product-price">
+                          <span class="text">From</span>
+                          <span class="price-amount">{{ slide.Thumbprice }}</span>
+                        </div>
+                      </div>
+                      <div class="single-slide slick-slide  slick-active" data-sal="slide-up" data-sal-delay="600"
+                        data-sal-duration="1500" data-slick-index="1" aria-hidden="false" tabindex="0" role="tabpanel"
+                        id="slick-slide61" aria-describedby="slick-slide-control61" style="width: 672px;">
+                        <img src="{{ slide.thumbImage}}" alt="Product">
+                        <div class="product-price">
+                          <span class="text">From</span>
+                          <span class="price-amount">{{ slide.Thumbprice }}</span>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+
+
+
+                </div>
+              </div>
+            </div>
+          </div>
+        </ng-template>
+      </ng-container>
+
+    </owl-carousel-o>
+
+  </div>
+  <ul class="shape-group">
+    <li class="shape-1"><img src="assets/images/others/shape-1.png" alt="Shape"></li>
+    <li class="shape-2"><img src="assets/images/others/shape-2.png" alt="Shape"></li>
+  </ul>
+</div>

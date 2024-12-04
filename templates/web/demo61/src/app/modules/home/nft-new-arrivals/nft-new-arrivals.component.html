@@ -1,0 +1,52 @@
+<section class="section-b-space">
+    <div class="container">
+        <div class="row">
+            <div class="col-12">
+                <div class="title2">
+                    <h4>OUR PRODUCTS</h4>
+                    <h2 class="title-inner2">NEW ARRAIVAL</h2>
+                </div>
+            </div>
+            <div class="col-12">
+                <div class="product-4_2 product-m no-arrow ratio3_2">
+                  <owl-carousel-o [options]="NftBoxSlider">
+                  <ng-container *ngFor="let item of nftBox">
+                      <ng-template carouselSlide>
+                        <div class="nft-box">
+                            <div class="nft-img">
+                                <img src="{{item.src}}" class="img-fluid bg-img" alt="">
+<!--                                 <div class="timer-sec">
+                                    <span>{{item.timer}}</span>
+                                </div> -->
+                                <a routerlink="#"><i data-feather="heart"></i></a>
+                            </div>
+                            <div class="nft-content">
+                                <div class="top-content">
+                                    <a routerlink="">
+                                        <h4>{{item.name}}</h4>
+                                    </a>
+                                    <h5>{{item.provider}}</h5>
+                                </div>
+                                <div class="bottom-content">
+                                    <div>
+                                        <span>current bid</span>
+                                        <div class="price">
+                                            <img src="../assets/images/nft/ethereum.png" class="img-fluid" alt="">
+                                            <h5>20,00 ETH</h5>
+                                        </div>
+                                    </div>
+                                    <a class="btn btn-solid btn-xs rounded-2" routerlink="#">Place a Bid</a>
+                                </div>
+                            </div>
+                        </div>
+                      </ng-template>
+                  </ng-container>
+              </owl-carousel-o>
+
+  
+                </div>
+            </div>
+        </div>
+    </div>
+  </section>
+

@@ -1,0 +1,78 @@
+<div class="fancy-hero-one" style="padding-top: 150px;">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-9 m-auto">
+                <h2 class="font-rubik">{{blog?.title}}</h2>
+            </div>
+        </div>
+    </div>
+    <div class="bubble-one"></div>
+    <div class="bubble-two"></div>
+    <div class="bubble-three"></div>
+    <div class="bubble-four"></div>
+    <div class="bubble-five"></div>
+    <div class="bubble-six"></div>
+</div>
+
+
+<div class="blog-page-bg">
+    <div class="shapes shape-one"></div>
+    <div class="shapes shape-two"></div>
+    <div class="shapes shape-three"></div>
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 feature-blog-one width-lg blog-details-post-v1">
+                <div *ngIf="blog?.sectionData?.length" class="post-meta">
+                    <img [src]="blog?.pictures[0]?.baseUrl + '/' + blog?.pictures[0]?.path"
+                        [alt]="blog?.pictures[0]?.alt" class="image-meta">
+                    <div class="tag">{{ blog?.createdAt | date }}</div>
+                    <div *ngFor="let section of blog.sectionData" class="entry-content editor-content">
+                        <h3 class="title">{{section?.sectionTitle}}</h3>
+                        <quill-view-html [content]="section?.sectionContent" theme="snow"></quill-view-html>
+                        <br>
+                    </div>
+
+                    <div class="d-sm-flex align-items-center justify-content-between share-area">
+                        <ul class="tag-feature d-flex">
+                            <li>Tag: &nbsp;</li>
+                            <li><a *ngFor="let tag of blog?.tags">{{tag}}, </a></li>
+                        </ul>
+                        <ul class="share-option d-flex align-items-center">
+                            <li>Share</li>
+                            <li><a href="#" style="background: #F6616F;"><i class="fa fa-instagram"></i></a></li>
+                            <li><a href="#" style="background: #41CFED;"><i class="fa fa-linkedin"></i></a></li>
+                            <li><a href="#" style="background: #588DE7;"><i class="fa fa-facebook"></i></a></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-4 col-md-6">
+                <div class="blog-sidebar-one">
+                    <div class="sidebar-search-form mb-85">
+                        <form action="#">
+                            <input type="text" placeholder="{{'SEARCH' | translate}}">
+                            <button class="button-color"><img src="assets/images/icon/50.svg" alt=""></button>
+                        </form>
+                    </div> <!-- /.sidebar-search-form -->
+                    <div *ngIf="blogs?.length" class="sidebar-recent-news mb-85">
+                        <h4 class="sidebar-title">{{'RECENT_NEWS' | translate}}</h4>
+                        <ul>
+                            <li *ngFor="let blog of blogs">
+                                <a [routerLink]="['/blog/' + blog.url]">
+                                    <span class="title">{{blog?.title}}</span>
+                                    <span class="date">{{ blog?.createdAt | date }}</span>
+                                </a>
+                            </li>
+                        </ul>
+                    </div> <!-- /.sidebar-recent-news -->
+                    <div class="sidebar-keyword">
+                        <h4 class="sidebar-title">{{'KEYWORDS' | translate}}</h4>
+                        <ul class="cleafix">
+                            <li><a *ngFor="let tag of blog?.tags">{{tag}}</a></li>
+                        </ul>
+                    </div> <!-- /.sidebar-keyword -->
+                </div> <!-- /.blog-sidebar-one -->
+            </div>
+        </div>
+    </div>
+</div>

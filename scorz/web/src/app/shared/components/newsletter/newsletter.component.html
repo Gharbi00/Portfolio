@@ -1,0 +1,8 @@
+<form [formGroup]="newsLetterForm" data-aos="fade-up" data-aos-delay="250" data-aos-duration="500"
+    data-aos-easing="ease-in" class="aos-init aos-animate">
+    <input formControlName="email" type="email" placeholder="Enter Your Email" aria-label="Email Address"
+        aria-describedby="newsletter-btn" required>
+    <button class="prd-btn-1 submit-btn" [disabled]="newsLetterForm.invalid || isButtonDisabled"
+        (click)="submitNewsLetter()" type="button" id="newsletter-btn">Subscribe <i
+            class="fa-sharp fa-light fa-paper-plane"></i></button>
+</form>

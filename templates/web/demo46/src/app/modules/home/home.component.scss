@@ -1,0 +1,14 @@
+.game-product .product-box .add-button {
+    background-color: var(--theme-color);
+    color: white;
+    text-align: center;
+    font-size: 18px;
+    text-transform: capitalize;
+    position: absolute;
+    width: 100%;
+    bottom: -40px;
+    padding: 5px 0;
+    -webkit-transition: all 0.5s ease;
+    transition: all 0.5s ease;
+    cursor: pointer;
+}

@@ -1,0 +1,137 @@
+body {
+  font-family: 'Roboto', sans-serif;
+  font-weight: normal;
+  font-size: 18px;
+  position: relative;
+  line-height: 1.7em;
+  color: var(--text-color);
+}
+
+.font-gordita {
+  font-family: 'gordita' !important;
+}
+
+.rtl {
+  .clients-feedback-classic .feedback-wrapper:before {
+    transform: scaleX(-1);
+    position: absolute;
+    bottom: 55px;
+    left: 60px;
+    right: auto !important;
+  }
+
+  .hero-banner-seven .illustration-container {
+    position: absolute;
+    top: 22px;
+    left: 70px !important;
+    right: auto !important;
+    max-width: 46%;
+  }
+
+  .hero-banner-sixteen {
+    position: relative;
+    z-index: 1;
+    margin: 100px 0 250px !important;
+  }
+
+  p {
+    font-size: 22px !important;
+  }
+
+  h2 {
+    font-size: 60px !important;
+  }
+
+  .faq-classic .card .card-header button {
+    text-align: right;
+    padding-right: 50px;
+  }
+
+  .faq-classic .card .card-header button:before {
+    content: "+";
+    position: absolute;
+    font-size: 24px;
+    right: 20px;
+    left: auto;
+  }
+
+
+
+  @media (max-width: 991px) {
+    .dropdown-toggle[_ngcontent-portal-c180]::after {
+      content: "";
+      font-family: Flaticon;
+      border: none !important;
+      font-size: 10px;
+      position: absolute;
+      right: 90% !important;
+      top: 6%;
+      color: inherit;
+      transition: all 0.3s ease-in-out;
+    }
+  }
+
+  .title-style-thirteen .upper-title {
+    text-transform: uppercase !important;
+    font-size: 20px !important;
+    font-weight: 800 !important;
+    color: rgba(0, 0, 0, 0.2) !important;
+    letter-spacing: 3px !important;
+    padding-bottom: 16px !important;
+  }
+
+  @media (max-width: 991px) {
+    .image-right {
+      margin-left: 50px;
+    }
+
+    .hello-right {
+      padding: 20px 15px !important;
+    }
+  }
+
+  .fancy-feature-thirtyFive .slider-wrapper {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: -11vw !important;
+    right: auto !important;
+    width: 72vw;
+    margin: 0 -24px;
+  }
+
+  .hero-banner-sixteen .screen-holder {
+    position: absolute;
+    left: 50px !important;
+    top: -30px;
+    right: auto;
+    width: 40%;
+  }
+
+  @media (max-width: 991px) {
+    .theme-menu-five #mega-menu-holder {
+      margin-left: 0 !important;
+      margin-right: auto !important;
+    }
+  }
+
+  .hero-banner-eleven .illustration-container {
+    position: absolute;
+    top: -14%;
+    left: 5%;
+    right: auto;
+    max-width: 46%;
+  }
+
+  .fancy-text-block-six .img-meta-container {
+    position: absolute;
+    left: 0 !important;
+    right: auto;
+    top: 23px;
+    max-width: 42%;
+  }
+
+  .accordion-style-two .card .card-header button {
+    text-align: right !important;
+  }
+}

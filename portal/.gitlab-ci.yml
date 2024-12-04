@@ -1,0 +1,67 @@
+variables:
+  PORTAL_TAG: elevok-portal-1.0
+  PORTAL_PROD_TAG: elevok-portal-prod-1.0
+
+##########################################
+## STAGE: BUILD                         ##
+##########################################
+
+build:portal:
+  stage: build
+  dependencies:
+    - cleanup
+  script:
+    - echo "Build Started ..."
+
+##########################################
+## STAGE: VERIFY                        ##
+##########################################
+
+verify:portal:
+  stage: verify
+  dependencies:
+    - build:portal
+  script:
+    - echo "Verfify Portal Started ..."
+
+##########################################
+## STAGE: CONTAINERIZE                  ##
+##########################################
+
+containerize:portal:
+  stage: containerize
+  dependencies:
+    - verify:portal
+  image: docker:23.0.5
+  services:
+    - docker:23.0.5-dind
+  script:
+    - docker system prune -a -f
+    - docker build -t $IMAGE_NAME:$PORTAL_TAG --build-arg CI_SERVER_HOST=$CI_SERVER_HOST --build-arg CI_PROJECT_ID=$CI_PROJECT_ID --build-arg CI_JOB_TOKEN=$CI_JOB_TOKEN -f apps/portal/Dockerfile.ssr .
+    - docker tag $IMAGE_NAME:$PORTAL_TAG $CI_REGISTRY_IMAGE:$PORTAL_TAG
+    - docker push $CI_REGISTRY_IMAGE:$PORTAL_TAG
+  when: manual
+
+##########################################
+## STAGE: DEPLOY                        ##
+##########################################
+
+deploy:portal:
+  stage: deploy
+  dependencies:
+    - containerize:portal
+  variables:
+    CONTAINER_NAME: elevok-portal
+  script:
+    - ssh -o StrictHostKeyChecking=no -i $CLIENTS_KEY ubuntu@"$CLIENTS_SERVER" "
+        docker login -u $CI_REGISTRY_USER -p $CI_REGISTRY_PASSWORD $CI_REGISTRY &&
+        docker pull $CI_REGISTRY_IMAGE:$PORTAL_TAG &&
+        RUNNING_CONTAINER=\$(docker ps -aqf "name=$CONTAINER_NAME") &&
+        if [ -n \"\$RUNNING_CONTAINER\" ]; then
+            echo stopping and removing container $RUNNING_CONTAINER &&
+            docker stop \$RUNNING_CONTAINER &&
+            docker rm \$RUNNING_CONTAINER;
+        fi &&
+        docker system prune -a -f &&
+        docker run -d -p 811:4000 -e API_SERVER=elevok.com -e BACKEND_SERVER=sfca-sbx-bck.diktup.cloud --name $CONTAINER_NAME $CI_REGISTRY_IMAGE:$PORTAL_TAG"
+  when: manual

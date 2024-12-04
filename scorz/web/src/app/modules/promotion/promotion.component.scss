@@ -1,0 +1,9 @@
+.promotion {
+    padding: 200px 0;
+    position: relative;
+}
+:host::ng-deep ul {
+    margin-top: 0;
+    margin-bottom: 2px;
+    padding-left: 2px;
+}

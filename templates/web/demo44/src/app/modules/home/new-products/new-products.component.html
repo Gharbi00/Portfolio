@@ -1,0 +1,210 @@
+<section style="display:flex;flex-wrap: wrap;justify-content: center;align-items: center; ">
+    <div class="container">
+        <div class="row multiple-slider">
+            <div class="col-xl-9 col-lg-8 col-md-12">
+                <div class="theme-tab">
+                    <div class="tab-content-cls ratio_asos">
+                        <div class="product_4 product-m no-arrow slick-initialized slick-slider">
+                            <div class="slick-list draggable">
+                                <owl-carousel-o [options]="NewProductsCarousel" class="slick-track"
+                                    style="opacity: 1; width: 3705px;">
+                                    <ng-container *ngFor="let product of NewProductsData">
+                                    <ng-template  carouselSlide class="slick-slide slick-cloned" data-slick-index="-3" aria-hidden="true"
+                                        tabindex="-1" style="width: 285px;">
+                                        <div>
+                                            <div class="product-box" style="width: 100%; display: inline-block;">
+                                                <div class="img-wrapper">
+                                                    <div class="front">
+                                                        <a href="product-page(no-sidebar).html"
+                                                            class="bg-size blur-up lazyloaded"
+                                                            style="background-image: url(&quot;{{product.src}}&quot;); background-size: cover; background-position: center center; display: block;"
+                                                            tabindex="-1"><img
+                                                                src="{{product.src}}"
+                                                                class="img-fluid blur-up lazyload bg-img" alt=""
+                                                               ></a>
+                                                    </div>
+                                                    <div class="cart-info cart-wrap">
+                                                        <button data-bs-toggle="modal" data-bs-target="#addtocart"
+                                                            title="Add to cart" tabindex="-1"><i
+                                                                class="ti-shopping-cart"></i></button> <a
+                                                            href="javascript:void(0)" title="Add to Wishlist"
+                                                            tabindex="-1"><i class="ti-heart"
+                                                                aria-hidden="true"></i></a> <a href="#"
+                                                            data-bs-toggle="modal" data-bs-target="#quick-view"
+                                                            title="Quick View" tabindex="-1"><i class="ti-search"
+                                                                aria-hidden="true"></i></a>
+                                                        <a href="compare.html" title="Compare" tabindex="-1"><i
+                                                                class="ti-reload" aria-hidden="true"></i></a>
+                                                    </div>
+                                                </div>
+                                                <div class="product-detail">
+                                                    <div class="rating"><i class="fa fa-star"></i> <i
+                                                            class="fa fa-star"></i>
+                                                        <i class="fa fa-star"></i> <i class="fa fa-star"></i> <i
+                                                            class="fa fa-star"></i>
+                                                    </div>
+                                                    <a href="product-page(no-sidebar).html" tabindex="-1">
+                                                        <h6>{{product.name}}</h6>
+                                                    </a>
+                                                    <h4>${{product.price}}</h4>
+                                                    <ul class="color-variant">
+                                                        <li class="bg-light0"></li>
+                                                        <li class="bg-light1"></li>
+                                                        <li class="bg-light2"></li>
+                                                    </ul>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </ng-template>
+                                    </ng-container>
+                                </owl-carousel-o>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="banner-tools border-0">
+                    <div class="banner-goggles ratio2_1">
+                        <div class="container p-0">
+                            <div class="row partition3">
+                                <div class="col-md-6">
+                                    <a href="#">
+                                        <div class="collection-banner p-right text-end">
+                                            <div class="img-part bg-size blur-up lazyloaded"
+                                                style="background-image: url(&quot;../assets/images/furniture/banner/8.jpg&quot;); background-size: cover; background-position: center center; display: block;">
+                                                <img src="../assets/images/furniture/banner/8.jpg"
+                                                    class="img-fluid blur-up lazyload bg-img" alt=""
+                                                    style="display: none;">
+                                            </div>
+                                            <div class="contain-banner banner-3">
+                                                <div>
+                                                    <h4 class="text-dark">10% off</h4>
+                                                    <h2 class="text-dark">speaker</h2>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </a>
+                                </div>
+                                <div class="col-md-6">
+                                    <a href="#">
+                                        <div class="collection-banner p-right text-end">
+                                            <div class="img-part bg-size blur-up lazyloaded"
+                                                style="background-image: url(&quot;../assets/images/furniture/banner/9.jpg&quot;); background-size: cover; background-position: center center; display: block;">
+                                                <img src="../assets/images/furniture/banner/9.jpg"
+                                                    class="img-fluid blur-up lazyload bg-img" alt=""
+                                                    style="display: none;">
+                                            </div>
+                                            <div class="contain-banner banner-3">
+                                                <div>
+                                                    <h4 class="text-light">10% off</h4>
+                                                    <h2 class="text-light">earplug</h2>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-xl-3 col-lg-4 col-md-12 mb-0 hello">
+                <div class="theme-card">
+                    <h5 class="title-border">new products</h5>
+                    <div class="offer-slider slide-1 slick-initialized slick-slider">
+                        <div class="slick-list draggable">
+                            <owl-carousel-o [options]="NewProductsCarousel2" class="slick-track"
+                                style="opacity: 1; width: 1305px;">
+                                <ng-container *ngFor="let product of NewProductsData; let i = index">
+                                    
+                                <ng-template carouselSlide class="slick-slide slick-cloned" data-slick-index="-1" aria-hidden="true"
+                                    tabindex="-1" style="width: 261px;">
+                                    <div *ngIf="i * 4 + 3< NewProductsData.length">
+                                    <div>
+                                        <div style="width: 100%; display: inline-block;">
+                                            <div class="media">
+                                                <a href="product-page(no-sidebar).html" tabindex="-1"><img
+                                                        class="img-fluid blur-up lazyloaded"
+                                                        src="../assets/images/furniture/pro/1.jpg" alt=""></a>
+                                                <div class="media-body align-self-center">
+                                                    <div class="rating">
+                                                        <i class="fa fa-star"></i>
+                                                        <i class="fa fa-star"></i>
+                                                        <i class="fa fa-star"></i>
+                                                        <i class="fa fa-star"></i>
+                                                        <i class="fa fa-star"></i>
+                                                    </div>
+                                                    <a href="product-page(no-sidebar).html" tabindex="-1">
+                                                        <h6>{{ NewProductsData[i*4].name }}</h6>
+                                                    </a>
+                                                    <h4>$300.20 <del>$400.0</del></h4>
+                                                </div>
+                                            </div>
+                                            <div class="media">
+                                                <a href="product-page(no-sidebar).html" tabindex="-1"><img
+                                                        class="img-fluid blur-up lazyloaded"
+                                                        src="../assets/images/furniture/pro/4.jpg" alt=""></a>
+                                                <div class="media-body align-self-center">
+                                                    <div class="rating">
+                                                        <i class="fa fa-star"></i>
+                                                        <i class="fa fa-star"></i>
+                                                        <i class="fa fa-star"></i>
+                                                        <i class="fa fa-star"></i>
+                                                        <i class="fa fa-star"></i>
+                                                    </div>
+                                                    <a href="product-page(no-sidebar).html" tabindex="-1">
+                                                        <h6>{{ NewProductsData[i*4+1].name }}</h6>
+                                                    </a>
+                                                    <h4>$100.00</h4>
+                                                </div>
+                                            </div>
+                                            <div class="media">
+                                                <a href="product-page(no-sidebar).html" tabindex="-1"><img
+                                                        class="img-fluid blur-up lazyloaded"
+                                                        src="../assets/images/furniture/pro/2.jpg" alt=""></a>
+                                                <div class="media-body align-self-center">
+                                                    <div class="rating">
+                                                        <i class="fa fa-star"></i>
+                                                        <i class="fa fa-star"></i>
+                                                        <i class="fa fa-star"></i>
+                                                        <i class="fa fa-star"></i>
+                                                        <i class="fa fa-star"></i>
+                                                    </div>
+                                                    <a href="product-page(no-sidebar).html" tabindex="-1">
+                                                        <h6>{{ NewProductsData[i*4+2].name }}</h6>
+                                                    </a>
+                                                    <h4>$150.30</h4>
+                                                </div>
+                                            </div>
+                                            <div class="media">
+                                                <a href="product-page(no-sidebar).html" tabindex="-1"><img
+                                                        class="img-fluid blur-up lazyloaded"
+                                                        src="../assets/images/furniture/pro/3.jpg" alt=""></a>
+                                                <div class="media-body align-self-center">
+                                                    <div class="rating">
+                                                        <i class="fa fa-star"></i>
+                                                        <i class="fa fa-star"></i>
+                                                        <i class="fa fa-star"></i>
+                                                        <i class="fa fa-star"></i>
+                                                        <i class="fa fa-star"></i>
+                                                    </div>
+                                                    <a href="product-page(no-sidebar).html" tabindex="-1">
+                                                        <h6>{{ NewProductsData[i*4+3].name }}</h6>
+                                                    </a>
+                                                    <h4>$350.80</h4>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                </ng-template>
+                               
+                            </ng-container>
+
+                            </owl-carousel-o>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>

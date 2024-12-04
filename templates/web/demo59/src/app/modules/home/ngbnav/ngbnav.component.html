@@ -1,0 +1,1753 @@
+<div class="title1 section-t-space">
+    <h2 class="title-inner1">top category</h2>
+</div>
+
+<section class="section-b-space pt-0 ratio_square">
+    <div class="container">
+        <div class="row">
+            <div class="col">
+                <div class="theme-tab">
+                    <ul class="tabs tab-title">
+                        <li  [class.current]="activeTab === 'tab-1'" (click)="switchTab('tab-1')">
+                            <a >covid</a>
+                        </li>
+                        <li  [class.current]="activeTab === 'tab-2'" (click)="switchTab('tab-2')">
+                            <a >personal care</a>
+                        </li>
+                        <li  [class.current]="activeTab === 'tab-3'" (click)="switchTab('tab-3')">
+                            <a >diabetic</a>
+                        </li>
+                        <li [class.current]="activeTab === 'tab-4'" (click)="switchTab('tab-4')">
+                            <a>supplements</a>
+                        </li>
+                        <li  [class.current]="activeTab === 'tab-5'" (click)="switchTab('tab-5')">
+                            <a >devices</a>
+                        </li>
+                    </ul>
+                    <div class="tab-content-cls j-box style-box"  [@tabAnimation]="activeTab">
+                        <ng-container *ngIf="activeTab==='tab-1'" class="tab-content active default" >
+                            <div class="no-slider row five-product margin-default">
+                                <div class="product-box">
+                                    <div class="img-wrapper">
+                                        <div class="front">
+                                            <a href="product-page(no-sidebar).html" class="bg-size blur-up lazyloaded"
+                                                style="background-image: url(&quot;../assets/images/medicine/pro/1.jpg&quot;); background-size: cover; background-position: center center; display: block;"><img
+                                                    src="../assets/images/medicine/pro/1.jpg"
+                                                    class="img-fluid blur-up lazyload bg-img" alt=""
+                                                    ></a>
+                                        </div>
+                                        <div class="cart-info cart-wrap">
+                                            <button data-bs-toggle="modal" data-bs-target="#addtocart"
+                                                title="Add to cart"><i class="ti-shopping-cart"></i></button>
+                                            <a href="javascript:void(0)" title="Add to Wishlist"><i class="ti-heart"
+                                                    aria-hidden="true"></i></a>
+                                            <a href="#" data-bs-toggle="modal" data-bs-target="#quick-view"
+                                                title="Quick View"><i class="ti-search" aria-hidden="true"></i></a>
+                                            <a href="compare.html" title="Compare"><i class="ti-reload"
+                                                    aria-hidden="true"></i></a>
+                                        </div>
+                                    </div>
+                                    <div class="product-detail">
+                                        <div class="rating">
+                                            <i class="fa fa-star"></i>
+                                            <i class="fa fa-star"></i>
+                                            <i class="fa fa-star"></i>
+                                            <i class="fa fa-star"></i>
+                                            <i class="fa fa-star"></i>
+                                        </div>
+                                        <a href="product-page(no-sidebar).html">
+                                            <h6>Surgical Mask</h6>
+                                        </a>
+                                        <h4>$1.00</h4>
+                                    </div>
+                                </div>
+                                <div class="product-box">
+                                    <div class="img-wrapper">
+                                        <div class="front">
+                                            <a href="product-page(no-sidebar).html" class="bg-size blur-up lazyloaded"
+                                                style="background-image: url(&quot;../assets/images/medicine/pro/2.jpg&quot;); background-size: cover; background-position: center center; display: block;"><img
+                                                    src="../assets/images/medicine/pro/2.jpg"
+                                                    class="img-fluid blur-up lazyload bg-img" alt=""
+                                                    ></a>
+                                        </div>
+                                        <div class="cart-info cart-wrap">
+                                            <button data-bs-toggle="modal" data-bs-target="#addtocart"
+                                                title="Add to cart"><i class="ti-shopping-cart"></i></button>
+                                            <a href="javascript:void(0)" title="Add to Wishlist"><i class="ti-heart"
+                                                    aria-hidden="true"></i></a>
+                                            <a href="#" data-bs-toggle="modal" data-bs-target="#quick-view"
+                                                title="Quick View"><i class="ti-search" aria-hidden="true"></i></a>
+                                            <a href="compare.html" title="Compare"><i class="ti-reload"
+                                                    aria-hidden="true"></i></a>
+                                        </div>
+                                    </div>
+                                    <div class="product-detail">
+                                        <div class="rating">
+                                            <i class="fa fa-star"></i>
+                                            <i class="fa fa-star"></i>
+                                            <i class="fa fa-star"></i>
+                                            <i class="fa fa-star"></i>
+                                            <i class="fa fa-star"></i>
+                                        </div>
+                                        <a href="product-page(no-sidebar).html">
+                                            <h6>Hand Sanitizer</h6>
+                                        </a>
+                                        <h4>$10.00</h4>
+                                    </div>
+                                </div>
+                                <div class="product-box">
+                                    <div class="img-wrapper">
+                                        <div class="front">
+                                            <a href="product-page(no-sidebar).html" class="bg-size blur-up lazyloaded"
+                                                style="background-image: url(&quot;../assets/images/medicine/pro/3.jpg&quot;); background-size: cover; background-position: center center; display: block;"><img
+                                                    src="../assets/images/medicine/pro/3.jpg"
+                                                    class="img-fluid blur-up lazyload bg-img" alt=""
+                                                    ></a>
+                                        </div>
+                                        <div class="cart-info cart-wrap">
+                                            <button data-bs-toggle="modal" data-bs-target="#addtocart"
+                                                title="Add to cart"><i class="ti-shopping-cart"></i></button>
+                                            <a href="javascript:void(0)" title="Add to Wishlist"><i class="ti-heart"
+                                                    aria-hidden="true"></i></a>
+                                            <a href="#" data-bs-toggle="modal" data-bs-target="#quick-view"
+                                                title="Quick View"><i class="ti-search" aria-hidden="true"></i></a>
+                                            <a href="compare.html" title="Compare"><i class="ti-reload"
+                                                    aria-hidden="true"></i></a>
+                                        </div>
+                                    </div>
+                                    <div class="product-detail">
+                                        <div class="rating">
+                                            <i class="fa fa-star"></i>
+                                            <i class="fa fa-star"></i>
+                                            <i class="fa fa-star"></i>
+                                            <i class="fa fa-star"></i>
+                                            <i class="fa fa-star"></i>
+                                        </div>
+                                        <a href="product-page(no-sidebar).html">
+                                            <h6>Multi Vitamin Tablate</h6>
+                                        </a>
+                                        <h4>$3.00</h4>
+                                    </div>
+                                </div>
+                                <div class="product-box">
+                                    <div class="img-wrapper">
+                                        <div class="front">
+                                            <a href="product-page(no-sidebar).html" class="bg-size blur-up lazyloaded"
+                                                style="background-image: url(&quot;../assets/images/medicine/pro/4.jpg&quot;); background-size: cover; background-position: center center; display: block;"><img
+                                                    src="../assets/images/medicine/pro/4.jpg"
+                                                    class="img-fluid blur-up lazyload bg-img" alt=""
+                                                    ></a>
+                                        </div>
+                                        <div class="cart-info cart-wrap">
+                                            <button data-bs-toggle="modal" data-bs-target="#addtocart"
+                                                title="Add to cart"><i class="ti-shopping-cart"></i></button>
+                                            <a href="javascript:void(0)" title="Add to Wishlist"><i class="ti-heart"
+                                                    aria-hidden="true"></i></a>
+                                            <a href="#" data-bs-toggle="modal" data-bs-target="#quick-view"
+                                                title="Quick View"><i class="ti-search" aria-hidden="true"></i></a>
+                                            <a href="compare.html" title="Compare"><i class="ti-reload"
+                                                    aria-hidden="true"></i></a>
+                                        </div>
+                                    </div>
+                                    <div class="product-detail">
+                                        <div class="rating">
+                                            <i class="fa fa-star"></i>
+                                            <i class="fa fa-star"></i>
+                                            <i class="fa fa-star"></i>
+                                            <i class="fa fa-star"></i>
+                                            <i class="fa fa-star"></i>
+                                        </div>
+                                        <a href="product-page(no-sidebar).html">
+                                            <h6>Hand gloves</h6>
+                                        </a>
+                                        <h4>$0.50</h4>
+                                    </div>
+                                </div>
+                                <div class="product-box">
+                                    <div class="img-wrapper">
+                                        <div class="front">
+                                            <a href="product-page(no-sidebar).html" class="bg-size blur-up lazyloaded"
+                                                style="background-image: url(&quot;../assets/images/medicine/pro/5.jpg&quot;); background-size: cover; background-position: center center; display: block;"><img
+                                                    src="../assets/images/medicine/pro/5.jpg"
+                                                    class="img-fluid blur-up lazyload bg-img" alt=""
+                                                    ></a>
+                                        </div>
+                                        <div class="cart-info cart-wrap">
+                                            <button data-bs-toggle="modal" data-bs-target="#addtocart"
+                                                title="Add to cart"><i class="ti-shopping-cart"></i></button>
+                                            <a href="javascript:void(0)" title="Add to Wishlist"><i class="ti-heart"
+                                                    aria-hidden="true"></i></a>
+                                            <a href="#" data-bs-toggle="modal" data-bs-target="#quick-view"
+                                                title="Quick View"><i class="ti-search" aria-hidden="true"></i></a>
+                                            <a href="compare.html" title="Compare"><i class="ti-reload"
+                                                    aria-hidden="true"></i></a>
+                                        </div>
+                                    </div>
+                                    <div class="product-detail">
+                                        <div class="rating">
+                                            <i class="fa fa-star"></i>
+                                            <i class="fa fa-star"></i>
+                                            <i class="fa fa-star"></i>
+                                            <i class="fa fa-star"></i>
+                                            <i class="fa fa-star"></i>
+                                        </div>
+                                        <a href="product-page(no-sidebar).html">
+                                            <h6>Digital Thermometer</h6>
+                                        </a>
+                                        <h4>$1.50</h4>
+                                    </div>
+                                </div>
+                                <div class="product-box">
+                                    <div class="img-wrapper">
+                                        <div class="front">
+                                            <a href="product-page(no-sidebar).html" class="bg-size blur-up lazyloaded"
+                                                style="background-image: url(&quot;../assets/images/medicine/pro/6.jpg&quot;); background-size: cover; background-position: center center; display: block;"><img
+                                                    src="../assets/images/medicine/pro/6.jpg"
+                                                    class="img-fluid blur-up lazyload bg-img" alt=""
+                                                    ></a>
+                                        </div>
+                                        <div class="cart-info cart-wrap">
+                                            <button data-bs-toggle="modal" data-bs-target="#addtocart"
+                                                title="Add to cart"><i class="ti-shopping-cart"></i></button>
+                                            <a href="javascript:void(0)" title="Add to Wishlist"><i class="ti-heart"
+                                                    aria-hidden="true"></i></a>
+                                            <a href="#" data-bs-toggle="modal" data-bs-target="#quick-view"
+                                                title="Quick View"><i class="ti-search" aria-hidden="true"></i></a>
+                                            <a href="compare.html" title="Compare"><i class="ti-reload"
+                                                    aria-hidden="true"></i></a>
+                                        </div>
+                                    </div>
+                                    <div class="product-detail">
+                                        <div class="rating">
+                                            <i class="fa fa-star"></i>
+                                            <i class="fa fa-star"></i>
+                                            <i class="fa fa-star"></i>
+                                            <i class="fa fa-star"></i>
+                                            <i class="fa fa-star"></i>
+                                        </div>
+                                        <a href="product-page(no-sidebar).html">
+                                            <h6>black face shield </h6>
+                                        </a>
+                                        <h4>$2.00</h4>
+                                    </div>
+                                </div>
+                                <div class="product-box">
+                                    <div class="img-wrapper">
+                                        <div class="front">
+                                            <a href="product-page(no-sidebar).html" class="bg-size blur-up lazyloaded"
+                                                style="background-image: url(&quot;../assets/images/medicine/pro/7.jpg&quot;); background-size: cover; background-position: center center; display: block;"><img
+                                                    src="../assets/images/medicine/pro/7.jpg"
+                                                    class="img-fluid blur-up lazyload bg-img" alt=""
+                                                    ></a>
+                                        </div>
+                                        <div class="cart-info cart-wrap">
+                                            <button data-bs-toggle="modal" data-bs-target="#addtocart"
+                                                title="Add to cart"><i class="ti-shopping-cart"></i></button>
+                                            <a href="javascript:void(0)" title="Add to Wishlist"><i class="ti-heart"
+                                                    aria-hidden="true"></i></a>
+                                            <a href="#" data-bs-toggle="modal" data-bs-target="#quick-view"
+                                                title="Quick View"><i class="ti-search" aria-hidden="true"></i></a>
+                                            <a href="compare.html" title="Compare"><i class="ti-reload"
+                                                    aria-hidden="true"></i></a>
+                                        </div>
+                                    </div>
+                                    <div class="product-detail">
+                                        <div class="rating">
+                                            <i class="fa fa-star"></i>
+                                            <i class="fa fa-star"></i>
+                                            <i class="fa fa-star"></i>
+                                            <i class="fa fa-star"></i>
+                                            <i class="fa fa-star"></i>
+                                        </div>
+                                        <a href="product-page(no-sidebar).html">
+                                            <h6>N95 Mask</h6>
+                                        </a>
+                                        <h4>$1.50</h4>
+                                    </div>
+                                </div>
+                                <div class="product-box">
+                                    <div class="img-wrapper">
+                                        <div class="front">
+                                            <a href="product-page(no-sidebar).html" class="bg-size blur-up lazyloaded"
+                                                style="background-image: url(&quot;../assets/images/medicine/pro/8.jpg&quot;); background-size: cover; background-position: center center; display: block;"><img
+                                                    src="../assets/images/medicine/pro/8.jpg"
+                                                    class="img-fluid blur-up lazyload bg-img" alt=""
+                                                    ></a>
+                                        </div>
+                                        <div class="cart-info cart-wrap">
+                                            <button data-bs-toggle="modal" data-bs-target="#addtocart"
+                                                title="Add to cart"><i class="ti-shopping-cart"></i></button>
+                                            <a href="javascript:void(0)" title="Add to Wishlist"><i class="ti-heart"
+                                                    aria-hidden="true"></i></a>
+                                            <a href="#" data-bs-toggle="modal" data-bs-target="#quick-view"
+                                                title="Quick View"><i class="ti-search" aria-hidden="true"></i></a>
+                                            <a href="compare.html" title="Compare"><i class="ti-reload"
+                                                    aria-hidden="true"></i></a>
+                                        </div>
+                                    </div>
+                                    <div class="product-detail">
+                                        <div class="rating">
+                                            <i class="fa fa-star"></i>
+                                            <i class="fa fa-star"></i>
+                                            <i class="fa fa-star"></i>
+                                            <i class="fa fa-star"></i>
+                                            <i class="fa fa-star"></i>
+                                        </div>
+                                        <a href="product-page(no-sidebar).html">
+                                            <h6>Vitamin C Teblate</h6>
+                                        </a>
+                                        <h4>$3.00</h4>
+                                    </div>
+                                </div>
+                                <div class="product-box">
+                                    <div class="img-wrapper">
+                                        <div class="front">
+                                            <a href="product-page(no-sidebar).html" class="bg-size blur-up lazyloaded"
+                                                style="background-image: url(&quot;../assets/images/medicine/pro/9.jpg&quot;); background-size: cover; background-position: center center; display: block;"><img
+                                                    src="../assets/images/medicine/pro/9.jpg"
+                                                    class="img-fluid blur-up lazyload bg-img" alt=""
+                                                    ></a>
+                                        </div>
+                                        <div class="cart-info cart-wrap">
+                                            <button data-bs-toggle="modal" data-bs-target="#addtocart"
+                                                title="Add to cart"><i class="ti-shopping-cart"></i></button>
+                                            <a href="javascript:void(0)" title="Add to Wishlist"><i class="ti-heart"
+                                                    aria-hidden="true"></i></a>
+                                            <a href="#" data-bs-toggle="modal" data-bs-target="#quick-view"
+                                                title="Quick View"><i class="ti-search" aria-hidden="true"></i></a>
+                                            <a href="compare.html" title="Compare"><i class="ti-reload"
+                                                    aria-hidden="true"></i></a>
+                                        </div>
+                                    </div>
+                                    <div class="product-detail">
+                                        <div class="rating">
+                                            <i class="fa fa-star"></i>
+                                            <i class="fa fa-star"></i>
+                                            <i class="fa fa-star"></i>
+                                            <i class="fa fa-star"></i>
+                                            <i class="fa fa-star"></i>
+                                        </div>
+                                        <a href="product-page(no-sidebar).html">
+                                            <h6>Netural Body Spa Kit</h6>
+                                        </a>
+                                        <h4>$12.00</h4>
+                                    </div>
+                                </div>
+                                <div class="product-box">
+                                    <div class="img-wrapper">
+                                        <div class="front">
+                                            <a href="product-page(no-sidebar).html" class="bg-size blur-up lazyloaded"
+                                                style="background-image: url(&quot;../assets/images/medicine/pro/10.jpg&quot;); background-size: cover; background-position: center center; display: block;"><img
+                                                    src="../assets/images/medicine/pro/10.jpg"
+                                                    class="img-fluid blur-up lazyload bg-img" alt=""
+                                                    ></a>
+                                        </div>
+                                        <div class="cart-info cart-wrap">
+                                            <button data-bs-toggle="modal" data-bs-target="#addtocart"
+                                                title="Add to cart"><i class="ti-shopping-cart"></i></button>
+                                            <a href="javascript:void(0)" title="Add to Wishlist"><i class="ti-heart"
+                                                    aria-hidden="true"></i></a>
+                                            <a href="#" data-bs-toggle="modal" data-bs-target="#quick-view"
+                                                title="Quick View"><i class="ti-search" aria-hidden="true"></i></a>
+                                            <a href="compare.html" title="Compare"><i class="ti-reload"
+                                                    aria-hidden="true"></i></a>
+                                        </div>
+                                    </div>
+                                    <div class="product-detail">
+                                        <div class="rating">
+                                            <i class="fa fa-star"></i>
+                                            <i class="fa fa-star"></i>
+                                            <i class="fa fa-star"></i>
+                                            <i class="fa fa-star"></i>
+                                            <i class="fa fa-star"></i>
+                                        </div>
+                                        <a href="product-page(no-sidebar).html">
+                                            <h6>N95 Mask</h6>
+                                        </a>
+                                        <h4>$1.50</h4>
+                                    </div>
+                                </div>
+                            </div>
+                        </ng-container>
+                        <ng-container *ngIf="activeTab==='tab-2'" class="tab-content" >
+                            <div class="no-slider row five-product margin-default">
+                                <div class="product-box">
+                                    <div class="img-wrapper">
+                                        <div class="front">
+                                            <a href="product-page(no-sidebar).html" class="bg-size blur-up lazyloaded"
+                                                style="background-image: url(&quot;../assets/images/medicine/pro/1.jpg&quot;); background-size: cover; background-position: center center; display: block;"><img
+                                                    src="../assets/images/medicine/pro/1.jpg"
+                                                    class="img-fluid blur-up lazyload bg-img" alt=""
+                                                    ></a>
+                                        </div>
+                                        <div class="cart-info cart-wrap">
+                                            <button data-bs-toggle="modal" data-bs-target="#addtocart"
+                                                title="Add to cart"><i class="ti-shopping-cart"></i></button>
+                                            <a href="javascript:void(0)" title="Add to Wishlist"><i class="ti-heart"
+                                                    aria-hidden="true"></i></a>
+                                            <a href="#" data-bs-toggle="modal" data-bs-target="#quick-view"
+                                                title="Quick View"><i class="ti-search" aria-hidden="true"></i></a>
+                                            <a href="compare.html" title="Compare"><i class="ti-reload"
+                                                    aria-hidden="true"></i></a>
+                                        </div>
+                                    </div>
+                                    <div class="product-detail">
+                                        <div class="rating">
+                                            <i class="fa fa-star"></i>
+                                            <i class="fa fa-star"></i>
+                                            <i class="fa fa-star"></i>
+                                            <i class="fa fa-star"></i>
+                                            <i class="fa fa-star"></i>
+                                        </div>
+                                        <a href="product-page(no-sidebar).html">
+                                            <h6>Surgical Mask</h6>
+                                        </a>
+                                        <h4>$1.00</h4>
+                                    </div>
+                                </div>
+                                <div class="product-box">
+                                    <div class="img-wrapper">
+                                        <div class="front">
+                                            <a href="product-page(no-sidebar).html" class="bg-size blur-up lazyloaded"
+                                                style="background-image: url(&quot;../assets/images/medicine/pro/2.jpg&quot;); background-size: cover; background-position: center center; display: block;"><img
+                                                    src="../assets/images/medicine/pro/2.jpg"
+                                                    class="img-fluid blur-up lazyload bg-img" alt=""
+                                                    ></a>
+                                        </div>
+                                        <div class="cart-info cart-wrap">
+                                            <button data-bs-toggle="modal" data-bs-target="#addtocart"
+                                                title="Add to cart"><i class="ti-shopping-cart"></i></button>
+                                            <a href="javascript:void(0)" title="Add to Wishlist"><i class="ti-heart"
+                                                    aria-hidden="true"></i></a>
+                                            <a href="#" data-bs-toggle="modal" data-bs-target="#quick-view"
+                                                title="Quick View"><i class="ti-search" aria-hidden="true"></i></a>
+                                            <a href="compare.html" title="Compare"><i class="ti-reload"
+                                                    aria-hidden="true"></i></a>
+                                        </div>
+                                    </div>
+                                    <div class="product-detail">
+                                        <div class="rating">
+                                            <i class="fa fa-star"></i>
+                                            <i class="fa fa-star"></i>
+                                            <i class="fa fa-star"></i>
+                                            <i class="fa fa-star"></i>
+                                            <i class="fa fa-star"></i>
+                                        </div>
+                                        <a href="product-page(no-sidebar).html">
+                                            <h6>Hand Sanitizer</h6>
+                                        </a>
+                                        <h4>$10.00</h4>
+                                    </div>
+                                </div>
+                                <div class="product-box">
+                                    <div class="img-wrapper">
+                                        <div class="front">
+                                            <a href="product-page(no-sidebar).html" class="bg-size blur-up lazyloaded"
+                                                style="background-image: url(&quot;../assets/images/medicine/pro/3.jpg&quot;); background-size: cover; background-position: center center; display: block;"><img
+                                                    src="../assets/images/medicine/pro/3.jpg"
+                                                    class="img-fluid blur-up lazyload bg-img" alt=""
+                                                    ></a>
+                                        </div>
+                                        <div class="cart-info cart-wrap">
+                                            <button data-bs-toggle="modal" data-bs-target="#addtocart"
+                                                title="Add to cart"><i class="ti-shopping-cart"></i></button>
+                                            <a href="javascript:void(0)" title="Add to Wishlist"><i class="ti-heart"
+                                                    aria-hidden="true"></i></a>
+                                            <a href="#" data-bs-toggle="modal" data-bs-target="#quick-view"
+                                                title="Quick View"><i class="ti-search" aria-hidden="true"></i></a>
+                                            <a href="compare.html" title="Compare"><i class="ti-reload"
+                                                    aria-hidden="true"></i></a>
+                                        </div>
+                                    </div>
+                                    <div class="product-detail">
+                                        <div class="rating">
+                                            <i class="fa fa-star"></i>
+                                            <i class="fa fa-star"></i>
+                                            <i class="fa fa-star"></i>
+                                            <i class="fa fa-star"></i>
+                                            <i class="fa fa-star"></i>
+                                        </div>
+                                        <a href="product-page(no-sidebar).html">
+                                            <h6>Multi Vitamin Tablate</h6>
+                                        </a>
+                                        <h4>$3.00</h4>
+                                    </div>
+                                </div>
+                                <div class="product-box">
+                                    <div class="img-wrapper">
+                                        <div class="front">
+                                            <a href="product-page(no-sidebar).html" class="bg-size blur-up lazyloaded"
+                                                style="background-image: url(&quot;../assets/images/medicine/pro/6.jpg&quot;); background-size: cover; background-position: center center; display: block;"><img
+                                                    src="../assets/images/medicine/pro/6.jpg"
+                                                    class="img-fluid blur-up lazyload bg-img" alt=""
+                                                    ></a>
+                                        </div>
+                                        <div class="cart-info cart-wrap">
+                                            <button data-bs-toggle="modal" data-bs-target="#addtocart"
+                                                title="Add to cart"><i class="ti-shopping-cart"></i></button>
+                                            <a href="javascript:void(0)" title="Add to Wishlist"><i class="ti-heart"
+                                                    aria-hidden="true"></i></a>
+                                            <a href="#" data-bs-toggle="modal" data-bs-target="#quick-view"
+                                                title="Quick View"><i class="ti-search" aria-hidden="true"></i></a>
+                                            <a href="compare.html" title="Compare"><i class="ti-reload"
+                                                    aria-hidden="true"></i></a>
+                                        </div>
+                                    </div>
+                                    <div class="product-detail">
+                                        <div class="rating">
+                                            <i class="fa fa-star"></i>
+                                            <i class="fa fa-star"></i>
+                                            <i class="fa fa-star"></i>
+                                            <i class="fa fa-star"></i>
+                                            <i class="fa fa-star"></i>
+                                        </div>
+                                        <a href="product-page(no-sidebar).html">
+                                            <h6>black face shield </h6>
+                                        </a>
+                                        <h4>$2.00</h4>
+                                    </div>
+                                </div>
+                                <div class="product-box">
+                                    <div class="img-wrapper">
+                                        <div class="front">
+                                            <a href="product-page(no-sidebar).html" class="bg-size blur-up lazyloaded"
+                                                style="background-image: url(&quot;../assets/images/medicine/pro/7.jpg&quot;); background-size: cover; background-position: center center; display: block;"><img
+                                                    src="../assets/images/medicine/pro/7.jpg"
+                                                    class="img-fluid blur-up lazyload bg-img" alt=""
+                                                    ></a>
+                                        </div>
+                                        <div class="cart-info cart-wrap">
+                                            <button data-bs-toggle="modal" data-bs-target="#addtocart"
+                                                title="Add to cart"><i class="ti-shopping-cart"></i></button>
+                                            <a href="javascript:void(0)" title="Add to Wishlist"><i class="ti-heart"
+                                                    aria-hidden="true"></i></a>
+                                            <a href="#" data-bs-toggle="modal" data-bs-target="#quick-view"
+                                                title="Quick View"><i class="ti-search" aria-hidden="true"></i></a>
+                                            <a href="compare.html" title="Compare"><i class="ti-reload"
+                                                    aria-hidden="true"></i></a>
+                                        </div>
+                                    </div>
+                                    <div class="product-detail">
+                                        <div class="rating">
+                                            <i class="fa fa-star"></i>
+                                            <i class="fa fa-star"></i>
+                                            <i class="fa fa-star"></i>
+                                            <i class="fa fa-star"></i>
+                                            <i class="fa fa-star"></i>
+                                        </div>
+                                        <a href="product-page(no-sidebar).html">
+                                            <h6>N95 Mask</h6>
+                                        </a>
+                                        <h4>$1.50</h4>
+                                    </div>
+                                </div>
+                                <div class="product-box">
+                                    <div class="img-wrapper">
+                                        <div class="front">
+                                            <a href="product-page(no-sidebar).html" class="bg-size blur-up lazyloaded"
+                                                style="background-image: url(&quot;../assets/images/medicine/pro/4.jpg&quot;); background-size: cover; background-position: center center; display: block;"><img
+                                                    src="../assets/images/medicine/pro/4.jpg"
+                                                    class="img-fluid blur-up lazyload bg-img" alt=""
+                                                    ></a>
+                                        </div>
+                                        <div class="cart-info cart-wrap">
+                                            <button data-bs-toggle="modal" data-bs-target="#addtocart"
+                                                title="Add to cart"><i class="ti-shopping-cart"></i></button>
+                                            <a href="javascript:void(0)" title="Add to Wishlist"><i class="ti-heart"
+                                                    aria-hidden="true"></i></a>
+                                            <a href="#" data-bs-toggle="modal" data-bs-target="#quick-view"
+                                                title="Quick View"><i class="ti-search" aria-hidden="true"></i></a>
+                                            <a href="compare.html" title="Compare"><i class="ti-reload"
+                                                    aria-hidden="true"></i></a>
+                                        </div>
+                                    </div>
+                                    <div class="product-detail">
+                                        <div class="rating">
+                                            <i class="fa fa-star"></i>
+                                            <i class="fa fa-star"></i>
+                                            <i class="fa fa-star"></i>
+                                            <i class="fa fa-star"></i>
+                                            <i class="fa fa-star"></i>
+                                        </div>
+                                        <a href="product-page(no-sidebar).html">
+                                            <h6>Hand gloves</h6>
+                                        </a>
+                                        <h4>$0.50</h4>
+                                    </div>
+                                </div>
+                                <div class="product-box">
+                                    <div class="img-wrapper">
+                                        <div class="front">
+                                            <a href="product-page(no-sidebar).html" class="bg-size blur-up lazyloaded"
+                                                style="background-image: url(&quot;../assets/images/medicine/pro/5.jpg&quot;); background-size: cover; background-position: center center; display: block;"><img
+                                                    src="../assets/images/medicine/pro/5.jpg"
+                                                    class="img-fluid blur-up lazyload bg-img" alt=""
+                                                    ></a>
+                                        </div>
+                                        <div class="cart-info cart-wrap">
+                                            <button data-bs-toggle="modal" data-bs-target="#addtocart"
+                                                title="Add to cart"><i class="ti-shopping-cart"></i></button>
+                                            <a href="javascript:void(0)" title="Add to Wishlist"><i class="ti-heart"
+                                                    aria-hidden="true"></i></a>
+                                            <a href="#" data-bs-toggle="modal" data-bs-target="#quick-view"
+                                                title="Quick View"><i class="ti-search" aria-hidden="true"></i></a>
+                                            <a href="compare.html" title="Compare"><i class="ti-reload"
+                                                    aria-hidden="true"></i></a>
+                                        </div>
+                                    </div>
+                                    <div class="product-detail">
+                                        <div class="rating">
+                                            <i class="fa fa-star"></i>
+                                            <i class="fa fa-star"></i>
+                                            <i class="fa fa-star"></i>
+                                            <i class="fa fa-star"></i>
+                                            <i class="fa fa-star"></i>
+                                        </div>
+                                        <a href="product-page(no-sidebar).html">
+                                            <h6>Digital Thermometer</h6>
+                                        </a>
+                                        <h4>$1.50</h4>
+                                    </div>
+                                </div>
+                                <div class="product-box">
+                                    <div class="img-wrapper">
+                                        <div class="front">
+                                            <a href="product-page(no-sidebar).html" class="bg-size blur-up lazyloaded"
+                                                style="background-image: url(&quot;../assets/images/medicine/pro/8.jpg&quot;); background-size: cover; background-position: center center; display: block;"><img
+                                                    src="../assets/images/medicine/pro/8.jpg"
+                                                    class="img-fluid blur-up lazyload bg-img" alt=""
+                                                    ></a>
+                                        </div>
+                                        <div class="cart-info cart-wrap">
+                                            <button data-bs-toggle="modal" data-bs-target="#addtocart"
+                                                title="Add to cart"><i class="ti-shopping-cart"></i></button>
+                                            <a href="javascript:void(0)" title="Add to Wishlist"><i class="ti-heart"
+                                                    aria-hidden="true"></i></a>
+                                            <a href="#" data-bs-toggle="modal" data-bs-target="#quick-view"
+                                                title="Quick View"><i class="ti-search" aria-hidden="true"></i></a>
+                                            <a href="compare.html" title="Compare"><i class="ti-reload"
+                                                    aria-hidden="true"></i></a>
+                                        </div>
+                                    </div>
+                                    <div class="product-detail">
+                                        <div class="rating">
+                                            <i class="fa fa-star"></i>
+                                            <i class="fa fa-star"></i>
+                                            <i class="fa fa-star"></i>
+                                            <i class="fa fa-star"></i>
+                                            <i class="fa fa-star"></i>
+                                        </div>
+                                        <a href="product-page(no-sidebar).html">
+                                            <h6>Vitamin C Teblate</h6>
+                                        </a>
+                                        <h4>$3.00</h4>
+                                    </div>
+                                </div>
+                                <div class="product-box">
+                                    <div class="img-wrapper">
+                                        <div class="front">
+                                            <a href="product-page(no-sidebar).html" class="bg-size blur-up lazyloaded"
+                                                style="background-image: url(&quot;../assets/images/medicine/pro/9.jpg&quot;); background-size: cover; background-position: center center; display: block;"><img
+                                                    src="../assets/images/medicine/pro/9.jpg"
+                                                    class="img-fluid blur-up lazyload bg-img" alt=""
+                                                    ></a>
+                                        </div>
+                                        <div class="cart-info cart-wrap">
+                                            <button data-bs-toggle="modal" data-bs-target="#addtocart"
+                                                title="Add to cart"><i class="ti-shopping-cart"></i></button>
+                                            <a href="javascript:void(0)" title="Add to Wishlist"><i class="ti-heart"
+                                                    aria-hidden="true"></i></a>
+                                            <a href="#" data-bs-toggle="modal" data-bs-target="#quick-view"
+                                                title="Quick View"><i class="ti-search" aria-hidden="true"></i></a>
+                                            <a href="compare.html" title="Compare"><i class="ti-reload"
+                                                    aria-hidden="true"></i></a>
+                                        </div>
+                                    </div>
+                                    <div class="product-detail">
+                                        <div class="rating">
+                                            <i class="fa fa-star"></i>
+                                            <i class="fa fa-star"></i>
+                                            <i class="fa fa-star"></i>
+                                            <i class="fa fa-star"></i>
+                                            <i class="fa fa-star"></i>
+                                        </div>
+                                        <a href="product-page(no-sidebar).html">
+                                            <h6>Netural Body Spa Kit</h6>
+                                        </a>
+                                        <h4>$12.00</h4>
+                                    </div>
+                                </div>
+                                <div class="product-box">
+                                    <div class="img-wrapper">
+                                        <div class="front">
+                                            <a href="product-page(no-sidebar).html" class="bg-size blur-up lazyloaded"
+                                                style="background-image: url(&quot;../assets/images/medicine/pro/10.jpg&quot;); background-size: cover; background-position: center center; display: block;"><img
+                                                    src="../assets/images/medicine/pro/10.jpg"
+                                                    class="img-fluid blur-up lazyload bg-img" alt=""
+                                                    ></a>
+                                        </div>
+                                        <div class="cart-info cart-wrap">
+                                            <button data-bs-toggle="modal" data-bs-target="#addtocart"
+                                                title="Add to cart"><i class="ti-shopping-cart"></i></button>
+                                            <a href="javascript:void(0)" title="Add to Wishlist"><i class="ti-heart"
+                                                    aria-hidden="true"></i></a>
+                                            <a href="#" data-bs-toggle="modal" data-bs-target="#quick-view"
+                                                title="Quick View"><i class="ti-search" aria-hidden="true"></i></a>
+                                            <a href="compare.html" title="Compare"><i class="ti-reload"
+                                                    aria-hidden="true"></i></a>
+                                        </div>
+                                    </div>
+                                    <div class="product-detail">
+                                        <div class="rating">
+                                            <i class="fa fa-star"></i>
+                                            <i class="fa fa-star"></i>
+                                            <i class="fa fa-star"></i>
+                                            <i class="fa fa-star"></i>
+                                            <i class="fa fa-star"></i>
+                                        </div>
+                                        <a href="product-page(no-sidebar).html">
+                                            <h6>N95 Mask</h6>
+                                        </a>
+                                        <h4>$1.50</h4>
+                                    </div>
+                                </div>
+                            </div>
+                        </ng-container>
+                        <ng-container *ngIf="activeTab==='tab-3'" class="tab-content" >
+                            <div class="no-slider row five-product margin-default">
+                                <div class="product-box">
+                                    <div class="img-wrapper">
+                                        <div class="front">
+                                            <a href="product-page(no-sidebar).html" class="bg-size blur-up lazyloaded"
+                                                style="background-image: url(&quot;../assets/images/medicine/pro/7.jpg&quot;); background-size: cover; background-position: center center; display: block;"><img
+                                                    src="../assets/images/medicine/pro/7.jpg"
+                                                    class="img-fluid blur-up lazyload bg-img" alt=""
+                                                    ></a>
+                                        </div>
+                                        <div class="cart-info cart-wrap">
+                                            <button data-bs-toggle="modal" data-bs-target="#addtocart"
+                                                title="Add to cart"><i class="ti-shopping-cart"></i></button>
+                                            <a href="javascript:void(0)" title="Add to Wishlist"><i class="ti-heart"
+                                                    aria-hidden="true"></i></a>
+                                            <a href="#" data-bs-toggle="modal" data-bs-target="#quick-view"
+                                                title="Quick View"><i class="ti-search" aria-hidden="true"></i></a>
+                                            <a href="compare.html" title="Compare"><i class="ti-reload"
+                                                    aria-hidden="true"></i></a>
+                                        </div>
+                                    </div>
+                                    <div class="product-detail">
+                                        <div class="rating">
+                                            <i class="fa fa-star"></i>
+                                            <i class="fa fa-star"></i>
+                                            <i class="fa fa-star"></i>
+                                            <i class="fa fa-star"></i>
+                                            <i class="fa fa-star"></i>
+                                        </div>
+                                        <a href="product-page(no-sidebar).html">
+                                            <h6>N95 Mask</h6>
+                                        </a>
+                                        <h4>$1.50</h4>
+                                    </div>
+                                </div>
+                                <div class="product-box">
+                                    <div class="img-wrapper">
+                                        <div class="front">
+                                            <a href="product-page(no-sidebar).html" class="bg-size blur-up lazyloaded"
+                                                style="background-image: url(&quot;../assets/images/medicine/pro/8.jpg&quot;); background-size: cover; background-position: center center; display: block;"><img
+                                                    src="../assets/images/medicine/pro/8.jpg"
+                                                    class="img-fluid blur-up lazyload bg-img" alt=""
+                                                    ></a>
+                                        </div>
+                                        <div class="cart-info cart-wrap">
+                                            <button data-bs-toggle="modal" data-bs-target="#addtocart"
+                                                title="Add to cart"><i class="ti-shopping-cart"></i></button>
+                                            <a href="javascript:void(0)" title="Add to Wishlist"><i class="ti-heart"
+                                                    aria-hidden="true"></i></a>
+                                            <a href="#" data-bs-toggle="modal" data-bs-target="#quick-view"
+                                                title="Quick View"><i class="ti-search" aria-hidden="true"></i></a>
+                                            <a href="compare.html" title="Compare"><i class="ti-reload"
+                                                    aria-hidden="true"></i></a>
+                                        </div>
+                                    </div>
+                                    <div class="product-detail">
+                                        <div class="rating">
+                                            <i class="fa fa-star"></i>
+                                            <i class="fa fa-star"></i>
+                                            <i class="fa fa-star"></i>
+                                            <i class="fa fa-star"></i>
+                                            <i class="fa fa-star"></i>
+                                        </div>
+                                        <a href="product-page(no-sidebar).html">
+                                            <h6>Vitamin C Teblate</h6>
+                                        </a>
+                                        <h4>$3.00</h4>
+                                    </div>
+                                </div>
+                                <div class="product-box">
+                                    <div class="img-wrapper">
+                                        <div class="front">
+                                            <a href="product-page(no-sidebar).html" class="bg-size blur-up lazyloaded"
+                                                style="background-image: url(&quot;../assets/images/medicine/pro/2.jpg&quot;); background-size: cover; background-position: center center; display: block;"><img
+                                                    src="../assets/images/medicine/pro/2.jpg"
+                                                    class="img-fluid blur-up lazyload bg-img" alt=""
+                                                    ></a>
+                                        </div>
+                                        <div class="cart-info cart-wrap">
+                                            <button data-bs-toggle="modal" data-bs-target="#addtocart"
+                                                title="Add to cart"><i class="ti-shopping-cart"></i></button>
+                                            <a href="javascript:void(0)" title="Add to Wishlist"><i class="ti-heart"
+                                                    aria-hidden="true"></i></a>
+                                            <a href="#" data-bs-toggle="modal" data-bs-target="#quick-view"
+                                                title="Quick View"><i class="ti-search" aria-hidden="true"></i></a>
+                                            <a href="compare.html" title="Compare"><i class="ti-reload"
+                                                    aria-hidden="true"></i></a>
+                                        </div>
+                                    </div>
+                                    <div class="product-detail">
+                                        <div class="rating">
+                                            <i class="fa fa-star"></i>
+                                            <i class="fa fa-star"></i>
+                                            <i class="fa fa-star"></i>
+                                            <i class="fa fa-star"></i>
+                                            <i class="fa fa-star"></i>
+                                        </div>
+                                        <a href="product-page(no-sidebar).html">
+                                            <h6>N95 Mask</h6>
+                                        </a>
+                                        <h4>$1.50</h4>
+                                    </div>
+                                </div>
+                                <div class="product-box">
+                                    <div class="img-wrapper">
+                                        <div class="front">
+                                            <a href="product-page(no-sidebar).html" class="bg-size blur-up lazyloaded"
+                                                style="background-image: url(&quot;../assets/images/medicine/pro/3.jpg&quot;); background-size: cover; background-position: center center; display: block;"><img
+                                                    src="../assets/images/medicine/pro/3.jpg"
+                                                    class="img-fluid blur-up lazyload bg-img" alt=""
+                                                    ></a>
+                                        </div>
+                                        <div class="cart-info cart-wrap">
+                                            <button data-bs-toggle="modal" data-bs-target="#addtocart"
+                                                title="Add to cart"><i class="ti-shopping-cart"></i></button>
+                                            <a href="javascript:void(0)" title="Add to Wishlist"><i class="ti-heart"
+                                                    aria-hidden="true"></i></a>
+                                            <a href="#" data-bs-toggle="modal" data-bs-target="#quick-view"
+                                                title="Quick View"><i class="ti-search" aria-hidden="true"></i></a>
+                                            <a href="compare.html" title="Compare"><i class="ti-reload"
+                                                    aria-hidden="true"></i></a>
+                                        </div>
+                                    </div>
+                                    <div class="product-detail">
+                                        <div class="rating">
+                                            <i class="fa fa-star"></i>
+                                            <i class="fa fa-star"></i>
+                                            <i class="fa fa-star"></i>
+                                            <i class="fa fa-star"></i>
+                                            <i class="fa fa-star"></i>
+                                        </div>
+                                        <a href="product-page(no-sidebar).html">
+                                            <h6>Multi Vitamin Tablate</h6>
+                                        </a>
+                                        <h4>$3.00</h4>
+                                    </div>
+                                </div>
+                                <div class="product-box">
+                                    <div class="img-wrapper">
+                                        <div class="front">
+                                            <a href="product-page(no-sidebar).html" class="bg-size blur-up lazyloaded"
+                                                style="background-image: url(&quot;../assets/images/medicine/pro/4.jpg&quot;); background-size: cover; background-position: center center; display: block;"><img
+                                                    src="../assets/images/medicine/pro/4.jpg"
+                                                    class="img-fluid blur-up lazyload bg-img" alt=""
+                                                    ></a>
+                                        </div>
+                                        <div class="cart-info cart-wrap">
+                                            <button data-bs-toggle="modal" data-bs-target="#addtocart"
+                                                title="Add to cart"><i class="ti-shopping-cart"></i></button>
+                                            <a href="javascript:void(0)" title="Add to Wishlist"><i class="ti-heart"
+                                                    aria-hidden="true"></i></a>
+                                            <a href="#" data-bs-toggle="modal" data-bs-target="#quick-view"
+                                                title="Quick View"><i class="ti-search" aria-hidden="true"></i></a>
+                                            <a href="compare.html" title="Compare"><i class="ti-reload"
+                                                    aria-hidden="true"></i></a>
+                                        </div>
+                                    </div>
+                                    <div class="product-detail">
+                                        <div class="rating">
+                                            <i class="fa fa-star"></i>
+                                            <i class="fa fa-star"></i>
+                                            <i class="fa fa-star"></i>
+                                            <i class="fa fa-star"></i>
+                                            <i class="fa fa-star"></i>
+                                        </div>
+                                        <a href="product-page(no-sidebar).html">
+                                            <h6>Hand gloves</h6>
+                                        </a>
+                                        <h4>$0.50</h4>
+                                    </div>
+                                </div>
+                                <div class="product-box">
+                                    <div class="img-wrapper">
+                                        <div class="front">
+                                            <a href="product-page(no-sidebar).html" class="bg-size blur-up lazyloaded"
+                                                style="background-image: url(&quot;../assets/images/medicine/pro/5.jpg&quot;); background-size: cover; background-position: center center; display: block;"><img
+                                                    src="../assets/images/medicine/pro/5.jpg"
+                                                    class="img-fluid blur-up lazyload bg-img" alt=""
+                                                    ></a>
+                                        </div>
+                                        <div class="cart-info cart-wrap">
+                                            <button data-bs-toggle="modal" data-bs-target="#addtocart"
+                                                title="Add to cart"><i class="ti-shopping-cart"></i></button>
+                                            <a href="javascript:void(0)" title="Add to Wishlist"><i class="ti-heart"
+                                                    aria-hidden="true"></i></a>
+                                            <a href="#" data-bs-toggle="modal" data-bs-target="#quick-view"
+                                                title="Quick View"><i class="ti-search" aria-hidden="true"></i></a>
+                                            <a href="compare.html" title="Compare"><i class="ti-reload"
+                                                    aria-hidden="true"></i></a>
+                                        </div>
+                                    </div>
+                                    <div class="product-detail">
+                                        <div class="rating">
+                                            <i class="fa fa-star"></i>
+                                            <i class="fa fa-star"></i>
+                                            <i class="fa fa-star"></i>
+                                            <i class="fa fa-star"></i>
+                                            <i class="fa fa-star"></i>
+                                        </div>
+                                        <a href="product-page(no-sidebar).html">
+                                            <h6>Digital Thermometer</h6>
+                                        </a>
+                                        <h4>$1.50</h4>
+                                    </div>
+                                </div>
+                                <div class="product-box">
+                                    <div class="img-wrapper">
+                                        <div class="front">
+                                            <a href="product-page(no-sidebar).html" class="bg-size blur-up lazyloaded"
+                                                style="background-image: url(&quot;../assets/images/medicine/pro/6.jpg&quot;); background-size: cover; background-position: center center; display: block;"><img
+                                                    src="../assets/images/medicine/pro/6.jpg"
+                                                    class="img-fluid blur-up lazyload bg-img" alt=""
+                                                    ></a>
+                                        </div>
+                                        <div class="cart-info cart-wrap">
+                                            <button data-bs-toggle="modal" data-bs-target="#addtocart"
+                                                title="Add to cart"><i class="ti-shopping-cart"></i></button>
+                                            <a href="javascript:void(0)" title="Add to Wishlist"><i class="ti-heart"
+                                                    aria-hidden="true"></i></a>
+                                            <a href="#" data-bs-toggle="modal" data-bs-target="#quick-view"
+                                                title="Quick View"><i class="ti-search" aria-hidden="true"></i></a>
+                                            <a href="compare.html" title="Compare"><i class="ti-reload"
+                                                    aria-hidden="true"></i></a>
+                                        </div>
+                                    </div>
+                                    <div class="product-detail">
+                                        <div class="rating">
+                                            <i class="fa fa-star"></i>
+                                            <i class="fa fa-star"></i>
+                                            <i class="fa fa-star"></i>
+                                            <i class="fa fa-star"></i>
+                                            <i class="fa fa-star"></i>
+                                        </div>
+                                        <a href="product-page(no-sidebar).html">
+                                            <h6>black face shield </h6>
+                                        </a>
+                                        <h4>$2.00</h4>
+                                    </div>
+                                </div>
+                                <div class="product-box">
+                                    <div class="img-wrapper">
+                                        <div class="front">
+                                            <a href="product-page(no-sidebar).html" class="bg-size blur-up lazyloaded"
+                                                style="background-image: url(&quot;../assets/images/medicine/pro/1.jpg&quot;); background-size: cover; background-position: center center; display: block;"><img
+                                                    src="../assets/images/medicine/pro/1.jpg"
+                                                    class="img-fluid blur-up lazyload bg-img" alt=""
+                                                    ></a>
+                                        </div>
+                                        <div class="cart-info cart-wrap">
+                                            <button data-bs-toggle="modal" data-bs-target="#addtocart"
+                                                title="Add to cart"><i class="ti-shopping-cart"></i></button>
+                                            <a href="javascript:void(0)" title="Add to Wishlist"><i class="ti-heart"
+                                                    aria-hidden="true"></i></a>
+                                            <a href="#" data-bs-toggle="modal" data-bs-target="#quick-view"
+                                                title="Quick View"><i class="ti-search" aria-hidden="true"></i></a>
+                                            <a href="compare.html" title="Compare"><i class="ti-reload"
+                                                    aria-hidden="true"></i></a>
+                                        </div>
+                                    </div>
+                                    <div class="product-detail">
+                                        <div class="rating">
+                                            <i class="fa fa-star"></i>
+                                            <i class="fa fa-star"></i>
+                                            <i class="fa fa-star"></i>
+                                            <i class="fa fa-star"></i>
+                                            <i class="fa fa-star"></i>
+                                        </div>
+                                        <a href="product-page(no-sidebar).html">
+                                            <h6>Surgical Mask</h6>
+                                        </a>
+                                        <h4>$1.00</h4>
+                                    </div>
+                                </div>
+                                <div class="product-box">
+                                    <div class="img-wrapper">
+                                        <div class="front">
+                                            <a href="product-page(no-sidebar).html" class="bg-size blur-up lazyloaded"
+                                                style="background-image: url(&quot;../assets/images/medicine/pro/9.jpg&quot;); background-size: cover; background-position: center center; display: block;"><img
+                                                    src="../assets/images/medicine/pro/9.jpg"
+                                                    class="img-fluid blur-up lazyload bg-img" alt=""
+                                                    ></a>
+                                        </div>
+                                        <div class="cart-info cart-wrap">
+                                            <button data-bs-toggle="modal" data-bs-target="#addtocart"
+                                                title="Add to cart"><i class="ti-shopping-cart"></i></button>
+                                            <a href="javascript:void(0)" title="Add to Wishlist"><i class="ti-heart"
+                                                    aria-hidden="true"></i></a>
+                                            <a href="#" data-bs-toggle="modal" data-bs-target="#quick-view"
+                                                title="Quick View"><i class="ti-search" aria-hidden="true"></i></a>
+                                            <a href="compare.html" title="Compare"><i class="ti-reload"
+                                                    aria-hidden="true"></i></a>
+                                        </div>
+                                    </div>
+                                    <div class="product-detail">
+                                        <div class="rating">
+                                            <i class="fa fa-star"></i>
+                                            <i class="fa fa-star"></i>
+                                            <i class="fa fa-star"></i>
+                                            <i class="fa fa-star"></i>
+                                            <i class="fa fa-star"></i>
+                                        </div>
+                                        <a href="product-page(no-sidebar).html">
+                                            <h6>Netural Body Spa Kit</h6>
+                                        </a>
+                                        <h4>$12.00</h4>
+                                    </div>
+                                </div>
+                                <div class="product-box">
+                                    <div class="img-wrapper">
+                                        <div class="front">
+                                            <a href="product-page(no-sidebar).html" class="bg-size blur-up lazyloaded"
+                                                style="background-image: url(&quot;../assets/images/medicine/pro/10.jpg&quot;); background-size: cover; background-position: center center; display: block;"><img
+                                                    src="../assets/images/medicine/pro/10.jpg"
+                                                    class="img-fluid blur-up lazyload bg-img" alt=""
+                                                    ></a>
+                                        </div>
+                                        <div class="cart-info cart-wrap">
+                                            <button data-bs-toggle="modal" data-bs-target="#addtocart"
+                                                title="Add to cart"><i class="ti-shopping-cart"></i></button>
+                                            <a href="javascript:void(0)" title="Add to Wishlist"><i class="ti-heart"
+                                                    aria-hidden="true"></i></a>
+                                            <a href="#" data-bs-toggle="modal" data-bs-target="#quick-view"
+                                                title="Quick View"><i class="ti-search" aria-hidden="true"></i></a>
+                                            <a href="compare.html" title="Compare"><i class="ti-reload"
+                                                    aria-hidden="true"></i></a>
+                                        </div>
+                                    </div>
+                                    <div class="product-detail">
+                                        <div class="rating">
+                                            <i class="fa fa-star"></i>
+                                            <i class="fa fa-star"></i>
+                                            <i class="fa fa-star"></i>
+                                            <i class="fa fa-star"></i>
+                                            <i class="fa fa-star"></i>
+                                        </div>
+                                        <a href="product-page(no-sidebar).html">
+                                            <h6>N95 Mask</h6>
+                                        </a>
+                                        <h4>$1.50</h4>
+                                    </div>
+                                </div>
+                            </div>
+                        </ng-container>
+                        <ng-container *ngIf="activeTab==='tab-4'" class="tab-content" style="display: block;">
+                            <div class="no-slider row five-product margin-default">
+                                <div class="product-box">
+                                    <div class="img-wrapper">
+                                        <div class="front">
+                                            <a href="product-page(no-sidebar).html" class="bg-size blur-up lazyloaded"
+                                                style="background-image: url(&quot;../assets/images/medicine/pro/2.jpg&quot;); background-size: cover; background-position: center center; display: block;"><img
+                                                    src="../assets/images/medicine/pro/2.jpg"
+                                                    class="img-fluid blur-up lazyload bg-img" alt=""
+                                                    ></a>
+                                        </div>
+                                        <div class="cart-info cart-wrap">
+                                            <button data-bs-toggle="modal" data-bs-target="#addtocart"
+                                                title="Add to cart"><i class="ti-shopping-cart"></i></button>
+                                            <a href="javascript:void(0)" title="Add to Wishlist"><i class="ti-heart"
+                                                    aria-hidden="true"></i></a>
+                                            <a href="#" data-bs-toggle="modal" data-bs-target="#quick-view"
+                                                title="Quick View"><i class="ti-search" aria-hidden="true"></i></a>
+                                            <a href="compare.html" title="Compare"><i class="ti-reload"
+                                                    aria-hidden="true"></i></a>
+                                        </div>
+                                    </div>
+                                    <div class="product-detail">
+                                        <div class="rating">
+                                            <i class="fa fa-star"></i>
+                                            <i class="fa fa-star"></i>
+                                            <i class="fa fa-star"></i>
+                                            <i class="fa fa-star"></i>
+                                            <i class="fa fa-star"></i>
+                                        </div>
+                                        <a href="product-page(no-sidebar).html">
+                                            <h6>N95 Mask</h6>
+                                        </a>
+                                        <h4>$1.50</h4>
+                                    </div>
+                                </div>
+                                <div class="product-box">
+                                    <div class="img-wrapper">
+                                        <div class="front">
+                                            <a href="product-page(no-sidebar).html" class="bg-size blur-up lazyloaded"
+                                                style="background-image: url(&quot;../assets/images/medicine/pro/1.jpg&quot;); background-size: cover; background-position: center center; display: block;"><img
+                                                    src="../assets/images/medicine/pro/1.jpg"
+                                                    class="img-fluid blur-up lazyload bg-img" alt=""
+                                                    ></a>
+                                        </div>
+                                        <div class="cart-info cart-wrap">
+                                            <button data-bs-toggle="modal" data-bs-target="#addtocart"
+                                                title="Add to cart"><i class="ti-shopping-cart"></i></button>
+                                            <a href="javascript:void(0)" title="Add to Wishlist"><i class="ti-heart"
+                                                    aria-hidden="true"></i></a>
+                                            <a href="#" data-bs-toggle="modal" data-bs-target="#quick-view"
+                                                title="Quick View"><i class="ti-search" aria-hidden="true"></i></a>
+                                            <a href="compare.html" title="Compare"><i class="ti-reload"
+                                                    aria-hidden="true"></i></a>
+                                        </div>
+                                    </div>
+                                    <div class="product-detail">
+                                        <div class="rating">
+                                            <i class="fa fa-star"></i>
+                                            <i class="fa fa-star"></i>
+                                            <i class="fa fa-star"></i>
+                                            <i class="fa fa-star"></i>
+                                            <i class="fa fa-star"></i>
+                                        </div>
+                                        <a href="product-page(no-sidebar).html">
+                                            <h6>Surgical Mask</h6>
+                                        </a>
+                                        <h4>$1.00</h4>
+                                    </div>
+                                </div>
+                                <div class="product-box">
+                                    <div class="img-wrapper">
+                                        <div class="front">
+                                            <a href="product-page(no-sidebar).html" class="bg-size blur-up lazyloaded"
+                                                style="background-image: url(&quot;../assets/images/medicine/pro/4.jpg&quot;); background-size: cover; background-position: center center; display: block;"><img
+                                                    src="../assets/images/medicine/pro/4.jpg"
+                                                    class="img-fluid blur-up lazyload bg-img" alt=""
+                                                    ></a>
+                                        </div>
+                                        <div class="cart-info cart-wrap">
+                                            <button data-bs-toggle="modal" data-bs-target="#addtocart"
+                                                title="Add to cart"><i class="ti-shopping-cart"></i></button>
+                                            <a href="javascript:void(0)" title="Add to Wishlist"><i class="ti-heart"
+                                                    aria-hidden="true"></i></a>
+                                            <a href="#" data-bs-toggle="modal" data-bs-target="#quick-view"
+                                                title="Quick View"><i class="ti-search" aria-hidden="true"></i></a>
+                                            <a href="compare.html" title="Compare"><i class="ti-reload"
+                                                    aria-hidden="true"></i></a>
+                                        </div>
+                                    </div>
+                                    <div class="product-detail">
+                                        <div class="rating">
+                                            <i class="fa fa-star"></i>
+                                            <i class="fa fa-star"></i>
+                                            <i class="fa fa-star"></i>
+                                            <i class="fa fa-star"></i>
+                                            <i class="fa fa-star"></i>
+                                        </div>
+                                        <a href="product-page(no-sidebar).html">
+                                            <h6>Hand gloves</h6>
+                                        </a>
+                                        <h4>$0.50</h4>
+                                    </div>
+                                </div>
+                                <div class="product-box">
+                                    <div class="img-wrapper">
+                                        <div class="front">
+                                            <a href="product-page(no-sidebar).html" class="bg-size blur-up lazyloaded"
+                                                style="background-image: url(&quot;../assets/images/medicine/pro/3.jpg&quot;); background-size: cover; background-position: center center; display: block;"><img
+                                                    src="../assets/images/medicine/pro/3.jpg"
+                                                    class="img-fluid blur-up lazyload bg-img" alt=""
+                                                    ></a>
+                                        </div>
+                                        <div class="cart-info cart-wrap">
+                                            <button data-bs-toggle="modal" data-bs-target="#addtocart"
+                                                title="Add to cart"><i class="ti-shopping-cart"></i></button>
+                                            <a href="javascript:void(0)" title="Add to Wishlist"><i class="ti-heart"
+                                                    aria-hidden="true"></i></a>
+                                            <a href="#" data-bs-toggle="modal" data-bs-target="#quick-view"
+                                                title="Quick View"><i class="ti-search" aria-hidden="true"></i></a>
+                                            <a href="compare.html" title="Compare"><i class="ti-reload"
+                                                    aria-hidden="true"></i></a>
+                                        </div>
+                                    </div>
+                                    <div class="product-detail">
+                                        <div class="rating">
+                                            <i class="fa fa-star"></i>
+                                            <i class="fa fa-star"></i>
+                                            <i class="fa fa-star"></i>
+                                            <i class="fa fa-star"></i>
+                                            <i class="fa fa-star"></i>
+                                        </div>
+                                        <a href="product-page(no-sidebar).html">
+                                            <h6>Multi Vitamin Tablate</h6>
+                                        </a>
+                                        <h4>$3.00</h4>
+                                    </div>
+                                </div>
+                                <div class="product-box">
+                                    <div class="img-wrapper">
+                                        <div class="front">
+                                            <a href="product-page(no-sidebar).html" class="bg-size blur-up lazyloaded"
+                                                style="background-image: url(&quot;../assets/images/medicine/pro/5.jpg&quot;); background-size: cover; background-position: center center; display: block;"><img
+                                                    src="../assets/images/medicine/pro/5.jpg"
+                                                    class="img-fluid blur-up lazyload bg-img" alt=""
+                                                    ></a>
+                                        </div>
+                                        <div class="cart-info cart-wrap">
+                                            <button data-bs-toggle="modal" data-bs-target="#addtocart"
+                                                title="Add to cart"><i class="ti-shopping-cart"></i></button>
+                                            <a href="javascript:void(0)" title="Add to Wishlist"><i class="ti-heart"
+                                                    aria-hidden="true"></i></a>
+                                            <a href="#" data-bs-toggle="modal" data-bs-target="#quick-view"
+                                                title="Quick View"><i class="ti-search" aria-hidden="true"></i></a>
+                                            <a href="compare.html" title="Compare"><i class="ti-reload"
+                                                    aria-hidden="true"></i></a>
+                                        </div>
+                                    </div>
+                                    <div class="product-detail">
+                                        <div class="rating">
+                                            <i class="fa fa-star"></i>
+                                            <i class="fa fa-star"></i>
+                                            <i class="fa fa-star"></i>
+                                            <i class="fa fa-star"></i>
+                                            <i class="fa fa-star"></i>
+                                        </div>
+                                        <a href="product-page(no-sidebar).html">
+                                            <h6>Digital Thermometer</h6>
+                                        </a>
+                                        <h4>$1.50</h4>
+                                    </div>
+                                </div>
+                                <div class="product-box">
+                                    <div class="img-wrapper">
+                                        <div class="front">
+                                            <a href="product-page(no-sidebar).html" class="bg-size blur-up lazyloaded"
+                                                style="background-image: url(&quot;../assets/images/medicine/pro/6.jpg&quot;); background-size: cover; background-position: center center; display: block;"><img
+                                                    src="../assets/images/medicine/pro/6.jpg"
+                                                    class="img-fluid blur-up lazyload bg-img" alt=""
+                                                    ></a>
+                                        </div>
+                                        <div class="cart-info cart-wrap">
+                                            <button data-bs-toggle="modal" data-bs-target="#addtocart"
+                                                title="Add to cart"><i class="ti-shopping-cart"></i></button>
+                                            <a href="javascript:void(0)" title="Add to Wishlist"><i class="ti-heart"
+                                                    aria-hidden="true"></i></a>
+                                            <a href="#" data-bs-toggle="modal" data-bs-target="#quick-view"
+                                                title="Quick View"><i class="ti-search" aria-hidden="true"></i></a>
+                                            <a href="compare.html" title="Compare"><i class="ti-reload"
+                                                    aria-hidden="true"></i></a>
+                                        </div>
+                                    </div>
+                                    <div class="product-detail">
+                                        <div class="rating">
+                                            <i class="fa fa-star"></i>
+                                            <i class="fa fa-star"></i>
+                                            <i class="fa fa-star"></i>
+                                            <i class="fa fa-star"></i>
+                                            <i class="fa fa-star"></i>
+                                        </div>
+                                        <a href="product-page(no-sidebar).html">
+                                            <h6>black face shield </h6>
+                                        </a>
+                                        <h4>$2.00</h4>
+                                    </div>
+                                </div>
+                                <div class="product-box">
+                                    <div class="img-wrapper">
+                                        <div class="front">
+                                            <a href="product-page(no-sidebar).html" class="bg-size blur-up lazyloaded"
+                                                style="background-image: url(&quot;../assets/images/medicine/pro/7.jpg&quot;); background-size: cover; background-position: center center; display: block;"><img
+                                                    src="../assets/images/medicine/pro/7.jpg"
+                                                    class="img-fluid blur-up lazyload bg-img" alt=""
+                                                    ></a>
+                                        </div>
+                                        <div class="cart-info cart-wrap">
+                                            <button data-bs-toggle="modal" data-bs-target="#addtocart"
+                                                title="Add to cart"><i class="ti-shopping-cart"></i></button>
+                                            <a href="javascript:void(0)" title="Add to Wishlist"><i class="ti-heart"
+                                                    aria-hidden="true"></i></a>
+                                            <a href="#" data-bs-toggle="modal" data-bs-target="#quick-view"
+                                                title="Quick View"><i class="ti-search" aria-hidden="true"></i></a>
+                                            <a href="compare.html" title="Compare"><i class="ti-reload"
+                                                    aria-hidden="true"></i></a>
+                                        </div>
+                                    </div>
+                                    <div class="product-detail">
+                                        <div class="rating">
+                                            <i class="fa fa-star"></i>
+                                            <i class="fa fa-star"></i>
+                                            <i class="fa fa-star"></i>
+                                            <i class="fa fa-star"></i>
+                                            <i class="fa fa-star"></i>
+                                        </div>
+                                        <a href="product-page(no-sidebar).html">
+                                            <h6>N95 Mask</h6>
+                                        </a>
+                                        <h4>$1.50</h4>
+                                    </div>
+                                </div>
+                                <div class="product-box">
+                                    <div class="img-wrapper">
+                                        <div class="front">
+                                            <a href="product-page(no-sidebar).html" class="bg-size blur-up lazyloaded"
+                                                style="background-image: url(&quot;../assets/images/medicine/pro/8.jpg&quot;); background-size: cover; background-position: center center; display: block;"><img
+                                                    src="../assets/images/medicine/pro/8.jpg"
+                                                    class="img-fluid blur-up lazyload bg-img" alt=""
+                                                    ></a>
+                                        </div>
+                                        <div class="cart-info cart-wrap">
+                                            <button data-bs-toggle="modal" data-bs-target="#addtocart"
+                                                title="Add to cart"><i class="ti-shopping-cart"></i></button>
+                                            <a href="javascript:void(0)" title="Add to Wishlist"><i class="ti-heart"
+                                                    aria-hidden="true"></i></a>
+                                            <a href="#" data-bs-toggle="modal" data-bs-target="#quick-view"
+                                                title="Quick View"><i class="ti-search" aria-hidden="true"></i></a>
+                                            <a href="compare.html" title="Compare"><i class="ti-reload"
+                                                    aria-hidden="true"></i></a>
+                                        </div>
+                                    </div>
+                                    <div class="product-detail">
+                                        <div class="rating">
+                                            <i class="fa fa-star"></i>
+                                            <i class="fa fa-star"></i>
+                                            <i class="fa fa-star"></i>
+                                            <i class="fa fa-star"></i>
+                                            <i class="fa fa-star"></i>
+                                        </div>
+                                        <a href="product-page(no-sidebar).html">
+                                            <h6>Vitamin C Teblate</h6>
+                                        </a>
+                                        <h4>$3.00</h4>
+                                    </div>
+                                </div>
+                                <div class="product-box">
+                                    <div class="img-wrapper">
+                                        <div class="front">
+                                            <a href="product-page(no-sidebar).html" class="bg-size blur-up lazyloaded"
+                                                style="background-image: url(&quot;../assets/images/medicine/pro/9.jpg&quot;); background-size: cover; background-position: center center; display: block;"><img
+                                                    src="../assets/images/medicine/pro/9.jpg"
+                                                    class="img-fluid blur-up lazyload bg-img" alt=""
+                                                    ></a>
+                                        </div>
+                                        <div class="cart-info cart-wrap">
+                                            <button data-bs-toggle="modal" data-bs-target="#addtocart"
+                                                title="Add to cart"><i class="ti-shopping-cart"></i></button>
+                                            <a href="javascript:void(0)" title="Add to Wishlist"><i class="ti-heart"
+                                                    aria-hidden="true"></i></a>
+                                            <a href="#" data-bs-toggle="modal" data-bs-target="#quick-view"
+                                                title="Quick View"><i class="ti-search" aria-hidden="true"></i></a>
+                                            <a href="compare.html" title="Compare"><i class="ti-reload"
+                                                    aria-hidden="true"></i></a>
+                                        </div>
+                                    </div>
+                                    <div class="product-detail">
+                                        <div class="rating">
+                                            <i class="fa fa-star"></i>
+                                            <i class="fa fa-star"></i>
+                                            <i class="fa fa-star"></i>
+                                            <i class="fa fa-star"></i>
+                                            <i class="fa fa-star"></i>
+                                        </div>
+                                        <a href="product-page(no-sidebar).html">
+                                            <h6>Netural Body Spa Kit</h6>
+                                        </a>
+                                        <h4>$12.00</h4>
+                                    </div>
+                                </div>
+                                <div class="product-box">
+                                    <div class="img-wrapper">
+                                        <div class="front">
+                                            <a href="product-page(no-sidebar).html" class="bg-size blur-up lazyloaded"
+                                                style="background-image: url(&quot;../assets/images/medicine/pro/10.jpg&quot;); background-size: cover; background-position: center center; display: block;"><img
+                                                    src="../assets/images/medicine/pro/10.jpg"
+                                                    class="img-fluid blur-up lazyload bg-img" alt=""
+                                                    ></a>
+                                        </div>
+                                        <div class="cart-info cart-wrap">
+                                            <button data-bs-toggle="modal" data-bs-target="#addtocart"
+                                                title="Add to cart"><i class="ti-shopping-cart"></i></button>
+                                            <a href="javascript:void(0)" title="Add to Wishlist"><i class="ti-heart"
+                                                    aria-hidden="true"></i></a>
+                                            <a href="#" data-bs-toggle="modal" data-bs-target="#quick-view"
+                                                title="Quick View"><i class="ti-search" aria-hidden="true"></i></a>
+                                            <a href="compare.html" title="Compare"><i class="ti-reload"
+                                                    aria-hidden="true"></i></a>
+                                        </div>
+                                    </div>
+                                    <div class="product-detail">
+                                        <div class="rating">
+                                            <i class="fa fa-star"></i>
+                                            <i class="fa fa-star"></i>
+                                            <i class="fa fa-star"></i>
+                                            <i class="fa fa-star"></i>
+                                            <i class="fa fa-star"></i>
+                                        </div>
+                                        <a href="product-page(no-sidebar).html">
+                                            <h6>N95 Mask</h6>
+                                        </a>
+                                        <h4>$1.50</h4>
+                                    </div>
+                                </div>
+                            </div>
+                        </ng-container>
+                        <ng-container *ngIf="activeTab==='tab-5'" class="tab-content" >
+                            <div class="no-slider row five-product margin-default">
+                                <div class="product-box">
+                                    <div class="img-wrapper">
+                                        <div class="front">
+                                            <a href="product-page(no-sidebar).html" class="bg-size blur-up lazyloaded"
+                                                style="background-image: url(&quot;../assets/images/medicine/pro/6.jpg&quot;); background-size: cover; background-position: center center; display: block;"><img
+                                                    src="../assets/images/medicine/pro/6.jpg"
+                                                    class="img-fluid blur-up lazyload bg-img" alt=""
+                                                    ></a>
+                                        </div>
+                                        <div class="cart-info cart-wrap">
+                                            <button data-bs-toggle="modal" data-bs-target="#addtocart"
+                                                title="Add to cart"><i class="ti-shopping-cart"></i></button>
+                                            <a href="javascript:void(0)" title="Add to Wishlist"><i class="ti-heart"
+                                                    aria-hidden="true"></i></a>
+                                            <a href="#" data-bs-toggle="modal" data-bs-target="#quick-view"
+                                                title="Quick View"><i class="ti-search" aria-hidden="true"></i></a>
+                                            <a href="compare.html" title="Compare"><i class="ti-reload"
+                                                    aria-hidden="true"></i></a>
+                                        </div>
+                                    </div>
+                                    <div class="product-detail">
+                                        <div class="rating">
+                                            <i class="fa fa-star"></i>
+                                            <i class="fa fa-star"></i>
+                                            <i class="fa fa-star"></i>
+                                            <i class="fa fa-star"></i>
+                                            <i class="fa fa-star"></i>
+                                        </div>
+                                        <a href="product-page(no-sidebar).html">
+                                            <h6>black face shield </h6>
+                                        </a>
+                                        <h4>$2.00</h4>
+                                    </div>
+                                </div>
+                                <div class="product-box">
+                                    <div class="img-wrapper">
+                                        <div class="front">
+                                            <a href="product-page(no-sidebar).html" class="bg-size blur-up lazyloaded"
+                                                style="background-image: url(&quot;../assets/images/medicine/pro/7.jpg&quot;); background-size: cover; background-position: center center; display: block;"><img
+                                                    src="../assets/images/medicine/pro/7.jpg"
+                                                    class="img-fluid blur-up lazyload bg-img" alt=""
+                                                    ></a>
+                                        </div>
+                                        <div class="cart-info cart-wrap">
+                                            <button data-bs-toggle="modal" data-bs-target="#addtocart"
+                                                title="Add to cart"><i class="ti-shopping-cart"></i></button>
+                                            <a href="javascript:void(0)" title="Add to Wishlist"><i class="ti-heart"
+                                                    aria-hidden="true"></i></a>
+                                            <a href="#" data-bs-toggle="modal" data-bs-target="#quick-view"
+                                                title="Quick View"><i class="ti-search" aria-hidden="true"></i></a>
+                                            <a href="compare.html" title="Compare"><i class="ti-reload"
+                                                    aria-hidden="true"></i></a>
+                                        </div>
+                                    </div>
+                                    <div class="product-detail">
+                                        <div class="rating">
+                                            <i class="fa fa-star"></i>
+                                            <i class="fa fa-star"></i>
+                                            <i class="fa fa-star"></i>
+                                            <i class="fa fa-star"></i>
+                                            <i class="fa fa-star"></i>
+                                        </div>
+                                        <a href="product-page(no-sidebar).html">
+                                            <h6>N95 Mask</h6>
+                                        </a>
+                                        <h4>$1.50</h4>
+                                    </div>
+                                </div>
+                                <div class="product-box">
+                                    <div class="img-wrapper">
+                                        <div class="front">
+                                            <a href="product-page(no-sidebar).html" class="bg-size blur-up lazyloaded"
+                                                style="background-image: url(&quot;../assets/images/medicine/pro/8.jpg&quot;); background-size: cover; background-position: center center; display: block;"><img
+                                                    src="../assets/images/medicine/pro/8.jpg"
+                                                    class="img-fluid blur-up lazyload bg-img" alt=""
+                                                    ></a>
+                                        </div>
+                                        <div class="cart-info cart-wrap">
+                                            <button data-bs-toggle="modal" data-bs-target="#addtocart"
+                                                title="Add to cart"><i class="ti-shopping-cart"></i></button>
+                                            <a href="javascript:void(0)" title="Add to Wishlist"><i class="ti-heart"
+                                                    aria-hidden="true"></i></a>
+                                            <a href="#" data-bs-toggle="modal" data-bs-target="#quick-view"
+                                                title="Quick View"><i class="ti-search" aria-hidden="true"></i></a>
+                                            <a href="compare.html" title="Compare"><i class="ti-reload"
+                                                    aria-hidden="true"></i></a>
+                                        </div>
+                                    </div>
+                                    <div class="product-detail">
+                                        <div class="rating">
+                                            <i class="fa fa-star"></i>
+                                            <i class="fa fa-star"></i>
+                                            <i class="fa fa-star"></i>
+                                            <i class="fa fa-star"></i>
+                                            <i class="fa fa-star"></i>
+                                        </div>
+                                        <a href="product-page(no-sidebar).html">
+                                            <h6>Vitamin C Teblate</h6>
+                                        </a>
+                                        <h4>$3.00</h4>
+                                    </div>
+                                </div>
+                                <div class="product-box">
+                                    <div class="img-wrapper">
+                                        <div class="front">
+                                            <a href="product-page(no-sidebar).html" class="bg-size blur-up lazyloaded"
+                                                style="background-image: url(&quot;../assets/images/medicine/pro/9.jpg&quot;); background-size: cover; background-position: center center; display: block;"><img
+                                                    src="../assets/images/medicine/pro/9.jpg"
+                                                    class="img-fluid blur-up lazyload bg-img" alt=""
+                                                    ></a>
+                                        </div>
+                                        <div class="cart-info cart-wrap">
+                                            <button data-bs-toggle="modal" data-bs-target="#addtocart"
+                                                title="Add to cart"><i class="ti-shopping-cart"></i></button>
+                                            <a href="javascript:void(0)" title="Add to Wishlist"><i class="ti-heart"
+                                                    aria-hidden="true"></i></a>
+                                            <a href="#" data-bs-toggle="modal" data-bs-target="#quick-view"
+                                                title="Quick View"><i class="ti-search" aria-hidden="true"></i></a>
+                                            <a href="compare.html" title="Compare"><i class="ti-reload"
+                                                    aria-hidden="true"></i></a>
+                                        </div>
+                                    </div>
+                                    <div class="product-detail">
+                                        <div class="rating">
+                                            <i class="fa fa-star"></i>
+                                            <i class="fa fa-star"></i>
+                                            <i class="fa fa-star"></i>
+                                            <i class="fa fa-star"></i>
+                                            <i class="fa fa-star"></i>
+                                        </div>
+                                        <a href="product-page(no-sidebar).html">
+                                            <h6>Netural Body Spa Kit</h6>
+                                        </a>
+                                        <h4>$12.00</h4>
+                                    </div>
+                                </div>
+                                <div class="product-box">
+                                    <div class="img-wrapper">
+                                        <div class="front">
+                                            <a href="product-page(no-sidebar).html" class="bg-size blur-up lazyloaded"
+                                                style="background-image: url(&quot;../assets/images/medicine/pro/10.jpg&quot;); background-size: cover; background-position: center center; display: block;"><img
+                                                    src="../assets/images/medicine/pro/10.jpg"
+                                                    class="img-fluid blur-up lazyload bg-img" alt=""
+                                                    ></a>
+                                        </div>
+                                        <div class="cart-info cart-wrap">
+                                            <button data-bs-toggle="modal" data-bs-target="#addtocart"
+                                                title="Add to cart"><i class="ti-shopping-cart"></i></button>
+                                            <a href="javascript:void(0)" title="Add to Wishlist"><i class="ti-heart"
+                                                    aria-hidden="true"></i></a>
+                                            <a href="#" data-bs-toggle="modal" data-bs-target="#quick-view"
+                                                title="Quick View"><i class="ti-search" aria-hidden="true"></i></a>
+                                            <a href="compare.html" title="Compare"><i class="ti-reload"
+                                                    aria-hidden="true"></i></a>
+                                        </div>
+                                    </div>
+                                    <div class="product-detail">
+                                        <div class="rating">
+                                            <i class="fa fa-star"></i>
+                                            <i class="fa fa-star"></i>
+                                            <i class="fa fa-star"></i>
+                                            <i class="fa fa-star"></i>
+                                            <i class="fa fa-star"></i>
+                                        </div>
+                                        <a href="product-page(no-sidebar).html">
+                                            <h6>N95 Mask</h6>
+                                        </a>
+                                        <h4>$1.50</h4>
+                                    </div>
+                                </div>
+                                <div class="product-box">
+                                    <div class="img-wrapper">
+                                        <div class="front">
+                                            <a href="product-page(no-sidebar).html" class="bg-size blur-up lazyloaded"
+                                                style="background-image: url(&quot;../assets/images/medicine/pro/1.jpg&quot;); background-size: cover; background-position: center center; display: block;"><img
+                                                    src="../assets/images/medicine/pro/1.jpg"
+                                                    class="img-fluid blur-up lazyload bg-img" alt=""
+                                                    ></a>
+                                        </div>
+                                        <div class="cart-info cart-wrap">
+                                            <button data-bs-toggle="modal" data-bs-target="#addtocart"
+                                                title="Add to cart"><i class="ti-shopping-cart"></i></button>
+                                            <a href="javascript:void(0)" title="Add to Wishlist"><i class="ti-heart"
+                                                    aria-hidden="true"></i></a>
+                                            <a href="#" data-bs-toggle="modal" data-bs-target="#quick-view"
+                                                title="Quick View"><i class="ti-search" aria-hidden="true"></i></a>
+                                            <a href="compare.html" title="Compare"><i class="ti-reload"
+                                                    aria-hidden="true"></i></a>
+                                        </div>
+                                    </div>
+                                    <div class="product-detail">
+                                        <div class="rating">
+                                            <i class="fa fa-star"></i>
+                                            <i class="fa fa-star"></i>
+                                            <i class="fa fa-star"></i>
+                                            <i class="fa fa-star"></i>
+                                            <i class="fa fa-star"></i>
+                                        </div>
+                                        <a href="product-page(no-sidebar).html">
+                                            <h6>Surgical Mask</h6>
+                                        </a>
+                                        <h4>$1.00</h4>
+                                    </div>
+                                </div>
+                                <div class="product-box">
+                                    <div class="img-wrapper">
+                                        <div class="front">
+                                            <a href="product-page(no-sidebar).html" class="bg-size blur-up lazyloaded"
+                                                style="background-image: url(&quot;../assets/images/medicine/pro/2.jpg&quot;); background-size: cover; background-position: center center; display: block;"><img
+                                                    src="../assets/images/medicine/pro/2.jpg"
+                                                    class="img-fluid blur-up lazyload bg-img" alt=""
+                                                    ></a>
+                                        </div>
+                                        <div class="cart-info cart-wrap">
+                                            <button data-bs-toggle="modal" data-bs-target="#addtocart"
+                                                title="Add to cart"><i class="ti-shopping-cart"></i></button>
+                                            <a href="javascript:void(0)" title="Add to Wishlist"><i class="ti-heart"
+                                                    aria-hidden="true"></i></a>
+                                            <a href="#" data-bs-toggle="modal" data-bs-target="#quick-view"
+                                                title="Quick View"><i class="ti-search" aria-hidden="true"></i></a>
+                                            <a href="compare.html" title="Compare"><i class="ti-reload"
+                                                    aria-hidden="true"></i></a>
+                                        </div>
+                                    </div>
+                                    <div class="product-detail">
+                                        <div class="rating">
+                                            <i class="fa fa-star"></i>
+                                            <i class="fa fa-star"></i>
+                                            <i class="fa fa-star"></i>
+                                            <i class="fa fa-star"></i>
+                                            <i class="fa fa-star"></i>
+                                        </div>
+                                        <a href="product-page(no-sidebar).html">
+                                            <h6>N95 Mask</h6>
+                                        </a>
+                                        <h4>$1.50</h4>
+                                    </div>
+                                </div>
+                                <div class="product-box">
+                                    <div class="img-wrapper">
+                                        <div class="front">
+                                            <a href="product-page(no-sidebar).html" class="bg-size blur-up lazyloaded"
+                                                style="background-image: url(&quot;../assets/images/medicine/pro/3.jpg&quot;); background-size: cover; background-position: center center; display: block;"><img
+                                                    src="../assets/images/medicine/pro/3.jpg"
+                                                    class="img-fluid blur-up lazyload bg-img" alt=""
+                                                    ></a>
+                                        </div>
+                                        <div class="cart-info cart-wrap">
+                                            <button data-bs-toggle="modal" data-bs-target="#addtocart"
+                                                title="Add to cart"><i class="ti-shopping-cart"></i></button>
+                                            <a href="javascript:void(0)" title="Add to Wishlist"><i class="ti-heart"
+                                                    aria-hidden="true"></i></a>
+                                            <a href="#" data-bs-toggle="modal" data-bs-target="#quick-view"
+                                                title="Quick View"><i class="ti-search" aria-hidden="true"></i></a>
+                                            <a href="compare.html" title="Compare"><i class="ti-reload"
+                                                    aria-hidden="true"></i></a>
+                                        </div>
+                                    </div>
+                                    <div class="product-detail">
+                                        <div class="rating">
+                                            <i class="fa fa-star"></i>
+                                            <i class="fa fa-star"></i>
+                                            <i class="fa fa-star"></i>
+                                            <i class="fa fa-star"></i>
+                                            <i class="fa fa-star"></i>
+                                        </div>
+                                        <a href="product-page(no-sidebar).html">
+                                            <h6>Multi Vitamin Tablate</h6>
+                                        </a>
+                                        <h4>$3.00</h4>
+                                    </div>
+                                </div>
+                                <div class="product-box">
+                                    <div class="img-wrapper">
+                                        <div class="front">
+                                            <a href="product-page(no-sidebar).html" class="bg-size blur-up lazyloaded"
+                                                style="background-image: url(&quot;../assets/images/medicine/pro/4.jpg&quot;); background-size: cover; background-position: center center; display: block;"><img
+                                                    src="../assets/images/medicine/pro/4.jpg"
+                                                    class="img-fluid blur-up lazyload bg-img" alt=""
+                                                    ></a>
+                                        </div>
+                                        <div class="cart-info cart-wrap">
+                                            <button data-bs-toggle="modal" data-bs-target="#addtocart"
+                                                title="Add to cart"><i class="ti-shopping-cart"></i></button>
+                                            <a href="javascript:void(0)" title="Add to Wishlist"><i class="ti-heart"
+                                                    aria-hidden="true"></i></a>
+                                            <a href="#" data-bs-toggle="modal" data-bs-target="#quick-view"
+                                                title="Quick View"><i class="ti-search" aria-hidden="true"></i></a>
+                                            <a href="compare.html" title="Compare"><i class="ti-reload"
+                                                    aria-hidden="true"></i></a>
+                                        </div>
+                                    </div>
+                                    <div class="product-detail">
+                                        <div class="rating">
+                                            <i class="fa fa-star"></i>
+                                            <i class="fa fa-star"></i>
+                                            <i class="fa fa-star"></i>
+                                            <i class="fa fa-star"></i>
+                                            <i class="fa fa-star"></i>
+                                        </div>
+                                        <a href="product-page(no-sidebar).html">
+                                            <h6>Hand gloves</h6>
+                                        </a>
+                                        <h4>$0.50</h4>
+                                    </div>
+                                </div>
+                                <div class="product-box">
+                                    <div class="img-wrapper">
+                                        <div class="front">
+                                            <a href="product-page(no-sidebar).html" class="bg-size blur-up lazyloaded"
+                                                style="background-image: url(&quot;../assets/images/medicine/pro/5.jpg&quot;); background-size: cover; background-position: center center; display: block;"><img
+                                                    src="../assets/images/medicine/pro/5.jpg"
+                                                    class="img-fluid blur-up lazyload bg-img" alt=""
+                                                    ></a>
+                                        </div>
+                                        <div class="cart-info cart-wrap">
+                                            <button data-bs-toggle="modal" data-bs-target="#addtocart"
+                                                title="Add to cart"><i class="ti-shopping-cart"></i></button>
+                                            <a href="javascript:void(0)" title="Add to Wishlist"><i class="ti-heart"
+                                                    aria-hidden="true"></i></a>
+                                            <a href="#" data-bs-toggle="modal" data-bs-target="#quick-view"
+                                                title="Quick View"><i class="ti-search" aria-hidden="true"></i></a>
+                                            <a href="compare.html" title="Compare"><i class="ti-reload"
+                                                    aria-hidden="true"></i></a>
+                                        </div>
+                                    </div>
+                                    <div class="product-detail">
+                                        <div class="rating">
+                                            <i class="fa fa-star"></i>
+                                            <i class="fa fa-star"></i>
+                                            <i class="fa fa-star"></i>
+                                            <i class="fa fa-star"></i>
+                                            <i class="fa fa-star"></i>
+                                        </div>
+                                        <a href="product-page(no-sidebar).html">
+                                            <h6>Digital Thermometer</h6>
+                                        </a>
+                                        <h4>$1.50</h4>
+                                    </div>
+                                </div>
+                            </div>
+                        </ng-container>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>

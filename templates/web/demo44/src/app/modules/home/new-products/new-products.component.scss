@@ -1,0 +1,9 @@
+:host::ng-deep .owl-carousel .owl-item {
+    max-width: 285px;
+}
+
+:host::ng-deep .hello{
+    @media(width < 1200px){
+        display:none;
+    }
+}

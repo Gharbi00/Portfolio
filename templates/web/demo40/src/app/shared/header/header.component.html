@@ -1,0 +1,68 @@
+<header class="sticky" [ngClass]="class" [class.fixed]="stick && sticky">
+  <div class="mobile-fix-option"></div>
+  <div class="top-header" *ngIf="topbar">
+    <div class="container">
+      <div class="row">
+        <div class="col-lg-6">
+          <div class="header-contact">
+            <ul>
+              <li class="header-color">Welcome to Our store Multikart</li>
+              <li class="header-color"><i class="fa fa-phone" aria-hidden="true"></i>Call Us: 123 - 456 - 7890</li>
+            </ul>
+          </div>
+        </div>
+        <div class="col-lg-6 text-end">
+          <ul class="header-dropdown">
+            <li class="compare header-color">
+              <a [routerLink]="['/shop/compare']"class="header-color"><i class="fa fa-random header-color"
+                  aria-hidden="true"></i>Compare</a>
+            </li>
+            <li class="mobile-wishlist header-color">
+              <a [routerLink]="['/shop/wishlist']" class="header-color"><i class="fa fa-heart header-color "
+                  aria-hidden="true"></i>Wishlist</a>
+            </li>
+            <li class="onhover-dropdown mobile-account header-color">
+              <i class="fa fa-user " aria-hidden="true" ></i> My Account
+              <ul class="onhover-show-div">
+                <li>
+                  <a data-lng="en" [routerLink]="['/login']">
+                    Login
+                  </a>
+                </li>
+                <li>
+                  <a data-lng="es">
+                    Logout
+                  </a>
+                </li>
+              </ul>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="container">
+    <div class="row">
+      <div class="col-sm-12">
+        <div class="main-menu">
+          <div class="menu-left">
+            <!-- <app-left-menu></app-left-menu> -->
+            <div class="brand-logo">
+              <a routerLink="/" id="headerlogo">
+                <img [src]="themeLogo" class="img-fluid" alt="logo">
+              </a>
+            </div>
+          </div>
+          <div class="menu-right pull-right">
+            <div>
+              <app-menu></app-menu>
+            </div>
+            <div>
+              <app-settings class="setting"></app-settings>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</header>

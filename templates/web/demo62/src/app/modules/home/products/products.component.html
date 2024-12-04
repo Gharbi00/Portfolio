@@ -1,0 +1,70 @@
+<section class="section-b-space ratio_square" >
+    <div class="container">
+        <div class="row">
+            <div class="col">
+                <div class="title4">
+                    <h2 class="title-inner4">trending products</h2>
+                    <div class="line"><span></span></div>
+                </div>
+                <div class="product-4 product-m no-arrow slick-initialized slick-slider">
+                    <div class="slick-list draggable">
+
+                        <owl-carousel-o [options]="ProductCarousel" class="slick-track"
+                            style="opacity: 1; width: 3990px; ">
+                            <ng-container *ngFor="let product of ProductData">
+
+                                <ng-template carouselSlide class="slick-slide" style="width: 285px;">
+
+
+                                    <div>
+                                        <div>
+                                            <div class="product-box product-wrap"
+                                                style="width: 100%; display: inline-block;">
+                                                <div class="img-wrapper">
+                                                    <div class="lable-block"><span *ngIf="product.new" class="lable3">new</span> <span
+                                                           *ngIf="product.onsale" class="lable4">on
+                                                            sale</span></div>
+                                                    <div class="front">
+                                                        <a href="product-page(no-sidebar).html"
+                                                            class="bg-size blur-up lazyloaded"
+                                                            style="background-image: url(&quot;../assets/images/nursery/pro/1.jpg&quot;); background-size: cover; background-position: center center; display: block;"
+                                                            tabindex="0"><img src="{{product.src}}"
+                                                                class="img-fluid blur-up lazyload bg-img" alt=""
+                                                                ></a>
+                                                    </div>
+                                                    <div class="cart-box">
+                                                        <button data-bs-toggle="modal" data-bs-target="#addtocart"
+                                                            title="Add to cart" tabindex="0"><i
+                                                                class="ti-shopping-cart"></i></button> <a
+                                                            href="javascript:void(0)" title="Add to Wishlist"
+                                                            tabindex="0"><i class="ti-heart" aria-hidden="true"></i></a>
+                                                        <a href="#" data-bs-toggle="modal" data-bs-target="#quick-view"
+                                                            title="Quick View" tabindex="0"><i class="ti-search"
+                                                                aria-hidden="true"></i></a> <a href="compare.html"
+                                                            title="Compare" tabindex="0"><i class="ti-reload"
+                                                                aria-hidden="true"></i></a>
+                                                    </div>
+                                                </div>
+                                                <div class="product-detail text-center">
+                                                    <div class="rating"><i class="fa fa-star"></i> <i
+                                                            class="fa fa-star"></i> <i class="fa fa-star"></i> <i
+                                                            class="fa fa-star"></i> <i class="fa fa-star"></i></div><a
+                                                        href="product-page(no-sidebar).html" tabindex="0">
+                                                        <h6>{{product.name}}</h6>
+                                                    </a>
+                                                    <h4>${{product.newPrice}} <del *ngIf="product.onsale" >${{product.oldPrice}}</del></h4>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+
+                                </ng-template>
+                            </ng-container>
+                        </owl-carousel-o>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>

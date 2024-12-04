@@ -1,0 +1,398 @@
+<section class="p-0">
+    <div class="tab-bg tab-grey-bg">
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col">
+                    <div class="title4">
+                        <h2 class="title-inner4">special products</h2>
+                        <div class="line"><span></span></div>
+                    </div>
+                    <div class="theme-tab">
+                        <ul class="tabs tab-title">
+                            <li [class.current]="activeTab === 'tab-1'" (click)="switchTab('tab-1')"><a >featured</a></li>
+                            <li [class.current]="activeTab === 'tab-2'" (click)="switchTab('tab-2')"><a >best product</a></li>
+                            <li [class.current]="activeTab === 'tab-3'" (click)="switchTab('tab-3')"><a>sale product</a></li>
+                        </ul>
+                        <div class="tab-content-cls" [@tabAnimation]="activeTab">
+                            <div *ngIf="activeTab==='tab-1'" class="tab-content active default" style="display: block;">
+                                <div class="row product-tab">
+                                    <div class="tab-box">
+                                        <div class="product-box2">
+                                            <div class="media">
+                                                <a href="product-page(no-sidebar).html" style="min-width: 125px;"><img class="img-fluid blur-up lazyloaded" src="../assets/images/nursery/pro/1.jpg" alt=""></a>
+                                                <div class="media-body align-self-center">
+                                                    <div class="rating"><i class="fa fa-star"></i> <i class="fa fa-star"></i> <i class="fa fa-star"></i>
+                                                        <i class="fa fa-star"></i> <i class="fa fa-star"></i>
+                                                    </div><a href="product-page(no-sidebar).html">
+                                                        <h6>Fragrant Plants</h6>
+                                                    </a>
+                                                    <h4>$5.00 </h4>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="tab-box">
+                                        <div class="product-box2">
+                                            <div class="media">
+                                                <a href="product-page(no-sidebar).html" style="min-width: 125px;"><img class="img-fluid blur-up lazyloaded" src="../assets/images/nursery/pro/2.jpg" alt=""></a>
+                                                <div class="media-body align-self-center">
+                                                    <div class="rating"><i class="fa fa-star"></i> <i class="fa fa-star"></i> <i class="fa fa-star"></i>
+                                                        <i class="fa fa-star"></i> <i class="fa fa-star"></i>
+                                                    </div>
+                                                    <a href="product-page(no-sidebar).html">
+                                                        <h6>Allovera plant</h6>
+                                                    </a>
+                                                    <h4>$10.00</h4>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="tab-box">
+                                        <div class="product-box2">
+                                            <div class="media">
+                                                <a href="product-page(no-sidebar).html" style="min-width: 125px;"><img class="img-fluid blur-up lazyloaded" src="../assets/images/nursery/pro/3.jpg" alt=""></a>
+                                                <div class="media-body align-self-center">
+                                                    <div class="rating"><i class="fa fa-star"></i> <i class="fa fa-star"></i> <i class="fa fa-star"></i>
+                                                        <i class="fa fa-star"></i> <i class="fa fa-star"></i>
+                                                    </div><a href="product-page(no-sidebar).html">
+                                                        <h6>oxygen enriching plant</h6>
+                                                    </a>
+                                                    <h4>$500.00</h4>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="tab-box">
+                                        <div class="product-box2">
+                                            <div class="media">
+                                                <a href="product-page(no-sidebar).html" style="min-width: 125px;"><img class="img-fluid blur-up lazyloaded" src="../assets/images/nursery/pro/4.jpg" alt=""></a>
+                                                <div class="media-body align-self-center">
+                                                    <div class="rating"><i class="fa fa-star"></i> <i class="fa fa-star"></i> <i class="fa fa-star"></i>
+                                                        <i class="fa fa-star"></i> <i class="fa fa-star"></i>
+                                                    </div><a href="product-page(no-sidebar).html">
+                                                        <h6>oxygen enriching plant</h6>
+                                                    </a>
+                                                    <h4>$500.00</h4>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="tab-box">
+                                        <div class="product-box2">
+                                            <div class="media">
+                                                <a href="product-page(no-sidebar).html" style="min-width: 125px;"><img class="img-fluid blur-up lazyloaded" src="../assets/images/nursery/pro/5.jpg" alt=""></a>
+                                                <div class="media-body align-self-center">
+                                                    <div class="rating"><i class="fa fa-star"></i> <i class="fa fa-star"></i> <i class="fa fa-star"></i>
+                                                        <i class="fa fa-star"></i> <i class="fa fa-star"></i>
+                                                    </div>
+                                                    <a href="product-page(no-sidebar).html">
+                                                        <h6>Outdoor Plants</h6>
+                                                    </a>
+                                                    <h4>$2.00</h4>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="tab-box">
+                                        <div class="product-box2">
+                                            <div class="media">
+                                                <a href="product-page(no-sidebar).html" style="min-width: 125px;"><img class="img-fluid blur-up lazyloaded" src="../assets/images/nursery/pro/6.jpg" alt=""></a>
+                                                <div class="media-body align-self-center">
+                                                    <div class="rating"><i class="fa fa-star"></i> <i class="fa fa-star"></i> <i class="fa fa-star"></i>
+                                                        <i class="fa fa-star"></i> <i class="fa fa-star"></i>
+                                                    </div><a href="product-page(no-sidebar).html">
+                                                        <h6>Indoor Plants</h6>
+                                                    </a>
+                                                    <h4>$3.00</h4>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="tab-box">
+                                        <div class="product-box2">
+                                            <div class="media">
+                                                <a href="product-page(no-sidebar).html" style="min-width: 125px;"><img class="img-fluid blur-up lazyloaded" src="../assets/images/nursery/pro/7.jpg" alt=""></a>
+                                                <div class="media-body align-self-center">
+                                                    <div class="rating"><i class="fa fa-star"></i> <i class="fa fa-star"></i> <i class="fa fa-star"></i>
+                                                        <i class="fa fa-star"></i> <i class="fa fa-star"></i>
+                                                    </div><a href="product-page(no-sidebar).html">
+                                                        <h6>pollution killer plants</h6>
+                                                    </a>
+                                                    <h4>$8.00 <del>$9.00</del></h4>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="tab-box">
+                                        <div class="product-box2">
+                                            <div class="media">
+                                                <a href="product-page(no-sidebar).html" style="min-width: 125px;"><img class="img-fluid blur-up lazyloaded" src="../assets/images/nursery/pro/1.jpg" alt=""></a>
+                                                <div class="media-body align-self-center">
+                                                    <div class="rating"><i class="fa fa-star"></i> <i class="fa fa-star"></i> <i class="fa fa-star"></i>
+                                                        <i class="fa fa-star"></i> <i class="fa fa-star"></i>
+                                                    </div><a href="product-page(no-sidebar).html">
+                                                        <h6>Fragrant Plants</h6>
+                                                    </a>
+                                                    <h4>$5.00 </h4>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div *ngIf="activeTab==='tab-2'" class="tab-content" style="display: block;">
+                                <div class="row product-tab">
+                                    <div class="tab-box">
+                                        <div class="product-box2">
+                                            <div class="media">
+                                                <a href="product-page(no-sidebar).html" style="min-width: 125px;"><img class="img-fluid blur-up lazyloaded" src="../assets/images/nursery/pro/2.jpg" alt=""></a>
+                                                <div class="media-body align-self-center">
+                                                    <div class="rating"><i class="fa fa-star"></i> <i class="fa fa-star"></i> <i class="fa fa-star"></i>
+                                                        <i class="fa fa-star"></i> <i class="fa fa-star"></i>
+                                                    </div><a href="product-page(no-sidebar).html">
+                                                        <h6>Allovera plant</h6>
+                                                    </a>
+                                                    <h4>$10.00</h4>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="tab-box">
+                                        <div class="product-box2">
+                                            <div class="media">
+                                                <a href="product-page(no-sidebar).html" style="min-width: 125px;"><img class="img-fluid blur-up lazyloaded" src="../assets/images/nursery/pro/3.jpg" alt=""></a>
+                                                <div class="media-body align-self-center">
+                                                    <div class="rating"><i class="fa fa-star"></i> <i class="fa fa-star"></i> <i class="fa fa-star"></i>
+                                                        <i class="fa fa-star"></i> <i class="fa fa-star"></i>
+                                                    </div><a href="product-page(no-sidebar).html">
+                                                        <h6>oxygen enriching plant</h6>
+                                                    </a>
+                                                    <h4>$6.00<del>$600.00</del></h4>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="tab-box">
+                                        <div class="product-box2">
+                                            <div class="media">
+                                                <a href="product-page(no-sidebar).html" style="min-width: 125px;"><img class="img-fluid blur-up lazyloaded" src="../assets/images/nursery/pro/4.jpg" alt=""></a>
+                                                <div class="media-body align-self-center">
+                                                    <div class="rating"><i class="fa fa-star"></i> <i class="fa fa-star"></i> <i class="fa fa-star"></i>
+                                                        <i class="fa fa-star"></i> <i class="fa fa-star"></i>
+                                                    </div><a href="product-page(no-sidebar).html">
+                                                        <h6>oxygen enriching plant</h6>
+                                                    </a>
+                                                    <h4>$500.00</h4>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="tab-box">
+                                        <div class="product-box2">
+                                            <div class="media">
+                                                <a href="product-page(no-sidebar).html" style="min-width: 125px;"><img class="img-fluid blur-up lazyloaded" src="../assets/images/nursery/pro/5.jpg" alt=""></a>
+                                                <div class="media-body align-self-center">
+                                                    <div class="rating"><i class="fa fa-star"></i> <i class="fa fa-star"></i> <i class="fa fa-star"></i>
+                                                        <i class="fa fa-star"></i> <i class="fa fa-star"></i>
+                                                    </div><a href="product-page(no-sidebar).html">
+                                                        <h6>Outdoor Plants</h6>
+                                                    </a>
+                                                    <h4>$2.00</h4>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="tab-box">
+                                        <div class="product-box2">
+                                            <div class="media">
+                                                <a href="product-page(no-sidebar).html" style="min-width: 125px;"><img class="img-fluid blur-up lazyloaded" src="../assets/images/nursery/pro/6.jpg" alt=""></a>
+                                                <div class="media-body align-self-center">
+                                                    <div class="rating"><i class="fa fa-star"></i> <i class="fa fa-star"></i> <i class="fa fa-star"></i>
+                                                        <i class="fa fa-star"></i> <i class="fa fa-star"></i>
+                                                    </div><a href="product-page(no-sidebar).html">
+                                                        <h6>Indoor Plants</h6>
+                                                    </a>
+                                                    <h4>$3.00</h4>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="tab-box">
+                                        <div class="product-box2">
+                                            <div class="media">
+                                                <a href="product-page(no-sidebar).html" style="min-width: 125px;"><img class="img-fluid blur-up lazyloaded" src="../assets/images/nursery/pro/7.jpg" alt=""></a>
+                                                <div class="media-body align-self-center">
+                                                    <div class="rating"><i class="fa fa-star"></i> <i class="fa fa-star"></i> <i class="fa fa-star"></i>
+                                                        <i class="fa fa-star"></i> <i class="fa fa-star"></i>
+                                                    </div><a href="product-page(no-sidebar).html">
+                                                        <h6>pollution killer plants</h6>
+                                                    </a>
+                                                    <h4>$8.00</h4>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="tab-box">
+                                        <div class="product-box2">
+                                            <div class="media">
+                                                <a href="product-page(no-sidebar).html" style="min-width: 125px;"><img class="img-fluid blur-up lazyloaded" src="../assets/images/nursery/pro/1.jpg" alt=""></a>
+                                                <div class="media-body align-self-center">
+                                                    <div class="rating"><i class="fa fa-star"></i> <i class="fa fa-star"></i> <i class="fa fa-star"></i>
+                                                        <i class="fa fa-star"></i> <i class="fa fa-star"></i>
+                                                    </div><a href="product-page(no-sidebar).html">
+                                                        <h6>Fragrant Plants</h6>
+                                                    </a>
+                                                    <h4>$5.00 </h4>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="tab-box">
+                                        <div class="product-box2">
+                                            <div class="media">
+                                                <a href="product-page(no-sidebar).html" style="min-width: 125px;"><img class="img-fluid blur-up lazyloaded" src="../assets/images/nursery/pro/2.jpg" alt=""></a>
+                                                <div class="media-body align-self-center">
+                                                    <div class="rating"><i class="fa fa-star"></i> <i class="fa fa-star"></i> <i class="fa fa-star"></i>
+                                                        <i class="fa fa-star"></i> <i class="fa fa-star"></i>
+                                                    </div><a href="product-page(no-sidebar).html">
+                                                        <h6>Allovera plant</h6>
+                                                    </a>
+                                                    <h4>$10.00</h4>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div *ngIf="activeTab==='tab-3'" class="tab-content" style="display: block;">
+                                <div class="row product-tab">
+                                    <div class="tab-box">
+                                        <div class="product-box2">
+                                            <div class="media">
+                                                <a href="product-page(no-sidebar).html" style="min-width: 125px;"><img class="img-fluid blur-up lazyloaded" src="../assets/images/nursery/pro/3.jpg" alt=""></a>
+                                                <div class="media-body align-self-center">
+                                                    <div class="rating"><i class="fa fa-star"></i> <i class="fa fa-star"></i> <i class="fa fa-star"></i>
+                                                        <i class="fa fa-star"></i> <i class="fa fa-star"></i>
+                                                    </div><a href="product-page(no-sidebar).html">
+                                                        <h6>oxygen enriching plant</h6>
+                                                    </a>
+                                                    <h4>$6.00<del>$600.00</del></h4>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="tab-box">
+                                        <div class="product-box2">
+                                            <div class="media">
+                                                <a href="product-page(no-sidebar).html" style="min-width: 125px;"><img class="img-fluid blur-up lazyloaded" src="../assets/images/nursery/pro/4.jpg" alt=""></a>
+                                                <div class="media-body align-self-center">
+                                                    <div class="rating"><i class="fa fa-star"></i> <i class="fa fa-star"></i> <i class="fa fa-star"></i>
+                                                        <i class="fa fa-star"></i> <i class="fa fa-star"></i>
+                                                    </div><a href="product-page(no-sidebar).html">
+                                                        <h6>oxygen enriching plant</h6>
+                                                    </a>
+                                                    <h4>$500.00</h4>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="tab-box">
+                                        <div class="product-box2">
+                                            <div class="media">
+                                                <a href="product-page(no-sidebar).html" style="min-width: 125px;"><img class="img-fluid blur-up lazyloaded" src="../assets/images/nursery/pro/5.jpg" alt=""></a>
+                                                <div class="media-body align-self-center">
+                                                    <div class="rating"><i class="fa fa-star"></i> <i class="fa fa-star"></i> <i class="fa fa-star"></i>
+                                                        <i class="fa fa-star"></i> <i class="fa fa-star"></i>
+                                                    </div><a href="product-page(no-sidebar).html">
+                                                        <h6>Outdoor Plants</h6>
+                                                    </a>
+                                                    <h4>$2.00</h4>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="tab-box">
+                                        <div class="product-box2">
+                                            <div class="media">
+                                                <a href="product-page(no-sidebar).html" style="min-width: 125px;"><img class="img-fluid blur-up lazyloaded" src="../assets/images/nursery/pro/6.jpg" alt=""></a>
+                                                <div class="media-body align-self-center">
+                                                    <div class="rating"><i class="fa fa-star"></i> <i class="fa fa-star"></i> <i class="fa fa-star"></i>
+                                                        <i class="fa fa-star"></i> <i class="fa fa-star"></i>
+                                                    </div>
+                                                    <a href="product-page(no-sidebar).html">
+                                                        <h6>Indoor Plants</h6>
+                                                    </a>
+                                                    <h4>$3.00</h4>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="tab-box">
+                                        <div class="product-box2">
+                                            <div class="media">
+                                                <a href="product-page(no-sidebar).html" style="min-width: 125px;"><img class="img-fluid blur-up lazyloaded" src="../assets/images/nursery/pro/7.jpg" alt=""></a>
+                                                <div class="media-body align-self-center">
+                                                    <div class="rating"><i class="fa fa-star"></i> <i class="fa fa-star"></i> <i class="fa fa-star"></i>
+                                                        <i class="fa fa-star"></i> <i class="fa fa-star"></i>
+                                                    </div><a href="product-page(no-sidebar).html">
+                                                        <h6>pollution killer plants</h6>
+                                                    </a>
+                                                    <h4>$8.00</h4>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="tab-box">
+                                        <div class="product-box2">
+                                            <div class="media">
+                                                <a href="product-page(no-sidebar).html" style="min-width: 125px;"><img class="img-fluid blur-up lazyloaded" src="../assets/images/nursery/pro/1.jpg" alt=""></a>
+                                                <div class="media-body align-self-center">
+                                                    <div class="rating"><i class="fa fa-star"></i> <i class="fa fa-star"></i> <i class="fa fa-star"></i>
+                                                        <i class="fa fa-star"></i> <i class="fa fa-star"></i>
+                                                    </div><a href="product-page(no-sidebar).html">
+                                                        <h6>Fragrant Plants</h6>
+                                                    </a>
+                                                    <h4>$5.00 <del>$6.00</del></h4>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="tab-box">
+                                        <div class="product-box2">
+                                            <div class="media">
+                                                <a href="product-page(no-sidebar).html" style="min-width: 125px;"><img class="img-fluid blur-up lazyloaded" src="../assets/images/nursery/pro/2.jpg" alt=""></a>
+                                                <div class="media-body align-self-center">
+                                                    <div class="rating"><i class="fa fa-star"></i> <i class="fa fa-star"></i> <i class="fa fa-star"></i>
+                                                        <i class="fa fa-star"></i> <i class="fa fa-star"></i>
+                                                    </div><a href="product-page(no-sidebar).html">
+                                                        <h6>Allovera plant</h6>
+                                                    </a>
+                                                    <h4>$10.00</h4>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="tab-box">
+                                        <div class="product-box2">
+                                            <div class="media">
+                                                <a href="product-page(no-sidebar).html" style="min-width: 125px;"><img class="img-fluid blur-up lazyloaded" src="../assets/images/nursery/pro/3.jpg" alt=""></a>
+                                                <div class="media-body align-self-center">
+                                                    <div class="rating"><i class="fa fa-star"></i> <i class="fa fa-star"></i> <i class="fa fa-star"></i>
+                                                        <i class="fa fa-star"></i> <i class="fa fa-star"></i>
+                                                    </div><a href="product-page(no-sidebar).html">
+                                                        <h6>oxygen enriching plant</h6>
+                                                    </a>
+                                                    <h4>$500.00</h4>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>

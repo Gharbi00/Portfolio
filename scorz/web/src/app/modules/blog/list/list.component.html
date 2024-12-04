@@ -1,0 +1,516 @@
+<div class="prd-breadcrumb">
+    <div class="brd-shape">
+        <div class="brd-img brd-img-1 aos-init aos-animate" data-aos="fade-right" data-aos-delay="200"
+            data-aos-duration="500" data-aos-easing="ease-in">
+            <img src="assets/img/breadcrumb/brd-img-1.png" alt="">
+        </div>
+        <div class="brd-img brd-img-2 aos-init aos-animate" data-aos="fade-left" data-aos-delay="200"
+            data-aos-duration="500" data-aos-easing="ease-in">
+            <img src="assets/img/breadcrumb/brd-img-2.png" alt="">
+        </div>
+    </div>
+    <div class="container">
+        <div class="brd-content">
+            <div data-aos="fade-up" data-aos-delay="200" data-aos-duration="500" data-aos-easing="ease-in"
+                class="aos-init aos-animate">
+                <span class="sub-title">blog posts</span>
+            </div>
+            <h2 class="title aos-init aos-animate" data-aos="fade-up" data-aos-delay="350" data-aos-duration="500"
+                data-aos-easing="ease-in">Get Betting News &amp; Bet Winner Stories</h2>
+            <div class="page-direction">
+                <ul>
+                    <li>
+                        <span class="icon"><i class="fa-solid fa-house"></i></span>
+                        <span class="text">Home</span>
+                    </li>
+                    <li>
+                        <span class="icon"><i class="fa-light fa-caret-right fa-xl"></i></span>
+                        <span class="text">blog posts</span>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="blog-posts">
+    <div class="global-shape style-3">
+        <img src="assets/img/shapes/shape-1.png" alt="" data-aos="fade-left" data-aos-duration="500"
+            data-aos-offset="200" data-aos-easing="ease-in" data-aos-delay="400" class="aos-init">
+    </div>
+    <div class="container">
+        <div class="row g-4">
+            <div class="col-xl-8 col-lg-12">
+              <div class="row g-4">
+                <ng-container *ngFor="let blog of getSlicedBlogs(); let i = index">
+                  <!-- Conditional rendering for left and right layout -->
+                  <div  *ngIf="i % 3 !== 2"
+                    class="col-xl-12 col-lg-12 col-md-6" 
+                    data-aos="fade-up" 
+                    data-aos-delay="100" 
+                    data-aos-duration="500" 
+                    data-aos-easing="ease-in"
+                    [ngClass]="{'right-sided-img': i % 2 === 1}"
+                  >
+                    <div class="single-blog" [ngClass]="{'right-sided-img': i % 2 === 1}">
+                      <div *ngIf="i % 2 === 0" class="part-img">
+                        <img [src]="blog.imgSrc" alt="">
+                      </div>
+                      <div class="part-text">
+                        <span class="post-category">{{ blog.category }}</span>
+                        <h3 class="blog-post-title">
+                          <a href="/blog-details">{{ blog.title }}</a>
+                        </h3>
+                        <p>{{ blog.description }}</p>
+                        <div class="post-info-stats">
+                          <a href="#0" class="post-creator">
+                            <div class="creator-pic">
+                              <img [src]="blog.authorImage" alt="">
+                            </div>
+                            <span class="creator-name">{{ blog.author }}</span>
+                          </a>
+                          <span class="posting-time">{{ blog.postingTime }}</span>
+                        </div>
+                      </div>
+                      <div *ngIf="i % 2 === 1" class="part-img">
+                        <img [src]="blog.imgSrc" alt="">
+                      </div>
+                    </div>
+                  </div>
+                </ng-container>
+              </div>
+            </div>
+          
+            <div class="col-xl-4 col-lg-12">
+              <div class="row g-4">
+                <ng-container *ngFor="let blog of getSlicedBlogs(); let i = index">
+                  <!-- Horizontal layout for every 3rd blog -->
+                  <div *ngIf="i % 3 === 2" class="col-xl-12 col-lg-12 col-md-6" 
+                  data-aos="fade-up" 
+                  data-aos-delay="100" 
+                  data-aos-duration="500" 
+                  data-aos-easing="ease-in"
+                  >
+                    <div class="single-blog vertical-style">
+                      <div class="part-img">
+                        <img [src]="blog.imgSrc" alt="">
+                      </div>
+                      <div class="part-text">
+                        <span class="post-category">{{ blog.category }}</span>
+                        <h3 class="blog-post-title">
+                          <a href="/blog-details">{{ blog.title }}</a>
+                        </h3>
+                        <p>{{ blog.description }}</p>
+                        <div class="post-info-stats">
+                          <a href="#0" class="post-creator">
+                            <div class="creator-pic">
+                              <img [src]="blog.authorImage" alt="">
+                            </div>
+                            <span class="creator-name">{{ blog.author }}</span>
+                          </a>
+                          <span class="posting-time">{{ blog.postingTime }}</span>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </ng-container>
+              </div>
+            </div>
+          </div>
+          
+        <app-pagination [perPage]="perPage" [total]="blogsdata.length" [length]="pagesToBeShown - 1"></app-pagination>
+        <!-- [length]="pagesToBeShown - 1" -->
+        <div class="pok-sidebar aos-init aos-animate" data-aos="fade-up" data-aos-delay="150" data-aos-duration="500"
+            data-aos-easing="ease-in">
+            <div class="row">
+                <div class="col-xl-4 col-lg-12 aos-init aos-animate" data-aos="fade-up" data-aos-delay="250"
+                    data-aos-duration="500" data-aos-easing="ease-in">
+                    <div class="single-element recent-postss">
+                        <h4 class="title">Recent posted</h4>
+                        <div class="recent-post-slider owl-carousel owl-theme owl-loaded">
+                            <div class="owl-stage-outer">
+                                <div class="owl-stage"
+                                    style="transform: translate3d(-896px, 0px, 0px); transition: 0.5s linear; width: 3136px;">
+                                    <div class="owl-item cloned" style="width: 408px; margin-right: 40px;">
+                                        <div class="recent-posts">
+                                            <div class="single-recent-post">
+                                                <div class="part-img">
+                                                    <img src="assets/img/blog/recent-post-1.jpg" alt="">
+                                                </div>
+                                                <div class="part-text">
+                                                    <h5 class="post-title">
+                                                        <a routerLink="/blog/details">Even more and setted see.</a>
+                                                    </h5>
+                                                    <div class="post-stats">
+                                                        <span class="text">
+                                                            by
+                                                            <a class="posted-by" href="#">Sierra Guzman</a>
+                                                        </span>
+                                                        <span class="text">
+                                                            in
+                                                            <a class="category-by" href="#">MegaMillions</a>
+                                                        </span>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="single-recent-post">
+                                                <div class="part-img">
+                                                    <img src="assets/img/blog/recent-post-2.jpg" alt="">
+                                                </div>
+                                                <div class="part-text">
+                                                    <h5 class="post-title">
+                                                        <a routerLink="/blog/details">Began a need detailed free.</a>
+                                                    </h5>
+                                                    <div class="post-stats">
+                                                        <span class="text">
+                                                            by
+                                                            <a class="posted-by" href="#">Peter Bowen</a>
+                                                        </span>
+                                                        <span class="text">
+                                                            in
+                                                            <a class="category-by" href="#">Euro Jackpot</a>
+                                                        </span>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="owl-item cloned" style="width: 408px; margin-right: 40px;">
+                                        <div class="recent-posts">
+                                            <div class="single-recent-post">
+                                                <div class="part-img">
+                                                    <img src="assets/img/blog/recent-post-1.jpg" alt="">
+                                                </div>
+                                                <div class="part-text">
+                                                    <h5 class="post-title">
+                                                        <a routerLink="/blog/details">Even more and setted see.</a>
+                                                    </h5>
+                                                    <div class="post-stats">
+                                                        <span class="text">
+                                                            by
+                                                            <a class="posted-by" href="#">Sierra Guzman</a>
+                                                        </span>
+                                                        <span class="text">
+                                                            in
+                                                            <a class="category-by" href="#">MegaMillions</a>
+                                                        </span>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="single-recent-post">
+                                                <div class="part-img">
+                                                    <img src="assets/img/blog/recent-post-2.jpg" alt="">
+                                                </div>
+                                                <div class="part-text">
+                                                    <h5 class="post-title">
+                                                        <a routerLink="/blog/details">Began a need detailed free.</a>
+                                                    </h5>
+                                                    <div class="post-stats">
+                                                        <span class="text">
+                                                            by
+                                                            <a class="posted-by" href="#">Peter Bowen</a>
+                                                        </span>
+                                                        <span class="text">
+                                                            in
+                                                            <a class="category-by" href="#">Euro Jackpot</a>
+                                                        </span>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="owl-item active" style="width: 408px; margin-right: 40px;">
+                                        <div class="recent-posts">
+                                            <div class="single-recent-post">
+                                                <div class="part-img">
+                                                    <img src="assets/img/blog/recent-post-1.jpg" alt="">
+                                                </div>
+                                                <div class="part-text">
+                                                    <h5 class="post-title">
+                                                        <a routerLink="/blog/details">Even more and setted see.</a>
+                                                    </h5>
+                                                    <div class="post-stats">
+                                                        <span class="text">
+                                                            by
+                                                            <a class="posted-by" href="#">Sierra Guzman</a>
+                                                        </span>
+                                                        <span class="text">
+                                                            in
+                                                            <a class="category-by" href="#">MegaMillions</a>
+                                                        </span>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="single-recent-post">
+                                                <div class="part-img">
+                                                    <img src="assets/img/blog/recent-post-2.jpg" alt="">
+                                                </div>
+                                                <div class="part-text">
+                                                    <h5 class="post-title">
+                                                        <a routerLink="/blog/details">Began a need detailed free.</a>
+                                                    </h5>
+                                                    <div class="post-stats">
+                                                        <span class="text">
+                                                            by
+                                                            <a class="posted-by" href="#">Peter Bowen</a>
+                                                        </span>
+                                                        <span class="text">
+                                                            in
+                                                            <a class="category-by" href="#">Euro Jackpot</a>
+                                                        </span>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="owl-item active" style="width: 408px; margin-right: 40px;">
+                                        <div class="recent-posts">
+                                            <div class="single-recent-post">
+                                                <div class="part-img">
+                                                    <img src="assets/img/blog/recent-post-1.jpg" alt="">
+                                                </div>
+                                                <div class="part-text">
+                                                    <h5 class="post-title">
+                                                        <a routerLink="/blog/details">Even more and setted see.</a>
+                                                    </h5>
+                                                    <div class="post-stats">
+                                                        <span class="text">
+                                                            by
+                                                            <a class="posted-by" href="#">Sierra Guzman</a>
+                                                        </span>
+                                                        <span class="text">
+                                                            in
+                                                            <a class="category-by" href="#">MegaMillions</a>
+                                                        </span>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="single-recent-post">
+                                                <div class="part-img">
+                                                    <img src="assets/img/blog/recent-post-2.jpg" alt="">
+                                                </div>
+                                                <div class="part-text">
+                                                    <h5 class="post-title">
+                                                        <a routerLink="/blog/details">Began a need detailed free.</a>
+                                                    </h5>
+                                                    <div class="post-stats">
+                                                        <span class="text">
+                                                            by
+                                                            <a class="posted-by" href="#">Peter Bowen</a>
+                                                        </span>
+                                                        <span class="text">
+                                                            in
+                                                            <a class="category-by" href="#">Euro Jackpot</a>
+                                                        </span>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="owl-item" style="width: 408px; margin-right: 40px;">
+                                        <div class="recent-posts">
+                                            <div class="single-recent-post">
+                                                <div class="part-img">
+                                                    <img src="assets/img/blog/recent-post-1.jpg" alt="">
+                                                </div>
+                                                <div class="part-text">
+                                                    <h5 class="post-title">
+                                                        <a routerLink="/blog/details">Even more and setted see.</a>
+                                                    </h5>
+                                                    <div class="post-stats">
+                                                        <span class="text">
+                                                            by
+                                                            <a class="posted-by" href="#">Sierra Guzman</a>
+                                                        </span>
+                                                        <span class="text">
+                                                            in
+                                                            <a class="category-by" href="#">MegaMillions</a>
+                                                        </span>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="single-recent-post">
+                                                <div class="part-img">
+                                                    <img src="assets/img/blog/recent-post-2.jpg" alt="">
+                                                </div>
+                                                <div class="part-text">
+                                                    <h5 class="post-title">
+                                                        <a routerLink="/blog/details">Began a need detailed free.</a>
+                                                    </h5>
+                                                    <div class="post-stats">
+                                                        <span class="text">
+                                                            by
+                                                            <a class="posted-by" href="#">Peter Bowen</a>
+                                                        </span>
+                                                        <span class="text">
+                                                            in
+                                                            <a class="category-by" href="#">Euro Jackpot</a>
+                                                        </span>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="owl-item cloned" style="width: 408px; margin-right: 40px;">
+                                        <div class="recent-posts">
+                                            <div class="single-recent-post">
+                                                <div class="part-img">
+                                                    <img src="assets/img/blog/recent-post-1.jpg" alt="">
+                                                </div>
+                                                <div class="part-text">
+                                                    <h5 class="post-title">
+                                                        <a routerLink="/blog/details">Even more and setted see.</a>
+                                                    </h5>
+                                                    <div class="post-stats">
+                                                        <span class="text">
+                                                            by
+                                                            <a class="posted-by" href="#">Sierra Guzman</a>
+                                                        </span>
+                                                        <span class="text">
+                                                            in
+                                                            <a class="category-by" href="#">MegaMillions</a>
+                                                        </span>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="single-recent-post">
+                                                <div class="part-img">
+                                                    <img src="assets/img/blog/recent-post-2.jpg" alt="">
+                                                </div>
+                                                <div class="part-text">
+                                                    <h5 class="post-title">
+                                                        <a routerLink="/blog/details">Began a need detailed free.</a>
+                                                    </h5>
+                                                    <div class="post-stats">
+                                                        <span class="text">
+                                                            by
+                                                            <a class="posted-by" href="#">Peter Bowen</a>
+                                                        </span>
+                                                        <span class="text">
+                                                            in
+                                                            <a class="category-by" href="#">Euro Jackpot</a>
+                                                        </span>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="owl-item cloned" style="width: 408px; margin-right: 40px;">
+                                        <div class="recent-posts">
+                                            <div class="single-recent-post">
+                                                <div class="part-img">
+                                                    <img src="assets/img/blog/recent-post-1.jpg" alt="">
+                                                </div>
+                                                <div class="part-text">
+                                                    <h5 class="post-title">
+                                                        <a routerLink="/blog/details">Even more and setted see.</a>
+                                                    </h5>
+                                                    <div class="post-stats">
+                                                        <span class="text">
+                                                            by
+                                                            <a class="posted-by" href="#">Sierra Guzman</a>
+                                                        </span>
+                                                        <span class="text">
+                                                            in
+                                                            <a class="category-by" href="#">MegaMillions</a>
+                                                        </span>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="single-recent-post">
+                                                <div class="part-img">
+                                                    <img src="assets/img/blog/recent-post-2.jpg" alt="">
+                                                </div>
+                                                <div class="part-text">
+                                                    <h5 class="post-title">
+                                                        <a routerLink="/blog/details">Began a need detailed free.</a>
+                                                    </h5>
+                                                    <div class="post-stats">
+                                                        <span class="text">
+                                                            by
+                                                            <a class="posted-by" href="#">Peter Bowen</a>
+                                                        </span>
+                                                        <span class="text">
+                                                            in
+                                                            <a class="category-by" href="#">Euro Jackpot</a>
+                                                        </span>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="owl-nav disabled"><button type="button" role="presentation" class="owl-prev"><img
+                                        src="assets/img/testimonial/left-arrow.png"></button><button type="button"
+                                    role="presentation" class="owl-next"><img
+                                        src="assets/img/testimonial/right-arrow.png"></button></div>
+                            <div class="carousel-custom-dots"><button role="button"
+                                    class="owl-dot active"><span></span></button><button role="button"
+                                    class="owl-dot"><span></span></button></div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-xl-8 col-lg-12">
+                    <div class="row">
+                        <div class="col-xl-6 col-lg-6 col-md-6 aos-init aos-animate" data-aos="fade-up" data-aos-delay="300"
+                            data-aos-duration="500" data-aos-easing="ease-in">
+                            <div class="single-element posts-category">
+                                <h4 class="title">posts category</h4>
+                                <ul class="category-list">
+                                    <li>
+                                        <a href="#0">
+                                            <span class="cl-cat">Super enalotto</span>
+                                            <span class="q-numb">(02)</span>
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a href="#0">
+                                            <span class="cl-cat">us powerball</span>
+                                            <span class="q-numb">(23)</span>
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a href="#0">
+                                            <span class="cl-cat">euro Millions</span>
+                                            <span class="q-numb">(16)</span>
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a href="#0">
+                                            <span class="cl-cat">Premier Bet</span>
+                                            <span class="q-numb">(24)</span>
+                                        </a>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                        <div class="col-xl-6 col-lg-6 col-md-6 aos-init aos-animate" data-aos="fade-up" data-aos-delay="350"
+                            data-aos-duration="500" data-aos-easing="ease-in">
+                            <div class="single-element tag-lines">
+                                <h4 class="title">posts Tagline</h4>
+                                <div class="tag-words">
+                                    <a href="#0" class="single-tag">bets</a>
+                                    <a href="#0" class="single-tag">betting</a>
+                                    <a href="#0" class="single-tag">sportsbets</a>
+                                    <a href="#0" class="single-tag">gambling </a>
+                                    <a href="#0" class="single-tag">bettingodds</a>
+                                    <a href="#0" class="single-tag">nba </a>
+                                    <a href="#0" class="single-tag">bettingonline </a>
+                                    <a href="#0" class="single-tag">odds</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="search-bar-element aos-init" data-aos="fade-up" data-aos-delay="400" data-aos-duration="500"
+                        data-aos-easing="ease-in">
+                        <form>
+                            <input type="text" placeholder="Search a Blog....">
+                            <button type="submit"><i class="fa-light fa-magnifying-glass"></i></button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

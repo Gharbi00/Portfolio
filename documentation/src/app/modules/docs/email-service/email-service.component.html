@@ -1,0 +1,68 @@
+<main class=" col-xl-10 doc-main-body" data-bs-spy="scroll" data-bs-target="#email-service" data-bs-offset="0"
+  tabindex="0">
+  <h2>Email Services Configuration</h2>
+  <div id="introduction">
+    <h3>Introduction</h3>
+    <p>To send email notifications or marketing emails to your customers, you need to configure your email service
+      settings. This section will guide you through the steps to set up your email service
+      within Elevok. You can find these settings in the Elevok Marketplace under the Emails app.</p>
+  </div>
+  <div id="setup">
+    <h3>Setting Up Email Server</h3>
+    <ul class="list-item-one">
+      <li>Host: Enter the hostname of your email server.</li>
+      <li>User: Provide the username for your email account.</li>
+      <li>Port: Specify the port number your email server uses (e.g., 25, 465, 587).</li>
+      <li>Password: Enter the password for your email account.</li>
+      <li>Encryption: Choose the type of encryption for your email server (e.g., SSL, TLS).</li>
+    </ul>
+  </div>
+  <div id="settings">
+    <h3>Additional Settings </h3>
+    <ul class="list-item-one">
+      <li>From Address: Set the default email address that will appear in the "From" field of your outgoing emails.</li>
+      <li>Reply-to Address: Specify the reply-to address if it differs from the from address.</li>
+      <li>Test Email: Send a test email to verify that your settings are correct.</li>
+    </ul>
+  </div>
+  <div id="example">
+    <h3>Example Configuration</h3>
+    <ul class="list-item-one">
+      <li>Host: smtp.your-email-provider.com</li>
+      <li>User: your-email@your-domain.com</li>
+      <li>Port: 587</li>
+      <li>Password: your-email-password</li>
+      <li>Encryption: TLS</li>
+      <li>From Address: no-reply@your-domain.com</li>
+      <li>Reply-to Address: support@your-domain.com</li>
+    </ul>
+  </div>
+  <div id="test">
+    <h3>Sending Test Email</h3>
+    <ul class="list-item-one">
+      <li>After entering all required information, use the "Send Test Email" button to ensure that your email settings
+        are correctly configured.</li>
+      <li>Check your inbox for the test email to confirm receipt.</li>
+    </ul>
+    <p></p>
+    <p>By properly configuring your email service, you can ensure that all notifications and marketing emails are
+      reliably delivered to your customers, enhancing communication and engagement. For more detailed instructions and
+      troubleshooting tips, please refer to the Elevok Help Center.</p>
+    <img src="assets/images/doc/img_05.png" alt="" class="img-meta">
+  </div>
+
+  <div class="doc-pagination pt-40">
+    <app-pagination></app-pagination>
+  </div>
+</main> <!-- /.doc-main-body -->
+<nav class="d-none d-xl-block col-xl-3 doc-sideNav">
+  <div class="wrapper">
+    <nav class="main-side-nav" id="email-service">
+      <a href="email-service/#introduction" class="nav-link">Introduction</a>
+      <a href="email-service/#setup" class="nav-link">Setting Up Email Server</a>
+      <a href="email-service/#settings" class="nav-link">Additional Settings</a>
+      <a href="email-service/#example" class="nav-link">Example Configuration</a>
+      <a href="email-service#test" class="nav-link">Sending Test Email</a>
+    </nav>
+  </div>
+</nav>

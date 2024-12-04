@@ -1,0 +1,76 @@
+<main class=" col-xl-10 doc-main-body" data-bs-spy="scroll" data-bs-target="#authentication" data-bs-offset="0"
+  tabindex="0">
+  <h2>Authentication</h2>
+  <div id="introduction">
+    <h3>Introduction</h3>
+    <p>Elevok's API employs API keys for request authentication, providing a secure mechanism to access resources. Your
+      API keys can be accessed and managed within the Elevok Dashboard.</p>
+    <p>Authentication for Elevok APIs is conducted using API keys, which serve as a crucial security measure for your
+      account. Elevok provides two types of API keys: the Public Key and the Secret Key
+      (also referred to as the transaction key).</p>
+    <p>This API is used to authenticate users and obtain an access token, which is required to access other APIs within
+      the Elevok Loyalty Program system.</p>
+  </div>
+  <div id="endpoint">
+    <h3>Endpoint</h3>
+    <div class="mark-red">
+      <pre>URL: /cauth/clogin</pre>
+      <pre>Method: <span class="s1">POST</span></pre>
+    </div>
+  </div>
+  <div id="params">
+    <h3>Request Parameters</h3>
+    <div class="mark-red">
+      <pre><span class="s1">publicKey</span>: Public key associated with the user's account.</pre>
+      <pre><span class="s1">secretKey</span>: Secret key associated with the user's account.</pre>
+      <pre><span class="s1">client</span>: Your client identifier.</pre>
+    </div>
+  </div>
+  <div id="errors">
+    <h3>Error Handling</h3>
+    <p>The API returns appropriate error responses in case of missing parameters or authentication failure.</p>
+    <div class="mark-red">
+      <pre><span class="s1">400 Bad Request</span>: If the publicKey or secretKey parameters are missing.</pre>
+      <pre><span class="s1">400 Bad Request</span>: If no user is found with the provided email.</pre>
+      <pre><span class="s1">400 Bad Request</span>: If the provided secret key is incorrect.</pre>
+    </div>
+  </div>
+  <div id="request">
+    <h3>Sample Request</h3>
+    <p>Upon successful authentication, the API returns an access token.</p>
+    <pre class="bg-black"><code>
+  <span class="s2">&lbrace;</span>
+    <span class="s2">"publicKey": "example_public_key",</span>
+    <span class="s2">"secretKey": "example_secret_key"</span>
+    <span class="s2">"client": "example_client_key"</span>
+  <span class="s2">&rbrace;</span>
+      </code>
+    </pre>
+  </div>
+  <div id="response">
+    <h3>Sample Response</h3>
+    <p>Upon successful authentication, the API returns an access token.</p>
+    <pre class="bg-black"><code>
+  <span class="s2">&lbrace;</span>
+    <span class="s2">"expiresIn": 36000000"</span>
+    <span class="s2">"accessToken": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..."</span>
+  <span class="s2">&rbrace;</span>
+      </code>
+    </pre>
+  </div>
+  <div class="doc-pagination pt-40">
+    <app-pagination></app-pagination>
+  </div>
+</main> <!-- /.doc-main-body -->
+<nav class="d-none d-xl-block col-xl-3 doc-sideNav">
+  <div class="wrapper">
+    <nav class="main-side-nav" id="authentication">
+      <a href="authentication/#introduction" class="nav-link">Introduction</a>
+      <a href="authentication/#endpoint" class="nav-link">Endpoint</a>
+      <a href="authentication/#params" class="nav-link">Request Parameters</a>
+      <a href="authentication/#errors" class="nav-link">Error Handling</a>
+      <a href="authentication/#request" class="nav-link">Sample Request</a>
+      <a href="authentication/#response" class="nav-link">Sample Response</a>
+    </nav>
+  </div>
+</nav>

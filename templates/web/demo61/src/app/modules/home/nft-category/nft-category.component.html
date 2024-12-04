@@ -1,0 +1,26 @@
+<div class="container">
+    <section class="section-b-space border-section border-top-0 category-width">
+        <div class="row">
+            <div class="col">
+                <div class="slide-6 no-arrow">
+                  <owl-carousel-o [options]="NftCategorySlider" >
+                  <ng-container *ngFor="let product of nftName" >
+                      <ng-template carouselSlide>
+                    <div class="category-nft">
+                        <a routerlink="#">
+                            <div class="category-image"><img class="img-fluid" src="{{product.src}}" alt=""></div>
+  
+                            <div class="category-details">
+                                <h5>{{product.name}}</h5>
+                            </div>
+                        </a>
+                    </div>
+                  </ng-template>
+              </ng-container>
+          </owl-carousel-o>
+  
+                </div>
+            </div>
+        </div>
+    </section>
+  </div>

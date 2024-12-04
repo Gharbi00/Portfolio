@@ -1,0 +1,34 @@
+<owl-carousel-o [options]="HomeSliderConfig" class="home-slider" [ngClass]="class">
+	<ng-container *ngFor="let slider of sliders">
+		<ng-template carouselSlide>
+			<div class="slick-slide slick-current slick-active slick-center" data-slick-index="0" aria-hidden="false"
+				style="max-width: 2000px;">
+				<div>
+					<div style="width: 100%; display: inline-block;">
+						<div class="home p-right text-center bg-size blur-up lazyloaded"
+							style="background-image: url(&quot;../assets/images/home-banner/59.jpg&quot;); background-size: cover; background-position: center center; display: block;">
+							<img src="{{slider.image}}" alt="" class=""
+								style="display: none;">
+							<div class="container">
+								<div class="row">
+									<div class="col">
+										<div class="slider-contain">
+											<div>
+												<h4 >end of season sale</h4>
+												<h1 class="animated fadeInUp">20th
+													-
+													25th Dec</h1>
+												<a href="#" class="btn btn-solid animated fadeInUp"
+													data-animation-in="fadeInUp" >explore now</a>
+											</div>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</ng-template>
+	</ng-container>
+</owl-carousel-o>

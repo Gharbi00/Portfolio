@@ -1,0 +1,49 @@
+
+
+:host::ng-deep .owl-theme .owl-dots .owl-dot {
+  background-color: rgb(201, 201, 201)!important;
+  opacity: 1;
+  height: 6px;
+  width: 26px;
+  border-radius: 6px;
+  background-color: #e6e6e6;
+  padding: 0;
+  margin-left: 5px;
+  margin-right: 5px;
+ 
+
+   
+  }
+
+  :host::ng-deep .owl-theme .owl-dots .owl-dot.active {
+    
+    background-color: black !important;
+    opacity: 1;
+    margin-left: 5px;
+    margin-right: 5px;
+    height: 6px;
+    width: 34px;
+    border-radius: 6px;
+    background-color: #e6e6e6;
+    padding: 0;
+  }
+  :host::ng-deep .owl-theme .owl-dots .owl-dot span  {
+    background:transparent;
+}
+  
+
+/*   :host::ng-deep owl-carousel-o .owl-stage .owl-item.center {
+    width: 380px !important;
+    margin-bottom: 0px;
+    margin-top: -50px;
+    margin-left: -70px;
+    margin-right: -130px;
+    transition: width 1s ease-in-out;
+  }
+  
+  :host ::ng-deep owl-carousel-o .owl-item {
+    
+    margin-left: 50px;
+    padding-left: 40px;
+    width: 190px !important; 
+  } */

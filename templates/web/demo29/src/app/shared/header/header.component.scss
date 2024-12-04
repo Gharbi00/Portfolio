@@ -1,0 +1,15 @@
+@media(max-width:577px) {
+
+    .main-menu .brand-logo {
+        margin-top: 8%;
+    }
+
+
+}
+
+::ng-deep.main-nav-center .toggle-nav {
+    @media(max-width:1200px) {
+        top: -18px;
+    left: 95%;
+    }
+}

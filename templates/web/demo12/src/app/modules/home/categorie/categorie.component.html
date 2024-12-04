@@ -1,0 +1,29 @@
+<div class="axil-categorie-area pt--30 bg-color-white">
+    <div class="container">
+        <div
+            class="categrie-product-activation-2 categorie-product-two slick-layout-wrapper--15 slick-initialized slick-slider">
+
+
+
+            <div class="slick-list draggable">
+                <owl-carousel-o [options]="carouselOptions" class="slick-track" style="opacity: 1;">
+                    <ng-container *ngFor="let category of categories" >
+                    <ng-template carouselSlide>
+                    <div class="slick-single-layout slick-slide slick-cloned" 
+                        >
+                        <div class="categrie-product-2">
+                            <a href="#" tabindex="-1">
+                                <img class="img-fluid" src="{{category.src}}"
+                                    alt="product categorie">
+                                <h6 class="cat-title">{{category.name}}</h6>
+                            </a>
+                        </div>
+                        <!-- End .categrie-product -->
+                    </div>
+                </ng-template>
+                </ng-container>
+                </owl-carousel-o>
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,34 @@
+<section class="instagram ratio_square">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12">
+                <h2 class="title-borderless"># instagram</h2>
+                <div class="slide-7 no-arrow slick-instagram slick-initialized slick-slider">
+                    <div class="slick-list draggable">
+                        <owl-carousel-o [options]="InstaCarousel" class="slick-track"
+                            style="opacity: 1; width: 6138px; ">
+                            <ng-container *ngFor="let instagram of InstaData">
+                            <ng-template carouselSlide  class="slick-slide slick-cloned" style="width: 279px;">
+                                <div>
+                                    <div style="width: 100%; display: inline-block;">
+                                        <a href="#" tabindex="-1">
+                                            <div class="instagram-box bg-size"
+                                                style="background-image: url(&quot;{{instagram.src}}&quot;); background-size: cover; background-position: center center; display: block;">
+                                                <img src="{{instagram.src}}" class="bg-img"
+                                                    alt="Avatar" style="width: 100%; ">
+                                                <div class="overlay">
+                                                    <i class="fa fa-instagram"></i>
+                                                </div>
+                                            </div>
+                                        </a>
+                                    </div>
+                                </div>
+                            </ng-template>
+                        </ng-container>
+                        </owl-carousel-o>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>

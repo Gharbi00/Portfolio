@@ -1,0 +1,24 @@
+<div class="container category-button button-dark">
+    <section class="section-b-space border-section">
+        <div class="slide-6 no-arrow slick-default-margin slick-initialized slick-slider">
+            <div class="slick-list draggable">
+                <owl-carousel-o [options]="TrendingProducts" class="slick-track" style="opacity: 1; width: 3876px;">
+                    <ng-container *ngFor="let slider of trendingProducts">
+                
+                            <ng-template carouselSlide class="slick-slide slick-current slick-active" data-slick-index="0" aria-hidden="false"
+                                style="width: 228px;">
+                                <div>
+                                    <div style="width: 80%; display: inline-block;"><a href="#"
+                                            class="btn btn-outline btn-block" tabindex="0"><img
+                                                src="{{slider.src}}" class="img-fluid"
+                                                alt="">{{slider.name}}</a></div>
+                                </div>
+                            </ng-template>
+                            
+                        
+                    </ng-container>
+                </owl-carousel-o>
+            </div>
+        </div>
+    </section>
+</div>

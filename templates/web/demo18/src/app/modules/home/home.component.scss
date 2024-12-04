@@ -1,0 +1,131 @@
+.full-banner .decor {
+    position: absolute;
+    top: -150px;
+    left: 0;
+}
+.home-slider .slider-details h2, .home-slider .slider-details h3, .home-slider .slider-details h4, .center-slider .slider-details h2, .center-slider .slider-details h3, .center-slider .slider-details h4 {
+    color: white;
+}
+.full-banner .banner-contain.christmas-contain h3 {
+    font-size: calc(20px + (30 - 20) * ((100vw - 320px) / (1920 - 320)));
+    color: #fff;
+    text-transform: capitalize;
+    font-weight: 700;
+    margin-bottom: 15px;
+    margin-top: -6px;
+}
+.full-banner .banner-contain.christmas-contain h2 {
+    font-size: calc(24px + (70 - 24) * ((100vw - 320px) / (1920 - 320)));
+    font-weight: 700;
+    color: #fff;
+    text-transform: capitalize;
+    margin-bottom: 0;
+    margin-top: 0;
+}
+
+.full-banner .banner-contain.christmas-contain h4 {
+    font-size: calc(18px + (24 - 18) * ((100vw - 320px) / (1920 - 320)));
+    color: #fff;
+    font-weight: 600;
+    text-transform: capitalize;
+    letter-spacing: 0.07em;
+    padding-top: 10px;
+    margin-bottom: -5px;
+    line-height: 1.3;
+}
+.full-banner .banner-contain.christmas-contain h4 span {
+    color: var(--theme-color);
+}
+.full-banner.feature-banner .feature-object li:hover .media img, .full-banner.feature-banner .feature-object-right li:hover .media img {
+    background-color: white;
+    -webkit-transition: all 0.5s ease;
+    transition: all 0.5s ease;
+    -webkit-transform: scale(1.05);
+    transform: scale(1.05);
+}
+.media {
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-align: start;
+    -ms-flex-align: start;
+    align-items: flex-start;
+}
+.full-banner.feature-banner .feature-object li .media .media-body, .full-banner.feature-banner .feature-object-right li .media .media-body {
+    text-align: right;
+    margin-top: 18px;
+}
+.full-banner.feature-banner .feature-object li .media .media-body h4, .full-banner.feature-banner .feature-object li .media .media-body p, .full-banner.feature-banner .feature-object-right li .media .media-body h4, .full-banner.feature-banner .feature-object-right li .media .media-body p {
+    color: white;
+}
+
+.full-banner.feature-banner .feature-object li .media img, .full-banner.feature-banner .feature-object-right li .media img {
+    border-radius: 100%;
+    border: 1px solid white;
+    margin-left: 15px;
+    -webkit-transition: all 0.5s ease;
+    transition: all 0.5s ease;
+}
+
+.full-banner.feature-banner .feature-object-right li .media .media-body {
+    text-align: left;
+}
+.full-banner.feature-banner .feature-object li, .full-banner.feature-banner .feature-object-right li {
+    margin-bottom: 55px;
+    margin-right: 50px;
+}
+.full-banner.feature-banner .feature-object-right li:nth-child(2) {
+    padding-right: 0;
+    padding-left: 30px;
+}
+.full-banner.feature-banner .feature-object-right li:nth-child(3) {
+    padding-right: 0;
+    padding-left: 60px;
+}
+.full-banner.feature-banner .feature-object li, .full-banner.feature-banner .feature-object-right li {
+    margin-bottom: 55px;
+    margin-right: 50px;
+}
+.full-banner.feature-banner .feature-object li:nth-child(2), .full-banner.feature-banner .feature-object-right li:nth-child(2) {
+    padding-right: 30px;
+}
+.full-banner.feature-banner .feature-object li:nth-child(3), .full-banner.feature-banner .feature-object-right li:nth-child(3) {
+    padding-right: 60px;
+    margin-bottom: 0;
+}
+.full-banner.feature-banner .center-img {
+    position: absolute;
+    bottom: -112px;
+    left: 50%;
+    margin: 0 auto;
+    -webkit-transform: translateX(-50%);
+    transform: translateX(-50%);
+}
+.full-banner.feature-banner {
+    padding: 50px 0;
+}
+.full-banner.feature-banner h2 {
+    text-align: center;
+    color: #fff;
+    margin-bottom: 180px;
+    margin-top: -7px;
+}
+.full-banner.feature-banner .banner-decor .left-img {
+    left: 50px;
+    position: absolute;
+    top: 0;
+    -webkit-animation: movebounce 4.9s linear infinite;
+    animation: movebounce 4.9s linear infinite;
+}
+
+
+body.christmas {
+    font-family: Philosopher,sans-serif;
+}
+.full-banner.feature-banner .banner-decor .right-img {
+    right: 50px;
+    position: absolute;
+    top: 0;
+    -webkit-animation: movebounce 4.9s linear infinite;
+    animation: movebounce 4.9s linear infinite;
+}

@@ -1,0 +1,56 @@
+
+
+:host::ng-deep .owl-prev {
+        left: 33%;
+        z-index: 1;
+        display: block;
+
+}
+:host::ng-deep .owl-next {
+    right: 33%;
+    z-index: 1;
+
+    display: block;
+
+}
+:host::ng-deep.owl-theme .owl-nav [class*=owl-] {
+    @media(width  >1000px){
+    color: #FFF;
+    font-size: 30px;
+    width: 30px;
+    height: 30px;
+    margin: 2px;
+    padding: 12px 7px;
+    background: var(--theme-color);
+    display: inline-block;
+    cursor: pointer;
+    border-radius: 16px;
+    opacity: 0.6;
+}
+@media(width  <1000px){
+display: none;
+}
+}
+.vegetables-category .category-boxes {
+    text-align: center;
+    width: 100%;
+    margin: 0 auto;
+    background-color: #f8f8f8;
+    padding: 18px;
+    border-radius: 12px;
+}
+.vegetables-category .category-boxes .img-sec {
+    width: 52%;
+    margin: 0 auto 12px;
+}
+.vegetables-category .category-boxes h4 {
+    margin-bottom: 0;
+    color: #222;
+}
+h4 {
+    font-size: 18px;
+    text-transform: capitalize;
+    font-weight: 400;
+    letter-spacing: 0.03em;
+    line-height: 1;
+}

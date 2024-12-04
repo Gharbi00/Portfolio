@@ -1,0 +1,47 @@
+<section class="small-section small-slider pt-res-0">
+    <div class="container">
+        <div class="slider-animate home-slider slick-initialized slick-slider">
+            <div class="slick-list draggable">
+                <owl-carousel-o [options]="MainSlider" class="slick-track" style="opacity: 1; width: 2752px;">
+
+                    <ng-container *ngFor="let slider of mainSlider">
+                        <ng-template carouselSlide>
+                            <div class="slick-slide" data-slick-index="0" aria-hidden="true"
+                                style="width: 1376px; position: relative; left: 0px; top: 0px; z-index: 998; ">
+                                <div>
+                                    <div style="width: 100%; display: inline-block;">
+                                        <div class="home bg-size blur-up lazyloaded"
+                                            style="background-image: url(&quot;{{slider.src}}&quot;); background-size: cover; background-position: center center; display: block;">
+                                            <img src="{{slider.src}}" alt=""
+                                                class="bg-img blur-up lazyloaded" style="display: none;">
+                                            <div class="container">
+                                                <div class="row">
+                                                    <div class="col">
+                                                        <div class="slider-contain px-padding">
+                                                            <div>
+                                                                <h4 class="" 
+                                                                  >save 30%</h4>
+                                                                <h1 class="" 
+                                                                    data-delay-in="0.3"
+                                                                   >
+                                                                    special price</h1><a href="#" class="btn btn-solid"
+
+                                                                   >shop
+                                                                    now</a>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </ng-template>
+                    </ng-container>
+                </owl-carousel-o>
+
+            </div>
+        </div>
+    </div>
+</section>

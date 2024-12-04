@@ -1,0 +1,729 @@
+<section class="addtocart_count ratio_square bg-title wo-bg">
+    <div class="container">
+        <div class="row">
+            <div class="col">
+                <div class="theme-tab">
+                    <div class="bg-title-part title-basic">
+                        <h2 class="title font-fraunces">RECOMMENDATIONS FOR YOU</h2>
+                        <ul class="tabs tab-title">
+                            <li [class.current]="activeTab === 'tab-1'" (click)="switchTab('tab-1')">
+                                <a>New Products</a>
+                            </li>
+                            <li [class.current]="activeTab === 'tab-2'" (click)="switchTab('tab-2')" >
+                                <a >Featured Products</a>
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="tab-content-cls" [@tabAnimation]="activeTab">
+                        <ng-container *ngIf="activeTab==='tab-1'" class="tab-content active default">
+                            <div class="five-product no-slider row" >
+                                <div class="product-box product-wrap product-style-1">
+                                    <div class="img-wrapper">
+                                        <div class="lable-block"><span class="lable3">new</span> <span class="lable4">on
+                                                sale</span></div>
+                                        <div class="front">
+                                            <a href="product-page(no-sidebar).html" class="bg-size blur-up lazyloaded" style="background-image: url(&quot;../assets/images/vegetables/pro/11.jpg&quot;); background-size: cover; background-position: center center; display: block;"><img src="../assets/images/vegetables/pro/11.jpg" class="img-fluid blur-up lazyload bg-img" alt="" ></a>
+                                        </div>
+                                        <div class="cart-info cart-wrap">
+                                            <a href="javascript:void(0)" title="Add to Wishlist"><i class="ti-heart" aria-hidden="true"></i></a>
+                                            <a href="#" data-bs-toggle="modal" data-bs-target="#quick-view" title="Quick View"><i class="ti-search" aria-hidden="true"></i></a>
+                                            <a href="compare.html" title="Compare"><i class="ti-reload" aria-hidden="true"></i></a>
+                                        </div>
+                                        <div class="addtocart_btn">
+                                            <button class="add-button add_cart" (click)="toggleButton(0)"  title="Add to cart">
+                                                Add to Cart
+                                            </button>
+                                            <div class="qty-box cart_qty" [style.display]="showButton[0] ? 'block' : 'none'"> 
+                                                <div class="input-group">
+                                                    <button type="button" class="btn quantity-left-minus" data-type="minus" data-field="">
+                                                        <i class="fa fa-minus" aria-hidden="true"></i>
+                                                    </button>
+                                                    <input type="text" name="quantity" class="form-control input-number qty-input" value="1">
+                                                    <button type="button" class="btn quantity-right-plus" data-type="plus" data-field="">
+                                                        <i class="fa fa-plus" aria-hidden="true"></i>
+                                                    </button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="product-detail text-center">
+                                        <a href="product-page(no-sidebar).html">
+                                            <h6>Tomato - Hybrid</h6>
+                                        </a>
+                                        <h4>$2.00 <del>$2.40</del></h4>
+                                    </div>
+                                </div>
+                                <div class="product-box product-wrap product-style-1">
+                                    <div class="img-wrapper">
+                                        <div class="front">
+                                            <a href="product-page(no-sidebar).html" class="bg-size blur-up lazyloaded" style="background-image: url(&quot;../assets/images/vegetables/pro/12.jpg&quot;); background-size: cover; background-position: center center; display: block;"><img src="../assets/images/vegetables/pro/12.jpg" class="img-fluid blur-up lazyload bg-img" alt="" ></a>
+                                        </div>
+                                        <div class="cart-info cart-wrap">
+                                            <a href="javascript:void(0)" title="Add to Wishlist"><i class="ti-heart" aria-hidden="true"></i></a>
+                                            <a href="#" data-bs-toggle="modal" data-bs-target="#quick-view" title="Quick View"><i class="ti-search" aria-hidden="true"></i></a>
+                                            <a href="compare.html" title="Compare"><i class="ti-reload" aria-hidden="true"></i></a>
+                                        </div>
+                                        <div class="addtocart_btn">
+                                            <button class="add-button add_cart" (click)="toggleButton(1)"  title="Add to cart">
+                                                Add to Cart
+                                            </button>
+                                            <div class="qty-box cart_qty" [style.display]="showButton[1] ? 'block' : 'none'"> 
+                                                <div class="input-group">
+                                                    <button type="button" class="btn quantity-left-minus" data-type="minus" data-field="">
+                                                        <i class="fa fa-minus" aria-hidden="true"></i>
+                                                    </button>
+                                                    <input type="text" name="quantity" class="form-control input-number qty-input" value="1">
+                                                    <button type="button" class="btn quantity-right-plus" data-type="plus" data-field="">
+                                                        <i class="fa fa-plus" aria-hidden="true"></i>
+                                                    </button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="product-detail text-center">
+                                        <a href="product-page(no-sidebar).html">
+                                            <h6>Fresh Broccoli</h6>
+                                        </a>
+                                        <h4>$3.20</h4>
+                                    </div>
+                                </div>
+                                <div class="product-box product-wrap product-style-1">
+                                    <div class="img-wrapper">
+                                        <div class="front">
+                                            <a href="product-page(no-sidebar).html" class="bg-size blur-up lazyloaded" style="background-image: url(&quot;../assets/images/vegetables/pro/13.jpg&quot;); background-size: cover; background-position: center center; display: block;"><img src="../assets/images/vegetables/pro/13.jpg" class="img-fluid blur-up lazyload bg-img" alt="" ></a>
+                                        </div>
+                                        <div class="cart-info cart-wrap">
+                                            <a href="javascript:void(0)" title="Add to Wishlist"><i class="ti-heart" aria-hidden="true"></i></a>
+                                            <a href="#" data-bs-toggle="modal" data-bs-target="#quick-view" title="Quick View"><i class="ti-search" aria-hidden="true"></i></a>
+                                            <a href="compare.html" title="Compare"><i class="ti-reload" aria-hidden="true"></i></a>
+                                        </div>
+                                        <div class="addtocart_btn">
+                                            <button class="add-button add_cart" (click)="toggleButton(2)"  title="Add to cart">
+                                                Add to Cart
+                                            </button>
+                                            <div class="qty-box cart_qty" [style.display]="showButton[2] ? 'block' : 'none'"> 
+                                                <div class="input-group">
+                                                    <button type="button" class="btn quantity-left-minus" data-type="minus" data-field="">
+                                                        <i class="fa fa-minus" aria-hidden="true"></i>
+                                                    </button>
+                                                    <input type="text" name="quantity" class="form-control input-number qty-input" value="1">
+                                                    <button type="button" class="btn quantity-right-plus" data-type="plus" data-field="">
+                                                        <i class="fa fa-plus" aria-hidden="true"></i>
+                                                    </button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="product-detail text-center">
+                                        <a href="product-page(no-sidebar).html">
+                                            <h6>Sweet Corn - Organically Grown</h6>
+                                        </a>
+                                        <h4>$1.90</h4>
+                                    </div>
+                                </div>
+                                <div class="product-box product-wrap product-style-1">
+                                    <div class="img-wrapper">
+                                        <div class="front">
+                                            <a href="product-page(no-sidebar).html" class="bg-size blur-up lazyloaded" style="background-image: url(&quot;../assets/images/vegetables/pro/14.jpg&quot;); background-size: cover; background-position: center center; display: block;"><img src="../assets/images/vegetables/pro/14.jpg" class="img-fluid blur-up lazyload bg-img" alt="" ></a>
+                                        </div>
+                                        <div class="cart-info cart-wrap">
+                                            <a href="javascript:void(0)" title="Add to Wishlist"><i class="ti-heart" aria-hidden="true"></i></a>
+                                            <a href="#" data-bs-toggle="modal" data-bs-target="#quick-view" title="Quick View"><i class="ti-search" aria-hidden="true"></i></a>
+                                            <a href="compare.html" title="Compare"><i class="ti-reload" aria-hidden="true"></i></a>
+                                        </div>
+                                        <div class="addtocart_btn">
+                                            <button class="add-button add_cart" (click)="toggleButton(3)"  title="Add to cart">
+                                                Add to Cart
+                                            </button>
+                                            <div class="qty-box cart_qty" [style.display]="showButton[3] ? 'block' : 'none'"> 
+                                                <div class="input-group">
+                                                    <button type="button" class="btn quantity-left-minus" data-type="minus" data-field="">
+                                                        <i class="fa fa-minus" aria-hidden="true"></i>
+                                                    </button>
+                                                    <input type="text" name="quantity" class="form-control input-number qty-input" value="1">
+                                                    <button type="button" class="btn quantity-right-plus" data-type="plus" data-field="">
+                                                        <i class="fa fa-plus" aria-hidden="true"></i>
+                                                    </button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="product-detail text-center">
+                                        <a href="product-page(no-sidebar).html">
+                                            <h6>Fresh Avocado - Medium</h6>
+                                        </a>
+                                        <h4>$6.00</h4>
+                                    </div>
+                                </div>
+                                <div class="product-box product-wrap product-style-1">
+                                    <div class="img-wrapper">
+                                        <div class="lable-block"><span class="lable3">new</span> <span class="lable4">on
+                                                sale</span></div>
+                                        <div class="front">
+                                            <a href="product-page(no-sidebar).html" class="bg-size blur-up lazyloaded" style="background-image: url(&quot;../assets/images/vegetables/pro/15.jpg&quot;); background-size: cover; background-position: center center; display: block;"><img src="../assets/images/vegetables/pro/15.jpg" class="img-fluid blur-up lazyload bg-img" alt="" ></a>
+                                        </div>
+                                        <div class="cart-info cart-wrap">
+                                            <a href="javascript:void(0)" title="Add to Wishlist"><i class="ti-heart" aria-hidden="true"></i></a>
+                                            <a href="#" data-bs-toggle="modal" data-bs-target="#quick-view" title="Quick View"><i class="ti-search" aria-hidden="true"></i></a>
+                                            <a href="compare.html" title="Compare"><i class="ti-reload" aria-hidden="true"></i></a>
+                                        </div>
+                                        <div class="addtocart_btn">
+                                            <button class="add-button add_cart" (click)="toggleButton(4)"  title="Add to cart">
+                                                Add to Cart
+                                            </button>
+                                            <div class="qty-box cart_qty" [style.display]="showButton[4] ? 'block' : 'none'"> 
+                                                <div class="input-group">
+                                                    <button type="button" class="btn quantity-left-minus" data-type="minus" data-field="">
+                                                        <i class="fa fa-minus" aria-hidden="true"></i>
+                                                    </button>
+                                                    <input type="text" name="quantity" class="form-control input-number qty-input" value="1">
+                                                    <button type="button" class="btn quantity-right-plus" data-type="plus" data-field="">
+                                                        <i class="fa fa-plus" aria-hidden="true"></i>
+                                                    </button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="product-detail text-center">
+                                        <a href="product-page(no-sidebar).html">
+                                            <h6>Yellow Pumpkin - Original</h6>
+                                        </a>
+                                        <h4>$5.80</h4>
+                                    </div>
+                                </div>
+                                <div class="product-box product-wrap product-style-1">
+                                    <div class="img-wrapper">
+                                        <div class="lable-block"><span class="lable3">new</span> <span class="lable4">on
+                                                sale</span></div>
+                                        <div class="front">
+                                            <a href="product-page(no-sidebar).html" class="bg-size blur-up lazyloaded" style="background-image: url(&quot;../assets/images/vegetables/pro/16.jpg&quot;); background-size: cover; background-position: center center; display: block;"><img src="../assets/images/vegetables/pro/16.jpg" class="img-fluid blur-up lazyload bg-img" alt="" ></a>
+                                        </div>
+                                        <div class="cart-info cart-wrap">
+                                            <a href="javascript:void(0)" title="Add to Wishlist"><i class="ti-heart" aria-hidden="true"></i></a>
+                                            <a href="#" data-bs-toggle="modal" data-bs-target="#quick-view" title="Quick View"><i class="ti-search" aria-hidden="true"></i></a>
+                                            <a href="compare.html" title="Compare"><i class="ti-reload" aria-hidden="true"></i></a>
+                                        </div>
+                                        <div class="addtocart_btn">
+                                            <button class="add-button add_cart" (click)="toggleButton(5)"  title="Add to cart">
+                                                Add to Cart
+                                            </button>
+                                            <div class="qty-box cart_qty" [style.display]="showButton[5] ? 'block' : 'none'"> 
+                                                <div class="input-group">
+                                                    <button type="button" class="btn quantity-left-minus" data-type="minus" data-field="">
+                                                        <i class="fa fa-minus" aria-hidden="true"></i>
+                                                    </button>
+                                                    <input type="text" name="quantity" class="form-control input-number qty-input" value="1">
+                                                    <button type="button" class="btn quantity-right-plus" data-type="plus" data-field="">
+                                                        <i class="fa fa-plus" aria-hidden="true"></i>
+                                                    </button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="product-detail text-center">
+                                        <a href="product-page(no-sidebar).html">
+                                            <h6>Fresh Mushrooms - Button</h6>
+                                        </a>
+                                        <h4>$3.20 <del>$3.60</del></h4>
+                                    </div>
+                                </div>
+
+                                <div class="product-box product-wrap product-style-1">
+                                    <div class="img-wrapper">
+                                        <div class="lable-block"><span class="lable3">new</span> <span class="lable4">on
+                                                sale</span></div>
+                                        <div class="front">
+                                            <a href="product-page(no-sidebar).html" class="bg-size blur-up lazyloaded" style="background-image: url(&quot;../assets/images/vegetables/pro/11.jpg&quot;); background-size: cover; background-position: center center; display: block;"><img src="../assets/images/vegetables/pro/11.jpg" class="img-fluid blur-up lazyload bg-img" alt="" ></a>
+                                        </div>
+                                        <div class="cart-info cart-wrap">
+                                            <a href="javascript:void(0)" title="Add to Wishlist"><i class="ti-heart" aria-hidden="true"></i></a>
+                                            <a href="#" data-bs-toggle="modal" data-bs-target="#quick-view" title="Quick View"><i class="ti-search" aria-hidden="true"></i></a>
+                                            <a href="compare.html" title="Compare"><i class="ti-reload" aria-hidden="true"></i></a>
+                                        </div>
+                                        <div class="addtocart_btn">
+                                            <button class="add-button add_cart" (click)="toggleButton(6)"  title="Add to cart">
+                                                Add to Cart
+                                            </button>
+                                            <div class="qty-box cart_qty" [style.display]="showButton[6] ? 'block' : 'none'"> 
+                                                <div class="input-group">
+                                                    <button type="button" class="btn quantity-left-minus" data-type="minus" data-field="">
+                                                        <i class="fa fa-minus" aria-hidden="true"></i>
+                                                    </button>
+                                                    <input type="text" name="quantity" class="form-control input-number qty-input" value="1">
+                                                    <button type="button" class="btn quantity-right-plus" data-type="plus" data-field="">
+                                                        <i class="fa fa-plus" aria-hidden="true"></i>
+                                                    </button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="product-detail text-center">
+                                        <a href="product-page(no-sidebar).html">
+                                            <h6>Tomato - Hybrid</h6>
+                                        </a>
+                                        <h4>$2.00 <del>$2.40</del></h4>
+                                    </div>
+                                </div>
+                                <div class="product-box product-wrap product-style-1">
+                                    <div class="img-wrapper">
+                                        <div class="front">
+                                            <a href="product-page(no-sidebar).html" class="bg-size blur-up lazyloaded" style="background-image: url(&quot;../assets/images/vegetables/pro/12.jpg&quot;); background-size: cover; background-position: center center; display: block;"><img src="../assets/images/vegetables/pro/12.jpg" class="img-fluid blur-up lazyload bg-img" alt="" ></a>
+                                        </div>
+                                        <div class="cart-info cart-wrap">
+                                            <a href="javascript:void(0)" title="Add to Wishlist"><i class="ti-heart" aria-hidden="true"></i></a>
+                                            <a href="#" data-bs-toggle="modal" data-bs-target="#quick-view" title="Quick View"><i class="ti-search" aria-hidden="true"></i></a>
+                                            <a href="compare.html" title="Compare"><i class="ti-reload" aria-hidden="true"></i></a>
+                                        </div>
+                                        <div class="addtocart_btn">
+                                            <button class="add-button add_cart" (click)="toggleButton(7)"  title="Add to cart">
+                                                Add to Cart
+                                            </button>
+                                            <div class="qty-box cart_qty" [style.display]="showButton[7] ? 'block' : 'none'"> 
+                                                <div class="input-group">
+                                                    <button type="button" class="btn quantity-left-minus" data-type="minus" data-field="">
+                                                        <i class="fa fa-minus" aria-hidden="true"></i>
+                                                    </button>
+                                                    <input type="text" name="quantity" class="form-control input-number qty-input" value="1">
+                                                    <button type="button" class="btn quantity-right-plus" data-type="plus" data-field="">
+                                                        <i class="fa fa-plus" aria-hidden="true"></i>
+                                                    </button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="product-detail text-center">
+                                        <a href="product-page(no-sidebar).html">
+                                            <h6>Fresh Broccoli</h6>
+                                        </a>
+                                        <h4>$3.20</h4>
+                                    </div>
+                                </div>
+                                <div class="product-box product-wrap product-style-1">
+                                    <div class="img-wrapper">
+                                        <div class="front">
+                                            <a href="product-page(no-sidebar).html" class="bg-size blur-up lazyloaded" style="background-image: url(&quot;../assets/images/vegetables/pro/13.jpg&quot;); background-size: cover; background-position: center center; display: block;"><img src="../assets/images/vegetables/pro/13.jpg" class="img-fluid blur-up lazyload bg-img" alt="" ></a>
+                                        </div>
+                                        <div class="cart-info cart-wrap">
+                                            <a href="javascript:void(0)" title="Add to Wishlist"><i class="ti-heart" aria-hidden="true"></i></a>
+                                            <a href="#" data-bs-toggle="modal" data-bs-target="#quick-view" title="Quick View"><i class="ti-search" aria-hidden="true"></i></a>
+                                            <a href="compare.html" title="Compare"><i class="ti-reload" aria-hidden="true"></i></a>
+                                        </div>
+                                        <div class="addtocart_btn">
+                                            <button class="add-button add_cart" (click)="toggleButton(8)"  title="Add to cart">
+                                                Add to Cart
+                                            </button>
+                                            <div class="qty-box cart_qty" [style.display]="showButton[8] ? 'block' : 'none'"> 
+                                                <div class="input-group">
+                                                    <button type="button" class="btn quantity-left-minus" data-type="minus" data-field="">
+                                                        <i class="fa fa-minus" aria-hidden="true"></i>
+                                                    </button>
+                                                    <input type="text" name="quantity" class="form-control input-number qty-input" value="1">
+                                                    <button type="button" class="btn quantity-right-plus" data-type="plus" data-field="">
+                                                        <i class="fa fa-plus" aria-hidden="true"></i>
+                                                    </button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="product-detail text-center">
+                                        <a href="product-page(no-sidebar).html">
+                                            <h6>Sweet Corn - Organically Grown</h6>
+                                        </a>
+                                        <h4>$1.90</h4>
+                                    </div>
+                                </div>
+                                <div class="product-box product-wrap product-style-1">
+                                    <div class="img-wrapper">
+                                        <div class="front">
+                                            <a href="product-page(no-sidebar).html" class="bg-size blur-up lazyloaded" style="background-image: url(&quot;../assets/images/vegetables/pro/14.jpg&quot;); background-size: cover; background-position: center center; display: block;"><img src="../assets/images/vegetables/pro/14.jpg" class="img-fluid blur-up lazyload bg-img" alt="" ></a>
+                                        </div>
+                                        <div class="cart-info cart-wrap">
+                                            <a href="javascript:void(0)" title="Add to Wishlist"><i class="ti-heart" aria-hidden="true"></i></a>
+                                            <a href="#" data-bs-toggle="modal" data-bs-target="#quick-view" title="Quick View"><i class="ti-search" aria-hidden="true"></i></a>
+                                            <a href="compare.html" title="Compare"><i class="ti-reload" aria-hidden="true"></i></a>
+                                        </div>
+                                        <div class="addtocart_btn">
+                                            <button class="add-button add_cart" (click)="toggleButton(9)"  title="Add to cart">
+                                                Add to Cart
+                                            </button>
+                                            <div class="qty-box cart_qty" [style.display]="showButton[9] ? 'block' : 'none'"> 
+                                                <div class="input-group">
+                                                    <button type="button" class="btn quantity-left-minus" data-type="minus" data-field="">
+                                                        <i class="fa fa-minus" aria-hidden="true"></i>
+                                                    </button>
+                                                    <input type="text" name="quantity" class="form-control input-number qty-input" value="1">
+                                                    <button type="button" class="btn quantity-right-plus" data-type="plus" data-field="">
+                                                        <i class="fa fa-plus" aria-hidden="true"></i>
+                                                    </button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="product-detail text-center">
+                                        <a href="product-page(no-sidebar).html">
+                                            <h6>Fresh Avocado - Medium</h6>
+                                        </a>
+                                        <h4>$6.00</h4>
+                                    </div>
+                                </div>
+                            </div>
+                        </ng-container>
+                        <ng-container *ngIf="activeTab==='tab-2'" class="tab-content">
+                            <div class="five-product no-slider row">
+                                <div class="product-box product-wrap product-style-1">
+                                    <div class="img-wrapper">
+                                        <div class="lable-block"><span class="lable3">new</span> <span class="lable4">on
+                                                sale</span></div>
+                                        <div class="front">
+                                            <a href="product-page(no-sidebar).html" class="bg-size blur-up lazyloaded" style="background-image: url(&quot;../assets/images/vegetables/pro/11.jpg&quot;); background-size: cover; background-position: center center; display: block;"><img src="../assets/images/vegetables/pro/11.jpg" class="img-fluid blur-up lazyload bg-img" alt="" ></a>
+                                        </div>
+                                        <div class="cart-info cart-wrap">
+                                            <a href="javascript:void(0)" title="Add to Wishlist"><i class="ti-heart" aria-hidden="true"></i></a>
+                                            <a href="#" data-bs-toggle="modal" data-bs-target="#quick-view" title="Quick View"><i class="ti-search" aria-hidden="true"></i></a>
+                                            <a href="compare.html" title="Compare"><i class="ti-reload" aria-hidden="true"></i></a>
+                                        </div>
+                                        <div class="addtocart_btn">
+                                            <button class="add-button add_cart" (click)="toggleButton()"  title="Add to cart">
+                                                Add to Cart
+                                            </button>
+                                            <div class="qty-box cart_qty" [style.display]="showButton ? 'block' : 'none'"> 
+                                                <div class="input-group">
+                                                    <button type="button" class="btn quantity-left-minus" data-type="minus" data-field="">
+                                                        <i class="fa fa-minus" aria-hidden="true"></i>
+                                                    </button>
+                                                    <input type="text" name="quantity" class="form-control input-number qty-input" value="1">
+                                                    <button type="button" class="btn quantity-right-plus" data-type="plus" data-field="">
+                                                        <i class="fa fa-plus" aria-hidden="true"></i>
+                                                    </button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="product-detail text-center">
+                                        <a href="product-page(no-sidebar).html">
+                                            <h6>Tomato - Hybrid</h6>
+                                        </a>
+                                        <h4>$2.00 <del>$2.40</del></h4>
+                                    </div>
+                                </div>
+                                <div class="product-box product-wrap product-style-1">
+                                    <div class="img-wrapper">
+                                        <div class="front">
+                                            <a href="product-page(no-sidebar).html" class="bg-size blur-up lazyloaded" style="background-image: url(&quot;../assets/images/vegetables/pro/12.jpg&quot;); background-size: cover; background-position: center center; display: block;"><img src="../assets/images/vegetables/pro/12.jpg" class="img-fluid blur-up lazyload bg-img" alt="" ></a>
+                                        </div>
+                                        <div class="cart-info cart-wrap">
+                                            <a href="javascript:void(0)" title="Add to Wishlist"><i class="ti-heart" aria-hidden="true"></i></a>
+                                            <a href="#" data-bs-toggle="modal" data-bs-target="#quick-view" title="Quick View"><i class="ti-search" aria-hidden="true"></i></a>
+                                            <a href="compare.html" title="Compare"><i class="ti-reload" aria-hidden="true"></i></a>
+                                        </div>
+                                        <div class="addtocart_btn">
+                                            <button class="add-button add_cart" (click)="toggleButton()"  title="Add to cart">
+                                                Add to Cart
+                                            </button>
+                                            <div class="qty-box cart_qty" [style.display]="showButton ? 'block' : 'none'"> 
+                                                <div class="input-group">
+                                                    <button type="button" class="btn quantity-left-minus" data-type="minus" data-field="">
+                                                        <i class="fa fa-minus" aria-hidden="true"></i>
+                                                    </button>
+                                                    <input type="text" name="quantity" class="form-control input-number qty-input" value="1">
+                                                    <button type="button" class="btn quantity-right-plus" data-type="plus" data-field="">
+                                                        <i class="fa fa-plus" aria-hidden="true"></i>
+                                                    </button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="product-detail text-center">
+                                        <a href="product-page(no-sidebar).html">
+                                            <h6>Fresh Broccoli</h6>
+                                        </a>
+                                        <h4>$3.20</h4>
+                                    </div>
+                                </div>
+                                <div class="product-box product-wrap product-style-1">
+                                    <div class="img-wrapper">
+                                        <div class="front">
+                                            <a href="product-page(no-sidebar).html" class="bg-size blur-up lazyloaded" style="background-image: url(&quot;../assets/images/vegetables/pro/13.jpg&quot;); background-size: cover; background-position: center center; display: block;"><img src="../assets/images/vegetables/pro/13.jpg" class="img-fluid blur-up lazyload bg-img" alt="" ></a>
+                                        </div>
+                                        <div class="cart-info cart-wrap">
+                                            <a href="javascript:void(0)" title="Add to Wishlist"><i class="ti-heart" aria-hidden="true"></i></a>
+                                            <a href="#" data-bs-toggle="modal" data-bs-target="#quick-view" title="Quick View"><i class="ti-search" aria-hidden="true"></i></a>
+                                            <a href="compare.html" title="Compare"><i class="ti-reload" aria-hidden="true"></i></a>
+                                        </div>
+                                        <div class="addtocart_btn">
+                                            <button class="add-button add_cart" (click)="toggleButton()"  title="Add to cart">
+                                                Add to Cart
+                                            </button>
+                                            <div class="qty-box cart_qty" [style.display]="showButton ? 'block' : 'none'"> 
+                                                <div class="input-group">
+                                                    <button type="button" class="btn quantity-left-minus" data-type="minus" data-field="">
+                                                        <i class="fa fa-minus" aria-hidden="true"></i>
+                                                    </button>
+                                                    <input type="text" name="quantity" class="form-control input-number qty-input" value="1">
+                                                    <button type="button" class="btn quantity-right-plus" data-type="plus" data-field="">
+                                                        <i class="fa fa-plus" aria-hidden="true"></i>
+                                                    </button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="product-detail text-center">
+                                        <a href="product-page(no-sidebar).html">
+                                            <h6>Sweet Corn - Organically Grown</h6>
+                                        </a>
+                                        <h4>$1.90</h4>
+                                    </div>
+                                </div>
+                                <div class="product-box product-wrap product-style-1">
+                                    <div class="img-wrapper">
+                                        <div class="front">
+                                            <a href="product-page(no-sidebar).html" class="bg-size blur-up lazyloaded" style="background-image: url(&quot;../assets/images/vegetables/pro/14.jpg&quot;); background-size: cover; background-position: center center; display: block;"><img src="../assets/images/vegetables/pro/14.jpg" class="img-fluid blur-up lazyload bg-img" alt="" ></a>
+                                        </div>
+                                        <div class="cart-info cart-wrap">
+                                            <a href="javascript:void(0)" title="Add to Wishlist"><i class="ti-heart" aria-hidden="true"></i></a>
+                                            <a href="#" data-bs-toggle="modal" data-bs-target="#quick-view" title="Quick View"><i class="ti-search" aria-hidden="true"></i></a>
+                                            <a href="compare.html" title="Compare"><i class="ti-reload" aria-hidden="true"></i></a>
+                                        </div>
+                                        <div class="addtocart_btn">
+                                            <button class="add-button add_cart" (click)="toggleButton()"  title="Add to cart">
+                                                Add to Cart
+                                            </button>
+                                            <div class="qty-box cart_qty" [style.display]="showButton ? 'block' : 'none'"> 
+                                                <div class="input-group">
+                                                    <button type="button" class="btn quantity-left-minus" data-type="minus" data-field="">
+                                                        <i class="fa fa-minus" aria-hidden="true"></i>
+                                                    </button>
+                                                    <input type="text" name="quantity" class="form-control input-number qty-input" value="1">
+                                                    <button type="button" class="btn quantity-right-plus" data-type="plus" data-field="">
+                                                        <i class="fa fa-plus" aria-hidden="true"></i>
+                                                    </button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="product-detail text-center">
+                                        <a href="product-page(no-sidebar).html">
+                                            <h6>Fresh Avocado - Medium</h6>
+                                        </a>
+                                        <h4>$6.00</h4>
+                                    </div>
+                                </div>
+                                <div class="product-box product-wrap product-style-1">
+                                    <div class="img-wrapper">
+                                        <div class="lable-block"><span class="lable3">new</span> <span class="lable4">on
+                                                sale</span></div>
+                                        <div class="front">
+                                            <a href="product-page(no-sidebar).html" class="bg-size blur-up lazyloaded" style="background-image: url(&quot;../assets/images/vegetables/pro/15.jpg&quot;); background-size: cover; background-position: center center; display: block;"><img src="../assets/images/vegetables/pro/15.jpg" class="img-fluid blur-up lazyload bg-img" alt="" ></a>
+                                        </div>
+                                        <div class="cart-info cart-wrap">
+                                            <a href="javascript:void(0)" title="Add to Wishlist"><i class="ti-heart" aria-hidden="true"></i></a>
+                                            <a href="#" data-bs-toggle="modal" data-bs-target="#quick-view" title="Quick View"><i class="ti-search" aria-hidden="true"></i></a>
+                                            <a href="compare.html" title="Compare"><i class="ti-reload" aria-hidden="true"></i></a>
+                                        </div>
+                                        <div class="addtocart_btn">
+                                            <button class="add-button add_cart" (click)="toggleButton()"  title="Add to cart">
+                                                Add to Cart
+                                            </button>
+                                            <div class="qty-box cart_qty" [style.display]="showButton ? 'block' : 'none'"> 
+                                                <div class="input-group">
+                                                    <button type="button" class="btn quantity-left-minus" data-type="minus" data-field="">
+                                                        <i class="fa fa-minus" aria-hidden="true"></i>
+                                                    </button>
+                                                    <input type="text" name="quantity" class="form-control input-number qty-input" value="1">
+                                                    <button type="button" class="btn quantity-right-plus" data-type="plus" data-field="">
+                                                        <i class="fa fa-plus" aria-hidden="true"></i>
+                                                    </button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="product-detail text-center">
+                                        <a href="product-page(no-sidebar).html">
+                                            <h6>Yellow Pumpkin - Original</h6>
+                                        </a>
+                                        <h4>$5.80</h4>
+                                    </div>
+                                </div>
+                                <div class="product-box product-wrap product-style-1">
+                                    <div class="img-wrapper">
+                                        <div class="lable-block"><span class="lable3">new</span> <span class="lable4">on
+                                                sale</span></div>
+                                        <div class="front">
+                                            <a href="product-page(no-sidebar).html" class="bg-size blur-up lazyloaded" style="background-image: url(&quot;../assets/images/vegetables/pro/16.jpg&quot;); background-size: cover; background-position: center center; display: block;"><img src="../assets/images/vegetables/pro/16.jpg" class="img-fluid blur-up lazyload bg-img" alt="" ></a>
+                                        </div>
+                                        <div class="cart-info cart-wrap">
+                                            <a href="javascript:void(0)" title="Add to Wishlist"><i class="ti-heart" aria-hidden="true"></i></a>
+                                            <a href="#" data-bs-toggle="modal" data-bs-target="#quick-view" title="Quick View"><i class="ti-search" aria-hidden="true"></i></a>
+                                            <a href="compare.html" title="Compare"><i class="ti-reload" aria-hidden="true"></i></a>
+                                        </div>
+                                        <div class="addtocart_btn">
+                                            <button class="add-button add_cart" (click)="toggleButton()"  title="Add to cart">
+                                                Add to Cart
+                                            </button>
+                                            <div class="qty-box cart_qty" [style.display]="showButton ? 'block' : 'none'"> 
+                                                <div class="input-group">
+                                                    <button type="button" class="btn quantity-left-minus" data-type="minus" data-field="">
+                                                        <i class="fa fa-minus" aria-hidden="true"></i>
+                                                    </button>
+                                                    <input type="text" name="quantity" class="form-control input-number qty-input" value="1">
+                                                    <button type="button" class="btn quantity-right-plus" data-type="plus" data-field="">
+                                                        <i class="fa fa-plus" aria-hidden="true"></i>
+                                                    </button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="product-detail text-center">
+                                        <a href="product-page(no-sidebar).html">
+                                            <h6>Fresh Mushrooms - Button</h6>
+                                        </a>
+                                        <h4>$3.20 <del>$3.60</del></h4>
+                                    </div>
+                                </div>
+
+                                <div class="product-box product-wrap product-style-1">
+                                    <div class="img-wrapper">
+                                        <div class="lable-block"><span class="lable3">new</span> <span class="lable4">on
+                                                sale</span></div>
+                                        <div class="front">
+                                            <a href="product-page(no-sidebar).html" class="bg-size blur-up lazyloaded" style="background-image: url(&quot;../assets/images/vegetables/pro/11.jpg&quot;); background-size: cover; background-position: center center; display: block;"><img src="../assets/images/vegetables/pro/11.jpg" class="img-fluid blur-up lazyload bg-img" alt="" ></a>
+                                        </div>
+                                        <div class="cart-info cart-wrap">
+                                            <a href="javascript:void(0)" title="Add to Wishlist"><i class="ti-heart" aria-hidden="true"></i></a>
+                                            <a href="#" data-bs-toggle="modal" data-bs-target="#quick-view" title="Quick View"><i class="ti-search" aria-hidden="true"></i></a>
+                                            <a href="compare.html" title="Compare"><i class="ti-reload" aria-hidden="true"></i></a>
+                                        </div>
+                                        <div class="addtocart_btn">
+                                            <button class="add-button add_cart" (click)="toggleButton()"  title="Add to cart">
+                                                Add to Cart
+                                            </button>
+                                            <div class="qty-box cart_qty" [style.display]="showButton ? 'block' : 'none'"> 
+                                                <div class="input-group">
+                                                    <button type="button" class="btn quantity-left-minus" data-type="minus" data-field="">
+                                                        <i class="fa fa-minus" aria-hidden="true"></i>
+                                                    </button>
+                                                    <input type="text" name="quantity" class="form-control input-number qty-input" value="1">
+                                                    <button type="button" class="btn quantity-right-plus" data-type="plus" data-field="">
+                                                        <i class="fa fa-plus" aria-hidden="true"></i>
+                                                    </button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="product-detail text-center">
+                                        <a href="product-page(no-sidebar).html">
+                                            <h6>Tomato - Hybrid</h6>
+                                        </a>
+                                        <h4>$2.00 <del>$2.40</del></h4>
+                                    </div>
+                                </div>
+                                <div class="product-box product-wrap product-style-1">
+                                    <div class="img-wrapper">
+                                        <div class="front">
+                                            <a href="product-page(no-sidebar).html" class="bg-size blur-up lazyloaded" style="background-image: url(&quot;../assets/images/vegetables/pro/12.jpg&quot;); background-size: cover; background-position: center center; display: block;"><img src="../assets/images/vegetables/pro/12.jpg" class="img-fluid blur-up lazyload bg-img" alt="" ></a>
+                                        </div>
+                                        <div class="cart-info cart-wrap">
+                                            <a href="javascript:void(0)" title="Add to Wishlist"><i class="ti-heart" aria-hidden="true"></i></a>
+                                            <a href="#" data-bs-toggle="modal" data-bs-target="#quick-view" title="Quick View"><i class="ti-search" aria-hidden="true"></i></a>
+                                            <a href="compare.html" title="Compare"><i class="ti-reload" aria-hidden="true"></i></a>
+                                        </div>
+                                        <div class="addtocart_btn">
+                                            <button class="add-button add_cart" (click)="toggleButton()"  title="Add to cart">
+                                                Add to Cart
+                                            </button>
+                                            <div class="qty-box cart_qty" [style.display]="showButton ? 'block' : 'none'"> 
+                                                <div class="input-group">
+                                                    <button type="button" class="btn quantity-left-minus" data-type="minus" data-field="">
+                                                        <i class="fa fa-minus" aria-hidden="true"></i>
+                                                    </button>
+                                                    <input type="text" name="quantity" class="form-control input-number qty-input" value="1">
+                                                    <button type="button" class="btn quantity-right-plus" data-type="plus" data-field="">
+                                                        <i class="fa fa-plus" aria-hidden="true"></i>
+                                                    </button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="product-detail text-center">
+                                        <a href="product-page(no-sidebar).html">
+                                            <h6>Fresh Broccoli</h6>
+                                        </a>
+                                        <h4>$3.20</h4>
+                                    </div>
+                                </div>
+                                <div class="product-box product-wrap product-style-1">
+                                    <div class="img-wrapper">
+                                        <div class="front">
+                                            <a href="product-page(no-sidebar).html" class="bg-size blur-up lazyloaded" style="background-image: url(&quot;../assets/images/vegetables/pro/13.jpg&quot;); background-size: cover; background-position: center center; display: block;"><img src="../assets/images/vegetables/pro/13.jpg" class="img-fluid blur-up lazyload bg-img" alt="" ></a>
+                                        </div>
+                                        <div class="cart-info cart-wrap">
+                                            <a href="javascript:void(0)" title="Add to Wishlist"><i class="ti-heart" aria-hidden="true"></i></a>
+                                            <a href="#" data-bs-toggle="modal" data-bs-target="#quick-view" title="Quick View"><i class="ti-search" aria-hidden="true"></i></a>
+                                            <a href="compare.html" title="Compare"><i class="ti-reload" aria-hidden="true"></i></a>
+                                        </div>
+                                        <div class="addtocart_btn">
+                                            <button class="add-button add_cart" (click)="toggleButton()"  title="Add to cart">
+                                                Add to Cart
+                                            </button>
+                                            <div class="qty-box cart_qty" [style.display]="showButton ? 'block' : 'none'"> 
+                                                <div class="input-group">
+                                                    <button type="button" class="btn quantity-left-minus" data-type="minus" data-field="">
+                                                        <i class="fa fa-minus" aria-hidden="true"></i>
+                                                    </button>
+                                                    <input type="text" name="quantity" class="form-control input-number qty-input" value="1">
+                                                    <button type="button" class="btn quantity-right-plus" data-type="plus" data-field="">
+                                                        <i class="fa fa-plus" aria-hidden="true"></i>
+                                                    </button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="product-detail text-center">
+                                        <a href="product-page(no-sidebar).html">
+                                            <h6>Sweet Corn - Organically Grown</h6>
+                                        </a>
+                                        <h4>$1.90</h4>
+                                    </div>
+                                </div>
+                                <div class="product-box product-wrap product-style-1">
+                                    <div class="img-wrapper">
+                                        <div class="front">
+                                            <a href="product-page(no-sidebar).html" class="bg-size blur-up lazyloaded" style="background-image: url(&quot;../assets/images/vegetables/pro/14.jpg&quot;); background-size: cover; background-position: center center; display: block;"><img src="../assets/images/vegetables/pro/14.jpg" class="img-fluid blur-up lazyload bg-img" alt="" ></a>
+                                        </div>
+                                        <div class="cart-info cart-wrap">
+                                            <a href="javascript:void(0)" title="Add to Wishlist"><i class="ti-heart" aria-hidden="true"></i></a>
+                                            <a href="#" data-bs-toggle="modal" data-bs-target="#quick-view" title="Quick View"><i class="ti-search" aria-hidden="true"></i></a>
+                                            <a href="compare.html" title="Compare"><i class="ti-reload" aria-hidden="true"></i></a>
+                                        </div>
+                                        <div class="addtocart_btn">
+                                            <button class="add-button add_cart" (click)="toggleButton()"  title="Add to cart">
+                                                Add to Cart
+                                            </button>
+                                            <div class="qty-box cart_qty" [style.display]="showButton ? 'block' : 'none'"> 
+                                                <div class="input-group">
+                                                    <button type="button" class="btn quantity-left-minus" data-type="minus" data-field="">
+                                                        <i class="fa fa-minus" aria-hidden="true"></i>
+                                                    </button>
+                                                    <input type="text" name="quantity" class="form-control input-number qty-input" value="1">
+                                                    <button type="button" class="btn quantity-right-plus" data-type="plus" data-field="">
+                                                        <i class="fa fa-plus" aria-hidden="true"></i>
+                                                    </button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="product-detail text-center">
+                                        <a href="product-page(no-sidebar).html">
+                                            <h6>Fresh Avocado - Medium</h6>
+                                        </a>
+                                        <h4>$6.00</h4>
+                                    </div>
+                                </div>
+                            </div>
+                        </ng-container>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>

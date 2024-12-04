@@ -1,0 +1,75 @@
+.fa {
+    display: inline-block;
+    font: normal normal normal 14px/1 FontAwesome;
+    font-size: inherit;
+    text-rendering: auto;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+.product-style-4.product-box .addtocart_btn .add_cart, .product-style-4.product-wrap .addtocart_btn .add_cart {
+    position: absolute;
+    right: 0;
+    bottom: 0;
+    -webkit-box-shadow: none;
+    box-shadow: none;
+    border: none;
+    background-color: var(--theme-color);
+    color: white;
+    width: 26px;
+    height: 26px;
+    font-size: 14px;
+    padding: 0;
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-align: center;
+    -ms-flex-align: center;
+    align-items: center;
+    -webkit-box-pack: center;
+    -ms-flex-pack: center;
+    justify-content: center;
+    border-radius: 3px;
+}
+
+.product-style-4.product-box .cart-detail a i, .product-style-4.product-wrap .cart-detail a i {
+    color: var(--theme-color);
+    font-size: 14px;
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    padding-top: 8px;
+    padding-bottom: 8px;
+    background-color: #fff;
+    padding: 6px;
+    border-radius: 100%;
+    margin-bottom: 5px;
+    border: 1px solid #ddd;
+}
+[class^="ti-"], [class*=" ti-"] {
+    font-family: 'themify';
+   
+    font-style: normal;
+    font-weight: normal;
+    font-variant: normal;
+    text-transform: none;
+    line-height: 1;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+
+.product-style-4.product-box, .product-style-4.product-wrap {
+    padding: 10px;
+    border-radius: 7px;
+    border: 1px solid #f1f1f1;
+}
+.product-style-4.product-box .product-info, .product-style-4.product-wrap .product-info {
+    text-align: left;
+    margin-top: 10px;
+}
+
+.product-style-4.product-box .addtocart_btn .cart_qty.qty-box, .product-style-4.product-wrap .addtocart_btn .cart_qty.qty-box {
+    position: absolute;
+    bottom: 0;
+    display: none;
+    right: -12px;
+}

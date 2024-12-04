@@ -1,0 +1,79 @@
+<main class=" col-xl-10 doc-main-body" data-bs-spy="scroll" data-bs-target="#deduct-api" data-bs-offset="0"
+  tabindex="0">
+  <h2>Acknowledge outbound message</h2>
+  <div id="introduction">
+    <h3>Introduction</h3>
+    <p>This endpoint creates a corporate notification linked to an outbound action for a specific target extracted from the authorization token to prevent the outbound to show again.</p>
+  </div>
+  <div id="endpoint">
+    <h3>Endpoint</h3>
+    <div class="mark-red">
+      <pre>URL: /outbound/read</pre>
+      <pre>Method: <span class="s1">POST</span></pre>
+    </div>
+  </div>
+  <div id="headers">
+    <h3>Request Headers</h3>
+    <p>Here you need to insert the bearer token obtained from the Login and Get Access Token API.</p>
+    <pre class="bg-black"><code>
+  <span class="s2">&lbrace;</span>
+    <span class="s2">"Authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..."</span>
+  <span class="s2">&rbrace;</span>
+      </code>
+    </pre>
+  </div>
+  <div id="params">
+    <h3>Request Parameters</h3>
+    <div class="mark-red">
+      <pre><span class="s1">outbound</span>: Outbound identifier.</pre>
+      <pre><span class="s1">reference*</span>: Session reference found in local storage or cookies under key <span style="font-weight: bold; color: #006eff;">elevkusr</span>.</pre>
+    </div>
+    <p class="note">Note: In case no reference is found in cookies, please save the outbound identifier in the cookies to prevent the outbound to show again and before showing any outbount test if you have it already in your cookies.</p>
+  </div>
+  <div id="error">
+    <h3>Error Handling</h3>
+    <div class="mark-red">
+      <pre><span class="s1">500 Internal server error</span>: In case of an error (HTTP 500), you need to get in touche with our developers.</pre>
+    </div>
+  </div>
+  <div id="request">
+    <h3>Sample Request</h3>
+    <p>Upon successful request, the API returns an success message.</p>
+    <pre class="bg-black"><code>
+  <span class="s1">POST /outbound/read</span>
+  <span class="s1">Authorization: Bearer YOUR_ACCESS_TOKEN</span>
+  <span class="s2">&lbrace;</span>
+    <span class="s2">"outbound": "sdfgsd9867s987df6g80987"</span>
+    <span class="s2">"reference": "345635jkbnjkhb34563456"</span>
+  <span class="s2">&rbrace;</span>
+      </code>
+    </pre>
+  </div>
+  <div id="response">
+    <h3>Sample Response</h3>
+    <p>Upon successful request, the API returns a confirmation.</p>
+    <pre class="bg-black"><code>
+  <span class="s2">&lbrace;</span>
+    <span class="s2">"success": "true",</span>
+    <span class="s2">"message": "Outbound acknowledgment saved successfully!",</span>
+  <span class="s2">&rbrace;</span>
+      </code>
+    </pre>
+  </div>
+  <div class="doc-pagination pt-40">
+    <app-pagination></app-pagination>
+  </div>
+</main> <!-- /.doc-main-body -->
+<nav class="d-none d-xl-block col-xl-3 doc-sideNav">
+  <div class="wrapper">
+    <nav class="main-side-nav" id="deduct-api">
+      <a href="deduct-api/#introduction" class="nav-link">Introduction</a>
+      <a href="deduct-api/#endpoint" class="nav-link">Endpoint</a>
+      <a href="deduct-api/#headers" class="nav-link">Request Headers</a>
+      <a href="deduct-api/#params" class="nav-link">Request Parameters</a>
+      <a href="deduct-api/#error" class="nav-link">Error Handling</a>
+      <a href="deduct-api/#request" class="nav-link">Sample Request</a>
+      <a href="deduct-api/#response" class="nav-link">Sample Response</a>
+    </nav>
+  </div>
+</nav>

@@ -1,0 +1,46 @@
+
+
+:host::ng-deep .hello{
+    @media(width < 1200px){
+        display:none;
+    }
+}
+
+:host::ng-deep.owl-carousel{
+padding-left: 2%;
+}
+.title-basic .title {
+    font-size: calc(16px + (24 - 16) * ((100vw - 320px) / (1920 - 320)));
+    margin-bottom: 0;
+}
+.bg-title .theme-tab .bg-title-part .tab-title.w-bg li.current a {
+    color: white;
+}
+.bg-title.wo-bg .theme-tab .tab-title .current a {
+    color: var(--theme-color);
+}
+.bg-title .theme-tab .bg-title-part .tab-title.w-bg li {
+    padding: 4px 18px !important;
+}
+.bg-title .theme-tab .bg-title-part .tab-title {
+    margin-bottom: 0;
+    margin-top: 0;
+    margin-left: auto;
+    text-align: right;
+}
+.bg-title .theme-tab .bg-title-part .tab-title.w-bg li.current {
+    background-color: var(--theme-color);
+}
+.bg-title.wo-bg .theme-tab .tab-title a {
+    color: #2d2a25;
+}
+.bg-title.wo-bg .theme-tab .bg-title-part {
+    background-color: transparent;
+    padding: 0 0 14px 0;
+    border-radius: 0;
+    border-bottom: 1px solid #ddd;
+    display: flex;
+}
+.theme-tab {
+    position: relative;
+}

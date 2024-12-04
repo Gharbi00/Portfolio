@@ -1,0 +1,12 @@
+<div class="doc-pagination pt-40">
+  <ul class="d-flex align-items-center justify-content-between">
+    <li  class="d-flex align-items-center">
+      <a [ngClass]="{disabled: !getPreviousPage()}" [routerLink]="getPreviousPage()?.route"><i class="fa fa-angle-left" aria-hidden="true"></i></a>&nbsp;&nbsp;&nbsp;
+      <span>{{ getPreviousPage()?.name }}</span>
+    </li>
+    <li  class="d-flex align-items-center">
+      <span>{{ getNextPage()?.name }}</span> &nbsp;&nbsp;&nbsp;
+      <a [ngClass]="{disabled: !getNextPage()}" [routerLink]="getNextPage()?.route"><i class="fa fa-angle-right" aria-hidden="true"></i></a>
+    </li>
+  </ul>
+</div>

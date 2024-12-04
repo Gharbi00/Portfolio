@@ -1,0 +1,27 @@
+:host::ng-deep  .owl-item{
+    
+    display: grid;
+place-items: center;}
+
+.basic-effect:after {
+    position: absolute;
+    content: "";
+    background: -webkit-gradient(linear, left top, left bottom, from(var(--theme-color)), color-stop(99%, var(--theme-color2)));
+    background: linear-gradient(-180deg, var(--theme-color) 0%, var(--theme-color2) 99%);
+    width: 100%;
+    height: 100%;
+    top: 0;
+    left: 0;
+    opacity: 0;
+    -webkit-transition: all 0.5s ease;
+    transition: all 0.5s ease;
+}
+.basic-effect {
+    position: relative;
+    overflow: hidden;
+}
+.theme-color-30 {
+    --theme-color: #206664!important;
+    --theme-color2: #ee7a63!important;
+}
+

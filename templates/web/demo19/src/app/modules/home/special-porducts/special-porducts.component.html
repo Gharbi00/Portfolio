@@ -1,0 +1,149 @@
+<section class="tools_product section-b-space">
+    <div class="container">
+        <div class="row">
+            <div class="col-12">
+                <div class="title2">
+                    <h4>exclusive products</h4>
+                    <h2 class="title-inner2">special products</h2>
+                </div>
+            </div>
+            <div class="col-md-12">
+                <div class="theme-tab">
+                    <div *ngIf="shouldDisplayBloc">
+                    <ul class="tabs tab-title">
+                        <li [class.current]="activeTab === 'tab-1'" (click)="switchTab('tab-1')" style="cursor:pointer;">
+                            <a >New Products</a>
+                        </li>
+                        <li [class.current]="activeTab === 'tab-2'" (click)="switchTab('tab-2')" style="cursor:pointer;">
+                            <a >Featured Products</a>
+                        </li>
+                    </ul>
+                </div>
+                    <div class="tab-content-cls ratio_asos" [@tabAnimation]="activeTab">
+                        <ng-container *ngIf="activeTab === 'tab-1'" class="tabs_item"  class="tab-content active default" style="display: block;">
+                            <div class="product-5 game-product product-m no-arrow slick-initialized slick-slider">
+                                
+                                <div class="slick-list draggable">
+                                    <owl-carousel-o [options]="SpecialProductsCarousel" class="slick-track"
+                                        style="opacity: 1; max-width: 1680px; ;">
+                                        <ng-container *ngFor="let product of SpecialProductsData" >
+                                            <ng-template carouselSlide>
+
+
+                                        <div class="slick-slide slick-current slick-active" data-slick-index="0"
+                                            aria-hidden="false" style="width: 280px;">
+                                            <div>
+                                                <div class="product-box" style="width: 100%; display: inline-block;">
+                                                    <div class="img-wrapper">
+                                                        <div class="front">
+                                                            <a href="product-page(no-sidebar).html"
+                                                                class="bg-size blur-up lazyloaded"
+                                                                style="background-image: url(&quot;../assets/images/books/product/7.jpg&quot;); background-size: cover; background-position: center center; display: block;"
+                                                                tabindex="0"><img
+                                                                    src="../assets/images/books/product/7.jpg"
+                                                                    class="img-fluid blur-up lazyload bg-img" alt=""
+                                                                    ></a>
+                                                        </div>
+                                                        <div class="cart-info cart-wrap">
+                                                            <a href="javascript:void(0)" title="Add to Wishlist"
+                                                                tabindex="0"><i class="ti-heart"
+                                                                    aria-hidden="true"></i></a>
+                                                            <a href="#" data-bs-toggle="modal"
+                                                                data-bs-target="#quick-view" title="Quick View"
+                                                                tabindex="0"><i class="ti-search"
+                                                                    aria-hidden="true"></i></a>
+                                                            <a href="compare.html" title="Compare" tabindex="0"><i
+                                                                    class="ti-reload" aria-hidden="true"></i></a>
+                                                        </div>
+                                                        <div class="add-button" data-bs-toggle="modal"
+                                                            data-bs-target="#addtocart">
+                                                            add to
+                                                            cart</div>
+                                                    </div>
+                                                    <div class="product-detail">
+                                                        <div class="rating"><i class="fa fa-star"></i> <i
+                                                                class="fa fa-star"></i>
+                                                            <i class="fa fa-star"></i> <i class="fa fa-star"></i> <i
+                                                                class="fa fa-star"></i>
+                                                        </div>
+                                                        <a href="product-page(no-sidebar).html" tabindex="0">
+                                                            <h6>Where The Crawdads</h6>
+                                                        </a>
+                                                        <h4>$5.00</h4>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </ng-template>
+                                </ng-container>
+                                    </owl-carousel-o>
+                                </div>
+                            </div>
+                        </ng-container>
+                        <ng-container *ngIf="activeTab === 'tab-2'" class="tabs_item"  class="tab-content active default" style="display: block;">
+                            <div class="product-5 game-product product-m no-arrow slick-initialized slick-slider">
+                                
+                                <div class="slick-list draggable">
+                                    <owl-carousel-o [options]="SpecialProductsCarousel" class="slick-track"
+                                        style="opacity: 1; max-width: 1680px; ;">
+                                        <ng-container *ngFor="let product of SpecialProductsData" >
+                                            <ng-template carouselSlide>
+
+
+                                        <div class="slick-slide slick-current slick-active" data-slick-index="0"
+                                            aria-hidden="false" style="width: 280px;">
+                                            <div>
+                                                <div class="product-box" style="width: 100%; display: inline-block;">
+                                                    <div class="img-wrapper">
+                                                        <div class="front">
+                                                            <a href="product-page(no-sidebar).html"
+                                                                class="bg-size blur-up lazyloaded"
+                                                                style="background-image: url(&quot;../assets/images/books/product/7.jpg&quot;); background-size: cover; background-position: center center; display: block;"
+                                                                tabindex="0"><img
+                                                                    src="../assets/images/books/product/7.jpg"
+                                                                    class="img-fluid blur-up lazyload bg-img" alt=""
+                                                                    ></a>
+                                                        </div>
+                                                        <div class="cart-info cart-wrap">
+                                                            <a href="javascript:void(0)" title="Add to Wishlist"
+                                                                tabindex="0"><i class="ti-heart"
+                                                                    aria-hidden="true"></i></a>
+                                                            <a href="#" data-bs-toggle="modal"
+                                                                data-bs-target="#quick-view" title="Quick View"
+                                                                tabindex="0"><i class="ti-search"
+                                                                    aria-hidden="true"></i></a>
+                                                            <a href="compare.html" title="Compare" tabindex="0"><i
+                                                                    class="ti-reload" aria-hidden="true"></i></a>
+                                                        </div>
+                                                        <div class="add-button" data-bs-toggle="modal"
+                                                            data-bs-target="#addtocart">
+                                                            add to
+                                                            cart</div>
+                                                    </div>
+                                                    <div class="product-detail">
+                                                        <div class="rating"><i class="fa fa-star"></i> <i
+                                                                class="fa fa-star"></i>
+                                                            <i class="fa fa-star"></i> <i class="fa fa-star"></i> <i
+                                                                class="fa fa-star"></i>
+                                                        </div>
+                                                        <a href="product-page(no-sidebar).html" tabindex="0">
+                                                            <h6>Where The Crawdads</h6>
+                                                        </a>
+                                                        <h4>$5.00</h4>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </ng-template>
+                                </ng-container>
+                                    </owl-carousel-o>
+                                </div>
+                            </div>
+                        </ng-container>
+                    </div>
+                    
+                </div>
+            </div>
+        </div>
+    </div>
+</section>

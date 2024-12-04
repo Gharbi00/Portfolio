@@ -1,0 +1,24 @@
+<div class="page-pagination-two pt-30">
+  <ul class="d-flex align-items-center justify-content-center">
+    <li class="arrow" [class.invert]="rtl$ | async"><a [routerLink]="" [class.disabled]="actualPage===1"
+        [queryParams]="{page: (actualPage - 1)}" queryParamsHandling="merge"><i class="flaticon-right-arrow"></i></a>
+    </li>
+
+    <div *ngIf="actualPage > 2 " style="display: flex;">
+      <li style=" transform: rotate(180deg)!important;"><a [routerLink]="" [queryParams]="{page: 1}">{{'FIRST' |
+          translate}}</a></li>
+      <li>...</li>
+
+    </div>
+    <li [class.active]="actualPage===page" *ngFor="let page of pagesToBeShown"><a [routerLink]=""
+        [queryParams]="{page: page}" queryParamsHandling="merge">{{page}}</a></li>
+
+    <ul *ngIf="length > actualPage" style="display: flex;">
+      <li>...</li>
+      <li><a [routerLink]="" [queryParams]="{page: length + 1}">{{'LAST' | translate}}</a></li>
+    </ul>
+    <li class="arrow" [class.invert]="rtl$ | async"><a [routerLink]="" [queryParams]="{page: (actualPage + 1)}"
+        queryParamsHandling="merge" [class.disabled]="actualPage===length + 1"><i class="flaticon-right-arrow"></i></a>
+    </li>
+  </ul>
+</div>

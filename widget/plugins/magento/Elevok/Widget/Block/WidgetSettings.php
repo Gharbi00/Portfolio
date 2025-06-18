@@ -72,6 +72,28 @@ class WidgetSettings extends Template
         return $value ?: 'Appliquer une remise:';
     }
 
+    public function getDesktopSelector()
+    {
+        $value = $this->_scopeConfig->getValue(
+            'elevok_widget_general/general/desktop_selector', // Adjust the path if needed
+            \Magento\Store\Model\ScopeInterface::SCOPE_STORE
+        );
+        $this->logger->debug("Desktop Selector : " . $value);
+        return $value ?: 'Default Desktop Selector'; // Provide a default value if none is set
+    }
+
+    public function getMobileSelector()
+    {
+        $value = $this->_scopeConfig->getValue(
+            'elevok_widget_general/general/mobile_selector', // Adjust the path if needed
+            \Magento\Store\Model\ScopeInterface::SCOPE_STORE
+        );
+        $this->logger->debug("Mobile Selector : " . $value);
+        return $value ?: 'Default Mobile Selector'; // Provide a default value if none is set
+        
+    }
+
+
     public function getWidgetStyle()
     {
     $value = $this->_scopeConfig->getValue('elevok_widget_general/general/widget_style', \Magento\Store\Model\ScopeInterface::SCOPE_STORE);
@@ -172,7 +194,7 @@ class WidgetSettings extends Template
 
     public function sendRequest($endpoint, $postData)
     {
-        $url = 'https://sfca-sbx-bck.diktup.cloud' . $endpoint;
+        $url = 'https://api.elevok.com' . $endpoint;
     
         $ch = curl_init($url);
     
@@ -206,7 +228,7 @@ class WidgetSettings extends Template
     
     public function sendAuthenticatedRequest($endpoint, $postData, $accessToken)
     {
-        $url = 'https://sfca-sbx-bck.diktup.cloud' . $endpoint;
+        $url = 'https://api.elevok.com' . $endpoint;
     
         // Debug log for endpoint and post data
        // $this->logger->debug("sendAuthenticatedRequest Sending authenticated request to URL: " . $url);

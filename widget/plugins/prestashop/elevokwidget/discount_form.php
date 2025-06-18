@@ -59,7 +59,7 @@ if ($displayDiscountForm) {
         var form = new FormData();
         form.append("action", "apply_discount");
         form.append("discount_amount", maxDiscountAmount);
-        fetch(`/${encodeURIComponent(rootFolderName)}/modules/elevokwidget/ajax-discount-handler.php`, {
+        fetch(`/modules/elevokwidget/ajax-discount-handler.php`, {
             method: "POST",
             body: form
         }).then(response => {
@@ -96,7 +96,7 @@ if ($displayDiscountForm) {
 
     function removeDiscount() {
     var xhr = new XMLHttpRequest();
-    xhr.open("POST", `/${encodeURIComponent(rootFolderName)}/modules/elevokwidget/remove-discount.php`, true);
+    xhr.open("POST", `/modules/elevokwidget/remove-discount.php`, true);
     xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
 
     xhr.onreadystatechange = function () {

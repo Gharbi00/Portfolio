@@ -12,9 +12,22 @@ $widgetStyles=$block->getWidgetStyle();
         locale: 'fr-fr'
     };
 
+document.addEventListener("DOMContentLoaded", function () {
+    console.log("DOM loaded, checking for logout condition...");
+
+    // Check if the URL matches the logout success page
+    if (window.location.pathname === "/customer/account/logoutSuccess/") {
+        console.log("User logged out. Clearing local storage...");
+        localStorage.removeItem("elvkwdigttoken");
+        localStorage.removeItem("elvwdigtauth");
+        localStorage.setItem("elvwdigtauth", "false");
+        console.log("Local storage cleared successfully.");
+    }
+});
+
     window.onload = function() {
         var script = document.createElement('script');
-        script.src = "https://widgt-sbx-app.bosk.app/sdk.js";
+        script.src = "https://widget.elevok.com/sdk.js";
         script.async = true;
         script.defer = true;
         script.onload = function() {
@@ -28,6 +41,91 @@ $widgetStyles=$block->getWidgetStyle();
     };
 </script>
 
+<script>
+        document.addEventListener("DOMContentLoaded", function() {
+            const observer = new MutationObserver(function(mutations) {
+                mutations.forEach(function(mutation) {
+                    mutation.addedNodes.forEach(function(node) {
+                        if (node.nodeType === Node.ELEMENT_NODE) {
+                            //console.log("Added node:", node.tagName);
+
+                            if (node.tagName.toLowerCase() === "index-component") {
+                                const indexShadowRoot = node.shadowRoot;
+                                if (indexShadowRoot) {
+                                    const circularMenu = indexShadowRoot.querySelector("fw-circular-menu");
+                                    if (circularMenu) {
+                                        const circularMenuShadowRoot = circularMenu.shadowRoot;
+                                        if (circularMenuShadowRoot) {
+                                            const profileCnt = circularMenuShadowRoot.querySelector(".profile-cnt");
+                                            if (profileCnt) {
+                                                profileCnt.addEventListener("click", function() {
+                                                    //console.log(".profile-cnt clicked!");
+
+                                                    const appGuestMode = indexShadowRoot.querySelector("app-guest-mode");
+                                                    if (appGuestMode) {
+                                                        //console.log("app-guest-mode found:", appGuestMode);
+
+                                                        const guestModeShadowRoot = appGuestMode.shadowRoot;
+                                                        if (guestModeShadowRoot) {
+                                                            //console.log("Guest mode shadow root found.");
+
+                                                            setTimeout(function() {
+                                                                const widgetButton = guestModeShadowRoot.querySelector(".widget-box-button");
+                                                                if (widgetButton) {
+                                                                    widgetButton.addEventListener("click", function() {
+                                                                        //alert("Widget button clicked!");
+                                                                        const desktopInfo = document.getElementsByClassName('<?php echo trim($block->escapeJs($block->getDesktopSelector())); ?>');
+                                                                        const mobileInfo = document.getElementsByClassName('<?php echo trim($block->escapeJs($block->getMobileSelector())); ?>');
+
+                                                                        console.log("Desktop Info Element:", desktopInfo);
+                                                                        console.log("Mobile Info Element:", mobileInfo);
+
+                                                                        if (desktopInfo.length > 0) {
+                                                                            desktopInfo[0].classList.add("elevok-animate-login");
+                                                                        }
+
+                                                                        if (mobileInfo.length > 0) {
+                                                                            mobileInfo[0].classList.add("elevok-animate-login");
+                                                                        }
+
+                                                                    });
+                                                                } else {
+                                                                    console.error("Widget button not found inside the shadow DOM.");
+                                                                }
+                                                            }, 1000);
+                                                        } else {
+                                                            console.error("Shadow root of app-guest-mode not found.");
+                                                        }
+                                                    } else {
+                                                        console.warn("app-guest-mode not found inside index-component.");
+                                                    }
+                                                });
+                                            } else {
+                                                console.warn(".profile-cnt not found inside fw-circular-menu shadow DOM.");
+                                            }
+                                        } else {
+                                            console.error("Shadow root of fw-circular-menu not found.");
+                                        }
+                                    } else {
+                                        console.warn("fw-circular-menu not found inside index-component shadow DOM.");
+                                    }
+                                } else {
+                                    console.error("Shadow root of index-component not found.");
+                                }
+                            }
+                        }
+                    });
+                });
+            });
+
+            observer.observe(document.body, { childList: true, subtree: true });
+        });
+    </script>
+
 <style>
+    .elevok-animate-login {
+        animation: bouncePulse 2s infinite;
+        transition: background-color .3s ease;
+    }
 <?= $widgetStyles; ?>
 </style>

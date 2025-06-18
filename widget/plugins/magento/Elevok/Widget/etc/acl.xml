@@ -3,20 +3,11 @@
         xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Auth:etc/acl.xsd">
     <acl>
         <resources>
-            <administration>
-                <children>
-                    <elevok_widget translate="label">
-                        <title><![CDATA[Elevok Widget]]></title>
-                        <sortOrder>100</sortOrder>
-                        <children>
-                            <config_elevok_widget translate="label">
-                                <title><![CDATA[General Settings]]></title>
-                                <sortOrder>10</sortOrder>
-                            </config_elevok_widget>
-                        </children>
-                    </elevok_widget>
-                </children>
-            </administration>
+            <resource id="Magento_Backend::admin">
+                <resource id="Elevok_Widget::widget" title="Elevok Widget" translate="title" sortOrder="100">
+                    <resource id="Elevok_Widget::settings" title="General Settings" translate="title" sortOrder="10" />
+                </resource>
+            </resource>
         </resources>
     </acl>
 </config>

@@ -476,62 +476,66 @@ class GShoppingFlux extends Module
     }
 
     public function generateXMLFiles($lang_id, $shop_id, $shop_group_id)
-    {
-        if (isset($lang_id) && $lang_id != 0) {
-            $count = $this->generateLangFileList($lang_id, $shop_id);
-            $languages = GLangAndCurrency::getLangCurrencies($lang_id, $shop_id);
-        } else {
-            $count = $this->generateShopFileList($shop_id);
-            $languages = GLangAndCurrency::getAllLangCurrencies(1);
-        }
-
-        
-        $id_lang = Context::getContext()->language->id; 
-        $id_currency = Context::getContext()->currency->id; 
-
-       
-        $lang = new Language($id_lang);
-        $currency = new Currency($id_currency);
-
-       
-        $shop_group_id = Shop::getGroupFromShop($shop_id);
-        $shop_id = Context::getContext()->shop->id;
-
-        
-        if (Configuration::get('GS_GEN_FILE_IN_ROOT', 0, $shop_group_id, $shop_id) == 1) {
-            // Generating file URLs for different file types (products, categories, brands)
-            $products_file_url = $this->uri . $this->_getOutputFileName($lang->iso_code, $currency->iso_code, $shop_id, 'elevok-products');
-            $categories_file_url = $this->uri . $this->_getOutputFileName($lang->iso_code, $currency->iso_code, $shop_id, 'elevok-categories');
-            $brands_file_url = $this->uri . $this->_getOutputFileName($lang->iso_code, $currency->iso_code, $shop_id, 'elevok-brands');
-        } else {
-            // Generating file URLs for different file types (products, categories, brands) in the export folder
-            $products_file_url = $this->uri . 'modules/elevokwidget/' . $this->name . '/export/' . $this->_getOutputFileName($lang->iso_code, $currency->iso_code, $shop_id, 'elevok-products');
-            $categories_file_url = $this->uri . 'modules/elevokwidget/' . $this->name . '/export/' . $this->_getOutputFileName($lang->iso_code, $currency->iso_code, $shop_id, 'elevok-categories');
-            $brands_file_url = $this->uri . 'modules/elevokwidget/' . $this->name . '/export/' . $this->_getOutputFileName($lang->iso_code, $currency->iso_code, $shop_id, 'elevok-brands');
-        }
-        
-        // Example of using the URLs
-        $this->confirm .= '<br /> <a href="' . $products_file_url . '" target="_blank">' . $products_file_url . '</a>';
-        $this->confirm .= '<br /> <a href="' . $categories_file_url . '" target="_blank">' . $categories_file_url . '</a>';
-        $this->confirm .= '<br /> <a href="' . $brands_file_url . '" target="_blank">' . $brands_file_url . '</a>';
-
-        if ($count[0]['nb_combinations'] > 0) {
-            $this->confirm .= ': ' . $count[0]['nb_prod_w_attr'] . ' ' . $this->l('products with attributes');
-            $this->confirm .= ', ' . $count[0]['nb_combinations'] . ' ' . $this->l('attributes combinations');
-            $this->confirm .= '.<br/> ' . $this->l('Total') . ': ' . ($count[0]['nb_products']) . ' ' . $this->l('exported products');
-
-            if ($count[0]['non_exported_products'] > 0) {
-                $this->confirm .= ', ' . $this->l('and') . ' ' . $count[0]['non_exported_products'] . ' ' . $this->l('not-exported products (non-available)');
-            }
-            $this->confirm .= '.';
-        } else {
-            $this->confirm .= '.';
-        }
-
-        $this->_html .= $this->displayConfirmation(html_entity_decode($this->confirm));
-
-        return;
+{
+    if (isset($lang_id) && $lang_id != 0) {
+        $count = $this->generateLangFileList($lang_id, $shop_id);
+        $languages = GLangAndCurrency::getLangCurrencies($lang_id, $shop_id);
+    } else {
+        $count = $this->generateShopFileList($shop_id);
+        $languages = GLangAndCurrency::getAllLangCurrencies(1);
     }
+
+    $id_lang = Context::getContext()->language->id;
+    $id_currency = Context::getContext()->currency->id;
+
+    $lang = new Language($id_lang);
+    $currency = new Currency($id_currency);
+
+    $shop_group_id = Shop::getGroupFromShop($shop_id);
+    $shop_id = Context::getContext()->shop->id;
+
+    if (Configuration::get('GS_GEN_FILE_IN_ROOT', 0, $shop_group_id, $shop_id) == 1) {
+        // File URLs for products, categories, brands, attributes, and attribute values in the root
+        $products_file_url = $this->uri . $this->_getOutputFileName($lang->iso_code, $currency->iso_code, $shop_id, 'elevok-products');
+        $categories_file_url = $this->uri . $this->_getOutputFileName($lang->iso_code, $currency->iso_code, $shop_id, 'elevok-categories');
+        $brands_file_url = $this->uri . $this->_getOutputFileName($lang->iso_code, $currency->iso_code, $shop_id, 'elevok-brands');
+        $attributes_file_url = $this->uri . $this->_getOutputFileName($lang->iso_code, $currency->iso_code, $shop_id, 'elevok-attributes');
+        $attribute_values_file_url = $this->uri . $this->_getOutputFileName($lang->iso_code, $currency->iso_code, $shop_id, 'elevok-attribute-values');
+	$articles_file_url = $this->uri . $this->_getOutputFileName($lang->iso_code, 'articles', $shop_id, 'elevok-articles');    
+} else {
+        // File URLs in the export folder
+        $products_file_url = $this->uri . 'modules/elevokwidget/' . $this->name . '/export/' . $this->_getOutputFileName($lang->iso_code, $currency->iso_code, $shop_id, 'elevok-products');
+        $categories_file_url = $this->uri . 'modules/elevokwidget/' . $this->name . '/export/' . $this->_getOutputFileName($lang->iso_code, $currency->iso_code, $shop_id, 'elevok-categories');
+        $brands_file_url = $this->uri . 'modules/elevokwidget/' . $this->name . '/export/' . $this->_getOutputFileName($lang->iso_code, $currency->iso_code, $shop_id, 'elevok-brands');
+        $attributes_file_url = $this->uri . 'modules/elevokwidget/' . $this->name . '/export/' . $this->_getOutputFileName($lang->iso_code, $currency->iso_code, $shop_id, 'elevok-attributes');
+        $attribute_values_file_url = $this->uri . 'modules/elevokwidget/' . $this->name . '/export/' . $this->_getOutputFileName($lang->iso_code, $currency->iso_code, $shop_id, 'elevok-attribute-values');
+	$articles_file_url = $this->uri . 'modules/elevokwidget/' . $this->name . '/export/' . $this->_getOutputFileName($lang->iso_code, 'articles', $shop_id, 'elevok-articles');    
+}
+
+    // Add the URLs to the confirmation message
+    $this->confirm .= '<br /> <a href="' . $products_file_url . '" target="_blank">' . $products_file_url . '</a>';
+    $this->confirm .= '<br /> <a href="' . $categories_file_url . '" target="_blank">' . $categories_file_url . '</a>';
+    $this->confirm .= '<br /> <a href="' . $brands_file_url . '" target="_blank">' . $brands_file_url . '</a>';
+    $this->confirm .= '<br /> <a href="' . $attributes_file_url . '" target="_blank">' . $attributes_file_url . '</a>';
+    $this->confirm .= '<br /> <a href="' . $attribute_values_file_url . '" target="_blank">' . $attribute_values_file_url . '</a>';
+    $this->confirm .= '<br /> <a href="' . $articles_file_url . '" target="_blank">' . $articles_file_url . '</a>'; // Added articles file link
+    if ($count[0]['nb_combinations'] > 0) {
+        $this->confirm .= ': ' . $count[0]['nb_prod_w_attr'] . ' ' . $this->l('products with attributes');
+        $this->confirm .= ', ' . $count[0]['nb_combinations'] . ' ' . $this->l('attributes combinations');
+        $this->confirm .= '.<br/> ' . $this->l('Total') . ': ' . ($count[0]['nb_products']) . ' ' . $this->l('exported products');
+
+        if ($count[0]['non_exported_products'] > 0) {
+            $this->confirm .= ', ' . $this->l('and') . ' ' . $count[0]['non_exported_products'] . ' ' . $this->l('not-exported products (non-available)');
+        }
+        $this->confirm .= '.';
+    } else {
+        $this->confirm .= '.';
+    }
+
+    $this->_html .= $this->displayConfirmation(html_entity_decode($this->confirm));
+
+    return;
+}
 
     public function getWarningMultishopHtml()
     {
@@ -1889,12 +1893,18 @@ class GShoppingFlux extends Module
                 $get_file_url[] = $this->uri . $this->_getOutputFileName($lang->iso_code, $currency->iso_code, $this->context->shop->id, 'elevok-products');
                 $get_file_url[] = $this->uri . $this->_getOutputFileName($lang->iso_code, $currency->iso_code, $this->context->shop->id, 'elevok-categories');
                 $get_file_url[] = $this->uri . $this->_getOutputFileName($lang->iso_code, $currency->iso_code, $this->context->shop->id, 'elevok-brands');
-            } else {
+            	$get_file_url[] = $this->uri . $this->_getOutputFileName($lang->iso_code, $currency->iso_code, $this->context->shop->id, 'elevok-attributes');
+                $get_file_url[] = $this->uri . $this->_getOutputFileName($lang->iso_code, $currency->iso_code, $this->context->shop->id, 'elevok-attribute-values');
+                $get_file_url[] = $this->uri . $this->_getOutputFileName($lang->iso_code, $currency->iso_code, $this->context->shop->id, 'elevok-articles');
+		} else {
                 // Generate the file URLs for products, categories, and brands in the export folder
                 $get_file_url[] = $this->uri . 'modules/' . $this->_getOutputFileName($lang->iso_code, $currency->iso_code, $this->context->shop->id, 'elevok-products');
                 $get_file_url[] = $this->uri . 'modules/' . $this->_getOutputFileName($lang->iso_code, $currency->iso_code, $this->context->shop->id, 'elevok-categories');
                 $get_file_url[] = $this->uri . 'modules/' . $this->_getOutputFileName($lang->iso_code, $currency->iso_code, $this->context->shop->id, 'elevok-brands');
-            }
+		$get_file_url[] = $this->uri . 'modules/' . $this->_getOutputFileName($lang->iso_code, $currency->iso_code, $this->context->shop->id, 'elevok-attributes');
+    		$get_file_url[] = $this->uri . 'modules/' . $this->_getOutputFileName($lang->iso_code, $currency->iso_code, $this->context->shop->id, 'elevok-attribute-values');
+    		$get_file_url[] = $this->uri . 'modules/' . $this->_getOutputFileName($lang->iso_code, $currency->iso_code, $this->context->shop->id, 'elevok-articles');            
+}
         } elseif ($formName == "order") {
             // Generate order file URLs based on system language and currency
             if (Configuration::get('GS_GEN_FILE_IN_ROOT', 0, $this->context->shop->id_shop_group, $this->context->shop->id) == 1) {
@@ -2279,7 +2289,28 @@ class GShoppingFlux extends Module
             } else {
                 error_log("Failed to generate brands file for lang: {$lang['iso_code']}");
             }
+        $attributesFile = $this->generateFileAttributes($lang, $id_shop);
+        if ($attributesFile) {
+            $ret[] = $attributesFile;
+        } else {
+            error_log("Failed to generate attributes file for lang: {$lang['iso_code']}");
         }
+
+        // Generate attribute values file
+        $attributeValuesFile = $this->generateFileAttributeValues($lang, $id_shop);
+        if ($attributeValuesFile) {
+            $ret[] = $attributeValuesFile;
+        } else {
+            error_log("Failed to generate attribute values file for lang: {$lang['iso_code']}");
+        }
+        $articlesFile = $this->generateFileArticles($lang, $id_shop);
+        if ($articlesFile) {
+            $ret[] = $articlesFile;
+        } else {
+            error_log("Failed to generate articles file for lang: {$lang['iso_code']}");
+        }
+        }
+
     
         return $ret;  // Return the list of generated file paths
     }
@@ -2313,6 +2344,22 @@ class GShoppingFlux extends Module
                 if ($brandsFile) {
                     $ret['brands'][] = $brandsFile;
                 }
+		            $attributesFile = $this->generateFileAttributes($lang, $id_shop);
+            if ($attributesFile) {
+                $ret['attributes'][] = $attributesFile;
+            }
+
+            // Generate Attribute Values File
+            $attributeValuesFile = $this->generateFileAttributeValues($lang, $id_shop);
+            if ($attributeValuesFile) {
+                $ret['attribute_values'][] = $attributeValuesFile;
+            }
+        $articlesFile = $this->generateFileArticles($lang, $id_shop);
+        if ($articlesFile) {
+            $ret[] = $articlesFile;
+        } else {
+            error_log("Failed to generate articles file for lang: {$lang['iso_code']}");
+        }
             }
         }
 
@@ -2454,72 +2501,362 @@ class GShoppingFlux extends Module
             'non_exported_products' => $this->nb_not_exported_products,
         );
     }
+public function generateFileCategories($lang, $id_shop)
+{
+    $id_lang = (int) $lang['id_lang'];
+    $this->shop = new Shop($id_shop);
 
-    public function generateFileCategories($lang, $id_shop)
-    {
-        $id_lang = (int) $lang['id_lang'];
-        $this->shop = new Shop($id_shop);
+    // Get module configuration for this shop
+    $this->module_conf = $this->getConfigFieldsValues($id_shop);
 
-        // Get module configuration for this shop
-        $this->module_conf = $this->getConfigFieldsValues($id_shop);
-
-        // Init file path
-        $generate_file_path = $this->module_conf['gen_file_in_root']
+    // Init file path
+    $generate_file_path = $this->module_conf['gen_file_in_root']
         ? dirname(__FILE__) . '/../../../' . $this->_getOutputFileName($lang['iso_code'], 'category', $id_shop, 'elevok-categories')
         : dirname(__FILE__) . '/export/' . $this->_getOutputFileName($lang['iso_code'], 'category', $id_shop, 'elevok-categories');
 
+    $xml_header = '<?xml version="1.0" encoding="' . self::CHARSET . '" ?>' . "\n";
+    $xml_header .= '<rss version="2.0" xmlns:g="http://base.google.com/ns/1.0">' . "\n";
+    $xml_header .= '<channel>' . "\n";
+    $xml_header .= '<title>' . $this->shop->name . '</title>' . "\n";
+    $xml_header .= '<description>' . $this->getShopDescription($id_lang, $id_shop) . '</description>' . "\n";
+    $xml_header .= '<link href="' . htmlspecialchars($this->uri, self::REPLACE_FLAGS, self::CHARSET, false) . '" rel="alternate" type="text/html"/>' . "\n";
 
-        $xml_header = '<?xml version="1.0" encoding="' . self::CHARSET . '" ?>' . "\n";
-        $xml_header .= '<rss version="2.0" xmlns:g="http://base.google.com/ns/1.0">' . "\n";
-        $xml_header .= '<channel>' . "\n";
-        $xml_header .= '<title>' . $this->shop->name . '</title>' . "\n";
-        $xml_header .= '<description>' . $this->getShopDescription($id_lang, $id_shop) . '</description>' . "\n";
-        $xml_header .= '<link href="' . htmlspecialchars($this->uri, self::REPLACE_FLAGS, self::CHARSET, false) . '" rel="alternate" type="text/html"/>' . "\n";
-        
-        // Open file for writing
-        $categoryFile = fopen($generate_file_path, 'w');
+    // Open file for writing
+    $categoryFile = fopen($generate_file_path, 'w');
 
-        // Add UTF-8 byte order mark
-        fwrite($categoryFile, pack('CCC', 0xef, 0xbb, 0xbf));
+    // Add UTF-8 byte order mark
+    fwrite($categoryFile, pack('CCC', 0xef, 0xbb, 0xbf));
 
-        // Write the XML header
-        fwrite($categoryFile, $xml_header);
+    // Write the XML header
+    fwrite($categoryFile, $xml_header);
 
-        // Query categories
-        $sql = 'SELECT c.id_category, cl.name, c.id_parent, cl.description, c.active '
-            . 'FROM ' . _DB_PREFIX_ . 'category c '
-            . 'INNER JOIN ' . _DB_PREFIX_ . 'category_lang cl ON c.id_category = cl.id_category '
-            . 'WHERE cl.id_lang = ' . $id_lang . ' AND c.active = 1';
+    // Query categories
+    $sql = 'SELECT c.id_category, cl.name, c.id_parent, cl.description, c.active '
+        . 'FROM ' . _DB_PREFIX_ . 'category c '
+        . 'INNER JOIN ' . _DB_PREFIX_ . 'category_lang cl ON c.id_category = cl.id_category '
+        . 'WHERE cl.id_lang = ' . $id_lang . ' AND c.active = 1';
 
-        $categories = Db::getInstance()->ExecuteS($sql);
+    $categories = Db::getInstance()->ExecuteS($sql);
 
-        // Loop through categories and write XML data for each
-        foreach ($categories as $category) {
-            $xml_category = '<item>' . "\n"
-            . '<id>' . $category['id_category'] . '</id>' . "\n"
-            . '<name>' . $category['name'] . '</name>' . "\n"
-            . '<parent>' . $category['id_parent'] . '</parent>' . "\n"
-            . '<description>' . $category['description'] . '</description>' . "\n"
-            . '<deeplink>' . Tools::link_rewrite($category['name']) . '</deeplink>' . "\n"
-                . '</item>' . "\n";
-
-            fwrite($categoryFile, $xml_category);
+    // Loop through categories and write XML data for each
+    foreach ($categories as $category) {
+        // Skip Root and Home categories
+        if (in_array((int) $category['id_category'], [1, 2])) {
+            continue;
         }
 
-        // Write the closing XML tags after all categories are processed
-        $xml_footer = '</channel>' . "\n";  // ONLY include closing </channel>
-        $xml_footer .= '</rss>' . "\n";
-        fwrite($categoryFile, $xml_footer);
-
-        fclose($categoryFile);
-
-        @chmod($generate_file_path, 0777);
-
-        return array(
-            'nb_categories' => count($categories),
+        // Generate category URL
+        $categoryLink = Context::getContext()->link->getCategoryLink(
+            (int) $category['id_category'],
+            null,
+            (int) $id_lang,
+            null,
+            $id_shop
         );
+
+           $cleanDescription = strip_tags($category['description']);
+
+    // Write the category XML
+    $xml_category = '<item>' . "\n"
+        . '<id>' . $category['id_category'] . '</id>' . "\n"
+        . '<name>' . htmlspecialchars($category['name'], ENT_QUOTES, self::CHARSET) . '</name>' . "\n"
+        . '<parent>' . $category['id_parent'] . '</parent>' . "\n"
+        . '<description>' . htmlspecialchars($cleanDescription, ENT_QUOTES, self::CHARSET) . '</description>' . "\n"
+        . '<deeplink>' . htmlspecialchars($categoryLink, ENT_QUOTES, self::CHARSET) . '</deeplink>' . "\n"
+        . '</item>' . "\n";
+
+    fwrite($categoryFile, $xml_category);
     }
 
+    // Write the closing XML tags after all categories are processed
+    $xml_footer = '</channel>' . "\n";  // ONLY include closing </channel>
+    $xml_footer .= '</rss>' . "\n";
+    fwrite($categoryFile, $xml_footer);
+
+    fclose($categoryFile);
+
+    @chmod($generate_file_path, 0777);
+
+    return array(
+        'nb_categories' => count($categories),
+    );
+}
+
+public function generateFileAttributes($lang, $id_shop)
+{
+    $id_lang = (int) $lang['id_lang'];
+    $this->shop = new Shop($id_shop);
+
+    // Get module configuration for this shop
+    $this->module_conf = $this->getConfigFieldsValues($id_shop);
+
+    // Init file path
+    $generate_file_path = $this->module_conf['gen_file_in_root']
+        ? dirname(__FILE__) . '/../../../' . $this->_getOutputFileName($lang['iso_code'], 'attributes', $id_shop, 'elevok-attributes')
+        : dirname(__FILE__) . '/export/' . $this->_getOutputFileName($lang['iso_code'], 'attributes', $id_shop, 'elevok-attributes');
+
+    $xml_header = '<?xml version="1.0" encoding="' . self::CHARSET . '" ?>' . "\n";
+    $xml_header .= '<rss version="2.0" xmlns:g="http://base.google.com/ns/1.0">' . "\n";
+    $xml_header .= '<channel>' . "\n";
+    $xml_header .= '<title>' . $this->shop->name . '</title>' . "\n";
+    $xml_header .= '<description>List of attributes</description>' . "\n";
+
+    // Open file for writing
+    $attributeFile = fopen($generate_file_path, 'w');
+
+    // Add UTF-8 byte order mark
+    fwrite($attributeFile, pack('CCC', 0xef, 0xbb, 0xbf));
+
+    // Write the XML header
+    fwrite($attributeFile, $xml_header);
+
+    // Query attributes
+    $sql = 'SELECT id_attribute_group, name '
+        . 'FROM ' . _DB_PREFIX_ . 'attribute_group_lang '
+        . 'WHERE id_lang = ' . $id_lang;
+
+    $attributes = Db::getInstance()->ExecuteS($sql);
+
+    // Loop through attributes and write XML data for each
+    foreach ($attributes as $attribute) {
+        $xml_attribute = '<item>' . "\n"
+            . '<id>' . $attribute['id_attribute_group'] . '</id>' . "\n"
+            . '<name>' . htmlspecialchars($attribute['name'], ENT_QUOTES, self::CHARSET) . '</name>' . "\n"
+            . '</item>' . "\n";
+
+        fwrite($attributeFile, $xml_attribute);
+    }
+
+    // Write the closing XML tags after all attributes are processed
+    $xml_footer = '</channel>' . "\n";
+    $xml_footer .= '</rss>' . "\n";
+    fwrite($attributeFile, $xml_footer);
+
+    fclose($attributeFile);
+
+    @chmod($generate_file_path, 0777);
+
+    return array(
+        'nb_attributes' => count($attributes),
+    );
+}
+public function generateFileAttributeValues($lang, $id_shop)
+{
+    $id_lang = (int) $lang['id_lang'];
+    $this->shop = new Shop($id_shop);
+
+    // Get module configuration for this shop
+    $this->module_conf = $this->getConfigFieldsValues($id_shop);
+
+    // Init file path
+    $generate_file_path = $this->module_conf['gen_file_in_root']
+        ? dirname(__FILE__) . '/../../../' . $this->_getOutputFileName($lang['iso_code'], 'attribute_values', $id_shop, 'elevok-attribute-values')
+        : dirname(__FILE__) . '/export/' . $this->_getOutputFileName($lang['iso_code'], 'attribute_values', $id_shop, 'elevok-attribute-values');
+
+    $xml_header = '<?xml version="1.0" encoding="' . self::CHARSET . '" ?>' . "\n";
+    $xml_header .= '<rss version="2.0" xmlns:g="http://base.google.com/ns/1.0">' . "\n";
+    $xml_header .= '<channel>' . "\n";
+    $xml_header .= '<title>' . $this->shop->name . '</title>' . "\n";
+    $xml_header .= '<description>List of attribute values</description>' . "\n";
+
+    // Open file for writing
+    $attributeValueFile = fopen($generate_file_path, 'w');
+
+    // Add UTF-8 byte order mark
+    fwrite($attributeValueFile, pack('CCC', 0xef, 0xbb, 0xbf));
+
+    // Write the XML header
+    fwrite($attributeValueFile, $xml_header);
+
+    // Query attribute values and group by attribute ID
+    $sql = 'SELECT a.id_attribute, a.id_attribute_group, ag.name as group_name, al.name as value_name 
+            FROM ' . _DB_PREFIX_ . 'attribute a 
+            INNER JOIN ' . _DB_PREFIX_ . 'attribute_lang al ON a.id_attribute = al.id_attribute 
+            INNER JOIN ' . _DB_PREFIX_ . 'attribute_group_lang ag ON a.id_attribute_group = ag.id_attribute_group 
+            WHERE al.id_lang = ' . $id_lang . ' 
+            ORDER BY a.id_attribute_group, a.id_attribute';
+
+    $attributeValues = Db::getInstance()->ExecuteS($sql);
+
+    // Track the current ID sequence for each attribute group
+    $attributeValueIds = [];
+
+    // Loop through attribute values and write XML data for each
+    foreach ($attributeValues as $attributeValue) {
+        $groupId = (int) $attributeValue['id_attribute_group'];
+        $groupPrefix = $groupId * 1000;
+
+        // Generate the ID based on the attribute group
+        if (!isset($attributeValueIds[$groupId])) {
+            $attributeValueIds[$groupId] = $groupPrefix;
+        } else {
+            $attributeValueIds[$groupId]++;
+        }
+
+        $generatedId = $attributeValueIds[$groupId];
+
+        $xml_attributeValue = '<item>' . "\n"
+            . '<id>' . $generatedId . '</id>' . "\n"
+            
+            . '<value>' . htmlspecialchars($attributeValue['value_name'], ENT_QUOTES, self::CHARSET) . '</value>' . "\n"
+            . '</item>' . "\n";
+
+        fwrite($attributeValueFile, $xml_attributeValue);
+    }
+
+    // Write the closing XML tags after all attribute values are processed
+    $xml_footer = '</channel>' . "\n";
+    $xml_footer .= '</rss>' . "\n";
+    fwrite($attributeValueFile, $xml_footer);
+
+    fclose($attributeValueFile);
+
+    @chmod($generate_file_path, 0777);
+
+    return array(
+        'nb_attribute_values' => count($attributeValues),
+    );
+}
+public function generateFileArticles($lang, $id_shop) 
+{
+    $id_lang = (int) $lang['id_lang'];
+    $this->shop = new Shop($id_shop);
+
+    // Get module configuration for this shop
+    $this->module_conf = $this->getConfigFieldsValues($id_shop);
+
+    // Init file path
+    $generate_file_path = $this->module_conf['gen_file_in_root']
+        ? dirname(__FILE__) . '/../../../' . $this->_getOutputFileName($lang['iso_code'], 'articles', $id_shop, 'elevok-articles')
+        : dirname(__FILE__) . '/export/' . $this->_getOutputFileName($lang['iso_code'], 'articles', $id_shop, 'elevok-articles');
+
+    $xml_header = '<?xml version="1.0" encoding="' . self::CHARSET . '" ?>' . "\n";
+    $xml_header .= '<rss version="2.0" xmlns:g="http://base.google.com/ns/1.0">' . "\n";
+    $xml_header .= '<channel>' . "\n";
+    $xml_header .= '<title>' . $this->shop->name . '</title>' . "\n";
+    $xml_header .= '<description>List of articles with attribute values</description>' . "\n";
+
+    // Open file for writing
+    $articleFile = fopen($generate_file_path, 'w');
+
+    // Add UTF-8 byte order mark
+    fwrite($articleFile, pack('CCC', 0xef, 0xbb, 0xbf));
+
+    // Write the XML header
+    fwrite($articleFile, $xml_header);
+
+    // Query attribute groups and values
+    $sql_attributes = 'SELECT a.id_attribute, ag.id_attribute_group, al.name
+                       FROM ' . _DB_PREFIX_ . 'attribute a
+                       JOIN ' . _DB_PREFIX_ . 'attribute_lang al ON a.id_attribute = al.id_attribute AND al.id_lang = ' . $id_lang . '
+                       JOIN ' . _DB_PREFIX_ . 'attribute_group ag ON a.id_attribute_group = ag.id_attribute_group';
+
+    $attributeValues = Db::getInstance()->ExecuteS($sql_attributes);
+
+    // Define attribute group ID mappings
+    $attributeGroupMapping = [];
+    $attributeValueMapping = [];
+    $base_id = 1000;
+
+    foreach ($attributeValues as $attributeValue) {
+        $group_id = $attributeValue['id_attribute_group'];
+
+        // Assign base ID for each new attribute group
+        if (!isset($attributeGroupMapping[$group_id])) {
+            $attributeGroupMapping[$group_id] = $base_id;
+            $base_id += 1000; // Increment by 1000 for the next group
+        }
+
+        // Assign standardized ID to each attribute value within its group
+        $attributeValueMapping[$attributeValue['name']] = $attributeGroupMapping[$group_id]++;
+    }
+
+    // Query articles with their attributes
+    $sql = 'SELECT p.id_product, p.reference AS barcode, pl.name, p.price,
+                   GROUP_CONCAT(DISTINCT al.name ORDER BY al.name SEPARATOR ", ") AS attribute_values
+            FROM ' . _DB_PREFIX_ . 'product p
+            JOIN ' . _DB_PREFIX_ . 'product_lang pl ON p.id_product = pl.id_product AND pl.id_lang = ' . $id_lang . '
+            LEFT JOIN ' . _DB_PREFIX_ . 'product_attribute pa ON p.id_product = pa.id_product
+            LEFT JOIN ' . _DB_PREFIX_ . 'product_attribute_combination pac ON pa.id_product_attribute = pac.id_product_attribute
+            LEFT JOIN ' . _DB_PREFIX_ . 'attribute a ON pac.id_attribute = a.id_attribute
+            LEFT JOIN ' . _DB_PREFIX_ . 'attribute_lang al ON a.id_attribute = al.id_attribute AND al.id_lang = ' . $id_lang . '
+            WHERE p.id_shop_default = ' . $id_shop . '
+            GROUP BY p.id_product';
+
+    $articles = Db::getInstance()->ExecuteS($sql);
+
+    // Loop through articles and write XML data for each
+    foreach ($articles as $article) {
+        $attributes = explode(', ', $article['attribute_values']);
+        $attribute_ids = [];
+
+        foreach ($attributes as $attribute) {
+            if (isset($attributeValueMapping[$attribute])) {
+                $attribute_ids[] = $attributeValueMapping[$attribute];
+            }
+        }
+$images = Image::getImages($lang['id_lang'], $article['id_product']);
+$nbimages = 0;
+$image_type = $this->module_conf['img_type'] ?: 'large_default';
+
+// Fetch the correct link_rewrite from the database
+$linkRewrite = Db::getInstance()->getValue(
+    'SELECT link_rewrite FROM ' . _DB_PREFIX_ . 'product_lang 
+     WHERE id_product = ' . (int) $article['id_product'] . ' 
+     AND id_lang = ' . (int) $lang['id_lang']
+);
+
+$imageLinks = [];
+foreach ($images as $im) {
+    // Ensure ID image exists
+    if (!isset($im['id_image']) || empty($im['id_image'])) {
+        continue;
+    }
+
+    // Generate the correct image URL
+    $image = $this->context->link->getImageLink($linkRewrite, $im['id_image'], $image_type);
+
+    // Append sanitized image URL
+    $imageLinks[] = htmlspecialchars($image, ENT_QUOTES, 'UTF-8');
+
+    // Limit the number of images if needed (max 10 in this case)
+    if (++$nbimages == 10) {
+        break;
+    }
+}
+        // Add images to XML if available
+        $xml_article = '<item>' . "\n"
+            . '<id>' . $article['id_product'] . '</id>' . "\n"
+            . '<barcode>' . htmlspecialchars($article['barcode'], ENT_QUOTES, self::CHARSET) . '</barcode>' . "\n"
+            . '<name>' . htmlspecialchars($article['name'], ENT_QUOTES, self::CHARSET) . '</name>' . "\n"
+            . '<attributes>' . implode(', ', $attribute_ids) . '</attributes>' . "\n"
+            . '<price>' . number_format($article['price'], 2, '.', '') . '</price>' . "\n";
+
+        // Add image URLs to the XML
+        if (!empty($imageLinks)) {
+            foreach ($imageLinks as $imageLink) {
+                $xml_article .= '<pictures>' . $imageLink . '</pictures>' . "\n";
+            }
+        }
+
+        $xml_article .= '</item>' . "\n";
+
+        fwrite($articleFile, $xml_article);
+    }
+
+    // Write the closing XML tags after all articles are processed
+    $xml_footer = '</channel>' . "\n";
+    $xml_footer .= '</rss>' . "\n";
+    fwrite($articleFile, $xml_footer);
+
+    fclose($articleFile);
+
+    @chmod($generate_file_path, 0777);
+
+    return array(
+        'nb_articles' => count($articles),
+    );
+}
     public function generateFileBrands($lang, $id_shop)
     {
         $id_lang = (int) $lang['id_lang'];
@@ -2735,18 +3072,7 @@ class GShoppingFlux extends Module
         }
         $cover_key = array_search('1', array_column($images, 'cover'));
         $nbimages = 0;
-        foreach ($images as $im_key => $im) {
-            // Get the product image URL
-            $image = $this->context->link->getImageLink($product['link_rewrite'], $im['id_image'], 'large_default');
         
-            // Append image to the XML
-            $xml_googleshopping .= '<pictures>' . htmlspecialchars($image) . '</pictures>' . "\n";
-        
-            // Limit the number of images if needed (max 10 in this case)
-            if (++$nbimages == 10) {
-                break;
-            }
-        }
         $xml_googleshopping .= '<price>' . $product['price'] . '</price>' . "\n";        
         $xml_googleshopping .= '</item>' . "\n\n";
 

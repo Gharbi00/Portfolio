@@ -15,8 +15,8 @@ class ElevokWidget extends Module
     
     public $config_form = false;
     private $accessToken = null;
-    public $widget_url = "https://widget.elevok.com/sdk.js";
-    public $backend_url = "https://api.elevok.com";
+    public $widget_url = "https://widgt-sbx-app.bosk.app";
+    public $backend_url = "https://sfca-sbx-bck.diktup.cloud";
     public $logFilePath = "/var/www/vhosts/proitshop.com/httpdocs/cutomlog.log";
 
     public function __construct()
@@ -41,7 +41,7 @@ class ElevokWidget extends Module
             !parent::install() ||
             !$this->registerHook('actionAuthentication') ||
             !$this->registerHook('actionCustomerAccountAdd') ||
-            !$this->registerHook('actionCustomerLogoutAfter') ||
+            !$this->registerHook('actionCustomerwLogoutAfter') ||
             !$this->registerHook('actionValidateOrder') ||
             !$this->registerHook('displayAfterCarrier') ||
             !$this->registerHook('displayHeader') ||
@@ -335,7 +335,7 @@ class ElevokWidget extends Module
 
 
 
-        public function hookDisplayHeader($params)
+    public function hookDisplayHeader($params)
     {
         
         $query = $_SERVER['QUERY_STRING']; 
@@ -383,36 +383,14 @@ class ElevokWidget extends Module
         $scriptTag = '
         <script>
             // Define the widget configuration before the external script is loaded
-           window.onload = function () {
-            var script = document.createElement("script");
-            script.src = "https://widget.elevok.com/sdk.js?v=" + new Date().getTime();
-            script.async = true;
-            script.defer = true;
-            script.onload = function () {
-                window.widgetInit = {
-                    appId: "' . addslashes($appId) . '",
-                    locale: "' . addslashes($widget_lang) . '",
-                    theme: "' . addslashes($theme) . '"
-                };
+            window.widgetInit = { 
+                appId: \'' . $appId . '\', 
+                locale: \'' . $widget_lang . '\', 
+                theme: \'' . $theme . '\'
             };
-            document.head.appendChild(script);
-        };
- 
 
- document.addEventListener("DOMContentLoaded", function () {
-    console.log("DOM loaded, checking for logout condition...");
 
-    // Example: Check if the user is logged out by inspecting cookies
-    if (!document.cookie.includes("PrestaShop-")) {
-        console.log("User logged out, clearing local storage.");
-        localStorage.removeItem("elvkwdigttoken");
-        localStorage.removeItem("elvwdigtauth");
-        localStorage.setItem("elvwdigtauth", "false");
-        console.log("Local storage items cleared successfully.");
-    }
-});
-
-       </script>
+        </script>
         <script src="' . $widgetUrl . '/sdk.js" defer></script>
     ';
 
@@ -435,6 +413,7 @@ class ElevokWidget extends Module
             mutations.forEach(function(mutation) {
                 mutation.addedNodes.forEach(function(node) {
                     if (node.nodeType === Node.ELEMENT_NODE) {
+                        console.log("Added node:", node.tagName);
     
                         if (node.tagName.toLowerCase() === "index-component") {
                             const indexShadowRoot = node.shadowRoot;
@@ -514,7 +493,8 @@ class ElevokWidget extends Module
         $headerContent = $customStylesheetLink . $scriptTag .$loginAnimationScript;
     
         return $headerContent;
-    }    
+    }        
+
     public function hookActionAuthentication($params)
     {
         $email = $params['cookie']->email;
@@ -610,111 +590,107 @@ class ElevokWidget extends Module
          //PrestaShopLogger::addLog('Error during authentication: ' . json_encode($response), 3, null, 'ElevokWidget');
         }
     }
- 
 
-	public function hookActionCustomerLogoutAfter($params)
-{
-    // Clear cookies
-    setcookie('elvkwdigttoken', '', time() - 3600, '/');
-    setcookie('elvwdigtauth', '', time() - 3600, '/');
-    setcookie('elvwdigtauth', 'false', time() + (864000 * 300), '/');
-    echo '<script>
-        localStorage.removeItem("elvkwdigttoken");
+    public function hookActionCustomerLogoutAfter($email)
+    {
+        setcookie('elvkwdigttoken', '', time() - 3600, '/');
+        setcookie('elvwdigtauth', '', time() - 3600, '/');
+        setcookie('elvwdigtauth', 'false', time() + (864000 * 300), "/");
+	    echo '<script>
+	alert('local storage is cleared);        
+localStorage.removeItem("elvkwdigttoken");
         localStorage.removeItem("elvwdigtauth");
         localStorage.setItem("elvwdigtauth", "false");
     </script>';
 }
 
-
-        public function hookActionValidateOrder($params)
-        {
-            $displayDiscount = (bool) Configuration::get('ELEVOKWIDGET_DISPLAY_DISCOUNT');
-            if ($displayDiscount) {
-                $orderId     = $params['order']->id;
-                $order       = new Order($orderId);
-                $orderAmount = $order->total_paid;
-                $cart        = new Cart($order->id_cart); // Get the associated cart
-
-                $appId           = Configuration::get('ELEVOKWIDGET_APP_ID');
-                $orderType       = ($order->module == 'storepickup') ? 'PICKUP' : 'DELIVERY';
-                $orderTime       = $order->date_add;
-                $products        = $cart->getProducts();
-                $productsOrdered = [];
-
-                foreach ($products as $product) {
-                    $productId  = $product['id_product'];
-                    $productObj = new Product($productId);
-
-                    $productsOrdered[] = [
-                        'id'       => $productObj->reference,
-                        'quantity' => $product['cart_quantity'],
-                    ];
-                }
-
-                $customerId = $order->id_customer;
-
-                $sql = new DbQuery();
-                $sql->select('*')
-                    ->from('address')
-                    ->where('id_customer = ' . (int) $customerId)
-                    ->where('deleted = 0');
-
-                $addresses = Db::getInstance()->executeS($sql);
-
-                if (! empty($addresses)) {
-                    $address = $addresses[0];
-
-                    $deliveryAddress = [
-                        'address' => 'firstname: ' . $address['firstname'] . ', ' .
-                        'lastname: ' . $address['lastname'] . ', ' .
-                        'address1: ' . $address['address1'] . ', ' .
-                        'address2: ' . $address['address2'] . ', ' .
-                        'postcode: ' . $address['postcode'] . ', ' .
-                        'city: ' . $address['city'] . ', ' .
-                        'country: ' . Country::getNameById(Context::getContext()->language->id, $address['id_country']) . ', ' .
-                        'phone: ' . $address['phone'],
-                    ];
-                }
-
-                $currency      = new Currency($order->id_currency);
-                $customerEmail = $params['cookie']->email;
-                $cartRules     = $order->getCartRules(); // This will get the cart rules applied to the order
-                PrestaShopLogger::addLog('Cart Rules: ' . json_encode($cartRules), 1);
-
-                $coinsAmount = 0;
-                if (! empty($cartRules)) {
-                    foreach ($cartRules as $cartRule) {
-                        if ($cartRule['name'] === 'Réduction par points fidélité') {
-                            $checkResponse  = $this->fetchWalletInformation();
-                            $unitValue      = $checkResponse['wallet']['coin']['unitValue']['amount'];
-                            $coinsAmount    = $cartRule['value'] / $unitValue;
-                            $cartRuleId     = $cartRule['id_cart_rule'];
-                            $cartRuleObject = new CartRule($cartRuleId);
-                            $cartRuleObject->delete();
-                        } else {
-                            PrestaShopLogger::addLog("Cart Rules not found", 3);
-                        }
-                    }
+    public function hookActionValidateOrder($params)
+    {
+        $orderId = $params['order']->id;
+        $order = new Order($orderId);
+        $orderAmount = $order->total_paid;
+        $cart = new Cart($order->id_cart);  // Get the associated cart
+    
+        $appId = Configuration::get('ELEVOKWIDGET_APP_ID');
+        $orderType = ($order->module == 'storepickup') ? 'PICKUP' : 'DELIVERY';
+        $orderTime = $order->date_add;
+        $products = $cart->getProducts();
+        $productsOrdered = [];
+    
+        foreach ($products as $product) {
+            $productId = $product['id_product'];
+            $productObj = new Product($productId);
+    
+            $productsOrdered[] = [
+                'id' => $productObj->reference, 
+                'quantity' => $product['cart_quantity'],
+            ];
+        }
+    
+        $customerId = $order->id_customer;
+    
+        $sql = new DbQuery();
+        $sql->select('*')
+            ->from('address')
+            ->where('id_customer = ' . (int)$customerId)
+            ->where('deleted = 0');
+        
+        $addresses = Db::getInstance()->executeS($sql);
+        
+        if (!empty($addresses)) {
+            $address = $addresses[0];
+    
+            $deliveryAddress = [
+                'address' => 'firstname: ' . $address['firstname'] . ', ' .
+                             'lastname: ' . $address['lastname'] . ', ' .
+                             'address1: ' . $address['address1'] . ', ' .
+                             'address2: ' . $address['address2'] . ', ' .
+                             'postcode: ' . $address['postcode'] . ', ' .
+                             'city: ' . $address['city'] . ', ' .
+                             'country: ' . Country::getNameById(Context::getContext()->language->id, $address['id_country']) . ', ' .
+                             'phone: ' . $address['phone']
+            ];
+        } 
+    
+        $currency = new Currency($order->id_currency);
+        $customerEmail = $params['cookie']->email;
+        $cartRules = $order->getCartRules(); // This will get the cart rules applied to the order
+        PrestaShopLogger::addLog('Cart Rules: ' . json_encode($cartRules), 1);
+    
+        $coinsAmount = 0;
+        if (!empty($cartRules)) {
+            foreach ($cartRules as $cartRule) {
+                if ($cartRule['name'] === 'Réduction par points fidélité') {
+                    $checkResponse = $this->fetchWalletInformation();
+                    $unitValue = $checkResponse['wallet']['coin']['unitValue']['amount'];
+                    $coinsAmount = $cartRule['value'] / $unitValue;
+                    $cartRuleId = $cartRule['id_cart_rule'];
+                    $cartRuleObject = new CartRule($cartRuleId);
+                    $cartRuleObject->delete();
                 } else {
-                    PrestaShopLogger::addLog("No cart rules found for the cart.", 3);
+                    PrestaShopLogger::addLog("Cart Rules not found", 3);
                 }
-
-                $postData = json_encode([
-                    'orderType'       => $orderType,
-                    'orderTime'       => (string) $orderTime,
-                    'currency'        => $currency->iso_code,
-                    'user'            => (string) $customerEmail,
-                    'client'          => $appId,
-                    'deliveryAddress' => $deliveryAddress,
-                    'products'        => $productsOrdered,
-                ], JSON_PRETTY_PRINT);
-
-                PrestaShopLogger::addLog('Encoded Order Data: ' . $postData, 1);
-
-                $this->postOrderData($postData);
-                $this->sendPushAmount($customerEmail, $orderAmount, $coinsAmount);
             }
-        }    
+        } else {
+            PrestaShopLogger::addLog("No cart rules found for the cart.", 3);
+        }
+        
+
+        $postData = json_encode([
+            'orderType' => $orderType,
+            'orderTime' => (string)$orderTime,
+            'currency' => $currency->iso_code,
+            'user' => (string)$customerEmail,
+            'client' => $appId,
+            'deliveryAddress' => $deliveryAddress,
+            'products' => $productsOrdered
+        ], JSON_PRETTY_PRINT);
+    
+        PrestaShopLogger::addLog('Encoded Order Data: ' . $postData, 1);
+        $this->postOrderData($postData);
+        $this->sendPushAmount($customerEmail, $orderAmount, $coinsAmount); // Post the data to external service
+    }
+    
     
 
     private function sendRequest($endpoint, $postData)

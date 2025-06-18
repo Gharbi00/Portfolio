@@ -1,67 +1,58 @@
 <?php
-
-
-$userEmail = $block->getCustomerEmail(); 
+$userEmail = $block->getCustomerEmail();
 $displayDiscount = $block->getDisplayDiscount();
 
+// Fetch wallet information
 $checkResponse = $block->fetchWalletInformation($userEmail);
-?>
 
-
-<?php
-// Debugging to check if response is valid
-if ($checkResponse) {
+// Check if wallet information exists and is valid
+if ($checkResponse && isset($checkResponse['wallet'])) {
     // Extract wallet details
+    $walletAmount = $checkResponse['wallet']['amount'];
+    $walletIconUrl = $checkResponse['wallet']['coin']['picture']['baseUrl'] . '/' . $checkResponse['wallet']['coin']['picture']['path'];
+    $walletAlt = $checkResponse['wallet']['coin']['name'];
+    $unitValue = $checkResponse['wallet']['coin']['unitValue']['amount'];
 
-    if (isset($checkResponse['wallet'])) {
-        $walletAmount = $checkResponse['wallet']['amount'];
-        $walletIconUrl = $checkResponse['wallet']['coin']['picture']['baseUrl'] . '/' . $checkResponse['wallet']['coin']['picture']['path'];
-        $walletAlt = $checkResponse['wallet']['coin']['name'];
-        $unitValue = $checkResponse['wallet']['coin']['unitValue']['amount'];
-    } else {
-        echo "<h2>No wallet information returned. Please check the API response.</h2>";
-    }
+    // Fetch configurable texts
     $firstText = $block->getFirstText();
     $secondText = $block->getSecondText();
     $submitText = $block->getSubmitText();
 
+    // Display discount widget if enabled
+    if ($displayDiscount): ?>
+        <div id="discount-widget" style="display: none;">
+            <div class="wallet-block" id="wallet-info">
+                <div class="col-md-special-6" style="margin-bottom: 20px;">
+                    <span class="wallet-label"><?= htmlspecialchars($firstText) ?></span>
+                    <strong><?= htmlspecialchars($walletAmount) ?></strong>
+                    <img class="wallet-img" src="<?= htmlspecialchars($walletIconUrl) ?>" alt="<?= htmlspecialchars($walletAlt) ?>" />
+                </div>
 
+                <div class="col-md-special-6" id="input-coins-step" style="margin-bottom: 20px;">
+                    <label for="coins_input" class="coins-label"><?= htmlspecialchars($secondText) ?></label>
+                    <img class="wallet-img" src="<?= htmlspecialchars($walletIconUrl) ?>" alt="<?= htmlspecialchars($walletAlt) ?>" />
+                    <input type="number" id="coins_input" name="coins_input" min="0" max="<?= htmlspecialchars($walletAmount) ?>" />
+                </div>
+            </div>
 
-    ?>
+            <div id="apply_discount_btn_wrapper" class="submit-button" style="margin-bottom: 20px;">
+                <button id="apply_discount_btn" class="apply-btn" type="button"><?= htmlspecialchars($submitText) ?></button>
+            </div>
 
-
-<?php if ($block->getDisplayDiscount()): ?>
-<div id="discount-widget" style="display: none;"> 
-    <div class="wallet-block" id="wallet-info">
-        <div class="col-md-special-6" style="margin-bottom: 20px;">
-            <span class="wallet-label"><?= htmlspecialchars($firstText) ?></span>
-            <strong><?= htmlspecialchars($walletAmount) ?></strong>
-            <img class="wallet-img" src="<?= htmlspecialchars($walletIconUrl) ?>" alt="<?= htmlspecialchars($walletAlt) ?>" />
-        </div>
-
-        <div class="col-md-special-6" id="input-coins-step" style="margin-bottom: 20px;">
-            <label for="coins_input" class="coins-label"><?= htmlspecialchars($secondText) ?></label>
-            <img class="wallet-img" src="<?= htmlspecialchars($walletIconUrl) ?>" alt="<?= htmlspecialchars($walletAlt) ?>" />
-            <input type="number" id="coins_input" name="coins_input" min="0" max="<?= htmlspecialchars($walletAmount) ?>" />
-        </div>
-    </div>
-
-    <div id="apply_discount_btn_wrapper" class="submit-button" style="margin-bottom: 20px;">
-        <button id="apply_discount_btn" class="apply-btn" type="button"><?= htmlspecialchars($submitText) ?></button>
-    </div>
-    <div id="custom-alert" class="custom-alert hidden">
+            <div id="custom-alert" class="custom-alert hidden">
                 <span id="alert-message"></span>
                 <button id="alert-close-btn" class="alert-close-btn">&times;</button>
-    </div>
-    <div id="discount-data" data-unit-value="<?php echo $unitValue; ?>" data-wallet-amount="<?php echo $walletAmount; ?>"></div>
-</div>
-<?php endif; ?>
+            </div>
 
-<?php
+            <div id="discount-data" data-unit-value="<?= htmlspecialchars($unitValue) ?>" data-wallet-amount="<?= htmlspecialchars($walletAmount) ?>"></div>
+        </div>
+    <?php endif; 
 } else {
-    echo "<h2>No wallet information returned. Please check the API response.</h2>";
+    // Optionally, handle cases where wallet information does not exist
+    echo "<h2>Wallet information is not available.</h2>";
 }
 ?>
+
 
 
 <style>     

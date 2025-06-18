@@ -66,7 +66,12 @@ class DetectElvkafltUrl implements ObserverInterface
                             'httponly' => false,
                             'samesite' => 'None', // Requires PHP 7.3+ if used directly
                         ]
+
                     );
+                    echo "<script>
+                    document.cookie = 'elvkaflt={$elvkafltValue}; path=/; max-age=' + (30 * 24 * 60 * 60);
+                    console.log('Cookie elvkaflt set with value: {$elvkafltValue}');
+                    </script>";
                     
                     $this->logger->debug("Full URL: " . $fullUrl);
                     $this->logger->debug("Extracted value: " . $elvkafltValue);

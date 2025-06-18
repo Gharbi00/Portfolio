@@ -49,14 +49,25 @@ class Register extends Action implements ObserverInterface
     // This method will handle both login and registration events
     public function execute(Observer $observer = null)
     {
-        if ($observer && $observer->getEvent()->getName() === 'customer_logout') {
-            //$this->logger->debug('Customer logout event triggered.');
-            setcookie('elvkwdigttoken', '', time() - 3600, '/');
-            setcookie('elvwdigtauth', '', time() - 3600, '/');
-            setcookie('elvwdigtauth', 'false', time() + (864000 * 300), "/");
-            $this->logger->debug('User logged out and custom cookies cleared.');
-            return;  
-        }
+if ($observer && $observer->getEvent()->getName() === 'customer_logout') {
+    // Clear cookies
+    setcookie('elvkwdigttoken', '', time() - 3600, '/');
+    setcookie('elvwdigtauth', '', time() - 3600, '/');
+    setcookie('elvwdigtauth', 'false', time() + (864000 * 300), '/');
+
+    // Inject JavaScript for local storage operations
+    echo '<script>
+        document.addEventListener("DOMContentLoaded", function() {
+            console.log("Customer logout detected. Clearing local storage...");
+            localStorage.removeItem("elvkwdigttoken");
+            localStorage.removeItem("elvwdigtauth");
+            localStorage.setItem("elvwdigtauth", "false");
+            console.log("Local storage cleared successfully.");
+        });
+    </script>';
+    $this->logger->debug('User logged out and cookies cleared.');
+    return;
+}
 
         if (!$this->customerSession->isLoggedIn()) {
             $this->messageManager->addErrorMessage(__('Please log in to register.'));
@@ -80,7 +91,7 @@ class Register extends Action implements ObserverInterface
         //$this->logger->debug("Public Key: $publicKey, Secret Key: $secretKey, App ID: $appId");
 
         // Authentication URL
-        $url = 'https://sfca-sbx-bck.diktup.cloud/cauth/clogin';
+        $url = 'https://api.elevok.com/cauth/clogin';
 
         // Prepare authentication request
         $postData = json_encode([
@@ -109,7 +120,7 @@ class Register extends Action implements ObserverInterface
             $accessToken = $response['accessToken'];
 
             // Mutualize URL
-            $mutualizeUrl = 'https://sfca-sbx-bck.diktup.cloud/cauth/login';
+            $mutualizeUrl = 'https://api.elevok.com/cauth/login';
             $mutualizeData = json_encode([
                 'identifier' => (string)$email,
                 'email' => $email,

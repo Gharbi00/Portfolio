@@ -148,29 +148,68 @@ document.addEventListener("DOMContentLoaded", function() {
             
 });
 
-require(['jquery'], function ($) {
-    $(document).ready(function () {
-        var interval = setInterval(function () {
-            var discountWidget = $('#discount-widget');
+require([
+    'jquery',
+    'domReady!'
+], function ($) {
+    try {
+        // Debug: Start of script
+        console.log("Starting to reposition and toggle the discount widget...");
 
-            if (discountWidget.length) {
-                clearInterval(interval); 
-                function toggleDiscountWidget() {
-                    var hash = window.location.hash; 
-                    if (hash === '#payment') {
-                        discountWidget.show(); 
-                    } else {
-                        discountWidget.hide(); 
-                    }
+        const waitForElements = function (callback) {
+            const interval = setInterval(function () {
+                const discountWidget = $('#discount-widget');
+                const actionsToolbar = $('.actions-toolbar');
+                const agreementsBlock = $('.checkout-agreements-block');
+
+                // Check if all elements are present
+                if (discountWidget.length && actionsToolbar.length && agreementsBlock.length) {
+                    clearInterval(interval); // Stop the interval
+                    callback(discountWidget, actionsToolbar, agreementsBlock); // Execute callback
+                } else {
+                    // Debug: Log the current status of element availability
+                    console.log("Waiting for elements to load...");
+                    console.log("Discount widget found:", discountWidget.length > 0);
+                    console.log("actions-toolbar found:", actionsToolbar.length > 0);
+                    console.log("checkout-agreements-block found:", agreementsBlock.length > 0);
                 }
+            }, 100); // Check every 100ms
+        };
 
+        const repositionAndToggleWidget = function (discountWidget, actionsToolbar, agreementsBlock) {
+            // Reposition the discount widget
+            agreementsBlock.after(discountWidget);
+            console.log("Discount widget successfully repositioned.");
+
+            // Function to toggle visibility of the discount widget
+            const toggleDiscountWidget = function () {
+                const hash = window.location.hash;
+
+                if (hash === '#payment') {
+                    discountWidget.show(); // Show the widget only on the payment step
+                    console.log("Discount widget displayed.");
+                } else {
+                    discountWidget.hide(); // Hide the widget on other steps
+                    console.log("Discount widget hidden.");
+                }
+            };
+
+            // Initial toggle based on current hash
+            toggleDiscountWidget();
+
+            // Listen for hash changes to toggle visibility dynamically
+            $(window).on('hashchange', function () {
                 toggleDiscountWidget();
+            });
+        };
 
-                $(window).on('hashchange', function () {
-                    toggleDiscountWidget();
-                });
-            }
-        }, 100); 
-    });
+        // Wait for the elements to load and then reposition and toggle the widget
+        waitForElements(repositionAndToggleWidget);
+
+    } catch (error) {
+        // Debug: Catch and log errors
+        console.error("Error during discount widget setup:", error);
+    }
 });
+
 

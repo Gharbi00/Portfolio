@@ -34,6 +34,8 @@ class Save extends Action
             $this->configWriter->save('elevok_widget/general/second_text', $post['second_text']);
             $this->configWriter->save('elevok_widget/general/submit_text', $post['submit_text']);
             $this->configWriter->save('elevok_widget/general/widget_style', $post['widget_style']);
+            $this->configWriter->save('elevok_widget_general/general/desktop_selector', $post['desktop_selector']);
+            $this->configWriter->save('elevok_widget_general/general/mobile_selector', $post['mobile_selector']);
 
             $this->messageManager->addSuccessMessage(__('Settings saved successfully.'));
         } else {
